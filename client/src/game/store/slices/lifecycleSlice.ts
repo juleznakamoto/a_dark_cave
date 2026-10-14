@@ -593,6 +593,10 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
         devGameMode: get().devGameMode,
         activeDevSaveId: null,
         boostApplied: savedState.boostApplied === true,
+        demoContinuePlaying: savedState.demoContinuePlaying === true,
+        demoVisibleBuildingIds: Array.isArray(savedState.demoVisibleBuildingIds)
+          ? savedState.demoVisibleBuildingIds
+          : null,
         effects: calculateTotalEffects(stateForDerived),
         bastion_stats: calculateBastionStats(stateForDerived),
         cruelMode,

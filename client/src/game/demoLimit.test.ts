@@ -8,11 +8,13 @@ const {
   woodenHutCountRef,
   galaxyTimeUpDialogOpenRef,
   demoEndDialogDismissedRef,
+  demoContinuePlayingRef,
   eventGateRef,
 } = vi.hoisted(() => {
   const woodenHutCountRef = { current: 0 };
   const galaxyTimeUpDialogOpenRef = { current: false };
   const demoEndDialogDismissedRef = { current: false };
+  const demoContinuePlayingRef = { current: false };
   const eventGateRef = {
     current: {
       dialogHandoffPending: false,
@@ -33,6 +35,7 @@ const {
     woodenHutCountRef,
     galaxyTimeUpDialogOpenRef,
     demoEndDialogDismissedRef,
+    demoContinuePlayingRef,
     eventGateRef,
   };
 });
@@ -55,6 +58,7 @@ vi.mock("@/game/state", () => ({
       buildings: { woodenHut: woodenHutCountRef.current },
       galaxyTimeUpDialogOpen: galaxyTimeUpDialogOpenRef.current,
       demoEndDialogDismissed: demoEndDialogDismissedRef.current,
+      demoContinuePlaying: demoContinuePlayingRef.current,
       ...eventGateRef.current,
       setGalaxyTimeUpDialogOpen: setGalaxyTimeUpDialogOpenMock,
       restartGame: restartGameMock,
@@ -69,6 +73,7 @@ vi.mock("@/game/gameStoreHolder", () => ({
       buildings: { woodenHut: woodenHutCountRef.current },
       galaxyTimeUpDialogOpen: galaxyTimeUpDialogOpenRef.current,
       demoEndDialogDismissed: demoEndDialogDismissedRef.current,
+      demoContinuePlaying: demoContinuePlayingRef.current,
       ...eventGateRef.current,
     }),
     setState: setStateMock,
@@ -90,6 +95,7 @@ import {
   isDemoLimitReachedFromState,
   isDemoEndBlockedByOngoingEvent,
   isDemoPlayFrozen,
+  isDemoBuildingTierLocked,
   canResolveOpenEventDuringDemoEnd,
   shouldDismissEventWithoutApplying,
   processDemoLimit,
@@ -104,6 +110,7 @@ describe("demoLimit", () => {
     woodenHutCountRef.current = 0;
     galaxyTimeUpDialogOpenRef.current = false;
     demoEndDialogDismissedRef.current = false;
+    demoContinuePlayingRef.current = false;
     eventGateRef.current = {
       dialogHandoffPending: false,
       eventDialog: { isOpen: false, currentEvent: null },
@@ -204,6 +211,15 @@ describe("demoLimit", () => {
     expect(setStateMock).not.toHaveBeenCalled();
   });
 
+  it("does not reopen the dialog after the player continues", () => {
+    woodenHutCountRef.current = DEMO_WOODEN_HUT_LIMIT;
+    demoContinuePlayingRef.current = true;
+
+    processDemoLimit();
+
+    expect(setStateMock).not.toHaveBeenCalled();
+  });
+
   it("does not reopen the dialog after the player closes it", () => {
     woodenHutCountRef.current = DEMO_WOODEN_HUT_LIMIT;
     demoEndDialogDismissedRef.current = true;
@@ -225,6 +241,23 @@ describe("demoLimit", () => {
   it("freezes play at the wooden hut cap", () => {
     expect(isDemoPlayFrozen({ buildings: { woodenHut: DEMO_WOODEN_HUT_LIMIT - 1 } })).toBe(false);
     expect(isDemoPlayFrozen({ buildings: { woodenHut: DEMO_WOODEN_HUT_LIMIT } })).toBe(true);
+  });
+
+  it("unfreezes play after the player continues", () => {
+    expect(
+      isDemoPlayFrozen({
+        buildings: { woodenHut: DEMO_WOODEN_HUT_LIMIT },
+        demoContinuePlaying: true,
+      }),
+    ).toBe(false);
+  });
+
+  it("locks building tiers that need the hut cap, and leaves earlier tiers", () => {
+    expect(isDemoBuildingTierLocked(DEMO_WOODEN_HUT_LIMIT, 8)).toBe(true);
+    expect(isDemoBuildingTierLocked(DEMO_WOODEN_HUT_LIMIT, 7)).toBe(false);
+    expect(isDemoBuildingTierLocked(DEMO_WOODEN_HUT_LIMIT - 1, 8)).toBe(false);
+    isDemoEditionMock.mockReturnValue(false);
+    expect(isDemoBuildingTierLocked(DEMO_WOODEN_HUT_LIMIT, 8)).toBe(false);
   });
 
   it("freezes play in DEV Demo End mode before the hut cap", () => {

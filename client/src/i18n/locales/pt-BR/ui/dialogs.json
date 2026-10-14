@@ -217,6 +217,7 @@
     "description": "Adicione o jogo completo à sua lista de desejos na Steam para continuar a jornada quando for lançado.",
     "wishlistButton": "Adicionar à lista de desejos na Steam",
     "startNewGameButton": "Iniciar novo jogo",
+    "continuePlayingButton": "Continuar jogando",
     "seeWhatsNextButton": "Ver o que vem",
     "feedbackButton": "Feedback",
     "storeHeaderLink": "Lista de desejos",

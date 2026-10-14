@@ -32,11 +32,17 @@ export default function DemoTimeUpDialog({
   // `/dev/demo-end` is the Steam demo ending preview, so the review button is always on.
   const showSteamReview = preview || shouldOfferSteamDemoReview(devGameMode);
   const dismissDemoEndDialog = useGameStore((state) => state.dismissDemoEndDialog);
+  const continueDemoPlay = useGameStore((state) => state.continueDemoPlay);
   const open = storeOpen;
 
   const handleStartNewGame = () => {
     if (preview) return;
     void startNewDemoGame();
+  };
+
+  const handleContinuePlaying = () => {
+    if (preview) return;
+    continueDemoPlay();
   };
 
   const handleOpenChange = (nextOpen: boolean) => {
@@ -110,6 +116,20 @@ export default function DemoTimeUpDialog({
           <Button
             variant="outline"
             type="button"
+            onClick={() => openGameFeedbackForm("demoEnd")}
+            data-testid="button-demo-end-feedback"
+            className="inline-flex items-center gap-1.5"
+          >
+            <GameUiIcon
+              name="feedback"
+              sizeClassName="w-4 h-4"
+              className="opacity-100"
+            />
+            {t("galaxy.feedbackButton", { defaultValue: "Feedback" })}
+          </Button>
+          <Button
+            variant="outline"
+            type="button"
             onClick={() => {
               dismissDemoEndDialog();
             }}
@@ -128,16 +148,19 @@ export default function DemoTimeUpDialog({
           <Button
             variant="outline"
             type="button"
-            onClick={() => openGameFeedbackForm("demoEnd")}
-            data-testid="button-demo-end-feedback"
+            onClick={handleContinuePlaying}
+            button_id="demo-end-continue"
+            data-testid="button-demo-end-continue"
             className="inline-flex items-center gap-1.5"
           >
             <GameUiIcon
-              name="feedback"
+              name="unpause"
               sizeClassName="w-4 h-4"
               className="opacity-100"
             />
-            {t("galaxy.feedbackButton", { defaultValue: "Feedback" })}
+            {t("galaxy.continuePlayingButton", {
+              defaultValue: "Continue playing",
+            })}
           </Button>
           <Button
             variant="outline"

@@ -231,6 +231,7 @@ export default function GameContainer() {
         const state = useGameStore.getState();
         if (
           isDemoLimitReachedFromState(state) &&
+          !state.demoContinuePlaying &&
           !state.demoEndDialogDismissed &&
           !isDemoEndBlockedByOngoingEvent(state)
         ) {

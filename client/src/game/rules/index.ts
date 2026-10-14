@@ -45,7 +45,12 @@ import { forestResearchActions } from "./forestResearchActions";
 import { getFinanceExpeditionTier } from "./financeExpedition";
 import { bastionActions } from "./bastionActions";
 import { getExecutionTime } from "./executionTime";
-import { isDemoPlayFrozen } from "@/game/demoLimit";
+import {
+  DEMO_WOODEN_HUT_LIMIT,
+  isDemoBuildingTierLocked,
+  isDemoPlayFrozen,
+} from "@/game/demoLimit";
+import { registerDemoBuildingRosterCapture } from "@/game/demoBuildingRoster";
 
 // Register all actions with the central registry
 registerActions({
@@ -135,6 +140,24 @@ const checkRequirements = (
   });
 };
 
+/** Wooden-hut count on the tier the player would build next, if that tier names one. */
+function requiredWoodenHutsForBuildingTier(
+  showWhen: unknown,
+  nextLevel: number,
+): unknown {
+  if (!showWhen || typeof showWhen !== "object") return undefined;
+  const record = showWhen as Record<string, unknown>;
+  const keys = Object.keys(record);
+  const tiered =
+    keys.length > 0 && keys.every((key) => !isNaN(Number(key)));
+  if (tiered) {
+    const tier = record[String(nextLevel)];
+    if (!tier || typeof tier !== "object") return undefined;
+    return (tier as Record<string, unknown>)["buildings.woodenHut"];
+  }
+  return record["buildings.woodenHut"];
+}
+
 // Utility function to check if an action should be shown
 export const shouldShowAction = (
   actionId: string,
@@ -182,6 +205,26 @@ export const shouldShowAction = (
     }
     const maxHutLevel = getMaxHutLevelForBuildAction(actionId, state);
     if (maxHutLevel !== null && nextLevel > maxHutLevel) {
+      return false;
+    }
+    const woodenHutCount = state.buildings.woodenHut ?? 0;
+    const atDemoHutCap = isDemoBuildingTierLocked(
+      woodenHutCount,
+      DEMO_WOODEN_HUT_LIMIT,
+    );
+    if (
+      isDemoBuildingTierLocked(
+        woodenHutCount,
+        requiredWoodenHutsForBuildingTier(action.show_when, nextLevel),
+      )
+    ) {
+      return false;
+    }
+    if (atDemoHutCap && actionId === "buildWoodenHut") {
+      return false;
+    }
+    const roster = state.demoVisibleBuildingIds;
+    if (atDemoHutCap && roster && !roster.includes(actionId)) {
       return false;
     }
   }
@@ -874,3 +917,14 @@ export function getEventChoiceCostBreakdown(
 
   return breakdown;
 }
+
+registerDemoBuildingRosterCapture((state) =>
+  Object.entries(getGameActions())
+    .filter(
+      ([actionId, action]) =>
+        action.building === true &&
+        actionId !== "buildWoodenHut" &&
+        shouldShowAction(actionId, state),
+    )
+    .map(([actionId]) => actionId),
+);

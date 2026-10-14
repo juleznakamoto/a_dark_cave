@@ -147,6 +147,7 @@ export async function runGameplayInitialization(
     const loadedState = useGameStore.getState();
     if (
       isDemoLimitReachedFromState(loadedState) &&
+      !loadedState.demoContinuePlaying &&
       !loadedState.demoEndDialogDismissed &&
       !isDemoEndBlockedByOngoingEvent(loadedState)
     ) {

@@ -1019,6 +1019,22 @@ html[data-adc-chrome-stage="0"] {
   animation: fade-in 8s ease-in-out forwards;
 }
 
+/* Demo end shader: same 8s arrival as the dialog overlay. */
+@keyframes adc-dialog-backdrop-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.adc-dialog-backdrop-fade-in {
+  animation: adc-dialog-backdrop-fade-in 8s ease-in-out forwards;
+  opacity: 0;
+}
+
 /* Share dialog: card fades up in place; actions follow after. */
 @keyframes share-card-enter {
   from {

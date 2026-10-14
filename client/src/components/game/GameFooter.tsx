@@ -24,8 +24,11 @@ import {
   handleDonateHeartAnimationEnd,
   pumpDonateHeart,
 } from "@/lib/exclusivePromoShockwave";
+import { AppWindow } from "lucide-react";
 import { SegmentedProgress } from "@/components/ui/progress-bar";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
+  DEMO_WOODEN_HUT_LIMIT,
   getDemoProgressCompleted,
   getDemoProgressPercent,
   getDemoProgressSegmentCount,
@@ -35,7 +38,12 @@ import { initPlaylight } from "@/lib/playlight";
 import PlaylightDiscoveryButton from "./PlaylightDiscoveryButton";
 import FooterNetworkMenu from "./FooterNetworkMenu";
 import { usePeriodicPlayTimeTooltip } from "@/hooks/usePeriodicPlayTimeTooltip";
-import { GAME_CHROME_NO_BG_HOVER, GAME_CHROME_RULE_TOP } from "./gameChrome";
+import {
+  GAME_CHROME_NO_BG_HOVER,
+  GAME_CHROME_RULE_TOP,
+  GAME_INFO_GLYPH_CLASS,
+  GAME_INFO_TRIGGER_CLASS,
+} from "./gameChrome";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { FOOTER_TRADER_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 
@@ -135,36 +143,87 @@ function FooterSteamWishlistCallout({
 function SteamDemoProgressBar() {
   const { t } = useTranslation("ui");
   const woodenHut = useGameStore((s) => s.buildings.woodenHut ?? 0);
+  const setGalaxyTimeUpDialogOpen = useGameStore(
+    (s) => s.setGalaxyTimeUpDialogOpen,
+  );
   const buildings = { woodenHut };
   const segments = getDemoProgressSegmentCount();
   const completed = getDemoProgressCompleted(buildings);
   const percent = getDemoProgressPercent(buildings);
-  const label = t("footer.demoProgress", { defaultValue: "Demo Progress" });
+  const demoEnded = woodenHut >= DEMO_WOODEN_HUT_LIMIT;
+  const label = demoEnded
+    ? t("footer.demoEnded", { defaultValue: "Demo ended" })
+    : t("footer.demoProgress", { defaultValue: "Demo Progress" });
+  const openEndedLabel = t("footer.demoEndedOpen", {
+    defaultValue: "Open the demo end screen",
+  });
+  const hint = t("footer.demoProgressHint", {
+    count: DEMO_WOODEN_HUT_LIMIT,
+    defaultValue: "You can build up to {{count}} wooden huts.",
+  });
 
   return (
     <div
       className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center px-16 sm:px-24"
       aria-hidden={false}
     >
-      <div className="pointer-events-auto w-full max-w-[min(9rem,25vw)] min-w-[4rem] opacity-80 transition-opacity hover:opacity-100 sm:max-w-[10rem]">
-        <SegmentedProgress
-          value={percent}
-          segments={segments}
-          label={label}
-          showPercentage={false}
-          showDemo={false}
-          compact
-          showRim={false}
-          filledClassName="bg-green-700"
-          emptyClassName="bg-neutral-800"
-          segmentClassName="h-1.5"
-          flashOnFill
-          aria-label={label}
-          aria-valuenow={completed}
-          aria-valuemin={0}
-          aria-valuemax={segments}
-          data-testid="footer-demo-progress"
-        />
+      <div className="pointer-events-auto flex items-center gap-1 opacity-80 transition-opacity hover:opacity-100">
+        <div className="flex flex-col items-center gap-1">
+          <div className="flex items-center justify-center gap-1">
+            <span className="whitespace-nowrap text-xs font-medium leading-none tracking-wide text-neutral-400">
+              {label}
+            </span>
+            {demoEnded && (
+              <TooltipWrapper
+                tooltip={openEndedLabel}
+                tooltipId="footer-demo-ended-open"
+                className={GAME_INFO_TRIGGER_CLASS}
+              >
+                <button
+                  type="button"
+                  aria-label={openEndedLabel}
+                  data-testid="footer-demo-ended-open"
+                  onClick={() => setGalaxyTimeUpDialogOpen(true)}
+                  className="inline-flex items-center justify-center text-neutral-400 hover:text-neutral-200"
+                >
+                  <AppWindow className="h-3.5 w-3.5" aria-hidden />
+                </button>
+              </TooltipWrapper>
+            )}
+          </div>
+          <div className="w-full max-w-[min(9rem,25vw)] min-w-[4rem] sm:max-w-[10rem]">
+            <SegmentedProgress
+              value={percent}
+              segments={segments}
+              showPercentage={false}
+              showDemo={false}
+              compact
+              showRim={false}
+              filledClassName="bg-green-700"
+              emptyClassName="bg-neutral-800"
+              segmentClassName="h-1.5"
+              flashOnFill
+              aria-label={label}
+              aria-valuenow={completed}
+              aria-valuemin={0}
+              aria-valuemax={segments}
+              data-testid="footer-demo-progress"
+            />
+          </div>
+        </div>
+        <TooltipWrapper
+          tooltip={hint}
+          tooltipId="footer-demo-progress-info"
+          className={GAME_INFO_TRIGGER_CLASS}
+        >
+          <span
+            className={GAME_INFO_GLYPH_CLASS}
+            aria-label={hint}
+            data-testid="footer-demo-progress-info"
+          >
+            🛈
+          </span>
+        </TooltipWrapper>
       </div>
     </div>
   );

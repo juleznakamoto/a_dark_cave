@@ -428,6 +428,8 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
   setShareDialogOpen: (isOpen: boolean) => void;
   setGalaxyTimeUpDialogOpen: (isOpen: boolean) => void;
   dismissDemoEndDialog: () => void;
+  /** Close the demo-end dialog and keep this save running. */
+  continueDemoPlay: () => void;
   setShopCheckoutItemId: (itemId: string | null) => void;
   /** Grandfather legacy `additional_preset_slots` shop purchases. */
   grantAdditionalPresetSlots: () => void;

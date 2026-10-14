@@ -994,7 +994,7 @@ export function EndScreenShaderBackground({
   return (
     <canvas
       ref={canvasRef}
-      className={className}
+      className={`${className} adc-dialog-backdrop-fade-in`}
       style={{ background: "black" }}
       aria-hidden
     />

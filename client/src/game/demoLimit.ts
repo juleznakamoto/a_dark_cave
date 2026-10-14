@@ -99,14 +99,32 @@ export function isDemoLimitReachedFromState(state: {
 export const isGalaxyDemoLimitReachedFromState = isDemoLimitReachedFromState;
 
 /**
- * Demo play is over: DEV Demo End, or a capped demo at the wooden-hut limit.
- * The sim stays frozen after the end dialog is dismissed; only a new run unfreezes.
+ * Demo play is frozen: DEV Demo End, or a capped demo at the wooden-hut limit.
+ * Continue playing clears the freeze. New building buttons that need the cap stay hidden.
  */
 export function isDemoPlayFrozen(state: {
   buildings?: { woodenHut?: number };
+  demoContinuePlaying?: boolean;
 }): boolean {
+  if (state.demoContinuePlaying) return false;
   if (isDemoEndDevMode()) return true;
   return isDemoLimitReachedFromState(state);
+}
+
+/**
+ * After the demo hut cap, hide a building tier whose show_when needs that many huts.
+ * Tiers that were already available (fewer huts) stay.
+ */
+export function isDemoBuildingTierLocked(
+  woodenHutCount: number,
+  requiredWoodenHuts: unknown,
+): boolean {
+  if (!isDemoEdition()) return false;
+  if (woodenHutCount < DEMO_WOODEN_HUT_LIMIT) return false;
+  return (
+    typeof requiredWoodenHuts === "number" &&
+    requiredWoodenHuts >= DEMO_WOODEN_HUT_LIMIT
+  );
 }
 
 type DemoEndDialogFlags = {
@@ -180,8 +198,10 @@ export function processDemoLimit(): void {
   const state = store.getState() as {
     galaxyTimeUpDialogOpen?: boolean;
     demoEndDialogDismissed?: boolean;
+    demoContinuePlaying?: boolean;
     buildings?: { woodenHut?: number };
   } & DemoEndDialogFlags;
+  if (state.demoContinuePlaying) return;
   if (state.galaxyTimeUpDialogOpen || state.demoEndDialogDismissed) return;
   if (!isDemoLimitReachedFromState(state)) return;
   if (isDemoEndBlockedByOngoingEvent(state)) return;

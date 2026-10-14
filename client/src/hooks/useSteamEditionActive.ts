@@ -81,8 +81,12 @@ export function useSteamDemoActive(): boolean {
 /** Demo play is frozen: DEV Demo End, or a capped demo at the hut limit. */
 export function useDemoPlayFrozen(): boolean {
   const woodenHut = useGameStore((s) => s.buildings.woodenHut ?? 0);
+  const demoContinuePlaying = useGameStore(
+    (s) => s.demoContinuePlaying === true,
+  );
   const demoEdition = useDemoEditionActive();
   const devGameMode = useGameStore((s) => s.devGameMode);
+  if (demoContinuePlaying) return false;
   if (import.meta.env.DEV && !isSteamBuild && devGameMode === "demoEnd") {
     return true;
   }

@@ -111,6 +111,16 @@ export const gameStateSchema = z.object({
     .default({}),
   /** True after the one-time /boost URL bonus has been applied to this save. */
   boostApplied: z.boolean().default(false),
+  /**
+   * Demo: player chose Continue playing after the wooden-hut cap.
+   * The save keeps running, but new building buttons that need 8 huts stay hidden.
+   */
+  demoContinuePlaying: z.boolean().default(false),
+  /**
+   * Demo: building buttons visible before the 8th wooden hut.
+   * Null until that hut is built. After that, new building buttons stay hidden.
+   */
+  demoVisibleBuildingIds: z.array(z.string()).nullable().default(null),
   flags: z
     .object({
       villageUnlocked: z.boolean().default(false),
