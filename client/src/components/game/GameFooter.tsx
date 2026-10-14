@@ -41,7 +41,6 @@ import { usePeriodicPlayTimeTooltip } from "@/hooks/usePeriodicPlayTimeTooltip";
 import {
   GAME_CHROME_NO_BG_HOVER,
   GAME_CHROME_RULE_TOP,
-  GAME_INFO_GLYPH_CLASS,
   GAME_INFO_TRIGGER_CLASS,
 } from "./gameChrome";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
