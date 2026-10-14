@@ -58,6 +58,40 @@ body {
 }
 
 @layer base {
+  :root {
+    --ds-blue-1000: oklch(26.67% 0.1099 254.34);
+    --ds-red-1000: oklch(24.8% 0.1041 18.86);
+    --ds-amber-1000: oklch(30.83% 0.099 45.48);
+    --ds-green-1000: oklch(29.15% 0.1197 147.38);
+    --ds-teal-1000: oklch(32.11% 0.0788 179.82);
+    --ds-purple-1000: oklch(23.96% 0.13 305.66);
+    --ds-pink-1000: oklch(26% 0.0977 359);
+    --ds-gray-1000: hsla(0, 0%, 9%, 1);
+    --ds-gray-alpha-400: hsla(0, 0%, 0%, 0.08);
+    --ds-background-100: hsla(0, 0%, 100%, 1);
+    --ds-background-200: hsla(0, 0%, 98%, 1);
+    --geist-success: #0070f3;
+    --accents-1: #fafafa;
+    --accents-2: #eaeaea;
+    --ds-toggle-ring: 0 0 4px rgba(0, 0, 0, 0.12), 0 1px 1px rgba(0, 0, 0, 0.16);
+  }
+
+  .dark {
+    --ds-blue-1000: oklch(96.75% 0.0179 242.42);
+    --ds-red-1000: oklch(95.6% 0.0293 6.61);
+    --ds-amber-1000: oklch(96.7% 0.0418 84.59);
+    --ds-green-1000: oklch(96.76% 0.056 154.18);
+    --ds-teal-1000: oklch(96.46% 0.056 180.29);
+    --ds-purple-1000: oklch(96.1% 0.0304 316.46);
+    --ds-pink-1000: oklch(95.74% 0.0326 350.08);
+    --ds-gray-1000: hsla(0, 0%, 93%, 1);
+    --ds-gray-alpha-400: hsla(0, 0%, 100%, 0.14);
+    --ds-background-100: hsla(0, 0%, 4%, 1);
+    --ds-background-200: hsla(0, 0%, 0%, 1);
+    --accents-1: #111111;
+    --accents-2: #333333;
+  }
+
   * {
     @apply border-border select-none;
     color-scheme: dark;

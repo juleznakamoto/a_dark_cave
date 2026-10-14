@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
+import { Toggle } from "@/components/ui/toggle";
 import {
   useCrazyGamesEditionActive,
   useDemoEditionActive,
+  useDemoEndCatalogActive,
   useDemoEnded,
 } from "@/hooks/useSteamEditionActive";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
@@ -47,11 +49,12 @@ export function SteamDemoHeaderStoreLink() {
   );
 }
 
-/** Reopens the demo-end screen after the hut cap. Sits to the right of the wishlist link. */
+/** Turns the what's-next teasers on and off. Sits to the right of the wishlist link. */
 export function DemoEndHeaderLink() {
   const demoEnded = useDemoEnded();
-  const setGalaxyTimeUpDialogOpen = useGameStore(
-    (s) => s.setGalaxyTimeUpDialogOpen,
+  const hintsOn = useDemoEndCatalogActive();
+  const setDemoNextHintsEnabled = useGameStore(
+    (s) => s.setDemoNextHintsEnabled,
   );
   const { t } = useUiTranslation();
 
@@ -62,14 +65,15 @@ export function DemoEndHeaderLink() {
   });
 
   return (
-    <Button
-      type="button"
-      variant="ghost"
-      size="xs"
-      button_id="header-see-whats-coming"
+    <Toggle
+      checked={hintsOn}
+      color="green"
+      size="small"
+      direction="label-first"
       data-testid="header-see-whats-coming"
-      onClick={() => setGalaxyTimeUpDialogOpen(true)}
-      className={`${HEADER_STORE_LINK_CLASS} whitespace-nowrap`}
+      aria-label={label}
+      onChange={(event) => setDemoNextHintsEnabled(event.target.checked)}
+      className={`${HEADER_STORE_LINK_CLASS} whitespace-nowrap py-0`}
     >
       <GameUiIcon
         name="unlockedPadlock"
@@ -77,7 +81,7 @@ export function DemoEndHeaderLink() {
         className="text-green-500 opacity-100"
       />
       <span className={HEADER_STORE_LABEL_CLASS}>{label}</span>
-    </Button>
+    </Toggle>
   );
 }
 

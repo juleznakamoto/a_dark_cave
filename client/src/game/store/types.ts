@@ -430,6 +430,8 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
   dismissDemoEndDialog: () => void;
   /** Close the demo-end dialog and keep this save running. */
   continueDemoPlay: () => void;
+  /** Show or hide the what's-next teasers after the demo ends. */
+  setDemoNextHintsEnabled: (enabled: boolean) => void;
   setShopCheckoutItemId: (itemId: string | null) => void;
   /** Grandfather legacy `additional_preset_slots` shop purchases. */
   grantAdditionalPresetSlots: () => void;

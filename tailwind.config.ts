@@ -64,6 +64,25 @@ export default {
           border: "var(--sidebar-border)",
           ring: "var(--sidebar-ring)",
         },
+        // Toggle-only tokens. Standard steps (green-700, gray-100, …) stay
+        // on Tailwind's palette so the rest of the game does not shift.
+        "gray-1000": "var(--ds-gray-1000)",
+        "gray-alpha-400": "var(--ds-gray-alpha-400)",
+        "background-100": "var(--ds-background-100)",
+        "background-200": "var(--ds-background-200)",
+        success: "var(--geist-success)",
+        "accents-1": "var(--accents-1)",
+        "accents-2": "var(--accents-2)",
+        "blue-1000": "var(--ds-blue-1000)",
+        "red-1000": "var(--ds-red-1000)",
+        "amber-1000": "var(--ds-amber-1000)",
+        "green-1000": "var(--ds-green-1000)",
+        "teal-1000": "var(--ds-teal-1000)",
+        "purple-1000": "var(--ds-purple-1000)",
+        "pink-1000": "var(--ds-pink-1000)",
+      },
+      boxShadow: {
+        toggle: "var(--ds-toggle-ring)",
       },
       fontFamily: {
         sans: ["var(--font-sans)"],

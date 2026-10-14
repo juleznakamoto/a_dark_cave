@@ -402,6 +402,7 @@ export const createUiSlice: GameStoreCreator<Partial<GameStore>> = (set, get) =>
         galaxyTimeUpDialogOpen: mode === "demoEnd",
         demoEndDialogDismissed: false,
         demoContinuePlaying: false,
+        demoNextHintsEnabled: true,
         ...(mode === "demoEnd" || isSteamEndScreenDevMode(mode)
           ? { settingsDialogOpen: false }
           : {}),
@@ -412,6 +413,7 @@ export const createUiSlice: GameStoreCreator<Partial<GameStore>> = (set, get) =>
         galaxyTimeUpDialogOpen: false,
         demoEndDialogDismissed: false,
         demoContinuePlaying: false,
+        demoNextHintsEnabled: true,
       });
     }
   },

@@ -106,9 +106,11 @@ export function useDemoPlayFrozen(): boolean {
   return demoEdition && woodenHut >= DEMO_WOODEN_HUT_LIMIT;
 }
 
-/** Demo-end catalog tease: same gate as {@link useDemoPlayFrozen}. */
+/** What's-next teasers after the demo ends. The header toggle turns these off. */
 export function useDemoEndCatalogActive(): boolean {
-  return useDemoPlayFrozen();
+  const demoEnded = useDemoEnded();
+  const hintsEnabled = useGameStore((s) => s.demoNextHintsEnabled !== false);
+  return demoEnded && hintsEnabled;
 }
 
 /** CrazyGames folder, `/crazygames` path, or DEV Game Mode CrazyGames Demo. */

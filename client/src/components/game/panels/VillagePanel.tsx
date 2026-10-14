@@ -117,7 +117,10 @@ import {
 } from "@/components/game/RedactedHint";
 import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
-import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
+import {
+  useDemoEndCatalogActive,
+  useDemoPlayFrozen,
+} from "@/hooks/useSteamEditionActive";
 import {
   DEMO_END_VILLAGE_UTILITY_ACTION_IDS,
   getDemoEndHiddenActionTeasers,
@@ -376,7 +379,7 @@ function VillageProductionCycleIndicator({
 
 function VillageInvestButton({ label }: { label: string }) {
   const { t } = useUiTranslation();
-  const playFrozen = useDemoEndCatalogActive();
+  const playFrozen = useDemoPlayFrozen();
   const playTime = useGameStore((s) => s.playTime);
   const investmentHallState = useGameStore((s) => s.investmentHallState);
   const investDialogOpen = useGameStore((s) => s.investDialogOpen);
@@ -465,7 +468,7 @@ function VillageInvestButton({ label }: { label: string }) {
 
 function VillageCallMerchantButton({ label }: { label: string }) {
   const { t } = useUiTranslation();
-  const playFrozen = useDemoEndCatalogActive();
+  const playFrozen = useDemoPlayFrozen();
   const playTime = useGameStore((s) => s.playTime);
   const story = useGameStore((s) => s.story);
   const timedEventTab = useGameStore((s) => s.timedEventTab);

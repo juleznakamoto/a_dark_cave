@@ -594,6 +594,10 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
         activeDevSaveId: null,
         boostApplied: savedState.boostApplied === true,
         demoContinuePlaying: savedState.demoContinuePlaying === true,
+        demoNextHintsEnabled:
+          typeof savedState.demoNextHintsEnabled === "boolean"
+            ? savedState.demoNextHintsEnabled
+            : savedState.demoContinuePlaying !== true,
         demoVisibleBuildingIds: Array.isArray(savedState.demoVisibleBuildingIds)
           ? savedState.demoVisibleBuildingIds
           : null,

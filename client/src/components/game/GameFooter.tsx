@@ -185,7 +185,7 @@ function SteamDemoProgressBar() {
               </span>
             </TooltipWrapper>
           </div>
-          <div className="w-full max-w-[min(9rem,25vw)] min-w-[4rem] opacity-80 sm:max-w-[10rem]">
+          <div className="w-[150%] max-w-[min(13.5rem,37.5vw)] min-w-[6rem] opacity-80 sm:max-w-[15rem]">
             <SegmentedProgress
               value={percent}
               segments={segments}

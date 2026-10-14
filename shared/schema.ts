@@ -117,6 +117,11 @@ export const gameStateSchema = z.object({
    */
   demoContinuePlaying: z.boolean().default(false),
   /**
+   * Demo: show the what's-next teasers after the hut cap.
+   * The header toggle flips this. Continue playing starts it off.
+   */
+  demoNextHintsEnabled: z.boolean().default(true),
+  /**
    * Demo: building buttons visible before the 8th wooden hut.
    * Null until that hut is built. After that, new building buttons stay hidden.
    */

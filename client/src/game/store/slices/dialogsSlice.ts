@@ -355,7 +355,11 @@ export const createDialogsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
   },
 
   dismissDemoEndDialog: () => {
-    set({ galaxyTimeUpDialogOpen: false, demoEndDialogDismissed: true });
+    set({
+      galaxyTimeUpDialogOpen: false,
+      demoEndDialogDismissed: true,
+      demoNextHintsEnabled: true,
+    });
   },
 
   continueDemoPlay: () => {
@@ -364,10 +368,15 @@ export const createDialogsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
       galaxyTimeUpDialogOpen: false,
       demoEndDialogDismissed: true,
       demoContinuePlaying: true,
+      demoNextHintsEnabled: false,
       demoVisibleBuildingIds:
         state.demoVisibleBuildingIds ??
         captureDemoVisibleBuildingIds(state),
     });
+  },
+
+  setDemoNextHintsEnabled: (enabled: boolean) => {
+    set({ demoNextHintsEnabled: enabled });
   },
 
   setShopCheckoutItemId: (itemId: string | null) => {
