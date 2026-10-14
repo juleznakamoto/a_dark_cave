@@ -224,7 +224,6 @@
     "startNewGameButton": "Nouvelle partie",
     "continuePlayingButton": "Continuer à jouer",
     "seeWhatsNextButton": "Voir ce qui vient",
-    "storeHeaderLink": "Liste de souhaits",
-    "storeHeaderTooltip": "Ajouter le jeu complet à la liste de souhaits Steam"
+    "storeHeaderLink": "Liste de souhaits"
   }
 }

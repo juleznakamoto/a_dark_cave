@@ -220,8 +220,7 @@
     "continuePlayingButton": "Continuar jogando",
     "seeWhatsNextButton": "Ver o que vem",
     "feedbackButton": "Feedback",
-    "storeHeaderLink": "Lista de desejos",
-    "storeHeaderTooltip": "Adicionar o jogo completo à lista de desejos da Steam"
+    "storeHeaderLink": "Lista de desejos"
   },
   "blessingOffer": {
     "title": "Escolha uma bênção",

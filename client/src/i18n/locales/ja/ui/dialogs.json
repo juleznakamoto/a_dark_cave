@@ -220,7 +220,6 @@
     "title": "デモはここで終わりです",
     "description": "Steamで製品版をウィッシュリストに入れておくと、発売後に旅を続けられます。",
     "storeHeaderLink": "ウィッシュリストに追加",
-    "storeHeaderTooltip": "製品版をSteamのウィッシュリストに追加する",
     "wishlistButton": "ウィッシュリストに追加",
     "feedbackButton": "フィードバック",
     "startNewGameButton": "新しいゲームを始める",

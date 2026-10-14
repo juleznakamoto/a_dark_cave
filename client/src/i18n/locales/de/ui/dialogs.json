@@ -224,7 +224,6 @@
     "startNewGameButton": "Neues Spiel starten",
     "continuePlayingButton": "Weiterspielen",
     "seeWhatsNextButton": "Was kommt",
-    "storeHeaderLink": "Zur Wunschliste",
-    "storeHeaderTooltip": "Vollversion auf die Steam-Wunschliste setzen"
+    "storeHeaderLink": "Zur Wunschliste"
   }
 }
