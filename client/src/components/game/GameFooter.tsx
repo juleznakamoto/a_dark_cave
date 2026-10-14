@@ -185,7 +185,7 @@ function SteamDemoProgressBar() {
                   {label}
                 </span>
                 <span
-                  className="inline-flex shrink-0 translate-y-[3px] items-center justify-center font-noto-symbols-2 text-[0.8rem] font-normal leading-none group-hover/demo-progress:text-white"
+                  className="inline-flex shrink-0 translate-y-[4px] items-center justify-center font-noto-symbols-2 text-[0.8rem] font-normal leading-none group-hover/demo-progress:text-white"
                   aria-hidden
                 >
                   🛈
@@ -417,88 +417,88 @@ export default function GameFooter() {
           </div>
           <div className="pointer-events-none flex min-w-0 flex-1 items-center justify-end">
             <div className="pointer-events-auto flex items-center gap-1">
-            {steamDemoActive && playlightButton}
-            {/* Steam edition hides the store link — keep Feedback in the right cluster. */}
-            {(hideSteamStoreLink || hideFooterSteamAndSocial) && (
-              <>
-                {feedbackButton}
-                {!hideFooterSteamAndSocial && (
-                  <FooterNetworkMenu
-                    iconClassName={FOOTER_CONTROL_ICON}
-                    labelClassName={FOOTER_SOCIAL_LABEL}
-                    referralCount={referralCount}
-                  />
-                )}
-              </>
-            )}
-            {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
-              if (
-                platform === "steam" &&
-                (hideSteamStoreLink || hideFooterSteamAndSocial)
-              ) {
-                return null;
-              }
-
-              const { href: defaultHref, title } =
-                GAME_FOOTER_RIGHT_ICON_LINKS[platform];
-              const href =
-                platform === "steam"
-                  ? steamStoreUrl(STEAM_STORE_UTM_CONTENT.gameFooter)
-                  : defaultHref;
-              const linkLabel =
-                platform === "contact"
-                  ? tWithFallback("ui", "footer.contact", title)
-                  : title;
-              /** Steam keeps a desktop label; other inline icons stay icon-only. */
-              const showSocialLabel = platform === "steam";
-              const socialLink = (
-                <a
-                  href={href}
-                  {...(href.startsWith("http")
-                    ? {
-                      target: "_blank",
-                      rel: "noopener noreferrer me",
-                    }
-                    : {})}
-                  className={socialLinkClass}
-                  aria-label={linkLabel}
-                  onClick={
-                    platform === "steam" ? markFooterSteamClicked : undefined
-                  }
-                >
-                  <FooterSocialIcon
-                    platform={platform}
-                    className={socialIconClass}
-                  />
-                  {showSocialLabel && (
-                    <span className={FOOTER_SOCIAL_LABEL}>{linkLabel}</span>
-                  )}
-                </a>
-              );
-
-              if (platform === "steam") {
-                return (
-                  <div key={platform} className="contents">
-                    {feedbackButton}
-                    <FooterSteamWishlistCallout
-                      href={href}
-                      label={t("footer.wishlistOnSteam")}
-                      forceShowTooltip={showPauseSleepCallout}
-                      forceTooltipFadeDurationMs={1_000}
-                    >
-                      {socialLink}
-                    </FooterSteamWishlistCallout>
+              {steamDemoActive && playlightButton}
+              {/* Steam edition hides the store link — keep Feedback in the right cluster. */}
+              {(hideSteamStoreLink || hideFooterSteamAndSocial) && (
+                <>
+                  {feedbackButton}
+                  {!hideFooterSteamAndSocial && (
                     <FooterNetworkMenu
                       iconClassName={FOOTER_CONTROL_ICON}
                       labelClassName={FOOTER_SOCIAL_LABEL}
                       referralCount={referralCount}
                     />
-                  </div>
-                );
-              }
+                  )}
+                </>
+              )}
+              {GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
+                if (
+                  platform === "steam" &&
+                  (hideSteamStoreLink || hideFooterSteamAndSocial)
+                ) {
+                  return null;
+                }
 
-              return cloneElement(socialLink, { key: platform });
-            })}
+                const { href: defaultHref, title } =
+                  GAME_FOOTER_RIGHT_ICON_LINKS[platform];
+                const href =
+                  platform === "steam"
+                    ? steamStoreUrl(STEAM_STORE_UTM_CONTENT.gameFooter)
+                    : defaultHref;
+                const linkLabel =
+                  platform === "contact"
+                    ? tWithFallback("ui", "footer.contact", title)
+                    : title;
+                /** Steam keeps a desktop label; other inline icons stay icon-only. */
+                const showSocialLabel = platform === "steam";
+                const socialLink = (
+                  <a
+                    href={href}
+                    {...(href.startsWith("http")
+                      ? {
+                        target: "_blank",
+                        rel: "noopener noreferrer me",
+                      }
+                      : {})}
+                    className={socialLinkClass}
+                    aria-label={linkLabel}
+                    onClick={
+                      platform === "steam" ? markFooterSteamClicked : undefined
+                    }
+                  >
+                    <FooterSocialIcon
+                      platform={platform}
+                      className={socialIconClass}
+                    />
+                    {showSocialLabel && (
+                      <span className={FOOTER_SOCIAL_LABEL}>{linkLabel}</span>
+                    )}
+                  </a>
+                );
+
+                if (platform === "steam") {
+                  return (
+                    <div key={platform} className="contents">
+                      {feedbackButton}
+                      <FooterSteamWishlistCallout
+                        href={href}
+                        label={t("footer.wishlistOnSteam")}
+                        forceShowTooltip={showPauseSleepCallout}
+                        forceTooltipFadeDurationMs={1_000}
+                      >
+                        {socialLink}
+                      </FooterSteamWishlistCallout>
+                      <FooterNetworkMenu
+                        iconClassName={FOOTER_CONTROL_ICON}
+                        labelClassName={FOOTER_SOCIAL_LABEL}
+                        referralCount={referralCount}
+                      />
+                    </div>
+                  );
+                }
+
+                return cloneElement(socialLink, { key: platform });
+              })}
             </div>
           </div>
         </div>
