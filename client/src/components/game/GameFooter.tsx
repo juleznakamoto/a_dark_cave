@@ -164,20 +164,37 @@ function SteamDemoProgressBar() {
 
   return (
     <div
-      className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center px-16 sm:px-24"
+      className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center px-16 sm:px-24"
       aria-hidden={false}
     >
-      <div className="pointer-events-auto flex items-center gap-1 opacity-80 transition-opacity hover:opacity-100">
+      <div className="pointer-events-auto flex items-center gap-1">
         <div className="flex flex-col items-center gap-1">
           <div className="flex items-center justify-center gap-1">
-            <span className="whitespace-nowrap text-xs font-medium leading-none tracking-wide text-neutral-400">
-              {label}
-            </span>
+            <TooltipWrapper
+              tooltip={hint}
+              tooltipId="footer-demo-progress-info"
+              side="top"
+              className="inline-flex items-center gap-1 opacity-80 transition-opacity hover:opacity-100"
+              tooltipTriggerClassName="inline-flex items-center gap-1"
+            >
+              <span
+                className="inline-flex items-center gap-1"
+                data-testid="footer-demo-progress-info"
+                aria-label={hint}
+              >
+                <span className="whitespace-nowrap text-xs font-medium leading-none tracking-wide text-neutral-400">
+                  {label}
+                </span>
+                <span className={GAME_INFO_GLYPH_CLASS} aria-hidden>
+                  🛈
+                </span>
+              </span>
+            </TooltipWrapper>
             {demoEnded && (
               <TooltipWrapper
                 tooltip={openEndedLabel}
                 tooltipId="footer-demo-ended-open"
-                className={GAME_INFO_TRIGGER_CLASS}
+                className={`${GAME_INFO_TRIGGER_CLASS} opacity-80 transition-opacity hover:opacity-100`}
               >
                 <button
                   type="button"
@@ -190,21 +207,8 @@ function SteamDemoProgressBar() {
                 </button>
               </TooltipWrapper>
             )}
-            <TooltipWrapper
-              tooltip={hint}
-              tooltipId="footer-demo-progress-info"
-              className={GAME_INFO_TRIGGER_CLASS}
-            >
-              <span
-                className={GAME_INFO_GLYPH_CLASS}
-                aria-label={hint}
-                data-testid="footer-demo-progress-info"
-              >
-                🛈
-              </span>
-            </TooltipWrapper>
           </div>
-          <div className="w-full max-w-[min(9rem,25vw)] min-w-[4rem] sm:max-w-[10rem]">
+          <div className="w-full max-w-[min(9rem,25vw)] min-w-[4rem] opacity-80 sm:max-w-[10rem]">
             <SegmentedProgress
               value={percent}
               segments={segments}
