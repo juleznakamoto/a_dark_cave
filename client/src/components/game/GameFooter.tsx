@@ -185,7 +185,7 @@ function SteamDemoProgressBar() {
                   {label}
                 </span>
                 <span
-                  className="inline-flex shrink-0 translate-y-[4px] items-center justify-center font-noto-symbols-2 text-[0.8rem] font-normal leading-none group-hover/demo-progress:text-white"
+                  className="inline-flex shrink-0 translate-y-[2px] items-center justify-center font-noto-symbols-2 text-[0.8rem] font-normal leading-none group-hover/demo-progress:text-white"
                   aria-hidden
                 >
                   🛈
