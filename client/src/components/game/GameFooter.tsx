@@ -190,6 +190,19 @@ function SteamDemoProgressBar() {
                 </button>
               </TooltipWrapper>
             )}
+            <TooltipWrapper
+              tooltip={hint}
+              tooltipId="footer-demo-progress-info"
+              className={GAME_INFO_TRIGGER_CLASS}
+            >
+              <span
+                className={GAME_INFO_GLYPH_CLASS}
+                aria-label={hint}
+                data-testid="footer-demo-progress-info"
+              >
+                🛈
+              </span>
+            </TooltipWrapper>
           </div>
           <div className="w-full max-w-[min(9rem,25vw)] min-w-[4rem] sm:max-w-[10rem]">
             <SegmentedProgress
@@ -211,19 +224,6 @@ function SteamDemoProgressBar() {
             />
           </div>
         </div>
-        <TooltipWrapper
-          tooltip={hint}
-          tooltipId="footer-demo-progress-info"
-          className={GAME_INFO_TRIGGER_CLASS}
-        >
-          <span
-            className={GAME_INFO_GLYPH_CLASS}
-            aria-label={hint}
-            data-testid="footer-demo-progress-info"
-          >
-            🛈
-          </span>
-        </TooltipWrapper>
       </div>
     </div>
   );
