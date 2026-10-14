@@ -213,7 +213,7 @@ export default function GameContainer() {
     })),
   );
 
-  const mapTabVisible = Boolean(flags.mapUnlocked) || import.meta.env.DEV;
+  const mapTabVisible = Boolean(flags.mapUnlocked);
 
   const mapTabGlow = useMemo(() => {
     if (!mapTabVisible || activeTab === "map") return false;
