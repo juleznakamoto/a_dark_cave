@@ -89,7 +89,6 @@ export default function DemoTimeUpDialog({
             >
               <FooterSocialIcon
                 platform="steam"
-                variant="brand"
                 className="h-4 w-4 shrink-0"
               />
               {t("endScreen.writeReview", { defaultValue: "Write a review" })}
