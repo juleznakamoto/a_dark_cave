@@ -158,12 +158,12 @@ function SteamDemoProgressBar() {
   });
   const hint = t("footer.demoProgressHint", {
     count: DEMO_WOODEN_HUT_LIMIT,
-    defaultValue: "You can build up to {{count}} wooden huts.",
+    defaultValue: "You can build up to {{count}} wooden huts in the demo.",
   });
 
   return (
     <div
-      className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center px-16 sm:px-24"
+      className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center px-16 sm:px-24"
       aria-hidden={false}
     >
       <div className="pointer-events-auto flex items-center gap-1">
@@ -338,8 +338,8 @@ export default function GameFooter() {
     <>
       <footer className={`relative z-50 flex min-h-9 items-center ${GAME_CHROME_RULE_TOP} px-4 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible md:px-2`}>
         {steamDemoActive && <SteamDemoProgressBar />}
-        <div className="relative z-10 flex w-full items-center justify-between">
-          <div className="flex items-center gap-0.5 shrink-0">
+        <div className="pointer-events-none relative z-10 flex w-full items-center justify-between">
+          <div className="pointer-events-auto flex items-center gap-0.5 shrink-0">
             <Button
               variant="ghost"
               size="xs"
@@ -415,7 +415,8 @@ export default function GameFooter() {
               </Button>
             )}
           </div>
-          <div className="flex-1 flex justify-end gap-1 items-center">
+          <div className="pointer-events-none flex min-w-0 flex-1 items-center justify-end">
+            <div className="pointer-events-auto flex items-center gap-1">
             {steamDemoActive && playlightButton}
             {/* Steam edition hides the store link — keep Feedback in the right cluster. */}
             {(hideSteamStoreLink || hideFooterSteamAndSocial) && (
@@ -498,6 +499,7 @@ export default function GameFooter() {
 
               return cloneElement(socialLink, { key: platform });
             })}
+            </div>
           </div>
         </div>
       </footer>

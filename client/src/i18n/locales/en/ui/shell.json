@@ -73,7 +73,7 @@
     "cruelModeActive": "Cruel Mode active",
     "wishlistOnSteam": "Wishlist on Steam",
     "demoProgress": "Demo Progress",
-    "demoProgressHint": "You can build up to {{count}} wooden huts.",
+    "demoProgressHint": "You can build up to {{count}} wooden huts in the demo.",
     "demoEnded": "Demo ended",
     "demoEndedOpen": "Open the demo end screen",
     "progress": "Progress",

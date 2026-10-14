@@ -73,7 +73,7 @@
     "cruelModeActive": "Modo cruel activo",
     "wishlistOnSteam": "Añadir a la lista de deseados en Steam",
     "demoProgress": "Progreso de la demo",
-    "demoProgressHint": "Puedes construir hasta {{count}} cabañas de madera.",
+    "demoProgressHint": "Puedes construir hasta {{count}} cabañas de madera en la demo.",
     "demoEnded": "Demo terminada",
     "demoEndedOpen": "Abrir la pantalla de fin de la demo",
     "progress": "Progreso",

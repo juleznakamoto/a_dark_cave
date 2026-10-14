@@ -73,7 +73,7 @@
     "cruelModeActive": "残酷モード発動中",
     "wishlistOnSteam": "Steamのウィッシュリストに追加",
     "demoProgress": "デモの進捗",
-    "demoProgressHint": "木の小屋は{{count}}軒まで建てられます。",
+    "demoProgressHint": "デモでは木の小屋は{{count}}軒まで建てられます。",
     "demoEnded": "デモ終了",
     "demoEndedOpen": "デモ終了画面を開く",
     "progress": "進捗",

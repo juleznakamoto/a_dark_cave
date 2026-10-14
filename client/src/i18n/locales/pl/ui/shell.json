@@ -73,7 +73,7 @@
     "cruelModeActive": "Tryb okrutny aktywny",
     "wishlistOnSteam": "Dodaj do listy życzeń na Steam",
     "demoProgress": "Postęp demo",
-    "demoProgressHint": "Możesz zbudować do {{count}} drewnianych chat.",
+    "demoProgressHint": "W demo możesz zbudować do {{count}} drewnianych chat.",
     "demoEnded": "Demo zakończone",
     "demoEndedOpen": "Otwórz ekran końca demo",
     "progress": "Postęp",

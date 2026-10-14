@@ -73,7 +73,7 @@
     "cruelModeActive": "Жестокий режим активен",
     "wishlistOnSteam": "Добавить в список желаемого Steam",
     "demoProgress": "Прогресс демо",
-    "demoProgressHint": "Можно построить до {{count}} деревянных хижин.",
+    "demoProgressHint": "В демо можно построить до {{count}} деревянных хижин.",
     "demoEnded": "Демо завершено",
     "demoEndedOpen": "Открыть экран окончания демо",
     "progress": "Прогресс",
