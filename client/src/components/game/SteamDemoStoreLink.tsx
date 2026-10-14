@@ -65,20 +65,20 @@ export function DemoEndHeaderLink() {
   });
 
   return (
-    <LayoutAnimation
-      checked={hintsOn}
-      data-testid="header-see-whats-coming"
-      aria-label={label}
-      onCheckedChange={setDemoNextHintsEnabled}
-      className={`${HEADER_STORE_LINK_CLASS} whitespace-nowrap py-0`}
-    >
+    <label className={`${HEADER_STORE_LINK_CLASS} whitespace-nowrap py-0`}>
       <GameUiIcon
         name="unlockedPadlock"
         sizeClassName="h-3.5 w-3.5"
         className="text-green-500 opacity-100"
       />
       <span className={HEADER_STORE_LABEL_CLASS}>{label}</span>
-    </LayoutAnimation>
+      <LayoutAnimation
+        checked={hintsOn}
+        onCheckedChange={setDemoNextHintsEnabled}
+        aria-label={label}
+        data-testid="header-see-whats-coming"
+      />
+    </label>
   );
 }
 

@@ -1,57 +1,48 @@
-import { type ReactNode } from "react";
+import { useState } from "react";
 import { motion } from "motion/react";
-import { cn } from "@/lib/utils";
 import "./motion-layout-animation-utils/index.css";
 
 type LayoutAnimationProps = {
-  checked: boolean;
-  onCheckedChange: (checked: boolean) => void;
+  /** When set, the switch follows the caller instead of its own state. */
+  checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
   disabled?: boolean;
-  children?: ReactNode;
-  className?: string;
   "aria-label"?: string;
   "data-testid"?: string;
 };
 
-/** Spring layout switch. `checked` comes from the caller so game state stays in sync. */
 export function LayoutAnimation({
   checked,
   onCheckedChange,
   disabled = false,
-  children,
-  className,
   "aria-label": ariaLabel,
   "data-testid": testId,
-}: LayoutAnimationProps) {
+}: LayoutAnimationProps = {}) {
+  const [uncontrolledOn, setUncontrolledOn] = useState(false);
+  const isOn = checked ?? uncontrolledOn;
+
   return (
     <button
       type="button"
       role="switch"
-      aria-checked={checked}
+      aria-checked={isOn}
       aria-label={ariaLabel}
       data-testid={testId}
       disabled={disabled}
-      onClick={() => onCheckedChange(!checked)}
-      className={cn(
-        "inline-flex items-center gap-2 bg-transparent p-0 text-xs select-none",
-        disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer",
-        className,
-      )}
+      data-state={isOn ? "on" : "off"}
+      className="layout-toggle"
+      style={{ justifyContent: `flex-${isOn ? "start" : "end"}` }}
+      onClick={() => {
+        const next = !isOn;
+        onCheckedChange?.(next);
+        if (checked === undefined) setUncontrolledOn(next);
+      }}
     >
-      {children ? (
-        <span className="inline-flex items-center gap-1">{children}</span>
-      ) : null}
-      <span
-        className="layout-toggle"
-        data-state={checked ? "on" : "off"}
-        style={{ justifyContent: checked ? "flex-end" : "flex-start" }}
-      >
-        <motion.div
-          className="layout-toggle__handle"
-          layout
-          transition={{ type: "spring", visualDuration: 0.2, bounce: 0.2 }}
-        />
-      </span>
+      <motion.div
+        className="layout-toggle__handle"
+        layout
+        transition={{ type: "spring", visualDuration: 0.2, bounce: 0.2 }}
+      />
     </button>
   );
 }
