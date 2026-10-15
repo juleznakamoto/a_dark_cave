@@ -64,6 +64,13 @@ export const CRUEL_MODE = {
     maxOccurrencesCruel: 3,
   },
 
+  frostfall: {
+    /** Prepare cost per resource. Normal steps by 250; cruel keeps the +500 ladder. */
+    prepareBase: 500,
+    prepareStepNormal: 250,
+    prepareStepCruel: 500,
+  },
+
   loop: {
     /** Subtracted from multi-stranger multiplier when cruel mode is on */
     multiStrangerCruelPenalty: 0.25,
@@ -325,6 +332,16 @@ export function riddleFogDurationMs(cruelTier: number): number {
 export function bloodMoonSubsequentMinPopulation(cruelMode: boolean): number {
   const { normal, cruel } = CRUEL_MODE.bloodMoon.subsequentMinPopulation;
   return cruelMode ? cruel : normal;
+}
+
+export function frostfallPrepareResourceCost(
+  cruelMode: boolean,
+  timesOccurred: number,
+): number {
+  const { prepareBase, prepareStepNormal, prepareStepCruel } =
+    CRUEL_MODE.frostfall;
+  const step = cruelMode ? prepareStepCruel : prepareStepNormal;
+  return prepareBase + timesOccurred * step;
 }
 
 export function bloodMoonSacrificeAmount(

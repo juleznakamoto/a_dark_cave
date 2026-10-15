@@ -10,6 +10,7 @@ import {
   curseLikeDurationMs,
   disgustDurationMs,
   cruelModeScale,
+  frostfallPrepareResourceCost,
 } from "../cruelMode";
 import { btpLootAmount } from "@/game/btpLoot";
 import {
@@ -38,6 +39,16 @@ function paleFigureDeathsWithinFree(
   requestedDeaths: number,
 ): number {
   return Math.min(requestedDeaths, paleFigureFreeVillagers(state));
+}
+
+function frostfallPrepareAmounts(state: GameState): {
+  timesOccurred: number;
+  woodCost: number;
+  foodCost: number;
+} {
+  const timesOccurred = (state.story?.seen?.frostfallCount as number) || 0;
+  const amount = frostfallPrepareResourceCost(state.cruelMode, timesOccurred);
+  return { timesOccurred, woodCost: amount, foodCost: amount };
 }
 
 export const choiceEvents: Record<string, GameEvent> = {
@@ -1923,17 +1934,12 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "prepareFrostfall",
         cost: (state: GameState) => {
-          const timesOccurred =
-            (state.story?.seen?.frostfallCount as number) || 0;
-          const woodCost = 500 * (timesOccurred + 1);
-          const foodCost = 500 * (timesOccurred + 1);
+          const { woodCost, foodCost } = frostfallPrepareAmounts(state);
           return `${woodCost} wood, ${foodCost} food`;
         },
         effect: (state: GameState) => {
-          const timesOccurred =
-            (state.story?.seen?.frostfallCount as number) || 0;
-          const woodCost = 500 * (timesOccurred + 1);
-          const foodCost = 500 * (timesOccurred + 1);
+          const { timesOccurred, woodCost, foodCost } =
+            frostfallPrepareAmounts(state);
 
           return {
             resources: {
