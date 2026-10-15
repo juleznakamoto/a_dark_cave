@@ -1,6 +1,6 @@
 /**
  * Copy square and round logos, then zip client/public/press-kit.
- * Capsules, screenshots, and the gameplay trailer are authored locally.
+ * Capsules, screenshots, GIFs, and the gameplay trailer are authored locally.
  * Run: node scripts/build-press-kit-assets.mjs
  */
 import { execFileSync } from "node:child_process";
@@ -14,6 +14,7 @@ const DIRS = {
   logos: join(OUT, "logos"),
   screenshots: join(OUT, "screenshots"),
   capsules: join(OUT, "capsules"),
+  gifs: join(OUT, "gifs"),
   video: join(OUT, "video"),
 };
 
@@ -40,7 +41,7 @@ function main() {
     [
       "-NoProfile",
       "-Command",
-      `Compress-Archive -Path "${OUT}\\logos","${OUT}\\screenshots","${OUT}\\capsules","${OUT}\\video" -DestinationPath "${zipPath}" -Force`,
+      `Compress-Archive -Path "${OUT}\\logos","${OUT}\\screenshots","${OUT}\\capsules","${OUT}\\gifs","${OUT}\\video" -DestinationPath "${zipPath}" -Force`,
     ],
     { stdio: "inherit" },
   );

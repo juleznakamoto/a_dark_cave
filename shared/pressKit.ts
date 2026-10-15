@@ -152,7 +152,7 @@ export function pressLinksInGroup(group: PressLink["group"]): PressLink[] {
   return [...links].sort((a, b) => (b.publishedOn ?? "").localeCompare(a.publishedOn ?? ""));
 }
 
-export type PressAssetKind = "logo" | "screenshot" | "capsule" | "video";
+export type PressAssetKind = "logo" | "screenshot" | "capsule" | "gif" | "video";
 
 export type PressAsset = {
   id: string;
@@ -162,6 +162,21 @@ export type PressAsset = {
   href: string;
   sizeHint?: string;
 };
+
+function assetFolder(kind: PressAssetKind): string {
+  switch (kind) {
+    case "video":
+      return "video";
+    case "logo":
+      return "logos";
+    case "capsule":
+      return "capsules";
+    case "gif":
+      return "gifs";
+    case "screenshot":
+      return "screenshots";
+  }
+}
 
 function asset(
   kind: PressAssetKind,
@@ -174,7 +189,7 @@ function asset(
     kind,
     label,
     fileName,
-    href: `${PRESS_ASSET_DIR}/${kind === "video" ? "video/" : kind === "logo" ? "logos/" : kind === "capsule" ? "capsules/" : "screenshots/"}${fileName}`,
+    href: `${PRESS_ASSET_DIR}/${assetFolder(kind)}/${fileName}`,
     ...extras,
   };
 }
@@ -233,6 +248,12 @@ export const PRESS_CAPSULES: readonly PressAsset[] = [
   }),
 ];
 
+export const PRESS_GIFS: readonly PressAsset[] = [
+  asset("gif", "a_dark_cave_light_fire.gif", "Light the fire", {
+    sizeHint: "500 × 237",
+  }),
+];
+
 export const PRESS_VIDEOS: readonly PressAsset[] = [
   asset("video", "a_dark_cave_gameplay_trailer.mp4", "Gameplay trailer", {
     sizeHint: "MP4 download",
@@ -243,6 +264,7 @@ export const PRESS_ASSETS: readonly PressAsset[] = [
   ...PRESS_LOGOS,
   ...PRESS_CAPSULES,
   ...PRESS_SCREENSHOTS,
+  ...PRESS_GIFS,
   ...PRESS_VIDEOS,
 ];
 

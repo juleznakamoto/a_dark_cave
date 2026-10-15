@@ -6,6 +6,7 @@ import {
   PRESS_BOILERPLATE_LONG,
   PRESS_BOILERPLATE_SHORT,
   PRESS_CAPSULES,
+  PRESS_GIFS,
   PRESS_LOCKED_LINE,
   PRESS_LOGOS,
   PRESS_PERMISSIONS,
@@ -89,6 +90,13 @@ describe("press kit copy", () => {
     ]);
   });
 
+  it("includes the light-the-fire gif", () => {
+    expect(PRESS_GIFS.map((asset) => asset.fileName)).toEqual([
+      "a_dark_cave_light_fire.gif",
+    ]);
+    expect(PRESS_GIFS[0]?.href).toBe("/press-kit/gifs/a_dark_cave_light_fire.gif");
+  });
+
   it("includes header and small capsules", () => {
     const names = PRESS_CAPSULES.map((asset) => asset.fileName);
     expect(names).toEqual([
@@ -145,6 +153,9 @@ describe("press kit files", () => {
       existsSync(
         join(PRESS_KIT_DIR, "video", "a_dark_cave_gameplay_trailer.mp4"),
       ),
+    ).toBe(true);
+    expect(
+      existsSync(join(PRESS_KIT_DIR, "gifs", "a_dark_cave_light_fire.gif")),
     ).toBe(true);
     expect(
       existsSync(

@@ -6,6 +6,7 @@ import {
   PRESS_CONTACT_EMAIL,
   PRESS_CONTACT_MAILTO,
   PRESS_FACTS,
+  PRESS_GIFS,
   PRESS_HEADING,
   PRESS_LOCKED_LINE,
   PRESS_LOGOS,
@@ -325,6 +326,11 @@ export default function Press() {
         <AssetGrid
           title="Screenshots"
           assets={PRESS_SCREENSHOTS}
+          onPreview={setPreview}
+        />
+        <AssetGrid
+          title="GIFs"
+          assets={PRESS_GIFS}
           onPreview={setPreview}
         />
 
