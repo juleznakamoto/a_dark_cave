@@ -256,11 +256,9 @@ export const actionChartConfig: AchievementChartConfig = {
         label: "Heavy Sleeper",
         reward: 250,
         getCount: (state: GameState) => {
+          // Sleep hours only. totalFocusEarned also rises when the Obsidian Orb grants focus.
           const count = Math.min(
-            Math.max(
-              Number(state.story?.heavySleeperHours) || 0,
-              Number(state.totalFocusEarned) || 0,
-            ),
+            Number(state.story?.heavySleeperHours) || 0,
             20,
           );
           return [1, 2, 3].includes(count) ? 3 : count;

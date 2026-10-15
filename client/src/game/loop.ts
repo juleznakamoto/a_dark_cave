@@ -975,8 +975,6 @@ export function processActionTicks() {
         ...obsidianOrbPatch.focusState,
       },
       obsidianOrbState: obsidianOrbPatch.obsidianOrbState,
-      totalFocusEarned:
-        (s.totalFocusEarned || 0) + obsidianOrbPatch.totalFocusEarned,
     }));
   }
 }

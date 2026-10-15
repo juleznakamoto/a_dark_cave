@@ -2,6 +2,13 @@ import { useGameStore } from "@/game/state";
 import type { AchievementChartConfig } from "../achievementTypes";
 import { FELLOWSHIP_MEMBER_ORDER, type GameState } from "@shared/schema";
 
+export const ANCIENT_WISDOM_BOOKS = [
+  "book_of_ascension",
+  "book_of_trials",
+  "book_of_chainmaster",
+  "book_of_absolution",
+] as const;
+
 function getItemCount(itemKeys: string[]): number {
   const state = useGameStore.getState();
   let count = 0;
@@ -142,15 +149,11 @@ export const itemChartConfig: AchievementChartConfig = {
     [
       {
         segmentId: "3-ancient_books",
-        maxCount: 3,
+        maxCount: ANCIENT_WISDOM_BOOKS.length,
         label: "Ancient Wisdom",
         reward: 250,
         getCount: (_state: GameState) =>
-          getItemCount([
-            "book_of_ascension",
-            "book_of_trials",
-            "book_of_absolution",
-          ]),
+          getItemCount([...ANCIENT_WISDOM_BOOKS]),
       },
       {
         segmentId: "3-fellowship",

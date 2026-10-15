@@ -351,7 +351,6 @@ export default function GameContainer() {
   const _achFellowship = useGameStore((s) => s.fellowship);
   const _achUpgrades = useGameStore((s) => s.buttonUpgrades);
   const _achStory = useGameStore((s) => s.story);
-  const _achFocus = useGameStore((s) => s.totalFocusEarned);
   const unclaimedAchievementIds = useMemo(
     () =>
       getUnclaimedAchievementIds(
@@ -369,7 +368,7 @@ export default function GameContainer() {
       _achFellowship,
       _achUpgrades,
       _achStory,
-      _achFocus,
+      books,
       relics?.survivors_notes,
       books?.book_of_trials,
     ],
