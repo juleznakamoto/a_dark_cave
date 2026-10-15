@@ -20,11 +20,11 @@ import { resolveEventMessage } from "@/i18n/eventText";
 import "@/game/rules";
 
 const TRADES = [
-  { id: "theHunter1", huts: 3, bones: 100, food: 50 },
-  { id: "theHunter2", huts: 4, bones: 250, food: 125 },
-  { id: "theHunter3", huts: 5, bones: 500, food: 250 },
-  { id: "theHunter4", huts: 6, bones: 750, food: 500 },
-  { id: "theHunter5", huts: 7, bones: 1000, food: 750 },
+  { id: "theHunter1", huts: 3, bones: 250, food: 125 },
+  { id: "theHunter2", huts: 4, bones: 500, food: 250 },
+  { id: "theHunter3", huts: 5, bones: 750, food: 375 },
+  { id: "theHunter4", huts: 6, bones: 1000, food: 500 },
+  { id: "theHunter5", huts: 7, bones: 1500, food: 750 },
 ] as const;
 
 function state(patch: Partial<GameState> = {}): GameState {

@@ -41,6 +41,16 @@ function CssEffectSample({
     >
       <RedactedBar widthCh={8} className={pulseClass} />
     </span>
+  ) : className.includes("timer-progress-pulse") ? (
+    <span
+      key={active ? `${effectId}-on` : `${effectId}-off`}
+      className={cn(
+        "inline-flex h-2 w-40 overflow-hidden rounded-full bg-neutral-900",
+        pulseClass,
+      )}
+    >
+      <span className="h-full w-2/3 rounded-full bg-red-950" />
+    </span>
   ) : (
     <span
       key={active ? `${effectId}-on` : `${effectId}-off`}

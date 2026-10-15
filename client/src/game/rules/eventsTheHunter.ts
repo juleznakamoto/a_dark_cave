@@ -10,11 +10,11 @@ interface TheHunterConfig {
 }
 
 const theHunterConfigs: TheHunterConfig[] = [
-  { level: 1, woodenHuts: 3, boneCost: 100, foodReward: 50 },
-  { level: 2, woodenHuts: 4, boneCost: 250, foodReward: 125 },
-  { level: 3, woodenHuts: 5, boneCost: 500, foodReward: 250 },
-  { level: 4, woodenHuts: 6, boneCost: 750, foodReward: 500 },
-  { level: 5, woodenHuts: 7, boneCost: 1000, foodReward: 750 },
+  { level: 1, woodenHuts: 3, boneCost: 250, foodReward: 125 },
+  { level: 2, woodenHuts: 4, boneCost: 500, foodReward: 250 },
+  { level: 3, woodenHuts: 5, boneCost: 750, foodReward: 375 },
+  { level: 4, woodenHuts: 6, boneCost: 1000, foodReward: 500 },
+  { level: 5, woodenHuts: 7, boneCost: 1500, foodReward: 750 },
 ];
 
 function acceptedLevel(state: GameState): number {

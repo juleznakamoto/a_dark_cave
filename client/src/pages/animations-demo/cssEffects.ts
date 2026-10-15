@@ -167,6 +167,13 @@ export const CSS_EFFECT_DEMOS: CssEffectDemo[] = [
     sample: "⏱",
   },
   {
+    id: "timer-progress-pulse",
+    label: "Timed event time bar (last 5s)",
+    className: "timer-progress-pulse",
+    mode: "loop",
+    sample: "Time",
+  },
+  {
     id: "compass-glow",
     label: "Compass glow",
     className: "compass-glow",
