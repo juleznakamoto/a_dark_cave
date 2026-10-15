@@ -1680,6 +1680,35 @@
   "portalDiscovered": {
     "message": "In the citadel's lowest chambers you find a colossal gate forged from an unknown, unyielding metal. Perhaps the alchemist creations will be able to open it."
   },
+  "raggedYouth": {
+    "choices": {
+      "doNotHelp": {
+        "label": "Do not help"
+      },
+      "giveFur": {
+        "cost": "{{furCost}} fur",
+        "label": "Give {{furCost}} Fur"
+      }
+    },
+    "log": {
+      "attack": "The man gets angry. He attacks and kills a villager, then runs off.",
+      "thanks": "'Thank you. Thank you very much,' he says, and he hurries away with the furs."
+    },
+    "message": "A young man in ruined clothes appears. 'I camp outside the village. My family needs furs to survive the cold. I cannot pay now, but I will later.'",
+    "title": "A Desperate Father"
+  },
+  "raggedYouthReturn": {
+    "choices": {
+      "takeSilver": {
+        "label": "Take the silver"
+      }
+    },
+    "log": {
+      "repay": "He sets down {{silverReward}} Silver and walks away."
+    },
+    "message": "The young man returns, this time in normal clothes. He holds out a heavy pouch. 'I said I would pay you. This is {{silverReward}} Silver.'",
+    "title": "The Young Man Returns"
+  },
   "redMaskChoice": {
     "choices": {
       "leaveMask": {

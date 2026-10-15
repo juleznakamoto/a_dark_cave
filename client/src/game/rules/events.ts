@@ -30,6 +30,7 @@ import { staringDeerEvents } from "./eventsStaringDeer";
 import { forestFearEvents } from "./eventsForestFear";
 import { boneDevourerEvents } from "./eventsBoneDevourer";
 import { theHunterEvents } from "./eventsTheHunter";
+import { raggedYouthEvents } from "./eventsRaggedYouth";
 import { villageAttackEvents } from "./eventsVillageAttacks";
 import { bloodMoonEvents } from "./eventsBloodMoon";
 import { loreEvents } from "./eventsLore";
@@ -90,6 +91,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...forestFearEvents,
   ...boneDevourerEvents,
   ...theHunterEvents,
+  ...raggedYouthEvents,
   ...villageAttackEvents,
   ...bloodMoonEvents,
   ...fellowshipEvents,
