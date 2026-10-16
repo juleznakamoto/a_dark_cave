@@ -45,6 +45,21 @@ function triggerSelector(id: string): string {
   return `[data-tooltip-trigger-id="${CSS.escape(id)}"]`;
 }
 
+/** Radix sets aria-describedby on the trigger only while the hover tooltip is open. */
+function isHoverTooltipVisible(id: string): boolean {
+  if (typeof document === "undefined") return false;
+  try {
+    const triggers = document.querySelectorAll(triggerSelector(id));
+    for (const trigger of triggers) {
+      if (trigger.hasAttribute("aria-describedby")) return true;
+      if (trigger.querySelector("[aria-describedby]")) return true;
+    }
+    return false;
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Global tooltip state manager
  * Ensures only one tooltip is open at a time across the entire application
@@ -62,6 +77,8 @@ class GlobalTooltipManager {
   private tooltipsOpenedByTimer: Set<string> = new Set();
   private suppressNextClickIds: Set<string> = new Set();
   private clickSuppressTimers: Map<string, ReturnType<typeof setTimeout>> = new Map();
+  /** Mouse/pen press that started while the Radix hover tooltip was already visible. */
+  private hoverTooltipPressIds: Set<string> = new Set();
   private outsideListenerAttached = false;
 
   subscribe(listener: () => void) {
@@ -268,6 +285,35 @@ class GlobalTooltipManager {
     this.suppressNextClickIds.clear();
   }
 
+  /**
+   * Recorded from pointerdown capture, before Radix closes a hover tooltip.
+   * A mouse press that starts while the effects are already showing should
+   * activate the control. Arming the long-press timer would swallow that
+   * press and every later click until an outside click.
+   */
+  notePointerDown(id: string, pointerType: string) {
+    if (pointerType === "touch") {
+      this.hoverTooltipPressIds.delete(id);
+      return;
+    }
+    if (isHoverTooltipVisible(id)) this.hoverTooltipPressIds.add(id);
+    else this.hoverTooltipPressIds.delete(id);
+  }
+
+  hasHoverTooltipPress(id: string) {
+    return this.hoverTooltipPressIds.has(id);
+  }
+
+  consumeHoverTooltipPress(id: string) {
+    const had = this.hoverTooltipPressIds.has(id);
+    this.hoverTooltipPressIds.delete(id);
+    return had;
+  }
+
+  clearHoverTooltipPresses() {
+    this.hoverTooltipPressIds.clear();
+  }
+
   setPressTimer(id: string, timer: ReturnType<typeof setTimeout>) {
     // Clear any existing timer for this id
     const existingTimer = this.pressTimers.get(id);
@@ -311,6 +357,7 @@ if (typeof window !== "undefined") {
 export function closeAllGlobalTooltips() {
   globalTooltipManager.clearAllPressTimers();
   globalTooltipManager.clearAllClickSuppression();
+  globalTooltipManager.clearHoverTooltipPresses();
   globalTooltipManager.setOpenTooltip(null);
 }
 
@@ -444,9 +491,17 @@ export function useGlobalTooltip() {
     return true;
   }, []);
 
+  const notePointerDown = useCallback((id: string, pointerType: string) => {
+    globalTooltipManager.notePointerDown(id, pointerType);
+  }, []);
+
   const handleMouseDown = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
     // Clear any existing timer before creating a new one
     globalTooltipManager.clearPressTimer(id);
+
+    // Hover already revealed the tooltip. Don't arm long-press, or the release
+    // is cancelled and later clicks stay cancelled until an outside click.
+    if (globalTooltipManager.hasHoverTooltipPress(id)) return;
 
     // Don't prevent default to allow button interaction
     // Start timer to show tooltip after 300ms (works on all devices including tablets)
@@ -465,6 +520,7 @@ export function useGlobalTooltip() {
     e: React.MouseEvent,
     preferNativeClick = true,
   ) => {
+    const sawHoverTooltip = globalTooltipManager.consumeHoverTooltipPress(id);
     const wasPressing = globalTooltipManager.isPressing(id);
     const tooltipWasOpen = globalTooltipManager.isTooltipOpen(id);
     globalTooltipManager.clearPressTimer(id);
@@ -489,6 +545,16 @@ export function useGlobalTooltip() {
       globalTooltipManager.suppressNextClick(id);
       e.preventDefault();
       e.stopPropagation();
+      return;
+    }
+
+    // Press began while the hover tooltip was already visible, so no long-press
+    // timer is running. Still let this release activate the control.
+    if (sawHoverTooltip && !wasPressing && !tooltipWasOpen && !disabled) {
+      if (preferNativeClick) return;
+      e.preventDefault();
+      e.stopPropagation();
+      onClick();
       return;
     }
 
@@ -599,6 +665,7 @@ export function useGlobalTooltip() {
     setOpenTooltip,
     handleWrapperClick,
     handleClickCapture,
+    notePointerDown,
     handleMouseDown,
     handleMouseUp,
     handleTouchStart,

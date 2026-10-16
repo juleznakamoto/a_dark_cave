@@ -176,6 +176,11 @@ export function TooltipWrapper({
           globalTooltip.handleWrapperClick(finalTooltipId, disabled, false, e);
         }
       }}
+      onPointerDownCapture={(e) => {
+        // Before Radix's pointerdown closes a hover tooltip. A press that
+        // starts while effects are already visible must not become a long-press.
+        globalTooltip.notePointerDown(finalTooltipId, e.pointerType);
+      }}
       onMouseDown={(e) => {
         // Start hold timer for tooltip (works on all devices including tablets)
         globalTooltip.handleMouseDown(finalTooltipId, disabled, false, e);

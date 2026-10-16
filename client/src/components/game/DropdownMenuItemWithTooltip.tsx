@@ -70,6 +70,7 @@ export function DropdownMenuItemWithTooltip({
   onTouchEnd,
   onClick,
   onSelect,
+  onPointerDownCapture,
   ...props
 }: DropdownMenuItemWithTooltipProps) {
   const globalTooltip = useGlobalTooltip();
@@ -149,6 +150,10 @@ export function DropdownMenuItemWithTooltip({
             onClick?.(e);
           }}
           {...props}
+          onPointerDownCapture={mergeHandlers(
+            (e) => globalTooltip.notePointerDown(tooltipId, e.pointerType),
+            onPointerDownCapture,
+          )}
         />
       </TooltipTrigger>
       <TooltipContent

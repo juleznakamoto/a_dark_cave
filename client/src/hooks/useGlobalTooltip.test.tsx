@@ -52,6 +52,9 @@ function TestTooltipButton({
             preferNativeClick,
           )
         }
+        onPointerDownCapture={(e) =>
+          globalTooltip.notePointerDown(id, e.pointerType)
+        }
         onMouseDown={(e) =>
           globalTooltip.handleMouseDown(id, disabled, false, e)
         }
@@ -246,6 +249,132 @@ describe("useGlobalTooltip - mobile long-press behavior", () => {
 
     expect(onDisabledAction).not.toHaveBeenCalled();
     expect(onEnabledAction).not.toHaveBeenCalled();
+  });
+});
+
+describe("useGlobalTooltip - mouse press while hover tooltip is open", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    setGlobalTooltipIsMobile(false);
+    setGlobalTooltipsSuppressed(false);
+  });
+
+  afterEach(() => {
+    setGameTabHiddenForTests(null);
+    setGlobalTooltipsSuppressed(false);
+    closeAllGlobalTooltips();
+    vi.useRealTimers();
+  });
+
+  function markHoverTooltipOpen(id: string) {
+    const root = document.querySelector(`[data-tooltip-trigger-id="${id}"]`);
+    const described = document.createElement("span");
+    described.setAttribute("aria-describedby", `${id}-tip`);
+    root?.appendChild(described);
+  }
+
+  it("still cancels a mouse hold when the hover tooltip is not open", async () => {
+    const onAction = vi.fn();
+    render(
+      <TestTooltipButton id="mouse-hold" disabled={false} onAction={onAction} />,
+    );
+    const trigger = screen.getByTestId("trigger-mouse-hold");
+
+    await act(async () => {
+      fireEvent.pointerDown(trigger, { pointerType: "mouse" });
+      fireEvent.mouseDown(trigger);
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(300);
+    });
+    await act(async () => {
+      fireEvent.mouseUp(trigger);
+      fireEvent.click(trigger);
+    });
+
+    expect(onAction).not.toHaveBeenCalled();
+    expect(screen.getByTestId("open-mouse-hold").textContent).toBe("open");
+  });
+
+  it("runs the action on a slow press when the hover tooltip is already open", async () => {
+    const onAction = vi.fn();
+    render(
+      <TestTooltipButton id="hover-open" disabled={false} onAction={onAction} />,
+    );
+    const trigger = screen.getByTestId("trigger-hover-open");
+    markHoverTooltipOpen("hover-open");
+
+    await act(async () => {
+      fireEvent.pointerDown(trigger, { pointerType: "mouse" });
+      fireEvent.mouseDown(trigger);
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(350);
+    });
+    await act(async () => {
+      fireEvent.mouseUp(trigger);
+      fireEvent.click(trigger);
+    });
+
+    expect(onAction).toHaveBeenCalledTimes(1);
+    expect(screen.getByTestId("open-hover-open").textContent).toBe("closed");
+
+    await act(async () => {
+      fireEvent.pointerDown(trigger, { pointerType: "mouse" });
+      fireEvent.mouseDown(trigger);
+      fireEvent.mouseUp(trigger);
+      fireEvent.click(trigger);
+    });
+
+    expect(onAction).toHaveBeenCalledTimes(2);
+  });
+
+  it("calls wrapper onAction when preferNativeClick is false and the hover tooltip is open", async () => {
+    const onAction = vi.fn();
+    render(
+      <TestTooltipButton
+        id="hover-wrapper"
+        disabled={false}
+        onAction={onAction}
+        preferNativeClick={false}
+      />,
+    );
+    const trigger = screen.getByTestId("trigger-hover-wrapper");
+    markHoverTooltipOpen("hover-wrapper");
+
+    await act(async () => {
+      fireEvent.pointerDown(trigger, { pointerType: "mouse" });
+      fireEvent.mouseDown(trigger);
+      vi.advanceTimersByTime(350);
+      fireEvent.mouseUp(trigger);
+    });
+
+    expect(onAction).toHaveBeenCalledTimes(1);
+    expect(screen.getByTestId("open-hover-wrapper").textContent).toBe("closed");
+  });
+
+  it("keeps touch long-press when a touch pointer lands on an open hover tooltip", async () => {
+    const onAction = vi.fn();
+    render(
+      <TestTooltipButton id="touch-hover" disabled={false} onAction={onAction} />,
+    );
+    const trigger = screen.getByTestId("trigger-touch-hover");
+    markHoverTooltipOpen("touch-hover");
+
+    await act(async () => {
+      fireEvent.pointerDown(trigger, { pointerType: "touch" });
+      fireEvent.touchStart(trigger);
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(300);
+    });
+    await act(async () => {
+      fireEvent.touchEnd(trigger);
+      fireEvent.click(trigger);
+    });
+
+    expect(onAction).not.toHaveBeenCalled();
+    expect(screen.getByTestId("open-touch-hover").textContent).toBe("open");
   });
 });
 
