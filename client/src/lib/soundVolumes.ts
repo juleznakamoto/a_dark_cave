@@ -43,6 +43,8 @@ export const SOUND_VOLUME = {
   /** Madness event sting (separate file from Event UI) */
   eventMadness: 0.1,
   merchant: 0.7,
+  /** Forest trades, merchant deals, collector buy/sell, and other goods purchases */
+  purchase: 0.4,
   explosion: 0.5,
   sleep: 0.3,
   combat: 0.3,

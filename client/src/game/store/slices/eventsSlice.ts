@@ -224,7 +224,7 @@ import {
 } from "../dialogScheduling";
 import { getTimedEventTabCleanupPatch } from "../timedEventTab";
 import { StateManager } from "../StateManager";
-import { playActionStartSfx } from "../actionSfx";
+import { playPurchaseSfx, shouldPlayPurchaseSfx } from "../actionSfx";
 
 export const createEventsSlice: GameStoreCreator<Partial<GameStore>> = (set, get) => ({
   addLogEntry: (entry: LogEntry) => {
@@ -511,6 +511,10 @@ export const createEventsSlice: GameStoreCreator<Partial<GameStore>> = (set, get
 
     if (changes._choiceRejected) {
       return false;
+    }
+
+    if (shouldPlayPurchaseSfx(eventId, choiceId, changes)) {
+      playPurchaseSfx();
     }
 
     let combatData = null;
