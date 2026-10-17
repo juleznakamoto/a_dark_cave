@@ -14,7 +14,6 @@ import {
 } from "@/game/state";
 import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { CheckmarkIcon } from "@/components/ui/checkmark-icon";
 import {
   gameActionButtonGridClassName,
@@ -71,11 +70,6 @@ import {
   RelevantStatIcon,
 } from "@/components/game/EventChoiceSuccessTooltip";
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
-import {
-  getTimedEventTimeBarFillPercent,
-  shouldPulseTimedEventTimeBar,
-  TIMED_EVENT_TIME_BAR_PULSE_CLASS,
-} from "@/game/timedEventTimeBar";
 
 export default function TimedEventPanel() {
   const { t } = useTranslation(["ui", "common"]);
@@ -785,50 +779,23 @@ export default function TimedEventPanel() {
     );
   };
 
-  const timeBarUrgent = shouldPulseTimedEventTimeBar(timeRemaining);
-  const timeBarFill = getTimedEventTimeBarFillPercent({
-    startTime: timedEventTab.startTime,
-    pauseAccumMs: timedEventTab.pauseAccumMs,
-    pauseStartedAt: timedEventTab.pauseStartedAt,
-    now: Date.now(),
-    remainingMs: timeRemaining,
-  });
-
   return (
     <div className={cn("w-full space-y-1 pl-2 pr-2", GAME_TAB_PANEL_BODY)}>
       {/* Event Title */}
       {displayTitle && (
-        <div>
-          <h2 className="text-sm flex items-center justify-between">
-            <div className="flex items-center min-w-0 flex-wrap gap-x-1">
-              <span className="font-semibold">{displayTitle}</span>
-              <span
-                className={cn(
-                  "inline-block w-[5ch] shrink-0 text-right tabular-nums",
-                  timeBarUrgent ? "text-red-400" : "text-muted-foreground",
-                )}
-                aria-live="polite"
-                data-testid="timed-event-time"
-              >
-                {formatTime(timeRemaining)}
-              </span>
-              <ActionInsightBadge timeRemainingMs={timeRemaining} />
-            </div>
-          </h2>
-          <Progress
-            value={timeBarFill}
-            disableGlow
-            className={cn(
-              "mt-1 h-2 timer-progress",
-              timeBarUrgent && TIMED_EVENT_TIME_BAR_PULSE_CLASS,
-            )}
-            aria-label={t("tooltips.timeRemaining", {
-              duration: formatTime(timeRemaining),
-              defaultValue: "{{duration}} remaining",
-            })}
-            data-testid="timed-event-time-bar"
-          />
-        </div>
+        <h2 className="text-sm flex items-center justify-between">
+          <div className="flex items-center min-w-0 flex-wrap gap-x-1">
+            <span className="font-semibold">{displayTitle}</span>
+            <span
+              className="inline-block w-[5ch] shrink-0 text-right tabular-nums text-muted-foreground"
+              aria-live="polite"
+              data-testid="timed-event-time"
+            >
+              {formatTime(timeRemaining)}
+            </span>
+            <ActionInsightBadge timeRemainingMs={timeRemaining} />
+          </div>
+        </h2>
       )}
       {/* Event Message */}
       {displayMessage && (

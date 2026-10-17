@@ -1814,13 +1814,14 @@ html.adc-text-large .game-panel-produce-effects {
   }
 }
 
-/* Glow stays on the filled indicator. The track background does not pulse. */
-.timer-progress-pulse .bg-red-950 {
+/* Glow stays on the filled indicator. The track background does not pulse.
+   Madness dialogs keep a violet fill, so they do not pick up this red pulse. */
+.timer-progress-pulse .bg-red-950:not(.bg-violet-700) {
   animation: timer-progress-pulse-fill 0.8s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .timer-progress-pulse .bg-red-950 {
+  .timer-progress-pulse .bg-red-950:not(.bg-violet-700) {
     animation: none;
     background-color: #b91c1c;
     box-shadow: none;

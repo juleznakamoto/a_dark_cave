@@ -34,6 +34,11 @@ import { TREE_VARIANTS, treeVariant } from "@/pages/village-map-demo/trees";
 import { UpgradeRuleIcon, VillageMap } from "@/pages/village-map-demo/VillageMap";
 import TreeSheet from "@/pages/village-map-demo/TreeSheet";
 import { saveVillageMapToGame } from "@/pages/village-map-demo/saveLayout";
+import {
+  VILLAGE_MAP_PATH_OVERRIDES,
+  VILLAGE_MAP_POSITIONS,
+  VILLAGE_MAP_TREES,
+} from "@/game/villageMapLayout";
 
 const STORAGE_KEY = VILLAGE_MAP_DEMO_STORAGE_KEY;
 
@@ -88,17 +93,31 @@ function currentSheet(tuning: Tuning): Tuning {
   return next;
 }
 
+/** The arrangement the game draws. An empty demo save is this, not the seed ring. */
+function gameArrangement(): Pick<DemoState, "overrides" | "pathOverrides" | "trees"> {
+  return {
+    overrides: { ...VILLAGE_MAP_POSITIONS },
+    pathOverrides: { ...VILLAGE_MAP_PATH_OVERRIDES },
+    trees: VILLAGE_MAP_TREES.map((tree) => ({ ...tree })),
+  };
+}
+
 function readSaved(): DemoState | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
     const snapshot = sanitizeSnapshot(JSON.parse(raw));
     if (!snapshot) return null;
+    const arrangement = gameArrangement();
     return {
       ...snapshot,
       tuning: currentSheet(snapshot.tuning),
-      pathOverrides: snapshot.pathOverrides ?? {},
-      trees: snapshot.trees ?? [],
+      overrides: Object.keys(snapshot.overrides).length > 0 ? snapshot.overrides : arrangement.overrides,
+      pathOverrides:
+        Object.keys(snapshot.pathOverrides ?? {}).length > 0
+          ? (snapshot.pathOverrides ?? {})
+          : arrangement.pathOverrides,
+      trees: (snapshot.trees ?? []).length > 0 ? (snapshot.trees ?? []) : arrangement.trees,
       presetId: null,
     };
   } catch {
@@ -112,9 +131,7 @@ function freshState(): DemoState {
     stage,
     build: applyGrowth(stage),
     tuning: DEFAULT_TUNING,
-    overrides: {},
-    pathOverrides: {},
-    trees: [],
+    ...gameArrangement(),
     presetId: "village",
   };
 }
@@ -1064,7 +1081,11 @@ export default function VillageMapDemo() {
               size="xs"
               variant="outline"
               onClick={() =>
-                setState((current) => ({ ...current, overrides: {}, pathOverrides: {} }))
+                setState((current) => ({
+                  ...current,
+                  overrides: { ...VILLAGE_MAP_POSITIONS },
+                  pathOverrides: { ...VILLAGE_MAP_PATH_OVERRIDES },
+                }))
               }
             >
               Reset dragged positions

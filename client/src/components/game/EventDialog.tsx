@@ -48,6 +48,10 @@ import {
   RelevantStatIcon,
 } from "@/components/game/EventChoiceSuccessTooltip";
 import { shouldDismissEventWithoutApplying } from "@/game/demoLimit";
+import {
+  shouldPulseTimedEventTimeBar,
+  TIMED_EVENT_TIME_BAR_PULSE_CLASS,
+} from "@/game/timedEventTimeBar";
 import { madnessEvents } from "@/game/rules/eventsMadness";
 import { resolveVillageEffectAnnouncementTheme } from "@/game/villageEffectThemes";
 import {
@@ -285,6 +289,9 @@ function EventDialogOpen({
     event.isTimedChoice && timeRemaining !== null && totalTime > 0
       ? ((totalTime - timeRemaining) / totalTime) * 100
       : 0;
+  const timeBarUrgent =
+    timeRemaining !== null &&
+    shouldPulseTimedEventTimeBar(timeRemaining * 1000);
 
   const isCubeEvent = event?.id?.startsWith("cube");
   const isMerchantEvent = Boolean(event?.id?.includes("merchant"));
@@ -572,11 +579,15 @@ function EventDialogOpen({
                 </div>
                 <Progress
                   value={progress}
-                  className="h-2 timer-progress"
+                  className={cn(
+                    "h-2 timer-progress",
+                    timeBarUrgent && TIMED_EVENT_TIME_BAR_PULSE_CLASS,
+                  )}
                   disableGlow
                   indicatorClassName={
                     isMadnessEvent ? "bg-violet-700" : undefined
                   }
+                  data-testid="timed-dialog-time-bar"
                 />
               </div>
             )}
