@@ -1,6 +1,6 @@
 import { cloneElement, createContext, isValidElement, memo, useContext, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode, type RefObject } from "react";
 import { heartfireHatchOpacity } from "@/game/villageMapBuild";
-import type { VillageSilverCoin } from "@/game/villageMapSilver";
+import type { VillageMapCoinMetal, VillageSilverCoin } from "@/game/villageMapSilver";
 import { SilverCoinMark } from "@/pages/village-map-demo/SilverCoinMark";
 import { VILLAGE_MAP_OPEN_FADE_DELAY_MS, type VillageMapReveal } from "@/game/villageMapReveal";
 import { BUILDINGS, MAP_CENTER, treeDrawScale, type BuildState, type MapTree, type SanctumGod, type Tuning } from "@/pages/village-map-demo/catalog";
@@ -368,6 +368,8 @@ type VillageMapProps = {
   /** Coins waiting on open ground. The game map passes the live list. */
   silverCoins?: readonly VillageSilverCoin[];
   onSilverCoin?: (id: string) => void;
+  /** Silver or gold while the pointer is on that coin, otherwise null. */
+  onHoverSilverCoin?: (metal: VillageMapCoinMetal | null) => void;
   silverCoinLabel?: string;
   goldCoinLabel?: string;
 };
@@ -397,6 +399,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
   onRemoveTree,
   silverCoins = NO_SILVER_COINS,
   onSilverCoin,
+  onHoverSilverCoin,
   silverCoinLabel = "Silver",
   goldCoinLabel = "Gold",
   svgRef,
@@ -1581,6 +1584,14 @@ const VillageMapSvg = memo(function VillageMapSvg({
                   metal={coin.metal === "gold" ? "gold" : "silver"}
                   label={coin.metal === "gold" ? goldCoinLabel : silverCoinLabel}
                   onCollect={onSilverCoin}
+                  onHover={
+                    onHoverSilverCoin
+                      ? (hovered) =>
+                          onHoverSilverCoin(
+                            hovered ? (coin.metal === "gold" ? "gold" : "silver") : null,
+                          )
+                      : undefined
+                  }
                 />
               ))}
             </g>

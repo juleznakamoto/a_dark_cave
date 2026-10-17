@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useGameStore } from "@/game/state";
-import { resettleVillageSilverCoins } from "@/game/villageMapSilver";
+import {
+  resettleVillageSilverCoins,
+  type VillageMapCoinMetal,
+} from "@/game/villageMapSilver";
 import "@/i18n";
 import {
   VILLAGE_MAP_PATH_OVERRIDES,
@@ -77,6 +80,11 @@ export default function VillageMapOverlay() {
   const blessings = useGameStore((state) => state.blessings);
   const collectSilverCoin = useCallback((id: string) => {
     useGameStore.getState().collectVillageSilverCoin(id);
+  }, []);
+  const coinHoverRef = useRef<VillageMapCoinMetal | null>(null);
+  const onHoverCoin = useCallback((metal: VillageMapCoinMetal | null) => {
+    coinHoverRef.current = metal;
+    useGameStore.getState().setHighlightedResources(metal ? [metal] : []);
   }, []);
   const onHoverBuilding = useCallback((buildingId: string | null) => {
     setVillageMapHoveredBuilding(
@@ -157,6 +165,10 @@ export default function VillageMapOverlay() {
         shownRef.current = {};
       }
       setVillageMapHoveredBuilding(null);
+      if (coinHoverRef.current) {
+        coinHoverRef.current = null;
+        useGameStore.getState().setHighlightedResources([]);
+      }
       return;
     }
     const openWait = revealRef.current?.openWait;
@@ -202,6 +214,7 @@ export default function VillageMapOverlay() {
           heartfireLevel={heartfireLevel}
           silverCoins={silverCoins ?? []}
           onSilverCoin={collectSilverCoin}
+          onHoverSilverCoin={onHoverCoin}
           silverCoinLabel={t("resources.silver", { defaultValue: "Silver" })}
           goldCoinLabel={t("resources.gold", { defaultValue: "Gold" })}
         />

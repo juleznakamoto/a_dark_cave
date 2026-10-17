@@ -26,6 +26,7 @@ export function SilverCoinMark({
   label,
   metal = "silver",
   onCollect,
+  onHover,
 }: {
   id: string;
   x: number;
@@ -33,6 +34,7 @@ export function SilverCoinMark({
   label: string;
   metal?: VillageMapCoinMetal;
   onCollect?: (id: string) => void;
+  onHover?: (hovered: boolean) => void;
 }) {
   const radius = VILLAGE_SILVER_COIN_RADIUS;
   const groupRef = useRef<SVGGElement>(null);
@@ -56,6 +58,7 @@ export function SilverCoinMark({
   const onPointerDown = (event: PointerEvent<SVGGElement>) => {
     event.stopPropagation();
     event.preventDefault();
+    onHover?.(false);
     onCollect?.(id);
   };
   return (
@@ -68,6 +71,8 @@ export function SilverCoinMark({
       transform={`translate(${x} ${y}) scale(${boost})`}
       role="button"
       aria-label={label}
+      onPointerEnter={() => onHover?.(true)}
+      onPointerLeave={() => onHover?.(false)}
       onPointerDown={onPointerDown}
     >
       <circle r={radius + 4} fill="#000" fillOpacity={0} />
