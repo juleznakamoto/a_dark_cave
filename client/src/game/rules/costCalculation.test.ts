@@ -119,6 +119,16 @@ describe("lantern torch cost", () => {
     ).toBe(10);
   });
 
+  it("charges 20 food and 4 torches for iron and coal", () => {
+    const state = miningState();
+    const iron = applyActionCostsOnly("mineIron", state);
+    const coal = applyActionCostsOnly("mineCoal", state);
+    expect(iron.resources?.food).toBe(80);
+    expect(iron.resources?.torch).toBe(6);
+    expect(coal.resources?.food).toBe(80);
+    expect(coal.resources?.torch).toBe(6);
+  });
+
   it("charges the discounted torch cost and skips a clamped cost", () => {
     const iron = applyActionCostsOnly("mineStone", miningState("iron_lantern", 5));
     expect(iron.resources?.torch).toBe(4);
