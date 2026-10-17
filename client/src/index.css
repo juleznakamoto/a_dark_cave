@@ -981,10 +981,6 @@ html[data-adc-chrome-stage="0"] {
   cursor: pointer;
 }
 
-.village-silver-coin-glyph {
-  font-family: "Noto Symbol Compat", "Noto Sans Symbols 2", sans-serif;
-}
-
 .village-silver-coin-shadow {
   animation: village-silver-coin-shadow 2s ease-in-out infinite;
 }
