@@ -84,6 +84,7 @@ describe("boot.js fatal recovery", () => {
     failScript("https://files.example/assets/index-missing.js");
 
     const repeat = document.querySelector("[data-adc-fatal-message]")?.textContent ?? "";
+    expect(repeat).toContain("delete the cache");
     expect(repeat).toContain("make fire again");
     expect(repeat).not.toContain("light");
     const returnButton = document.getElementById("adc-fatal-error-return");

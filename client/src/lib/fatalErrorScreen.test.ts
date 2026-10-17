@@ -83,6 +83,7 @@ describe("fatal screen recovery", () => {
     document.getElementById("adc-fatal-error")?.remove();
     mountFatalErrorScreen(new Error("second"));
     const message = document.querySelector("[data-adc-fatal-message]")?.textContent ?? "";
+    expect(message).toContain("delete the cache");
     expect(message).toContain("make fire again");
     expect(message).not.toContain("light");
     expect(document.getElementById("adc-fatal-error-return")?.textContent).toBe(

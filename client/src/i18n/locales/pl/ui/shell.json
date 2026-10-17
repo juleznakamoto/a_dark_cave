@@ -46,7 +46,7 @@
   "errorScreen": {
     "message": "Kopiemy głębiej. Wróć wkrótce.",
     "reload": "Przeładuj grę",
-    "repeatMessage": "Ponowne wczytanie nie przywróciło ognia. Możesz wrócić do jaskini i ponownie rozpalić ogień.",
+    "repeatMessage": "Ponowne wczytanie nie przywróciło ognia. Możesz usunąć cache i ponownie rozpalić ogień.",
     "returnToCave": "Usuń cache",
     "saveKept": "Ostatniego zapisu nie dało się otworzyć, więc to nowa gra. Stary zapis zostaje na tym urządzeniu.",
     "saveKeptDismiss": "Dalej"

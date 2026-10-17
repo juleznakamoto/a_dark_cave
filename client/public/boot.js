@@ -148,7 +148,7 @@
     var repeat = noteFatalScreenShown() >= 2;
     var buttonStyle = "border:1px solid #525252;border-radius:0.25rem;padding:0.5rem 1rem;background:transparent;color:#e5e5e5;font-size:0.875rem;cursor:pointer;";
     var message = repeat
-      ? "Reloading did not bring the fire back. You can return to the cave and make fire again."
+      ? "Reloading did not bring the fire back. You can delete the cache and make fire again."
       : "We are digging deeper. Please check back soon.";
     var host = document.createElement("div");
     host.id = "adc-fatal-error";
