@@ -1,5 +1,8 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { useGameStore } from "@/game/state";
+import { resettleVillageSilverCoins } from "@/game/villageMapSilver";
+import "@/i18n";
 import {
   VILLAGE_MAP_PATH_OVERRIDES,
   VILLAGE_MAP_POSITIONS,
@@ -60,7 +63,9 @@ const ignoreMapEdit = () => { };
  * opening it rebuilt every path and wobble filter.
  */
 export default function VillageMapOverlay() {
+  const { t } = useTranslation("common");
   const open = useGameStore((state) => state.activeTab === "map");
+  const silverCoins = useGameStore((state) => state.villageSilverCoins);
   const keptRef = useRef(open);
   if (open) keptRef.current = true;
   const sidePanelHover = useSidePanelActiveTooltipHoverId();
@@ -70,6 +75,9 @@ export default function VillageMapOverlay() {
   const buildingsRef = useRef(buildings);
   buildingsRef.current = buildings;
   const blessings = useGameStore((state) => state.blessings);
+  const collectSilverCoin = useCallback((id: string) => {
+    useGameStore.getState().collectVillageSilverCoin(id);
+  }, []);
   const onHoverBuilding = useCallback((buildingId: string | null) => {
     setVillageMapHoveredBuilding(
       buildingId ? sidePanelRowFromMapBuilding(buildingId, buildingsRef.current) : null,
@@ -133,6 +141,12 @@ export default function VillageMapOverlay() {
     shownRef.current = next.shown;
     markKeyRef.current = markKey;
   }
+  useLayoutEffect(() => {
+    if (!open) return;
+    const patch = resettleVillageSilverCoins(useGameStore.getState());
+    if (patch) useGameStore.setState(patch);
+  }, [open, build, overrides, pathOverrides]);
+
   useEffect(() => {
     if (!open) {
       if (sessionRef.current) {
@@ -186,6 +200,9 @@ export default function VillageMapOverlay() {
           onHoverBuilding={onHoverBuilding}
           readOnly
           heartfireLevel={heartfireLevel}
+          silverCoins={silverCoins ?? []}
+          onSilverCoin={collectSilverCoin}
+          silverCoinLabel={t("resources.silver", { defaultValue: "Silver" })}
         />
       </div>
     </div>

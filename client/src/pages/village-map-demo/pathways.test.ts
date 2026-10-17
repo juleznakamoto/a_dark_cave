@@ -499,6 +499,18 @@ describe("village pathways", () => {
     expect(shared.length).toBeGreaterThan(0);
   });
 
+  it("ties a few roads to each other, out away from the heartfire", () => {
+    const { paths } = fieldFor("full");
+    const links = paths.filter((path) => path.id.startsWith("link:"));
+    expect(links.length).toBeGreaterThanOrEqual(6);
+    expect(links.length).toBeLessThanOrEqual(10);
+    for (const link of links) {
+      for (const point of link.points) {
+          expect(Math.hypot(point.x - MAP_CENTER, point.y - MAP_CENTER), link.id).toBeGreaterThan(70);
+      }
+    }
+  });
+
   it("does not leave two roads side by side for a long stretch", () => {
     expect(longParallelRuns(fieldFor("village").paths)).toEqual([]);
     // Some full-village pairs still cannot join: the merge would cross a third road.

@@ -47,7 +47,7 @@
     "message": "我们还在往深处挖。请稍后再来。",
     "reload": "重新加载游戏",
     "repeatMessage": "重新加载没有把火带回来。你可以回到洞穴，再一次生火。",
-    "returnToCave": "回到洞穴",
+    "returnToCave": "删除缓存",
     "saveKept": "上次的存档打不开，所以这是一局新游戏。旧存档还在这台设备上。",
     "saveKeptDismiss": "继续"
   },

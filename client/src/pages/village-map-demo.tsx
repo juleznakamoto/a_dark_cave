@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Redirect } from "wouter";
 import { Button } from "@/components/ui/button";
 import { revealForSimulatedOpen, type VillageMapReveal } from "@/game/villageMapReveal";
+import type { VillageSilverCoin } from "@/game/villageMapSilver";
 import {
   BUILDINGS,
   DEFAULT_TUNING,
@@ -266,6 +267,13 @@ function ColorField({
     </div>
   );
 }
+
+/** Same coin mark as the game, sitting on open ground in this preview. */
+const DEMO_SILVER_COINS: VillageSilverCoin[] = [
+  { id: "demo-silver-a", x: 500, y: 760 },
+  { id: "demo-silver-b", x: 760, y: 700 },
+  { id: "demo-silver-c", x: 640, y: 760 },
+];
 
 export default function VillageMapDemo() {
   const [state, setState] = useState<DemoState>(() => readSaved() ?? freshState());
@@ -604,6 +612,8 @@ export default function VillageMapDemo() {
                   });
                 }}
                 onActiveLabel={onActiveLabel}
+                silverCoins={DEMO_SILVER_COINS}
+                silverCoinLabel="Silver"
               />
             </div>
             <div className="pointer-events-none absolute bottom-3 left-3 text-xs text-stone-400">

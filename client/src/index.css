@@ -977,6 +977,37 @@ html[data-adc-chrome-stage="0"] {
   animation: village-map-highlight-fade 1.5s linear forwards;
 }
 
+.village-silver-coin {
+  cursor: pointer;
+}
+
+.village-silver-coin-glyph {
+  font-family: "Noto Symbol Compat", "Noto Sans Symbols 2", sans-serif;
+}
+
+.village-silver-coin-shadow {
+  animation: village-silver-coin-shadow 2s ease-in-out infinite;
+}
+
+@keyframes village-silver-coin-shadow {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.village-silver-coin-hover {
+  stroke-width: 0;
+}
+
+.village-silver-coin:hover .village-silver-coin-hover {
+  stroke-width: 1px;
+}
+
 /* Shown by :hover, .is-hovered, or .is-highlighted. No map render. */
 .village-map-hover-ring {
   display: none;
@@ -1046,6 +1077,11 @@ html[data-adc-chrome-stage="0"] {
   .village-map-path-after-building {
     animation: none;
     opacity: 1;
+  }
+
+  .village-silver-coin-shadow {
+    animation: none;
+    opacity: 0.55;
   }
 }
 

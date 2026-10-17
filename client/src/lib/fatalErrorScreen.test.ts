@@ -86,7 +86,7 @@ describe("fatal screen recovery", () => {
     expect(message).toContain("make fire again");
     expect(message).not.toContain("light");
     expect(document.getElementById("adc-fatal-error-return")?.textContent).toBe(
-      "Return to the cave",
+      "Delete cache",
     );
     expect(document.getElementById("adc-fatal-error-return")?.hasAttribute("hidden")).toBe(
       false,

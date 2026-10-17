@@ -220,7 +220,8 @@ import {
 } from "../dialogScheduling";
 import { getTimedEventTabCleanupPatch } from "../timedEventTab";
 import { StateManager } from "../StateManager";
-import { playActionStartSfx } from "../actionSfx";
+import { playActionStartSfx, playPurchaseSfx } from "../actionSfx";
+import { collectVillageSilverPatch } from "@/game/villageMapSilver";
 
 export const createUiSlice: GameStoreCreator<Partial<GameStore>> = (set, get) => ({
   unlockAchievement: (achievementId) =>
@@ -380,6 +381,17 @@ export const createUiSlice: GameStoreCreator<Partial<GameStore>> = (set, get) =>
 
   setVillageMapSeenTiers: (tiers: Record<string, number>) => {
     set({ villageMapSeenTiers: tiers });
+  },
+
+  collectVillageSilverCoin: (id: string) => {
+    const state = get();
+    const patch = collectVillageSilverPatch(state, id);
+    if (!patch) return;
+    const before = state.resources.silver ?? 0;
+    set(patch);
+    const gained = (get().resources.silver ?? 0) - before;
+    if (gained > 0) get().emitResourceChange("silver", gained);
+    playPurchaseSfx();
   },
 
   setSettingsDialogOpen: (isOpen: boolean) => {

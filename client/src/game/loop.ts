@@ -54,6 +54,7 @@ import {
 import { isDemoPlayFrozen, processDemoLimit } from "./demoLimit";
 import { processTimedEffects } from "./timedEffects";
 import { tickObsidianOrbFocus } from "@/game/obsidianOrb";
+import { tickVillageMapSilver } from "@/game/villageMapSilver";
 import { isLocalOnlyEdition, shouldSyncSteamAchievements } from "@/lib/edition";
 let gameLoopRunning = false;
 let gameLoopTimer: ReturnType<typeof setTimeout> | null = null;
@@ -629,6 +630,8 @@ export function startGameLoop() {
     }
     if (shouldAdvancePlayTime) {
       useGameStore.getState().tickInvestmentHall();
+      const silverPatch = tickVillageMapSilver(useGameStore.getState());
+      if (silverPatch) useGameStore.setState(silverPatch);
     }
 
     if (!IsDialogOpen) {

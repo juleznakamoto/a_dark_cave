@@ -70,10 +70,12 @@ import {
   unitVector,
   walkBranch,
 } from "@/pages/village-map-demo/pathwayJoins";
+import { buryStreetEnds, linkNearbyRoads } from "@/pages/village-map-demo/pathwayLinks";
 
 /**
  * Gravel tracks from each building's door to the heartfire.
  * Routes share a shortest-path tree, so they join instead of crossing.
+ * A few later streets tie neighboring roads together.
  * Nothing leads to the pale cross, monolith, or pillar. They only block the way.
  */
 
@@ -304,12 +306,15 @@ export function villagePathDrawings(
 ): VillagePath[] {
   const resolved = resolveEdges(field, overrides);
   const ribbons = extendIntoNext(resolved);
-  return resolved.map((edge) => {
+  const drawnLines = resolved.map((edge) => softenCenterline(edgeLine(edge, ribbons), mixSeed(edge.id)));
+  const hosts = drawnLines.filter((_, index) => !resolved[index].id.startsWith("link:"));
+  return resolved.map((edge, index) => {
     const handle = overrides[edge.id] ?? midpoint(edge.points);
     const seed = mixSeed(edge.id);
-    const route = ribbons.get(edge.id) ?? edge.points;
-    const met = edge.slotIds.length === 1 ? extendThroughDoor(route) : route;
-    const drawn = softenCenterline(met, seed);
+    const met = edgeLine(edge, ribbons);
+    const drawn = edge.id.startsWith("link:")
+      ? buryStreetEnds(drawnLines[index], hosts, LINK_BURY)
+      : drawnLines[index];
     return {
       id: edge.id,
       slotIds: edge.slotIds,
@@ -323,8 +328,19 @@ export function villagePathDrawings(
   });
 }
 
+/** Door spurs run through the doorway. Streets between roads stay as routed. */
+function edgeLine(edge: PathEdgeBase, ribbons: ReadonlyMap<string, Point[]>): Point[] {
+  const route = ribbons.get(edge.id) ?? edge.points;
+  return edge.slotIds.length === 1 ? extendThroughDoor(route) : route;
+}
+
 /** How far a stretch runs into the next one, so the join sits inside the merged track. */
 const MERGE_OVERLAP = PATH_HALF * 2;
+/**
+ * A street between roads ends on the drawn lane's middle.
+ * Further than this and the round end pokes out the far side.
+ */
+const LINK_BURY = 0;
 
 /**
  * Each edge ends where the next one starts. Continue the ribbon into that next
@@ -895,6 +911,7 @@ function traceEdges(
   leanSomeForksInward(grid, edges);
   bundleParallelSpans(grid, edges);
   collapseRejoins(grid, edges);
+  linkNearbyRoads(grid, edges);
   edges.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   return edges;
 }

@@ -1209,6 +1209,15 @@ export const gameStateSchema = z.object({
     .default({}),
   /** Map slot tiers already shown, so a new building fades in only once. */
   villageMapSeenTiers: z.record(z.string(), z.number()).default({}),
+  /** Silver coins sitting on open village-map ground. Capped at three. */
+  villageSilverCoins: z
+    .array(z.object({ id: z.string(), x: z.number(), y: z.number() }))
+    .default([]),
+  /**
+   * playTime when the next map coin may appear.
+   * 0 means the wait has not started, or three coins are already out.
+   */
+  villageSilverNextAt: z.number().default(0),
   /**
    * Action and job ids in the order the player first saw them.
    * New unlocks append, so a late button does not jump up the list.

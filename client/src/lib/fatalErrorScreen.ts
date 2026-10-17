@@ -15,7 +15,7 @@ export const ERROR_SCREEN_MESSAGE =
 export const ERROR_SCREEN_RELOAD = "Reload game";
 export const ERROR_SCREEN_REPEAT_MESSAGE =
   "Reloading did not bring the fire back. You can return to the cave and make fire again.";
-export const ERROR_SCREEN_RETURN = "Return to the cave";
+export const ERROR_SCREEN_RETURN = "Delete cache";
 export const FATAL_ERROR_ROOT_ID = "adc-fatal-error";
 
 /**

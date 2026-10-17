@@ -1,5 +1,7 @@
 import { cloneElement, createContext, isValidElement, memo, useContext, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode, type RefObject } from "react";
 import { heartfireHatchOpacity } from "@/game/villageMapBuild";
+import type { VillageSilverCoin } from "@/game/villageMapSilver";
+import { SilverCoinMark } from "@/pages/village-map-demo/SilverCoinMark";
 import { VILLAGE_MAP_OPEN_FADE_DELAY_MS, type VillageMapReveal } from "@/game/villageMapReveal";
 import { BUILDINGS, MAP_CENTER, treeDrawScale, type BuildState, type MapTree, type SanctumGod, type Tuning } from "@/pages/village-map-demo/catalog";
 import { TreeMark } from "@/pages/village-map-demo/TreeMark";
@@ -185,7 +187,7 @@ function openChain(points: Point[]): string {
 /** Dilated ring around each track. The door mask has to cover this, not only the fill. */
 const PATH_OUTLINE_RADIUS = 0.75;
 /** Gravel fill and stones. The outline is a sibling, so this does not tint the ring. */
-const PATH_GRAVEL_OPACITY = 0.7;
+const PATH_GRAVEL_OPACITY = 0.65;
 /** Painted ring. Kept off the gravel group so this is the opacity on the page. */
 const PATH_OUTLINE_OPACITY = 0.3;
 /** Hand-drawn bend of the ring, in map units. */
@@ -297,6 +299,7 @@ function pathFadeClass(path: VillagePath, reveal: VillageMapReveal | null): stri
 }
 
 const NO_TREES: MapTree[] = [];
+const NO_SILVER_COINS: VillageSilverCoin[] = [];
 
 function applyBuildingHighlight(svg: SVGSVGElement | null, highlightId: string | null) {
   if (!svg) return;
@@ -362,6 +365,10 @@ type VillageMapProps = {
   onPlaceTree?: (point: Point) => void;
   onMoveTree?: (id: string, point: Point) => void;
   onRemoveTree?: (id: string) => void;
+  /** Coins waiting on open ground. The game map passes the live list. */
+  silverCoins?: readonly VillageSilverCoin[];
+  onSilverCoin?: (id: string) => void;
+  silverCoinLabel?: string;
 };
 
 type VillageMapSvgProps = Omit<VillageMapProps, "highlightId"> & {
@@ -387,6 +394,9 @@ const VillageMapSvg = memo(function VillageMapSvg({
   onPlaceTree,
   onMoveTree,
   onRemoveTree,
+  silverCoins = NO_SILVER_COINS,
+  onSilverCoin,
+  silverCoinLabel = "Silver",
   svgRef,
   highlightRef,
 }: VillageMapSvgProps) {
@@ -1554,6 +1564,21 @@ const VillageMapSvg = memo(function VillageMapSvg({
                   </g>
                   <circle r={trapTarget} fill="#000" fillOpacity={0} pointerEvents="all" />
                 </g>
+              ))}
+            </g>
+          ) : null}
+
+          {silverCoins.length > 0 ? (
+            <g data-testid="village-silver-coins">
+              {silverCoins.map((coin) => (
+                <SilverCoinMark
+                  key={coin.id}
+                  id={coin.id}
+                  x={coin.x}
+                  y={coin.y}
+                  label={silverCoinLabel}
+                  onCollect={onSilverCoin}
+                />
               ))}
             </g>
           ) : null}

@@ -159,7 +159,7 @@
       '<span class="adc-page-load-spinner" aria-hidden="true"><span class="adc-page-load-spinner__ring"></span><span class="adc-page-load-spinner__core"><img class="adc-page-load-spinner__logo" src="/apple-touch-icon.png" alt="" /></span></span>' +
       '<p data-adc-fatal-message style="max-width:24rem;margin:0;font-size:0.875rem;line-height:1.625;color:#a3a3a3;">' + message + "</p>" +
       '<div style="display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;">' +
-      '<button type="button" id="adc-fatal-error-return"' + (repeat ? "" : " hidden") + ' style="' + buttonStyle + '">Return to the cave</button>' +
+      '<button type="button" id="adc-fatal-error-return"' + (repeat ? "" : " hidden") + ' style="' + buttonStyle + '">Delete cache</button>' +
       '<button type="button" id="adc-fatal-error-reload" style="' + buttonStyle + '">Reload game</button>' +
       "</div></div>";
     document.body.appendChild(host);
