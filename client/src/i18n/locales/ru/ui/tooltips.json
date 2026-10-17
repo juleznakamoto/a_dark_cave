@@ -122,6 +122,7 @@
     "actionProbabilityBonus": "{{action}}: {{percent}} % шанс на +50 {{resource}}",
     "cooldownReduction": "{{action}}: -{{seconds}}с перезарядки",
     "durationReduction": "{{action}}: -{{seconds}}с длительности",
+    "torchCostReduction": "Стоимость факелов: -{{count}}",
     "poisonArrowsAvailable": "Доступно: 1/1 за бой",
     "poisonEnchantRound_one": "+{{count}} раунд",
     "poisonEnchantRound_few": "+{{count}} раунда",

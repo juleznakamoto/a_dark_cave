@@ -107,6 +107,7 @@
     "actionProbabilityBonus": "{{action}}: {{percent}}% di probabilità di +50 {{resource}}",
     "cooldownReduction": "{{action}}: -{{seconds}}s Recupero",
     "durationReduction": "{{action}}: -{{seconds}}s Durata",
+    "torchCostReduction": "Costo in torce: -{{count}}",
     "poisonArrowsAvailable": "Disponibili: 1/1 per combattimento",
     "poisonEnchantRound_one": "+{{count}} turno",
     "poisonEnchantRound_other": "+{{count}} turni",

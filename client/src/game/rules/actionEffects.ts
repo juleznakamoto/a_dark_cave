@@ -182,6 +182,7 @@ export function applyActionCostsOnly(actionId: string, state: GameState): Partia
           path.startsWith("resources."),
           state,
           actionDef?.category as "crafting" | "building" | undefined,
+          path,
         );
 
         const stateAmount = path.startsWith("resources.")

@@ -167,6 +167,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
     name: "Iron Lantern",
     description: "Simple lantern providing reliable light",
     bonuses: {
+      generalBonuses: {
+        torchCostReduction: 1,
+      },
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.25,
@@ -184,6 +187,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
     name: "Steel Lantern",
     description: "Bright lantern illuminating the darkest places",
     bonuses: {
+      generalBonuses: {
+        torchCostReduction: 2,
+      },
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.5,
@@ -201,6 +207,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
     name: "Obsidian Lantern",
     description: "Powerful lantern that casts a strong, unwavering light",
     bonuses: {
+      generalBonuses: {
+        torchCostReduction: 3,
+      },
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.75,
@@ -218,6 +227,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
     name: "Adamant Lantern",
     description: "Ultimate light source, illuminating every path",
     bonuses: {
+      generalBonuses: {
+        torchCostReduction: 4,
+      },
       actionBonuses: {
         mining: {
           resourceMultiplier: 2.0,
@@ -260,6 +272,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
     name: "Blacksteel Lantern",
     description: "Lantern forged from rare blacksteel",
     bonuses: {
+      generalBonuses: {
+        torchCostReduction: 5,
+      },
       actionBonuses: {
         mining: {
           resourceMultiplier: 2.5,

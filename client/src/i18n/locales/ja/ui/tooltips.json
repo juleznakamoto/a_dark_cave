@@ -118,6 +118,7 @@
     "actionProbabilityBonus": "{{action}}：{{resource}}+50の確率{{percent}}%",
     "cooldownReduction": "{{action}}：クールダウン-{{seconds}}秒",
     "durationReduction": "{{action}}：所要時間-{{seconds}}秒",
+    "torchCostReduction": "松明コスト：-{{count}}",
     "poisonArrowsAvailable": "使用可能：戦闘ごとに1/1",
     "poisonEnchantRound_one": "+{{count}}ラウンド",
     "poisonEnchantRound_other": "+{{count}}ラウンド",

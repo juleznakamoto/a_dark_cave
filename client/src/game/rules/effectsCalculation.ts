@@ -269,6 +269,16 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
   return activeEffects;
 };
 
+/** Torches removed from action costs by the best crafted lantern. Each tier adds 1. */
+export function getLanternTorchCostReduction(state: GameState): number {
+  let reduction = 0;
+  for (const effect of getActiveEffects(state)) {
+    const amount = effect.bonuses.generalBonuses?.torchCostReduction ?? 0;
+    if (amount > reduction) reduction = amount;
+  }
+  return reduction;
+}
+
 // Helper function to get action bonuses from pre-calculated effects in state
 export const getActionBonuses = (
   actionId: string,

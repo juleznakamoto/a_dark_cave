@@ -1035,6 +1035,14 @@ export function renderItemTooltip(
                 )}
               </div>
             )}
+          {effect.bonuses.generalBonuses.torchCostReduction != null &&
+            effect.bonuses.generalBonuses.torchCostReduction > 0 && (
+              <div>
+                {getUiTooltip("torchCostReduction", "Torch cost: -{{count}}", {
+                  count: effect.bonuses.generalBonuses.torchCostReduction,
+                })}
+              </div>
+            )}
           {effect.bonuses.generalBonuses.craftingCostReduction && (
             <div>
               {getUiTooltip("craftDiscount", "Craft Discount: -{{percent}}%", {

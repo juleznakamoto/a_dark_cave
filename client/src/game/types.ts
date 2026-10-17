@@ -324,6 +324,8 @@ export interface EffectDefinition {
       knowledge?: number; // Knowledge bonus
       madness?: number; // Madness bonus
       craftingCostReduction?: number; // Percentage reduction in crafting costs (0.1 = 10% reduction)
+      /** Torches removed from action costs. Best crafted lantern only; each tier adds 1. */
+      torchCostReduction?: number;
       buildingCostReduction?: number; // Percentage reduction in building costs (0.1 = 10% reduction)
       MAX_EMBER_BOMBS?: number; // Bonus to max ember bombs capacity (combat)
       MAX_CINDERFLAME_BOMBS?: number; // Bonus to max ashfire bombs (combat)

@@ -121,6 +121,16 @@ function getWeaponEffectLines(itemId: string): WeaponEffectLine[] {
     }
   }
 
+  const torchCostReduction = effect.bonuses?.generalBonuses?.torchCostReduction ?? 0;
+  if (torchCostReduction > 0) {
+    lines.push({
+      key: "torchCostReduction",
+      line: getUiTooltip("torchCostReduction", "Torch cost: -{{count}}", {
+        count: torchCostReduction,
+      }),
+    });
+  }
+
   const unlock = CHAIN_UNLOCKS[itemId];
   if (unlock) {
     lines.push({

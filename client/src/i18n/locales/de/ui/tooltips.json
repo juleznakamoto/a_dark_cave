@@ -110,6 +110,7 @@
     "actionProbabilityBonus": "{{action}}: {{percent}} % Chance auf +50 {{resource}}",
     "cooldownReduction": "{{action}}: -{{seconds}}s Abklingzeit",
     "durationReduction": "{{action}}: -{{seconds}}s Dauer",
+    "torchCostReduction": "Fackelkosten: -{{count}}",
     "poisonArrowsAvailable": "Verfügbar: 1/1 pro Kampf",
     "poisonEnchantRound_one": "+{{count}} Runde",
     "poisonEnchantRound_other": "+{{count}} Runden",

@@ -53,6 +53,7 @@ function handleBuildingConstruction(
           true,
           state,
           "building",
+          path,
         );
         newResources[resource] -=
           typeof adjustedCost === "number" ? adjustedCost : cost;

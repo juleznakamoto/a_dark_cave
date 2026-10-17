@@ -111,6 +111,7 @@ describe("weapon upgrade tooltips", () => {
       "Mining: +50% Bonus",
       "Mining: -1.5s Duration",
       "Cave Explore: +50% Bonus",
+      "Torch cost: -2",
     ]);
   });
 });

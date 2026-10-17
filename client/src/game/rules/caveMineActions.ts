@@ -78,7 +78,7 @@ export const caveMineActions: Record<string, Action> = {
     },
     cost: {
       "resources.food": 10,
-      "resources.torch": 1,
+      "resources.torch": 2,
     },
     effects: (state: GameState) => {
       const bonus = state.BTP === 1 ? 1 : 0;
@@ -105,8 +105,8 @@ export const caveMineActions: Record<string, Action> = {
       "tools.stone_pickaxe": true,
     },
     cost: {
-      "resources.food": 10,
-      "resources.torch": 1,
+      "resources.food": 20,
+      "resources.torch": 4,
     },
     effects: (state: GameState) => {
       const bonus = state.BTP === 1 ? 1 : 0;
@@ -133,8 +133,8 @@ export const caveMineActions: Record<string, Action> = {
       "tools.iron_pickaxe": true,
     },
     cost: {
-      "resources.food": 10,
-      "resources.torch": 1,
+      "resources.food": 20,
+      "resources.torch": 4,
     },
     effects: (state: GameState) => {
       const bonus = state.BTP === 1 ? 1 : 0;
@@ -163,7 +163,7 @@ export const caveMineActions: Record<string, Action> = {
     },
     cost: {
       "resources.food": 30,
-      "resources.torch": 2,
+      "resources.torch": 6,
     },
     effects: (state: GameState) => {
       const bonus = state.BTP === 1 ? 1 : 0;
@@ -191,7 +191,7 @@ export const caveMineActions: Record<string, Action> = {
     },
     cost: {
       "resources.food": 50,
-      "resources.torch": 5,
+      "resources.torch": 9,
     },
     effects: (state: GameState) => {
       const bonus = state.BTP === 1 ? 1 : 0;
@@ -219,7 +219,7 @@ export const caveMineActions: Record<string, Action> = {
     },
     cost: {
       "resources.food": 100,
-      "resources.torch": 10,
+      "resources.torch": 14,
     },
     effects: (state: GameState) => {
       const bonus = state.BTP === 1 ? 1 : 0;
@@ -247,7 +247,7 @@ export const caveMineActions: Record<string, Action> = {
     },
     cost: {
       "resources.food": 200,
-      "resources.torch": 20,
+      "resources.torch": 25,
     },
     effects: (state: GameState) => {
       const bonus = state.BTP === 1 ? 1 : 0;

@@ -271,6 +271,7 @@ export function getAdjustedCost(
   baseCost: number,
   isResourceCost: boolean,
   state: GameState,
+  resourcePath?: string,
 ): number {
   const action = getGameActions()[actionId];
   return calculateAdjustedCost(
@@ -279,6 +280,7 @@ export function getAdjustedCost(
     isResourceCost,
     state,
     action?.category as "crafting" | "building" | undefined,
+    resourcePath,
   );
 }
 
@@ -513,6 +515,7 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
         requiredAmount,
         true,
         state,
+        path,
       );
       if ((current || 0) < adjustedCost) {
         return false;
@@ -575,8 +578,13 @@ export function getActionCostDisplay(
           amount,
           resource.startsWith("resources."),
           state,
+          resource,
         )
         : amount;
+
+      if (typeof adjustedAmount === "number" && adjustedAmount <= 0) {
+        return null;
+      }
 
       // Extract the clean resource name from paths like "resources.wood"
       const resourceName = resource.includes(".")
@@ -589,6 +597,7 @@ export function getActionCostDisplay(
         .join(" ");
       return `-${formatNumber(adjustedAmount)} ${formattedName}`;
     })
+    .filter((line): line is string => line != null)
     .join(", ");
 
   return costText;
@@ -750,7 +759,12 @@ export function getActionCostBreakdown(
       amount as number, // Cast amount to number as it's expected here
       resource.startsWith("resources."),
       state,
+      resource,
     );
+
+    if (typeof adjustedAmount === "number" && adjustedAmount <= 0) {
+      return;
+    }
 
     // Player-facing name: use effect catalog for relics so labels match tooltips (e.g. Black Timber).
     const resourceNameFormatted =

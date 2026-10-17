@@ -5,9 +5,14 @@ import {
   getDarkEstateResourceCost,
 } from "@/game/demoLimit";
 import {
+  getLanternTorchCostReduction,
   getTotalCraftingCostReduction,
   getTotalBuildingCostReduction,
 } from "./effectsCalculation";
+
+function isTorchResourcePath(resourcePath?: string): boolean {
+  return resourcePath === "torch" || resourcePath === "resources.torch";
+}
 
 /**
  * Calculate adjusted crafting cost with all applicable discounts
@@ -45,6 +50,7 @@ export function calculateAdjustedCost(
   isResourceCost: boolean,
   state: GameState,
   actionCategory?: "crafting" | "building",
+  resourcePath?: string,
 ): number {
   if (!isResourceCost) {
     return baseCost;
@@ -61,11 +67,16 @@ export function calculateAdjustedCost(
   const isCraftingAction = actionCategory === "crafting" || actionId.startsWith("craft");
   const isBuildingAction = actionCategory === "building" || actionId.startsWith("build");
 
+  let adjusted = baseCost;
   if (isCraftingAction) {
-    return calculateCraftingCost(baseCost, state);
+    adjusted = calculateCraftingCost(baseCost, state);
   } else if (isBuildingAction) {
-    return calculateBuildingCost(baseCost, state);
+    adjusted = calculateBuildingCost(baseCost, state);
   }
 
-  return baseCost;
+  if (isTorchResourcePath(resourcePath)) {
+    adjusted = Math.max(0, adjusted - getLanternTorchCostReduction(state));
+  }
+
+  return adjusted;
 }
