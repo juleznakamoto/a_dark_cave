@@ -369,6 +369,7 @@ type VillageMapProps = {
   silverCoins?: readonly VillageSilverCoin[];
   onSilverCoin?: (id: string) => void;
   silverCoinLabel?: string;
+  goldCoinLabel?: string;
 };
 
 type VillageMapSvgProps = Omit<VillageMapProps, "highlightId"> & {
@@ -397,6 +398,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
   silverCoins = NO_SILVER_COINS,
   onSilverCoin,
   silverCoinLabel = "Silver",
+  goldCoinLabel = "Gold",
   svgRef,
   highlightRef,
 }: VillageMapSvgProps) {
@@ -1576,7 +1578,8 @@ const VillageMapSvg = memo(function VillageMapSvg({
                   id={coin.id}
                   x={coin.x}
                   y={coin.y}
-                  label={silverCoinLabel}
+                  metal={coin.metal === "gold" ? "gold" : "silver"}
+                  label={coin.metal === "gold" ? goldCoinLabel : silverCoinLabel}
                   onCollect={onSilverCoin}
                 />
               ))}

@@ -387,10 +387,14 @@ export const createUiSlice: GameStoreCreator<Partial<GameStore>> = (set, get) =>
     const state = get();
     const patch = collectVillageSilverPatch(state, id);
     if (!patch) return;
-    const before = state.resources.silver ?? 0;
+    const beforeSilver = state.resources.silver ?? 0;
+    const beforeGold = state.resources.gold ?? 0;
     set(patch);
-    const gained = (get().resources.silver ?? 0) - before;
-    if (gained > 0) get().emitResourceChange("silver", gained);
+    const next = get();
+    const silverGained = (next.resources.silver ?? 0) - beforeSilver;
+    const goldGained = (next.resources.gold ?? 0) - beforeGold;
+    if (silverGained > 0) next.emitResourceChange("silver", silverGained);
+    if (goldGained > 0) next.emitResourceChange("gold", goldGained);
     playPurchaseSfx();
   },
 

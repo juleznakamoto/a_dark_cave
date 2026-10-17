@@ -1209,9 +1209,17 @@ export const gameStateSchema = z.object({
     .default({}),
   /** Map slot tiers already shown, so a new building fades in only once. */
   villageMapSeenTiers: z.record(z.string(), z.number()).default({}),
-  /** Silver coins sitting on open village-map ground. Capped at three. */
+  /** Silver and gold coins sitting on open village-map ground. Capped at three. */
   villageSilverCoins: z
-    .array(z.object({ id: z.string(), x: z.number(), y: z.number() }))
+    .array(
+      z.object({
+        id: z.string(),
+        x: z.number(),
+        y: z.number(),
+        /** Missing on older saves. Those coins stay silver. */
+        metal: z.enum(["silver", "gold"]).default("silver"),
+      }),
+    )
     .default([]),
   /**
    * playTime when the next map coin may appear.

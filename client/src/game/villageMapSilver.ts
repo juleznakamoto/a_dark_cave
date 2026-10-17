@@ -71,7 +71,22 @@ export const VILLAGE_SILVER_COIN_REACH =
 const RANDOM_TRIES = 120;
 const GRID_STEP = 14;
 
-export type VillageSilverCoin = { id: string; x: number; y: number };
+/** One spawn in ten is gold. The rest stay silver. */
+export const VILLAGE_GOLD_COIN_CHANCE = 0.1;
+
+export type VillageMapCoinMetal = "silver" | "gold";
+
+export type VillageSilverCoin = {
+  id: string;
+  x: number;
+  y: number;
+  /** Absent on coins saved before gold coins existed. Those pay silver. */
+  metal?: VillageMapCoinMetal;
+};
+
+export function villageMapCoinMetal(random: () => number = Math.random): VillageMapCoinMetal {
+  return random() < VILLAGE_GOLD_COIN_CHANCE ? "gold" : "silver";
+}
 
 type SilverField = {
   interior: Point[];
@@ -404,7 +419,7 @@ export function tickVillageMapSilver(
   }
   const spawned: VillageSilverCoin[] = [
     ...settled.coins,
-    { id: villageSilverCoinId(playTime, random), ...spot },
+    { id: villageSilverCoinId(playTime, random), metal: villageMapCoinMetal(random), ...spot },
   ];
   return {
     villageSilverCoins: spawned,
@@ -425,19 +440,21 @@ export function resettleVillageSilverCoins(
   return { villageSilverCoins: settled.coins };
 }
 
-/** Remove the coin and add the silver it pays. Null when that coin is already gone. */
+/** Remove the coin and add the silver or gold it pays. Null when that coin is already gone. */
 export function collectVillageSilverPatch(
   state: GameState,
   id: string,
 ): Partial<GameState> | null {
   const coins = state.villageSilverCoins ?? [];
-  if (!coins.some((coin) => coin.id === id)) return null;
+  const coin = coins.find((entry) => entry.id === id);
+  if (!coin) return null;
   const reward = villageSilverCoinReward(
     state.buildings.woodenHut ?? 0,
     state.buildings.stoneHut ?? 0,
   );
+  const metal = coin.metal === "gold" ? "gold" : "silver";
   return {
-    ...applyResourceDeltas(state, { silver: reward }),
-    villageSilverCoins: coins.filter((coin) => coin.id !== id),
+    ...applyResourceDeltas(state, { [metal]: reward }),
+    villageSilverCoins: coins.filter((entry) => entry.id !== id),
   };
 }

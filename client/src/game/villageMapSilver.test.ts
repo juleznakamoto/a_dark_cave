@@ -11,6 +11,7 @@ import {
   VILLAGE_SILVER_MIN_MS,
   isVillageSilverSpotOpen,
   tickVillageMapSilver,
+  villageMapCoinMetal,
   villageSilverCoinReward,
   villageSilverDelayMs,
   type VillageSilverCoin,
@@ -46,6 +47,13 @@ describe("village silver coin reward", () => {
     expect(late).toBeGreaterThan(VILLAGE_SILVER_MAX_MS - 5);
     expect(late).toBeLessThanOrEqual(VILLAGE_SILVER_MAX_MS);
   });
+
+  it("makes one spawn in ten a gold coin", () => {
+    expect(villageMapCoinMetal(() => 0)).toBe("gold");
+    expect(villageMapCoinMetal(() => 0.099)).toBe("gold");
+    expect(villageMapCoinMetal(() => 0.1)).toBe("silver");
+    expect(villageMapCoinMetal(() => 0.99)).toBe("silver");
+  });
 });
 
 describe("village silver coin spawns", () => {
@@ -73,6 +81,7 @@ describe("village silver coin spawns", () => {
       };
       const patch = tickVillageMapSilver(state, () => 0.41 + index * 0.05);
       expect(patch?.villageSilverCoins).toHaveLength(index + 1);
+      expect(patch?.villageSilverCoins?.[index]?.metal).toBe("silver");
       coins.splice(0, coins.length, ...(patch?.villageSilverCoins ?? []));
       state = { ...state, ...patch, villageSilverCoins: coins };
     }
@@ -100,6 +109,17 @@ describe("village silver coin spawns", () => {
     );
     expect(afterPickup?.villageSilverCoins).toBeUndefined();
     expect(afterPickup?.villageSilverNextAt).toBe(20_000 + VILLAGE_SILVER_MIN_MS);
+  });
+
+  it("spawns a gold coin when the roll is under one in ten", () => {
+    let state = withMap(buildDevSave("bastion"), 1_000);
+    state = { ...state, ...tickVillageMapSilver(state, () => 0.05) };
+    const patch = tickVillageMapSilver(
+      { ...state, playTime: state.villageSilverNextAt },
+      () => 0.05,
+    );
+    expect(patch?.villageSilverCoins).toHaveLength(1);
+    expect(patch?.villageSilverCoins?.[0]?.metal).toBe("gold");
   });
 
   it("does not land on a hut", () => {
@@ -132,6 +152,26 @@ describe("collect village silver coin", () => {
     expect(useGameStore.getState().resources.silver).toBe(35);
     expect(useGameStore.getState().villageSilverCoins).toEqual([]);
     expect(useGameStore.getState().resourceChangeEvents.at(-1)?.resource).toBe("silver");
+    expect(useGameStore.getState().resourceChangeEvents.at(-1)?.amount).toBe(25);
+    expect(play).toHaveBeenCalledWith("purchase", expect.any(Number));
+    play.mockRestore();
+  });
+
+  it("pays a gold coin the same amount in gold", () => {
+    const play = vi.spyOn(audioManager, "playSound").mockImplementation(() => {});
+    const buildings = useGameStore.getState().buildings;
+    const resources = useGameStore.getState().resources;
+    useGameStore.setState({
+      buildings: { ...buildings, woodenHut: 8, stoneHut: 4 },
+      resources: { ...resources, silver: 10, gold: 3 },
+      villageSilverCoins: [{ id: "coin-gold", x: 10, y: 20, metal: "gold" }],
+    });
+
+    useGameStore.getState().collectVillageSilverCoin("coin-gold");
+    expect(useGameStore.getState().resources.silver).toBe(10);
+    expect(useGameStore.getState().resources.gold).toBe(28);
+    expect(useGameStore.getState().villageSilverCoins).toEqual([]);
+    expect(useGameStore.getState().resourceChangeEvents.at(-1)?.resource).toBe("gold");
     expect(useGameStore.getState().resourceChangeEvents.at(-1)?.amount).toBe(25);
     expect(play).toHaveBeenCalledWith("purchase", expect.any(Number));
     play.mockRestore();

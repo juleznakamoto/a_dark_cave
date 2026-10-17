@@ -271,7 +271,7 @@ function ColorField({
 /** Same coin mark as the game, sitting on open ground in this preview. */
 const DEMO_SILVER_COINS: VillageSilverCoin[] = [
   { id: "demo-silver-a", x: 500, y: 760 },
-  { id: "demo-silver-b", x: 760, y: 700 },
+  { id: "demo-silver-b", x: 760, y: 700, metal: "gold" },
   { id: "demo-silver-c", x: 640, y: 760 },
 ];
 
@@ -614,6 +614,7 @@ export default function VillageMapDemo() {
                 onActiveLabel={onActiveLabel}
                 silverCoins={DEMO_SILVER_COINS}
                 silverCoinLabel="Silver"
+                goldCoinLabel="Gold"
               />
             </div>
             <div className="pointer-events-none absolute bottom-3 left-3 text-xs text-stone-400">

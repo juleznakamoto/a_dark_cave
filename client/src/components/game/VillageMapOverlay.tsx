@@ -203,6 +203,7 @@ export default function VillageMapOverlay() {
           silverCoins={silverCoins ?? []}
           onSilverCoin={collectSilverCoin}
           silverCoinLabel={t("resources.silver", { defaultValue: "Silver" })}
+          goldCoinLabel={t("resources.gold", { defaultValue: "Gold" })}
         />
       </div>
     </div>

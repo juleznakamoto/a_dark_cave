@@ -1,5 +1,5 @@
-import { useId, useLayoutEffect, useRef, useState, type PointerEvent } from "react";
-import { VILLAGE_SILVER_COIN_RADIUS } from "@/game/villageMapSilver";
+import { useLayoutEffect, useRef, useState, type PointerEvent } from "react";
+import { VILLAGE_SILVER_COIN_RADIUS, type VillageMapCoinMetal } from "@/game/villageMapSilver";
 
 /** On the short stacked map a map-unit coin shrinks to a speck. Keep a small disc. */
 const MIN_RADIUS_PX = 9.6;
@@ -16,24 +16,25 @@ const RING_R = OUTER_R - RING_STROKE / 2;
 const INNER_R = GLYPH_EM * (111.5 / 400);
 
 /**
- * A silver coin on open village ground. The wide transparent circle is the tap target.
+ * A silver or gold coin on open village ground. The wide transparent circle is the tap target.
+ * Gold uses the same yellow as the sidebar gold row.
  */
 export function SilverCoinMark({
   id,
   x,
   y,
   label,
+  metal = "silver",
   onCollect,
 }: {
   id: string;
   x: number;
   y: number;
   label: string;
+  metal?: VillageMapCoinMetal;
   onCollect?: (id: string) => void;
 }) {
   const radius = VILLAGE_SILVER_COIN_RADIUS;
-  const markId = useId().replace(/:/g, "");
-  const shadowId = `silver-coin-shadow-${markId}`;
   const groupRef = useRef<SVGGElement>(null);
   const [boost, setBoost] = useState(1);
   useLayoutEffect(() => {
@@ -63,35 +64,14 @@ export function SilverCoinMark({
       className="village-silver-coin"
       data-testid="village-silver-coin"
       data-coin-id={id}
+      data-coin-metal={metal}
       transform={`translate(${x} ${y}) scale(${boost})`}
       role="button"
       aria-label={label}
       onPointerDown={onPointerDown}
     >
-      <defs>
-        <filter
-          id={shadowId}
-          x="-80%"
-          y="-80%"
-          width="260%"
-          height="260%"
-          colorInterpolationFilters="sRGB"
-        >
-          <feGaussianBlur in="SourceAlpha" stdDeviation="2.8" result="blur" />
-          <feComposite in="blur" in2="SourceAlpha" operator="out" result="outside" />
-          <feFlood floodColor="#000" floodOpacity="0.85" result="ink" />
-          <feComposite in="ink" in2="outside" operator="in" />
-        </filter>
-      </defs>
       <circle r={radius + 4} fill="#000" fillOpacity={0} />
-      <circle
-        className="village-silver-coin-shadow"
-        r={OUTER_R}
-        fill="#000"
-        filter={`url(#${shadowId})`}
-        pointerEvents="none"
-      />
-      <g className="text-gray-400" pointerEvents="none">
+      <g className={metal === "gold" ? "text-yellow-600" : "text-gray-400"} pointerEvents="none">
         <circle r={RING_R} fill="none" stroke="currentColor" strokeWidth={RING_STROKE} />
         <circle r={INNER_R} fill="currentColor" />
       </g>
