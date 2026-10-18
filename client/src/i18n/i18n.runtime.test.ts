@@ -222,20 +222,20 @@ describe("i18n runtime", () => {
 
   it("uses Russian one/few/many forms for villager counts", async () => {
     await i18n.changeLanguage("ru");
-    expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 1 })).toBe(
-      "-1 житель",
+    expect(getUiTooltip("villagerCost", "{{available}} / {{count}} Villager", { count: 1, available: 8 })).toBe(
+      "8 / 1 житель",
     );
-    expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 2 })).toBe(
-      "-2 жителя",
+    expect(getUiTooltip("villagerCost", "{{available}} / {{count}} Villager", { count: 2, available: 8 })).toBe(
+      "8 / 2 жителя",
     );
-    expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 5 })).toBe(
-      "-5 жителей",
+    expect(getUiTooltip("villagerCost", "{{available}} / {{count}} Villager", { count: 5, available: 8 })).toBe(
+      "8 / 5 жителей",
     );
-    expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 21 })).toBe(
-      "-21 житель",
+    expect(getUiTooltip("villagerCost", "{{available}} / {{count}} Villager", { count: 21, available: 8 })).toBe(
+      "8 / 21 житель",
     );
-    expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 22 })).toBe(
-      "-22 жителя",
+    expect(getUiTooltip("villagerCost", "{{available}} / {{count}} Villager", { count: 22, available: 8 })).toBe(
+      "8 / 22 жителя",
     );
 
     expect(
@@ -270,15 +270,15 @@ describe("i18n runtime", () => {
   });
 
   it("resolves villagerCost plural tooltip in English and German", async () => {
-    expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 1 })).toBe(
-      "-1 Villager",
+    expect(getUiTooltip("villagerCost", "{{available}} / {{count}} Villager", { count: 1, available: 4 })).toBe(
+      "4 / 1 Villager",
     );
-    expect(getUiTooltip("villagerCost", "-{{count}} Villagers", { count: 3 })).toBe(
-      "-3 Villagers",
+    expect(getUiTooltip("villagerCost", "{{available}} / {{count}} Villagers", { count: 3, available: 4 })).toBe(
+      "4 / 3 Villagers",
     );
     await i18n.changeLanguage("de");
-    expect(getUiTooltip("villagerCost", "-{{count}} Villager", { count: 1 })).toBe(
-      "-1 Dorfbewohner",
+    expect(getUiTooltip("villagerCost", "{{available}} / {{count}} Villager", { count: 1, available: 4 })).toBe(
+      "4 / 1 Dorfbewohner",
     );
   });
 
@@ -320,7 +320,7 @@ describe("i18n runtime", () => {
     });
     const breakdown = getActionCostBreakdown("humans", state);
     expect(breakdown).toHaveLength(1);
-    expect(breakdown[0].text).toBe("-1 Villager");
+    expect(breakdown[0].text).toBe("10 / 1 Villager");
     expect(breakdown[0].text).not.toContain("tooltips.");
   });
 

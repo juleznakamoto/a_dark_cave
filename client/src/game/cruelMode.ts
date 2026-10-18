@@ -199,7 +199,7 @@ export const CRUEL_MODE = {
     hillGrave: { base: 12, whenCruel: 4 },
     sunkenTemple: { base: 16, whenCruel: 4 },
     collapsedTower: { base: 10, whenCruel: 4 },
-    forestCave: { base: 10, whenCruel: 4 },
+    forestCave: { base: 8, whenCruel: 4 },
     risingSmoke: { base: 16, whenCruel: 4 },
     swampSanctuary: { base: 20, whenCruel: 4 },
   },

@@ -49,16 +49,18 @@ describe("tWithFallback", () => {
   it("resolves plural catalog keys when exists() is false", async () => {
     expect(i18n.exists("ui:tooltips.villagerCost")).toBe(false);
     expect(
-      tWithFallback("ui", "tooltips.villagerCost", "-{{count}} Villager", {
+      tWithFallback("ui", "tooltips.villagerCost", "{{available}} / {{count}} Villager", {
         count: 1,
+        available: 4,
       }),
-    ).toBe("-1 Villager");
+    ).toBe("4 / 1 Villager");
     await i18n.changeLanguage("de");
     expect(
-      tWithFallback("ui", "tooltips.villagerCost", "-{{count}} Villager", {
+      tWithFallback("ui", "tooltips.villagerCost", "{{available}} / {{count}} Villager", {
         count: 1,
+        available: 4,
       }),
-    ).toBe("-1 Dorfbewohner");
+    ).toBe("4 / 1 Dorfbewohner");
   });
 
   it("returns fallback when t() resolves to the raw key path", () => {

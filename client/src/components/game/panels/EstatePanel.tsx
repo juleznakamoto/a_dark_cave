@@ -42,11 +42,12 @@ import {
   GAME_TAB_SECTION_STACK,
 } from "@/components/game/gameChrome";
 import { headerIndicatorIcon } from "@/game/headerIndicatorIcons";
-import { formatNumber, formatSignedNumber } from "@/lib/utils";
+import { formatSignedNumber } from "@/lib/utils";
 import cn from "clsx";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { formatTooltipCostLine } from "@/i18n/tooltipLabels";
+import { TooltipCostLines } from "@/game/rules/tooltips";
 import { getResourceName } from "@/i18n/resolveGameText";
 import { useDemoEndCatalogActive, useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { isDemoPlayFrozen } from "@/game/demoLimit";
@@ -124,9 +125,12 @@ function SkillUpgradeRow({
   description,
 }: SkillUpgradeRowProps) {
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
+  const gold = useGameStore((s) => s.resources.gold ?? 0);
   const canUpgrade = canAfford;
   const openShop = useEstateGoldShopClick(canUpgrade);
-  const costLine = formatTooltipCostLine(upgradeCost, "gold");
+  const costLine = formatTooltipCostLine(upgradeCost, "gold", {
+    available: gold,
+  });
   return (
     <div className="w-full space-y-1 pt-2">
       <EstateUpgradeRowHeader
@@ -138,9 +142,9 @@ function SkillUpgradeRow({
                 <div className="text-xs whitespace-nowrap">
                   {tooltipContent}
                   <div className="border-t border-border my-1" />
-                  <div className={canAfford ? "" : "text-muted-foreground"}>
-                    {costLine}
-                  </div>
+                  <TooltipCostLines
+                    costs={[{ text: costLine, satisfied: canAfford }]}
+                  />
                 </div>
               }
               tooltipId={tooltipId}
@@ -829,15 +833,19 @@ export default function EstatePanel({
                               h
                             </div>
                             <div className="border-t border-border my-1" />
-                            <div
-                              className={
-                                resources.gold >= nextLengthUpgrade.cost
-                                  ? ""
-                                  : "text-muted-foreground"
-                              }
-                            >
-                              -{formatNumber(nextLengthUpgrade.cost)} Gold
-                            </div>
+                            <TooltipCostLines
+                              costs={[
+                                {
+                                  text: formatTooltipCostLine(
+                                    nextLengthUpgrade.cost,
+                                    "gold",
+                                    { available: resources.gold },
+                                  ),
+                                  satisfied:
+                                    resources.gold >= nextLengthUpgrade.cost,
+                                },
+                              ]}
+                            />
                           </div>
                         }
                         tooltipId="upgrade-length-button"
@@ -889,15 +897,19 @@ export default function EstatePanel({
                               %
                             </div>
                             <div className="border-t border-border my-1" />
-                            <div
-                              className={
-                                resources.gold >= nextIntensityUpgrade.cost
-                                  ? ""
-                                  : "text-muted-foreground"
-                              }
-                            >
-                              {formatTooltipCostLine(nextIntensityUpgrade.cost, "gold")}
-                            </div>
+                            <TooltipCostLines
+                              costs={[
+                                {
+                                  text: formatTooltipCostLine(
+                                    nextIntensityUpgrade.cost,
+                                    "gold",
+                                    { available: resources.gold },
+                                  ),
+                                  satisfied:
+                                    resources.gold >= nextIntensityUpgrade.cost,
+                                },
+                              ]}
+                            />
                           </div>
                         }
                         tooltipId="upgrade-intensity-button"

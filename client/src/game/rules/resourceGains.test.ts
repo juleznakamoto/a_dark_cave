@@ -7,6 +7,11 @@ import { gameActions, getActionCostBreakdown } from './index';
 import { applyActionEffects } from './actionEffects';
 import { getResourceGainTooltip, calculateResourceGains } from './tooltips';
 
+function costAmountFromTooltip(text: string): number {
+  const raw = text.split(" / ")[1]?.split(" ")[0] ?? text.split(" ")[0];
+  return parseInt(raw.replace(/[-']/g, ""), 10);
+}
+
 // Mock executeAction if it's not imported or available in this scope
 // If executeAction is defined elsewhere and imported, this mock can be removed.
 const executeAction = (actionId: string, state: GameState) => {
@@ -603,8 +608,8 @@ describe('Resource Gain Tests', () => {
 
       expect(woodCostWithout).toBeDefined();
       expect(woodCostWith).toBeDefined();
-      const amountWithout = parseInt(woodCostWithout!.text.split(' ')[0].replace('-', ''));
-      const amountWith = parseInt(woodCostWith!.text.split(' ')[0].replace('-', ''));
+      const amountWithout = costAmountFromTooltip(woodCostWithout!.text);
+      const amountWith = costAmountFromTooltip(woodCostWith!.text);
 
       // Get the base cost from game actions
       const baseCost = (gameActions.buildCabin.cost as any)[1]["resources.wood"];
@@ -631,10 +636,10 @@ describe('Resource Gain Tests', () => {
       const woodCostWithFortifiedStorehouse = costWithFortifiedStorehouse.find(c => c.text.includes('Wood'));
 
       expect(woodCostWithout).toBeDefined();
-      const amountWithout = parseInt(woodCostWithout!.text.split(' ')[0].replace('-', ''));
+      const amountWithout = costAmountFromTooltip(woodCostWithout!.text);
 
       // Fortified Storehouse: check for building cost reduction
-      const amountWithFortifiedStorehouse = parseInt(woodCostWithFortifiedStorehouse!.text.split(' ')[0].replace('-', ''));
+      const amountWithFortifiedStorehouse = costAmountFromTooltip(woodCostWithFortifiedStorehouse!.text);
       const fortifiedStorehouseAction = gameActions.buildFortifiedStorehouse;
       const discountPercent = fortifiedStorehouseAction.effect?.buildingCostReduction || 0;
 
@@ -669,8 +674,8 @@ describe('Resource Gain Tests', () => {
       expect(ironCostWith).toBeDefined();
 
       // Parse the numbers from the cost strings
-      const amountWithout = parseInt(ironCostWithout!.text.split(' ')[0].replace('-', ''));
-      const amountWith = parseInt(ironCostWith!.text.split(' ')[0].replace('-', ''));
+      const amountWithout = costAmountFromTooltip(ironCostWithout!.text);
+      const amountWith = costAmountFromTooltip(ironCostWith!.text);
 
       // With hammer should cost 15% less (50 * 0.85 = 42.5, floor = 42)
       // However, the actual implementation shows 45, so verify the reduction is applied

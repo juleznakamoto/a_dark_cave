@@ -29,6 +29,7 @@ import {
   staringDeerTooltip,
   forestFearTooltip,
   ActionTooltipResourceRows,
+  TooltipCostLines,
 } from "@/game/rules/tooltips";
 import { getBuildingDisplayName } from "@/game/rules/buildingTooltipSections";
 import {
@@ -535,9 +536,16 @@ function VillageCallMerchantButton({ label }: { label: string }) {
     </div>
   ) : (
     <div className="text-xs whitespace-nowrap">
-      <div className={canAfford ? "text-foreground" : "text-muted-foreground"}>
-        {formatTooltipCostLine(price, "gold")}
-      </div>
+      <TooltipCostLines
+        costs={[
+          {
+            text: formatTooltipCostLine(price, "gold", {
+              available: resources?.gold ?? 0,
+            }),
+            satisfied: canAfford,
+          },
+        ]}
+      />
     </div>
   );
 
@@ -918,15 +926,16 @@ export default function VillagePanel() {
       const tooltipContent =
         currentLevel < 5 ? (
           <div className="text-xs whitespace-nowrap">
-            <div
-              className={
-                state.resources.wood >= woodCost
-                  ? "text-foreground"
-                  : "text-muted-foreground"
-              }
-            >
-              {formatTooltipCostLine(woodCost, "wood")}
-            </div>
+            <TooltipCostLines
+              costs={[
+                {
+                  text: formatTooltipCostLine(woodCost, "wood", {
+                    available: state.resources.wood ?? 0,
+                  }),
+                  satisfied: state.resources.wood >= woodCost,
+                },
+              ]}
+            />
           </div>
         ) : undefined;
 

@@ -4,7 +4,7 @@ import type { EventChoice } from "@/game/rules/eventTypes";
 import { getVillagersInVillage } from "@/game/population";
 import { getResourceName } from "@/i18n/resolveGameText";
 import { resolveEventChoiceCost } from "@/i18n/eventText";
-import { getUiTooltip } from "@/i18n/tooltipLabels";
+import { formatTooltipVillagerCostLine } from "@/i18n/tooltipLabels";
 
 type TranslateOptions = Record<string, string | number | boolean | undefined>;
 
@@ -247,23 +247,21 @@ export function getEventVillagerCostTooltipRows(
   costAmount: number,
   state: GameState,
   options?: { useTotalInVillage?: boolean },
-): Array<{ text: string; satisfied: boolean }> {
+): Array<{ text: string; satisfied: boolean; villager: true }> {
   const useTotalInVillage = options?.useTotalInVillage ?? false;
   const available = useTotalInVillage
     ? getVillagersInVillage(state)
     : getFreeVillagerCount(state);
   const canAfford = available >= costAmount;
-  const tooltipKey = useTotalInVillage ? "villagerCost" : "freeVillagerCost";
   return [
     {
-      text: getUiTooltip(
-        tooltipKey,
-        costAmount === 1
-          ? "-{{count}} Villager"
-          : "-{{count}} Villagers",
-        { count: costAmount },
+      text: formatTooltipVillagerCostLine(
+        costAmount,
+        available,
+        useTotalInVillage ? "villager" : "freeVillager",
       ),
       satisfied: canAfford,
+      villager: true,
     },
   ];
 }

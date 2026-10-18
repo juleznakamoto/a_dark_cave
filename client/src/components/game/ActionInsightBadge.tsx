@@ -19,6 +19,7 @@ import {
   useGameStore,
 } from "@/game/state";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
+import { formatNumber } from "@/lib/utils";
 import { useUntilTimestamp } from "@/lib/uiClock";
 
 const PROLONG_MINUTES = TIMED_EVENT_TAB_PROLONG_MS / 60_000;
@@ -80,10 +81,10 @@ export function ActionInsightBadge({ timeRemainingMs }: ActionInsightBadgeProps)
         defaultValue:
           "Extend time by {{minutes}} min for {{cost}} {{resource}}",
         minutes: PROLONG_MINUTES,
-        cost: TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
+        cost: `${formatNumber(insight)} / ${formatNumber(TIMED_EVENT_TAB_PROLONG_INSIGHT_COST)}`,
         resource: insightResource,
       }),
-    [t, i18n.language, insightResource],
+    [t, i18n.language, insight, insightResource],
   );
 
   if (!canShow) return null;

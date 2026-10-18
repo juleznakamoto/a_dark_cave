@@ -17,7 +17,7 @@ import {
 import { useGameStore } from "@/game/state";
 import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
-import { cn, formatCompactDuration } from "@/lib/utils";
+import { cn, formatCompactDuration, formatNumber } from "@/lib/utils";
 import { useUntilTimestamp } from "@/lib/uiClock";
 
 /** Noto text double-triangle (U+23E9 + text VS). Do not use the ⏩ emoji form. */
@@ -71,8 +71,10 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
   const beforeFinishTooltip = useUntilTimestamp(finishTooltipAt);
   const finishesBuild = isExecuting && !beforeFinishTooltip;
 
+  const insight = useGameStore((s) => s.resources.insight ?? 0);
   const savedTime = formatCompactDuration(reductionSeconds, "round");
   const insightResource = formatTooltipResourceName("insight");
+  const costLabel = `${formatNumber(insight)} / ${formatNumber(cost)}`;
 
   const isCraftAction = actionId.startsWith("craft");
   const costTooltip = useMemo(
@@ -82,7 +84,7 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
           defaultValue: isCraftAction
             ? "Finish crafting for {{cost}} {{resource}}"
             : "Finish construction for {{cost}} {{resource}}",
-          cost,
+          cost: costLabel,
           resource: insightResource,
         })
         : t(isCraftAction ? "cave.craftingBoost" : "village.constructionBoost", {
@@ -90,10 +92,10 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
             ? "Speed up crafting by {{time}} for {{cost}} {{resource}}"
             : "Speed up construction by {{time}} for {{cost}} {{resource}}",
           time: savedTime,
-          cost,
+          cost: costLabel,
           resource: insightResource,
         }),
-    [t, isCraftAction, finishesBuild, savedTime, cost, insightResource],
+    [t, isCraftAction, finishesBuild, savedTime, costLabel, insightResource],
   );
 
   if (!canShow) return null;

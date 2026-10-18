@@ -51,17 +51,44 @@ export function resolveActionTooltipEffects(
   return list.map((effect) => resolveBuildingTooltipEffect(effect));
 }
 
-/** Player-facing cost line for tooltips (e.g. "-50 Gold"). */
+/** Player-facing cost line for tooltips (e.g. "120 / 50 Gold"). */
 export function formatTooltipCostLine(
   amount: number,
   resourceKey: string,
-  options?: { displayName?: string },
+  options: { displayName?: string; available: number },
 ): string {
   const resource =
-    options?.displayName ?? formatTooltipResourceName(resourceKey);
-  return getUiTooltip("costLine", "-{{amount}} {{resource}}", {
+    options.displayName ?? formatTooltipResourceName(resourceKey);
+  return getUiTooltip("costLine", "{{available}} / {{amount}} {{resource}}", {
+    available: formatNumber(options.available),
     amount: formatNumber(amount),
     resource,
+  });
+}
+
+/** How many of a resource or relic the player currently holds. */
+export function tooltipHeldAmount(state: GameState, resourceKey: string): number {
+  const held = state.resources[resourceKey as keyof typeof state.resources];
+  if (typeof held === "number") return held;
+  const relic = state.relics?.[resourceKey as keyof typeof state.relics];
+  if (typeof relic === "boolean") return relic ? 1 : 0;
+  return 0;
+}
+
+/** Villager spend line (e.g. "4 / 2 Free Villagers"). */
+export function formatTooltipVillagerCostLine(
+  count: number,
+  available: number,
+  kind: "villager" | "freeVillager",
+): string {
+  const key = kind === "freeVillager" ? "freeVillagerCost" : "villagerCost";
+  const noun =
+    kind === "freeVillager"
+      ? englishCountFallback(count, "Free Villager", "Free Villagers")
+      : englishCountFallback(count, "Villager", "Villagers");
+  return getUiTooltip(key, `{{available}} / {{count}} ${noun}`, {
+    count,
+    available: formatNumber(available),
   });
 }
 

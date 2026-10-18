@@ -236,7 +236,7 @@ describe("eventAffordance", () => {
     });
 
     expect(rows).toHaveLength(1);
-    expect(rows[0].text).toBe("-10 Villagers");
+    expect(rows[0].text).toBe("12 / 10 Villagers");
     expect(rows[0].satisfied).toBe(true);
   });
 });

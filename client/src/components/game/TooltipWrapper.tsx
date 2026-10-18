@@ -46,8 +46,8 @@ export interface TooltipWrapperProps {
 
 /**
  * Wrapper component that adds consistent tooltip behavior to any element
- * - Desktop: tooltips shown on hover AND long press (300ms)
- * - Enabled buttons: native click (standard touch → click); long-press still opens tooltip
+ * - Desktop: tooltip on hover. A mouse press is a normal click.
+ * - Touch: long-press opens the tooltip and does not run the action. A short tap clicks.
  * - Long-press tooltips stay open until user clicks/taps elsewhere
  * - Only one tooltip open at a time globally
  */

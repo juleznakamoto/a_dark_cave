@@ -317,7 +317,7 @@ export const forestScoutActions: Record<string, Action> = {
     },
     effects: {},
     ...defineSuccessChance({
-      base: 0.2,
+      base: 0.25,
       stats: [
         { type: "strength", multiplier: 0.005 },
         { type: "knowledge", multiplier: 0.005 },

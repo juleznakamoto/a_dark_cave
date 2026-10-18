@@ -273,7 +273,7 @@ describe("useGlobalTooltip - mouse press while hover tooltip is open", () => {
     root?.appendChild(described);
   }
 
-  it("still cancels a mouse hold when the hover tooltip is not open", async () => {
+  it("runs a slow mouse press as a normal click", async () => {
     const onAction = vi.fn();
     render(
       <TestTooltipButton id="mouse-hold" disabled={false} onAction={onAction} />,
@@ -285,15 +285,52 @@ describe("useGlobalTooltip - mouse press while hover tooltip is open", () => {
       fireEvent.mouseDown(trigger);
     });
     await act(async () => {
-      vi.advanceTimersByTime(300);
+      vi.advanceTimersByTime(450);
     });
     await act(async () => {
       fireEvent.mouseUp(trigger);
       fireEvent.click(trigger);
     });
 
-    expect(onAction).not.toHaveBeenCalled();
-    expect(screen.getByTestId("open-mouse-hold").textContent).toBe("open");
+    expect(onAction).toHaveBeenCalledTimes(1);
+    expect(screen.getByTestId("open-mouse-hold").textContent).toBe("closed");
+
+    await act(async () => {
+      fireEvent.pointerDown(trigger, { pointerType: "mouse" });
+      fireEvent.mouseDown(trigger);
+      fireEvent.mouseUp(trigger);
+      fireEvent.click(trigger);
+    });
+
+    expect(onAction).toHaveBeenCalledTimes(2);
+  });
+
+  it("does not leave a tooltip stuck when the mouse is released outside", async () => {
+    const onAction = vi.fn();
+    render(
+      <TestTooltipButton id="mouse-outside" disabled={false} onAction={onAction} />,
+    );
+    const trigger = screen.getByTestId("trigger-mouse-outside");
+
+    await act(async () => {
+      fireEvent.pointerDown(trigger, { pointerType: "mouse" });
+      fireEvent.mouseDown(trigger);
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(450);
+    });
+
+    expect(screen.getByTestId("open-mouse-outside").textContent).toBe("closed");
+
+    await act(async () => {
+      fireEvent.pointerDown(trigger, { pointerType: "mouse" });
+      fireEvent.mouseDown(trigger);
+      fireEvent.mouseUp(trigger);
+      fireEvent.click(trigger);
+    });
+
+    expect(onAction).toHaveBeenCalledTimes(1);
+    expect(screen.getByTestId("open-mouse-outside").textContent).toBe("closed");
   });
 
   it("runs the action on a slow press when the hover tooltip is already open", async () => {

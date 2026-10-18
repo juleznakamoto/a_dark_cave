@@ -45,8 +45,11 @@ export { formatExecutionDuration };
 import type { TooltipConfig } from "@/game/types";
 import {
   englishCountFallback,
+  formatTooltipCostLine,
   formatTooltipResourceName,
+  formatTooltipVillagerCostLine,
   getUiTooltip,
+  tooltipHeldAmount,
 } from "@/i18n/tooltipLabels";
 import { wrapTooltipHeaderWithTrailing } from "./actionTooltipLayout";
 import {
@@ -153,18 +156,14 @@ export const getActionVillagerCostLine = (
   const satisfied = (state.villagers?.free ?? 0) >= required;
   return (
     <IconCostLine
-      className={satisfied ? undefined : "text-muted-foreground"}
+      className={satisfied ? "text-muted-foreground" : undefined}
       icon={<VillagerCostGlyph />}
     >
       {costLabelWithoutSign(
-        getUiTooltip(
-          "freeVillagerCost",
-          englishCountFallback(
-            required,
-            "-{{count}} Free Villager",
-            "-{{count}} Free Villagers",
-          ),
-          { count: required },
+        formatTooltipVillagerCostLine(
+          required,
+          state.villagers?.free ?? 0,
+          "freeVillager",
         ),
       )}
     </IconCostLine>
@@ -183,7 +182,7 @@ export function actionTooltipHasResourceSection(
 }
 
 function ActionTooltipCostLine({ cost }: { cost: ActionTooltipCostRow }) {
-  const muted = cost.satisfied ? undefined : "text-muted-foreground";
+  const muted = cost.satisfied ? "text-muted-foreground" : undefined;
   if (cost.villager) {
     return (
       <IconCostLine className={muted} icon={<VillagerCostGlyph />}>
@@ -208,6 +207,29 @@ function ActionTooltipCostLine({ cost }: { cost: ActionTooltipCostRow }) {
 }
 
 /**
+ * Standard cost rows: check or cross for resources, villager glyph for villager spends.
+ * Resource rows come first.
+ */
+export function TooltipCostLines({
+  costs,
+}: {
+  costs: ActionTooltipCostRow[];
+}): React.ReactNode {
+  const resourceCosts = costs.filter((cost) => !cost.villager);
+  const villagerCosts = costs.filter((cost) => cost.villager);
+  return (
+    <>
+      {resourceCosts.map((cost, index) => (
+        <ActionTooltipCostLine key={`cost-${index}`} cost={cost} />
+      ))}
+      {villagerCosts.map((cost, index) => (
+        <ActionTooltipCostLine key={`villager-cost-${index}`} cost={cost} />
+      ))}
+    </>
+  );
+}
+
+/**
  * Resource section rows: resource costs, then time, then villager cost.
  * Villager cost is always the last row.
  */
@@ -224,13 +246,9 @@ export function ActionTooltipResourceRows({
   const villagerCosts = costs.filter((cost) => cost.villager);
   return (
     <>
-      {resourceCosts.map((cost, index) => (
-        <ActionTooltipCostLine key={`cost-${index}`} cost={cost} />
-      ))}
+      <TooltipCostLines costs={resourceCosts} />
       {getActionDurationLine(actionId, state)}
-      {villagerCosts.map((cost, index) => (
-        <ActionTooltipCostLine key={`villager-cost-${index}`} cost={cost} />
-      ))}
+      <TooltipCostLines costs={villagerCosts} />
       {getActionVillagerCostLine(actionId, state)}
     </>
   );
@@ -591,9 +609,8 @@ export const getResourceGainTooltip = (
     isBombAtMax || isVeinfireElixirAtMax || gains.length > 0;
 
   const costRows = costs.map((cost) => ({
-    text: getUiTooltip("costLine", "-{{amount}} {{resource}}", {
-      amount: formatNumber(cost.amount),
-      resource: formatResourceName(cost.resource),
+    text: formatTooltipCostLine(cost.amount, cost.resource, {
+      available: tooltipHeldAmount(state, cost.resource),
     }),
     satisfied: cost.hasEnough,
   }));
@@ -1220,57 +1237,25 @@ export const eventChoiceCostTooltip = {
       });
     }
 
-    const currentAmounts: React.ReactNode[] = [];
     const costLines: React.ReactNode[] = [];
-
-    // Add current amounts if gameState is provided
-    if (gameState && resources.length > 0) {
-      resources.forEach(({ resource }, index) => {
-        const currentAmount =
-          gameState.resources[resource as keyof typeof gameState.resources] ||
-          0;
-        currentAmounts.push(
-          <div key={`current-${index}`} className="flex justify-between gap-2">
-            <span>{formatTooltipResourceName(resource)}:</span>
-            <span>{formatNumber(currentAmount)}</span>
-          </div>,
-        );
-      });
-    }
 
     // Add cost information with individual satisfaction checks
     resources.forEach(({ resource, amount }, index) => {
-      // Check if player has enough of this specific resource
-      let hasEnough = true;
-      if (gameState) {
-        const resourceValue =
-          gameState.resources[resource as keyof typeof gameState.resources] ||
-          0;
-        hasEnough = resourceValue >= amount;
-      }
+      const held = gameState ? tooltipHeldAmount(gameState, resource) : 0;
+      const hasEnough = !gameState || held >= amount;
 
       costLines.push(
-        <div
+        <ActionTooltipCostLine
           key={`cost-${index}`}
-          className={hasEnough ? "!text-foreground" : "!text-muted-foreground"}
-        >
-          {getUiTooltip("costLine", "-{{amount}} {{resource}}", {
-            amount: formatNumber(amount),
-            resource: formatTooltipResourceName(resource),
-          })}
-        </div>,
+          cost={{
+            text: formatTooltipCostLine(amount, resource, { available: held }),
+            satisfied: hasEnough,
+          }}
+        />,
       );
     });
 
-    return (
-      <>
-        {currentAmounts}
-        {currentAmounts.length > 0 && costLines.length > 0 && (
-          <div className="border-t border-border my-1" />
-        )}
-        {costLines}
-      </>
-    );
+    return <>{costLines}</>;
   },
 };
 
@@ -1307,9 +1292,12 @@ export const getCurrentResourceAmount = {
   },
 };
 
-// Merchant-specific tooltip that only shows cost (no current amounts)
+// Merchant-specific tooltip that only shows cost, with held amount in front.
 export const merchantTooltip = {
-  getContent: (costText: string | undefined): React.ReactNode => {
+  getContent: (
+    costText: string | undefined,
+    gameState?: GameState,
+  ): React.ReactNode => {
     if (!costText) return null;
 
     const resources: Array<{ resource: string; amount: number }> = [];
@@ -1329,12 +1317,17 @@ export const merchantTooltip = {
     // Add cost lines only (no current amounts)
     resources.forEach(({ resource, amount }, index) => {
       costLines.push(
-        <div key={`cost-${index}`}>
-          {getUiTooltip("costLine", "-{{amount}} {{resource}}", {
-            amount: formatNumber(amount),
-            resource: formatTooltipResourceName(resource),
-          })}
-        </div>,
+        <ActionTooltipCostLine
+          key={`cost-${index}`}
+          cost={{
+            text: formatTooltipCostLine(amount, resource, {
+              available: gameState ? tooltipHeldAmount(gameState, resource) : 0,
+            }),
+            satisfied: gameState
+              ? tooltipHeldAmount(gameState, resource) >= amount
+              : true,
+          }}
+        />,
       );
     });
 

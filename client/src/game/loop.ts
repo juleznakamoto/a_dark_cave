@@ -36,6 +36,7 @@ import {
 import { GAME_CONSTANTS } from "./constants";
 import { POST_COMPLETION_ATTACK_WAVE_ID } from "./rules/attackWaveOrder";
 import { logger } from "@/lib/logger";
+import { refreshResultMeansSessionRevoked } from "./sessionRevocation";
 import { isGameTabHidden } from "@/lib/tabVisibility";
 import { formatSaveTimestamp } from "@/lib/utils";
 import { gameActions, canExecuteAction, shouldShowAction } from "./rules";
@@ -478,23 +479,29 @@ export function startGameLoop() {
         error,
       } = await supabase.auth.refreshSession();
 
-      // If there's an error or no session, the token was invalidated server-side
-      if (error || !session) {
-        logger.log("[SESSION] Session invalidated - another login detected");
-        // Delete local save when session is invalidated
-        try {
-          const { deleteSave } = await import("./save");
-          await deleteSave();
-        } catch (deleteError) {
-          logger.error("[SESSION] Failed to delete save:", deleteError);
+      // Network and gateway failures return an error with a null session, and
+      // auth-js keeps the stored login. Only a rejected token is another login.
+      if (!refreshResultMeansSessionRevoked({ session, error })) {
+        if (error) {
+          logger.warn("[SESSION] Session check skipped after a network error:", error);
         }
-
-        stopGameLoop();
-        useGameStore.setState({
-          inactivityDialogOpen: true,
-          inactivityReason: "multitab",
-        });
+        return;
       }
+
+      logger.log("[SESSION] Session invalidated - another login detected");
+      // Delete local save when session is invalidated
+      try {
+        const { deleteSave } = await import("./save");
+        await deleteSave();
+      } catch (deleteError) {
+        logger.error("[SESSION] Failed to delete save:", deleteError);
+      }
+
+      stopGameLoop();
+      useGameStore.setState({
+        inactivityDialogOpen: true,
+        inactivityReason: "multitab",
+      });
     } catch (error) {
       logger.error("[SESSION] Session check failed:", error);
     }

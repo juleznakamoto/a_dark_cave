@@ -61,6 +61,7 @@ import {
   getEventChoiceAffordance,
 } from "@/i18n/eventAffordance";
 import { getEventChoiceCostBreakdown } from "@/game/rules/index";
+import { TooltipCostLines } from "@/game/rules/tooltips";
 import type { MerchantTradeData } from "@/game/types";
 import {
   EventChoiceSuccessTooltipContent,
@@ -589,20 +590,7 @@ export default function TimedEventPanel() {
 
     const costHeader =
       costBreakdown.length > 0 ? (
-        <div>
-          {costBreakdown.map((costItem, index) => (
-            <div
-              key={index}
-              className={
-                costItem.satisfied
-                  ? "text-foreground"
-                  : "text-muted-foreground"
-              }
-            >
-              {costItem.text}
-            </div>
-          ))}
-        </div>
+        <TooltipCostLines costs={costBreakdown} />
       ) : costText ? (
         <div>{costText}</div>
       ) : undefined;

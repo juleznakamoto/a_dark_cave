@@ -19,7 +19,8 @@ import i18n from "i18next";
 import {
   formatTooltipCostLine,
   formatTooltipResourceName,
-  getUiTooltip,
+  formatTooltipVillagerCostLine,
+  tooltipHeldAmount,
 } from "@/i18n/tooltipLabels";
 import {
   getEventChoiceAffordance,
@@ -617,9 +618,9 @@ export function getActionCostBreakdown(
     });
     return [
       {
-        text: getUiTooltip("costLine", "-{{amount}} {{resource}}", {
-          amount: formatNumber(dynamicCost),
-          resource,
+        text: formatTooltipCostLine(dynamicCost, "bone_totem", {
+          displayName: resource,
+          available: state.resources.bone_totem || 0,
         }),
         satisfied: (state.resources.bone_totem || 0) >= dynamicCost,
       },
@@ -635,9 +636,9 @@ export function getActionCostBreakdown(
     });
     return [
       {
-        text: getUiTooltip("costLine", "-{{amount}} {{resource}}", {
-          amount: formatNumber(dynamicCost),
-          resource,
+        text: formatTooltipCostLine(dynamicCost, "leather_totem", {
+          displayName: resource,
+          available: state.resources.leather_totem || 0,
         }),
         satisfied: (state.resources.leather_totem || 0) >= dynamicCost,
       },
@@ -650,12 +651,10 @@ export function getActionCostBreakdown(
     const totalVillagers = getVillagersInVillage(state);
     return [
       {
-        text: getUiTooltip(
-          "villagerCost",
-          dynamicCost === 1
-            ? "-{{count}} Villager"
-            : "-{{count}} Villagers",
-          { count: dynamicCost },
+        text: formatTooltipVillagerCostLine(
+          dynamicCost,
+          totalVillagers,
+          "villager",
         ),
         satisfied: totalVillagers >= dynamicCost,
         villager: true,
@@ -668,7 +667,9 @@ export function getActionCostBreakdown(
     const dynamicCost = getAnimalsCost(state);
     return [
       {
-        text: formatTooltipCostLine(dynamicCost, "food"),
+        text: formatTooltipCostLine(dynamicCost, "food", {
+          available: state.resources.food || 0,
+        }),
         satisfied: (state.resources.food || 0) >= dynamicCost,
       },
     ];
@@ -678,11 +679,15 @@ export function getActionCostBreakdown(
     const tier = getFinanceExpeditionTier(state);
     return [
       {
-        text: formatTooltipCostLine(tier.gold, "gold"),
+        text: formatTooltipCostLine(tier.gold, "gold", {
+          available: state.resources.gold || 0,
+        }),
         satisfied: (state.resources.gold || 0) >= tier.gold,
       },
       {
-        text: formatTooltipCostLine(tier.food, "food"),
+        text: formatTooltipCostLine(tier.food, "food", {
+          available: state.resources.food || 0,
+        }),
         satisfied: (state.resources.food || 0) >= tier.food,
       },
     ];
@@ -789,9 +794,9 @@ export function getActionCostBreakdown(
     }
 
     breakdown.push({
-      text: getUiTooltip("costLine", "-{{amount}} {{resource}}", {
-        amount: formatNumber(displayCost),
-        resource: resourceNameFormatted,
+      text: formatTooltipCostLine(displayCost, resourceName, {
+        displayName: resourceNameFormatted,
+        available: tooltipHeldAmount(state, resourceName),
       }),
       satisfied,
     });
@@ -843,9 +848,8 @@ export function getEventChoiceCostBreakdown(
 
     if (affordance.costs.length > 0) {
       return affordance.costs.map(({ resource, amount }) => ({
-        text: getUiTooltip("costLine", "-{{amount}} {{resource}}", {
-          amount: formatNumber(amount),
-          resource: getResourceName(resource, formatTooltipResourceName(resource)),
+        text: formatTooltipCostLine(amount, resource, {
+          available: tooltipHeldAmount(state, resource),
         }),
         satisfied: affordance.individualAffordance[resource] !== false,
       }));
@@ -890,9 +894,9 @@ export function getEventChoiceCostBreakdown(
         (resources[resourceName as keyof typeof resources] || 0) >= displayCost;
 
       breakdown.push({
-        text: getUiTooltip("costLine", "-{{amount}} {{resource}}", {
-          amount: formatNumber(displayCost),
-          resource: resourceNameFormatted,
+        text: formatTooltipCostLine(displayCost, resourceName, {
+          displayName: resourceNameFormatted,
+          available: tooltipHeldAmount(state, resourceName),
         }),
         satisfied,
       });
@@ -908,9 +912,8 @@ export function getEventChoiceCostBreakdown(
 
     if (affordance.costs.length > 0) {
       return affordance.costs.map(({ resource, amount }) => ({
-        text: getUiTooltip("costLine", "-{{amount}} {{resource}}", {
-          amount: formatNumber(amount),
-          resource: getResourceName(resource, formatTooltipResourceName(resource)),
+        text: formatTooltipCostLine(amount, resource, {
+          available: tooltipHeldAmount(state, resource),
         }),
         satisfied: affordance.individualAffordance[resource] !== false,
       }));

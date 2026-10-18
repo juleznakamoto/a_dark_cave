@@ -6,6 +6,7 @@ import { LogEntry } from "@/game/rules/events";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
 import { calculateKnowledgeTimeBonus, isKnowledgeBonusMaxed } from "@/game/rules/effectsStats";
 import { getEventChoiceCostBreakdown } from "@/game/rules/index";
+import { TooltipCostLines } from "@/game/rules/tooltips";
 import {
   Dialog,
   DialogContent,
@@ -498,20 +499,7 @@ function EventDialogOpen({
 
                 const costHeader =
                   costBreakdown.length > 0 ? (
-                    <>
-                      {costBreakdown.map((costItem, index) => (
-                        <div
-                          key={index}
-                          className={
-                            costItem.satisfied
-                              ? "text-foreground"
-                              : "text-muted-foreground"
-                          }
-                        >
-                          {costItem.text}
-                        </div>
-                      ))}
-                    </>
+                    <TooltipCostLines costs={costBreakdown} />
                   ) : costText ? (
                     <div>{costText}</div>
                   ) : undefined;

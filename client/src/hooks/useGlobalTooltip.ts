@@ -300,10 +300,6 @@ class GlobalTooltipManager {
     else this.hoverTooltipPressIds.delete(id);
   }
 
-  hasHoverTooltipPress(id: string) {
-    return this.hoverTooltipPressIds.has(id);
-  }
-
   consumeHoverTooltipPress(id: string) {
     const had = this.hoverTooltipPressIds.has(id);
     this.hoverTooltipPressIds.delete(id);
@@ -496,21 +492,15 @@ export function useGlobalTooltip() {
   }, []);
 
   const handleMouseDown = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
-    // Clear any existing timer before creating a new one
+    // A finger already armed long-press from touchstart. The compatibility
+    // mousedown that follows must not cancel that timer.
+    if (globalTooltipManager.isPressing(id)) return;
+
     globalTooltipManager.clearPressTimer(id);
-
-    // Hover already revealed the tooltip. Don't arm long-press, or the release
-    // is cancelled and later clicks stay cancelled until an outside click.
-    if (globalTooltipManager.hasHoverTooltipPress(id)) return;
-
-    // Don't prevent default to allow button interaction
-    // Start timer to show tooltip after 300ms (works on all devices including tablets)
-    const timer = setTimeout(() => {
-      globalTooltipManager.setOpenTooltip(id, true); // Mark as opened by timer
-      globalTooltipManager.clearPressTimer(id);
-    }, 300);
-
-    globalTooltipManager.setPressTimer(id, timer);
+    // A mouse press is a click, however long it is held and wherever it is
+    // released. Hover shows the tooltip. Arming a long-press here swallows
+    // the click, and releasing outside leaves that tooltip stuck so later
+    // clicks on the same button do nothing until a click lands elsewhere.
   }, []);
 
   const handleMouseUp = useCallback((
