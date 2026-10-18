@@ -15,7 +15,7 @@ describe("action villager cost tooltip", () => {
     await ensureGameplayLocalesLoaded();
   });
 
-  it("places expedition villager cost after the time cost in the resource section", () => {
+  it("places the time cost after the expedition villager cost in the resource section", () => {
     const state = gameStateSchema.parse({
       tools: { iron_lantern: true },
       resources: { food: 50 },
@@ -31,9 +31,9 @@ describe("action villager cost tooltip", () => {
     const rewardAt = text.indexOf("Stone");
 
     expect(foodAt).toBeGreaterThanOrEqual(0);
-    expect(timeAt).toBeGreaterThan(foodAt);
-    expect(villagerAt).toBeGreaterThan(timeAt);
-    expect(rewardAt).toBeGreaterThan(villagerAt);
+    expect(villagerAt).toBeGreaterThan(foodAt);
+    expect(timeAt).toBeGreaterThan(villagerAt);
+    expect(rewardAt).toBeGreaterThan(timeAt);
     expect(text.indexOf("Requires")).toBe(-1);
     const muted = [...container.querySelectorAll(".text-muted-foreground")].map(
       (el) => el.textContent ?? "",
@@ -57,7 +57,7 @@ describe("action villager cost tooltip", () => {
     expect(muted.some((line) => line.includes("0 / 2 Free Villagers"))).toBe(false);
   });
 
-  it("places the humans sacrifice villager cost after the time cost", () => {
+  it("places the time cost after the humans sacrifice villager cost", () => {
     const state = gameStateSchema.parse({
       flags: { humanSacrificeUnlocked: true },
       buildings: { blackMonolith: 1 },
@@ -71,8 +71,8 @@ describe("action villager cost tooltip", () => {
     const text = container.textContent ?? "";
     const timeAt = text.indexOf("1m 30s");
     const villagerAt = text.indexOf("10 / 1 Villager");
-    expect(timeAt).toBeGreaterThanOrEqual(0);
-    expect(villagerAt).toBeGreaterThan(timeAt);
+    expect(villagerAt).toBeGreaterThanOrEqual(0);
+    expect(timeAt).toBeGreaterThan(villagerAt);
   });
 
   it("aligns resource costs with the time and villager text and marks a met cost", () => {

@@ -111,8 +111,8 @@ function costLabelWithoutSign(text: string): string {
 }
 
 /**
- * Tooltip line showing an action's execution duration. Sits in the resource
- * section, immediately before any villager cost. Returns null for instant actions.
+ * Tooltip line showing an action's execution duration. Last row of the
+ * resource section, under any people cost. Returns null for instant actions.
  */
 export const getActionDurationLine = (
   actionId: string,
@@ -138,13 +138,13 @@ export const getActionDurationLine = (
 export type ActionTooltipCostRow = {
   text: string;
   satisfied: boolean;
-  /** Villager spend. Rendered after the time cost, not with other resources. */
+  /** Villager spend. Rendered with other people costs, above the time cost. */
   villager?: boolean;
 };
 
 /**
  * Free villagers an expedition action locks for its duration.
- * Last row of the resource section, directly under the time cost.
+ * People row in the resource section, above the time cost.
  */
 export const getActionVillagerCostLine = (
   actionId: string,
@@ -230,8 +230,7 @@ export function TooltipCostLines({
 }
 
 /**
- * Resource section rows: resource costs, then time, then villager cost.
- * Villager cost is always the last row.
+ * Resource section rows: resource costs, then people, then time last.
  */
 export function ActionTooltipResourceRows({
   actionId,
@@ -242,14 +241,11 @@ export function ActionTooltipResourceRows({
   state: GameState;
   costs: ActionTooltipCostRow[];
 }): React.ReactNode {
-  const resourceCosts = costs.filter((cost) => !cost.villager);
-  const villagerCosts = costs.filter((cost) => cost.villager);
   return (
     <>
-      <TooltipCostLines costs={resourceCosts} />
-      {getActionDurationLine(actionId, state)}
-      <TooltipCostLines costs={villagerCosts} />
+      <TooltipCostLines costs={costs} />
       {getActionVillagerCostLine(actionId, state)}
+      {getActionDurationLine(actionId, state)}
     </>
   );
 }
