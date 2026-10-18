@@ -22,6 +22,7 @@ import {
   INTERSECTION_REACH,
   PATH_DOOR_CLEAR,
   PATH_DOOR_FADE,
+  PATH_HEART_FADE,
   PATH_RIBBON_REACH,
   buildVillagePathField,
   clearVillagePathFieldCache,
@@ -753,7 +754,7 @@ describe("village pathways", () => {
     }
   });
 
-  it("fades each building approach and each heartfire end from solid at 15 map units to clear at 3", () => {
+  it("fades each building approach in the open, and each heartfire end, from solid at the fade distance to clear at the door", () => {
     const { field, paths } = fieldFor("full");
     const shared = paths.filter((path) => path.slotIds.length > 1);
     expect(shared.length).toBeGreaterThan(0);
@@ -763,12 +764,12 @@ describe("village pathways", () => {
     for (const path of spurs) {
       expect(path.doorFade, path.id).toBeTruthy();
       if (!path.doorFade) continue;
-      // The fade is already solid before the routed door, under the wall.
+      // The fade starts at the routed door and becomes solid out in the open.
       const fromDoor = Math.hypot(path.doorFade.from.x - path.points[0].x, path.doorFade.from.y - path.points[0].y);
       const solidToDoor = Math.hypot(path.doorFade.to.x - path.points[0].x, path.doorFade.to.y - path.points[0].y);
-      expect(fromDoor).toBeGreaterThan(PATH_DOOR_FADE);
-      expect(solidToDoor).toBeGreaterThan(4);
-      expect(solidToDoor).toBeLessThan(fromDoor);
+      expect(fromDoor).toBeLessThan(0.5);
+      expect(solidToDoor).toBeGreaterThan(PATH_DOOR_CLEAR);
+      expect(solidToDoor).toBeGreaterThan(fromDoor);
       const span = Math.hypot(path.doorFade.to.x - path.doorFade.from.x, path.doorFade.to.y - path.doorFade.from.y);
       expect(span).toBeGreaterThan(PATH_DOOR_CLEAR);
       expect(span).toBeLessThanOrEqual(PATH_DOOR_FADE + 0.01);
@@ -789,7 +790,7 @@ describe("village pathways", () => {
         length += Math.hypot(path.points[index].x - path.points[index - 1].x, path.points[index].y - path.points[index - 1].y);
       }
       expect(span).toBeGreaterThan(0);
-      expect(span).toBeLessThanOrEqual(PATH_DOOR_FADE + 0.01);
+      expect(span).toBeLessThanOrEqual(PATH_HEART_FADE + 0.01);
       expect(path.heartFade.clear).toBeGreaterThan(0);
       if (length > PATH_DOOR_CLEAR) {
         expect(span).toBeGreaterThan(PATH_DOOR_CLEAR);

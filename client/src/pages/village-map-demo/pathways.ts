@@ -95,8 +95,10 @@ export const PATH_GAP = 8;
 export const PATH_CLEARANCE = PATH_GAP + ROUTE_PAD * 1.22;
 /** Fully clear this close to a door or the heartfire. */
 export const PATH_DOOR_CLEAR = 2;
-/** Fully solid this far from a door or the heartfire. The fade runs from here in to the clear distance. */
-export const PATH_DOOR_FADE = 8;
+/** Fully solid this far from a door. The fade runs from here in to the clear distance. */
+export const PATH_DOOR_FADE = 6;
+/** Fully solid this far from the heartfire. A little longer than a door approach. */
+export const PATH_HEART_FADE = 8;
 /** The routed door sits this far outside the wall. */
 export const DOOR_OUTSET = 1.5;
 /** Solid gravel continues this far under the wall, so the road meets the building. */
@@ -311,7 +313,7 @@ export function villagePathDrawings(
   return resolved.map((edge, index) => {
     const handle = overrides[edge.id] ?? midpoint(edge.points);
     const seed = mixSeed(edge.id);
-    const met = edgeLine(edge, ribbons);
+    const route = ribbons.get(edge.id) ?? edge.points;
     const drawn = edge.id.startsWith("link:")
       ? buryStreetEnds(drawnLines[index], hosts, LINK_BURY)
       : drawnLines[index];
@@ -322,7 +324,7 @@ export function villagePathDrawings(
       ribbon: ribbonPath(drawn, seed),
       stones: stonesAlong(drawn, seed),
       handle,
-      doorFade: doorFade(edge.slotIds, met),
+      doorFade: doorFade(edge.slotIds, route),
       heartFade: heartFade(edge.points, field.heartRadius),
     };
   });
@@ -496,10 +498,10 @@ function buildingDoor(slot: PlacedSlot, hutSize: number): Point | null {
 }
 
 /**
- * The route starts just outside the wall, and the fade then hides the first
- * stretch of it. Drawn as-is, that leaves open ground between the gravel and
- * the building. Pull the drawn start back through the wall so the fade is
- * solid under the wall, so the gravel meets the building.
+ * The route starts just outside the wall. Continue the ribbon back through
+ * the wall so the masked end has gravel to hide, instead of a hard cut.
+ * The fade itself is measured from the door, so it shows in the open
+ * before the building.
  */
 function extendThroughDoor(points: readonly Point[]): Point[] {
   const start = points[0];
@@ -528,12 +530,12 @@ function doorFade(slotIds: readonly string[], points: readonly Point[]): PathFad
   return fadeBetween(from, to, clearAt);
 }
 
-/** Trunks that stop short of the heartfire. Same clear and solid distances as a door. */
+/** Trunks that stop short of the heartfire. Clear distance matches a door. The solid point sits further out. */
 function heartFade(points: readonly Point[], heartRadius: number): PathFade | null {
   if (points.length < 2 || heartRadius <= 0) return null;
   const from = points[points.length - 1];
   if (Math.abs(Math.hypot(from.x - MAP_CENTER, from.y - MAP_CENTER) - heartRadius) > 1.5) return null;
-  const to = pointFromEnd(points, PATH_DOOR_FADE);
+  const to = pointFromEnd(points, PATH_HEART_FADE);
   const clearAt = pointFromEnd(points, PATH_DOOR_CLEAR);
   if (!to || !clearAt) return null;
   return fadeBetween(from, to, clearAt);
