@@ -10,6 +10,7 @@
       "app[content][sysreqs][windows][min][soundcard]": "Standard audio device",
       "app[content][sysreqs][windows][min][notes]": "Offline play supported",
       "app[content][reviews][0][quote]": "A dark and minimalist incremental village builder with a strong focus on story.",
+      "app[content][reviews][1][quote]": "A Dark Cave turns a campfire into a whole settlement, and five minutes into a whole evening.",
       "app[assets][extra][0][alt_text]": "#decorative-only",
       "app[assets][extra][1][alt_text]": "Add to Wishlist and Follow"
     },
@@ -21,7 +22,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Carte graphique intégrée ; affichage 1280×720",
       "app[content][sysreqs][windows][min][soundcard]": "Périphérique audio standard",
       "app[content][sysreqs][windows][min][notes]": "Jeu hors ligne pris en charge",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Un jeu de construction de village incrémental, sombre et minimaliste, avec un fort accent sur le récit.",
+      "app[content][reviews][1][quote]": "A Dark Cave fait d'un feu de camp une colonie entière, et de cinq minutes toute une soirée.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -33,7 +35,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Grafica integrata; display 1280×720",
       "app[content][sysreqs][windows][min][soundcard]": "Dispositivo audio standard",
       "app[content][sysreqs][windows][min][notes]": "Gioco offline supportato",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Un gioco incrementale di costruzione di un villaggio, cupo e minimalista, con una forte attenzione alla storia.",
+      "app[content][reviews][1][quote]": "A Dark Cave trasforma un falò in un intero insediamento e cinque minuti in un'intera serata.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -46,6 +49,7 @@
       "app[content][sysreqs][windows][min][soundcard]": "Standard-Audiogerät",
       "app[content][sysreqs][windows][min][notes]": "Offline-Spiel unterstützt",
       "app[content][reviews][0][quote]": "Ein düsterer und minimalistischer Incremental Village Builder mit starkem Fokus auf die Geschichte",
+      "app[content][reviews][1][quote]": "A Dark Cave macht aus einem Lagerfeuer eine ganze Siedlung und aus fünf Minuten einen ganzen Abend.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -57,7 +61,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Gráficos integrados; pantalla de 1280×720",
       "app[content][sysreqs][windows][min][soundcard]": "Dispositivo de audio estándar",
       "app[content][sysreqs][windows][min][notes]": "Compatible con el juego sin conexión",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Un juego incremental de construcción de aldeas, oscuro y minimalista, con un fuerte enfoque en la historia.",
+      "app[content][reviews][1][quote]": "A Dark Cave convierte una hoguera en todo un asentamiento y cinco minutos en toda una noche.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -69,7 +74,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Интегрирана графика; дисплей 1280×720",
       "app[content][sysreqs][windows][min][soundcard]": "Стандартно аудио устройство",
       "app[content][sysreqs][windows][min][notes]": "Поддържа се офлайн игра",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Мрачна и минималистична инкрементална игра за изграждане на село със силен акцент върху сюжета.",
+      "app[content][reviews][1][quote]": "A Dark Cave превръща лагерния огън в цяло селище, а пет минути в цяла вечер.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -81,7 +87,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Integrovaná grafika; displej 1280×720",
       "app[content][sysreqs][windows][min][soundcard]": "Standardní zvukové zařízení",
       "app[content][sysreqs][windows][min][notes]": "Podporována hra offline",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Temná a minimalistická inkrementální hra o budování vesnice se silným důrazem na příběh.",
+      "app[content][reviews][1][quote]": "A Dark Cave udělá z táboráku celé sídlo a z pěti minut celý večer.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -93,7 +100,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Integreret grafik; 1280×720-skærm",
       "app[content][sysreqs][windows][min][soundcard]": "Standardlydenhed",
       "app[content][sysreqs][windows][min][notes]": "Offlinespil understøttes",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Et mørkt og minimalistisk inkrementelt landsbybyggespil med stærkt fokus på historien.",
+      "app[content][reviews][1][quote]": "A Dark Cave gør et lejrbål til en hel bosættelse og fem minutter til en hel aften.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -105,7 +113,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Geïntegreerde graphics; 1280×720-scherm",
       "app[content][sysreqs][windows][min][soundcard]": "Standaard audioapparaat",
       "app[content][sysreqs][windows][min][notes]": "Offline spelen ondersteund",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Een duister en minimalistisch incrementeel spel over het bouwen van een dorp, met een sterke focus op het verhaal.",
+      "app[content][reviews][1][quote]": "A Dark Cave maakt van een kampvuur een hele nederzetting en van vijf minuten een hele avond.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -117,7 +126,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Integroitu näytönohjain; 1280×720-näyttö",
       "app[content][sysreqs][windows][min][soundcard]": "Vakioäänilaite",
       "app[content][sysreqs][windows][min][notes]": "Offline-pelaamista tuetaan",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Synkkä ja minimalistinen inkrementaalinen kylänrakennuspeli, jossa tarina on vahvasti keskiössä.",
+      "app[content][reviews][1][quote]": "A Dark Cave tekee nuotiosta kokonaisen asutuksen ja viidestä minuutista kokonaisen illan.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -129,7 +139,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Ενσωματωμένα γραφικά· οθόνη 1280×720",
       "app[content][sysreqs][windows][min][soundcard]": "Τυπική συσκευή ήχου",
       "app[content][sysreqs][windows][min][notes]": "Υποστηρίζεται παιχνίδι εκτός σύνδεσης",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Ένα σκοτεινό και μινιμαλιστικό incremental παιχνίδι χτισίματος χωριού, με έντονη έμφαση στην ιστορία.",
+      "app[content][reviews][1][quote]": "Το A Dark Cave μετατρέπει μια κατασκηνωτική φωτιά σε έναν ολόκληρο οικισμό και πέντε λεπτά σε μια ολόκληρη βραδιά.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -141,7 +152,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Integrált grafika; 1280×720 kijelző",
       "app[content][sysreqs][windows][min][soundcard]": "Szabványos hangeszköz",
       "app[content][sysreqs][windows][min][notes]": "Offline játék támogatott",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Egy sötét és minimalista inkrementális faluépítő játék, erős hangsúllyal a történeten.",
+      "app[content][reviews][1][quote]": "A Dark Cave egy tábortűzből egész települést, öt percből pedig egy egész estét varázsol.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -153,7 +165,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Grafik terintegrasi; layar 1280×720",
       "app[content][sysreqs][windows][min][soundcard]": "Perangkat audio standar",
       "app[content][sysreqs][windows][min][notes]": "Mendukung permainan offline",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Gim pembangunan desa yang kelam, minimalis, dan inkremental, dengan fokus kuat pada cerita.",
+      "app[content][reviews][1][quote]": "A Dark Cave mengubah api unggun menjadi sebuah permukiman, dan lima menit menjadi semalaman.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -165,7 +178,8 @@
       "app[content][sysreqs][windows][min][graphics]": "内蔵グラフィックス、1280×720 ディスプレイ",
       "app[content][sysreqs][windows][min][soundcard]": "標準的なオーディオデバイス",
       "app[content][sysreqs][windows][min][notes]": "オフラインプレイに対応",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "暗くミニマルで、物語を重視したインクリメンタルな村づくり。",
+      "app[content][reviews][1][quote]": "A Dark Caveは、焚き火を一つの集落に、五分を一晩に変える。",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -177,7 +191,8 @@
       "app[content][sysreqs][windows][min][graphics]": "내장 그래픽, 1280×720 디스플레이",
       "app[content][sysreqs][windows][min][soundcard]": "표준 오디오 장치",
       "app[content][sysreqs][windows][min][notes]": "오프라인 플레이 지원",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "이야기에 강하게 집중한, 어둡고 미니멀한 인크리멘탈 마을 건설 게임.",
+      "app[content][reviews][1][quote]": "A Dark Cave는 모닥불을 하나의 정착지로, 5분을 하룻저녁으로 바꿉니다.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -189,7 +204,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Grafik bersepadu; paparan 1280×720",
       "app[content][sysreqs][windows][min][soundcard]": "Peranti audio standard",
       "app[content][sysreqs][windows][min][notes]": "Menyokong permainan luar talian",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Permainan pembinaan kampung yang gelap, minimalis dan inkremental, dengan fokus kuat pada cerita.",
+      "app[content][reviews][1][quote]": "A Dark Cave mengubah unggun api menjadi sebuah penempatan, dan lima minit menjadi sepanjang malam.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -201,7 +217,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Integrert grafikk; 1280×720-skjerm",
       "app[content][sysreqs][windows][min][soundcard]": "Standard lydenhet",
       "app[content][sysreqs][windows][min][notes]": "Frakoblet spilling støttes",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Et mørkt og minimalistisk inkrementelt landsbybyggespill med sterkt fokus på historien.",
+      "app[content][reviews][1][quote]": "A Dark Cave gjør et bål til en hel bosetning og fem minutter til en hel kveld.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -213,7 +230,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Grafika zintegrowana; wyświetlacz 1280×720",
       "app[content][sysreqs][windows][min][soundcard]": "Standardowe urządzenie audio",
       "app[content][sysreqs][windows][min][notes]": "Obsługa gry offline",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Mroczna i minimalistyczna gra incremental o budowaniu wioski, z silnym naciskiem na fabułę.",
+      "app[content][reviews][1][quote]": "A Dark Cave zamienia ognisko w całą osadę, a pięć minut w cały wieczór.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -225,7 +243,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Gráficos integrados; tela de 1280×720",
       "app[content][sysreqs][windows][min][soundcard]": "Dispositivo de áudio padrão",
       "app[content][sysreqs][windows][min][notes]": "Compatível com jogo offline",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Um jogo incremental de construção de vila, sombrio e minimalista, com forte foco na história.",
+      "app[content][reviews][1][quote]": "A Dark Cave transforma uma fogueira em um assentamento inteiro e cinco minutos em uma noite inteira.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -237,7 +256,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Gráficos integrados; ecrã de 1280×720",
       "app[content][sysreqs][windows][min][soundcard]": "Dispositivo de áudio padrão",
       "app[content][sysreqs][windows][min][notes]": "Compatível com jogo offline",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Um jogo incremental de construção de aldeia, sombrio e minimalista, com um forte foco na história.",
+      "app[content][reviews][1][quote]": "A Dark Cave transforma uma fogueira num povoado inteiro e cinco minutos numa noite inteira.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -249,7 +269,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Grafică integrată; afișaj 1280×720",
       "app[content][sysreqs][windows][min][soundcard]": "Dispozitiv audio standard",
       "app[content][sysreqs][windows][min][notes]": "Este acceptat jocul offline",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Un joc incremental de construire a unui sat, întunecat și minimalist, cu un accent puternic pe poveste.",
+      "app[content][reviews][1][quote]": "A Dark Cave transformă un foc de tabără într-o așezare întreagă și cinci minute într-o seară întreagă.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -261,7 +282,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Встроенная графика; дисплей 1280×720",
       "app[content][sysreqs][windows][min][soundcard]": "Стандартное аудиоустройство",
       "app[content][sysreqs][windows][min][notes]": "Поддерживается офлайн-игра",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Мрачная и минималистичная incremental-игра о строительстве деревни с сильным акцентом на сюжет.",
+      "app[content][reviews][1][quote]": "A Dark Cave превращает костёр в целое поселение, а пять минут в целый вечер.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -273,7 +295,8 @@
       "app[content][sysreqs][windows][min][graphics]": "集成显卡；1280×720 显示",
       "app[content][sysreqs][windows][min][soundcard]": "标准音频设备",
       "app[content][sysreqs][windows][min][notes]": "支持离线游玩",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "一款注重剧情的黑暗极简增量村庄建造游戏。",
+      "app[content][reviews][1][quote]": "A Dark Cave把篝火变成一整座聚落，把五分钟变成一整个晚上。",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -285,7 +308,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Gráficos integrados; pantalla de 1280×720",
       "app[content][sysreqs][windows][min][soundcard]": "Dispositivo de audio estándar",
       "app[content][sysreqs][windows][min][notes]": "Compatible con el juego sin conexión",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Un juego incremental de construcción de aldeas, oscuro y minimalista, con un fuerte enfoque en la historia.",
+      "app[content][reviews][1][quote]": "A Dark Cave convierte una fogata en todo un asentamiento y cinco minutos en toda una noche.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -297,7 +321,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Integrerad grafik; 1280×720-skärm",
       "app[content][sysreqs][windows][min][soundcard]": "Standardljudenhet",
       "app[content][sysreqs][windows][min][notes]": "Offlinespel stöds",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Ett mörkt och minimalistiskt inkrementellt bybyggarspel med starkt fokus på berättelsen.",
+      "app[content][reviews][1][quote]": "A Dark Cave gör en lägereld till en hel bosättning och fem minuter till en hel kväll.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -309,7 +334,8 @@
       "app[content][sysreqs][windows][min][graphics]": "กราฟิกออนบอร์ด; จอแสดงผล 1280×720",
       "app[content][sysreqs][windows][min][soundcard]": "อุปกรณ์เสียงมาตรฐาน",
       "app[content][sysreqs][windows][min][notes]": "รองรับการเล่นแบบออฟไลน์",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "เกมสร้างหมู่บ้าน incremental ที่มืดมน มินิมอล และเน้นเรื่องราวเป็นหลัก",
+      "app[content][reviews][1][quote]": "A Dark Cave เปลี่ยนกองไฟให้กลายเป็นถิ่นฐานทั้งแห่ง และเปลี่ยนห้านาทีให้กลายเป็นทั้งคืน.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -321,7 +347,8 @@
       "app[content][sysreqs][windows][min][graphics]": "內建顯示晶片；1280×720 顯示",
       "app[content][sysreqs][windows][min][soundcard]": "標準音訊裝置",
       "app[content][sysreqs][windows][min][notes]": "支援離線遊玩",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "一款注重劇情的黑暗極簡增量村莊建造遊戲。",
+      "app[content][reviews][1][quote]": "A Dark Cave把營火變成一整座聚落，把五分鐘變成一整個晚上。",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -333,7 +360,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Tümleşik grafikler; 1280×720 ekran",
       "app[content][sysreqs][windows][min][soundcard]": "Standart ses aygıtı",
       "app[content][sysreqs][windows][min][notes]": "Çevrimdışı oyun desteklenir",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Hikâyeye güçlü biçimde odaklanan, karanlık ve minimalist bir artımlı köy kurma oyunu.",
+      "app[content][reviews][1][quote]": "A Dark Cave bir kamp ateşini koca bir yerleşime, beş dakikayı ise koca bir akşama dönüştürür.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -345,7 +373,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Інтегрована графіка; дисплей 1280×720",
       "app[content][sysreqs][windows][min][soundcard]": "Стандартний аудіопристрій",
       "app[content][sysreqs][windows][min][notes]": "Підтримується гра офлайн",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Похмура й мінімалістична incremental-гра про будівництво села з сильним акцентом на сюжет.",
+      "app[content][reviews][1][quote]": "A Dark Cave перетворює багаття на ціле поселення, а п'ять хвилин на цілий вечір.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     },
@@ -357,7 +386,8 @@
       "app[content][sysreqs][windows][min][graphics]": "Đồ họa tích hợp; màn hình 1280×720",
       "app[content][sysreqs][windows][min][soundcard]": "Thiết bị âm thanh tiêu chuẩn",
       "app[content][sysreqs][windows][min][notes]": "Hỗ trợ chơi ngoại tuyến",
-      "app[content][reviews][0][quote]": "",
+      "app[content][reviews][0][quote]": "Một tựa game xây dựng làng incremental, đen tối và tối giản, với trọng tâm mạnh vào cốt truyện.",
+      "app[content][reviews][1][quote]": "A Dark Cave biến một đống lửa trại thành cả một khu định cư, và năm phút thành cả một buổi tối.",
       "app[assets][extra][0][alt_text]": "",
       "app[assets][extra][1][alt_text]": ""
     }
