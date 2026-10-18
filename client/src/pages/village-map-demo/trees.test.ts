@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { sanitizeSnapshot, treeDrawScale } from "@/pages/village-map-demo/catalog";
+import { TREE_FILLS, treeFill } from "@/pages/village-map-demo/TreeMark";
 import { TREE_VARIANTS, drawTree, treeReach, treeVariant } from "@/pages/village-map-demo/trees";
 
 describe("tree sketches", () => {
@@ -66,5 +67,12 @@ describe("tree sketches", () => {
     expect(treeDrawScale(huge!.trees[0])).toBe(1.15);
     expect(treeVariant("puff")?.label).toBe("Small puff");
     expect(treeReach(treeVariant("hedge")!)).toBeGreaterThan(treeReach(treeVariant("puff")!));
+  });
+
+  it("paints each crown one of three light greens, and keeps that tone", () => {
+    expect(treeFill("tree-1")).toBe(treeFill("tree-1"));
+    const used = new Set(["a", "b", "c", "d", "e", "f", "g", "h", "i"].map((id) => treeFill(id)));
+    expect(used.size).toBe(TREE_FILLS.length);
+    for (const fill of used) expect(TREE_FILLS).toContain(fill);
   });
 });

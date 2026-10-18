@@ -4,7 +4,7 @@ import type { VillageMapCoinMetal, VillageSilverCoin } from "@/game/villageMapSi
 import { SilverCoinMark } from "@/pages/village-map-demo/SilverCoinMark";
 import { VILLAGE_MAP_OPEN_FADE_DELAY_MS, type VillageMapReveal } from "@/game/villageMapReveal";
 import { BUILDINGS, MAP_CENTER, treeDrawScale, type BuildState, type MapTree, type SanctumGod, type Tuning } from "@/pages/village-map-demo/catalog";
-import { TreeMark } from "@/pages/village-map-demo/TreeMark";
+import { TreeMark, treeFill } from "@/pages/village-map-demo/TreeMark";
 import { treeReach, treeVariant } from "@/pages/village-map-demo/trees";
 import {
   ringPoints,
@@ -186,10 +186,15 @@ function openChain(points: Point[]): string {
 
 /** Dilated ring around each track. The door mask has to cover this, not only the fill. */
 const PATH_OUTLINE_RADIUS = 0.75;
-/** Gravel fill and stones. The outline is a sibling, so this does not tint the ring. */
-const PATH_GRAVEL_OPACITY = 0.65;
+/**
+ * How much dirt shows in the ribbon. Baked into an opaque fill over the paper,
+ * so two roads meeting stay one color instead of stacking a darker wash.
+ */
+const PATH_FILL_OPACITY = 0.4;
+/** Stones in the track. The outline is a sibling, so this does not tint the ring. */
+const PATH_GRAVEL_OPACITY = 0.6;
 /** Painted ring. Kept off the gravel group so this is the opacity on the page. */
-const PATH_OUTLINE_OPACITY = 0.3;
+const PATH_OUTLINE_OPACITY = 0.25;
 /** Hand-drawn bend of the ring, in map units. */
 const PATH_OUTLINE_WOBBLE = 2.5;
 /**
@@ -503,7 +508,9 @@ const VillageMapSvg = memo(function VillageMapSvg({
     }
     return covered;
   }, [trees, paths, build.wall, build.chitin, radius, tuning, thickness, slots, hutSize]);
-  const trackFill = mixHex(tuning.interior, "#a79f94", 0.38);
+  const paper = mixHex(tuning.ground, tuning.interior, tuning.interiorOpacity);
+  const trackInk = mixHex(tuning.interior, "#9a7044", 0.62);
+  const trackFill = mixHex(paper, trackInk, PATH_FILL_OPACITY);
   const stoneDark = mixHex("#6e6860", tuning.interior, 0.5);
   const stoneMid = mixHex("#8f8880", tuning.interior, 0.62);
   const showWall = build.wall > 0 || tuning.showWallGuide;
@@ -1115,8 +1122,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
                   ) : null,
                 )}
               </defs>
-              <g opacity={PATH_GRAVEL_OPACITY}>
-                {paths.map((path, index) => {
+              {paths.map((path, index) => {
                   const waiting = pathWaitsForBuilding(path, reveal);
                   const fades = [path.doorFade, path.heartFade].filter((fade): fade is PathFade => fade != null);
                   return (
@@ -1138,7 +1144,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
                         frame={{ x: frameX, y: frameY, size: frameSize }}
                       >
                         <path data-ribbon="" d={path.ribbon} fill={trackFill} />
-                        <g clipPath={`url(#${pathClipId})`}>
+                        <g clipPath={`url(#${pathClipId})`} opacity={PATH_GRAVEL_OPACITY}>
                           {path.stones.map((stone, stoneIndex) => (
                             <path
                               key={stoneIndex}
@@ -1150,8 +1156,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
                       </PathEndFades>
                     </g>
                   );
-                })}
-              </g>
+              })}
               <g mask={`url(#${pathDoorMaskId})`} style={{ pointerEvents: "none" }}>
                 <g mask={`url(#${pathHeartMaskId})`}>
                   <g filter={`url(#${pathOutlineFilterId})`} opacity={PATH_OUTLINE_OPACITY}>
@@ -1252,7 +1257,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
           ) : null}
 
           {trees.length > 0 ? (
-            <g data-testid="map-trees" opacity={0.8}>
+            <g data-testid="map-trees" opacity={0.5}>
               {trees.map((tree) => {
                 if (concealedTrees.has(tree.id)) return null;
                 const variant = treeVariant(tree.variant);
@@ -1278,7 +1283,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
                         }
                     }
                   >
-                    <TreeMark variant={variant} ink={tuning.ink} fill={tuning.fill} filterId={treeWobbleId} />
+                    <TreeMark variant={variant} ink={tuning.ink} fill={treeFill(tree.id)} filterId={treeWobbleId} />
                   </g>
                 );
               })}

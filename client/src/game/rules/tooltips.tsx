@@ -111,8 +111,16 @@ function costLabelWithoutSign(text: string): string {
 }
 
 /**
+ * Dims a cost the player already covers.
+ * Unmet resource and villager costs stay at full foreground.
+ * Time is always covered, so the duration row uses this class too.
+ */
+const SATISFIED_COST_CLASS = "text-muted-foreground";
+
+/**
  * Tooltip line showing an action's execution duration. Last row of the
  * resource section, under any people cost. Returns null for instant actions.
+ * Time cannot run short, so the row is always a satisfied cost.
  */
 export const getActionDurationLine = (
   actionId: string,
@@ -122,7 +130,7 @@ export const getActionDurationLine = (
   if (seconds <= 0) return null;
   return (
     <IconCostLine
-      className="text-muted-foreground"
+      className={SATISFIED_COST_CLASS}
       icon={
         <span className="inline-block translate-y-[0.105em] font-noto-symbols-2 text-[1.2em] leading-none" aria-hidden>
           {DURATION_COST_GLYPH}
@@ -157,7 +165,7 @@ export const getActionVillagerCostLine = (
   const satisfied = (state.villagers?.free ?? 0) >= required;
   return (
     <IconCostLine
-      className={satisfied ? "text-muted-foreground" : undefined}
+      className={satisfied ? SATISFIED_COST_CLASS : undefined}
       icon={<VillagerCostGlyph />}
     >
       {costLabelWithoutSign(
@@ -183,7 +191,7 @@ export function actionTooltipHasResourceSection(
 }
 
 function ActionTooltipCostLine({ cost }: { cost: ActionTooltipCostRow }) {
-  const muted = cost.satisfied ? "text-muted-foreground" : undefined;
+  const muted = cost.satisfied ? SATISFIED_COST_CLASS : undefined;
   if (cost.villager) {
     return (
       <IconCostLine className={muted} icon={<VillagerCostGlyph />}>

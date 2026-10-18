@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { DEFAULT_TUNING, type Tuning } from "@/pages/village-map-demo/catalog";
 import { markSize } from "@/pages/village-map-demo/geometry";
-import { TreeMark } from "@/pages/village-map-demo/TreeMark";
+import { TREE_FILLS, TreeMark } from "@/pages/village-map-demo/TreeMark";
 import { BuildingMark, MapInkProvider } from "@/pages/village-map-demo/VillageMap";
 import { TREE_VARIANTS } from "@/pages/village-map-demo/trees";
 
@@ -32,9 +32,9 @@ export default function TreeSheet({ tuning }: { tuning: SheetTuning }) {
         Plan-view crowns: a scalloped outline of overlapping circles, and a few short curves inside. No trunks. Drawn at the same scale as the map. The last cell is a wooden hut.
       </p>
       <div className="grid grid-cols-2 gap-x-3 gap-y-4 p-4 sm:grid-cols-3 xl:grid-cols-4">
-        {TREE_VARIANTS.map((variant) => (
+        {TREE_VARIANTS.map((variant, index) => (
           <Cell key={variant.id} label={variant.label}>
-            <TreeMark variant={variant} ink={tuning.ink} fill={tuning.fill} />
+            <TreeMark variant={variant} ink={tuning.ink} fill={TREE_FILLS[index % TREE_FILLS.length]} />
           </Cell>
         ))}
         <Cell label="Wooden hut">

@@ -392,8 +392,8 @@ function directionAt(poly: readonly Point[], along: number): Point {
   return { x: 1, y: 0 };
 }
 
-/** Drawn roads wander about this far off the routed line. Past it, the nearest line is some other road. */
-const HOST_SNAP = 10;
+/** Drawn roads wander off the routed line, and a dragged road can sit further. Past this, the nearest line is some other road. */
+const HOST_SNAP = 16;
 
 function buriedEnd(end: Point, prev: Point, hosts: readonly Point[][], bury: number): Point {
   const hit = closestHostPoint(end, hosts);

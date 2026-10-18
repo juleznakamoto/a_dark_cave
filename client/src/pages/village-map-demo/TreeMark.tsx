@@ -1,6 +1,22 @@
 import { useId } from "react";
 import { drawTree, type TreeVariant } from "@/pages/village-map-demo/trees";
 
+/**
+ * Crown papers. Three light greens: yellow-green, apple, and moss.
+ * Close enough to stay pale, far enough to tell apart.
+ */
+export const TREE_FILLS = ["#eaf4d4", "#d2e8c4", "#c8deb0"] as const;
+
+/** Same tone every time for a planted crown. */
+export function treeFill(id: string): string {
+  let hash = 0;
+  for (let index = 0; index < id.length; index++) {
+    hash = (hash * 37 + id.charCodeAt(index)) | 0;
+  }
+  const index = ((hash % TREE_FILLS.length) + TREE_FILLS.length) % TREE_FILLS.length;
+  return TREE_FILLS[index];
+}
+
 /** One plan-view crown. Pass `filterId` when many trees share one wobble filter. */
 export function TreeMark({
   variant,

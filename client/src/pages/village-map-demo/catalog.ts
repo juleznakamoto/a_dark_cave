@@ -397,7 +397,7 @@ export const BUILDING_BY_ID: Record<string, BuildingDef> = Object.fromEntries(
 
 export const DEFAULT_TUNING: Tuning = {
   squareSize: 28,
-  fill: "#f5f4f1",
+  fill: "#dcdcdc",
   ground: "#0e0e0e",
   interior: "#dedcd8",
   interiorOpacity: 1,

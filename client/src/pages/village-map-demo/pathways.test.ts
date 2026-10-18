@@ -32,6 +32,7 @@ import {
   softenCenterline,
   villagePathDrawings,
 } from "@/pages/village-map-demo/pathways";
+import { buryStreetEnds } from "@/pages/village-map-demo/pathwayLinks";
 
 function fieldFor(
   preset: "camp" | "village" | "full",
@@ -509,6 +510,31 @@ describe("village pathways", () => {
           expect(Math.hypot(point.x - MAP_CENTER, point.y - MAP_CENTER), link.id).toBeGreaterThan(70);
       }
     }
+  });
+
+  it("pulls a shifted street end onto the road, and leaves a far end where it is", () => {
+    const host = [
+      { x: 0, y: 0 },
+      { x: 40, y: 0 },
+    ];
+    const shifted = buryStreetEnds(
+      [
+        { x: 20, y: 14 },
+        { x: 20, y: 40 },
+      ],
+      [host],
+      0,
+    );
+    expect(shifted[0]).toEqual({ x: 20, y: 0 });
+    const far = buryStreetEnds(
+      [
+        { x: 20, y: 24 },
+        { x: 20, y: 50 },
+      ],
+      [host],
+      0,
+    );
+    expect(far[0]).toEqual({ x: 20, y: 24 });
   });
 
   it("does not leave two roads side by side for a long stretch", () => {

@@ -30,7 +30,7 @@ import {
   type Tuning,
 } from "@/pages/village-map-demo/catalog";
 import { placedSlots, type Point } from "@/pages/village-map-demo/geometry";
-import { TreeMark } from "@/pages/village-map-demo/TreeMark";
+import { TREE_FILLS, TreeMark } from "@/pages/village-map-demo/TreeMark";
 import { TREE_VARIANTS, treeVariant } from "@/pages/village-map-demo/trees";
 import { UpgradeRuleIcon, VillageMap } from "@/pages/village-map-demo/VillageMap";
 import TreeSheet from "@/pages/village-map-demo/TreeSheet";
@@ -73,6 +73,8 @@ type DemoState = {
 
 /** Fills from the removed shade sheets. A saved copy of one of those returns to the current colors. */
 const SHADE_FILLS = new Set(["#ebeae7", "#e4e3e0", "#dddcd9", "#d5d4d2", "#cecdca", "#c6c6c3"]);
+/** Building papers replaced by the current grey. A saved copy of one of these picks up the new fill. */
+const PREVIOUS_BUILDING_FILLS = new Set(["#f5f4f1", "#e6e6e6"]);
 
 const SHEET_COLOR_KEYS = [
   "fill",
@@ -88,10 +90,15 @@ const SHEET_COLOR_KEYS = [
 ] as const;
 
 function currentSheet(tuning: Tuning): Tuning {
-  if (!SHADE_FILLS.has(tuning.fill.toLowerCase())) return tuning;
-  const next = { ...tuning };
-  for (const key of SHEET_COLOR_KEYS) next[key] = DEFAULT_TUNING[key];
-  return next;
+  if (SHADE_FILLS.has(tuning.fill.toLowerCase())) {
+    const next = { ...tuning };
+    for (const key of SHEET_COLOR_KEYS) next[key] = DEFAULT_TUNING[key];
+    return next;
+  }
+  if (PREVIOUS_BUILDING_FILLS.has(tuning.fill.toLowerCase())) {
+    return { ...tuning, fill: DEFAULT_TUNING.fill };
+  }
+  return tuning;
 }
 
 /** The arrangement the game draws. An empty demo save is this, not the seed ring. */
@@ -806,7 +813,7 @@ export default function VillageMapDemo() {
               Pick a crown, then click ground, including ground that is not drawn yet. The tree appears when that ground is drawn. A trap hides a tree it covers. Click that crown again to stop. Drag a tree to move it. Double-click removes it.
             </p>
             <div className="grid grid-cols-5 gap-1.5" data-testid="tree-palette">
-              {TREE_VARIANTS.map((variant) => {
+              {TREE_VARIANTS.map((variant, index) => {
                 const armed = placingTree === variant.id;
                 return (
                   <button
@@ -820,7 +827,7 @@ export default function VillageMapDemo() {
                     onClick={() => setPlacingTree((current) => (current === variant.id ? null : variant.id))}
                   >
                     <svg viewBox="-62 -48 124 96" className="h-12 w-full" aria-hidden>
-                      <TreeMark variant={variant} ink={tuning.ink} fill={tuning.fill} />
+                      <TreeMark variant={variant} ink={tuning.ink} fill={TREE_FILLS[index % TREE_FILLS.length]} />
                     </svg>
                   </button>
                 );
