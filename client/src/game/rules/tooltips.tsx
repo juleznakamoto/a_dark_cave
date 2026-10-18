@@ -122,6 +122,7 @@ export const getActionDurationLine = (
   if (seconds <= 0) return null;
   return (
     <IconCostLine
+      className="text-muted-foreground"
       icon={
         <span className="inline-block translate-y-[0.105em] font-noto-symbols-2 text-[1.2em] leading-none" aria-hidden>
           {DURATION_COST_GLYPH}

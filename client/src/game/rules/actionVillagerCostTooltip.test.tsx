@@ -40,6 +40,7 @@ describe("action villager cost tooltip", () => {
     );
     expect(muted.some((line) => line.includes("50 / 50 Food"))).toBe(true);
     expect(muted.some((line) => line.includes("2 / 2 Free Villagers"))).toBe(true);
+    expect(muted.some((line) => line.includes("20s"))).toBe(true);
   });
 
   it("highlights the villager cost when there are not enough free villagers", () => {
@@ -119,6 +120,7 @@ describe("action villager cost tooltip", () => {
       "M7 7 17 17",
     );
     expect(food?.className).toContain("text-muted-foreground");
+    expect(time?.className).toContain("text-muted-foreground");
     expect(wood?.className).not.toContain("text-muted-foreground");
   });
 });
