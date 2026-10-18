@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MODE_FRAMES, ThinkingOrb, type ModeFrame } from "thinking-orbs";
 import { useGameStore } from "@/game/state";
@@ -23,6 +23,8 @@ type ExtendedLogEntry =
   };
 
 const MARK_READ_HOVER_MS = 300;
+/** Unread text pulses for this long, then stays still. The marker dot keeps going. */
+const UNREAD_FLASH_MS = 15 * 60 * 1000;
 const NEW_VILLAGER_ORB_COLOR = "rgb(255, 255, 255)";
 // thinking-orbs only draws at 20, 32, or 64. Paint at 20 and show it smaller.
 const UNREAD_ORB_DRAW = 20;
@@ -54,6 +56,20 @@ function logLineOpacity(isUnread: boolean, index: number): number {
   return (basePercent - fadePercent) / 100;
 }
 
+function unreadLineIsFlashing(
+  isUnread: boolean,
+  isTailLine: boolean,
+  timestamp: number,
+  now: number,
+): boolean {
+  return (
+    isUnread &&
+    !isTailLine &&
+    Number.isFinite(timestamp) &&
+    now - timestamp < UNREAD_FLASH_MS
+  );
+}
+
 function LogPanel() {
   const { i18n } = useTranslation("ui");
   const log = useGameStore((s) => s.log);
@@ -62,6 +78,8 @@ function LogPanel() {
   const readEntries = useMemo(() => new Set(readLogIds), [readLogIds]);
   const topRef = useRef<HTMLDivElement>(null);
   const prevLogLengthRef = useRef(log.length);
+  // Bumped when the next unread pulse expires, so a quiet log still stops flashing.
+  const [flashNow, setFlashNow] = useState(() => Date.now());
   const markReadTimeoutsRef = useRef(
     new Map<string, ReturnType<typeof setTimeout>>(),
   );
@@ -105,6 +123,30 @@ function LogPanel() {
     prevLogLengthRef.current = log.length;
   }, [log.length]);
 
+  useEffect(() => {
+    const now = Date.now();
+    let nextFlashEnd = Infinity;
+    const flashingCount = Math.min(
+      recentEntries.length,
+      LOG_TAIL_FADE_START_INDEX,
+    );
+    for (let index = 0; index < flashingCount; index++) {
+      const entry = recentEntries[index] as ExtendedLogEntry;
+      if (readEntries.has(entry.id)) continue;
+      const timestamp = entry.timestamp;
+      if (typeof timestamp !== "number" || !Number.isFinite(timestamp)) continue;
+      const endsAt = timestamp + UNREAD_FLASH_MS;
+      if (endsAt <= now) continue;
+      if (endsAt < nextFlashEnd) nextFlashEnd = endsAt;
+    }
+    if (nextFlashEnd === Infinity) return;
+
+    const timeout = setTimeout(() => {
+      setFlashNow(Date.now());
+    }, nextFlashEnd - now);
+    return () => clearTimeout(timeout);
+  }, [recentEntries, readEntries, flashNow]);
+
   return (
     <div className="h-full min-h-0 overflow-hidden">
       <ScrollAreaWithIndicator
@@ -125,7 +167,14 @@ function LogPanel() {
                 typedEntry as LogEntry,
               );
               // Pulse sets opacity itself, which would hide the tail fade.
-              const blinkClass = isUnread && !isTailLine ? "animate-pulse" : "";
+              const blinkClass = unreadLineIsFlashing(
+                isUnread,
+                isTailLine,
+                typedEntry.timestamp,
+                flashNow,
+              )
+                ? "animate-pulse"
+                : "";
 
               const markReadNow = () => {
                 const existing = markReadTimeoutsRef.current.get(typedEntry.id);

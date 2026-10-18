@@ -26,6 +26,10 @@ function touchPointer(
   fireEvent[type](row, { pointerType: "touch", pointerId: 1, bubbles: true });
 }
 
+function unreadMarker(row: HTMLElement) {
+  return row.querySelector("canvas");
+}
+
 describe("LogPanel mark read", () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -34,7 +38,7 @@ describe("LogPanel mark read", () => {
         {
           id: "log-short-tap",
           message: LINE,
-          timestamp: 1,
+          timestamp: Date.now(),
           type: "system",
         },
       ],
@@ -43,6 +47,7 @@ describe("LogPanel mark read", () => {
   });
 
   afterEach(() => {
+    vi.unstubAllGlobals();
     vi.useRealTimers();
     useGameStore.setState({ log: [], readLogIds: [] });
   });
@@ -120,5 +125,38 @@ describe("LogPanel mark read", () => {
     });
 
     expect(lineRow().text.className).toContain("animate-pulse");
+  });
+
+  it("stops flashing an unread line after 15 minutes and keeps the marker", async () => {
+    vi.stubGlobal("requestAnimationFrame", () => 0);
+    render(<LogPanel />);
+    const { text, row } = lineRow();
+    expect(text.className).toContain("animate-pulse");
+    expect(unreadMarker(row)).not.toBeNull();
+
+    await act(async () => {
+      vi.advanceTimersByTime(15 * 60 * 1000);
+    });
+
+    const after = lineRow();
+    expect(after.text.className).not.toContain("animate-pulse");
+    expect(unreadMarker(after.row)).not.toBeNull();
+  });
+
+  it("does not flash an unread line that is already 15 minutes old", () => {
+    useGameStore.setState({
+      log: [
+        {
+          id: "log-short-tap",
+          message: LINE,
+          timestamp: Date.now() - 15 * 60 * 1000,
+          type: "system",
+        },
+      ],
+    });
+    render(<LogPanel />);
+    const { text, row } = lineRow();
+    expect(text.className).not.toContain("animate-pulse");
+    expect(unreadMarker(row)).not.toBeNull();
   });
 });
