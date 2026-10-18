@@ -88,6 +88,33 @@ export function villageMapCoinMetal(random: () => number = Math.random): Village
   return random() < VILLAGE_GOLD_COIN_CHANCE ? "gold" : "silver";
 }
 
+export function villageSilverCoinMetal(coin: VillageSilverCoin): VillageMapCoinMetal {
+  return coin.metal === "gold" ? "gold" : "silver";
+}
+
+type VillageCoinSeenState = {
+  seenResources?: readonly string[] | null;
+  resources?: { silver?: number; gold?: number };
+};
+
+/** Same rule as the side panel: the resource was held, or still is. */
+export function hasSeenVillageCoinMetal(
+  state: VillageCoinSeenState,
+  metal: VillageMapCoinMetal,
+): boolean {
+  if ((state.seenResources ?? []).includes(metal)) return true;
+  const held = state.resources?.[metal];
+  return typeof held === "number" && held > 0;
+}
+
+/** Coins whose metal the player has already seen. */
+export function visibleVillageSilverCoins<T extends VillageSilverCoin>(
+  state: VillageCoinSeenState,
+  coins: readonly T[],
+): T[] {
+  return coins.filter((coin) => hasSeenVillageCoinMetal(state, villageSilverCoinMetal(coin)));
+}
+
 type SilverField = {
   interior: Point[];
   slots: PlacedSlot[];
@@ -384,42 +411,70 @@ export function isVillageSilverSpotOpen(
  * Advance the map-coin wait. Spawns at most one coin, and only while fewer than three are out.
  * Returns null when nothing changed.
  */
+function sameCoinList(
+  left: readonly VillageSilverCoin[],
+  right: readonly VillageSilverCoin[],
+): boolean {
+  if (left.length !== right.length) return false;
+  for (let index = 0; index < left.length; index++) {
+    if (left[index] !== right[index]) return false;
+  }
+  return true;
+}
+
 export function tickVillageMapSilver(
   state: GameState,
   random: () => number = Math.random,
 ): Partial<Pick<GameState, "villageSilverCoins" | "villageSilverNextAt">> | null {
   if (state.flags?.mapUnlocked !== true) return null;
   const stored = state.villageSilverCoins ?? [];
-  const coins = stored.slice(0, VILLAGE_SILVER_CAP);
-  const trimmed = stored.length > VILLAGE_SILVER_CAP;
   const playTime = state.playTime ?? 0;
   const nextAt = state.villageSilverNextAt ?? 0;
 
-  if (coins.length >= VILLAGE_SILVER_CAP) {
-    if (!trimmed && nextAt === 0) return null;
+  if (!hasSeenVillageCoinMetal(state, "silver")) {
+    if (stored.length === 0 && nextAt === 0) return null;
     return {
-      ...(trimmed ? { villageSilverCoins: coins } : {}),
+      ...(stored.length > 0 ? { villageSilverCoins: [] } : {}),
+      ...(nextAt !== 0 ? { villageSilverNextAt: 0 } : {}),
+    };
+  }
+
+  const coins = visibleVillageSilverCoins(state, stored).slice(0, VILLAGE_SILVER_CAP);
+  const listChanged = !sameCoinList(stored, coins);
+
+  if (coins.length >= VILLAGE_SILVER_CAP) {
+    if (!listChanged && nextAt === 0) return null;
+    return {
+      ...(listChanged ? { villageSilverCoins: coins } : {}),
       villageSilverNextAt: 0,
     };
   }
 
   if (nextAt <= 0) {
-    return { villageSilverNextAt: playTime + villageSilverDelayMs(random) };
+    return {
+      ...(listChanged ? { villageSilverCoins: coins } : {}),
+      villageSilverNextAt: playTime + villageSilverDelayMs(random),
+    };
   }
-  if (playTime < nextAt) return null;
+  if (playTime < nextAt) {
+    return listChanged ? { villageSilverCoins: coins } : null;
+  }
 
   const field = buildVillageSilverField(state);
   const settled = settleCoins(field, coins, random);
   const spot = pickVillageSilverSpot(field, settled.coins, random);
   if (!spot) {
     return {
-      ...(settled.moved ? { villageSilverCoins: settled.coins } : {}),
+      ...(settled.moved || listChanged ? { villageSilverCoins: settled.coins } : {}),
       villageSilverNextAt: playTime + VILLAGE_SILVER_RETRY_MS,
     };
   }
+  const rolled = villageMapCoinMetal(random);
+  const metal =
+    rolled === "gold" && hasSeenVillageCoinMetal(state, "gold") ? "gold" : "silver";
   const spawned: VillageSilverCoin[] = [
     ...settled.coins,
-    { id: villageSilverCoinId(playTime, random), metal: villageMapCoinMetal(random), ...spot },
+    { id: villageSilverCoinId(playTime, random), metal, ...spot },
   ];
   return {
     villageSilverCoins: spawned,

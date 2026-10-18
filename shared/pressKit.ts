@@ -117,6 +117,14 @@ export const PRESS_LINKS: readonly PressLink[] = [
   { id: "producthunt", label: "Product Hunt", href: "https://www.producthunt.com/products/a-dark-cave", group: "directory" },
   { id: "fandom", label: "Wiki", href: "https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki", group: "directory" },
   {
+    id: "indiegames-inside",
+    label:
+      "IndieGames Inside (17 October 2026): Im textbasierten Incremental-Abenteuer A Dark Cave wächst ein Lagerfeuer zur Siedlung heran",
+    href: "https://www.indiegames-inside.de/a-dark-cave-incremental-aufbauspiel-textbasiert/",
+    group: "coverage",
+    publishedOn: "2026-10-17",
+  },
+  {
     id: "indistation",
     label: "Indistation (28 September 2026): A Dark Cave",
     href: "https://indistation.com/a-dark-cave/",

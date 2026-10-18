@@ -107,15 +107,18 @@ describe("press kit copy", () => {
 
   it("lists press coverage newest first", () => {
     expect(pressLinksInGroup("coverage").map((link) => link.publishedOn)).toEqual([
+      "2026-10-17",
       "2026-10-01",
       "2026-09-28",
       "2026-09-23",
       "2026-09-15",
     ]);
     const html = getPressPageInnerHtml();
+    const indieGamesInside = html.indexOf("indiegames-inside.de");
     const gamersAt = html.indexOf("gamers.at");
     const indistation = html.indexOf("indistation.com");
-    expect(gamersAt).toBeGreaterThan(-1);
+    expect(indieGamesInside).toBeGreaterThan(-1);
+    expect(gamersAt).toBeGreaterThan(indieGamesInside);
     expect(indistation).toBeGreaterThan(gamersAt);
   });
 

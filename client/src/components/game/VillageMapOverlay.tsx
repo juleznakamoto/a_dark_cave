@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useGameStore } from "@/game/state";
 import {
   resettleVillageSilverCoins,
+  visibleVillageSilverCoins,
   type VillageMapCoinMetal,
 } from "@/game/villageMapSilver";
 import "@/i18n";
@@ -69,6 +70,17 @@ export default function VillageMapOverlay() {
   const { t } = useTranslation("common");
   const open = useGameStore((state) => state.activeTab === "map");
   const silverCoins = useGameStore((state) => state.villageSilverCoins);
+  const seenResources = useGameStore((state) => state.seenResources);
+  const silverHeld = useGameStore((state) => state.resources.silver ?? 0);
+  const goldHeld = useGameStore((state) => state.resources.gold ?? 0);
+  const visibleCoins = useMemo(
+    () =>
+      visibleVillageSilverCoins(
+        { seenResources, resources: { silver: silverHeld, gold: goldHeld } },
+        silverCoins ?? [],
+      ),
+    [silverCoins, seenResources, silverHeld, goldHeld],
+  );
   const keptRef = useRef(open);
   if (open) keptRef.current = true;
   const sidePanelHover = useSidePanelActiveTooltipHoverId();
@@ -212,7 +224,7 @@ export default function VillageMapOverlay() {
           onHoverBuilding={onHoverBuilding}
           readOnly
           heartfireLevel={heartfireLevel}
-          silverCoins={silverCoins ?? []}
+          silverCoins={visibleCoins}
           onSilverCoin={collectSilverCoin}
           onHoverSilverCoin={onHoverCoin}
           silverCoinLabel={t("resources.silver", { defaultValue: "Silver" })}

@@ -17,11 +17,16 @@ import {
   type VillageSilverCoin,
 } from "@/game/villageMapSilver";
 
-function withMap(state: GameState, playTime = state.playTime): GameState {
+function withMap(
+  state: GameState,
+  playTime = state.playTime,
+  seenResources: string[] = ["silver"],
+): GameState {
   return {
     ...state,
     playTime,
     flags: { ...state.flags, mapUnlocked: true },
+    seenResources,
     villageSilverCoins: [],
     villageSilverNextAt: 0,
   };
@@ -60,6 +65,48 @@ describe("village silver coin spawns", () => {
   it("does nothing until the map is unlocked", () => {
     const state = buildDevSave("village");
     expect(tickVillageMapSilver(state, () => 0)).toBeNull();
+  });
+
+  it("does nothing until silver has been seen", () => {
+    const state = withMap(buildDevSave("village"), 1_000, []);
+    expect(tickVillageMapSilver(state, () => 0)).toBeNull();
+  });
+
+  it("clears a waiting coin until silver has been seen", () => {
+    const state = {
+      ...withMap(buildDevSave("village"), 50_000, []),
+      villageSilverNextAt: 1_000,
+      villageSilverCoins: [{ id: "early", x: 10, y: 20, metal: "gold" as const }],
+    };
+    expect(tickVillageMapSilver(state, () => 0)).toEqual({
+      villageSilverCoins: [],
+      villageSilverNextAt: 0,
+    });
+  });
+
+  it("keeps a gold roll as silver until gold has been seen", () => {
+    let state = withMap(buildDevSave("bastion"), 1_000, ["silver"]);
+    state = { ...state, ...tickVillageMapSilver(state, () => 0.05) };
+    const patch = tickVillageMapSilver(
+      { ...state, playTime: state.villageSilverNextAt },
+      () => 0.05,
+    );
+    expect(patch?.villageSilverCoins).toHaveLength(1);
+    expect(patch?.villageSilverCoins?.[0]?.metal).toBe("silver");
+  });
+
+  it("treats gold still in hand as already seen", () => {
+    let state = withMap(buildDevSave("bastion"), 1_000, ["silver"]);
+    state = {
+      ...state,
+      resources: { ...state.resources, gold: 1 },
+    };
+    state = { ...state, ...tickVillageMapSilver(state, () => 0.05) };
+    const patch = tickVillageMapSilver(
+      { ...state, playTime: state.villageSilverNextAt },
+      () => 0.05,
+    );
+    expect(patch?.villageSilverCoins?.[0]?.metal).toBe("gold");
   });
 
   it("arms a wait instead of dropping a coin immediately", () => {
@@ -112,7 +159,7 @@ describe("village silver coin spawns", () => {
   });
 
   it("spawns a gold coin when the roll is under one in ten", () => {
-    let state = withMap(buildDevSave("bastion"), 1_000);
+    let state = withMap(buildDevSave("bastion"), 1_000, ["silver", "gold"]);
     state = { ...state, ...tickVillageMapSilver(state, () => 0.05) };
     const patch = tickVillageMapSilver(
       { ...state, playTime: state.villageSilverNextAt },
