@@ -22,9 +22,10 @@ function cartographerWasTurnedAway(state: GameState): boolean {
 
 /**
  * Village visit that opens the Map tab.
- * He only calls when the player can already pay the silver fee.
- * Turning him away does not end the visit for good:
- * he comes back on the return timer until the player pays.
+ * The first call waits until the player can pay the silver fee.
+ * Turning him away does not end the visit for good: he keeps
+ * returning on the return timer even if that silver is spent later,
+ * until the player pays.
  */
 export const cartographerEvents: Record<string, GameEvent> = {
   cartographer: {
@@ -34,9 +35,10 @@ export const cartographerEvents: Record<string, GameEvent> = {
       (state.buildings.woodenHut ?? 0) >= 1 &&
       state.flags.forestUnlocked === true &&
       state.flags.mapUnlocked !== true &&
-      (state.resources.silver ?? 0) >= CARTOGRAPHER_SILVER_COST &&
       state.story?.seen?.cartographerAccepted !== true &&
-      state.triggeredEvents?.cartographer !== true,
+      state.triggeredEvents?.cartographer !== true &&
+      (cartographerWasTurnedAway(state) ||
+        (state.resources.silver ?? 0) >= CARTOGRAPHER_SILVER_COST),
     timeProbability: (state: GameState) =>
       cartographerWasTurnedAway(state)
         ? CARTOGRAPHER_RETURN_MINUTES
