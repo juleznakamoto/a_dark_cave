@@ -328,7 +328,7 @@ export default function VillageMapOverlay() {
           onClick={onPlayClick}
         >
           <GameUiIcon
-            name={replaying ? "pause" : "unpause"}
+            name={replaying ? "stop" : "unpause"}
             sizeClassName="game-tab-icon"
             className={MAP_PLAY_ICON}
           />

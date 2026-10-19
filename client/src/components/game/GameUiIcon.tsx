@@ -13,6 +13,7 @@ export const GAME_UI_ICON_SRC = {
   reward: "/icons/award_star.svg",
   unpause: "/icons/play_button.svg",
   pause: "/icons/pause_button.svg",
+  stop: "/icons/stop_button.svg",
   achievements: "/icons/quest_book.svg",
   timedEvent: "/icons/time_hourglass.svg",
   language: "/icons/language_bubble.svg",

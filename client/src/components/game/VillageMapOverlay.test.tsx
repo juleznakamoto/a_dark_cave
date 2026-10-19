@@ -35,6 +35,10 @@ function leaveMap() {
   useGameStore.setState({ activeTab: "cave" });
 }
 
+function playIconMask(view: { getByTestId: (id: string) => HTMLElement }) {
+  return view.getByTestId("button-village-map-play").querySelector("span")?.getAttribute("style") ?? "";
+}
+
 describe("VillageMapOverlay", () => {
   beforeEach(() => {
     const buildings = { ...buildingsAtImport, woodenHut: 1 };
@@ -99,9 +103,11 @@ describe("VillageMapOverlay", () => {
       const huts = () => view.container.querySelectorAll("[data-building='woodenHut']");
       expect(huts()).toHaveLength(2);
 
+      expect(playIconMask(view)).toContain("play_button.svg");
       fireEvent.click(view.getByTestId("button-village-map-play"));
       expect(huts()).toHaveLength(1);
       expect(view.getByTestId("button-village-map-play")).toHaveAttribute("aria-pressed", "true");
+      expect(playIconMask(view)).toContain("stop_button.svg");
       expect(useGameStore.getState().villageMapReplaying).toBe(true);
 
       act(() => {
@@ -126,6 +132,7 @@ describe("VillageMapOverlay", () => {
       fireEvent.click(view.getByTestId("button-village-map-play"));
       expect(huts()).toHaveLength(2);
       expect(view.getByTestId("button-village-map-play")).toHaveAttribute("aria-pressed", "false");
+      expect(playIconMask(view)).toContain("play_button.svg");
 
       fireEvent.click(view.getByTestId("button-village-map-play"));
       expect(huts()).toHaveLength(1);
