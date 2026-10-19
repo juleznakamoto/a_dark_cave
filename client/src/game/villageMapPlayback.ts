@@ -7,14 +7,15 @@ import {
   type GrowthStep,
 } from "@/pages/village-map-demo/catalog";
 
-/** Hold each growth step this long once the village has 10 or more buildings. */
-export const VILLAGE_EVOLUTION_STEP_MS = 250;
+/** Hold time for each growth step, by how many buildings the village has. */
+const VILLAGE_EVOLUTION_STEP_BANDS = [
+  { maxBuildings: 10, stepMs: 500 },
+  { maxBuildings: 20, stepMs: 400 },
+  { maxBuildings: 30, stepMs: 300 },
+] as const;
 
-/** Slower hold for a small village, so a few huts do not flash past. */
-export const VILLAGE_EVOLUTION_SPARSE_STEP_MS = 500;
-
-/** Building counts below this use the slower step. */
-export const VILLAGE_EVOLUTION_SPARSE_BELOW = 10;
+/** Villages past the last band. */
+const VILLAGE_EVOLUTION_FAST_STEP_MS = 200;
 
 /**
  * Houses and workshops on the map. A stack counts each copy. An upgrade
@@ -31,9 +32,11 @@ export function placedBuildingCount(build: BuildState): number {
 }
 
 export function villageEvolutionStepMs(build: BuildState): number {
-  return placedBuildingCount(build) < VILLAGE_EVOLUTION_SPARSE_BELOW
-    ? VILLAGE_EVOLUTION_SPARSE_STEP_MS
-    : VILLAGE_EVOLUTION_STEP_MS;
+  const count = placedBuildingCount(build);
+  for (const band of VILLAGE_EVOLUTION_STEP_BANDS) {
+    if (count <= band.maxBuildings) return band.stepMs;
+  }
+  return VILLAGE_EVOLUTION_FAST_STEP_MS;
 }
 
 function cloneBuild(build: BuildState): BuildState {

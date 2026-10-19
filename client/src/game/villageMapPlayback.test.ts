@@ -52,14 +52,13 @@ describe("village evolution playback", () => {
     expect(villageEvolutionFrames(emptyBuild())).toEqual([]);
   });
 
-  it("uses a slower step below 10 buildings", () => {
-    const nine = village({ woodenHut: 9 });
-    const ten = village({ woodenHut: 9, heartfire: 1 });
-
-    expect(placedBuildingCount(nine)).toBe(9);
-    expect(placedBuildingCount(ten)).toBe(10);
+  it("holds each step longer when the village is smaller", () => {
     expect(placedBuildingCount(village({ cabin: 3 }))).toBe(1);
-    expect(villageEvolutionStepMs(nine)).toBe(500);
-    expect(villageEvolutionStepMs(ten)).toBe(250);
+    expect(villageEvolutionStepMs(village({ woodenHut: 10 }))).toBe(500);
+    expect(villageEvolutionStepMs(village({ woodenHut: 11 }))).toBe(400);
+    expect(villageEvolutionStepMs(village({ woodenHut: 12, stoneHut: 8 }))).toBe(400);
+    expect(villageEvolutionStepMs(village({ woodenHut: 12, stoneHut: 9 }))).toBe(300);
+    expect(villageEvolutionStepMs(village({ woodenHut: 12, stoneHut: 12, longhouse: 5, furTents: 1 }))).toBe(300);
+    expect(villageEvolutionStepMs(village({ woodenHut: 12, stoneHut: 12, longhouse: 5, furTents: 2 }))).toBe(200);
   });
 });
