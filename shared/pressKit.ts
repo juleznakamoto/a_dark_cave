@@ -29,6 +29,17 @@ export const PRESS_BOILERPLATE_LONG =
 
 export const PRESS_COMPS_LINE = "A Dark Room, Kittens Game, Universal Paperclips";
 
+export const PRESS_TRAILER_YOUTUBE_ID = "qDnoID3GcKc" as const;
+export const PRESS_TRAILER_YOUTUBE_URL =
+  `https://www.youtube.com/watch?v=${PRESS_TRAILER_YOUTUBE_ID}` as const;
+export const PRESS_TRAILER_EMBED_URL =
+  `https://www.youtube.com/embed/${PRESS_TRAILER_YOUTUBE_ID}` as const;
+export const PRESS_TRAILER_THUMBNAIL_URL =
+  `https://i.ytimg.com/vi/${PRESS_TRAILER_YOUTUBE_ID}/maxresdefault.jpg` as const;
+export const PRESS_TRAILER_NAME = "A Dark Cave gameplay trailer";
+/** No uploadDate: this repo does not record when the YouTube trailer was published. */
+export const PRESS_TRAILER_DESCRIPTION =
+  "Gameplay trailer for A Dark Cave, a text-based incremental. You wake in a cave, light a fire, gather resources, and build a village as the story unfolds.";
 export const PRESS_TRAILER_FILE_HREF =
   `${PRESS_ASSET_DIR}/video/a_dark_cave_gameplay_trailer.mp4` as const;
 
@@ -101,7 +112,7 @@ export const PRESS_LINKS: readonly PressLink[] = [
   { id: "steam-demo", label: "Steam demo", href: STEAM_DEMO_URL, group: "play" },
   { id: "itch", label: "itch.io", href: ITCH_URL, group: "play" },
   { id: "youtube", label: "YouTube", href: "https://www.youtube.com/channel/UCdQDWTJe_Bno7xyjnO1aC-w", group: "social" },
-  { id: "trailer", label: "Gameplay trailer", href: PRESS_TRAILER_FILE_HREF, group: "social" },
+  { id: "trailer", label: "Gameplay trailer", href: PRESS_TRAILER_YOUTUBE_URL, group: "social" },
   { id: "reddit", label: "Reddit", href: REDDIT_URL, group: "social" },
   { id: "instagram", label: "Instagram", href: "https://www.instagram.com/a_dark_cave/", group: "social" },
   { id: "facebook", label: "Facebook", href: "https://www.facebook.com/people/A-Dark-Cave/61584724119235/", group: "social" },
@@ -293,6 +304,22 @@ function htmlAnchor(href: string, label: string, external = href.startsWith("htt
   return `<a href="${escapeHtml(href)}"${extra}>${escapeHtml(label)}</a>`;
 }
 
+export function getPressTrailerVideoObject() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: PRESS_TRAILER_NAME,
+    description: PRESS_TRAILER_DESCRIPTION,
+    thumbnailUrl: PRESS_TRAILER_THUMBNAIL_URL,
+    embedUrl: PRESS_TRAILER_EMBED_URL,
+    contentUrl: PRESS_TRAILER_YOUTUBE_URL,
+  } as const;
+}
+
+function pressTrailerEmbedHtml(): string {
+  return `<iframe title="${escapeHtml(PRESS_TRAILER_NAME)}" src="${escapeHtml(PRESS_TRAILER_EMBED_URL)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+}
+
 /** First-HTML body for crawlers (English). */
 export function getPressPageInnerHtml(): string {
   const facts = PRESS_FACTS.map((fact) => {
@@ -311,7 +338,7 @@ export function getPressPageInnerHtml(): string {
     `<h2>Short boilerplate</h2><p>${escapeHtml(PRESS_BOILERPLATE_SHORT)}</p>`,
     `<h2>Long boilerplate</h2><p>${escapeHtml(PRESS_BOILERPLATE_LONG)}</p>`,
     `<h2>Fact sheet</h2><dl>${facts}</dl>`,
-    `<h2>Gameplay trailer</h2><p>${htmlAnchor(PRESS_TRAILER_FILE_HREF, "Download MP4", false)}</p>`,
+    `<h2>Gameplay trailer</h2>${pressTrailerEmbedHtml()}<p>${htmlAnchor(PRESS_TRAILER_YOUTUBE_URL, "YouTube")} · ${htmlAnchor(PRESS_TRAILER_FILE_HREF, "Download MP4", false)}</p>`,
     `<h2>Assets</h2><p>${htmlAnchor(PRESS_ZIP_HREF, "Download all assets (ZIP)", false)}</p>`,
     `<h2>Links</h2><ul>${linkItems()}</ul>`,
     `<h2>Permissions</h2><p>${escapeHtml(PRESS_PERMISSIONS)}</p>`,

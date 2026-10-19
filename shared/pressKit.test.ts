@@ -11,8 +11,15 @@ import {
   PRESS_LOGOS,
   PRESS_PERMISSIONS,
   PRESS_SCREENSHOTS,
+  PRESS_TRAILER_DESCRIPTION,
+  PRESS_TRAILER_EMBED_URL,
+  PRESS_TRAILER_NAME,
+  PRESS_TRAILER_THUMBNAIL_URL,
+  PRESS_TRAILER_YOUTUBE_ID,
+  PRESS_TRAILER_YOUTUBE_URL,
   countWords,
   getPressPageInnerHtml,
+  getPressTrailerVideoObject,
   pressLinksInGroup,
 } from "./pressKit";
 
@@ -128,8 +135,30 @@ describe("press kit copy", () => {
     expect(html).toContain("Short boilerplate");
     expect(html).toContain("/press-kit/a_dark_cave_press_kit.zip");
     expect(html).toContain("/press-kit/video/a_dark_cave_gameplay_trailer.mp4");
-    expect(html).not.toContain("G8Gm7o4cZfQ");
+    expect(html).toContain(PRESS_TRAILER_YOUTUBE_URL);
+    expect(html).toContain(PRESS_TRAILER_EMBED_URL);
+    expect(html).toContain(`src="${PRESS_TRAILER_EMBED_URL}"`);
     expect(html).toContain("support@a-dark-cave.com");
+    expect(pressLinksInGroup("social").find((link) => link.id === "trailer")?.href).toBe(
+      PRESS_TRAILER_YOUTUBE_URL,
+    );
+  });
+
+  it("describes the current YouTube trailer as a VideoObject", () => {
+    expect(PRESS_TRAILER_YOUTUBE_ID).toBe("qDnoID3GcKc");
+    assertPressSafe(PRESS_TRAILER_NAME);
+    assertPressSafe(PRESS_TRAILER_DESCRIPTION);
+    const video = getPressTrailerVideoObject();
+    expect(video["@context"]).toBe("https://schema.org");
+    expect(video["@type"]).toBe("VideoObject");
+    expect(video.name).toBe(PRESS_TRAILER_NAME);
+    expect(video.description).toBe(PRESS_TRAILER_DESCRIPTION);
+    expect(video.thumbnailUrl).toBe(PRESS_TRAILER_THUMBNAIL_URL);
+    expect(video.thumbnailUrl).toContain(PRESS_TRAILER_YOUTUBE_ID);
+    expect(video.embedUrl).toBe(PRESS_TRAILER_EMBED_URL);
+    expect(video.contentUrl).toBe(PRESS_TRAILER_YOUTUBE_URL);
+    expect(video).not.toHaveProperty("uploadDate");
+    expect(JSON.parse(JSON.stringify(video))["@type"]).toBe("VideoObject");
   });
 });
 

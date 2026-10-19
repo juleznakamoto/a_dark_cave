@@ -328,6 +328,32 @@ describe("publicSeo", () => {
     expect(press).toContain("Short boilerplate");
     expect(press).toContain("a_dark_cave_press_kit.zip");
     expect(press).toContain("support@a-dark-cave.com");
+    expect(press).toContain("https://www.youtube.com/watch?v=qDnoID3GcKc");
+    expect(press).toContain("https://www.youtube.com/embed/qDnoID3GcKc");
+    expect(press).toContain('"@type":"VideoObject"');
+    expect(press).toContain(
+      "https://i.ytimg.com/vi/qDnoID3GcKc/maxresdefault.jpg",
+    );
+    const videoLd = press.match(
+      /<script type="application\/ld\+json">(\{"@context":"https:\/\/schema\.org","@type":"VideoObject".*?\})<\/script>/,
+    );
+    expect(videoLd?.[1]).toBeTruthy();
+    const video = JSON.parse(videoLd![1]!) as {
+      "@type": string;
+      name: string;
+      description: string;
+      thumbnailUrl: string;
+      embedUrl: string;
+      contentUrl: string;
+      uploadDate?: string;
+    };
+    expect(video["@type"]).toBe("VideoObject");
+    expect(video.name.length).toBeGreaterThan(0);
+    expect(video.description.length).toBeGreaterThan(0);
+    expect(video.thumbnailUrl).toContain("qDnoID3GcKc");
+    expect(video.embedUrl).toBe("https://www.youtube.com/embed/qDnoID3GcKc");
+    expect(video.contentUrl).toBe("https://www.youtube.com/watch?v=qDnoID3GcKc");
+    expect(video.uploadDate).toBeUndefined();
     expect(press).toContain(">Start</a>");
     expect(press).toContain(">FAQ</a>");
     expect(press).toContain(">About</a>");
