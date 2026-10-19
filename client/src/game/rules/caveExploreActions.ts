@@ -570,7 +570,7 @@ export const caveExploreActions: Record<string, Action> = {
       "tools.iron_lantern": false,
     },
     cost: {
-      "resources.torch": 5,
+      "resources.torch": 4,
       "resources.food": 25,
     },
     effects: (state: GameState) => {
