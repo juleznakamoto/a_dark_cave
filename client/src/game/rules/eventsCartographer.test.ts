@@ -108,7 +108,7 @@ describe("cartographer", () => {
       resources: { silver: 10 },
       story: turnedAway.story,
     });
-    expect(event.condition(short)).toBe(true);
+    expect(event.condition(short)).toBe(false);
     expect(minutesUntil(short)).toBe(30);
 
     const waiting = baseState({
