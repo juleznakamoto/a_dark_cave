@@ -237,10 +237,11 @@ export type VillagePath = {
   /** Point that moves when this stretch is dragged. */
   handle: Point;
   /**
-   * Fade along the approach to one building. `from` is the door and `to` is
-   * {@link PATH_DOOR_FADE} back along the track (solid). `clear` is the
-   * gradient offset where the track is still fully clear, {@link PATH_DOOR_CLEAR}
-   * out from the door. Shared stretches have none.
+   * Fade along a private approach, measured on the spur after it runs back
+   * through the doorway. `from` is that inner tip (clear). `to` is
+   * {@link PATH_DOOR_FADE} back out along the spur, solid under the wall.
+   * `clear` is the gradient offset still fully clear, {@link PATH_DOOR_CLEAR}
+   * out from `from`. Shared stretches have none.
    */
   doorFade: PathFade | null;
   /**

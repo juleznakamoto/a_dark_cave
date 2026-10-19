@@ -122,7 +122,7 @@ describe("socialPromoExclusiveReward", () => {
     ).toBe(false);
   });
 
-  it("hides the header Rewards shortcut until 15 minutes of play time", () => {
+  it("hides the header Rewards shortcut until 25 minutes of play time", () => {
     expect(isRewardsTasksShortcutVisible({ ...empty, playTime: 0 })).toBe(false);
     expect(
       isRewardsTasksShortcutVisible({

@@ -34,7 +34,7 @@ export type RewardsTasksUiSlice = SocialPromoExclusiveSlice & {
 };
 
 /** Header Rewards shortcut stays hidden until this much active play time. */
-export const REWARDS_TASKS_SHORTCUT_VISIBLE_AFTER_MS = 15 * 60 * 1000;
+export const REWARDS_TASKS_SHORTCUT_VISIBLE_AFTER_MS = 25 * 60 * 1000;
 
 /** First rewards row: done when gameplay session is active or welcome bonus was already granted. */
 export function isSignUpRewardsStepDone(
