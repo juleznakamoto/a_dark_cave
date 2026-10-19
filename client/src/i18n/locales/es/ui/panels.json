@@ -258,5 +258,9 @@
     "heal": "Forma una poderosa hermandad",
     "repair": "Construye una fortaleza poderosa",
     "unlockAchievements": "Desbloquea {{count}} logros en {{categories}} categorías"
+  },
+  "map": {
+    "playGrowth": "Reproducir el crecimiento de la aldea",
+    "stopGrowth": "Detener el crecimiento de la aldea"
   }
 }

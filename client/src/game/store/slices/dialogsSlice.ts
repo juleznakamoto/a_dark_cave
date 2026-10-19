@@ -238,7 +238,11 @@ export const createDialogsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
       );
       // Queue behind an already-open event instead of replacing it. Outcome
       // follow-ups close first, then reopen during the handoff gap.
-      if (eventAlreadyShowing || isVisibleModalDialogOpen(store)) {
+      if (
+        eventAlreadyShowing ||
+        isVisibleModalDialogOpen(store) ||
+        store.villageMapReplaying
+      ) {
         scheduleEventDialogWhenClear(get, set, currentEvent, 0);
         return;
       }

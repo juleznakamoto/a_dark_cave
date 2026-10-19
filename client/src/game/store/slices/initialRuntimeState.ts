@@ -10,6 +10,7 @@ export const initialRuntimeState: Partial<GameStore> = {
   accountSteamMode: false,
   devGameMode: getDevGameModeOverride(),
   activeDevSaveId: null,
+  villageMapReplaying: false,
   lastSaved: "Never",
   cooldowns: {},
   executionStartTimes: {},

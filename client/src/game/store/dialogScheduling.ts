@@ -164,7 +164,7 @@ export function scheduleEventDialogWhenClear(
   // bars sit at 0s because ticks stay frozen (pause button is still off).
   scheduleWhenDialogClear(
     get,
-    isVisibleModalDialogOpen,
+    (store) => isVisibleModalDialogOpen(store) || store.villageMapReplaying === true,
     () => openEventDialogNow(set, event),
     initialDelayMs,
   );

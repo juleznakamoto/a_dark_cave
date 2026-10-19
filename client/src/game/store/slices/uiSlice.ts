@@ -383,6 +383,11 @@ export const createUiSlice: GameStoreCreator<Partial<GameStore>> = (set, get) =>
     set({ villageMapSeenTiers: tiers });
   },
 
+  setVillageMapReplaying: (isReplaying: boolean) => {
+    if (get().villageMapReplaying === isReplaying) return;
+    set({ villageMapReplaying: isReplaying });
+  },
+
   collectVillageSilverCoin: (id: string) => {
     const state = get();
     const patch = collectVillageSilverPatch(state, id);

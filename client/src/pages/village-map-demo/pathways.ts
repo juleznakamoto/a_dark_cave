@@ -71,11 +71,13 @@ import {
   walkBranch,
 } from "@/pages/village-map-demo/pathwayJoins";
 import { buryStreetEnds, linkNearbyRoads } from "@/pages/village-map-demo/pathwayLinks";
+import { pullCrossingsIntoMeetings } from "@/pages/village-map-demo/pathwayMeetings";
 
 /**
  * Gravel tracks from each building's door to the heartfire.
  * Routes share a shortest-path tree, so they join instead of crossing.
- * A few later streets tie neighboring roads together.
+ * A few later streets tie neighboring roads together. A street that hits a road
+ * near other joins is pulled into that same meeting point.
  * Nothing leads to the pale cross, monolith, or pillar. They only block the way.
  */
 
@@ -930,6 +932,7 @@ function traceEdges(
   bundleParallelSpans(grid, edges);
   collapseRejoins(grid, edges);
   linkNearbyRoads(grid, edges);
+  pullCrossingsIntoMeetings(grid, edges);
   edges.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   return edges;
 }
@@ -1495,6 +1498,8 @@ export type RoadSplit = {
 /**
  * Three or more side roads leaving the same stretch should meet at one point.
  * Separate joins a short way apart read as a run of forks, not a crossing.
+ * Cross streets are not in the tree yet. {@link pullCrossingsIntoMeetings}
+ * counts them once they exist.
  */
 function gatherCloseSplits(grid: Grid, edges: PathEdgeBase[]): void {
   for (let pass = 0; pass < 6; pass++) {

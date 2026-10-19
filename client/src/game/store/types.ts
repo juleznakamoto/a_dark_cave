@@ -449,6 +449,9 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
   setVillageMapOverride: (id: string, point: { x: number; y: number } | null) => void;
   setVillageMapPathOverride: (id: string, point: { x: number; y: number } | null) => void;
   setVillageMapSeenTiers: (tiers: Record<string, number>) => void;
+  /** True while the map tab is replaying village growth. New events wait. */
+  villageMapReplaying: boolean;
+  setVillageMapReplaying: (isReplaying: boolean) => void;
   /** Pick up a village-map silver coin. Grants silver and plays the purchase cue. */
   collectVillageSilverCoin: (id: string) => void;
   updateEffects: () => void;

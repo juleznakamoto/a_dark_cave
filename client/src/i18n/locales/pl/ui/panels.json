@@ -282,5 +282,9 @@
     "heal": "Zbierz potężną drużynę",
     "repair": "Zbuduj potężną twierdzę",
     "unlockAchievements": "Odblokuj {{count}} osiągnięć w {{categories}} kategoriach"
+  },
+  "map": {
+    "playGrowth": "Odtwórz rozwój wioski",
+    "stopGrowth": "Zatrzymaj rozwój wioski"
   }
 }

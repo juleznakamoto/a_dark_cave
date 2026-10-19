@@ -258,5 +258,9 @@
     "heal": "Assemblez une puissante compagnie",
     "repair": "Construisez une forteresse puissante",
     "unlockAchievements": "Débloquez {{count}} succès dans {{categories}} catégories"
+  },
+  "map": {
+    "playGrowth": "Lire la croissance du village",
+    "stopGrowth": "Arrêter la croissance du village"
   }
 }

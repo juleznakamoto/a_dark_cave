@@ -345,6 +345,138 @@ function nearbyBranchOffs(paths: Array<{ id: string; points: Array<{ x: number; 
   return violations;
 }
 
+/** A cross street still sitting along the road from a meeting, instead of on it. */
+function crossStreetsBesideMeetings(
+  paths: Array<{ id: string; points: Array<{ x: number; y: number }> }>,
+): string[] {
+  const same = (a: { x: number; y: number }, b: { x: number; y: number }) => Math.hypot(a.x - b.x, a.y - b.y) < 0.75;
+  const lengthOf = (points: Array<{ x: number; y: number }>) => {
+    let length = 0;
+    for (let index = 1; index < points.length; index++) {
+      length += Math.hypot(points[index].x - points[index - 1].x, points[index].y - points[index - 1].y);
+    }
+    return length;
+  };
+  const project = (point: { x: number; y: number }, points: Array<{ x: number; y: number }>) => {
+    let best = Infinity;
+    let along = 0;
+    let walked = 0;
+    for (let index = 1; index < points.length; index++) {
+      const start = points[index - 1];
+      const end = points[index];
+      const dx = end.x - start.x;
+      const dy = end.y - start.y;
+      const span = Math.hypot(dx, dy);
+      const lenSq = dx * dx + dy * dy || 1;
+      const t = Math.max(0, Math.min(1, ((point.x - start.x) * dx + (point.y - start.y) * dy) / lenSq));
+      const dist = Math.hypot(point.x - (start.x + dx * t), point.y - (start.y + dy * t));
+      if (dist < best) {
+        best = dist;
+        along = walked + span * t;
+      }
+      walked += span;
+    }
+    return { dist: best, along };
+  };
+  const roads = paths.filter((path) => !path.id.startsWith("link:"));
+  const links = paths.filter((path) => path.id.startsWith("link:"));
+  const endingAt = (point: { x: number; y: number }) =>
+    roads.filter((path) => {
+      const end = path.points[path.points.length - 1];
+      return end != null && same(end, point);
+    });
+  const violations: string[] = [];
+  const roots = roads.filter((path) => {
+    const end = path.points[path.points.length - 1];
+    return end != null && !roads.some((other) => other.points[0] && same(other.points[0], end));
+  });
+  for (const root of roots) {
+    const chain: Array<{ edge: (typeof roads)[number]; outerAlong: number }> = [];
+    const meetings: Array<{ at: { x: number; y: number }; along: number; sides: number }> = [];
+    let edge: (typeof roads)[number] | undefined = root;
+    let outerAlong = 0;
+    const seen = new Set<string>();
+    while (edge && !seen.has(edge.id)) {
+      seen.add(edge.id);
+      outerAlong += lengthOf(edge.points);
+      chain.push({ edge, outerAlong });
+      const joint = edge.points[0];
+      if (!joint) break;
+      const children = endingAt(joint).filter((path) => path !== edge);
+      if (children.length < 2) {
+        edge = children[0];
+        continue;
+      }
+      const outwardFrom = edge.points[1];
+      let onward = children[0];
+      if (outwardFrom) {
+        const ox = joint.x - outwardFrom.x;
+        const oy = joint.y - outwardFrom.y;
+        const span = Math.hypot(ox, oy) || 1;
+        let best = -2;
+        for (const child of children) {
+          const prev = child.points[child.points.length - 2];
+          if (!prev) continue;
+          const dx = prev.x - joint.x;
+          const dy = prev.y - joint.y;
+          const childSpan = Math.hypot(dx, dy) || 1;
+          const dot = (ox * dx + oy * dy) / (span * childSpan);
+          if (dot > best) {
+            best = dot;
+            onward = child;
+          }
+        }
+      }
+      const sides = children.filter((child) => child !== onward).length;
+      if (sides > 0) meetings.push({ at: joint, along: outerAlong, sides });
+      edge = onward;
+    }
+    const onChain = new Set(chain.map((item) => item.edge));
+    const hits: Array<{ along: number; sides: number; at: { x: number; y: number }; link: boolean }> = meetings.map(
+      (meeting) => ({ along: meeting.along, sides: meeting.sides, at: meeting.at, link: false }),
+    );
+    for (const link of links) {
+      const ends = [link.points[0], link.points[link.points.length - 1]];
+      let best: { along: number; at: { x: number; y: number }; dist: number } | null = null;
+      for (const point of ends) {
+        if (!point) continue;
+        for (const item of chain) {
+          const hit = project(point, item.edge.points);
+          if (hit.dist > 2.5) continue;
+          if (best && hit.dist >= best.dist) continue;
+          best = { along: item.outerAlong - hit.along, at: point, dist: hit.dist };
+        }
+      }
+      if (!best) continue;
+      const landed = best;
+      const host = chain.find((item) => project(landed.at, item.edge.points).dist <= 2.5);
+      if (!host || !onChain.has(host.edge)) continue;
+      hits.push({ along: landed.along, sides: 1, at: landed.at, link: true });
+    }
+    hits.sort((a, b) => a.along - b.along);
+    let start = 0;
+    while (start < hits.length) {
+      let end = start;
+      while (end + 1 < hits.length && hits[end + 1].along - hits[start].along <= INTERSECTION_REACH) end += 1;
+      const cluster = hits.slice(start, end + 1);
+      const forks = cluster.filter((hit) => !hit.link);
+      if (end > start && forks.length >= 2) {
+        start = end + 1;
+        continue;
+      }
+      const stray = cluster.filter(
+        (hit) => hit.link && !cluster.some((other) => !other.link && same(other.at, hit.at)),
+      );
+      if (end > start && forks.length === 1 && stray.length > 0) {
+        const at = stray[0].at;
+        violations.push(`${Math.round(at.x)},${Math.round(at.y)}`);
+      }
+      start += 1;
+    }
+  }
+  return violations;
+}
+
 describe("village pathways", () => {
   it("treats a crown on the ribbon as touched, and one past the edge as clear", () => {
     const line = [
@@ -436,6 +568,13 @@ describe("village pathways", () => {
     for (const preset of ["village", "full"] as const) {
       const { paths } = fieldFor(preset);
       expect(nearbyBranchOffs(paths), preset).toEqual([]);
+    }
+  });
+
+  it("pulls a cross street into a nearby meeting on the same road", () => {
+    for (const preset of ["village", "full"] as const) {
+      const { paths } = fieldFor(preset);
+      expect(crossStreetsBesideMeetings(paths), preset).toEqual([]);
     }
   });
 

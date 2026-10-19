@@ -260,6 +260,8 @@ export const createEventsSlice: GameStoreCreator<Partial<GameStore>> = (set, get
     if (isDemoPlayFrozen(state)) return;
 
     if (isModalDialogOpen(state)) return;
+    // Map growth replay: skip the roll so a stranger or attack cannot cover it.
+    if (state.villageMapReplaying) return;
 
     const { newLogEntries, stateChanges } =
       EventManager.checkEvents(state);

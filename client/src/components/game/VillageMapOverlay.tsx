@@ -1,6 +1,14 @@
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { GameUiIcon } from "@/components/game/GameUiIcon";
+import { GAME_CHROME_NO_BG_HOVER } from "@/components/game/gameChrome";
+import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
+import {
+  villageEvolutionFrames,
+  villageEvolutionStepMs,
+} from "@/game/villageMapPlayback";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   resettleVillageSilverCoins,
   visibleVillageSilverCoins,
@@ -36,6 +44,17 @@ import {
 } from "@/game/villageMapReveal";
 import { useSidePanelActiveTooltipHoverId } from "./panels/SidePanelSection";
 
+const MAP_PLAY_BUTTON =
+  `group absolute left-2 top-1 z-10 shrink-0 px-1 py-1 text-xs font-medium text-neutral-300 pointer-events-auto ${GAME_CHROME_NO_BG_HOVER}`;
+const MAP_PLAY_ICON =
+  "opacity-80 transition-[opacity,color] group-hover:opacity-100 text-neutral-300 group-hover:!text-neutral-300";
+
+type MapPlayback = {
+  frames: ReturnType<typeof villageEvolutionFrames>;
+  index: number;
+  stepMs: number;
+};
+
 function readDemoSnapshotRaw(): string | null {
   try {
     return localStorage.getItem(VILLAGE_MAP_DEMO_STORAGE_KEY);
@@ -68,7 +87,9 @@ const ignoreMapEdit = () => { };
  */
 export default function VillageMapOverlay() {
   const { t } = useTranslation("common");
+  const { t: tUi } = useUiTranslation();
   const open = useGameStore((state) => state.activeTab === "map");
+  const [playback, setPlayback] = useState<MapPlayback | null>(null);
   const silverCoins = useGameStore((state) => state.villageSilverCoins);
   const seenResources = useGameStore((state) => state.seenResources);
   const silverHeld = useGameStore((state) => state.resources.silver ?? 0);
@@ -118,7 +139,12 @@ export default function VillageMapOverlay() {
     wasOpen.current = false;
   }
   const demo = demoRef.current;
-  const build = useMemo(() => buildStateFromPlayer(buildings, blessings), [buildings, blessings]);
+  const liveBuild = useMemo(
+    () => buildStateFromPlayer(buildings, blessings),
+    [buildings, blessings],
+  );
+  const evolution = useMemo(() => villageEvolutionFrames(liveBuild), [liveBuild]);
+  const shownBuild = playback?.frames[playback.index] ?? liveBuild;
   const overrides = useMemo(
     () => ({ ...VILLAGE_MAP_POSITIONS, ...(demo?.overrides ?? {}), ...(moved ?? {}) }),
     [demo, moved],
@@ -130,15 +156,17 @@ export default function VillageMapOverlay() {
   const highlightId = open ? mapHighlightFromSidePanelHover(sidePanelHover) : null;
   const slotMarks = useMemo(
     () =>
-      placedSlots(build, DEFAULT_TUNING, overrides).map((slot) => ({
+      placedSlots(liveBuild, DEFAULT_TUNING, overrides).map((slot) => ({
         id: slot.id,
         tier: slot.tier,
       })),
-    [build, overrides],
+    [liveBuild, overrides],
   );
-  const featureMarks = useMemo(() => villageMapFeatureMarks(build), [build]);
+  const featureMarks = useMemo(() => villageMapFeatureMarks(liveBuild), [liveBuild]);
   const markKey = [...slotMarks, ...featureMarks].map((mark) => `${mark.id}:${mark.tier}`).join("|");
   const revealRef = useRef<VillageMapReveal | null>(null);
+  /** Mark key frozen while a replay is up, so the open-map fade does not restart when it ends. */
+  const revealCutRef = useRef<string | null>(null);
   const shownRef = useRef<Record<string, number>>({});
   const markKeyRef = useRef("");
   const sessionRef = useRef(false);
@@ -165,7 +193,60 @@ export default function VillageMapOverlay() {
     if (!open) return;
     const patch = resettleVillageSilverCoins(useGameStore.getState());
     if (patch) useGameStore.setState(patch);
-  }, [open, build, overrides, pathOverrides]);
+  }, [open, liveBuild, overrides, pathOverrides]);
+
+  if (!open) {
+    revealCutRef.current = null;
+  } else if (playback && revealCutRef.current == null) {
+    revealCutRef.current = markKey;
+  } else if (!playback && revealCutRef.current != null && revealCutRef.current !== markKey) {
+    revealCutRef.current = null;
+  }
+  const replaying = playback != null;
+
+  const onPlayClick = () => {
+    if (playback) {
+      setPlayback(null);
+      return;
+    }
+    if (evolution.length < 2) return;
+    if (coinHoverRef.current) {
+      coinHoverRef.current = null;
+      useGameStore.getState().setHighlightedResources([]);
+    }
+    setPlayback({
+      frames: evolution,
+      index: 0,
+      stepMs: villageEvolutionStepMs(liveBuild),
+    });
+  };
+
+  useEffect(() => {
+    useGameStore.getState().setVillageMapReplaying(open && playback != null);
+  }, [open, playback]);
+
+  useEffect(() => {
+    return () => {
+      useGameStore.getState().setVillageMapReplaying(false);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!open) {
+      setPlayback(null);
+      return;
+    }
+    if (!playback) return;
+    const timer = window.setTimeout(() => {
+      setPlayback((current) => {
+        if (!current) return null;
+        const next = current.index + 1;
+        if (next >= current.frames.length) return null;
+        return { ...current, index: next };
+      });
+    }, playback.stepMs);
+    return () => window.clearTimeout(timer);
+  }, [open, playback]);
 
   useEffect(() => {
     if (!open) {
@@ -211,26 +292,48 @@ export default function VillageMapOverlay() {
     >
       <div className="min-h-0 min-w-0 flex-1">
         <VillageMap
-          build={build}
+          build={shownBuild}
           tuning={DEFAULT_TUNING}
           overrides={overrides}
           pathOverrides={pathOverrides}
           trees={demo?.trees ?? VILLAGE_MAP_TREES}
-          highlightId={highlightId}
-          reveal={open ? revealRef.current : null}
+          highlightId={replaying ? null : highlightId}
+          reveal={open && !replaying && revealCutRef.current == null ? revealRef.current : null}
           onOverride={ignoreMapEdit}
           onPathOverride={ignoreMapEdit}
           onActiveLabel={ignoreMapEdit}
           onHoverBuilding={onHoverBuilding}
           readOnly
           heartfireLevel={heartfireLevel}
-          silverCoins={visibleCoins}
+          silverCoins={replaying ? [] : visibleCoins}
           onSilverCoin={collectSilverCoin}
           onHoverSilverCoin={onHoverCoin}
           silverCoinLabel={t("resources.silver", { defaultValue: "Silver" })}
           goldCoinLabel={t("resources.gold", { defaultValue: "Gold" })}
         />
       </div>
+      {(playback || evolution.length > 1) && (
+        <Button
+          variant="ghost"
+          size="xs"
+          button_id="village-map-play"
+          data-testid="button-village-map-play"
+          aria-pressed={replaying}
+          aria-label={
+            replaying
+              ? tUi("map.stopGrowth", { defaultValue: "Stop village growth" })
+              : tUi("map.playGrowth", { defaultValue: "Play village growth" })
+          }
+          className={MAP_PLAY_BUTTON}
+          onClick={onPlayClick}
+        >
+          <GameUiIcon
+            name={replaying ? "pause" : "unpause"}
+            sizeClassName="game-tab-icon"
+            className={MAP_PLAY_ICON}
+          />
+        </Button>
+      )}
     </div>
   );
 }

@@ -258,5 +258,9 @@
     "heal": "強力な仲間を集める",
     "repair": "強大な要塞を築く",
     "unlockAchievements": "{{categories}}部門で実績を{{count}}個解放"
+  },
+  "map": {
+    "playGrowth": "村の発展を再生",
+    "stopGrowth": "村の発展を停止"
   }
 }

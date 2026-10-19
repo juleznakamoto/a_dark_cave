@@ -258,5 +258,9 @@
     "heal": "Forme uma poderosa irmandade",
     "repair": "Construa uma fortaleza poderosa",
     "unlockAchievements": "Desbloqueie {{count}} conquistas em {{categories}} categorias"
+  },
+  "map": {
+    "playGrowth": "Reproduzir o crescimento da vila",
+    "stopGrowth": "Parar o crescimento da vila"
   }
 }

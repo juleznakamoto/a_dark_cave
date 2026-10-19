@@ -228,9 +228,14 @@ function consider(
 }
 
 function streetBetween(a: Sample, b: Sample): Point[][] {
-  const mid = { x: (a.at.x + b.at.x) / 2, y: (a.at.y + b.at.y) / 2 };
-  const dx = b.at.x - a.at.x;
-  const dy = b.at.y - a.at.y;
+  return aimedStreets(a.at, b.at);
+}
+
+/** Bowed runs from `from` to `to`. Straight is last, so a bend is preferred. */
+export function aimedStreets(from: Point, to: Point): Point[][] {
+  const mid = { x: (from.x + to.x) / 2, y: (from.y + to.y) / 2 };
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
   const len = Math.hypot(dx, dy) || 1;
   const px = -dy / len;
   const py = dx / len;
@@ -240,12 +245,14 @@ function streetBetween(a: Sample, b: Sample): Point[][] {
     x: mid.x + px * amount * sign,
     y: mid.y + py * amount * sign,
   });
+  const start = { x: from.x, y: from.y };
+  const end = { x: to.x, y: to.y };
   // Stop on each road's center. Riding along the road first makes the ribbon
   // corner flare into a bump where the street peels off.
   return [
-    dedupePoints([a.at, bow(BOW), b.at]),
-    dedupePoints([a.at, bow(-BOW), b.at]),
-    dedupePoints([a.at, b.at]),
+    dedupePoints([start, bow(BOW), end]),
+    dedupePoints([start, bow(-BOW), end]),
+    dedupePoints([start, end]),
   ].filter((points) => points.length >= 2 && !reverses(points));
 }
 
@@ -257,12 +264,45 @@ function streetFits(grid: RoadGrid, edges: readonly RoadEdge[], points: Point[],
   return middleStandsOff(points, edges, a.edge, b.edge, a.at, b.at);
 }
 
+/**
+ * A street pulled onto an existing meeting may meet a little shallower than a
+ * new street. Still a corner, not a slide along the road.
+ */
+const MEETING_JOIN = 30;
+
 /** The street has to leave each road at a real corner, not slide along it. */
-function meetsAtAngle(points: Point[], a: Sample, b: Sample): boolean {
+function meetsAtAngle(points: Point[], a: Sample, b: Sample, min = MIN_MEET): boolean {
   const leaveA = departDirection(points, a.at, false);
   const leaveB = departDirection(points, b.at, true);
   if (!leaveA || !leaveB) return false;
-  return lineAngle(a.dir, leaveA) >= MIN_MEET && lineAngle(b.dir, leaveB) >= MIN_MEET;
+  return lineAngle(a.dir, leaveA) >= min && lineAngle(b.dir, leaveB) >= min;
+}
+
+/**
+ * A cross street retargeted onto a meeting. `start` is the first point and
+ * `end` is the last. Edges that are about to move can be left out of `edges`.
+ */
+export function crossingStreetFits(
+  grid: RoadGrid,
+  edges: readonly RoadEdge[],
+  points: Point[],
+  start: { at: Point; dir: Point; edge: RoadEdge },
+  end: { at: Point; dir: Point; edge: RoadEdge },
+  sharing: readonly RoadEdge[] = [],
+): boolean {
+  const sample = (seat: { at: Point; dir: Point; edge: RoadEdge }): Sample => ({
+    edge: seat.edge,
+    along: 0,
+    at: seat.at,
+    dir: seat.dir,
+  });
+  const a = sample(start);
+  const b = sample(end);
+  if (!meetsAtAngle(points, a, b, MEETING_JOIN)) return false;
+  if (!centerlineOpen(grid, points, a.at, b.at)) return false;
+  if (edges.some((edge) => edge !== a.edge && edge !== b.edge && polylinesCross(points, edge.points))) return false;
+  if (polylinesCross(points, a.edge.points) || polylinesCross(points, b.edge.points)) return false;
+  return middleStandsOff(points, edges, a.edge, b.edge, a.at, b.at, true, sharing);
 }
 
 function departDirection(points: readonly Point[], join: Point, atEnd: boolean): Point | null {
@@ -311,6 +351,8 @@ function middleStandsOff(
   hostB: RoadEdge,
   joinA: Point,
   joinB: Point,
+  allowUnsampled = false,
+  sharing: readonly RoadEdge[] = [],
 ): boolean {
   let checked = 0;
   let walked = 0;
@@ -328,13 +370,14 @@ function middleStandsOff(
       if (Math.hypot(point.x - joinB.x, point.y - joinB.y) < 16) continue;
       checked += 1;
       for (const edge of edges) {
-        const gap = edge === hostA || edge === hostB ? 8 : 12;
+        const gap = edge === hostA || edge === hostB || sharing.includes(edge) ? 8 : 12;
         if (projectOnto(point, edge.points).dist < gap) return false;
       }
     }
     walked += span;
   }
-  return checked > 0 && walked > 0;
+  if (checked === 0) return allowUnsampled && walked > 0;
+  return walked > 0;
 }
 
 function sameChain(parent: ReadonlyMap<RoadEdge, RoadEdge>, a: RoadEdge, b: RoadEdge): boolean {

@@ -258,5 +258,9 @@
     "heal": "集结一支强大的同伴",
     "repair": "建造一座强大的堡垒",
     "unlockAchievements": "在 {{categories}} 个分类中解锁 {{count}} 项成就"
+  },
+  "map": {
+    "playGrowth": "播放村庄发展",
+    "stopGrowth": "停止村庄发展"
   }
 }

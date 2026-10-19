@@ -258,5 +258,9 @@
     "heal": "Stelle eine mächtige Gefolgschaft zusammen",
     "repair": "Errichte eine mächtige Festung",
     "unlockAchievements": "Schalte {{count}} Erfolge in {{categories}} Kategorien frei"
+  },
+  "map": {
+    "playGrowth": "Dorfwachstum abspielen",
+    "stopGrowth": "Dorfwachstum stoppen"
   }
 }

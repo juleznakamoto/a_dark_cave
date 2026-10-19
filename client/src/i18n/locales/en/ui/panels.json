@@ -258,5 +258,9 @@
     "heal": "Assemble a powerful fellowship",
     "repair": "Build a mighty fortress",
     "unlockAchievements": "Unlock {{count}} achievements in {{categories}} categories"
+  },
+  "map": {
+    "playGrowth": "Play village growth",
+    "stopGrowth": "Stop village growth"
   }
 }

@@ -258,5 +258,9 @@
     "heal": "Forma una potente compagnia",
     "repair": "Costruisci una potente fortezza",
     "unlockAchievements": "Sblocca {{count}} obiettivi in {{categories}} categorie"
+  },
+  "map": {
+    "playGrowth": "Riproduci la crescita del villaggio",
+    "stopGrowth": "Ferma la crescita del villaggio"
   }
 }

@@ -53,6 +53,7 @@ export const RUNTIME_ONLY_NON_DIALOG_KEYS = [
   "isPausedPreviously",
   "demoEndDialogDismissed",
   "restartGamePreferCruelMode",
+  "villageMapReplaying",
 ] as const;
 
 const TIMED_EVENT_TAB_PERSISTED_KEYS = [
@@ -176,6 +177,7 @@ export function getTransientDialogResetOnLoad(): Record<string, unknown> {
     signUpPromptEligibleForGold: false,
     inactivityReason: null,
     restartGamePreferCruelMode: false,
+    villageMapReplaying: false,
   };
 }
 
