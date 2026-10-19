@@ -7,6 +7,7 @@ function baseState(overrides: Record<string, unknown> = {}) {
   return gameStateSchema.parse({
     buildings: { woodenHut: 1 },
     flags: { forestUnlocked: true, mapUnlocked: false },
+    resources: { silver: CARTOGRAPHER_SILVER_COST },
     ...overrides,
   });
 }
@@ -25,7 +26,7 @@ describe("cartographer", () => {
     expect(event.showAsTimedTab).toBeFalsy();
     expect(event.repeatable).toBe(true);
     expect(event.cooldownPercent).toBe(0.6);
-    expect(minutesUntil(baseState())).toBe(15);
+    expect(minutesUntil(baseState())).toBe(5);
     expect(
       minutesUntil(
         baseState({ story: { seen: { cartographerDeclined: true } } }),
@@ -38,13 +39,18 @@ describe("cartographer", () => {
     expect(choices[1]?.id).toBe("refuse");
   });
 
-  it("waits until a wooden hut stands and the forest is unlocked", () => {
+  it("waits until a wooden hut stands, the forest is unlocked, and silver covers the fee", () => {
     expect(event.condition(baseState())).toBe(true);
     expect(event.condition(baseState({ buildings: { woodenHut: 0 } }))).toBe(
       false,
     );
     expect(
       event.condition(baseState({ flags: { forestUnlocked: false } })),
+    ).toBe(false);
+    expect(
+      event.condition(
+        baseState({ resources: { silver: CARTOGRAPHER_SILVER_COST - 1 } }),
+      ),
     ).toBe(false);
   });
 
@@ -98,8 +104,13 @@ describe("cartographer", () => {
     expect(turnedAway.flags?.mapUnlocked).not.toBe(true);
     expect(turnedAway.resources).toBeUndefined();
 
-    const waiting = baseState({
+    const short = baseState({
       resources: { silver: 10 },
+      story: turnedAway.story,
+    });
+    expect(event.condition(short)).toBe(false);
+
+    const waiting = baseState({
       story: turnedAway.story,
     });
     expect(event.condition(waiting)).toBe(true);
