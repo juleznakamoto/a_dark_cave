@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Redirect } from "wouter";
 import { Button } from "@/components/ui/button";
+import { villageEvolutionStepMs } from "@/game/villageMapPlayback";
 import { revealForSimulatedOpen, type VillageMapReveal } from "@/game/villageMapReveal";
 import type { VillageSilverCoin } from "@/game/villageMapSilver";
 import {
@@ -275,6 +276,9 @@ function ColorField({
   );
 }
 
+/** One pace for the whole script, from how many buildings the finished village has. */
+const DEMO_GROWTH_STEP_MS = villageEvolutionStepMs(applyGrowth(GROWTH_STEPS.length));
+
 /** Same coin mark as the game, sitting on open ground in this preview. */
 const DEMO_SILVER_COINS: VillageSilverCoin[] = [
   { id: "demo-silver-a", x: 500, y: 760 },
@@ -329,7 +333,7 @@ export default function VillageMapDemo() {
           presetId: mark ?? null,
         };
       });
-    }, 450);
+    }, DEMO_GROWTH_STEP_MS);
     return () => window.clearInterval(id);
   }, [playing, stage]);
 
