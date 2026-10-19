@@ -248,13 +248,19 @@ function PathEndFades({
   }, children);
 }
 
-/** A stretch waits until every building it serves has finished appearing. */
+/**
+ * A stretch waits until every building it serves has finished appearing.
+ * A cross street lists both roads it joins, so one new building is enough
+ * to hold it back with that building's own road. Shared trunks stay:
+ * they already lead to buildings that are on the map.
+ */
 function pathWaitsForBuilding(path: VillagePath, reveal: VillageMapReveal | null): boolean {
   if (!reveal || prefersReducedMotion()) return false;
   const firstTime = (id: string) => reveal.fadeIn[id] === true && reveal.fadeOutTier[id] == null;
   if (firstTime("heartfire:0")) return true;
   const served = path.slotIds;
   if (!served.some(firstTime)) return false;
+  if (path.id.startsWith("link:")) return true;
   return served.every(firstTime);
 }
 
