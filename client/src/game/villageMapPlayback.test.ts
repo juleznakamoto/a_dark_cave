@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
+import { createInitialState } from "@/game/store/createInitialState";
+import { mergeStateUpdates } from "@/game/store/mergeStateUpdates";
 import { buildStateFromPlayer } from "@/game/villageMapBuild";
+import { noteVillageBuildOrder } from "@/game/villageBuildOrder";
 import {
   placedBuildingCount,
   villageEvolutionFrames,
@@ -50,6 +53,58 @@ describe("village evolution playback", () => {
 
   it("returns nothing when there is no village yet", () => {
     expect(villageEvolutionFrames(emptyBuild())).toEqual([]);
+  });
+
+  it("plays a new save in the order the buildings were placed", () => {
+    const order = ["woodenHut", "heartfire", "woodenHut"];
+    const target = buildStateFromPlayer({ woodenHut: 2, heartfire: 1 });
+    const frames = villageEvolutionFrames(target, order);
+
+    expect(frames.map((frame) => frame.counts.woodenHut ?? 0)).toEqual([1, 1, 2]);
+    expect(frames.map((frame) => frame.counts.heartfire ?? 0)).toEqual([0, 1, 1]);
+    expect(sameBuild(frames[frames.length - 1], target)).toBe(true);
+  });
+
+  it("keeps the script order when a save has no build list", () => {
+    const target = village({ woodenHut: 3, heartfire: 1 });
+    const frames = villageEvolutionFrames(target, ["woodenHut"]);
+
+    expect(frames.map((frame) => frame.counts.woodenHut ?? 0)).toEqual([1, 2, 3, 3]);
+    expect(frames.map((frame) => frame.counts.heartfire ?? 0)).toEqual([0, 0, 0, 1]);
+  });
+
+  it("records each new copy and drops the latest one when it is lost", () => {
+    expect(noteVillageBuildOrder({ woodenHut: 2 }, { woodenHut: 3 }, ["woodenHut", "woodenHut"])).toEqual([
+      "woodenHut",
+      "woodenHut",
+      "woodenHut",
+    ]);
+    expect(noteVillageBuildOrder({ woodenHut: 2, stoneHut: 1 }, { woodenHut: 1 }, ["stoneHut", "woodenHut", "woodenHut"])).toEqual([
+      "stoneHut",
+      "woodenHut",
+    ]);
+    expect(noteVillageBuildOrder({ woodenHut: 4 }, { woodenHut: 5 }, [])).toEqual([]);
+  });
+
+  it("tracks build order through state updates on a fresh game only", () => {
+    const fresh = createInitialState();
+    const first = mergeStateUpdates(fresh, {
+      buildings: { ...fresh.buildings, woodenHut: 1 },
+    });
+    expect(first.villageBuildOrder).toEqual(["woodenHut"]);
+
+    const withFirst = { ...fresh, ...first, buildings: first.buildings ?? fresh.buildings };
+    const second = mergeStateUpdates(withFirst, {
+      buildings: { ...withFirst.buildings, heartfire: 1 },
+    });
+    expect(second.villageBuildOrder).toEqual(["woodenHut", "heartfire"]);
+
+    const old = createInitialState();
+    old.buildings = { ...old.buildings, woodenHut: 4 };
+    const ignored = mergeStateUpdates(old, {
+      buildings: { ...old.buildings, woodenHut: 5 },
+    });
+    expect(ignored.villageBuildOrder).toEqual([]);
   });
 
   it("holds each step longer when the village is smaller", () => {

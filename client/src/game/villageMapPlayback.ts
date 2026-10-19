@@ -1,3 +1,4 @@
+import { buildStateFromPlayer } from "@/game/villageMapBuild";
 import {
   BUILDINGS,
   emptyBuild,
@@ -132,13 +133,51 @@ function catchUp(frames: BuildState[], current: BuildState, target: BuildState):
   if (!sameBuild(cursor, target)) remember(frames, target);
 }
 
+/** Houses, walls, and traps. Blessings are filled in after the build list. */
+function samePlacedVillage(a: BuildState, b: BuildState): boolean {
+  if (a.wall !== b.wall || a.traps !== b.traps || a.moat !== b.moat || a.chitin !== b.chitin) {
+    return false;
+  }
+  return BUILDINGS.every(
+    (building) => (a.counts[building.id] ?? 0) === (b.counts[building.id] ?? 0),
+  );
+}
+
 /**
- * The player's village, one growth step at a time, in the map's build order.
- * Steps the save never reached are left out. The last frame is the live village.
+ * Replay a recorded build list. Returns nothing when the list is empty or
+ * does not add up to the live village, so older saves keep the script order.
+ */
+function framesFromBuildOrder(
+  target: BuildState,
+  buildOrder: readonly string[] | undefined,
+): BuildState[] | null {
+  if (!buildOrder || buildOrder.length === 0) return null;
+  const counts: Record<string, number> = {};
+  const frames: BuildState[] = [];
+  let current = emptyBuild();
+  for (const key of buildOrder) {
+    counts[key] = (counts[key] ?? 0) + 1;
+    current = remember(frames, buildStateFromPlayer(counts));
+  }
+  if (!samePlacedVillage(buildStateFromPlayer(counts), target)) return null;
+  if (!sameBuild(current, target)) catchUp(frames, current, target);
+  return frames;
+}
+
+/**
+ * The player's village, one growth step at a time.
+ * A recorded build list is the order a new game placed them. Older saves,
+ * which have no list, follow the map's growth script and skip steps they
+ * never reached. The last frame is the live village.
  * An empty save returns no frames.
  */
-export function villageEvolutionFrames(target: BuildState): BuildState[] {
+export function villageEvolutionFrames(
+  target: BuildState,
+  buildOrder?: readonly string[],
+): BuildState[] {
   if (sameBuild(target, emptyBuild())) return [];
+  const recorded = framesFromBuildOrder(target, buildOrder);
+  if (recorded) return recorded;
   const frames: BuildState[] = [];
   let current = emptyBuild();
   for (const step of GROWTH_STEPS) {

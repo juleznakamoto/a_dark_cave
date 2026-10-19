@@ -108,6 +108,7 @@ export default function VillageMapOverlay() {
   const moved = useGameStore((state) => state.villageMapOverrides);
   const pathMoved = useGameStore((state) => state.villageMapPathOverrides);
   const buildings = useGameStore((state) => state.buildings);
+  const buildOrder = useGameStore((state) => state.villageBuildOrder);
   const buildingsRef = useRef(buildings);
   buildingsRef.current = buildings;
   const blessings = useGameStore((state) => state.blessings);
@@ -143,7 +144,10 @@ export default function VillageMapOverlay() {
     () => buildStateFromPlayer(buildings, blessings),
     [buildings, blessings],
   );
-  const evolution = useMemo(() => villageEvolutionFrames(liveBuild), [liveBuild]);
+  const evolution = useMemo(
+    () => villageEvolutionFrames(liveBuild, buildOrder),
+    [liveBuild, buildOrder],
+  );
   const shownBuild = playback?.frames[playback.index] ?? liveBuild;
   const overrides = useMemo(
     () => ({ ...VILLAGE_MAP_POSITIONS, ...(demo?.overrides ?? {}), ...(moved ?? {}) }),

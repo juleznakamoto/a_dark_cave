@@ -384,6 +384,8 @@ export const gameStateSchema = z.object({
       treasury: z.number().default(0),
     })
     .default({}),
+  // Building ids in the order a new game placed them. Empty on older saves.
+  villageBuildOrder: z.array(z.string()).default(() => []),
 
   heartfireState: z
     .object({

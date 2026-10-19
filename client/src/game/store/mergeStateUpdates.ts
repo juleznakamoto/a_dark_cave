@@ -1,6 +1,7 @@
 import { GameState } from "@shared/schema";
 import { constrainResourceAmount } from "@/game/resourceLimits";
 import { markSeenResources } from "@/game/stateHelpers";
+import { noteVillageBuildOrder } from "@/game/villageBuildOrder";
 import {
   calculateTotalEffects,
   getMadnessComponents,
@@ -49,6 +50,15 @@ export const mergeStateUpdates = (
     weapons: { ...prevState.weapons, ...stateUpdates.weapons },
     tools: { ...prevState.tools, ...stateUpdates.tools },
     buildings: { ...prevState.buildings, ...stateUpdates.buildings },
+    villageBuildOrder: stateUpdates.buildings
+      ? noteVillageBuildOrder(
+          prevState.buildings,
+          stateUpdates.buildings,
+          prevState.villageBuildOrder,
+        )
+      : stateUpdates.villageBuildOrder !== undefined
+        ? stateUpdates.villageBuildOrder
+        : (prevState.villageBuildOrder ?? []),
     flags: { ...prevState.flags, ...stateUpdates.flags },
     villagers: { ...prevState.villagers, ...stateUpdates.villagers },
     current_population:
