@@ -190,11 +190,11 @@ const PATH_OUTLINE_RADIUS = 0.75;
  * How much dirt shows in the ribbon. Baked into an opaque fill over the paper,
  * so two roads meeting stay one color instead of stacking a darker wash.
  */
-const PATH_FILL_OPACITY = 0.4;
+const PATH_FILL_OPACITY = 0.3;
 /** Stones in the track. The outline is a sibling, so this does not tint the ring. */
-const PATH_GRAVEL_OPACITY = 0.6;
+const PATH_GRAVEL_OPACITY = 0.5;
 /** Painted ring. Kept off the gravel group so this is the opacity on the page. */
-const PATH_OUTLINE_OPACITY = 0.25;
+const PATH_OUTLINE_OPACITY = 0.2;
 /** Hand-drawn bend of the ring, in map units. */
 const PATH_OUTLINE_WOBBLE = 2.5;
 /**
@@ -1129,39 +1129,39 @@ const VillageMapSvg = memo(function VillageMapSvg({
                 )}
               </defs>
               {paths.map((path, index) => {
-                  const waiting = pathWaitsForBuilding(path, reveal);
-                  const fades = [path.doorFade, path.heartFade].filter((fade): fade is PathFade => fade != null);
-                  return (
-                    <g
-                      key={`${path.id}-${revealEpoch}`}
-                      data-path={path.id}
-                      className={pathFadeClass(path, reveal)}
-                      style={waiting && pathOpensWithWait(path, reveal) ? OPEN_WAIT_STYLE : undefined}
-                      onAnimationEnd={(event) => {
-                        if (event.animationName !== "village-map-path-in") return;
-                        setPathReady((current) =>
-                          current[path.id] ? current : { ...current, [path.id]: true },
-                        );
-                      }}
+                const waiting = pathWaitsForBuilding(path, reveal);
+                const fades = [path.doorFade, path.heartFade].filter((fade): fade is PathFade => fade != null);
+                return (
+                  <g
+                    key={`${path.id}-${revealEpoch}`}
+                    data-path={path.id}
+                    className={pathFadeClass(path, reveal)}
+                    style={waiting && pathOpensWithWait(path, reveal) ? OPEN_WAIT_STYLE : undefined}
+                    onAnimationEnd={(event) => {
+                      if (event.animationName !== "village-map-path-in") return;
+                      setPathReady((current) =>
+                        current[path.id] ? current : { ...current, [path.id]: true },
+                      );
+                    }}
+                  >
+                    <PathEndFades
+                      fades={fades}
+                      idPrefix={`${pathFadeId}-${index}`}
+                      frame={{ x: frameX, y: frameY, size: frameSize }}
                     >
-                      <PathEndFades
-                        fades={fades}
-                        idPrefix={`${pathFadeId}-${index}`}
-                        frame={{ x: frameX, y: frameY, size: frameSize }}
-                      >
-                        <path data-ribbon="" d={path.ribbon} fill={trackFill} />
-                        <g clipPath={`url(#${pathClipId})`} opacity={PATH_GRAVEL_OPACITY}>
-                          {path.stones.map((stone, stoneIndex) => (
-                            <path
-                              key={stoneIndex}
-                              d={stone.d}
-                              fill={stone.tone === 0 ? stoneDark : stoneMid}
-                            />
-                          ))}
-                        </g>
-                      </PathEndFades>
-                    </g>
-                  );
+                      <path data-ribbon="" d={path.ribbon} fill={trackFill} />
+                      <g clipPath={`url(#${pathClipId})`} opacity={PATH_GRAVEL_OPACITY}>
+                        {path.stones.map((stone, stoneIndex) => (
+                          <path
+                            key={stoneIndex}
+                            d={stone.d}
+                            fill={stone.tone === 0 ? stoneDark : stoneMid}
+                          />
+                        ))}
+                      </g>
+                    </PathEndFades>
+                  </g>
+                );
               })}
               <g mask={`url(#${pathDoorMaskId})`} style={{ pointerEvents: "none" }}>
                 <g mask={`url(#${pathHeartMaskId})`}>
@@ -1598,9 +1598,9 @@ const VillageMapSvg = memo(function VillageMapSvg({
                   onHover={
                     onHoverSilverCoin
                       ? (hovered) =>
-                          onHoverSilverCoin(
-                            hovered ? (coin.metal === "gold" ? "gold" : "silver") : null,
-                          )
+                        onHoverSilverCoin(
+                          hovered ? (coin.metal === "gold" ? "gold" : "silver") : null,
+                        )
                       : undefined
                   }
                 />

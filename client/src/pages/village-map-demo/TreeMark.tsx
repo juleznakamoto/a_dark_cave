@@ -5,7 +5,7 @@ import { drawTree, type TreeVariant } from "@/pages/village-map-demo/trees";
  * Crown papers. Three light greens: yellow-green, apple, and moss.
  * Close enough to stay pale, far enough to tell apart.
  */
-export const TREE_FILLS = ["#d6e8a8", "#b8d498", "#a4c484"] as const;
+export const TREE_FILLS = ["#c9dc9c", "#b8d498", "#a4c484"] as const;
 
 /** Same tone every time for a planted crown. */
 export function treeFill(id: string): string {

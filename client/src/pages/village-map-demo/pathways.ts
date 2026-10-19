@@ -83,6 +83,8 @@ import { pullCrossingsIntoMeetings } from "@/pages/village-map-demo/pathwayMeeti
 
 /** Drawn half-width. Stones and joins use this. Full width is twice it. */
 export const PATH_HALF = 3.9;
+/** The road from the bastion gate to the heartfire is this much wider than the others. */
+export const BASTION_PATH_SCALE = 1.5;
 /** Narrowest and widest half the edge wave reaches. */
 export const PATH_HALF_SWING: readonly [number, number] = [2.75, 4];
 /** Side-to-side bend of one edge, on top of the wave. */
@@ -312,7 +314,9 @@ export function villagePathDrawings(
   const resolved = resolveEdges(field, overrides);
   const ribbons = extendIntoNext(resolved);
   const centerlines = resolved.map((edge) => edgeLine(edge, ribbons));
-  const drawnLines = centerlines.map((line, index) => softenCenterline(line, mixSeed(resolved[index].id)));
+  const drawnLines = centerlines.map((line, index) =>
+    roadWidthScale(resolved[index]) === 1 ? softenCenterline(line, mixSeed(resolved[index].id)) : line,
+  );
   const hosts = drawnLines.filter((_, index) => !resolved[index].id.startsWith("link:"));
   return resolved.map((edge, index) => {
     const handle = overrides[edge.id] ?? midpoint(edge.points);
@@ -320,12 +324,13 @@ export function villagePathDrawings(
     const drawn = edge.id.startsWith("link:")
       ? buryStreetEnds(drawnLines[index], hosts, LINK_BURY)
       : drawnLines[index];
+    const scale = roadWidthScale(edge);
     return {
       id: edge.id,
       slotIds: edge.slotIds,
       points: edge.points,
-      ribbon: ribbonPath(drawn, seed),
-      stones: stonesAlong(drawn, seed),
+      ribbon: ribbonPath(drawn, seed, scale),
+      stones: stonesAlong(drawn, seed, scale),
       handle,
       doorFade: doorFade(edge.slotIds, centerlines[index], (ribbons.get(edge.id) ?? edge.points)[0]),
       heartFade: heartFade(edge.points, field.heartRadius),
@@ -341,6 +346,13 @@ function edgeLine(edge: PathEdgeBase, ribbons: ReadonlyMap<string, Point[]>): Po
 
 /** How far a stretch runs into the next one, so the join sits inside the merged track. */
 const MERGE_OVERLAP = PATH_HALF * 2;
+
+/** Cross streets stay the usual width. The one road that serves the bastion does not. */
+export function roadWidthScale(edge: { id: string; slotIds: readonly string[] }): number {
+  if (edge.id.startsWith("link:")) return 1;
+  if (edge.slotIds.includes("bastion:0")) return BASTION_PATH_SCALE;
+  return 1;
+}
 /**
  * A street between roads ends on the drawn lane's middle.
  * Further than this and the round end pokes out the far side.
@@ -366,7 +378,7 @@ function extendIntoNext(edges: readonly PathEdgeBase[]): Map<string, Point[]> {
       out.set(edge.id, edge.points);
       continue;
     }
-    out.set(edge.id, [...edge.points, ...continuation(next.points, MERGE_OVERLAP)]);
+    out.set(edge.id, [...edge.points, ...continuation(next.points, MERGE_OVERLAP * roadWidthScale(edge))]);
   }
   return out;
 }
@@ -446,7 +458,8 @@ export function pathClearanceViolation(
         if (slot.buildingId === "heartfire") continue;
         const shapes = slotShapes(slot, hutSize);
         const gap = distanceToShapes(point, shapes);
-        if (gap >= PATH_CLEARANCE - CELL) continue;
+        const limit = PATH_CLEARANCE - CELL;
+        if (gap >= limit) continue;
         const servedDoor = path.slotIds.some((id) => {
           const at = doors.get(id);
           return at != null && Math.hypot(point.x - at.x, point.y - at.y) <= PATH_CLEARANCE + CELL * 2;
@@ -933,16 +946,163 @@ function traceEdges(
   collapseRejoins(grid, edges);
   linkNearbyRoads(grid, edges);
   pullCrossingsIntoMeetings(grid, edges);
+  straightenBastionPath(grid, edges);
   edges.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   return edges;
 }
 
 /**
+ * The bastion road is one chain to the heartfire. Drop every corner the
+ * buildings do not require, then put roads that joined the old chain back on it.
+ */
+function straightenBastionPath(grid: Grid, edges: PathEdgeBase[]): void {
+  const parts = edges.filter((edge) => !edge.id.startsWith("link:") && edge.slotIds.includes("bastion:0"));
+  const ordered = orderBastionChain(parts);
+  if (ordered.length === 0 || ordered[0].points.length < 2) return;
+  const old = stitchBastionChain(ordered);
+  const pulled = stringPull(old, (from, to, fromDoor) => bastionChordClears(grid, from, to, fromDoor));
+  if (pulled.length < 2) return;
+
+  const joined: { edge: PathEdgeBase; atEnd: boolean }[] = [];
+  for (const edge of edges) {
+    if (parts.includes(edge)) continue;
+    const start = edge.points[0];
+    const end = edge.points[edge.points.length - 1];
+    if (start && projectOnto(start, old).dist < 1) joined.push({ edge, atEnd: false });
+    if (end && projectOnto(end, old).dist < 1) joined.push({ edge, atEnd: true });
+  }
+
+  const keep = ordered[0];
+  keep.points = pulled;
+  keep.slotIds = ["bastion:0"];
+  for (let index = edges.length - 1; index >= 0; index--) {
+    if (parts.includes(edges[index]) && edges[index] !== keep) edges.splice(index, 1);
+  }
+  for (const join of joined) {
+    if (!edges.includes(join.edge)) continue;
+    const at = join.atEnd ? join.edge.points.length - 1 : 0;
+    const point = join.edge.points[at];
+    if (!point) continue;
+    join.edge.points[at] = { ...projectOnto(point, keep.points).at };
+  }
+  meetBastionCrossings(keep, edges);
+  cutRoadsThatRejoin(keep, edges);
+  keep.points = dedupePoints(keep.points);
+}
+
+/**
+ * A side road stops when it reaches the bastion path.
+ * The tail past that meeting is what draws a spur through the junction.
+ */
+function cutRoadsThatRejoin(road: PathEdgeBase, edges: PathEdgeBase[]): void {
+  const host = road.points;
+  for (const edge of edges) {
+    if (edge === road || edge.id.startsWith("link:") || edge.points.length < 3) continue;
+    let landed = -1;
+    for (let index = 1; index < edge.points.length; index++) {
+      if (projectOnto(edge.points[index], host).dist <= 1.25) {
+        landed = index;
+        break;
+      }
+    }
+    if (landed < 0 || landed >= edge.points.length - 1) continue;
+    const hit = projectOnto(edge.points[landed], host).at;
+    const kept = dedupePoints([...edge.points.slice(0, landed), { ...hit }]);
+    if (kept.length < 2) continue;
+    edge.points = kept;
+  }
+}
+
+function orderBastionChain(parts: readonly PathEdgeBase[]): PathEdgeBase[] {
+  if (parts.length === 0) return [];
+  const start =
+    parts.find((edge) => {
+      const door = edge.points[0];
+      return door != null && !parts.some((other) => other !== edge && samePoint(other.points[other.points.length - 1] ?? door, door));
+    }) ?? parts[0];
+  const ordered = [start];
+  while (ordered.length < parts.length) {
+    const end = ordered[ordered.length - 1].points[ordered[ordered.length - 1].points.length - 1];
+    const next = parts.find((edge) => !ordered.includes(edge) && end != null && samePoint(edge.points[0], end));
+    if (!next) break;
+    ordered.push(next);
+  }
+  return ordered;
+}
+
+function stitchBastionChain(ordered: readonly PathEdgeBase[]): Point[] {
+  const points = ordered[0].points.map((point) => ({ ...point }));
+  for (const edge of ordered.slice(1)) {
+    for (const point of edge.points.slice(1)) points.push({ ...point });
+  }
+  return points;
+}
+
+/** Keep a corner only when the straight line between its neighbors hits a building. */
+function stringPull(points: readonly Point[], clears: (from: Point, to: Point, fromDoor: boolean) => boolean): Point[] {
+  if (points.length < 3) return points.map((point) => ({ ...point }));
+  const out: Point[] = [{ ...points[0] }];
+  let anchor = 0;
+  while (anchor < points.length - 1) {
+    let next = anchor + 1;
+    for (let candidate = points.length - 1; candidate > anchor + 1; candidate--) {
+      if (clears(points[anchor], points[candidate], anchor === 0)) {
+        next = candidate;
+        break;
+      }
+    }
+    out.push({ ...points[next] });
+    anchor = next;
+  }
+  return out;
+}
+
+function bastionChordClears(grid: Grid, from: Point, to: Point, leaveDoor: boolean): boolean {
+  const span = Math.hypot(to.x - from.x, to.y - from.y);
+  if (span < 0.5) return true;
+  const steps = Math.max(1, Math.ceil(span / 2));
+  for (let step = 1; step < steps; step++) {
+    const point = lerp(from, to, step / steps);
+    if (Math.hypot(point.x - MAP_CENTER, point.y - MAP_CENTER) <= grid.heartRadius + 1) continue;
+    if (leaveDoor && Math.hypot(point.x - from.x, point.y - from.y) < 12) continue;
+    if (grid.approachBlocked(point, "bastion:0")) return false;
+  }
+  return true;
+}
+
+/** A road that crosses the bastion path meets it at that spot. */
+function meetBastionCrossings(road: PathEdgeBase, edges: PathEdgeBase[]): void {
+  for (const other of edges) {
+    if (other === road || other.points.length < 2) continue;
+    for (let index = 1; index < other.points.length; index++) {
+      for (let step = 1; step < road.points.length; step++) {
+        const hit = segmentHit(road.points[step - 1], road.points[step], other.points[index - 1], other.points[index]);
+        if (!hit) continue;
+        road.points.splice(step, 0, hit);
+        other.points.splice(index, 0, hit);
+        break;
+      }
+    }
+  }
+}
+
+function segmentHit(a: Point, b: Point, c: Point, d: Point): Point | null {
+  if (samePoint(a, c) || samePoint(a, d) || samePoint(b, c) || samePoint(b, d)) return null;
+  const den = (d.y - c.y) * (b.x - a.x) - (d.x - c.x) * (b.y - a.y);
+  if (Math.abs(den) < 1e-6) return null;
+  const t = ((d.x - c.x) * (a.y - c.y) - (d.y - c.y) * (a.x - c.x)) / den;
+  const u = ((b.x - a.x) * (a.y - c.y) - (b.y - a.y) * (a.x - c.x)) / den;
+  if (t <= 0.02 || t >= 0.98 || u <= 0.02 || u >= 0.98) return null;
+  return lerp(a, b, t);
+}
+
+/**
  * Two tracks that run side by side for a long way. The lesser one joins the
  * other and only leaves it again out by its own door.
+ * A slightly wide gap and a short shared run, so near-parallel roads fold together.
  */
-const BUNDLE_GAP = 18;
-const BUNDLE_RUN = 32;
+const BUNDLE_GAP = 24;
+const BUNDLE_RUN = 24;
 /** Private approach left at the door, so the peel does not sit on the wall. */
 const DOOR_KEEP = 10;
 
@@ -1107,9 +1267,9 @@ function hooksInOpening(points: Point[]): boolean {
  * The lesser road stops where the shared stretch begins. The greater one
  * already draws the rest. The door stays put.
  */
-const SPAN_GAP = 18;
+const SPAN_GAP = 24;
 const SPAN_ALIGN = 0.9;
-const SPAN_RUN = 36;
+const SPAN_RUN = 28;
 const SPAN_BLEND = 16;
 /** One grid kink may sit in an otherwise straight shared stretch. */
 const SPAN_SKIP = 10;

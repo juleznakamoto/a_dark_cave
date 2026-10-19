@@ -1122,7 +1122,7 @@ function planBows(
   return bows;
 }
 
-export function ribbonPath(points: Point[], seed: number): string {
+export function ribbonPath(points: Point[], seed: number, scale = 1): string {
   const sampled = resample(points, 8);
   if (sampled.length < 2) return "";
   const left: Point[] = [];
@@ -1144,8 +1144,8 @@ export function ribbonPath(points: Point[], seed: number): string {
     const wave =
       0.75 * Math.sin(walked * 0.07 + seed * 0.017) + 0.25 * Math.sin(walked * 0.16 + seed * 0.011);
     const [narrow, wide] = PATH_HALF_SWING;
-    const half = narrow + (wide - narrow) * ((wave + 1) / 2);
-    const jitter = Math.sin(walked * 0.13 + seed * 0.023) * PATH_JITTER;
+    const half = (narrow + (wide - narrow) * ((wave + 1) / 2)) * scale;
+    const jitter = Math.sin(walked * 0.13 + seed * 0.023) * PATH_JITTER * scale;
     left.push({
       x: sampled[index].x + nx * (half + jitter),
       y: sampled[index].y + ny * (half + jitter),
@@ -1158,7 +1158,7 @@ export function ribbonPath(points: Point[], seed: number): string {
   return smoothClosedPath([...left, ...right.reverse()]);
 }
 
-export function stonesAlong(points: Point[], seed: number): Array<{ d: string; tone: 0 | 1 }> {
+export function stonesAlong(points: Point[], seed: number, scale = 1): Array<{ d: string; tone: 0 | 1 }> {
   const total = polylineLength(points);
   if (total < 14) return [];
   const stones: Array<{ d: string; tone: 0 | 1 }> = [];
@@ -1168,7 +1168,7 @@ export function stonesAlong(points: Point[], seed: number): Array<{ d: string; t
     const at = pointAt(points, walked);
     const normal = normalAt(points, walked);
     if (!at || !normal) break;
-    const offset = (rand() - 0.5) * PATH_HALF * 0.9;
+    const offset = (rand() - 0.5) * PATH_HALF * 0.9 * scale;
     const center = { x: at.x + normal.x * offset, y: at.y + normal.y * offset };
     const size = 1.05 + rand() * 2.3;
     const spin = rand() * Math.PI;

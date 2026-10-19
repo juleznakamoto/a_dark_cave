@@ -18,6 +18,7 @@ import {
   wallStrokeWidth,
 } from "@/pages/village-map-demo/geometry";
 import {
+  BASTION_PATH_SCALE,
   HEART_SPLIT_CLEAR,
   INTERSECTION_REACH,
   PATH_DOOR_CLEAR,
@@ -30,9 +31,11 @@ import {
   pathCenterlinesCross,
   pathClearanceViolation,
   pathMeetsCircle,
+  roadWidthScale,
   softenCenterline,
   villagePathDrawings,
 } from "@/pages/village-map-demo/pathways";
+import { ribbonPath } from "@/pages/village-map-demo/pathwayDraw";
 import { buryStreetEnds } from "@/pages/village-map-demo/pathwayLinks";
 
 function fieldFor(
@@ -632,6 +635,51 @@ describe("village pathways", () => {
     expect(paths.some((path) => path.stones.length > 0)).toBe(true);
   });
 
+  it("draws the bastion road fifty percent wider, as one path, and leaves other roads alone", () => {
+    const line = [
+      { x: 0, y: 0 },
+      { x: 160, y: 0 },
+    ];
+    const reach = (scale: number) => {
+      const numbers = ribbonPath(line, 1, scale).match(/-?\d+(?:\.\d+)?/g)?.map(Number) ?? [];
+      let max = 0;
+      for (let index = 1; index < numbers.length; index += 2) max = Math.max(max, Math.abs(numbers[index]));
+      return max;
+    };
+    expect(reach(BASTION_PATH_SCALE) / reach(1)).toBeCloseTo(BASTION_PATH_SCALE, 1);
+
+    const { field, paths } = fieldFor("full", VILLAGE_MAP_POSITIONS);
+    const avenue = paths.filter(
+      (path) => !path.id.startsWith("link:") && path.slotIds.includes("bastion:0"),
+    );
+    expect(avenue).toHaveLength(1);
+    expect(roadWidthScale(avenue[0])).toBe(BASTION_PATH_SCALE);
+    const points = avenue[0].points;
+    expect(points.length).toBeGreaterThan(2);
+    const end = points[points.length - 1];
+    expect(Math.abs(Math.hypot(end.x - MAP_CENTER, end.y - MAP_CENTER) - field.heartRadius)).toBeLessThan(2);
+    const grid = field.grid;
+    expect(grid).not.toBeNull();
+    if (grid) {
+      for (let index = 1; index < points.length - 1; index++) {
+        if (cornerTurn(points[index - 1], points[index], points[index + 1]) < 4) continue;
+        expect(
+          shortcutHitsBuilding(grid, points[index - 1], points[index + 1], index === 1),
+          `corner ${index}`,
+        ).toBe(true);
+      }
+    }
+    const others = paths.filter((path) => !avenue.includes(path));
+    expect(others.length).toBeGreaterThan(0);
+    expect(others.every((path) => roadWidthScale(path) === 1)).toBe(true);
+    const loops = others.filter((path) => leavesAndRejoins(path.points, points)).map((path) => path.id);
+    expect(loops).toEqual([]);
+    const spurs = others
+      .filter((path) => !path.id.startsWith("link:") && runsPastMeeting(path.points, points))
+      .map((path) => path.id);
+    expect(spurs).toEqual([]);
+  });
+
   it("merges tracks instead of crossing, and keeps them off other buildings", () => {
     const { slots, hutSize, paths } = fieldFor("full");
     expect(pathClearanceViolation(paths, slots, hutSize)).toBeNull();
@@ -981,6 +1029,107 @@ describe("village pathways", () => {
     expect(ever.length).toBeLessThan(paths.length * 0.6);
   });
 });
+
+/** True when a road sits on the bastion path, wanders off, and comes back. */
+function leavesAndRejoins(
+  points: Array<{ x: number; y: number }>,
+  host: Array<{ x: number; y: number }>,
+): boolean {
+  const gap = (point: { x: number; y: number }) => {
+    let best = Infinity;
+    for (let index = 1; index < host.length; index++) {
+      const start = host[index - 1];
+      const end = host[index];
+      const dx = end.x - start.x;
+      const dy = end.y - start.y;
+      const lenSq = dx * dx + dy * dy || 1;
+      const t = Math.max(0, Math.min(1, ((point.x - start.x) * dx + (point.y - start.y) * dy) / lenSq));
+      best = Math.min(best, Math.hypot(point.x - (start.x + dx * t), point.y - (start.y + dy * t)));
+    }
+    return best;
+  };
+  let landed = -1;
+  for (let index = 0; index < points.length; index++) {
+    if (gap(points[index]) <= 1.25) {
+      landed = index;
+      break;
+    }
+  }
+  if (landed < 0) return false;
+  let away = false;
+  for (let index = landed + 1; index < points.length; index++) {
+    const dist = gap(points[index]);
+    if (dist > 8) away = true;
+    else if (away && dist <= 1.25) return true;
+  }
+  return false;
+}
+
+/** True when a side road reaches the bastion path and then keeps going. */
+function runsPastMeeting(
+  points: Array<{ x: number; y: number }>,
+  host: Array<{ x: number; y: number }>,
+): boolean {
+  const gap = (point: { x: number; y: number }) => {
+    let best = Infinity;
+    for (let index = 1; index < host.length; index++) {
+      const start = host[index - 1];
+      const end = host[index];
+      const dx = end.x - start.x;
+      const dy = end.y - start.y;
+      const lenSq = dx * dx + dy * dy || 1;
+      const t = Math.max(0, Math.min(1, ((point.x - start.x) * dx + (point.y - start.y) * dy) / lenSq));
+      best = Math.min(best, Math.hypot(point.x - (start.x + dx * t), point.y - (start.y + dy * t)));
+    }
+    return best;
+  };
+  let landed = -1;
+  for (let index = 1; index < points.length; index++) {
+    if (gap(points[index]) <= 1.25) {
+      landed = index;
+      break;
+    }
+  }
+  return landed > 0 && landed < points.length - 1;
+}
+
+function cornerTurn(
+  a: { x: number; y: number },
+  b: { x: number; y: number },
+  c: { x: number; y: number },
+): number {
+  const ax = b.x - a.x;
+  const ay = b.y - a.y;
+  const bx = c.x - b.x;
+  const by = c.y - b.y;
+  const ar = Math.hypot(ax, ay);
+  const br = Math.hypot(bx, by);
+  if (ar < 1 || br < 1) return 0;
+  const dot = Math.min(1, Math.max(-1, (ax * bx + ay * by) / (ar * br)));
+  return (Math.acos(dot) * 180) / Math.PI;
+}
+
+/** True when the straight line hits a building. Matches the bastion shortcut check. */
+function shortcutHitsBuilding(
+  grid: {
+    heartRadius: number;
+    approachBlocked: (point: { x: number; y: number }, ignoreId: string) => boolean;
+  },
+  from: { x: number; y: number },
+  to: { x: number; y: number },
+  leaveDoor: boolean,
+): boolean {
+  const span = Math.hypot(to.x - from.x, to.y - from.y);
+  const steps = Math.max(1, Math.ceil(span / 2));
+  for (let step = 1; step < steps; step++) {
+    const t = step / steps;
+    const point = { x: from.x + (to.x - from.x) * t, y: from.y + (to.y - from.y) * t };
+    if (Math.hypot(point.x - MAP_CENTER, point.y - MAP_CENTER) <= grid.heartRadius + 1) continue;
+    if (leaveDoor && Math.hypot(point.x - from.x, point.y - from.y) < 12) continue;
+    if (grid.approachBlocked(point, "bastion:0")) return true;
+  }
+  return false;
+}
 
 function stopsShortOfHeart(
   path: { points: Array<{ x: number; y: number }> },
