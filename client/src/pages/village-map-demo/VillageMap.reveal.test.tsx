@@ -65,6 +65,8 @@ describe("village map path reveal", () => {
     const shared = paths.find(
       (path) => !path.id.startsWith("link:") && path.slotIds.includes(slotId!) && path.slotIds.length > 1,
     );
+    expect(shared).toBeDefined();
+    if (!shared) return;
     const spur = paths.find((path) => path.slotIds.length === 1 && path.slotIds[0] === slotId);
     const untouched = paths.find((path) => path.id.startsWith("link:") && !path.slotIds.includes(slotId!));
 
@@ -86,7 +88,7 @@ describe("village map path reveal", () => {
     const pathClass = (id: string) =>
       view.container.querySelector(`[data-path="${id}"]`)?.getAttribute("class") ?? "";
     expect(pathClass(link!.id)).toContain("village-map-path-after-building");
-    expect(pathClass(shared!.id)).toBe("");
+    expect(pathClass(shared.id)).toBe("");
     if (spur) expect(pathClass(spur.id)).toContain("village-map-path-after-building");
     if (untouched) expect(pathClass(untouched.id)).toBe("");
   });
