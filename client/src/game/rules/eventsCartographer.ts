@@ -22,10 +22,9 @@ function cartographerWasTurnedAway(state: GameState): boolean {
 
 /**
  * Village visit that opens the Map tab.
- * He only calls when the player can already pay the silver fee,
- * including after a refusal. Turning him away does not end the visit:
- * once the fee can be paid again, he returns on the return timer
- * until the player pays.
+ * Every call, including a return after a refusal, waits until the
+ * player can pay the silver fee. Once they can, a refusal sends him
+ * back on the return timer until they pay.
  */
 export const cartographerEvents: Record<string, GameEvent> = {
   cartographer: {
