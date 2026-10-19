@@ -43,19 +43,42 @@ describe("getStrangerApproachProbability", () => {
     expect(result.probability).toBeGreaterThanOrEqual(0.5); // low pop 0.5
   });
 
-  it("should apply low population bonus of 25% in Cruel Mode when pop <= 4", () => {
+  it("should apply the high low-population bonus at 3 villagers", () => {
     const state = createMockState({
       buildings: { ...createInitialState().buildings, woodenHut: 5 },
-      villagers: { ...createInitialState().villagers, free: 2 },
+      villagers: { ...createInitialState().villagers, free: 3 },
+    });
+    const cruel = createMockState({
+      buildings: { ...createInitialState().buildings, woodenHut: 5 },
+      villagers: { ...createInitialState().villagers, free: 3 },
       cruelMode: true,
     });
-    const result = getStrangerApproachProbability(state);
-    expect(result.lowPopulationBonus).toBe(0.25);
+    expect(getStrangerApproachProbability(state).lowPopulationBonus).toBe(0.5);
+    expect(getStrangerApproachProbability(cruel).lowPopulationBonus).toBe(0.25);
   });
 
-  it("should have no low population bonus when pop > 4", () => {
+  it("should apply the lower low-population bonus from 4 through 6 villagers", () => {
+    const atFour = createMockState({
+      buildings: { ...createInitialState().buildings, woodenHut: 5 },
+      villagers: { ...createInitialState().villagers, free: 4 },
+    });
+    const atSix = createMockState({
+      buildings: { ...createInitialState().buildings, woodenHut: 5 },
+      villagers: { ...createInitialState().villagers, free: 6 },
+    });
+    const atSixCruel = createMockState({
+      buildings: { ...createInitialState().buildings, woodenHut: 5 },
+      villagers: { ...createInitialState().villagers, free: 6 },
+      cruelMode: true,
+    });
+    expect(getStrangerApproachProbability(atFour).lowPopulationBonus).toBe(0.25);
+    expect(getStrangerApproachProbability(atSix).lowPopulationBonus).toBe(0.25);
+    expect(getStrangerApproachProbability(atSixCruel).lowPopulationBonus).toBe(0.1);
+  });
+
+  it("should have no low population bonus when pop > 6", () => {
     const state = createMockState({
-      villagers: { ...createInitialState().villagers, free: 5 },
+      villagers: { ...createInitialState().villagers, free: 7 },
     });
     const result = getStrangerApproachProbability(state);
     expect(result.lowPopulationBonus).toBe(0);
@@ -193,7 +216,7 @@ describe("getStrangerApproachProbability", () => {
 
   it("should add fromGreatFeast when a Great Feast is active", () => {
     const state = createMockState({
-      villagers: { ...createInitialState().villagers, free: 5 },
+      villagers: { ...createInitialState().villagers, free: 7 },
       buildings: { ...createInitialState().buildings, woodenHut: 5 },
       greatFeastState: { isActive: true, endTime: Date.now() + 60_000 },
     });
@@ -204,7 +227,7 @@ describe("getStrangerApproachProbability", () => {
 
   it("should not add fromGreatFeast when the Great Feast has expired", () => {
     const state = createMockState({
-      villagers: { ...createInitialState().villagers, free: 5 },
+      villagers: { ...createInitialState().villagers, free: 7 },
       buildings: { ...createInitialState().buildings, woodenHut: 5 },
       greatFeastState: { isActive: true, endTime: Date.now() - 1 },
     });

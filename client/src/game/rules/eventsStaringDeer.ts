@@ -2,26 +2,27 @@ import type { GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
 
 const MAX_OCCURRENCES = 6;
-const STARING_DEER_DURATION_MS = 10 * 60 * 1000;
+const MIN_HUNTERS = 2;
+const STARING_DEER_DURATION_MS = 15 * 60 * 1000;
 
-/** Average minutes between rolls at each hut stage (wooden 4/7/10, then stone 4/7/10). */
+/** Average minutes between rolls at each hut stage (wooden 3/6/9, then stone 3/6/9). */
 const STAGE_TIME_PROBABILITY = [10, 15, 15, 20, 20, 25] as const;
 
 function getOccurrenceCount(state: GameState): number {
   return (state.story?.seen?.staringDeerCount as number) || 0;
 }
 
-/** Hut-progress stage, or null before 4 wooden huts. */
+/** Hut-progress stage, or null before 3 wooden huts. */
 export function getStaringDeerStage(state: GameState): number | null {
   const stoneHuts = state.buildings.stoneHut ?? 0;
   const woodenHuts = state.buildings.woodenHut ?? 0;
 
-  if (stoneHuts >= 10) return 5;
-  if (stoneHuts >= 7) return 4;
-  if (stoneHuts >= 4) return 3;
-  if (woodenHuts >= 10) return 2;
-  if (woodenHuts >= 7) return 1;
-  if (woodenHuts >= 4) return 0;
+  if (stoneHuts >= 9) return 5;
+  if (stoneHuts >= 6) return 4;
+  if (stoneHuts >= 3) return 3;
+  if (woodenHuts >= 9) return 2;
+  if (woodenHuts >= 6) return 1;
+  if (woodenHuts >= 3) return 0;
   return null;
 }
 
@@ -47,6 +48,9 @@ export const staringDeerEvent: GameEvent = {
       return false;
     }
     if (getOccurrenceCount(state) >= MAX_OCCURRENCES) {
+      return false;
+    }
+    if ((state.villagers.hunter ?? 0) < MIN_HUNTERS) {
       return false;
     }
     const stage = getStaringDeerStage(state);

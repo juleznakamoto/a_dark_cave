@@ -165,7 +165,8 @@ import {
 import { GAME_CONSTANTS, getCallMerchantGoldCost } from "@/game/constants";
 import { GREAT_FEAST_DURATION_MS } from "@shared/shopItems";
 import { STARING_DEER_DURATION_MS } from "@/game/rules/eventsStaringDeer";
-import { FOREST_FEAR_DURATION_MS } from "@/game/rules/eventsForestFear";
+import { getForestFearDurationMs } from "@/game/rules/eventsForestFear";
+import { getSolsticeDurationMs } from "@/game/rules/eventsSolsticeGathering";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
 import {
   GAME_PANEL_HEADER_INDICATOR_CLASS,
@@ -714,7 +715,9 @@ export default function VillagePanel() {
     const updateSolsticeProgress = () => {
       const now = Date.now();
       if (solsticeState?.isActive && solsticeState.endTime > now) {
-        const solsticeDuration = 10 * 60 * 1000; // 10 minutes
+        const solsticeDuration = getSolsticeDurationMs(
+          useGameStore.getState().BTP,
+        );
         const solsticeElapsed =
           solsticeDuration - (solsticeState.endTime - now);
         setSolsticeProgress((solsticeElapsed / solsticeDuration) * 100);
@@ -2333,11 +2336,13 @@ export default function VillagePanel() {
                                     0,
                                     forestFearState.endTime - Date.now(),
                                   );
+                                  const forestFearDuration =
+                                    getForestFearDurationMs(state.BTP);
                                   const elapsed =
-                                    FOREST_FEAR_DURATION_MS - timeRemaining;
+                                    forestFearDuration - timeRemaining;
                                   return Math.min(
                                     100,
-                                    (elapsed / FOREST_FEAR_DURATION_MS) * 100,
+                                    (elapsed / forestFearDuration) * 100,
                                   );
                                 })()}
                                 size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}

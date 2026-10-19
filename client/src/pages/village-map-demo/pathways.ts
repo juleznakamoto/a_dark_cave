@@ -237,11 +237,11 @@ export type VillagePath = {
   /** Point that moves when this stretch is dragged. */
   handle: Point;
   /**
-   * Fade along a private approach, measured on the spur after it runs back
-   * through the doorway. `from` is that inner tip (clear). `to` is
-   * {@link PATH_DOOR_FADE} back out along the spur, solid under the wall.
-   * `clear` is the gradient offset still fully clear, {@link PATH_DOOR_CLEAR}
-   * out from `from`. Shared stretches have none.
+   * Fade along a private approach. The spur is drawn back through the doorway,
+   * and the fade is measured from the routed door out into the open, so it
+   * stays visible. `from` is the door (clear). `to` is {@link PATH_DOOR_FADE}
+   * further along the spur (solid). `clear` is the gradient offset still fully
+   * clear, {@link PATH_DOOR_CLEAR} out from the door. Shared stretches have none.
    */
   doorFade: PathFade | null;
   /**
@@ -309,12 +309,12 @@ export function villagePathDrawings(
 ): VillagePath[] {
   const resolved = resolveEdges(field, overrides);
   const ribbons = extendIntoNext(resolved);
-  const drawnLines = resolved.map((edge) => softenCenterline(edgeLine(edge, ribbons), mixSeed(edge.id)));
+  const centerlines = resolved.map((edge) => edgeLine(edge, ribbons));
+  const drawnLines = centerlines.map((line, index) => softenCenterline(line, mixSeed(resolved[index].id)));
   const hosts = drawnLines.filter((_, index) => !resolved[index].id.startsWith("link:"));
   return resolved.map((edge, index) => {
     const handle = overrides[edge.id] ?? midpoint(edge.points);
     const seed = mixSeed(edge.id);
-    const route = ribbons.get(edge.id) ?? edge.points;
     const drawn = edge.id.startsWith("link:")
       ? buryStreetEnds(drawnLines[index], hosts, LINK_BURY)
       : drawnLines[index];
@@ -325,7 +325,7 @@ export function villagePathDrawings(
       ribbon: ribbonPath(drawn, seed),
       stones: stonesAlong(drawn, seed),
       handle,
-      doorFade: doorFade(edge.slotIds, route),
+      doorFade: doorFade(edge.slotIds, centerlines[index], (ribbons.get(edge.id) ?? edge.points)[0]),
       heartFade: heartFade(edge.points, field.heartRadius),
     };
   });
@@ -501,8 +501,7 @@ function buildingDoor(slot: PlacedSlot, hutSize: number): Point | null {
 /**
  * The route starts just outside the wall. Continue the ribbon back through
  * the wall so the masked end has gravel to hide, instead of a hard cut.
- * The fade itself is measured from the door, so it shows in the open
- * before the building.
+ * The fade itself starts at the door and runs out into the open.
  */
 function extendThroughDoor(points: readonly Point[]): Point[] {
   const start = points[0];
@@ -521,14 +520,30 @@ function extendThroughDoor(points: readonly Point[]): Point[] {
   ];
 }
 
-/** Private spur only. Shared trunks stay solid at the building end. */
-function doorFade(slotIds: readonly string[], points: readonly Point[]): PathFade | null {
-  if (slotIds.length !== 1 || points.length < 2) return null;
-  const from = points[0];
-  const to = pointAt(points, PATH_DOOR_FADE);
-  const clearAt = pointAt(points, PATH_DOOR_CLEAR);
-  if (!to || !clearAt) return null;
+/**
+ * Private spur only. `points` is the drawn centerline, which may start inside
+ * the wall. The fade starts at `door` and runs out into the open.
+ */
+function doorFade(slotIds: readonly string[], points: readonly Point[], door: Point | undefined): PathFade | null {
+  if (slotIds.length !== 1 || points.length < 2 || !door) return null;
+  const origin = distanceToPoint(points, door);
+  const from = pointAt(points, origin);
+  const to = pointAt(points, origin + PATH_DOOR_FADE);
+  const clearAt = pointAt(points, origin + PATH_DOOR_CLEAR);
+  if (!from || !to || !clearAt) return null;
   return fadeBetween(from, to, clearAt);
+}
+
+/** Distance along `points` to the first sample that sits on `target`. */
+function distanceToPoint(points: readonly Point[], target: Point): number {
+  let walked = 0;
+  for (let index = 0; index < points.length; index++) {
+    if (index > 0) {
+      walked += Math.hypot(points[index].x - points[index - 1].x, points[index].y - points[index - 1].y);
+    }
+    if (samePoint(points[index], target)) return walked;
+  }
+  return 0;
 }
 
 /** Trunks that stop short of the heartfire. Clear distance matches a door. The solid point sits further out. */

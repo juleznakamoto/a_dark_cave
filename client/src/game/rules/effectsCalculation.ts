@@ -715,7 +715,8 @@ const STRANGER_APPROACH_BUILDINGS = [
  *   Longhouse +0.5% each (max 5), Fur Tent +0.5% each (max 5).
  *   Max from buildings: 22.5%.
  * - Blessings: ravens_mark +10%, ravens_mark_enhanced +15%. Both stack: 25%.
- * - Low population (pop ≤ 4): see CRUEL_MODE.strangerApproach.lowPopBonusWhenPopLte4.
+ * - Low population: pop ≤ 3 is +50% (+25% cruel); pop ≤ 6 is +25% (+10% cruel).
+ *   See CRUEL_MODE.strangerApproach.lowPopBonusTiers.
  * - Events: Solstice active +50%.
  * - Great Feast: +25% while active.
  * - Heartfire: Level 1 +1%, 2 +2.5%, 3 +5%, 4 +7.5%, 5 +10%.
@@ -750,12 +751,14 @@ export function getStrangerApproachProbability(state: GameState): {
   const maxPopulation = getMaxPopulation(state);
   const atCapacity = currentPopulation >= maxPopulation;
 
-  const lowPopulationBonus =
-    currentPopulation <= 4
-      ? state.cruelMode
-        ? CRUEL_MODE.strangerApproach.lowPopBonusWhenPopLte4.cruel
-        : CRUEL_MODE.strangerApproach.lowPopBonusWhenPopLte4.normal
-      : 0;
+  const lowPopTier = CRUEL_MODE.strangerApproach.lowPopBonusTiers.find(
+    (tier) => currentPopulation <= tier.maxPop,
+  );
+  const lowPopulationBonus = lowPopTier
+    ? state.cruelMode
+      ? lowPopTier.cruel
+      : lowPopTier.normal
+    : 0;
 
   let fromBuildings = 0;
   for (const actionId of STRANGER_APPROACH_BUILDINGS) {

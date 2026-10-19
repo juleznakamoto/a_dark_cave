@@ -3,6 +3,12 @@ import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 
 const FOREST_FEAR_DURATION_MS = 20 * 60 * 1000;
+const BTP_FOREST_FEAR_DURATION_MS = 15 * 60 * 1000;
+
+/** 20 minutes, or 15 minutes when buy-to-play (Steam) is active. */
+export function getForestFearDurationMs(btp?: number): number {
+  return btp === 1 ? BTP_FOREST_FEAR_DURATION_MS : FOREST_FEAR_DURATION_MS;
+}
 
 export const forestFearEvent: GameEvent = {
   id: "forestFear",
@@ -30,7 +36,7 @@ export const forestFearEvent: GameEvent = {
           ...deathResult,
           forestFearState: {
             isActive: true,
-            endTime: Date.now() + FOREST_FEAR_DURATION_MS,
+            endTime: Date.now() + getForestFearDurationMs(state.BTP),
           },
         };
       },
@@ -41,5 +47,3 @@ export const forestFearEvent: GameEvent = {
 export const forestFearEvents: Record<string, GameEvent> = {
   forestFear: forestFearEvent,
 };
-
-export { FOREST_FEAR_DURATION_MS };

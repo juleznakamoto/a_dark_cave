@@ -32,7 +32,14 @@ export const CRUEL_MODE = {
   },
 
   strangerApproach: {
-    lowPopBonusWhenPopLte4: { normal: 0.5, cruel: 0.25 },
+    /**
+     * New Villager Chance while the village is small. First matching tier wins.
+     * Above the last maxPop the bonus is 0.
+     */
+    lowPopBonusTiers: [
+      { maxPop: 3, normal: 0.5, cruel: 0.25 },
+      { maxPop: 6, normal: 0.25, cruel: 0.1 },
+    ],
   },
 
   itemMadness: {

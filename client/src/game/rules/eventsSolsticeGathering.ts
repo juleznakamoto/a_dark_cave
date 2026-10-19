@@ -2,8 +2,14 @@ import type { GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
 
 const MAX_TIER = 20;
-const SOLSTICE_DURATION_MS = 10 * 60 * 1000;
+const SOLSTICE_DURATION_MS = 15 * 60 * 1000;
+const BTP_SOLSTICE_BONUS_MS = 5 * 60 * 1000;
 const FIRST_TIER_WOOD_COST = 250;
+
+/** 15 minutes, or 20 minutes when buy-to-play (Steam) is active. */
+export function getSolsticeDurationMs(btp?: number): number {
+  return SOLSTICE_DURATION_MS + (btp === 1 ? BTP_SOLSTICE_BONUS_MS : 0);
+}
 
 function getWoodCost(tier: number): number {
   return tier === 1 ? FIRST_TIER_WOOD_COST : 0;
@@ -70,7 +76,7 @@ export const solsticeGatheringEvent: GameEvent = {
         const nextTier = Math.min(tier + 1, MAX_TIER);
         const activationsCount =
           (state.solsticeState?.activationsCount ?? 0) + 1;
-        const endTime = Date.now() + SOLSTICE_DURATION_MS;
+        const endTime = Date.now() + getSolsticeDurationMs(state.BTP);
 
         return {
           resources: {
