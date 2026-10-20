@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { LogEntry } from "@/game/rules/events";
 import {
   Dialog,
@@ -20,6 +20,10 @@ import {
   getEventChoiceLabel,
 } from "@/i18n/resolveGameText";
 import { useTranslation } from "react-i18next";
+import {
+  cubeHeartbeatBoxShadow,
+  heartbeatGlowIntensity,
+} from "@/components/game/cubeHeartbeatGlow";
 
 interface CubeDialogProps {
   isOpen: boolean;
@@ -36,28 +40,63 @@ export default function CubeDialog({
 }: CubeDialogProps) {
   const { t } = useTranslation("ui");
   const chromeOn = useDestroyedChrome();
+  const glowRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isOpen) {
+      // Crossfade: BGM fades out while cube hum and heartbeat fade in.
+      audioManager.startEventAmbience(
+        "whisperingCube",
+        SOUND_VOLUME.whisperingCube,
+      );
+      audioManager.startEventAmbience("heartbeat", SOUND_VOLUME.heartbeat);
+    } else {
+      audioManager.stopEventAmbience("whisperingCube");
+      audioManager.stopEventAmbience("heartbeat");
+    }
+
+    return () => {
+      audioManager.stopEventAmbience("whisperingCube");
+      audioManager.stopEventAmbience("heartbeat");
+    };
+  }, [isOpen]);
+
+  // The CSS lub-dub is a different tempo. Follow the file so each thump lights the frame.
+  useEffect(() => {
+    if (!isOpen) return;
+    let frame = 0;
+    const tick = () => {
+      const node = glowRef.current;
+      const fraction = audioManager.getLoopFraction("heartbeat");
+      if (node) {
+        if (fraction == null) {
+          node.style.animation = "";
+          node.style.boxShadow = "";
+        } else {
+          node.style.animation = "none";
+          node.style.boxShadow = cubeHeartbeatBoxShadow(
+            heartbeatGlowIntensity(fraction),
+          );
+        }
+      }
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(frame);
+      const node = glowRef.current;
+      if (!node) return;
+      node.style.animation = "";
+      node.style.boxShadow = "";
+    };
+  }, [isOpen]);
+
   // Guard against null/undefined event
   if (!event) {
     return null;
   }
 
   const eventChoices = event.choices || [];
-
-  useEffect(() => {
-    if (isOpen) {
-      // Crossfade: BGM fades out while cube ambience fades in (same duration)
-      audioManager.startEventAmbience(
-        "whisperingCube",
-        SOUND_VOLUME.whisperingCube,
-      );
-    } else {
-      audioManager.stopEventAmbience("whisperingCube");
-    }
-
-    return () => {
-      audioManager.stopEventAmbience("whisperingCube");
-    };
-  }, [isOpen]);
 
   const handleClose = async () => {
     onChoice(eventChoices[0]?.id);
@@ -141,7 +180,10 @@ export default function CubeDialog({
         className="[&>button]:hidden border-2 border-gray-400 shadow-2xl p-6 [--adc-dialog-max-w:22rem] h-[21rem] max-h-[21rem] flex flex-col overflow-visible z-[100]"
         style={chromeRuleColorStyle("#9ca3af")}
       >
-        <div className="absolute inset-0 -z-10 cube-dialog-glow pointer-events-none rounded-[inherit]"></div>
+        <div
+          ref={glowRef}
+          className="absolute inset-0 -z-10 cube-dialog-glow pointer-events-none rounded-[inherit]"
+        ></div>
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="pr-0 text-lg font-semibold">
             {resolvedTitle}

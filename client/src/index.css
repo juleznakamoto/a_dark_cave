@@ -1996,7 +1996,8 @@ html.adc-text-large .game-panel-produce-effects {
   animation: madness-pulse 1.5s ease-in-out infinite;
 }
 
-/* Shadow-only lub-dub at ~0.33 beat/sec (dialog stays still). */
+/* Shadow-only lub-dub while the heartbeat file is not playing (dialog stays still).
+   CubeDialog replaces this with the recording's own thumps once that loop starts. */
 @keyframes cube-glow-pulse {
 
   0%,

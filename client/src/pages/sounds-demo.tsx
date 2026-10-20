@@ -36,6 +36,11 @@ const AMBIENCE: DemoCue[] = [
     label: "Whispering cube",
     volume: SOUND_VOLUME.whisperingCube,
   },
+  {
+    id: "heartbeat",
+    label: "Cube heartbeat",
+    volume: SOUND_VOLUME.heartbeat,
+  },
 ];
 
 const SFX: DemoCue[] = [

@@ -49,8 +49,11 @@ export class AudioManager {
   private sfxMasterVolume: number = 1;
   /** Per-call requested volume (pre-master) so master changes can re-apply to live sounds. */
   private requestedVolumes: Map<string, number> = new Map();
-  /** Looping event ambience (cube, future madness beds, etc.) currently owning the mix. */
-  private activeEventAmbience: string | null = null;
+  /**
+   * Looping event beds currently owning the mix (cube hum, cube heartbeat, event dialog).
+   * A simulation pause must not stop these.
+   */
+  private activeEventAmbience = new Set<string>();
   /** True when we suspended a running context because the page was hidden. */
   private suspendedForHide = false;
   /** Bumps on every visibility change so a late suspend cannot win over show. */
@@ -90,6 +93,28 @@ export class AudioManager {
 
   isPlaying(name: string): boolean {
     return this.isSoundPlaying(name);
+  }
+
+  /**
+   * Playback position inside a looping sound, as 0–1.
+   * Null when that sound is not playing (still loading, or muted).
+   */
+  getLoopFraction(name: string): number | null {
+    const sound = this.sounds.get(name);
+    if (!sound || typeof sound.playing !== "function" || !sound.playing()) {
+      return null;
+    }
+    if (typeof sound.seek !== "function" || typeof sound.duration !== "function") {
+      return null;
+    }
+    const pos = sound.seek();
+    const dur = sound.duration();
+    if (typeof pos !== "number" || typeof dur !== "number" || !(dur > 0)) {
+      return null;
+    }
+    const fraction = pos / dur;
+    if (!Number.isFinite(fraction)) return null;
+    return ((fraction % 1) + 1) % 1;
   }
 
   private getCurrentVolume(name: string): number {
@@ -374,50 +399,55 @@ export class AudioManager {
   }
 
   /**
-   * Crossfade from background music into a looping event bed (cube, future madness, etc.).
-   * Safe to call when the game loop also pauses — event ambience is preserved.
+   * Crossfade from background music into a looping event bed (cube hum, heartbeat, event dialog).
+   * A second call layers another loop on the same bed and does not restart the music fade.
+   * Safe to call when the game loop also pauses: these loops are preserved.
    */
   startEventAmbience(
     name: string,
     volume: number,
     fadeSeconds: number = EVENT_AMBIENCE_FADE_SECONDS,
   ): void {
-    if (this.isSoundPlaying('backgroundMusic') || this.wasBackgroundMusicPlaying) {
-      this.wasBackgroundMusicPlaying = !this.isMusicMuted;
+    const alreadyBed = this.activeEventAmbience.size > 0;
+    if (!alreadyBed) {
+      if (this.isSoundPlaying('backgroundMusic') || this.wasBackgroundMusicPlaying) {
+        this.wasBackgroundMusicPlaying = !this.isMusicMuted;
+      }
+      this.stopLoopingSound('backgroundMusic', fadeSeconds);
     }
 
-    this.activeEventAmbience = name;
-    this.stopLoopingSound('backgroundMusic', fadeSeconds);
+    this.activeEventAmbience.add(name);
     this.playLoopingSound(name, volume, false, fadeSeconds);
   }
 
   /** True while an event bed still owns the mix. React cleanup can lag the store. */
   isEventAmbienceActive(): boolean {
-    return this.activeEventAmbience !== null;
+    return this.activeEventAmbience.size > 0;
   }
 
   /**
    * Fade out event ambience. Background music is restored by {@link resumeSounds}
    * when the simulation unpauses (typically when the event dialog closes).
+   * Omit `name` to stop every bed that is currently owning the mix.
    */
   stopEventAmbience(
     name?: string,
     fadeSeconds: number = EVENT_AMBIENCE_FADE_SECONDS,
   ): void {
-    const soundName = name ?? this.activeEventAmbience;
-    if (!soundName) return;
+    const names = name ? [name] : [...this.activeEventAmbience];
+    if (names.length === 0) return;
 
-    if (this.activeEventAmbience === soundName) {
-      this.activeEventAmbience = null;
+    for (const soundName of names) {
+      this.activeEventAmbience.delete(soundName);
+      this.stopLoopingSound(soundName, fadeSeconds);
     }
-    this.stopLoopingSound(soundName, fadeSeconds);
   }
 
-  /** Stop looping SFX except BGM and the active event ambience bed. */
+  /** Stop looping SFX except BGM and the active event ambience beds. */
   private stopNonAmbienceLoopingSounds(): void {
     this.sounds.forEach((sound, name) => {
       if (name === 'backgroundMusic') return;
-      if (name === this.activeEventAmbience) return;
+      if (this.activeEventAmbience.has(name)) return;
       if (!sound || typeof sound.loop !== 'function' || !sound.loop()) return;
       if (typeof sound.playing === 'function' && !sound.playing()) return;
       try {
@@ -446,7 +476,7 @@ export class AudioManager {
       }
     } else if (!this.isMusicMuted && this.wasBackgroundMusicPlaying) {
       // Keep resume intent if BGM already faded for event ambience
-    } else if (!this.activeEventAmbience) {
+    } else if (this.activeEventAmbience.size === 0) {
       this.wasBackgroundMusicPlaying = false;
     }
 
@@ -456,7 +486,7 @@ export class AudioManager {
   stopAllSounds(): void {
     // Full stop (restart / start screen): do not leave resume intent for BGM.
     this.wasBackgroundMusicPlaying = false;
-    this.activeEventAmbience = null;
+    this.activeEventAmbience.clear();
 
     this.sounds.forEach(sound => {
       try {
@@ -529,6 +559,7 @@ export class AudioManager {
     eventDialog: '/sounds/event_dialog.mp3',
     merchant: '/sounds/merchant.mp3',
     whisperingCube: '/sounds/whispering_cube.mp3',
+    heartbeat: '/sounds/heartbeat.mp3',
     bloodMoon: '/sounds/blood_moon.mp3',
     explosion: '/sounds/explosion.mp3',
     combat: '/sounds/combat.mp3',
@@ -602,7 +633,7 @@ export class AudioManager {
   tryResumeAfterSimulationPause(
     musicFadeInSeconds: number = EVENT_AMBIENCE_FADE_SECONDS,
   ): boolean {
-    if (this.activeEventAmbience) return false;
+    if (this.activeEventAmbience.size > 0) return false;
     void this.resumeSounds(musicFadeInSeconds);
     return true;
   }
@@ -611,7 +642,7 @@ export class AudioManager {
     musicFadeInSeconds: number = EVENT_AMBIENCE_FADE_SECONDS,
   ): Promise<void> {
     // Event dialog still owns the mix. Do not pull BGM back underneath it.
-    if (this.activeEventAmbience) return;
+    if (this.activeEventAmbience.size > 0) return;
 
     // Only resume background music if it was playing AND music is not muted.
     // Settings leaves BGM at the slider level; don't restart that fade.
@@ -705,9 +736,7 @@ export class AudioManager {
       this.sounds.forEach((sound, name) => {
         if (sound && name !== 'backgroundMusic' && sound.loop() && typeof sound.stop === 'function') {
           try {
-            if (name === this.activeEventAmbience) {
-              this.activeEventAmbience = null;
-            }
+            this.activeEventAmbience.delete(name);
             sound.off('fade');
             sound.stop();
           } catch (error) {
@@ -739,7 +768,7 @@ export class AudioManager {
 
     this.wasBackgroundMusicPlaying = true;
     // Don't restart BGM under an active event bed
-    if (!this.activeEventAmbience) {
+    if (this.activeEventAmbience.size === 0) {
       this.playLoopingSound('backgroundMusic', this.backgroundMusicVolume, false, 1);
     }
   }

@@ -33,6 +33,53 @@ describe("background music resume after an event dialog", () => {
       EVENT_AMBIENCE_FADE_SECONDS,
     );
   });
+
+  it("keeps the cube heartbeat loop through a pause until both beds stop", () => {
+    const sounds = (
+      audioManager as unknown as { sounds: Map<string, unknown> }
+    ).sounds;
+    const cubeStop = vi.fn();
+    const heartbeatStop = vi.fn();
+    const fakeLoop = (stop: ReturnType<typeof vi.fn>) => ({
+      playing: () => true,
+      loop: (value?: boolean) => (typeof value === "boolean" ? undefined : true),
+      volume: () => 0.1,
+      off: () => {},
+      once: () => {},
+      fade: () => {},
+      stop,
+      play: () => {},
+    });
+    sounds.set("whisperingCube", fakeLoop(cubeStop));
+    sounds.set("heartbeat", fakeLoop(heartbeatStop));
+
+    audioManager.startEventAmbience(
+      "whisperingCube",
+      SOUND_VOLUME.whisperingCube,
+      0,
+    );
+    audioManager.startEventAmbience("heartbeat", SOUND_VOLUME.heartbeat, 0);
+    cubeStop.mockClear();
+    heartbeatStop.mockClear();
+
+    audioManager.pauseForSimulation(2);
+
+    expect(cubeStop).not.toHaveBeenCalled();
+    expect(heartbeatStop).not.toHaveBeenCalled();
+    expect(audioManager.tryResumeAfterSimulationPause()).toBe(false);
+
+    audioManager.stopEventAmbience("whisperingCube", 0);
+    expect(audioManager.isEventAmbienceActive()).toBe(true);
+    expect(cubeStop).toHaveBeenCalled();
+
+    audioManager.stopEventAmbience("heartbeat", 0);
+    expect(audioManager.isEventAmbienceActive()).toBe(false);
+    expect(heartbeatStop).toHaveBeenCalled();
+    expect(audioManager.tryResumeAfterSimulationPause()).toBe(true);
+
+    sounds.delete("whisperingCube");
+    sounds.delete("heartbeat");
+  });
 });
 
 describe("settings volume controls", () => {

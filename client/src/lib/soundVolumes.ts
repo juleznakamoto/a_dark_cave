@@ -15,6 +15,11 @@ export const SOUND_VOLUME = {
   monsterStart: 0.45,
   backgroundMusic: 0.3,
   whisperingCube: 0.5,
+  /**
+   * Cube-dialog pulse, looped with the cube bed.
+   * File peaks at 0 dBFS (mean -10.4); 0.15 keeps it present without slamming.
+   */
+  heartbeat: 0.15,
   /** Loop under EventDialog (normal + madness; not cube) */
   eventDialog: 0.35,
   /** Blood moon timed-tab one-shot when the event starts */
