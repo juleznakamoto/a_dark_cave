@@ -23,6 +23,8 @@
     "madnessFromEvents": "{{value}} durch Ereignisse",
     "madnessTitle": "Wahnsinn",
     "productionBonus": "Produktionsbonus: {{value}}",
+    "productionBase": "Basis",
+    "devMode": "Dev-Modus",
     "madnessLevel": "Wahnsinn: {{value}}",
     "deathByMadnessChanceEachCycle": "Wahnsinnstod-Chance pro Zyklus: {{value}}%",
     "minRemaining": "Noch {{count}} Min.",

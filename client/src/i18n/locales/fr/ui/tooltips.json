@@ -23,6 +23,8 @@
     "madnessFromEvents": "{{value}} des événements",
     "madnessTitle": "Folie",
     "productionBonus": "Bonus de production : {{value}}",
+    "productionBase": "Base",
+    "devMode": "Mode dev",
     "madnessLevel": "Folie : {{value}}",
     "deathByMadnessChanceEachCycle": "Chance de mort par folie par cycle : {{value}} %",
     "minRemaining": "{{count}} min restantes",

@@ -23,6 +23,8 @@
     "madnessFromEvents": "事件 {{value}}",
     "madnessTitle": "疯狂",
     "productionBonus": "生产加成：{{value}}",
+    "productionBase": "基础",
+    "devMode": "开发模式",
     "madnessLevel": "疯狂：{{value}}",
     "deathByMadnessChanceEachCycle": "每周期疯狂死亡几率：{{value}}%",
     "minRemaining": "剩余 {{count}} 分钟",

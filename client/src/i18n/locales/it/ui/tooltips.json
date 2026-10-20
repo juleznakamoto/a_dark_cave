@@ -23,6 +23,8 @@
     "madnessFromEvents": "{{value}} dagli Eventi",
     "madnessTitle": "Follia",
     "productionBonus": "Bonus di Produzione: {{value}}",
+    "productionBase": "Base",
+    "devMode": "Modalità dev",
     "madnessLevel": "Follia: {{value}}",
     "deathByMadnessChanceEachCycle": "Probabilità di morte per follia per ciclo: {{value}}%",
     "minRemaining": "{{count}} min rimanenti",

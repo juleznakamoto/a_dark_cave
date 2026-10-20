@@ -118,6 +118,7 @@ import {
   RedactedMoreHint,
 } from "@/components/game/RedactedHint";
 import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
+import { JobProductionHover } from "@/components/game/JobProductionTooltip";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
   useDemoEndCatalogActive,
@@ -1216,6 +1217,7 @@ export default function VillagePanel() {
     count: number,
     options?: {
       className?: string;
+      jobId?: string;
       productionEntries?: { resource: string; totalAmount: number }[];
     },
   ) => {
@@ -1223,6 +1225,31 @@ export default function VillagePanel() {
     const productionKey = productionEntries
       .map((p) => `${p.resource}:${p.totalAmount}`)
       .join("|");
+    const labelBody = (
+      <>
+        <span translate="no" className="notranslate" aria-hidden>
+          •{" "}
+        </span>
+        {label}
+        {productionEntries.length > 0 && (
+          <>
+            {" "}
+            <span key={productionKey} className={VILLAGER_RESOURCE_HINT_CLASS}>
+              {productionEntries.map((prod, i) => (
+                <React.Fragment key={prod.resource}>
+                  {i > 0 && ", "}
+                  <span translate="no" className="notranslate">
+                    {prod.totalAmount > 0 ? "+" : ""}
+                    {prod.totalAmount}
+                  </span>{" "}
+                  {formatTooltipResourceName(prod.resource)}
+                </React.Fragment>
+              ))}
+            </span>
+          </>
+        )}
+      </>
+    );
     return (
       <div key={key} className={VILLAGER_COUNT_ROW_CLASS}>
         <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
@@ -1239,29 +1266,17 @@ export default function VillagePanel() {
         {/* Empty /cap cell; subgrid matches width to the widest /cap in the stack. */}
         <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} aria-hidden />
         {renderCapUpgradeSlot()}
-        <span className={villagerCountLabelClass}>
-          <span translate="no" className="notranslate" aria-hidden>
-            •{" "}
-          </span>
-          {label}
-          {productionEntries.length > 0 && (
-            <>
-              {" "}
-              <span key={productionKey} className={VILLAGER_RESOURCE_HINT_CLASS}>
-                {productionEntries.map((prod, i) => (
-                  <React.Fragment key={prod.resource}>
-                    {i > 0 && ", "}
-                    <span translate="no" className="notranslate">
-                      {prod.totalAmount > 0 ? "+" : ""}
-                      {prod.totalAmount}
-                    </span>{" "}
-                    {formatTooltipResourceName(prod.resource)}
-                  </React.Fragment>
-                ))}
-              </span>
-            </>
-          )}
-        </span>
+        {options?.jobId ? (
+          <JobProductionHover
+            jobId={options.jobId}
+            count={count}
+            className={villagerCountLabelClass}
+          >
+            <span>{labelBody}</span>
+          </JobProductionHover>
+        ) : (
+          <span className={villagerCountLabelClass}>{labelBody}</span>
+        )}
       </div>
     );
   };
@@ -1517,21 +1532,27 @@ export default function VillagePanel() {
           <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} />
         )}
         {renderCapUpgradeSlot(capUpgradeGroupId, jobId)}
-        <span className={villagerCountLabelClass}>
-          {label}{" "}
-          <span key={productionKey} className={VILLAGER_RESOURCE_HINT_CLASS}>
-            {productionEntries.map((prod, i) => (
-              <React.Fragment key={prod.resource}>
-                {i > 0 && ", "}
-                <span translate="no" className="notranslate">
-                  {prod.totalAmount > 0 ? "+" : ""}
-                  {prod.totalAmount}
-                </span>{" "}
-                {formatTooltipResourceName(prod.resource)}
-              </React.Fragment>
-            ))}
+        <JobProductionHover
+          jobId={jobId}
+          count={currentCount}
+          className={villagerCountLabelClass}
+        >
+          <span>
+            {label}{" "}
+            <span key={productionKey} className={VILLAGER_RESOURCE_HINT_CLASS}>
+              {productionEntries.map((prod, i) => (
+                <React.Fragment key={prod.resource}>
+                  {i > 0 && ", "}
+                  <span translate="no" className="notranslate">
+                    {prod.totalAmount > 0 ? "+" : ""}
+                    {prod.totalAmount}
+                  </span>{" "}
+                  {formatTooltipResourceName(prod.resource)}
+                </React.Fragment>
+              ))}
+            </span>
           </span>
-        </span>
+        </JobProductionHover>
       </div>
     );
   };
@@ -2699,6 +2720,7 @@ export default function VillagePanel() {
                         t("village.villagersAvailable"),
                         freeVillagers,
                         {
+                          jobId: "free",
                           productionEntries:
                             freeVillagers > 0
                               ? getPopulationProduction(

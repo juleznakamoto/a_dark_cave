@@ -23,6 +23,8 @@
     "madnessFromEvents": "{{value}} de Eventos",
     "madnessTitle": "Loucura",
     "productionBonus": "Bônus de Produção: {{value}}",
+    "productionBase": "Base",
+    "devMode": "Modo dev",
     "madnessLevel": "Loucura: {{value}}",
     "deathByMadnessChanceEachCycle": "Chance de morte por loucura por ciclo: {{value}}%",
     "minRemaining": "{{count}} min restantes",

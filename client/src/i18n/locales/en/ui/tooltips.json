@@ -23,6 +23,8 @@
     "madnessFromEvents": "{{value}} from Events",
     "madnessTitle": "Madness",
     "productionBonus": "Production Bonus: {{value}}",
+    "productionBase": "Base",
+    "devMode": "Dev mode",
     "madnessLevel": "Madness: {{value}}",
     "deathByMadnessChanceEachCycle": "Madness Death Chance per Cycle: {{value}}%",
     "minRemaining": "{{count}} min remaining",

@@ -167,9 +167,58 @@ export function getScholarInsightPerWorker(
   return 0;
 }
 
+/** One source's signed contribution to a job resource total for this cycle. */
+export type JobProductionCompositionLine = {
+  resource: string;
+  sourceId: string;
+  /** Delta applied to the cycle total (already multiplied by worker count). */
+  amount: number;
+};
+
 export interface GetPopulationProductionOptions {
   /** When true, excludes temporary bonuses (feast, solstice gathering, heartfire, curse, frostfall, fog, disgust, mining boost, staring deer, forest fear) and Disgraced Prior food upkeep. Use for sleep / idle eligibility: those effects are inactive while the sim is paused in sleep, and the Prior does not auto-execute. */
   excludeTemporaryBonuses?: boolean;
+  /**
+   * When set, each source that changes a resource total is appended here.
+   * Deltas for one resource sum to that resource's `totalAmount`.
+   * Omit on the game-loop path.
+   */
+  composition?: JobProductionCompositionLine[];
+}
+
+function noteComposition(
+  composition: JobProductionCompositionLine[] | undefined,
+  resource: string,
+  sourceId: string,
+  delta: number,
+): void {
+  if (!composition || delta === 0) return;
+  composition.push({ resource, sourceId, amount: delta });
+}
+
+function replaceCompositionResource(
+  composition: JobProductionCompositionLine[] | undefined,
+  resource: string,
+  sourceId: string,
+  amount: number,
+): void {
+  if (!composition) return;
+  for (let i = composition.length - 1; i >= 0; i--) {
+    if (composition[i].resource === resource) composition.splice(i, 1);
+  }
+  if (amount !== 0) {
+    composition.push({ resource, sourceId, amount });
+  }
+}
+
+/** Building that sets scholar insight, matching getScholarInsightPerWorker. */
+function scholarInsightSourceId(
+  state: Pick<GameState, "buildings">,
+): string {
+  if ((state.buildings.inkwardenAcademy ?? 0) > 0) return "inkwardenAcademy";
+  if ((state.buildings.scriptorium ?? 0) > 0) return "scriptorium";
+  if ((state.buildings.clerksHut ?? 0) > 0) return "clerksHut";
+  return "base";
 }
 
 /** Positive production multiplier from madness (1 = no penalty). Only meaningful when totalMadness >= 10. */
@@ -219,10 +268,30 @@ export const getPopulationProduction = (
     });
   }
 
+  const composition = options?.composition;
+  const note = (resource: string, sourceId: string, delta: number) => {
+    noteComposition(composition, resource, sourceId, delta);
+  };
+  const scale = (
+    prod: { resource: string; totalAmount: number },
+    sourceId: string,
+    next: (current: number) => number,
+  ) => {
+    const before = prod.totalAmount;
+    prod.totalAmount = next(before);
+    note(prod.resource, sourceId, prod.totalAmount - before);
+  };
+
+  for (const prod of baseProduction) {
+    note(prod.resource, "base", prod.totalAmount);
+  }
+
   // Apply building production bonuses
   if (state?.buildings) {
     baseProduction.forEach((prod) => {
       let buildingBonusPerWorker = 0;
+      const buildingParts: { sourceId: string; perWorker: number }[] | null =
+        composition ? [] : null;
 
       // Check all buildings for production effects that apply to this job
       Object.entries(villageBuildActions).forEach(([actionId, buildAction]) => {
@@ -240,15 +309,21 @@ export const getPopulationProduction = (
             state.buildings[buildingName as keyof typeof state.buildings] || 0;
 
           if (buildingCount > 0) {
-            buildingBonusPerWorker +=
-              productionEffects[jobId][prod.resource] *
-              buildingCount;
+            const perWorker =
+              productionEffects[jobId][prod.resource] * buildingCount;
+            buildingBonusPerWorker += perWorker;
+            buildingParts?.push({ sourceId: buildingName, perWorker });
           }
         }
       });
 
       // Apply per-worker bonus: (baseAmount + buildingBonus) * workerCount
       prod.totalAmount = (prod.baseAmount + buildingBonusPerWorker) * count;
+      if (buildingParts) {
+        for (const part of buildingParts) {
+          note(prod.resource, part.sourceId, part.perWorker * count);
+        }
+      }
     });
   }
 
@@ -266,7 +341,7 @@ export const getPopulationProduction = (
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
       if (prod.totalAmount > 0) {
-        prod.totalAmount = Math.ceil(prod.totalAmount * 0.5);
+        scale(prod, "witchsCurse", (n) => Math.ceil(n * 0.5));
       }
     });
   }
@@ -281,7 +356,7 @@ export const getPopulationProduction = (
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
       if (prod.totalAmount > 0) {
-        prod.totalAmount = Math.ceil(prod.totalAmount * 0.75);
+        scale(prod, "frostfall", (n) => Math.ceil(n * 0.75));
       }
     });
   }
@@ -293,7 +368,7 @@ export const getPopulationProduction = (
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
       if (prod.totalAmount > 0) {
-        prod.totalAmount = Math.ceil(prod.totalAmount * 0.75);
+        scale(prod, "chokingFog", (n) => Math.ceil(n * 0.75));
       }
     });
   }
@@ -308,7 +383,7 @@ export const getPopulationProduction = (
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
       if (prod.totalAmount > 0) {
-        prod.totalAmount = Math.ceil(prod.totalAmount * 0.75);
+        scale(prod, "villagerDisgust", (n) => Math.ceil(n * 0.75));
       }
     });
   }
@@ -323,7 +398,7 @@ export const getPopulationProduction = (
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
       if (prod.totalAmount > 0) {
-        prod.totalAmount = Math.ceil(prod.totalAmount * madnessMultiplier);
+        scale(prod, "madness", (n) => Math.ceil(n * madnessMultiplier));
       }
     });
   }
@@ -339,7 +414,7 @@ export const getPopulationProduction = (
     miningBoostState.endTime > Date.now()
   ) {
     baseProduction.forEach((prod) => {
-      prod.totalAmount = Math.ceil(prod.totalAmount * 2); // Mining boost doubles mining production
+      scale(prod, "miningBoost", (n) => Math.ceil(n * 2));
     });
   }
 
@@ -352,7 +427,7 @@ export const getPopulationProduction = (
   ) {
     baseProduction.forEach((prod) => {
       if (prod.resource === "food" && prod.totalAmount > 0) {
-        prod.totalAmount = Math.ceil(prod.totalAmount * 2);
+        scale(prod, "staringDeer", (n) => Math.ceil(n * 2));
       }
     });
   }
@@ -367,7 +442,7 @@ export const getPopulationProduction = (
   ) {
     baseProduction.forEach((prod) => {
       if (prod.totalAmount > 0) {
-        prod.totalAmount = Math.ceil(prod.totalAmount * 0.75);
+        scale(prod, "forestFear", (n) => Math.ceil(n * 0.75));
       }
     });
   }
@@ -377,29 +452,35 @@ export const getPopulationProduction = (
     const huntingSkillLevel = state.huntingSkills?.level || 0;
     const skillBonus = HUNTING_SKILL_BONUSES[huntingSkillLevel];
 
+    const addFlat = (
+      prod: { resource: string; totalAmount: number },
+      sourceId: string,
+      perWorker: number,
+    ) => {
+      if (!perWorker) return;
+      const delta = perWorker * count;
+      prod.totalAmount += delta;
+      note(prod.resource, sourceId, delta);
+    };
+
     baseProduction.forEach((prod) => {
       if (prod.resource === "food" && prod.baseAmount > 0) {
-        let bonusFood = skillBonus.food;
-        if (state.blessings?.sharp_aim) {
-          bonusFood += 5; // +5 food per hunter from Sharp Aim blessing
-        }
-        if (state.blessings?.trail_sense) {
-          bonusFood += 3; // +3 food per hunter from Trail Sense blessing
-        }
-        prod.totalAmount += bonusFood * count;
+        addFlat(prod, "huntressTraining", skillBonus.food);
+        if (state.blessings?.sharp_aim) addFlat(prod, "sharp_aim", 5);
+        if (state.blessings?.trail_sense) addFlat(prod, "trail_sense", 3);
       }
       if (prod.resource === "fur" && prod.baseAmount > 0) {
-        prod.totalAmount += skillBonus.fur * count;
+        addFlat(prod, "huntressTraining", skillBonus.fur);
       }
       if (prod.resource === "bones" && prod.baseAmount > 0) {
-        prod.totalAmount += skillBonus.bones * count;
+        addFlat(prod, "huntressTraining", skillBonus.bones);
       }
     });
 
     if (state.tools?.bone_saw) {
       baseProduction.forEach((prod) => {
         if (prod.resource === "fur" || prod.resource === "bones") {
-          prod.totalAmount += 1 * count; // +1 fur and +1 bones per hunter
+          addFlat(prod, "bone_saw", 1);
         }
       });
     }
@@ -407,7 +488,7 @@ export const getPopulationProduction = (
     if (state.weapons?.manhunter_bow) {
       baseProduction.forEach((prod) => {
         if (prod.resource === "food" && prod.baseAmount > 0) {
-          prod.totalAmount += 1 * count;
+          addFlat(prod, "manhunter_bow", 1);
         }
       });
     }
@@ -417,15 +498,18 @@ export const getPopulationProduction = (
   if (state && jobId === "steel_forger") {
     baseProduction.forEach((prod) => {
       if (prod.resource === "steel" && prod.baseAmount > 0) {
-        let bonusSteel = 0;
-        if (state.blessings?.flames_touch) {
-          bonusSteel = 1; // +1 steel per forger
-        }
+        const addSteel = (sourceId: string, perWorker: number) => {
+          const delta = perWorker * count;
+          prod.totalAmount += delta;
+          note(prod.resource, sourceId, delta);
+        };
         if (state.blessings?.flames_touch_enhanced) {
-          bonusSteel = 3; // +3 steel per forger (replaces the +1 from basic)
+          addSteel("flames_touch_enhanced", 3);
+        } else if (state.blessings?.flames_touch) {
+          addSteel("flames_touch", 1);
         }
         if (state.blessings?.brimstone_infusion) {
-          bonusSteel += 1;
+          addSteel("brimstone_infusion", 1);
         }
         const flux = state.brimstoneFluxState;
         if (
@@ -433,9 +517,8 @@ export const getPopulationProduction = (
           flux?.isActive &&
           (flux.endTime ?? 0) > Date.now()
         ) {
-          bonusSteel += BRIMSTONE_FLUX_STEEL_BONUS;
+          addSteel("brimstoneFlux", BRIMSTONE_FLUX_STEEL_BONUS);
         }
-        prod.totalAmount += bonusSteel * count;
       }
     });
   }
@@ -444,11 +527,11 @@ export const getPopulationProduction = (
   if (!excludeTemporary) {
     if (isGreatFeast) {
       baseProduction.forEach((prod) => {
-        prod.totalAmount = Math.ceil(prod.totalAmount * 5.0);
+        scale(prod, "greatVillageFeast", (n) => Math.ceil(n * 5.0));
       });
     } else if (isFeast) {
       baseProduction.forEach((prod) => {
-        prod.totalAmount = Math.ceil(prod.totalAmount * 2.0);
+        scale(prod, "villageFeast", (n) => Math.ceil(n * 2.0));
       });
     }
 
@@ -461,8 +544,7 @@ export const getPopulationProduction = (
       baseProduction.forEach((prod) => {
         if (prod.totalAmount > 0) {
           // +10% with integer amounts: ceil(n * 1.1) === floor((11n + 9) / 10); avoids float error (e.g. 50 * 1.1).
-          const n = prod.totalAmount;
-          prod.totalAmount = Math.floor((n * 11 + 9) / 10);
+          scale(prod, "solsticeGathering", (n) => Math.floor((n * 11 + 9) / 10));
         }
       });
     }
@@ -471,12 +553,21 @@ export const getPopulationProduction = (
   // Heartfire multiplier — temporary, inactive during sleep
   const heartfireLevel = state.heartfireState?.level || 0;
   if (!excludeTemporary && heartfireLevel > 0) {
-    const perLevel = state.blessings?.ebon_grace ? 0.1 : 0.05;
+    const ebonGrace = Boolean(state.blessings?.ebon_grace);
+    const perLevel = ebonGrace ? 0.1 : 0.05;
     const heartfireBonus = 1 + heartfireLevel * perLevel;
     baseProduction.forEach((prod) => {
       // Only apply to positive production (don't increase consumption)
       if (prod.totalAmount > 0) {
-        prod.totalAmount = Math.ceil(prod.totalAmount * heartfireBonus);
+        const before = prod.totalAmount;
+        prod.totalAmount = Math.ceil(before * heartfireBonus);
+        if (ebonGrace) {
+          const heartfireOnly = Math.ceil(before * (1 + heartfireLevel * 0.05));
+          note(prod.resource, "heartfire", heartfireOnly - before);
+          note(prod.resource, "ebon_grace", prod.totalAmount - heartfireOnly);
+        } else {
+          note(prod.resource, "heartfire", prod.totalAmount - before);
+        }
       }
     });
   }
@@ -487,9 +578,8 @@ export const getPopulationProduction = (
     const bonusPercent = Math.round(productionBonus * 100);
     baseProduction.forEach((prod) => {
       if (prod.totalAmount > 0) {
-        const n = prod.totalAmount;
-        prod.totalAmount = Math.floor(
-          (n * (100 + bonusPercent) + 99) / 100,
+        scale(prod, "book_of_chainmaster", (n) =>
+          Math.floor((n * (100 + bonusPercent) + 99) / 100),
         );
       }
     });
@@ -497,10 +587,17 @@ export const getPopulationProduction = (
 
   if (jobId === "scholar" && state) {
     const perWorker = getScholarInsightPerWorker(state);
+    const sourceId = scholarInsightSourceId(state);
     baseProduction.forEach((prod) => {
       if (prod.resource === "insight") {
         prod.baseAmount = perWorker;
         prod.totalAmount = perWorker * count;
+        replaceCompositionResource(
+          composition,
+          prod.resource,
+          sourceId,
+          prod.totalAmount,
+        );
       }
     });
   }
@@ -508,7 +605,7 @@ export const getPopulationProduction = (
   // Apply 9x multiplier in dev mode
   if (state && state.devMode) {
     baseProduction.forEach((prod) => {
-      prod.totalAmount *= 9;
+      scale(prod, "devMode", (n) => n * 9);
     });
   }
 

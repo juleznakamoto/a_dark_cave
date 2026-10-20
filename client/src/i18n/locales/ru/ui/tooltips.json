@@ -27,6 +27,8 @@
     "madnessFromEvents": "{{value}} от событий",
     "madnessTitle": "Безумие",
     "productionBonus": "Бонус производства: {{value}}",
+    "productionBase": "База",
+    "devMode": "Режим разработчика",
     "madnessLevel": "Безумие: {{value}}",
     "deathByMadnessChanceEachCycle": "Шанс смерти от безумия за цикл: {{value}}%",
     "minRemaining": "Осталось {{count}} мин",

@@ -23,6 +23,8 @@
     "madnessFromEvents": "出来事から{{value}}",
     "madnessTitle": "狂気",
     "productionBonus": "生産ボーナス：{{value}}",
+    "productionBase": "基本",
+    "devMode": "開発モード",
     "madnessLevel": "狂気：{{value}}",
     "deathByMadnessChanceEachCycle": "周期ごとの狂気死の確率：{{value}}%",
     "minRemaining": "残り{{count}}分",

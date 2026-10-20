@@ -27,6 +27,8 @@
     "madnessFromEvents": "{{value}} z wydarzeń",
     "madnessTitle": "Szaleństwo",
     "productionBonus": "Premia do produkcji: {{value}}",
+    "productionBase": "Podstawa",
+    "devMode": "Tryb deweloperski",
     "madnessLevel": "Szaleństwo: {{value}}",
     "deathByMadnessChanceEachCycle": "Szansa śmierci z szaleństwa na cykl: {{value}}%",
     "minRemaining": "Zostało {{count}} min",
