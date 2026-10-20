@@ -832,7 +832,8 @@ export default function VillagePanel() {
     },
   ];
 
-  // Define population jobs
+  // Job rows. Miners follow the cave Mine buttons (stone is gathered, not a job).
+  // Forgers come after the ore jobs, same as steel and blacksteel on the resource list.
   const populationJobs = [
     { id: "gatherer", label: "Gatherer", alwaysShow: true },
     { id: "hunter", label: "Hunter", showWhen: () => buildings.cabin > 0 },
@@ -845,16 +846,6 @@ export default function VillagePanel() {
       id: "coal_miner",
       label: "Coal Miner",
       showWhen: () => buildings.shallowPit >= 1,
-    },
-    {
-      id: "steel_forger",
-      label: "Steel Forger",
-      showWhen: () => state.buildings.foundry >= 1,
-    },
-    {
-      id: "blacksteel_forger",
-      label: "Blacksteel Forger",
-      showWhen: () => state.buildings.masterworkFoundry >= 1,
     },
     {
       id: "sulfur_miner",
@@ -875,6 +866,16 @@ export default function VillagePanel() {
       id: "moonstone_miner",
       label: "Moonstone Miner",
       showWhen: () => buildings.bottomlessPit >= 1,
+    },
+    {
+      id: "steel_forger",
+      label: "Steel Forger",
+      showWhen: () => state.buildings.foundry >= 1,
+    },
+    {
+      id: "blacksteel_forger",
+      label: "Blacksteel Forger",
+      showWhen: () => state.buildings.masterworkFoundry >= 1,
     },
     {
       id: "tanner",

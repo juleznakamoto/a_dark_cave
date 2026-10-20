@@ -10,6 +10,20 @@ function baseState(overrides: Partial<GameState> = {}): GameState {
 }
 
 describe("getSidePanelModel", () => {
+  it("lists mined resources in cave Mine button order", () => {
+    const mined = [
+      "stone",
+      "iron",
+      "coal",
+      "sulfur",
+      "obsidian",
+      "adamant",
+      "moonstone",
+    ];
+    const keys = Object.keys(gameStateSchema.parse({}).resources);
+    expect(keys.filter((key) => mined.includes(key))).toEqual(mined);
+  });
+
   it("lists a held resource and skips untouched ones", () => {
     const state = baseState({
       resources: {
