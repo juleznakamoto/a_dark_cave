@@ -138,6 +138,28 @@ export function getMadnessDeathChanceMaxPerCycle(cruelMode: boolean): number {
   return md.tier6.base + scale * md.tier6.whenCruel;
 }
 
+/**
+ * Villagers killed when a madness-death check hits.
+ * Normal mode below `multiDeathMinMadnessNormal` always kills one.
+ * At or above that, and in cruel mode at any Madness, roll 1 / 2 / 3 / 4.
+ */
+export function rollMadnessDeathCount(
+  totalMadness: number,
+  cruelMode: boolean,
+  random: () => number = Math.random,
+): number {
+  const md = CRUEL_MODE.loop.madnessDeath;
+  if (!cruelMode && totalMadness < md.multiDeathMinMadnessNormal) {
+    return 1;
+  }
+
+  const rand = random() + (cruelMode ? md.deathRollBiasWhenCruel : 0);
+  if (rand < 0.7) return 1;
+  if (rand < 0.8) return 2;
+  if (rand < 0.95) return 3;
+  return 4;
+}
+
 /** Decimal chance → percent for stat tooltips (one decimal when under 10%). */
 export function madnessDeathChanceToTooltipPercent(chance: number): number {
   const pct = chance * 100;

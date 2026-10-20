@@ -70,4 +70,29 @@ describe("RewardDialog button", () => {
 
     expect(screen.getByRole("button", { name: "Continue" })).toBeTruthy();
   });
+
+  it("makes a granted item hoverable with its side-panel tooltip", () => {
+    render(
+      <RewardDialog
+        isOpen
+        onClose={vi.fn()}
+        data={{
+          title: "A stone axe",
+          rewards: {
+            tools: ["stone_axe"],
+            resources: { wood: 10 },
+          },
+        }}
+      />,
+    );
+
+    const axe = screen.getByTestId("reward-item-tool-stone_axe");
+    expect(axe.textContent).toBe("Stone Axe");
+    expect(axe.closest("[data-tooltip-trigger-id]")).toBeTruthy();
+    expect(screen.queryByText("Unlocks Village")).toBeNull();
+    expect(screen.queryByText("Basic axe for chopping wood")).toBeNull();
+
+    const wood = screen.getByText(/\+.*Wood/i);
+    expect(wood.closest("[data-tooltip-trigger-id]")).toBeNull();
+  });
 });

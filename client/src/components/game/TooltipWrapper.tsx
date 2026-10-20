@@ -29,6 +29,8 @@ export interface TooltipWrapperProps {
   tooltipContentClassName?: string;
   /** Placement relative to the trigger. Defaults to Radix `top`. */
   side?: React.ComponentPropsWithoutRef<typeof TooltipContent>["side"];
+  /** Alignment along the trigger. Defaults to Radix `center`. */
+  align?: React.ComponentPropsWithoutRef<typeof TooltipContent>["align"];
   /**
    * Force this tooltip open or closed. Dev samples use `open` to keep a
    * specimen visible. Omit it for normal hover / long-press.
@@ -61,6 +63,7 @@ export function TooltipWrapper({
   tooltipTriggerAsChild = false,
   tooltipContentClassName,
   side,
+  align,
   open,
   preferNativeClick = true,
   onMouseEnter,
@@ -146,7 +149,7 @@ export function TooltipWrapper({
           </span>
         )}
       </TooltipTrigger>
-      <TooltipContent className={tooltipContentClassName} side={side}>
+      <TooltipContent className={tooltipContentClassName} side={side} align={align}>
         {tooltip}
       </TooltipContent>
     </Tooltip>

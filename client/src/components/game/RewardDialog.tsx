@@ -12,7 +12,12 @@ import { resolveOutcomeLogMessage } from "@/i18n/logDisplay";
 import { outcomeDialogIcon } from "@/game/headerIndicatorIcons";
 import OutcomeDialog from "./OutcomeDialog";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { triggerExclusivePromoPingOnce } from "@/lib/exclusivePromoShockwave";
+import {
+  renderItemTooltip,
+  SIDE_PANEL_ITEM_TOOLTIP_DISPLAY,
+} from "@/game/rules/itemTooltips";
 
 /** Same diamond-ring icon as SocialPromptDialog, plus the exclusive-promo shockwave. */
 function SocialPromoTasksOutcomeIcon() {
@@ -116,6 +121,76 @@ const sortResourceKeys = (keys: string[]) =>
     return a.localeCompare(b);
   });
 
+type RewardItemKind =
+  | "tool"
+  | "weapon"
+  | "clothing"
+  | "relic"
+  | "blessing"
+  | "book"
+  | "schematic"
+  | "fellowship";
+
+function rewardItemTooltipType(
+  kind: RewardItemKind,
+): "weapon" | "tool" | "blessing" | "book" | "fellowship" {
+  if (kind === "weapon") return "weapon";
+  if (kind === "tool") return "tool";
+  if (kind === "book") return "book";
+  if (kind === "fellowship") return "fellowship";
+  // Clothing, relics, blessings, and schematics share clothingEffects.
+  return "blessing";
+}
+
+/** Item name in the reward list. Hover shows the same tooltip as the side panel. */
+function RewardItemLine({
+  itemId,
+  kind,
+  label,
+  prefix = "",
+}: {
+  itemId: string;
+  kind: RewardItemKind;
+  label: string;
+  prefix?: string;
+}) {
+  const text = (
+    <span
+      className="text-sm text-foreground"
+      data-testid={`reward-item-${prefix === "-" ? "lost-" : ""}${kind}-${itemId}`}
+    >
+      {prefix}
+      {label}
+    </span>
+  );
+
+  const tooltip = renderItemTooltip(
+    itemId,
+    rewardItemTooltipType(kind),
+    undefined,
+    SIDE_PANEL_ITEM_TOOLTIP_DISPLAY,
+  );
+
+  if (!tooltip) {
+    return <div className="text-sm text-foreground">{prefix}{label}</div>;
+  }
+
+  return (
+    <TooltipWrapper
+      tooltip={tooltip}
+      tooltipId={`reward-item-${prefix === "-" ? "lost-" : ""}${kind}-${itemId}`}
+      disabled
+      tooltipContentClassName="max-w-xs"
+      className="w-fit max-w-full"
+      tooltipTriggerClassName="inline-block max-w-full"
+      side="right"
+      align="start"
+    >
+      {text}
+    </TooltipWrapper>
+  );
+}
+
 export default function RewardDialog({
   isOpen,
   data,
@@ -152,78 +227,50 @@ export default function RewardDialog({
       </div>
     );
   }
-  if (rewards.fellowship?.length) {
-    rewards.fellowship.forEach((member) => {
-      rewardItems.push(
-        <div key={`fellowship-${member}`} className="text-sm text-foreground">
-          {effectDisplayName(member, "fellowship")}
-        </div>
+  const pushItems = (
+    bucket: JSX.Element[],
+    ids: string[] | undefined,
+    kind: RewardItemKind,
+    labelFor: (id: string) => string,
+    prefix = "",
+  ) => {
+    ids?.forEach((id) => {
+      bucket.push(
+        <RewardItemLine
+          key={`${prefix}${kind}-${id}`}
+          itemId={id}
+          kind={kind}
+          label={labelFor(id)}
+          prefix={prefix}
+        />,
       );
     });
-  }
-  if (rewards.tools?.length) {
-    rewards.tools.forEach((tool) => {
-      rewardItems.push(
-        <div key={`tool-${tool}`} className="text-sm text-foreground">
-          {getEffectName("tools", tool, capitalizeWords(tool))}
-        </div>
-      );
-    });
-  }
-  if (rewards.weapons?.length) {
-    rewards.weapons.forEach((weapon) => {
-      rewardItems.push(
-        <div key={`weapon-${weapon}`} className="text-sm text-foreground">
-          {getEffectName("weapons", weapon, capitalizeWords(weapon))}
-        </div>
-      );
-    });
-  }
-  if (rewards.clothing?.length) {
-    rewards.clothing.forEach((clothing) => {
-      rewardItems.push(
-        <div key={`clothing-${clothing}`} className="text-sm text-foreground">
-          {effectDisplayName(clothing, "clothing")}
-        </div>
-      );
-    });
-  }
-  if (rewards.relics?.length) {
-    rewards.relics.forEach((relic) => {
-      rewardItems.push(
-        <div key={`relic-${relic}`} className="text-sm text-foreground">
-          {effectDisplayName(relic, "relic")}
-        </div>
-      );
-    });
-  }
-  if (rewards.blessings?.length) {
-    rewards.blessings.forEach((blessing) => {
-      rewardItems.push(
-        <div key={`blessing-${blessing}`} className="text-sm text-foreground">
-          {effectDisplayName(blessing, "blessing")}
-        </div>
-      );
-    });
-  }
-  if (rewards.books?.length) {
-    rewards.books.forEach((book) => {
-      rewardItems.push(
-        <div key={`book-${book}`} className="text-sm text-foreground">
-          {effectDisplayName(book, "book")}
-        </div>
-      );
-    });
-  }
-  if (rewards.schematics?.length) {
-    rewards.schematics.forEach((schematic) => {
-      rewardItems.push(
-        <div key={`schematic-${schematic}`} className="text-sm text-foreground">
-          {effectDisplayName(schematic, "schematic")}
-        </div>
-      );
-    });
-  }
+  };
+
+  pushItems(rewardItems, rewards.fellowship, "fellowship", (id) =>
+    effectDisplayName(id, "fellowship"),
+  );
+  pushItems(rewardItems, rewards.tools, "tool", (id) =>
+    getEffectName("tools", id, capitalizeWords(id)),
+  );
+  pushItems(rewardItems, rewards.weapons, "weapon", (id) =>
+    getEffectName("weapons", id, capitalizeWords(id)),
+  );
+  pushItems(rewardItems, rewards.clothing, "clothing", (id) =>
+    effectDisplayName(id, "clothing"),
+  );
+  pushItems(rewardItems, rewards.relics, "relic", (id) =>
+    effectDisplayName(id, "relic"),
+  );
+  pushItems(rewardItems, rewards.blessings, "blessing", (id) =>
+    effectDisplayName(id, "blessing"),
+  );
+  pushItems(rewardItems, rewards.books, "book", (id) =>
+    effectDisplayName(id, "book"),
+  );
+  pushItems(rewardItems, rewards.schematics, "schematic", (id) =>
+    effectDisplayName(id, "schematic"),
+  );
   if (rewards.resources && Object.keys(rewards.resources).length > 0) {
     sortResourceKeys(Object.keys(rewards.resources)).forEach((resource) => {
       const amount = rewards.resources![resource as keyof typeof rewards.resources];
@@ -253,28 +300,25 @@ export default function RewardDialog({
       );
     });
   }
-  if (rewards.relicsLost?.length) {
-    rewards.relicsLost.forEach((relic) => {
-      lossItems.push(
-        <div key={`relic-lost-${relic}`} className="text-sm text-foreground">
-          -{getEffectName(
-            "clothing",
-            relic,
-            clothingEffects[relic]?.name || capitalizeWords(relic),
-          )}
-        </div>
-      );
-    });
-  }
-  if (rewards.clothingLost?.length) {
-    rewards.clothingLost.forEach((clothing) => {
-      lossItems.push(
-        <div key={`clothing-lost-${clothing}`} className="text-sm text-foreground">
-          -{getEffectName("clothing", clothing, capitalizeWords(clothing))}
-        </div>
-      );
-    });
-  }
+  pushItems(
+    lossItems,
+    rewards.relicsLost,
+    "relic",
+    (id) =>
+      getEffectName(
+        "clothing",
+        id,
+        clothingEffects[id]?.name || capitalizeWords(id),
+      ),
+    "-",
+  );
+  pushItems(
+    lossItems,
+    rewards.clothingLost,
+    "clothing",
+    (id) => getEffectName("clothing", id, capitalizeWords(id)),
+    "-",
+  );
 
   const hasRewardItems = rewardItems.length > 0;
   const hasLosses = lossItems.length > 0;

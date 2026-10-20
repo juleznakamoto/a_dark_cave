@@ -46,7 +46,10 @@ import {
   DISGRACED_PRIOR_UPGRADES,
 } from "./rules/skillUpgrades";
 import { CRUEL_MODE, cruelModeScale, getMaxStoneHutLevel, getMaxWoodenHutLevel } from "./cruelMode";
-import { getMadnessDeathChancePerCycle } from "./rules/effectsStats";
+import {
+  getMadnessDeathChancePerCycle,
+  rollMadnessDeathCount,
+} from "./rules/effectsStats";
 import { buildVillagerScarcityLogEntries } from "./villagerScarcityLog";
 import {
   processPlayTimeAutoPrompts,
@@ -1372,30 +1375,15 @@ function handleMadnessCheck() {
   const totalMadness = getTotalMadness(state);
   if (totalMadness <= 0) return;
 
-  const probability = getMadnessDeathChancePerCycle(
-    totalMadness,
-    Boolean(state.cruelMode),
-  );
-  const md = CRUEL_MODE.loop.madnessDeath;
+  const cruelMode = Boolean(state.cruelMode);
+  const probability = getMadnessDeathChancePerCycle(totalMadness, cruelMode);
 
   // Check if a madness death event occurs
   if (Math.random() < probability) {
-    // Determine number of deaths: 0, 1, 2, or 4 villagers
-    const rand = Math.random() + cruelModeScale(state) * md.deathRollBiasWhenCruel;
-    let madnessDeaths = 0;
-
-    if (rand < 0.6) {
-      madnessDeaths = 1;
-    } else if (rand < 0.8) {
-      madnessDeaths = 2;
-    } else if (rand < 0.95) {
-      madnessDeaths = 3;
-    } else {
-      madnessDeaths = 4;
-    }
-
-    // Cap deaths at current population
-    madnessDeaths = Math.min(madnessDeaths, totalPopulation);
+    const madnessDeaths = Math.min(
+      rollMadnessDeathCount(totalMadness, cruelMode),
+      totalPopulation,
+    );
 
     if (madnessDeaths > 0) {
       // Use the centralized killVillagers function

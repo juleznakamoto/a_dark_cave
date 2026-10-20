@@ -37,8 +37,9 @@ export const CRUEL_MODE = {
      * Above the last maxPop the bonus is 0.
      */
     lowPopBonusTiers: [
-      { maxPop: 3, normal: 0.5, cruel: 0.25 },
-      { maxPop: 6, normal: 0.25, cruel: 0.1 },
+      { maxPop: 3, normal: 0.4, cruel: 0.2 },
+      { maxPop: 6, normal: 0.2, cruel: 0.1 },
+      { maxPop: 8, normal: 0.1, cruel: 0.05 },
     ],
   },
 
@@ -91,6 +92,8 @@ export const CRUEL_MODE = {
       tier5: { base: 0.015, whenCruel: 0.025 },
       tier6: { base: 0.02, whenCruel: 0.03 },
       deathRollBiasWhenCruel: 0.1,
+      /** Normal mode kills exactly one villager until Madness reaches this. Cruel mode can kill more at any band. */
+      multiDeathMinMadnessNormal: 21,
     },
   },
 
