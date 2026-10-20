@@ -40,6 +40,49 @@ describe("SilverCoinMark press", () => {
     expect(onCollect).toHaveBeenCalledWith("coin-a");
   });
 
+  it("releases a successful capture without asking hasPointerCapture", () => {
+    const onCollect = vi.fn();
+    const view = render(
+      <svg>
+        <SilverCoinMark id="coin-a" x={10} y={20} label="Silver" onCollect={onCollect} />
+      </svg>,
+    );
+    const coin = view.getByTestId("village-silver-coin");
+    const setPointerCapture = vi.fn();
+    const releasePointerCapture = vi.fn();
+    coin.setPointerCapture = setPointerCapture;
+    coin.releasePointerCapture = releasePointerCapture;
+    Object.defineProperty(coin, "hasPointerCapture", { value: undefined });
+
+    fireEvent.pointerDown(coin, { pointerId: 4 });
+    fireEvent.pointerUp(coin, { pointerId: 4 });
+
+    expect(setPointerCapture).toHaveBeenCalledWith(4);
+    expect(releasePointerCapture).toHaveBeenCalledWith(4);
+    expect(onCollect).toHaveBeenCalledWith("coin-a");
+  });
+
+  it("does not release when capture was refused", () => {
+    const onCollect = vi.fn();
+    const view = render(
+      <svg>
+        <SilverCoinMark id="coin-a" x={10} y={20} label="Silver" onCollect={onCollect} />
+      </svg>,
+    );
+    const coin = view.getByTestId("village-silver-coin");
+    const releasePointerCapture = vi.fn();
+    coin.setPointerCapture = () => {
+      throw new Error("no capture");
+    };
+    coin.releasePointerCapture = releasePointerCapture;
+
+    fireEvent.pointerDown(coin, { pointerId: 4 });
+    fireEvent.pointerUp(coin, { pointerId: 4 });
+
+    expect(releasePointerCapture).not.toHaveBeenCalled();
+    expect(onCollect).toHaveBeenCalledWith("coin-a");
+  });
+
   it("ignores a release that did not start on the coin", () => {
     const onCollect = vi.fn();
     const view = render(

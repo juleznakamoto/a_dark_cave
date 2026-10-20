@@ -39,6 +39,7 @@ export function SilverCoinMark({
   const radius = VILLAGE_SILVER_COIN_RADIUS;
   const groupRef = useRef<SVGGElement>(null);
   const pressedRef = useRef(false);
+  const capturedPointerId = useRef<number | null>(null);
   const [pressed, setPressed] = useState(false);
   const [boost, setBoost] = useState(1);
   useLayoutEffect(() => {
@@ -63,26 +64,33 @@ export function SilverCoinMark({
     pressedRef.current = true;
     setPressed(true);
     onHover?.(false);
+    capturedPointerId.current = null;
     try {
       event.currentTarget.setPointerCapture(event.pointerId);
+      capturedPointerId.current = event.pointerId;
     } catch {
       // Synthetic events may not capture. Releasing on the coin still collects.
     }
+  };
+  const releaseCapture = (target: SVGGElement) => {
+    const pointerId = capturedPointerId.current;
+    if (pointerId == null) return;
+    capturedPointerId.current = null;
+    target.releasePointerCapture(pointerId);
   };
   const onPointerUp = (event: PointerEvent<SVGGElement>) => {
     if (!pressedRef.current) return;
     pressedRef.current = false;
     setPressed(false);
-    if (event.currentTarget.hasPointerCapture?.(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId);
-    }
+    releaseCapture(event.currentTarget);
     event.stopPropagation();
     event.preventDefault();
     onCollect?.(id);
   };
-  const onPointerCancel = () => {
+  const onPointerCancel = (event: PointerEvent<SVGGElement>) => {
     pressedRef.current = false;
     setPressed(false);
+    releaseCapture(event.currentTarget);
   };
   return (
     <g
