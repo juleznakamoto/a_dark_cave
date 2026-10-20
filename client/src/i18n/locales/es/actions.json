@@ -532,7 +532,7 @@
   "forestCave": {
     "label": "Cueva del bosque",
     "log": {
-      "success": "Cuando los aldeanos descienden a la cueva, feroces sabuesos irrumpen de la oscuridad en manadas implacables. Los gritos resuenan mientras las garras desgarran y los dientes muerden. Cuando cae la última criatura, cada aldeano vive, vaciado por lo que vio.",
+      "success": "Cuando los aldeanos descienden a la cueva, feroces sabuesos irrumpen de la oscuridad en manadas implacables. Los gritos resuenan mientras las garras desgarran y los dientes muerden. Cuando cae la última bestia, cada aldeano vive, y la tribu de la cazadora queda salvada.",
       "failure": "Cuando la expedición entra en la cueva, es abrumada por una manada de brutales sabuesos. {{count}} aldeanos son destrozados por mandíbulas salvajes antes de que los supervivientes logren retirarse."
     }
   },

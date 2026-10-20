@@ -516,7 +516,7 @@
   "forestCave": {
     "label": "Caverna della Foresta",
     "log": {
-      "success": "Mentre gli abitanti scendono nella caverna, segugi selvaggi erompono dall'oscurità in branchi incessanti. Le urla riecheggiano mentre gli artigli lacerano e i denti azzannano. Quando l'ultima creatura cade, ogni abitante vive, svuotato da ciò che ha visto.",
+      "success": "Mentre gli abitanti scendono nella caverna, segugi selvaggi erompono dall'oscurità in branchi incessanti. Le urla riecheggiano mentre gli artigli lacerano e i denti azzannano. Quando l'ultima bestia cade, ogni abitante vive, e la tribù della cacciatrice è salvata.",
       "failure": "Mentre la spedizione entra nella caverna viene sopraffatta da un branco di brutali segugi. {{count}} abitanti vengono fatti a pezzi da fauci selvagge prima che i sopravvissuti riescano a ritirarsi."
     }
   },

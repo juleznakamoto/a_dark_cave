@@ -25,7 +25,7 @@ export const GAME_CONSTANTS = {
    * (choice outcomes, combat, rewards) open via `setEventDialog` / schedulers and
    * are not blocked by this gap.
    */
-  EVENT_DIALOG_MIN_GAP_MS: 90_000,
+  EVENT_DIALOG_MIN_GAP_MS: 60_000,
   /** First call costs this much gold; each subsequent call adds `CALL_MERCHANT_GOLD_PER_CALL`. */
   CALL_MERCHANT_BASE_GOLD: 10,
   CALL_MERCHANT_GOLD_PER_CALL: 10,

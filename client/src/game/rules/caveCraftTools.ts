@@ -6,7 +6,7 @@ import { applyActionEffects } from "./actionEffects";
 import { pushSystemLog } from "./systemLog";
 import { OBSIDIAN_ORB_FOCUS_INTERVAL_MS } from "@/game/obsidianOrb";
 
-const CRAFT_TORCHES_BASE_COST = 10;
+const CRAFT_TORCHES_BASE_COST = 8;
 const CRAFT_TORCHES_BASE_AMOUNT = 1;
 const CRAFT_TORCHES_BASE_EXECUTION = 2.5;
 

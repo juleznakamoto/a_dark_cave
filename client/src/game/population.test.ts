@@ -876,6 +876,33 @@ describe('Scholar insight production', () => {
   });
 });
 
+describe('idle villager production', () => {
+  it('produces 5 food per available villager each cycle', () => {
+    const state = createTestState({
+      villagers: { ...createTestState().villagers, free: 3, gatherer: 0 },
+    });
+    const production = getPopulationProduction('free', 3, state);
+    expect(production).toEqual([
+      expect.objectContaining({ resource: 'food', totalAmount: 15 }),
+    ]);
+    const effects = getTotalPopulationEffects(state, ['free']);
+    // 15 produced, 3 eaten once hunting upkeep is active
+    expect(effects.food).toBe(15 - 3);
+  });
+
+  it('produces nothing when nobody is available', () => {
+    const state = createTestState({
+      villagers: { ...createTestState().villagers, free: 0, hunter: 1 },
+    });
+    expect(getPopulationProduction('free', 0, state)).toEqual([
+      expect.objectContaining({ resource: 'food', totalAmount: 0 }),
+    ]);
+    expect(getResourceProductionBreakdown(state, 'food').map((line) => line.sourceId)).not.toContain(
+      'free',
+    );
+  });
+});
+
 describe('resource production breakdown', () => {
   it('lists villager upkeep first, then jobs for a resource', () => {
     const state = createTestState({
@@ -887,7 +914,11 @@ describe('resource production breakdown', () => {
       },
     });
 
-    expect(getAssignedPopulationJobIds(state)).toEqual(['gatherer', 'iron_miner']);
+    expect(getAssignedPopulationJobIds(state)).toEqual([
+      'gatherer',
+      'iron_miner',
+      'free',
+    ]);
 
     expect(getResourceProductionBreakdown(state, 'wood')).toEqual([
       { sourceId: VILLAGER_UPKEEP_SOURCE_ID, amount: -5 },
@@ -896,6 +927,7 @@ describe('resource production breakdown', () => {
     expect(getResourceProductionBreakdown(state, 'food')).toEqual([
       { sourceId: VILLAGER_UPKEEP_SOURCE_ID, amount: -5 },
       { sourceId: 'iron_miner', amount: -5 },
+      { sourceId: 'free', amount: 10 },
     ]);
     expect(getResourceProductionBreakdown(state, 'iron')).toEqual([
       { sourceId: 'iron_miner', amount: 5 },
@@ -916,6 +948,7 @@ describe('resource production breakdown', () => {
         amount: -DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
       },
       { sourceId: 'hunter', amount: 5 },
+      { sourceId: 'free', amount: 20 },
     ]);
   });
 

@@ -532,7 +532,7 @@
   "forestCave": {
     "label": "Leśna jaskinia",
     "log": {
-      "success": "Gdy wieśniacy schodzą w jaskinię, z mroku wyrywają się dzikie ogary w nieustępliwych watahach. Krzyki odbijają się echem, gdy szarpią pazury i kłapią zęby. Gdy pada ostatnia istota, każdy wieśniak żyje, wydrążony tym, co ujrzał.",
+      "success": "Gdy wieśniacy schodzą w jaskinię, z mroku wyrywają się dzikie ogary w nieustępliwych watahach. Krzyki odbijają się echem, gdy szarpią pazury i kłapią zęby. Gdy pada ostatnia bestia, każdy wieśniak żyje, a plemię łowczyni jest ocalone.",
       "failure": "Gdy wyprawa wkracza do jaskini, zalewa ją wataha okrutnych ogarów. {{count}} wieśniaków rozszarpują dzikie paszcze, zanim ocalałym udaje się wycofać."
     }
   },

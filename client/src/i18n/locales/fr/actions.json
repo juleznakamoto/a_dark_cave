@@ -532,7 +532,7 @@
   "forestCave": {
     "label": "Grotte forestière",
     "log": {
-      "success": "Alors que les villageois descendent dans la grotte, des chiens sauvages jaillissent des ténèbres en meutes implacables. Les cris résonnent tandis que griffes déchirent et dents claquent. Quand la dernière créature tombe, chaque villageois vit, vidé par ce qu'il a vu.",
+      "success": "Alors que les villageois descendent dans la grotte, des chiens sauvages jaillissent des ténèbres en meutes implacables. Les cris résonnent tandis que griffes déchirent et dents claquent. Quand la dernière bête tombe, chaque villageois vit, et la tribu de la chasseresse est sauvée.",
       "failure": "Lorsque l'expédition entre dans la grotte, elle est submergée par une meute de chiens brutaux. {{count}} villageois sont déchiquetés par des mâchoires sauvages avant que les survivants ne parviennent à se replier."
     }
   },

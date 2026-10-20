@@ -149,6 +149,12 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
       { resource: "food", amount: -5, interval: 15000 },
     ],
   },
+  // Idle villagers (the available pool). Not an assignable profession.
+  free: {
+    id: "free",
+    label: "free",
+    production: [{ resource: "food", amount: 5, interval: 15000 }],
+  },
 };
 
 /** Insight per scholar per cycle from highest clerk-chain building only. */

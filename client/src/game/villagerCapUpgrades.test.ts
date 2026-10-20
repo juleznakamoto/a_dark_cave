@@ -18,9 +18,13 @@ import {
   getVillagerCapUpgradeGroupForJob,
   MAX_VILLAGER_CAP_LEVEL,
   migrateVillagerCapFifteenStepOnLoad,
+  migrateVillagerCapFiveStepOnLoad,
   VILLAGER_CAP_BY_LEVEL,
   VILLAGER_CAP_FIFTEEN_STEP_SEEN_KEY,
+  VILLAGER_CAP_FIVE_STEP_SEEN_KEY,
 } from "./villagerCapUpgrades";
+import { createInitialState } from "@/game/store/createInitialState";
+import { applyGameStateLoadMigrations } from "@/game/stateHelpers";
 
 function baseState(
   overrides: Partial<GameState> = {},
@@ -61,11 +65,11 @@ describe("villagerCapUpgrades", () => {
     expect(getGroupForBuildingKey("woodenHut")).toBeUndefined();
   });
 
-  it("uses explicit cap table including level 6 = 100", () => {
-    expect(VILLAGER_CAP_BY_LEVEL).toEqual([10, 15, 20, 30, 40, 50, 100]);
-    expect(getVillagerCapForLevel(0)).toBe(10);
-    expect(getVillagerCapForLevel(1)).toBe(15);
-    expect(getVillagerCapForLevel(6)).toBe(100);
+  it("uses explicit cap table including level 0 = 5 and level 7 = 100", () => {
+    expect(VILLAGER_CAP_BY_LEVEL).toEqual([5, 10, 15, 20, 30, 40, 50, 100]);
+    expect(getVillagerCapForLevel(0)).toBe(5);
+    expect(getVillagerCapForLevel(1)).toBe(10);
+    expect(getVillagerCapForLevel(7)).toBe(100);
   });
 
   it("returns Infinity when feature gate is off", () => {
@@ -85,12 +89,13 @@ describe("villagerCapUpgrades", () => {
   });
 
   it("computes upgrade costs per cap step", () => {
-    expect(getNextCapUpgradeCost(0)).toBe(50);
-    expect(getNextCapUpgradeCost(1)).toBe(100);
-    expect(getNextCapUpgradeCost(2)).toBe(250);
-    expect(getNextCapUpgradeCost(3)).toBe(500);
-    expect(getNextCapUpgradeCost(4)).toBe(750);
-    expect(getNextCapUpgradeCost(5)).toBe(1000);
+    expect(getNextCapUpgradeCost(0)).toBe(25);
+    expect(getNextCapUpgradeCost(1)).toBe(50);
+    expect(getNextCapUpgradeCost(2)).toBe(100);
+    expect(getNextCapUpgradeCost(3)).toBe(250);
+    expect(getNextCapUpgradeCost(4)).toBe(500);
+    expect(getNextCapUpgradeCost(5)).toBe(750);
+    expect(getNextCapUpgradeCost(6)).toBe(1000);
   });
 
   it("defines construction queue slot unlock costs", () => {
@@ -111,7 +116,7 @@ describe("villagerCapUpgrades", () => {
     expect(getVillagerCapLevel(state, "hunter")).toBe(MAX_VILLAGER_CAP_LEVEL);
     expect(getVillagerCapLevel(state, "miner")).toBe(0);
     expect(getVillagerCapForJob(state, "hunter")).toBe(100);
-    expect(getVillagerCapForJob(state, "iron_miner")).toBe(10);
+    expect(getVillagerCapForJob(state, "iron_miner")).toBe(5);
   });
 
   it("getVillagerCapUpgradeGroupForBuilding gates on caps, insight, and max level", () => {
@@ -214,8 +219,8 @@ describe("villagerCapUpgrades", () => {
 
     const next = useGameStore.getState();
     expect(next.villagerCapUpgrades?.hunter).toBe(1);
-    expect(next.resources.insight).toBe(50);
-    expect(getVillagerCapForJob(next, "hunter")).toBe(15);
+    expect(next.resources.insight).toBe(75);
+    expect(getVillagerCapForJob(next, "hunter")).toBe(10);
   });
 
   it("shifts pre-15-step levels once so bought caps stay put", () => {
@@ -230,8 +235,21 @@ describe("villagerCapUpgrades", () => {
       scholar: 0,
     });
     expect(patch?.story?.seen?.[VILLAGER_CAP_FIFTEEN_STEP_SEEN_KEY]).toBe(true);
-    expect(getVillagerCapForLevel(2)).toBe(20);
-    expect(getVillagerCapForLevel(6)).toBe(100);
+    const withFive = migrateVillagerCapFiveStepOnLoad({
+      villagerCapUpgrades: patch?.villagerCapUpgrades,
+      story: patch?.story,
+    });
+    expect(withFive?.villagerCapUpgrades).toEqual({
+      hunter: 3,
+      miner: 7,
+      forger: 1,
+      tanner: 1,
+      scholar: 1,
+      alchemist: 1,
+    });
+    expect(getVillagerCapForLevel(3)).toBe(20);
+    expect(getVillagerCapForLevel(7)).toBe(100);
+    expect(getVillagerCapForLevel(1)).toBe(10);
 
     const already = baseState({
       villagerCapUpgrades: { hunter: 1 },
@@ -244,10 +262,74 @@ describe("villagerCapUpgrades", () => {
     expect(migrateVillagerCapFifteenStepOnLoad(already)).toBeNull();
   });
 
+  it("shifts pre-5-step levels once so the old cap of 10 stays put", () => {
+    const legacy = baseState({
+      villagerCapUpgrades: { hunter: 0, miner: 2, scholar: 6 },
+      story: {
+        seen: { [VILLAGER_CAP_FIFTEEN_STEP_SEEN_KEY]: true },
+        merchantPurchases: 0,
+        heavySleeperHours: 0,
+      },
+    });
+    const patch = migrateVillagerCapFiveStepOnLoad(legacy);
+    expect(patch?.villagerCapUpgrades).toEqual({
+      hunter: 1,
+      miner: 3,
+      forger: 1,
+      tanner: 1,
+      scholar: 7,
+      alchemist: 1,
+    });
+    expect(patch?.story?.seen?.[VILLAGER_CAP_FIVE_STEP_SEEN_KEY]).toBe(true);
+    expect(getVillagerCapForLevel(1)).toBe(10);
+    expect(getVillagerCapForLevel(3)).toBe(20);
+    expect(getVillagerCapForLevel(7)).toBe(100);
+
+    const already = baseState({
+      villagerCapUpgrades: { hunter: 0 },
+      story: {
+        seen: { [VILLAGER_CAP_FIVE_STEP_SEEN_KEY]: true },
+        merchantPurchases: 0,
+        heavySleeperHours: 0,
+      },
+    });
+    expect(migrateVillagerCapFiveStepOnLoad(already)).toBeNull();
+  });
+
+  it("new games start at cap 5 and are not shifted on load", () => {
+    const fresh = createInitialState();
+    expect(fresh.story.seen[VILLAGER_CAP_FIVE_STEP_SEEN_KEY]).toBe(true);
+    const started = {
+      ...fresh,
+      flags: { ...fresh.flags, villagerCapsEnabled: true },
+    };
+    const migrated = applyGameStateLoadMigrations(started);
+    expect(migrated.villagerCapUpgrades?.hunter).toBeUndefined();
+    expect(getVillagerCapForJob(migrated, "hunter")).toBe(5);
+  });
+
+  it("load migration keeps an old starting cap of 10", () => {
+    const fresh = createInitialState();
+    const seen = { ...fresh.story.seen };
+    delete seen[VILLAGER_CAP_FIVE_STEP_SEEN_KEY];
+    const legacy = {
+      ...fresh,
+      flags: { ...fresh.flags, villagerCapsEnabled: true },
+      villagerCapUpgrades: { hunter: 1 },
+      story: { ...fresh.story, seen },
+    };
+    const migrated = applyGameStateLoadMigrations(legacy);
+    expect(migrated.villagerCapUpgrades?.hunter).toBe(2);
+    expect(getVillagerCapForJob(migrated, "hunter")).toBe(15);
+    expect(migrated.villagerCapUpgrades?.miner).toBe(1);
+    expect(getVillagerCapForJob(migrated, "iron_miner")).toBe(10);
+    expect(migrated.story.seen[VILLAGER_CAP_FIVE_STEP_SEEN_KEY]).toBe(true);
+  });
+
   it("enables caps when villagerCapsEnabled flag is set", () => {
     const state = baseState();
     expect(areVillagerCapsEnabled(state)).toBe(true);
-    expect(getVillagerCapForJob(state, "hunter")).toBe(10);
+    expect(getVillagerCapForJob(state, "hunter")).toBe(5);
     expect(canUpgradeVillagerCap(state, "hunter")).toBe(true);
   });
 });

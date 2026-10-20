@@ -2431,10 +2431,19 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   animation: focus-glow 3s ease-in-out infinite;
 }
 
-/* Soft outer halo for a one-time craft. Buildings and repeat actions stay flat. */
+/* One-time crafts. Starts as the normal action outline (#431407).
+ * Edit --once-action-border to retint the solid stroke, the distorted
+ * hairline, and the disabled fade together. */
 .once-action-glow {
+  --once-action-border: #601d0b;
+  --adc-chrome-rule-color: var(--once-action-border);
   box-shadow:
     0 0 2px 1px rgba(251, 117, 60, 0.2);
+}
+
+.game-chrome-rule--box.once-action-glow:disabled,
+.game-chrome-rule--box.once-action-glow[aria-disabled] {
+  --adc-chrome-rule-color: color-mix(in srgb, var(--once-action-border) 50%, transparent);
 }
 
 /* Include box-shadow so the teal glow eases in/out (button base only transitions color/transform). */

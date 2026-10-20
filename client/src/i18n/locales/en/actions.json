@@ -532,7 +532,7 @@
   "forestCave": {
     "label": "Forest Cave",
     "log": {
-      "success": "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last creature falls, every villager lives, hollowed by what they saw.",
+      "success": "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last beast falls, every villager lives, and the huntress's tribe is saved.",
       "failure": "As the expedition enters the cave it is overwhelmed by a pack of brutal hounds. {{count}} villagers are torn apart by savage jaws before the survivors manage to retreat."
     }
   },

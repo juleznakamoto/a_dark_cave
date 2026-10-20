@@ -53,7 +53,7 @@ describe("Job assignment - touch/ghost-click fix", () => {
       {
         ...state,
         flags: { ...state.flags, villagerCapsEnabled: true },
-        villagers: { ...state.villagers, hunter: 10, free: 3 },
+        villagers: { ...state.villagers, hunter: 5, free: 3 },
       },
       "hunter",
     );
@@ -112,15 +112,15 @@ describe("Job assignment - touch/ghost-click fix", () => {
       {
         ...state,
         flags: { ...state.flags, villagerCapsEnabled: true },
-        villagers: { ...state.villagers, hunter: 7, free: 5 },
+        villagers: { ...state.villagers, hunter: 3, free: 5 },
       },
       "hunter",
       10,
     );
 
-    // Default hunter cap is 10 when caps are enabled
-    expect(updates.villagers?.hunter).toBe(10);
-    expect(updates.villagers?.free).toBe(2);
+    // Default hunter cap is 5 when caps are enabled
+    expect(updates.villagers?.hunter).toBe(5);
+    expect(updates.villagers?.free).toBe(3);
   });
 
   it("unassignVillagerFromJob removes up to count", () => {

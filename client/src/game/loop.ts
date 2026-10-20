@@ -1068,6 +1068,18 @@ function accumulateHunterProduction(
   );
 }
 
+function accumulateFreeVillagerProduction(
+  state: GameState,
+  available: Record<string, number>,
+  deltas: Record<string, number>,
+): void {
+  const free = state.villagers.free ?? 0;
+  if (free <= 0) return;
+  getPopulationProduction("free", free, state).forEach((prod) =>
+    accumulateProduction(prod, available, deltas),
+  );
+}
+
 function accumulateScholarProduction(
   state: GameState,
   available: Record<string, number>,
@@ -1187,6 +1199,7 @@ function runProductionCycle(): void {
 
   accumulateGathererProduction(state, available, deltas);
   accumulateHunterProduction(state, available, deltas);
+  accumulateFreeVillagerProduction(state, available, deltas);
   accumulateScholarProduction(state, available, deltas);
   accumulatePassiveEffectProduction(state, available, deltas);
   const { steelForgedThisTick, leatherCreatedThisTick } =

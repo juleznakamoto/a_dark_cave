@@ -1,19 +1,25 @@
 import type { GameState } from "@shared/schema";
 import { isInsightUnlocked, getInsightAmount } from "@/game/rules/insightReveal";
 
-/** Max villagers assignable per profession at each Insight upgrade level (0–6). */
-export const VILLAGER_CAP_BY_LEVEL = [10, 15, 20, 30, 40, 50, 100] as const;
+/** Max villagers assignable per profession at each Insight upgrade level (0–7). */
+export const VILLAGER_CAP_BY_LEVEL = [5, 10, 15, 20, 30, 40, 50, 100] as const;
 
 /** Gatherers use a fixed cap (not upgraded via Insight). */
 export const GATHERER_CAP = 100;
 
-export const MAX_VILLAGER_CAP_LEVEL = 6;
+export const MAX_VILLAGER_CAP_LEVEL = VILLAGER_CAP_BY_LEVEL.length - 1;
 
 /**
  * Set on new games and after the one-time load shift.
  * Older saves stored levels before the 15-cap step existed.
  */
 export const VILLAGER_CAP_FIFTEEN_STEP_SEEN_KEY = "villagerCapFifteenStepApplied";
+
+/**
+ * Set on new games and after the one-time load shift.
+ * Older saves stored levels before the 5-cap step existed (their level 0 was cap 10).
+ */
+export const VILLAGER_CAP_FIVE_STEP_SEEN_KEY = "villagerCapFiveStepApplied";
 
 export type VillagerCapGroupId =
   | "hunter"
@@ -130,9 +136,9 @@ export function getVillagerCapForJob(
   return getVillagerCapForGroup(state, groupId);
 }
 
-/** Insight cost to upgrade from each cap level to the next (levels 0–5 → caps 10→15 … 50→100). */
+/** Insight cost to upgrade from each cap level to the next (levels 0–6 → caps 5→10 … 50→100). */
 export const VILLAGER_CAP_UPGRADE_INSIGHT_COSTS = [
-  50, 100, 250, 500, 750, 1000,
+  25, 50, 100, 250, 500, 750, 1000,
 ] as const;
 
 /** Insight cost to upgrade from `level` to `level + 1`. */
@@ -213,7 +219,8 @@ export function getVillagerCapUpgradeInsightKey(
 
 /**
  * Insert the 15-cap step under levels bought before it existed.
- * Level 0 stays 10. Level 1 (old cap 20) becomes level 2, and so on.
+ * Level 0 is left alone. Level 1 (old cap 20) becomes level 2, and so on.
+ * The 5-cap migration runs after this and shifts every level, including 0.
  */
 export function migrateVillagerCapFifteenStepOnLoad(
   state: Pick<GameState, "villagerCapUpgrades" | "story">,
@@ -237,6 +244,39 @@ export function migrateVillagerCapFifteenStepOnLoad(
       seen: {
         ...(state.story?.seen ?? {}),
         [VILLAGER_CAP_FIFTEEN_STEP_SEEN_KEY]: true,
+      },
+    },
+  };
+}
+
+/**
+ * Insert the 5-cap step under levels bought before it existed.
+ * Old level 0 (cap 10, including groups with no stored level) becomes level 1.
+ */
+export function migrateVillagerCapFiveStepOnLoad(
+  state: Pick<GameState, "villagerCapUpgrades" | "story">,
+): Partial<Pick<GameState, "villagerCapUpgrades" | "story">> | null {
+  if (state.story?.seen?.[VILLAGER_CAP_FIVE_STEP_SEEN_KEY]) return null;
+
+  const current = state.villagerCapUpgrades ?? {};
+  const nextUpgrades: Record<string, number> = { ...current };
+  const groupIds = new Set<string>([
+    ...Object.keys(VILLAGER_CAP_GROUPS),
+    ...Object.keys(current),
+  ]);
+  for (const groupId of groupIds) {
+    const level = current[groupId];
+    const base = typeof level === "number" && level > 0 ? level : 0;
+    nextUpgrades[groupId] = Math.min(base + 1, MAX_VILLAGER_CAP_LEVEL);
+  }
+
+  return {
+    villagerCapUpgrades: nextUpgrades,
+    story: {
+      ...state.story,
+      seen: {
+        ...(state.story?.seen ?? {}),
+        [VILLAGER_CAP_FIVE_STEP_SEEN_KEY]: true,
       },
     },
   };

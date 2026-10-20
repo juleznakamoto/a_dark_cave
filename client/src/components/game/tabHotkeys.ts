@@ -16,7 +16,7 @@ export type VisibleHotkeyTabsParams = {
   darkEstate: number;
   achievementsUnlocked: boolean;
   timedEventActive: boolean;
-  /** Map tab, after the cartographer. Sits just left of Achievements. */
+  /** Map tab: cartographer unlock, or the demo-end view of buildings already built. */
   mapTab?: boolean;
   /** Demo-end teaser tabs are on-screen and clickable even while still locked. */
   includeDemoTeaserTabs?: boolean;

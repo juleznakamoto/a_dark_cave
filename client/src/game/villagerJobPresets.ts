@@ -47,9 +47,14 @@ type PresetSlot = NonNullable<GameState["villagerJobPresets"][number]>;
 type PresetAssignments = PresetSlot["assignments"];
 type VillagerJobKey = keyof GameState["villagers"];
 
-/** Stable list of job ids (everything in `villagers` except `free`). Lazy to avoid import cycles. */
+/**
+ * Assignable professions. `populationJobs` also lists `free` so idle villagers
+ * produce food, but that pool is the remainder after presets, not a job.
+ */
 function getJobIds(): VillagerJobKey[] {
-  return Object.keys(populationJobs) as VillagerJobKey[];
+  return (Object.keys(populationJobs) as VillagerJobKey[]).filter(
+    (id) => id !== "free",
+  );
 }
 
 function getBuiltPresetTierCount(

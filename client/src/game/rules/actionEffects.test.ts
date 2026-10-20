@@ -38,7 +38,7 @@ describe('Execution Split - costs on click, gains on completion', () => {
   describe('applyActionCostsOnly', () => {
     it('deducts resources but does NOT apply effects gains', () => {
       const state = createInitialState();
-      const woodCost = 10; // craftTorches tier 1
+      const woodCost = 8; // craftTorches base cost
       state.resources.wood = woodCost * 2;
       state.story.seen.hasWood = true;
       state.tools.stone_axe = false;
@@ -107,7 +107,7 @@ describe('Execution Split - costs on click, gains on completion', () => {
   describe('applyActionEffects - skips costs when _completingExecution is set', () => {
     it('skips cost deduction when completing execution, applies only effects', () => {
       const state = createInitialState();
-      const woodCost = 10; // craftTorches tier 1
+      const woodCost = 8; // craftTorches base cost
       state.resources.wood = woodCost * 2;
       state.story.seen.hasWood = true;
       state.tools.stone_axe = false;
@@ -126,7 +126,7 @@ describe('Execution Split - costs on click, gains on completion', () => {
 
     it('normally applies both costs AND effects when not completing execution', () => {
       const state = createInitialState();
-      const woodCost = 10; // craftTorches tier 1
+      const woodCost = 8; // craftTorches base cost
       state.resources.wood = woodCost * 2;
       state.story.seen.hasWood = true;
       state.tools.stone_axe = false;
@@ -141,7 +141,7 @@ describe('Execution Split - costs on click, gains on completion', () => {
 
     it('completing execution on a different action does NOT skip costs', () => {
       const state = createInitialState();
-      const woodCost = 10; // craftTorches tier 1
+      const woodCost = 8; // craftTorches base cost
       state.resources.wood = woodCost * 2;
       state.story.seen.hasWood = true;
       state.tools.stone_axe = false;
@@ -184,7 +184,7 @@ describe('actionEffects - circular dependency fix', () => {
   });
 
   it('should apply effects for craftTorches action', () => {
-    const woodCost = 10; // tier 1
+    const woodCost = 8; // base cost
     state.resources.wood = woodCost * 2; // Ensure enough resources
     state.story.seen.hasWood = true;
     state.tools.stone_axe = false;
@@ -211,7 +211,7 @@ describe('actionEffects - circular dependency fix', () => {
   });
 
   it('should scale craftTorches cost and gain with upgrade level when book_of_ascension', () => {
-    state.resources.wood = 60; // 10 * 6 for level 5
+    state.resources.wood = 48; // 8 * 6 for level 5
     state.story.seen.hasWood = true;
     state.tools.stone_axe = false;
     state.books = { book_of_ascension: true };
@@ -219,8 +219,8 @@ describe('actionEffects - circular dependency fix', () => {
 
     const updates = applyActionEffects('craftTorches', state);
 
-    // Level 5: multiplier 6, base cost 10, base amount 1
-    expect(updates.resources!.wood).toBe(0); // 60 - 60
+    // Level 5: multiplier 6, base cost 8, base amount 1
+    expect(updates.resources!.wood).toBe(0); // 48 - 48
     expect(updates.resources!.torch).toBe(6); // 1 * 6
   });
 

@@ -101,6 +101,7 @@ import {
   withTabUnlockBlinkSeen,
   type TabUnlockBlinkId,
 } from "@/game/tabUnlockBlink";
+import { shouldShowMapTab } from "@/game/demoTeaserTabs";
 import { buildStateFromPlayer } from "@/game/villageMapBuild";
 import {
   hasUnseenVillageMapMarks,
@@ -213,7 +214,10 @@ export default function GameContainer() {
     })),
   );
 
-  const mapTabVisible = Boolean(flags.mapUnlocked);
+  const mapTabVisible = shouldShowMapTab({
+    mapUnlocked: flags.mapUnlocked === true,
+    demoEndCatalogActive,
+  });
 
   const mapTabGlow = useMemo(() => {
     if (!mapTabVisible || activeTab === "map") return false;

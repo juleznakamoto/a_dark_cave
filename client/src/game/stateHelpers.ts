@@ -21,6 +21,7 @@ import { getTotalEventDeathReduction } from "./rules/effectsCalculation";
 import {
   getVillagerCapForJob,
   migrateVillagerCapFifteenStepOnLoad,
+  migrateVillagerCapFiveStepOnLoad,
 } from "./villagerCapUpgrades";
 import { getExecutionTime } from "./rules/executionTime";
 import { GAME_CONSTANTS } from "./constants";
@@ -1129,6 +1130,10 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   const capFifteenStep = migrateVillagerCapFifteenStepOnLoad(migrated);
   if (capFifteenStep) {
     migrated = { ...migrated, ...capFifteenStep };
+  }
+  const capFiveStep = migrateVillagerCapFiveStepOnLoad(migrated);
+  if (capFiveStep) {
+    migrated = { ...migrated, ...capFiveStep };
   }
   if (
     !migrated.boostApplied &&

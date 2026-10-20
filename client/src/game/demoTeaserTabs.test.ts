@@ -3,6 +3,7 @@ import {
   getDemoTeaserTabRedactedWidthCh,
   isDemoTeaserTab,
   shouldShowDemoLockedTab,
+  shouldShowMapTab,
 } from "./demoTeaserTabs";
 
 describe("demoTeaserTabs", () => {
@@ -12,6 +13,7 @@ describe("demoTeaserTabs", () => {
     expect(isDemoTeaserTab("estate")).toBe(true);
     expect(isDemoTeaserTab("bastion")).toBe(true);
     expect(isDemoTeaserTab("cave")).toBe(false);
+    expect(isDemoTeaserTab("map")).toBe(false);
     expect(isDemoTeaserTab("achievements")).toBe(false);
   });
 
@@ -33,6 +35,18 @@ describe("demoTeaserTabs", () => {
         demoEndCatalogActive: false,
         unlocked: false,
       }),
+    ).toBe(false);
+  });
+
+  it("shows the real map tab at demo end before the cartographer", () => {
+    expect(
+      shouldShowMapTab({ mapUnlocked: false, demoEndCatalogActive: true }),
+    ).toBe(true);
+    expect(
+      shouldShowMapTab({ mapUnlocked: true, demoEndCatalogActive: false }),
+    ).toBe(true);
+    expect(
+      shouldShowMapTab({ mapUnlocked: false, demoEndCatalogActive: false }),
     ).toBe(false);
   });
 

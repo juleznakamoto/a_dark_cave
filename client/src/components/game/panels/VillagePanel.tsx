@@ -1214,31 +1214,57 @@ export default function VillagePanel() {
     key: string,
     label: string,
     count: number,
-    options?: { className?: string },
-  ) => (
-    <div key={key} className={VILLAGER_COUNT_ROW_CLASS}>
-      <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
-        <span
-          className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
-          aria-hidden
-        />
-        {renderVillagerCount(count, options?.className)}
-        <span
-          className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
-          aria-hidden
-        />
-      </div>
-      {/* Empty /cap cell; subgrid matches width to the widest /cap in the stack. */}
-      <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} aria-hidden />
-      {renderCapUpgradeSlot()}
-      <span className={villagerCountLabelClass}>
-        <span translate="no" className="notranslate" aria-hidden>
-          •{" "}
+    options?: {
+      className?: string;
+      productionEntries?: { resource: string; totalAmount: number }[];
+    },
+  ) => {
+    const productionEntries = options?.productionEntries ?? [];
+    const productionKey = productionEntries
+      .map((p) => `${p.resource}:${p.totalAmount}`)
+      .join("|");
+    return (
+      <div key={key} className={VILLAGER_COUNT_ROW_CLASS}>
+        <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
+          <span
+            className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
+            aria-hidden
+          />
+          {renderVillagerCount(count, options?.className)}
+          <span
+            className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
+            aria-hidden
+          />
+        </div>
+        {/* Empty /cap cell; subgrid matches width to the widest /cap in the stack. */}
+        <span translate="no" className={VILLAGER_COUNT_CAP_CLASS} aria-hidden />
+        {renderCapUpgradeSlot()}
+        <span className={villagerCountLabelClass}>
+          <span translate="no" className="notranslate" aria-hidden>
+            •{" "}
+          </span>
+          {label}
+          {productionEntries.length > 0 && (
+            <>
+              {" "}
+              <span key={productionKey} className={VILLAGER_RESOURCE_HINT_CLASS}>
+                {productionEntries.map((prod, i) => (
+                  <React.Fragment key={prod.resource}>
+                    {i > 0 && ", "}
+                    <span translate="no" className="notranslate">
+                      {prod.totalAmount > 0 ? "+" : ""}
+                      {prod.totalAmount}
+                    </span>{" "}
+                    {formatTooltipResourceName(prod.resource)}
+                  </React.Fragment>
+                ))}
+              </span>
+            </>
+          )}
         </span>
-        {label}
-      </span>
-    </div>
-  );
+      </div>
+    );
+  };
 
   const renderVillagersSummaryRow = () => (
     <div key="villagers-summary" className={VILLAGER_COUNT_ROW_CLASS}>
@@ -2672,6 +2698,16 @@ export default function VillagePanel() {
                         "villagers-available",
                         t("village.villagersAvailable"),
                         freeVillagers,
+                        {
+                          productionEntries:
+                            freeVillagers > 0
+                              ? getPopulationProduction(
+                                  "free",
+                                  freeVillagers,
+                                  state,
+                                )
+                              : [],
+                        },
                       )}
                       {showVillagerMissionRows &&
                         renderVillagerStatRow(

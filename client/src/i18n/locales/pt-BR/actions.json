@@ -516,7 +516,7 @@
   "forestCave": {
     "label": "Caverna da Floresta",
     "log": {
-      "success": "Conforme os aldeões descem a caverna, cães selvagens irrompem da escuridão em matilhas implacáveis. Gritos ecoam enquanto garras rasgam e dentes estalam. Quando a última criatura tomba, cada aldeão vive, esvaziado pelo que viu.",
+      "success": "Conforme os aldeões descem a caverna, cães selvagens irrompem da escuridão em matilhas implacáveis. Gritos ecoam enquanto garras rasgam e dentes estalam. Quando a última fera tomba, cada aldeão vive, e a tribo da caçadora está salva.",
       "failure": "Quando a expedição entra na caverna, é dominada por uma matilha de cães brutais. {{count}} aldeões são despedaçados por mandíbulas selvagens antes que os sobreviventes consigam recuar."
     }
   },

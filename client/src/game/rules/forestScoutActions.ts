@@ -1056,7 +1056,7 @@ export function handleForestCave(
       message: getActionLogMessage(
         "forestCave",
         "success",
-        "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last creature falls, every villager lives, hollowed by what they saw.",
+        "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last beast falls, every villager lives, and the huntress's tribe is saved.",
       ),
       timestamp: Date.now(),
       type: "system",
