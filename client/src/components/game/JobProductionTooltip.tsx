@@ -1,9 +1,9 @@
 import React from "react";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
-  getJobProductionComposition,
   getJobProductionSourceLabel,
-  groupJobProductionComposition,
+  getOrderedJobProductionGroups,
+  type JobProductionResourceComposition,
 } from "@/game/jobProductionComposition";
 import {
   derivedListEqual,
@@ -17,24 +17,33 @@ export function villageJobProductionTooltipId(jobId: string): string {
   return `village-job-${jobId}-production`;
 }
 
+function jobProductionGroupsEqual(
+  a: readonly JobProductionResourceComposition[],
+  b: readonly JobProductionResourceComposition[],
+): boolean {
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i].resource !== b[i].resource || a[i].total !== b[i].total) return false;
+    if (!derivedListEqual(a[i].lines, b[i].lines)) return false;
+  }
+  return true;
+}
+
 /**
- * Per-source production breakdown for one village job.
- * Same source: effect lines as the side-panel Bonuses tooltips.
+ * Per-source production for one villager.
+ * Resource order matches the job row.
  */
 export default function JobProductionTooltip({
   jobId,
-  count,
 }: {
   jobId: string;
-  count: number;
 }) {
   const { t } = useUiTranslation();
   // Mounted only while the tooltip is open (hover or long-press).
-  const lines = useDerivedGameState(
-    (s) => getJobProductionComposition(jobId, count, s),
-    derivedListEqual,
+  const groups = useDerivedGameState(
+    (s) => getOrderedJobProductionGroups(jobId, 1, s),
+    jobProductionGroupsEqual,
   );
-  const groups = groupJobProductionComposition(lines);
   if (groups.length === 0) return null;
   return (
     <div
@@ -86,23 +95,20 @@ export default function JobProductionTooltip({
 
 export function JobProductionHover({
   jobId,
-  count,
   className,
   children,
 }: {
   jobId: string;
-  count: number;
   className: string;
   children: React.ReactElement;
 }) {
-  const workerCount = count > 0 ? count : 1;
   return (
     <TooltipWrapper
       tooltipId={villageJobProductionTooltipId(jobId)}
       className={className}
       tooltipTriggerClassName="inline-block max-w-full text-left"
       align="center"
-      tooltip={<JobProductionTooltip jobId={jobId} count={workerCount} />}
+      tooltip={<JobProductionTooltip jobId={jobId} />}
     >
       {children}
     </TooltipWrapper>

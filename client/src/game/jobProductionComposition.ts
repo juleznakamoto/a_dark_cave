@@ -80,6 +80,31 @@ export function groupJobProductionComposition(
   });
 }
 
+/**
+ * Composition grouped like the job row: same resource order as
+ * getPopulationProduction. Amounts are for `count` workers.
+ */
+export function getOrderedJobProductionGroups(
+  jobId: string,
+  count: number,
+  state?: GameState,
+  options?: Omit<GetPopulationProductionOptions, "composition">,
+): JobProductionResourceComposition[] {
+  const lines: JobProductionCompositionLine[] = [];
+  const production = getPopulationProduction(jobId, count, state, {
+    ...options,
+    composition: lines,
+  });
+  const groups = groupJobProductionComposition(lines);
+  const rank = new Map(production.map((entry, index) => [entry.resource, index]));
+  groups.sort(
+    (a, b) =>
+      (rank.get(a.resource) ?? Number.MAX_SAFE_INTEGER) -
+      (rank.get(b.resource) ?? Number.MAX_SAFE_INTEGER),
+  );
+  return groups;
+}
+
 export function getJobProductionSourceLabel(sourceId: string): string {
   const tooltip = TOOLTIP_SOURCES[sourceId];
   if (tooltip) return getUiTooltip(tooltip.key, tooltip.fallback);

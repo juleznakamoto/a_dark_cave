@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { gameStateSchema, type GameState } from "@shared/schema";
 import {
   getJobProductionComposition,
+  getOrderedJobProductionGroups,
   groupJobProductionComposition,
 } from "./jobProductionComposition";
 import { getPopulationProduction } from "./population";
@@ -85,7 +86,7 @@ describe("getJobProductionComposition", () => {
       { sourceId: "greatCabin", amount: 1 },
       { sourceId: "bone_saw", amount: 1 },
     ]);
-    expectCompositionMatchesProduction("hunter", 2, state);
+    expectCompositionMatchesProduction("hunter", 1, state);
   });
 
   it("attributes percentage bonuses as the amount they add", () => {
@@ -113,7 +114,7 @@ describe("getJobProductionComposition", () => {
     expect(amountsFor("iron_miner", 1, cursed, "food")).toEqual([
       { sourceId: "base", amount: -5 },
     ]);
-    expectCompositionMatchesProduction("iron_miner", 2, cursed);
+    expectCompositionMatchesProduction("iron_miner", 1, cursed);
   });
 
   it("keeps scholar insight as the clerk building only", () => {
@@ -131,6 +132,14 @@ describe("getJobProductionComposition", () => {
       "villageFeast",
     ]);
     expectCompositionMatchesProduction("scholar", 2, state);
+
+    const rowOrder = getPopulationProduction("scholar", 2, state).map(
+      (entry) => entry.resource,
+    );
+    const oneScholar = getOrderedJobProductionGroups("scholar", 1, state);
+    expect(oneScholar.map((group) => group.resource)).toEqual(rowOrder);
+    expect(oneScholar.find((group) => group.resource === "insight")?.total).toBe(2);
+    expect(oneScholar.find((group) => group.resource === "food")?.total).toBe(-10);
   });
 
   it("includes feast on consumption and dev mode on the final total", () => {

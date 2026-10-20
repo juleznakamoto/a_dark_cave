@@ -1269,7 +1269,6 @@ export default function VillagePanel() {
         {options?.jobId ? (
           <JobProductionHover
             jobId={options.jobId}
-            count={count}
             className={villagerCountLabelClass}
           >
             <span>{labelBody}</span>
@@ -1534,7 +1533,6 @@ export default function VillagePanel() {
         {renderCapUpgradeSlot(capUpgradeGroupId, jobId)}
         <JobProductionHover
           jobId={jobId}
-          count={currentCount}
           className={villagerCountLabelClass}
         >
           <span>
