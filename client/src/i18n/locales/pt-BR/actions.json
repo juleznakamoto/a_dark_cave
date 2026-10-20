@@ -72,7 +72,7 @@
     "label": "Poço Sem Fundo"
   },
   "buildBuildersLodge": {
-    "description": "Um alojamento onde mestres construtores coordenam a construção na aldeia",
+    "description": "Um alojamento onde mestres construtores coordenam a construção no vilarejo",
     "label": "Alojamento dos Construtores"
   },
   "buildBuildersHall": {
@@ -80,7 +80,7 @@
     "label": "Salão dos Construtores"
   },
   "buildBuildersGuild": {
-    "description": "Uma guilda de mestres construtores que comanda toda a capacidade de construção da aldeia",
+    "description": "Uma guilda de mestres construtores que comanda toda a capacidade de construção do vilarejo",
     "label": "Guilda dos Construtores"
   },
   "buildCabin": {
@@ -252,7 +252,7 @@
     "label": "Posto de Comércio"
   },
   "buildTraps": {
-    "description": "Armadilhas ao redor da aldeia que enfraquecem todos os atacantes",
+    "description": "Armadilhas ao redor do vilarejo que enfraquecem todos os atacantes",
     "label": "Armadilhas"
   },
   "buildTreasury": {
@@ -261,7 +261,7 @@
   },
   "buildVillageWarehouse": {
     "description": "Grande depósito capaz de armazenar vastas quantidades",
-    "label": "Depósito da Aldeia"
+    "label": "Depósito do Vilarejo"
   },
   "buildWatchtower": {
     "description": "Torre alta que dá aviso antecipado de ameaças",
@@ -272,8 +272,8 @@
     "label": "Torre do Mago"
   },
   "buildWoodenHut": {
-    "description": "Casebre simples de madeira que oferece abrigo básico",
-    "label": "Casebre de Madeira"
+    "description": "Cabana simples de madeira que oferece abrigo básico",
+    "label": "Cabana de Madeira"
   },
   "canyonBridge": {
     "label": "Ponte do Cânion",
@@ -476,7 +476,7 @@
     "log": {
       "debrisScroll": "Entre os escombros, você descobre um pergaminho desgastado pelo tempo contendo sabedoria para suportar este mundo implacável.",
       "torchBag": "Você encontra uma bolsa velha e empoeirada com 25 Tochas na caverna.",
-      "firstVisit": "A luz da tocha ilumina as paredes da caverna. Na luz bruxuleante, você nota um caminho que leva mais fundo nas cavernas."
+      "firstVisit": "A luz da tocha ilumina as paredes da caverna. Na luz trêmula, você nota um caminho que leva mais fundo nas cavernas."
     }
   },
   "exploreCitadel": {
@@ -657,9 +657,9 @@
     "log": {
       "success": "Sua expedição encontra um acampamento de foras da lei. A luta é brutal, mas você vence. Num baú, você encontra 500 Ouro.",
       "successKeyBonus": " Com sua chave-mestra, você abre um compartimento oculto e encontra mais 250 Ouro.",
-      "captiveOne": " 1 cativo do acampamento decide se juntar à aldeia.",
-      "captivesOther": " {{count}} cativos do acampamento decidem se juntar à aldeia.",
-      "failure": "Sua expedição alcança um acampamento de foras da lei, mas a luta dá terrivelmente errado. {{count}} aldeões caem antes que os sobreviventes fujam de volta à aldeia."
+      "captiveOne": " 1 cativo do acampamento decide se juntar ao vilarejo.",
+      "captivesOther": " {{count}} cativos do acampamento decidem se juntar ao vilarejo.",
+      "failure": "Sua expedição alcança um acampamento de foras da lei, mas a luta dá terrivelmente errado. {{count}} aldeões caem antes que os sobreviventes fujam de volta ao vilarejo."
     }
   },
   "sellBlacksteelBatch": {
@@ -743,11 +743,11 @@
     }
   },
   "buildGrandArchive": {
-    "description": "Uma vasta câmara de pergaminhos que preserva tudo o que a aldeia foi, cada nome e cada labuta gravados",
+    "description": "Uma vasta câmara de pergaminhos que preserva tudo o que o vilarejo foi, cada nome e cada labuta gravados",
     "label": "Grande Arquivo"
   },
   "buildRecordsHall": {
-    "description": "Um salão repleto de prateleiras com livros-razão e listas desgastados, a memória da aldeia registrada em tinta e mantida em ordem",
+    "description": "Um salão repleto de prateleiras com livros-razão e listas desgastados, a memória do vilarejo registrada em tinta e mantida em ordem",
     "label": "Salão de Registros"
   },
   "buildScribesOffice": {
@@ -759,7 +759,7 @@
     "label": "Jardim de ervas"
   },
   "exploreMountainVillage": {
-    "label": "Explorar aldeia da montanha"
+    "label": "Explorar o vilarejo da montanha"
   },
   "searchMountainLady": {
     "label": "Procurar a dama das montanhas"

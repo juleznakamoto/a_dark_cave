@@ -576,8 +576,8 @@ export function useGlobalTooltip() {
     // Clear any existing timer before creating a new one
     globalTooltipManager.clearPressTimer(id);
 
-    // Start timer to show tooltip (250ms on mobile for faster feedback, 300ms on desktop)
-    const delay = globalTooltipManager.isMobile() ? 250 : 300;
+    // Start timer to show tooltip (250ms on mobile, 150ms on desktop)
+    const delay = globalTooltipManager.isMobile() ? 250 : 150;
     const timer = setTimeout(() => {
       globalTooltipManager.setOpenTooltip(id, true); // Mark as opened by timer
       globalTooltipManager.clearPressTimer(id);

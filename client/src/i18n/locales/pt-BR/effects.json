@@ -235,11 +235,11 @@
       "name": "Amuleto Buscador de Raízes"
     },
     "ravens_mark": {
-      "description": "Estranhos se aproximam da aldeia com mais frequência",
+      "description": "Estranhos se aproximam do vilarejo com mais frequência",
       "name": "Marca do Corvo"
     },
     "ravens_mark_enhanced": {
-      "description": "Estranhos se aproximam da aldeia com muito mais frequência",
+      "description": "Estranhos se aproximam do vilarejo com muito mais frequência",
       "name": "Grande Marca do Corvo"
     },
     "ravens_orb": {
@@ -331,7 +331,7 @@
       "name": "Dádiva das Profundezas"
     },
     "fresh_blood": {
-      "description": "Estranhos se aproximam da aldeia com mais frequência",
+      "description": "Estranhos se aproximam do vilarejo com mais frequência",
       "name": "Sangue Fresco"
     },
     "keen_builder": {
@@ -381,7 +381,7 @@
       "name": "Cavaleiro Inquieto"
     },
     "the_hound": {
-      "description": "Sobrevivente musculoso e desfigurado de uma aldeia na montanha envenenada.",
+      "description": "Sobrevivente musculoso e desfigurado de um vilarejo na montanha envenenada.",
       "name": "Cão Bruto"
     }
   },
@@ -499,8 +499,8 @@
       "name": "Picareta de Pedra"
     },
     "mountain_village_map": {
-      "description": "Mapa rude marcado com um caminho para os altos passos, rumo a uma aldeia na montanha.",
-      "name": "Mapa da aldeia da montanha"
+      "description": "Mapa rude marcado com um caminho para os altos passos, rumo a um vilarejo na montanha.",
+      "name": "Mapa do vilarejo da montanha"
     },
     "wanderers_lantern": {
       "description": "Dá a quem a usa um pouco de sorte e a chance de notar o que a escuridão esconderia.",

@@ -49,7 +49,7 @@ export interface DropdownMenuItemWithTooltipProps
  *
  * Uses the centralized tooltip system (useGlobalTooltip) for:
  * - Single-tooltip-at-a-time global state
- * - Hold-to-show (250–300ms) on all devices
+ * - Hold-to-show (250ms mobile, 150ms desktop) on all devices
  * - Tap-to-show when disabled on mobile
  * - Desktop hover tooltips when inactive (aria-disabled, not native disabled — Radix
  *   sets pointer-events-none on disabled items, which blocks hover)
@@ -94,7 +94,7 @@ export function DropdownMenuItemWithTooltip({
   const tooltipTree = (
     <Tooltip
       open={tooltipOpen}
-      delayDuration={300}
+      delayDuration={150}
     >
       <TooltipTrigger asChild>
         <DropdownMenuItem

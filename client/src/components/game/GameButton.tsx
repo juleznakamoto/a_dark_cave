@@ -14,7 +14,7 @@ export interface GameButtonProps extends ButtonProps {
 /**
  * Unified button component with consistent tooltip behavior
  * - Desktop: tooltips shown on hover
- * - Mobile: tooltips shown on long press (300ms) or click if disabled
+ * - Mobile: tooltips shown on long press (250ms) or click if disabled
  * - Only one tooltip open at a time globally
  */
 const GameButton = forwardRef<HTMLButtonElement, GameButtonProps>(

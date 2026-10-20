@@ -26,21 +26,21 @@
       "failure": "Investimento de {{amount}} de Ouro concluído: Fracasso. Você perdeu {{loss}} de Ouro."
     },
     "stranger": {
-      "variant0": "Um estranho se aproxima e se junta à aldeia.",
+      "variant0": "Um estranho se aproxima e se junta ao vilarejo.",
       "variant1": "Um viajante chega e decide ficar.",
       "variant2": "Um andarilho aparece e passa a fazer parte da comunidade.",
-      "variant3": "Alguém se aproxima da aldeia e se estabelece.",
+      "variant3": "Alguém se aproxima do vilarejo e se estabelece.",
       "variant4": "Um estranho se junta à comunidade.",
       "variant5": "Um recém-chegado aparece e se sente em casa.",
-      "multiple0": "{{count}} estranhos se juntam à aldeia.",
+      "multiple0": "{{count}} estranhos se juntam ao vilarejo.",
       "multiple1": "{{count}} viajantes chegam e decidem ficar.",
       "multiple2": "{{count}} andarilhos chegam e se juntam à comunidade."
     },
     "building": {
-      "darkEstate": "A Propriedade Sombria se ergue numa pequena colina perto da aldeia, oferecendo solidão e refúgio.",
-      "blacksmith": "A forja do ferreiro ganha vida. O coração da indústria agora pulsa na aldeia.",
-      "firstWoodenHut": "O primeiro casebre de madeira está completo; este pode ser o início de algo grandioso.",
-      "villageGrowthSuggestion": "A aldeia cresce depressa. Talvez casas de pedra possam abrigar mais aldeões.",
+      "darkEstate": "A Propriedade Sombria se ergue numa pequena colina perto do vilarejo, oferecendo solidão e refúgio.",
+      "blacksmith": "A forja do ferreiro ganha vida. O coração da indústria agora pulsa no vilarejo.",
+      "firstWoodenHut": "A primeira cabana de madeira está completa; esta pode ser o início de algo grandioso.",
+      "villageGrowthSuggestion": "O vilarejo cresce depressa. Talvez casas de pedra possam abrigar mais aldeões.",
       "cityGrowthMilestone": "A cidade se tornou uma metrópole movimentada, repleta de comércio, indústria e a promessa de dias melhores.",
       "moonstoneDiscovered": "No fundo do poço, os trabalhadores descobrem veios de pedra-da-lua, um mineral luminescente repleto de energia.",
       "foundry": "A fundição ruge ao ganhar vida enquanto o fogo e o calor fundem matérias-primas.",
@@ -53,7 +53,7 @@
       "tannery": "O Curtume está completo. O cheiro de couro em cura preenche o ar enquanto os artesãos começam seu trabalho.",
       "highTannery": "O Alto Curtume é construído, uma grandiosa oficina onde artesãos experientes transformam peles no mais fino couro.",
       "longhouse": "A primeira casa comprida se ergue, um imenso salão de madeira com vigas robustas e muito espaço.",
-      "furTents": "As primeiras tendas de pele são erguidas na borda da aldeia, dando a mais pessoas um abrigo quente.",
+      "furTents": "As primeiras tendas de pele são erguidas na borda do vilarejo, dando a mais pessoas um abrigo quente.",
       "shrine": "Um santuário sagrado se ergue ao lado do altar, e sua presença traz paz e foco às mentes atormentadas.",
       "temple": "Um grandioso templo está completo, e seus salões sagrados ecoam preces sussurradas que acalmam a alma atormentada.",
       "sanctum": "O sacrário se ergue como um farol de proteção divina, sua aura abençoada afastando os pensamentos e medos mais sombrios.",
@@ -64,19 +64,19 @@
       "bastion": "O bastião se ergue como uma montanha de pedra, suas muralhas espessas e inabaláveis. Uma promessa de proteção contra o que quer que se agite nas profundezas.",
       "wizardTower": "A Torre do Mago espirala em direção ao céu, crepitando com energia arcana. O mago se muda para lá com sua coleção de tomos antigos e artefatos misteriosos.",
       "fortifiedMoat": "Um fosso profundo agora cerca o assentamento, suas águas escuras e traiçoeiras. Nenhum inimigo o cruzará com facilidade.",
-      "traps": "Armadilhas foram preparadas ao redor do perímetro da aldeia. Buracos ocultos, laços e estacas afiadas aguardam quem ousar atacar.",
-      "improvedTraps": "O perímetro da aldeia é reforçado com fossos cobertos, laços de mola e mecanismos de aço. Os atacantes encontram uma recepção muito mais letal.",
-      "blackMonolith": "O Monólito Negro se ergue do centro da aldeia, um monumento imponente de adamante sombrio. Sua superfície parece beber a luz, e os aldeões se reúnem ao seu redor com reverência e medo.",
+      "traps": "Armadilhas foram preparadas ao redor do perímetro do vilarejo. Buracos ocultos, laços e estacas afiadas aguardam quem ousar atacar.",
+      "improvedTraps": "O perímetro do vilarejo é reforçado com fossos cobertos, laços de mola e mecanismos de aço. Os atacantes encontram uma recepção muito mais letal.",
+      "blackMonolith": "O Monólito Negro se ergue do centro do vilarejo, um monumento imponente de adamante sombrio. Sua superfície parece beber a luz, e os aldeões se reúnem ao seu redor com reverência e medo.",
       "blackEstate": "A Propriedade Negra se ergue da colina, envolta por um véu de névoa.",
-      "chitinPlating": "As fortificações agora estão reforçadas com blindagem de quitina. A defesa da aldeia aumenta significativamente.",
+      "chitinPlating": "As fortificações agora estão reforçadas com blindagem de quitina. A defesa do vilarejo aumenta significativamente.",
       "pillarOfClarity": "O Pilar da Clareza se ergue, um obelisco reluzente que parece vibrar com poder ancestral. Sua presença traz uma sensação de calma e foco a quem está por perto.",
       "boneTemple": "O Templo de Ossos se ergue de milhares de ossos cuidadosamente dispostos, um monumento aos velhos deuses. Sua presença emana poder sombrio, e os aldeões se aproximam dele com reverência e medo.",
-      "heartfire": "O Fogo do Coração é aceso. Seu calor e sua luz trazem um novo senso de propósito à aldeia."
+      "heartfire": "O Fogo do Coração é aceso. Seu calor e sua luz trazem um novo senso de propósito ao vilarejo."
     },
     "gameplay": {
-      "forestUnlocked": "A aldeia é cercada por uma floresta densa e sombria. O perigo paira no ar, embora também possa ser um bom lugar para cortar madeira e caçar.",
+      "forestUnlocked": "O vilarejo é cercado por uma floresta densa e sombria. O perigo paira no ar, embora também possa ser um bom lugar para cortar madeira e caçar.",
       "villageUnlocked": "Você encontra a entrada da caverna. Lá fora, uma clareira se abre. Parece um bom lugar para construir um abrigo.",
-      "villageBegins": "Uma pequena aldeia começa a tomar forma. Os aldeões precisam de comida e madeira para sobreviver."
+      "villageBegins": "Um pequeno vilarejo começa a tomar forma. Os aldeões precisam de comida e madeira para sobreviver."
     },
     "crafting": {
       "emberBombFirst": "O conhecimento do alquimista se mostra inestimável. Você fabrica uma poderosa bomba de brasa, com seu núcleo brilhando em calor intenso e potencial destrutivo.",

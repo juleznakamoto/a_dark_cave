@@ -73,7 +73,7 @@
     },
     "greatFeast": {
       "forMinutes": "Por {{minutes}} minutos:",
-      "villageProduction": "Produção da aldeia 5x",
+      "villageProduction": "Produção do vilarejo 5x",
       "newVillagerChance": "+25 % de chance de novo aldeão"
     },
     "alreadyClaimedItemLog": "Você já resgatou {{name}}.",

@@ -19,7 +19,7 @@ const TooltipProvider = ({
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Provider>) => (
   <TooltipPrimitive.Provider
-    delayDuration={300}
+    delayDuration={150}
     skipDelayDuration={0}
     disableHoverableContent={true}
     {...props}

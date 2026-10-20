@@ -1062,10 +1062,10 @@ html[data-adc-chrome-stage="0"] {
 }
 
 .animate-fade-in {
-  animation: fade-in 8s ease-in-out forwards;
+  animation: fade-in 5s ease-in-out forwards;
 }
 
-/* Demo end shader: same 8s arrival as the dialog overlay. */
+/* Demo end shader: same 5s arrival as the dialog overlay. */
 @keyframes adc-dialog-backdrop-fade-in {
   from {
     opacity: 0;
@@ -1077,7 +1077,7 @@ html[data-adc-chrome-stage="0"] {
 }
 
 .adc-dialog-backdrop-fade-in {
-  animation: adc-dialog-backdrop-fade-in 8s ease-in-out forwards;
+  animation: adc-dialog-backdrop-fade-in 5s ease-in-out forwards;
   opacity: 0;
 }
 

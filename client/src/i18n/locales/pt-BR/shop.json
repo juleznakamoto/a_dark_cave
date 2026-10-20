@@ -82,12 +82,12 @@
   },
   "great_feast_1": {
     "activationMessage": "Um Grande Banquete começou!",
-    "description": "Por 30 minutos:\n• Produção da aldeia 5x\n• +25 % de chance de novo aldeão",
+    "description": "Por 30 minutos:\n• Produção do vilarejo 5x\n• +25 % de chance de novo aldeão",
     "name": "1 Grande Banquete"
   },
   "great_feast_3": {
     "activationMessage": "Um Grande Banquete começou!",
-    "description": "Por 30 minutos:\n• Produção da aldeia 5x\n• +25 % de chance de novo aldeão",
+    "description": "Por 30 minutos:\n• Produção do vilarejo 5x\n• +25 % de chance de novo aldeão",
     "name": "3 Grandes Banquetes"
   },
   "skull_lantern": {

@@ -116,7 +116,7 @@ export function TooltipWrapper({
   const tooltipTree = (
     <Tooltip
       open={resolvedOpen}
-      delayDuration={open !== undefined ? 0 : 300}
+      delayDuration={open !== undefined ? 0 : 150}
     >
       <TooltipTrigger asChild>
         {tooltipTriggerAsChild && React.isValidElement(children) ? (

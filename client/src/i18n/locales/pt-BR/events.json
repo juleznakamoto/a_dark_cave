@@ -100,7 +100,7 @@
       }
     },
     "log": {
-      "outcome0": "Enquanto você segue pegadas enlameadas pela aldeia, elas levam a cada cena de assassinato, uma após a outra. As pegadas combinam com suas próprias botas. O horror surge lentamente - foi você, possuído pela fome do anel. Quando os aldeões descobrem a verdade, dezoito fogem, sem querer permanecer perto de uma criatura tão amaldiçoada.",
+      "outcome0": "Enquanto você segue pegadas enlameadas pelo vilarejo, elas levam a cada cena de assassinato, uma após a outra. As pegadas combinam com suas próprias botas. O horror surge lentamente - foi você, possuído pela fome do anel. Quando os aldeões descobrem a verdade, dezoito fogem, sem querer permanecer perto de uma criatura tão amaldiçoada.",
       "outcome1": "Com as mãos trêmulas, você ergue seu machado. O anel pulsa enquanto a lâmina desce. A agonia rasga seu braço enquanto o osso se despedaça. Erguendo o dedo decepado, você vê pequenos fios negros, como tentáculos, fincados profundamente em sua carne."
     },
     "message": "Você acorda ao romper do amanhecer, suas roupas encharcadas de sangue fresco. Não é o seu. Um aldeão chega à propriedade, o rosto pálido de horror. 'Oito estão mortos,' ele sussurra. 'Dilacerados durante a noite.' O anel em seu dedo lateja com uma dor agonizante.",
@@ -120,7 +120,7 @@
       "outcome1": "Você bebe profundamente. O gosto de cobre inunda sua boca, espesso e quente. Naquela noite você sonha que se afoga em água vermelha, e acorda com o gosto ainda na língua.",
       "outcome2": "Você se recusa a beber, mas os aldeões continuam enchendo seus copos. Seus lábios se tingem de vermelho enquanto sorriem para você, como se nada estivesse errado."
     },
-    "message": "A água da aldeia corre vermelha por três dias. Os aldeões parecem não perceber, bebendo-a como se nada tivesse mudado. Você sente cheiro de cobre e ferro, mas eles afirmam que tem gosto de água pura de nascente.",
+    "message": "A água do vilarejo corre vermelha por três dias. Os aldeões parecem não perceber, bebendo-a como se nada tivesse mudado. Você sente cheiro de cobre e ferro, mas eles afirmam que tem gosto de água pura de nascente.",
     "title": "Sangue na Água"
   },
   "bloodMoonAttack": {
@@ -134,7 +134,7 @@
       }
     },
     "log": {
-      "outcome0": "Os aldeões são oferecidos aos licantropos. Com a lua de sangue se desvanecendo, a paz retorna à aldeia. Ao menos por enquanto.",
+      "outcome0": "Os aldeões são oferecidos aos licantropos. Com a lua de sangue se desvanecendo, a paz retorna ao vilarejo. Ao menos por enquanto.",
       "outcome1": "Os licantropos atacam, mas suas defesas resistem. O líder deles cai, e de seu cadáver você colhe Sangue de Licano, ainda quente e fervilhando de poder.",
       "outcome2": "Os licantropos sobrepujam suas defesas e invadem o assentamento! A lua de sangue se desvanece, mas a ameaça permanece.",
       "outcome3": "Os licantropos atacam, mas suas defesas resistem. O líder deles cai, e de seu cadáver você colhe Sangue de Licano, ainda quente e fervilhando de poder.",
@@ -168,7 +168,7 @@
   "boneArmyAttack": {
     "choices": {
       "defendAgainstBoneArmy": {
-        "label": "Defender a aldeia"
+        "label": "Defender o vilarejo"
       },
       "hideFromBoneArmy": {
         "label": "Esconder-se"
@@ -176,7 +176,7 @@
     },
     "log": {
       "outcome0": "Os aldeões derrotam o exército de ossos! Ossos e silêncio cobrem o campo de batalha. Você arranca a Coroa do Devorador de seus restos e drena um frasco de seu sangue pálido e viscoso.",
-      "outcome1": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha a aldeia. As criaturas esqueléticas acabam marchando para longe, seu propósito não cumprido.",
+      "outcome1": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha o vilarejo. As criaturas esqueléticas acabam marchando para longe, seu propósito não cumprido.",
       "defend_noDeaths": "Os aldeões lutam desesperadamente contra o exército de ossos. Os aldeões sobrevivem à investida.",
       "defend_noDeaths_hut": "Os aldeões lutam desesperadamente contra o exército de ossos. Os aldeões sobrevivem à investida. As criaturas esqueléticas despedaçam uma das cabanas, reduzindo-a a escombros.",
       "defend_noDeaths_steel": "Os aldeões lutam desesperadamente contra o exército de ossos. Os aldeões sobrevivem à investida. O exército de ossos saqueia os estoques antes de partir.",
@@ -189,12 +189,12 @@
       "defend_manyDeaths_hut": "Os aldeões lutam desesperadamente contra o exército de ossos. Vários aldeões caem diante dos guerreiros esqueléticos. As criaturas esqueléticas despedaçam uma das cabanas, reduzindo-a a escombros.",
       "defend_manyDeaths_steel": "Os aldeões lutam desesperadamente contra o exército de ossos. Vários aldeões caem diante dos guerreiros esqueléticos. O exército de ossos saqueia os estoques antes de partir.",
       "defend_manyDeaths_steel_hut": "Os aldeões lutam desesperadamente contra o exército de ossos. Vários aldeões caem diante dos guerreiros esqueléticos. O exército de ossos saqueia os estoques antes de partir. As criaturas esqueléticas despedaçam uma das cabanas, reduzindo-a a escombros.",
-      "hide_noDeaths": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha a aldeia. Ao amanhecer, o exército esquelético partiu, deixando para trás apenas fragmentos de osso.",
-      "hide_noDeaths_loot": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha a aldeia. O exército saqueia seus suprimentos e desaparece na escuridão, deixando para trás apenas fragmentos de osso.",
-      "hide_oneDeath": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha a aldeia. Um aldeão que tentou fugir é morto.",
-      "hide_oneDeath_loot": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha a aldeia. Um aldeão que tentou fugir é morto. O exército saqueia seus suprimentos antes de desaparecer na escuridão.",
-      "hide_manyDeaths": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha a aldeia. Os aldeões que tentaram fugir são mortos pelas criaturas de osso.",
-      "hide_manyDeaths_loot": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha a aldeia. Os aldeões que tentaram fugir são mortos pelas criaturas de osso. O exército saqueia seus suprimentos antes de desaparecer na escuridão."
+      "hide_noDeaths": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha o vilarejo. Ao amanhecer, o exército esquelético partiu, deixando para trás apenas fragmentos de osso.",
+      "hide_noDeaths_loot": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha o vilarejo. O exército saqueia seus suprimentos e desaparece na escuridão, deixando para trás apenas fragmentos de osso.",
+      "hide_oneDeath": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha o vilarejo. Um aldeão que tentou fugir é morto.",
+      "hide_oneDeath_loot": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha o vilarejo. Um aldeão que tentou fugir é morto. O exército saqueia seus suprimentos antes de desaparecer na escuridão.",
+      "hide_manyDeaths": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha o vilarejo. Os aldeões que tentaram fugir são mortos pelas criaturas de osso.",
+      "hide_manyDeaths_loot": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha o vilarejo. Os aldeões que tentaram fugir são mortos pelas criaturas de osso. O exército saqueia seus suprimentos antes de desaparecer na escuridão."
     },
     "message": "A terra treme enquanto criaturas esqueléticas emergem da floresta. O Devorador de Ossos usou os ossos que você negociou para forjar uma legião profana. Com olhos ocos e armas de osso afiadas, eles avançam sobre a cidade.",
     "title": "O Exército de Ossos"
@@ -317,30 +317,30 @@
   "cannibalRaid": {
     "choices": {
       "fightCannibals": {
-        "label": "Defender a aldeia"
+        "label": "Defender o vilarejo"
       },
       "hideFromCannibals": {
         "label": "Esconder-se"
       }
     },
     "log": {
-      "outcome0": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham a aldeia. Ao amanhecer, os canibais partiram sem encontrar ninguém.",
+      "outcome0": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham o vilarejo. Ao amanhecer, os canibais partiram sem encontrar ninguém.",
       "defeat_noDeaths": "Os canibais sobrepujam suas defesas. Os aldeões conseguem sobreviver, ainda que por pouco.",
       "defeat_noDeaths_loot": "Os canibais sobrepujam suas defesas. Os aldeões conseguem sobreviver, ainda que por pouco. Os canibais saqueiam seus estoques antes de recuar para a selva.",
       "defeat_oneDeath": "Os canibais sobrepujam suas defesas. Um aldeão é sequestrado pelos canibais.",
       "defeat_oneDeath_loot": "Os canibais sobrepujam suas defesas. Um aldeão é sequestrado pelos canibais. Os canibais saqueiam seus estoques antes de recuar para a selva.",
       "defeat_manyDeaths": "Os canibais sobrepujam suas defesas. Vários aldeões são mortos ou sequestrados pelos canibais.",
       "defeat_manyDeaths_loot": "Os canibais sobrepujam suas defesas. Vários aldeões são mortos ou sequestrados pelos canibais. Os canibais saqueiam seus estoques antes de recuar para a selva.",
-      "hide_noDeaths": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham a aldeia. Ao amanhecer, os canibais partiram sem encontrar ninguém.",
-      "hide_noDeaths_loot": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham a aldeia. Os canibais saqueiam livremente seus estoques e escapulem ao amanhecer sem encontrar ninguém.",
-      "hide_oneDeath": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham a aldeia. Um aldeão é sequestrado.",
-      "hide_oneDeath_loot": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham a aldeia. Um aldeão é sequestrado. Os canibais saqueiam livremente seus estoques antes de escapulir.",
-      "hide_manyDeaths": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham a aldeia. Vários aldeões são mortos ou sequestrados.",
-      "hide_manyDeaths_loot": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham a aldeia. Vários aldeões são mortos ou sequestrados. Os canibais saqueiam livremente seus estoques antes de escapulir.",
+      "hide_noDeaths": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham o vilarejo. Ao amanhecer, os canibais partiram sem encontrar ninguém.",
+      "hide_noDeaths_loot": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham o vilarejo. Os canibais saqueiam livremente seus estoques e escapulem ao amanhecer sem encontrar ninguém.",
+      "hide_oneDeath": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham o vilarejo. Um aldeão é sequestrado.",
+      "hide_oneDeath_loot": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham o vilarejo. Um aldeão é sequestrado. Os canibais saqueiam livremente seus estoques antes de escapulir.",
+      "hide_manyDeaths": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham o vilarejo. Vários aldeões são mortos ou sequestrados.",
+      "hide_manyDeaths_loot": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham o vilarejo. Vários aldeões são mortos ou sequestrados. Os canibais saqueiam livremente seus estoques antes de escapulir.",
       "victory_one": "Os aldeões repelem os canibais! Um aldeão tomba na batalha, mas a tribo recua em derrota. Entre os corpos, você encontra um colar primitivo feito de ossos humanos.",
       "victory_many": "Os aldeões lutam valentemente e repelem os canibais! Vários aldeões caem na batalha, mas a tribo é forçada a recuar. Entre os corpos, você encontra um colar primitivo feito de ossos humanos."
     },
-    "message": "Tambores de guerra ecoam pela noite enquanto uma tribo de canibais emerge da selva. Eles avançam sobre a aldeia com armas rudimentares e terríveis intenções.",
+    "message": "Tambores de guerra ecoam pela noite enquanto uma tribo de canibais emerge da selva. Eles avançam sobre o vilarejo com armas rudimentares e terríveis intenções.",
     "title": "Ataque dos Canibais"
   },
   "chainmasterCollector": {
@@ -381,19 +381,19 @@
   "creatureInHut": {
     "choices": {
       "burn_hut": {
-        "label": "Queimar o casebre"
+        "label": "Queimar a cabana"
       },
       "do_nothing": {
         "label": "Não fazer nada"
       }
     },
     "log": {
-      "outcome0": "Você incendeia o casebre. As chamas consomem a criatura. Vasculhando as ruínas depois, você encontra um pequeno baú escondido sob as tábuas do assoalho contendo 250 Ouro.",
-      "outcome1": "Você incendeia o casebre. As chamas consomem tudo, inclusive os dois aldeões que dormiam lá dentro. Pela manhã, você encontra apenas cinzas e o cheiro persistente de algo que nunca deveria queimar.",
+      "outcome0": "Você incendeia a cabana. As chamas consomem a criatura. Vasculhando as ruínas depois, você encontra um pequeno baú escondido sob as tábuas do assoalho contendo 250 Ouro.",
+      "outcome1": "Você incendeia a cabana. As chamas consomem tudo, inclusive os dois aldeões que dormiam lá dentro. Pela manhã, você encontra apenas cinzas e o cheiro persistente de algo que nunca deveria queimar.",
       "outcome2": "Você se vira e tenta esquecer o que viu. Mas em seus sonhos, a criatura o visita. Ela sussurra seu nome com uma voz como pedra raspando, e lhe mostra visões do que jaz sob a terra."
     },
-    "message": "Pelas frestas de um dos seus casebres de madeira, você vislumbra algo que não deveria estar ali. Uma forma escura se move na escuridão, alta e magra demais para ser humana. Quando ela se vira para você, você vê olhos brilhando como estrelas moribundas.",
-    "title": "Algo no Casebre"
+    "message": "Pelas frestas de uma das suas cabanas de madeira, você vislumbra algo que não deveria estar ali. Uma forma escura se move na escuridão, alta e magra demais para ser humana. Quando ela se vira para você, você vê olhos brilhando como estrelas moribundas.",
+    "title": "Algo na Cabana"
   },
   "cthulhuFigure": {
     "choices": {
@@ -716,8 +716,8 @@
     },
     "title": "Estabelecendo Comércio",
     "message": {
-      "firstTime": "Um ancião da aldeia se aproxima de você e recomenda enviar o corvo com uma mensagem para estabelecer comércio. Para onde enviar a primeira mensagem?",
-      "repeat": "O ancião da aldeia se aproxima mais uma vez. 'O corvo provou ser útil. Devemos enviar outra mensagem?'"
+      "firstTime": "Um ancião do vilarejo se aproxima de você e recomenda enviar o corvo com uma mensagem para estabelecer comércio. Para onde enviar a primeira mensagem?",
+      "repeat": "O ancião do vilarejo se aproxima mais uma vez. 'O corvo provou ser útil. Devemos enviar outra mensagem?'"
     }
   },
   "exiledScholarVisit": {
@@ -754,7 +754,7 @@
     },
     "log": {
       "outcome0": "Você paga a mulher, e ela compartilha o segredo da Orbe de Obsidiana.",
-      "outcome1": "Vinte aldeões são arrastados acorrentados. A mulher compartilha o conhecimento, mas a aldeia fica enojada com o que foi feito.",
+      "outcome1": "Vinte aldeões são arrastados acorrentados. A mulher compartilha o conhecimento, mas o vilarejo fica enojado com o que foi feito.",
       "outcome2": "Você a manda embora. Ela diz que pode voltar quando você estiver pronto.",
       "outcome3": "O tempo se esgota. Ela parte, dizendo que pode voltar quando você estiver pronto."
     },
@@ -773,9 +773,9 @@
     "log": {
       "outcome0": "Após uma inspeção mais atenta, parece ter sido apenas uma ilusão de ótica. Você solta um suspiro de alívio.",
       "outcome1": "Você se aproxima de um dos rostos. Seus olhos se abrem de repente e ele sussurra seu nome. Você reconhece o rosto como o de alguém que morreu há muito tempo.",
-      "outcome2": "Você tenta ignorar os rostos, mas eles se multiplicam. Logo toda superfície de madeira da aldeia traz a marca de almas torturadas. Certa manhã, todos desaparecem, como se nunca tivessem estado ali."
+      "outcome2": "Você tenta ignorar os rostos, mas eles se multiplicam. Logo toda superfície de madeira do vilarejo traz a marca de almas torturadas. Certa manhã, todos desaparecem, como se nunca tivessem estado ali."
     },
-    "message": "As paredes de madeira dos seus casebres começaram a exibir rostos - expressões retorcidas e agonizantes que parecem se projetar do outro lado. Eles articulam gritos e súplicas silenciosas. Os aldeões os contornam como se sempre estivessem ali.",
+    "message": "As paredes de madeira das suas cabanas começaram a exibir rostos - expressões retorcidas e agonizantes que parecem se projetar do outro lado. Eles articulam gritos e súplicas silenciosas. Os aldeões os contornam como se sempre estivessem ali.",
     "title": "Rostos nas Paredes"
   },
   "feast": {
@@ -797,7 +797,7 @@
       "outcome3": "O tempo passa e a oportunidade de um banquete se esvai."
     },
     "message": "Os aldeões propõem organizar um banquete. Um breve conforto para aliviar o cansaço e acalmar as mentes.",
-    "title": "Banquete da Aldeia"
+    "title": "Banquete do Vilarejo"
   },
   "feedingRing": {
     "choices": {
@@ -832,7 +832,7 @@
     "title": "O Pergaminho Antigo"
   },
   "fireStorm": {
-    "message": "Um incêndio varre a aldeia durante a noite, destruindo um casebre de madeira e matando seus ocupantes."
+    "message": "Um incêndio varre o vilarejo durante a noite, destruindo uma cabana de madeira e matando seus ocupantes."
   },
   "firstElderWarning": {
     "choices": {
@@ -841,7 +841,7 @@
       }
     },
     "message": "Um aldeão mais velho se aproxima de você, os olhos pesados de conhecimento. 'Você deu seus primeiros passos neste mundo cruel,' ele diz baixinho. 'Em breve, terá de decidir se está disposto a enfrentar o que está por vir.'",
-    "title": "O Ancião da Aldeia"
+    "title": "O Ancião do Vilarejo"
   },
   "firstWave": {
     "message": "Figuras pálidas emergem da caverna, finalmente libertas, seus olhos de brasa cortando a escuridão enquanto marcham rumo à cidade.",
@@ -877,7 +877,7 @@
       "outcome2": "Graças aos estoques de lenha e comida, os aldeões sobrevivem ilesos à nevasca.",
       "outcome3": "A nevasca atinge com força brutal. Toda a produção desacelera a passos de tartaruga enquanto os aldeões lutam para sobreviver ao frio."
     },
-    "message": "Ventos gélidos uivam pela aldeia. Os anciãos advertem que uma terrível nevasca se aproxima. Preparativos precisam ser feitos, ou as consequências serão terríveis.",
+    "message": "Ventos gélidos uivam pelo vilarejo. Os anciãos advertem que uma terrível nevasca se aproxima. Preparativos precisam ser feitos, ou as consequências serão terríveis.",
     "title": "Queda de Gelo"
   },
   "gambler": {
@@ -998,7 +998,7 @@
       "outcome0": "O sobrevivente recebe abrigo e cuidados. Naquela noite, ele o chama à sua cabana. Embora morrendo, seus olhos estão lúcidos. 'Obrigado por sua bondade, que a fortuna sempre o favoreça.' ele sussurra com seu último suspiro.",
       "outcome1": "Você manda o homem moribundo embora. Ele parte e é encontrado morto na floresta próxima no dia seguinte. Os aldeões ficam horrorizados e enojados com sua crueldade."
     },
-    "message": "Um estranho chega à aldeia, mal se agarrando à vida. Ele fala de seu assentamento ao norte, onde a falta de comida levou os aldeões a se matarem em desespero. Ele pede para ficar algumas noites para se recuperar.",
+    "message": "Um estranho chega ao vilarejo, mal se agarrando à vida. Ele fala de seu assentamento ao norte, onde a falta de comida levou os aldeões a se matarem em desespero. Ele pede para ficar algumas noites para se recuperar.",
     "title": "O Último Sobrevivente"
   },
   "leatherboundBookFound": {
@@ -1019,7 +1019,7 @@
     "log": {
       "outcome0": "Você desliza o anel no dedo. Ele serve perfeitamente. A mulher sorri e se despede, com leveza no passo."
     },
-    "message": "A mulher da aldeia se aproxima de você novamente, o rosto radiante de gratidão. 'Eu precisava agradecê-lo como devia,' diz ela, a voz calorosa. 'As coisas correram... muito bem. Fiz este anel para você.' Ela lhe entrega um anel com um anel menor preso a ele.",
+    "message": "A mulher do vilarejo se aproxima de você novamente, o rosto radiante de gratidão. 'Eu precisava agradecê-lo como devia,' diz ela, a voz calorosa. 'As coisas correram... muito bem. Fiz este anel para você.' Ela lhe entrega um anel com um anel menor preso a ele.",
     "title": "Um Retorno Agradecido"
   },
   "leatherHarnessRequest": {
@@ -1034,10 +1034,10 @@
     },
     "log": {
       "outcome1": "Você lhe entrega o couro. Ela o recebe com um sorriso grato, os olhos se iluminando. 'Obrigada. Ele vai ficar... muito surpreso.' Ela se apressa, apertando as peles contra o peito.",
-      "outcome2": "Você recusa. Ela acena, a decepção passando pelo rosto, e retorna à aldeia sem mais uma palavra."
+      "outcome2": "Você recusa. Ela acena, a decepção passando pelo rosto, e retorna ao vilarejo sem mais uma palavra."
     },
-    "message": "Uma mulher da aldeia se aproxima de você, as bochechas levemente coradas. Ela hesita antes de falar, os olhos baixos: 'Eu queria saber se você poderia ceder um pouco de couro. Gostaria de criar algo... para meu parceiro. Um arreio. Para surpreendê-lo.'",
-    "title": "Uma Mulher da Aldeia"
+    "message": "Uma mulher do vilarejo se aproxima de você, as bochechas levemente coradas. Ela hesita antes de falar, os olhos baixos: 'Eu queria saber se você poderia ceder um pouco de couro. Gostaria de criar algo... para meu parceiro. Um arreio. Para surpreendê-lo.'",
+    "title": "Uma Mulher do Vilarejo"
   },
   "madBeduine": {
     "choices": {
@@ -1109,7 +1109,7 @@
       "outcome2": "O mercenário sinaliza para seus homens atacarem. Apesar dos seus melhores esforços, você é sobrepujado. {{deaths}} aldeões caem antes de os mercenários finalmente recuarem, satisfeitos com a carnificina.",
       "outcome3": "Você lhe oferece o anel voraz que ainda guardava num baú trancado. O mercenário o examina com interesse, deslizando-o no próprio dedo. 'Um belo anel,' diz ele, 'mas não é o bastante. Voltarei amanhã para recolher o ouro.'"
     },
-    "message": "Um mercenário cheio de cicatrizes chega à aldeia, a mão pousada em sua lâmina. 'Não estou aqui para causar problemas. Pague-me 100 Ouro, e manterei as coisas em paz. Recuse, e meus homens reduzirão este lugar a cinzas.'",
+    "message": "Um mercenário cheio de cicatrizes chega ao vilarejo, a mão pousada em sua lâmina. 'Não estou aqui para causar problemas. Pague-me 100 Ouro, e manterei as coisas em paz. Recuse, e meus homens reduzirão este lugar a cinzas.'",
     "title": "O Mercenário"
   },
   "mercenaryReturnDemand": {
@@ -1128,7 +1128,7 @@
     "log": {
       "outcome0": "Você paga o ouro, as mãos tremendo de raiva. O mercenário ri. 'Escolha inteligente. Não vou incomodá-lo de novo... provavelmente.' Ele some na mata com seus homens.",
       "outcome1": "Você recusa. Os mercenários atacam, mas desta vez você está preparado. Após uma luta brutal, eles se dispersam pela selva, deixando seus mortos para trás.",
-      "outcome2": "Seu desafio lhe custa caro. Os mercenários devastam a aldeia, matando {{deaths}} antes de finalmente partirem, rindo da destruição que causaram.",
+      "outcome2": "Seu desafio lhe custa caro. Os mercenários devastam o vilarejo, matando {{deaths}} antes de finalmente partirem, rindo da destruição que causaram.",
       "outcome3": "Você lhe oferece o anel voraz que ainda guardava num baú trancado. O mercenário o examina com interesse, deslizando-o no próprio dedo. 'Um belo anel,' diz ele, 'mas não é o bastante. Voltarei amanhã para recolher o ouro.'"
     },
     "message": "O mercenário está de volta, e desta vez traz mais homens. 'Tempos difíceis,' diz ele com um sorriso. 'O preço subiu. 200 Ouro, ou as coisas ficam feias.'",
@@ -1242,7 +1242,7 @@
       "outcome4": "Os olhos do monge se arregalam à vista do ouro. 'Isto ajudará muito o mosteiro,' diz ele, sacando planos detalhados para uma chave-mestra. “Dizem que esta chave abre qualquer fechadura,” diz ele, antes de partir.",
       "outcome5": "Você recusa a oferta do monge. Ele se curva respeitosamente e inicia sua jornada de volta às montanhas."
     },
-    "message": "Um monge de um mosteiro na montanha chega à aldeia. 'Soube que você encontrou um baú misterioso,' diz ele suavemente. 'O mosteiro sabe como abri-lo. Ofereça um tributo, e eu compartilharei o segredo.'",
+    "message": "Um monge de um mosteiro na montanha chega ao vilarejo. 'Soube que você encontrou um baú misterioso,' diz ele suavemente. 'O mosteiro sabe como abri-lo. Ofereça um tributo, e eu compartilharei o segredo.'",
     "title": "O Monge da Montanha"
   },
   "monasteryResponse": {
@@ -1264,7 +1264,7 @@
     "title": "Mensagem do Mosteiro da Montanha"
   },
   "monolithDemand": {
-    "message": "Os aldeões exigem construir um monolito no centro da aldeia, um monumento para apaziguar a escuridão que se infiltra em suas mentes. Por meio do sacrifício de animais, eles querem encontrar paz.",
+    "message": "Os aldeões exigem construir um monolito no centro do vilarejo, um monumento para apaziguar a escuridão que se infiltra em suas mentes. Por meio do sacrifício de animais, eles querem encontrar paz.",
     "title": "Exigência pelo Monolito"
   },
   "mysteriousBell": {
@@ -1362,7 +1362,7 @@
       "declineForced": "Você recusa a oferta. O viking cospe no chão, resmungando maldições enquanto parte com seu machado de guerra. 'Você deveria ter me pagado quando teve a chance,' ele rosna.",
       "declineNormal": "Você recusa a oferta. O viking acena respeitosamente e parte com seu machado de guerra."
     },
-    "message": "O construtor viking retorna à sua aldeia, carregando um magnífico machado de guerra. 'Forjei este Machado de Guerra Nórdico em minha terra natal. Ele será seu... por um preço.'",
+    "message": "O construtor viking retorna ao seu vilarejo, carregando um magnífico machado de guerra. 'Forjei este Machado de Guerra Nórdico em minha terra natal. Ele será seu... por um preço.'",
     "title": "O Viking Retorna"
   },
   "oddTrinket": {
@@ -1406,7 +1406,7 @@
       "outcome4_one": "Você recusa o sacrifício. Durante a noite, {{actualDisappearances}} aldeão adentra a mata como sonâmbulo, atraído por uma voz que só ele podia ouvir. Ele nunca mais é visto.",
       "outcome4_other": "Você recusa o sacrifício. Durante a noite, {{actualDisappearances}} aldeões adentram a mata como sonâmbulos, atraídos por uma voz que só eles podiam ouvir. Eles nunca mais são vistos."
     },
-    "message": "Enquanto caçam, os aldeões relatam figuras perturbadoras na floresta. Eles estão aterrorizados. Os anciãos da aldeia dizem que os deuses da floresta exigem quatro aldeões em sacrifício.",
+    "message": "Enquanto caçam, os aldeões relatam figuras perturbadoras na floresta. Eles estão aterrorizados. Os anciãos do vilarejo dizem que os deuses da floresta exigem quatro aldeões em sacrifício.",
     "title": "Oferenda aos Deuses da Floresta"
   },
   "paleCrossCrucifixion": {
@@ -1426,8 +1426,8 @@
       }
     },
     "log": {
-      "outcome0": "Você não dá nenhuma ordem. Boatos se espalham, o medo coalha em repulsa, e o trabalho da aldeia vacila.",
-      "outcome2": "Você ordena os ritos funerários e alimenta os enlutados. A dor permanece, mas a aldeia se estabiliza.",
+      "outcome0": "Você não dá nenhuma ordem. Boatos se espalham, o medo coalha em repulsa, e o trabalho do vilarejo vacila.",
+      "outcome2": "Você ordena os ritos funerários e alimenta os enlutados. A dor permanece, mas o vilarejo se estabiliza.",
       "outcome3": "Você descobre um grupo de conspiradores e ordena sua execução. A justiça é rápida, e o medo recua.",
       "outcome4": "Você consagra o corpo à cruz. Os aldeões recuam de repulsa, mas o poder da cruz parece ter crescido."
     },
@@ -1463,7 +1463,7 @@
       "outcome0": "Quando os aldeões se aproximam, a figura desaparece. Em seu lugar jaz um manto de pena de corvo, cintilando com poder de outro mundo.",
       "outcome1": "A investigação dá errado. Um dos aldeões grita na névoa e nunca mais é visto. Os outros fogem aterrorizados.",
       "outcome2": "A figura esguia se move com velocidade desumana. {{actualDeaths}} aldeões desaparecem na névoa, seus gritos ecoando por entre as árvores.",
-      "outcome3": "Os aldeões permanecem perto da aldeia. Ao entardecer, a figura se foi.",
+      "outcome3": "Os aldeões permanecem perto do vilarejo. Ao entardecer, a figura se foi.",
       "outcome4": "Ao amanhecer, um dos aldeões que alegou ter visto a figura é encontrado morto em sua cama, o rosto congelado de terror."
     },
     "message": "Ao amanhecer, os aldeões vislumbram uma figura alta, pálida e esguia na orla da mata. O que você faz?",
@@ -1510,8 +1510,8 @@
     },
     "title": "O Cavaleiro Inquieto",
     "message": {
-      "firstTime": "Um cavaleiro em armadura desgastada chega à aldeia. 'Vi muito do mundo,' diz ele com voz oca. 'Por algum ouro, compartilharei o que vi em minhas viagens.'",
-      "repeat": "Novamente, o cavaleiro em armadura desgastada chega à aldeia. 'Vi muito do mundo,' diz ele com voz oca. 'Por algum ouro, compartilharei o que vi em minhas viagens.'"
+      "firstTime": "Um cavaleiro em armadura desgastada chega ao vilarejo. 'Vi muito do mundo,' diz ele com voz oca. 'Por algum ouro, compartilharei o que vi em minhas viagens.'",
+      "repeat": "Novamente, o cavaleiro em armadura desgastada chega ao vilarejo. 'Vi muito do mundo,' diz ele com voz oca. 'Por algum ouro, compartilharei o que vi em minhas viagens.'"
     }
   },
   "restlessKnightBurden": {
@@ -1634,7 +1634,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra na aldeia. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
       "success_second": "A figura dá um leve aceno e desaparece na noite. Ao amanhecer, uma surrada bolsa de couro com ouro jaz onde ela estava."
     }
   },
@@ -1662,7 +1662,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra na aldeia. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
       "success_second": "A figura dá um leve aceno e desaparece na noite. Ao amanhecer, uma surrada bolsa de couro com ouro jaz onde ela estava."
     }
   },
@@ -1690,7 +1690,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra na aldeia. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
       "success_third": "A figura inclina a cabeça em silencioso reconhecimento antes de recuar para a penumbra. Quando a manhã chega, uma surrada bolsa de moedas de ouro é encontrada do lado de fora da porta."
     }
   },
@@ -1718,7 +1718,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra na aldeia. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
       "success_third": "A figura inclina a cabeça em silencioso reconhecimento antes de recuar para a penumbra. Quando a manhã chega, uma surrada bolsa de moedas de ouro é encontrada do lado de fora da porta."
     }
   },
@@ -1746,7 +1746,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra na aldeia. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
       "success_fifth": "A figura inclina a cabeça em silenciosa reverência antes de desaparecer completamente. Um grande saco de ouro jaz no chão onde ela estava."
     }
   },
@@ -1774,7 +1774,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra na aldeia. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
       "success_fifth": "A figura inclina a cabeça em silenciosa reverência antes de desaparecer completamente. Um grande saco de ouro jaz no chão onde ela estava."
     }
   },
@@ -1802,7 +1802,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra na aldeia. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
       "success_fourth": "A figura baixa a cabeça encapuzada por um momento antes de se dissolver nas sombras. Um pequeno saco de ouro permanece no chão frio."
     }
   },
@@ -1830,7 +1830,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra na aldeia. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
       "success_fourth": "A figura baixa a cabeça encapuzada por um momento antes de se dissolver nas sombras. Um pequeno saco de ouro permanece no chão frio."
     }
   },
@@ -1934,7 +1934,7 @@
       "outcome1": "As sombras se inclinam em sua direção. Formas se coalescem na borda da visão, e algo sussurra seu nome com uma voz como folhas secas.",
       "outcome2": "Você desvia o olhar, mas a estranheza o segue. Pelo canto do olho, as sombras continuam se movendo muito depois de você parar de observar."
     },
-    "message": "As sombras na aldeia parecem se mover de forma errada. Elas se esticam por demais, torcem-se em ângulos impossíveis e, às vezes, parecem se mover independentemente de suas fontes.",
+    "message": "As sombras no vilarejo parecem se mover de forma errada. Elas se esticam por demais, torcem-se em ângulos impossíveis e, às vezes, parecem se mover independentemente de suas fontes.",
     "title": "Sombras em Movimento"
   },
   "shoreFishermenResponse": {
@@ -1989,12 +1989,12 @@
       }
     },
     "log": {
-      "outcome0": "Você entrega dois dos aldeões. O mercador lhe joga um saco de aço e parte a cavalo com seus novos cativos. Quando os aldeões restantes veem o que você fez, abandonam a aldeia enojados.",
-      "outcome1": "Seus homens atacam o escravagista! A luta é brutal, mas vitoriosa. Você liberta os cativos e reivindica o aço do mercador. Os escravos libertos juntam-se à sua aldeia.",
+      "outcome0": "Você entrega dois dos aldeões. O mercador lhe joga um saco de aço e parte a cavalo com seus novos cativos. Quando os aldeões restantes veem o que você fez, abandonam o vilarejo enojados.",
+      "outcome1": "Seus homens atacam o escravagista! A luta é brutal, mas vitoriosa. Você liberta os cativos e reivindica o aço do mercador. Os escravos libertos juntam-se ao seu vilarejo.",
       "outcome2": "Seus homens atacam o escravagista, mas ele está preparado! Ele revida ferozmente. {{actualDeaths}} aldeões caem na luta. O mercador escapa com seus cativos, deixando apenas morte para trás.",
       "outcome3": "Você recusa a vil oferta do escravagista. Ele cospe no chão enojado e parte a cavalo com seus cativos."
     },
-    "message": "Um homem numa carroça puxada por dois cavalos se aproxima da aldeia. Uma jaula de ferro na carroça contém três escravos miseráveis. O mercador sorri maldosamente: 'Pagarei 100 Aço por dois dos aldeões. O que me diz?'",
+    "message": "Um homem numa carroça puxada por dois cavalos se aproxima do vilarejo. Uma jaula de ferro na carroça contém três escravos miseráveis. O mercador sorri maldosamente: 'Pagarei 100 Aço por dois dos aldeões. O que me diz?'",
     "title": "O Mercador de Escravos"
   },
   "solsticeGathering": {
@@ -2030,7 +2030,7 @@
     },
     "log": {
       "outcome0": "A madeira negra resiste, mas seu povo a derruba. Você reivindica a amaldiçoada madeira negra.",
-      "outcome2": "Sangue e fumaça sobem da oferenda. Uma graça gélida se assenta sobre a aldeia."
+      "outcome2": "Sangue e fumaça sobem da oferenda. Uma graça gélida se assenta sobre o vilarejo."
     },
     "message": "Sua expedição alcança o esquecido santuário do pântano. Ruínas em ruínas circundam uma árvore enorme de madeira negra. O que você faz?",
     "title": "Santuário do Pântano"
@@ -2048,7 +2048,7 @@
       "outcome0": "Você aceita a oferta da Tribo do Pântano e se prepara para enviar a entrega de aço ao pântano.",
       "outcome1": "Você recusa a oferta da Tribo do Pântano. A oportunidade se perde."
     },
-    "message": "O corvo de um olho só retorna da Tribo do Pântano com uma carta esfarelada. A tribo oferece poderosas Placas de Quitina em troca de 1000 Aço entregues à sua aldeia.",
+    "message": "O corvo de um olho só retorna da Tribo do Pântano com uma carta esfarelada. A tribo oferece poderosas Placas de Quitina em troca de 1000 Aço entregues ao seu vilarejo.",
     "title": "Mensagem da Tribo do Pântano"
   },
   "templeDedication": {
@@ -2093,12 +2093,12 @@
       }
     },
     "log": {
-      "outcome0": "{{added}} sobreviventes juntam-se à sua aldeia, gratos, mas assombrados pelo que suportaram na mata.",
-      "outcome1": "Você os manda embora. Uma amarga inquietação recai sobre a aldeia, pois os aldeões não estão felizes com sua decisão.",
-      "outcome2": "Você os manda embora. Uma amarga inquietação recai sobre a aldeia, pois os aldeões não estão felizes com sua decisão.",
-      "outcome3": "Você os acolhe, mas não há espaço na aldeia para mais aldeões."
+      "outcome0": "{{added}} sobreviventes juntam-se ao seu vilarejo, gratos, mas assombrados pelo que suportaram na mata.",
+      "outcome1": "Você os manda embora. Uma amarga inquietação recai sobre o vilarejo, pois os aldeões não estão felizes com sua decisão.",
+      "outcome2": "Você os manda embora. Uma amarga inquietação recai sobre o vilarejo, pois os aldeões não estão felizes com sua decisão.",
+      "outcome3": "Você os acolhe, mas não há espaço no vilarejo para mais aldeões."
     },
-    "message": "Um grupo de jovens homens e mulheres sai cambaleando da floresta, meio mortos de frio e fome. Eles foram deixados na mata como sacrifício aos deuses da floresta, mas de algum modo sobreviveram. Você os acolhe na aldeia?",
+    "message": "Um grupo de jovens homens e mulheres sai cambaleando da floresta, meio mortos de frio e fome. Eles foram deixados na mata como sacrifício aos deuses da floresta, mas de algum modo sobreviveram. Você os acolhe no vilarejo?",
     "title": "Os Condenados"
   },
   "thirdWave": {
@@ -2148,7 +2148,7 @@
         "label": "Recusar"
       }
     },
-    "message": "O filho do mercador da aldeia se aproxima de você. Ele usou a valiosa adaga do pai para impressionar uma mulher, mas um bandido próximo o assaltou. Ele pede que você a recupere.",
+    "message": "O filho do mercador do vilarejo se aproxima de você. Ele usou a valiosa adaga do pai para impressionar uma mulher, mas um bandido próximo o assaltou. Ele pede que você a recupere.",
     "title": "O Filho do Mercador"
   },
   "traders_son_gratitude": {
@@ -2173,7 +2173,7 @@
         "label": "Continuar"
       }
     },
-    "message": "Um mercador chega à aldeia com sua família. Eles parecem exaustos, os rostos marcados por anos na estrada. Estão finalmente prontos para se estabelecer.",
+    "message": "Um mercador chega ao vilarejo com sua família. Eles parecem exaustos, os rostos marcados por anos na estrada. Estão finalmente prontos para se estabelecer.",
     "title": "O Mercador"
   },
   "undergroundLakeCreature": {
@@ -2216,7 +2216,7 @@
       "outcome2": "O andarilho dá um breve aceno e segue para a cava de mineração para começar seu labor.",
       "outcome4": "O andarilho dá um breve aceno e segue para a cava de mineração para começar seu labor."
     },
-    "message": "Um homem em roupas rasgadas se aproxima da aldeia, as mãos marcadas por anos de trabalho árduo. 'Venho de uma colônia de mineração,' diz ele com voz rouca. 'Posso trabalhar para você para melhorar seu rendimento de mineração.'",
+    "message": "Um homem em roupas rasgadas se aproxima do vilarejo, as mãos marcadas por anos de trabalho árduo. 'Venho de uma colônia de mineração,' diz ele com voz rouca. 'Posso trabalhar para você para melhorar seu rendimento de mineração.'",
     "title": "O Andarilho Sem Nome"
   },
   "veiledSeer": {
@@ -2269,7 +2269,7 @@
     "title": "O Construtor Viking"
   },
   "villageBecomesCity": {
-    "message": "A aldeia cresceu e se tornou uma cidade. O que começou como um pequeno assentamento agora se ergue como um pujante centro de pedra e fumaça."
+    "message": "O vilarejo cresceu e se tornou uma cidade. O que começou como um pequeno assentamento agora se ergue como um pujante centro de pedra e fumaça."
   },
   "villageElderDecision": {
     "choices": {
@@ -2277,7 +2277,7 @@
         "label": "Continuar"
       }
     },
-    "message": "O ancião da aldeia retorna, a expressão grave. 'Chegou a hora,' diz ele. 'Você deu seus primeiros passos num caminho longo e implacável. O que está por vir é mais profundo, mais escuro e mais exigente. Decida agora se continuará esta jornada.'",
+    "message": "O ancião do vilarejo retorna, a expressão grave. 'Chegou a hora,' diz ele. 'Você deu seus primeiros passos num caminho longo e implacável. O que está por vir é mais profundo, mais escuro e mais exigente. Decida agora se continuará esta jornada.'",
     "title": "Chegou a Hora"
   },
   "villageElderNotice": {
@@ -2286,7 +2286,7 @@
         "label": "Continuar"
       }
     },
-    "message": "Um ancião da aldeia se aproxima de você. Ele fala baixinho. 'Você está no início de um longo caminho repleto de provações. Muito em breve, você deverá escolher se continuará esta jornada.'",
+    "message": "Um ancião do vilarejo se aproxima de você. Ele fala baixinho. 'Você está no início de um longo caminho repleto de provações. Muito em breve, você deverá escolher se continuará esta jornada.'",
     "title": "O Aviso do Ancião"
   },
   "villagersStareAtSky": {
@@ -2371,7 +2371,7 @@
       "outcome4": "O artesão do fogo pega sua prata e começa a lhe ensinar a sombria arte de criar a bomba do vazio. 'Use este poder com sabedoria,' ele adverte antes de se esvair nas sombras.",
       "outcome5": "Você recusa a oferta do artesão do fogo. Ele acena com conhecimento, 'Talvez você ainda não esteja pronto para tamanho poder,' e desaparece na noite."
     },
-    "message": "Uma figura encapuzada em vestes manchadas chega à sua aldeia. 'Sou um artesão do fogo,' diz ele com voz ecoante. 'Posso ensiná-lo a criar uma bomba de extremo poder, que rasga a própria realidade. Mas o conhecimento tem seu preço.'",
+    "message": "Uma figura encapuzada em vestes manchadas chega ao seu vilarejo. 'Sou um artesão do fogo,' diz ele com voz ecoante. 'Posso ensiná-lo a criar uma bomba de extremo poder, que rasga a própria realidade. Mas o conhecimento tem seu preço.'",
     "title": "O Artesão do Fogo Errante"
   },
   "wanderingTribe": {
@@ -2387,7 +2387,7 @@
       "outcome0": "Você acolhe os nômades e oferece apoio. Em troca, eles ensinam seu povo a construir tendas de pele.",
       "outcome1": "Você recusa ajudar. O líder da tribo acena respeitosamente e conduz seu povo de volta à selva."
     },
-    "message": "Uma pequena tribo de nômades se aproxima da aldeia. Seu líder fala: 'Viajamos muito e buscamos um lugar para chamar de lar. Ajude-nos a nos estabelecer e ensinaremos seu povo a erguer tendas de pele.'",
+    "message": "Uma pequena tribo de nômades se aproxima do vilarejo. Seu líder fala: 'Viajamos muito e buscamos um lugar para chamar de lar. Ajude-nos a nos estabelecer e ensinaremos seu povo a erguer tendas de pele.'",
     "title": "A Tribo Errante"
   },
   "whispererInTheDark": {
@@ -2414,7 +2414,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra na aldeia. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
       "success_first": "A figura acena levemente com a cabeça antes de se esvair na escuridão. Pela manhã, um pequeno saco de ouro repousa na soleira da propriedade."
     }
   },
@@ -2442,7 +2442,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra na aldeia. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
       "success_first": "A figura acena levemente com a cabeça antes de se esvair na escuridão. Pela manhã, um pequeno saco de ouro repousa na soleira da propriedade."
     }
   },
@@ -2525,7 +2525,7 @@
       "outcome2": "Você se recusa a pagar. A bruxa cospe e pragueja, mas nada acontece. Ela manca para longe, resmungando ameaças ao vento. Parece que você teve sorte.",
       "outcome3": "Quando você se recusa a pagar, a bruxa ergue suas mãos retorcidas e profere palavras numa língua esquecida. Quando ela parte, os aldeões começam a se sentir fracos, como se sua força tivesse sido sugada por uma força invisível.",
       "outcome4": "Os aldeões a derrubam antes que ela possa terminar sua maldição. Antes de a bruxa cair, seu corpo se dissolve em fumaça negra, deixando apenas um fedor repugnante.",
-      "outcome5": "Os homens atacam, mas a bruxa é rápida demais. Com uma última gargalhada, ela amaldiçoa a aldeia antes de desaparecer na mata. Uma intensa fraqueza recai sobre seu povo, sugando sua força e vontade.",
+      "outcome5": "Os homens atacam, mas a bruxa é rápida demais. Com uma última gargalhada, ela amaldiçoa o vilarejo antes de desaparecer na mata. Uma intensa fraqueza recai sobre seu povo, sugando sua força e vontade.",
       "outcome6": "Você profere antigas palavras de poder, aprendidas de velhos textos. A bruxa recua de medo e foge, sua maldição quebrada antes que pudesse se firmar.",
       "outcome7": "Suas ameaças apenas irritam a bruxa. Ela ri e o amaldiçoa com magia sombria. Quando ela parte, os aldeões começam a se sentir fracos, como se sua força tivesse sido sugada por uma força invisível."
     },
@@ -2576,13 +2576,13 @@
     "title": "A Oferta do Mago"
   },
   "wizardReadyForBattle": {
-    "message": "O mago está à entrada de sua torre, 'As armas estão forjadas. Agora possuímos o que precisamos para enfrentar as criaturas das profundezas da caverna. A escuridão lá embaixo logo aprenderá que esta aldeia não cairá sem luta. Estamos prontos.'",
+    "message": "O mago está à entrada de sua torre, 'As armas estão forjadas. Agora possuímos o que precisamos para enfrentar as criaturas das profundezas da caverna. A escuridão lá embaixo logo aprenderá que este vilarejo não cairá sem luta. Estamos prontos.'",
     "title": "O Preparo Final"
   },
   "wolfAttack": {
     "choices": {
       "defendVillage": {
-        "label": "Defender a aldeia"
+        "label": "Defender o vilarejo"
       },
       "hideAndWait": {
         "label": "Esconder-se"
@@ -2590,47 +2590,47 @@
     },
     "log": {
       "outcome0": "Os aldeões derrotam a matilha de lobos! Você abate o lobo alfa e reivindica sua pele como troféu. Ela irradia poder primordial.",
-      "outcome0_first": "Os aldeões derrotam a matilha de lobos! Você abate o lobo alfa e reivindica sua pele como troféu. Ela irradia poder primordial. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "outcome0_first": "Os aldeões derrotam a matilha de lobos! Você abate o lobo alfa e reivindica sua pele como troféu. Ela irradia poder primordial. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "outcome1": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Ao amanhecer, os lobos partiram sem encontrar ninguém, deixando para trás apenas arranhões e terror.",
-      "outcome1_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Ao amanhecer, os lobos partiram sem encontrar ninguém, deixando para trás apenas arranhões e terror. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "outcome1_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Ao amanhecer, os lobos partiram sem encontrar ninguém, deixando para trás apenas arranhões e terror. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "defend_noDeaths": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões sobrevivem ao ataque.",
-      "defend_noDeaths_first": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões sobrevivem ao ataque. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "defend_noDeaths_first": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões sobrevivem ao ataque. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "defend_noDeaths_hut": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões sobrevivem ao ataque. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada.",
-      "defend_noDeaths_hut_first": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões sobrevivem ao ataque. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "defend_noDeaths_hut_first": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões sobrevivem ao ataque. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "defend_noDeaths_food": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões sobrevivem ao ataque. No caos, os lobos devastam seus estoques.",
-      "defend_noDeaths_food_first": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões sobrevivem ao ataque. No caos, os lobos devastam seus estoques. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "defend_noDeaths_food_first": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões sobrevivem ao ataque. No caos, os lobos devastam seus estoques. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "defend_noDeaths_food_hut": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões sobrevivem ao ataque. No caos, os lobos devastam seus estoques. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada.",
-      "defend_noDeaths_food_hut_first": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões sobrevivem ao ataque. No caos, os lobos devastam seus estoques. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "defend_noDeaths_food_hut_first": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões sobrevivem ao ataque. No caos, os lobos devastam seus estoques. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "defend_oneDeath": "Os aldeões lutam desesperadamente contra os lobos. Um aldeão cai diante da fúria sobrenatural dos lobos.",
-      "defend_oneDeath_first": "Os aldeões lutam desesperadamente contra os lobos. Um aldeão cai diante da fúria sobrenatural dos lobos. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "defend_oneDeath_first": "Os aldeões lutam desesperadamente contra os lobos. Um aldeão cai diante da fúria sobrenatural dos lobos. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "defend_oneDeath_hut": "Os aldeões lutam desesperadamente contra os lobos. Um aldeão cai diante da fúria sobrenatural dos lobos. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada.",
-      "defend_oneDeath_hut_first": "Os aldeões lutam desesperadamente contra os lobos. Um aldeão cai diante da fúria sobrenatural dos lobos. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "defend_oneDeath_hut_first": "Os aldeões lutam desesperadamente contra os lobos. Um aldeão cai diante da fúria sobrenatural dos lobos. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "defend_oneDeath_food": "Os aldeões lutam desesperadamente contra os lobos. Um aldeão cai diante da fúria sobrenatural dos lobos. No caos, os lobos devastam seus estoques.",
-      "defend_oneDeath_food_first": "Os aldeões lutam desesperadamente contra os lobos. Um aldeão cai diante da fúria sobrenatural dos lobos. No caos, os lobos devastam seus estoques. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "defend_oneDeath_food_first": "Os aldeões lutam desesperadamente contra os lobos. Um aldeão cai diante da fúria sobrenatural dos lobos. No caos, os lobos devastam seus estoques. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "defend_oneDeath_food_hut": "Os aldeões lutam desesperadamente contra os lobos. Um aldeão cai diante da fúria sobrenatural dos lobos. No caos, os lobos devastam seus estoques. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada.",
-      "defend_oneDeath_food_hut_first": "Os aldeões lutam desesperadamente contra os lobos. Um aldeão cai diante da fúria sobrenatural dos lobos. No caos, os lobos devastam seus estoques. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "defend_oneDeath_food_hut_first": "Os aldeões lutam desesperadamente contra os lobos. Um aldeão cai diante da fúria sobrenatural dos lobos. No caos, os lobos devastam seus estoques. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "defend_manyDeaths": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões caem diante da fúria sobrenatural dos lobos.",
-      "defend_manyDeaths_first": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões caem diante da fúria sobrenatural dos lobos. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "defend_manyDeaths_first": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões caem diante da fúria sobrenatural dos lobos. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "defend_manyDeaths_hut": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões caem diante da fúria sobrenatural dos lobos. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada.",
-      "defend_manyDeaths_hut_first": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões caem diante da fúria sobrenatural dos lobos. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "defend_manyDeaths_hut_first": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões caem diante da fúria sobrenatural dos lobos. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "defend_manyDeaths_food": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões caem diante da fúria sobrenatural dos lobos. No caos, os lobos devastam seus estoques.",
-      "defend_manyDeaths_food_first": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões caem diante da fúria sobrenatural dos lobos. No caos, os lobos devastam seus estoques. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "defend_manyDeaths_food_first": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões caem diante da fúria sobrenatural dos lobos. No caos, os lobos devastam seus estoques. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "defend_manyDeaths_food_hut": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões caem diante da fúria sobrenatural dos lobos. No caos, os lobos devastam seus estoques. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada.",
-      "defend_manyDeaths_food_hut_first": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões caem diante da fúria sobrenatural dos lobos. No caos, os lobos devastam seus estoques. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "defend_manyDeaths_food_hut_first": "Os aldeões lutam desesperadamente contra os lobos. Os aldeões caem diante da fúria sobrenatural dos lobos. No caos, os lobos devastam seus estoques. Em seu frenesi, os lobos destroem uma das cabanas, deixando apenas madeira estilhaçada. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "hide_noDeaths": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Ao amanhecer, os lobos partiram, deixando para trás apenas arranhões e terror.",
-      "hide_noDeaths_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Ao amanhecer, os lobos partiram, deixando para trás apenas arranhões e terror. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "hide_noDeaths_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Ao amanhecer, os lobos partiram, deixando para trás apenas arranhões e terror. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "hide_noDeaths_food": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Os lobos saqueiam seus suprimentos e somem ao amanhecer, deixando para trás apenas arranhões e terror.",
-      "hide_noDeaths_food_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Os lobos saqueiam seus suprimentos e somem ao amanhecer, deixando para trás apenas arranhões e terror. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "hide_noDeaths_food_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Os lobos saqueiam seus suprimentos e somem ao amanhecer, deixando para trás apenas arranhões e terror. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "hide_oneDeath": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Um aldeão que se aventurou para fora é encontrado dilacerado ao nascer do sol.",
-      "hide_oneDeath_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Um aldeão que se aventurou para fora é encontrado dilacerado ao nascer do sol. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "hide_oneDeath_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Um aldeão que se aventurou para fora é encontrado dilacerado ao nascer do sol. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "hide_oneDeath_food": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Um aldeão que se aventurou para fora é encontrado dilacerado ao nascer do sol. Os lobos saqueiam seus suprimentos antes de sumir ao amanhecer.",
-      "hide_oneDeath_food_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Um aldeão que se aventurou para fora é encontrado dilacerado ao nascer do sol. Os lobos saqueiam seus suprimentos antes de sumir ao amanhecer. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "hide_oneDeath_food_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Um aldeão que se aventurou para fora é encontrado dilacerado ao nascer do sol. Os lobos saqueiam seus suprimentos antes de sumir ao amanhecer. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "hide_manyDeaths": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Vários aldeões são arrastados de suas cabanas, seus gritos ecoando pela noite.",
-      "hide_manyDeaths_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Vários aldeões são arrastados de suas cabanas, seus gritos ecoando pela noite. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos.",
+      "hide_manyDeaths_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Vários aldeões são arrastados de suas cabanas, seus gritos ecoando pela noite. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos.",
       "hide_manyDeaths_food": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Vários aldeões são arrastados de suas cabanas, seus gritos ecoando pela noite. Os lobos saqueiam seus suprimentos antes de sumir ao amanhecer.",
-      "hide_manyDeaths_food_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Vários aldeões são arrastados de suas cabanas, seus gritos ecoando pela noite. Os lobos saqueiam seus suprimentos antes de sumir ao amanhecer. Os aldeões sugerem que você disponha armadilhas ao redor da aldeia para se proteger melhor de lobos e outros inimigos."
+      "hide_manyDeaths_food_first": "Os aldeões se encolhem em suas cabanas enquanto os lobos rondam lá fora. Vários aldeões são arrastados de suas cabanas, seus gritos ecoando pela noite. Os lobos saqueiam seus suprimentos antes de sumir ao amanhecer. Os aldeões sugerem que você disponha armadilhas ao redor do vilarejo para se proteger melhor de lobos e outros inimigos."
     },
-    "message": "Perto da meia-noite, os lobos emergem da escuridão, seus olhos brilhando com fome sobrenatural. Seus uivos carregam malícia enquanto circundam a aldeia.",
+    "message": "Perto da meia-noite, os lobos emergem da escuridão, seus olhos brilhando com fome sobrenatural. Seus uivos carregam malícia enquanto circundam o vilarejo.",
     "title": "Ataque dos Lobos"
   },
   "woodcutter": {
@@ -2664,20 +2664,20 @@
       "timeoutLevel4": "Sua indecisão frustra o lenhador. Ele parece decepcionado, mas aceita e parte.",
       "timeoutLevel5": "Sua indecisão frustra o lenhador. Ele franze a testa e se afasta.",
       "timeoutLevel6": "Sua indecisão frustra o lenhador. Ele franze a testa e se afasta.",
-      "successLevel1": "O lenhador pega a comida e segue para a floresta. Ao entardecer, ele retorna com a madeira prometida empilhada com capricho na orla da aldeia.",
+      "successLevel1": "O lenhador pega a comida e segue para a floresta. Ao entardecer, ele retorna com a madeira prometida empilhada com capricho na orla do vilarejo.",
       "successLevel2": "O lenhador pega a comida e desaparece na floresta. Ao cair da noite, ele retorna com uma grande pilha de madeira.",
       "successLevel3": "O lenhador pega a comida e se embrenha nas profundezas da floresta. Ele retorna com uma impressionante carga de madeira.",
       "successLevel4": "O lenhador pega a comida e passa a tarde na floresta. Ele retorna com uma enorme pilha de madeira.",
-      "successLevel5": "O lenhador pega a comida e, no mesmo dia, entrega um estoque massivo de madeira à aldeia.",
-      "successLevel6": "O lenhador pega a comida e, no mesmo dia, entrega um estoque massivo de madeira à aldeia."
+      "successLevel5": "O lenhador pega a comida e, no mesmo dia, entrega um estoque massivo de madeira ao vilarejo.",
+      "successLevel6": "O lenhador pega a comida e, no mesmo dia, entrega um estoque massivo de madeira ao vilarejo."
     },
     "message": {
-      "level1": "Um homem musculoso com um grande machado se aproxima da aldeia. Ele flexiona os braços. \"Sei cortar árvores como ninguém,\" gaba-se ele. \"Dê-me {{foodCost}} Comida, e eu trarei {{woodReward}} Madeira.\"",
-      "level2": "O lenhador retorna, seu machado reluzindo ao sol. \"Sua aldeia tem mais bocas,\" observa ele. \"Posso lhe trazer {{woodReward}} Madeira. Você me dá {{foodCost}} Comida. O que me diz?\"",
-      "level3": "O lenhador se aproxima novamente. \"Sua aldeia ainda está de pé,\" diz ele com um sorriso. \"Posso lhe trazer {{woodReward}} Madeira se você pagar {{foodCost}} Comida por ela.\"",
+      "level1": "Um homem musculoso com um grande machado se aproxima do vilarejo. Ele flexiona os braços. \"Sei cortar árvores como ninguém,\" gaba-se ele. \"Dê-me {{foodCost}} Comida, e eu trarei {{woodReward}} Madeira.\"",
+      "level2": "O lenhador retorna, seu machado reluzindo ao sol. \"Suo vilarejo tem mais bocas,\" observa ele. \"Posso lhe trazer {{woodReward}} Madeira. Você me dá {{foodCost}} Comida. O que me diz?\"",
+      "level3": "O lenhador se aproxima novamente. \"Suo vilarejo ainda está de pé,\" diz ele com um sorriso. \"Posso lhe trazer {{woodReward}} Madeira se você pagar {{foodCost}} Comida por ela.\"",
       "level4": "O lenhador chega mais uma vez. \"Quer usar meus serviços mais uma vez? {{woodReward}} Madeira por {{foodCost}} Comida,\" pergunta ele.",
       "level5": "O lenhador aparece com um sorriso confiante. \"Que tal fecharmos mais um acordo? {{woodReward}} Madeira por {{foodCost}} Comida.\"",
-      "level6": "O lenhador retorna à aldeia. \"Quer usar meus serviços mais uma vez? Ofereço {{woodReward}} Madeira por {{foodCost}} Comida,\" diz ele."
+      "level6": "O lenhador retorna ao vilarejo. \"Quer usar meus serviços mais uma vez? Ofereço {{woodReward}} Madeira por {{foodCost}} Comida,\" diz ele."
     },
     "title": {
       "level1": "O Lenhador",
@@ -2699,10 +2699,10 @@
     },
     "log": {
       "outcome0": "Ao inspecionar, você não vê nada de incomum no poço. Deve ter sido um truque de luz ou sua imaginação. A inquietação persiste, mas você se sente um pouco melhor.",
-      "outcome1": "Você se debruça sobre a borda do poço. Seu reflexo lhe sorri de volta com dentes demais e sussurra segredos sobre o que outrora foi construído onde a aldeia agora se ergue. Você se afasta, mas o conhecimento permanece, ardendo em sua mente.",
+      "outcome1": "Você se debruça sobre a borda do poço. Seu reflexo lhe sorri de volta com dentes demais e sussurra segredos sobre o que outrora foi construído onde o vilarejo agora se ergue. Você se afasta, mas o conhecimento permanece, ardendo em sua mente.",
       "outcome2": "Você tapa o poço com tábuas de madeira, proibindo todo acesso à água profana. Construir um novo poço leva tempo demais para terminar, e {{thirstDeaths}} dos aldeões perecem de sede."
     },
-    "message": "A superfície do poço da aldeia mostra reflexos que não correspondem à realidade. Você se vê, mas mais velho, com olhos fundos e uma boca cheia de escuridão.",
+    "message": "A superfície do poço do vilarejo mostra reflexos que não correspondem à realidade. Você se vê, mas mais velho, com olhos fundos e uma boca cheia de escuridão.",
     "title": "Reflexos Errados"
   },
   "wrongVillagers": {
@@ -2715,8 +2715,8 @@
       }
     },
     "log": {
-      "outcome0": "Você fala com os estranhos. Eles admitem ser andarilhos que tinham medo demais de pedir abrigo, então simplesmente se instalaram numa cabana vazia. Você os permite ficar e trabalhar na aldeia.",
-      "outcome1": "Ao confrontá-los, eles riem e confessam ser ladrões que vieram roubar a aldeia. Eles o dominam e fogem com 250 Prata antes de desaparecer na mata.",
+      "outcome0": "Você fala com os estranhos. Eles admitem ser andarilhos que tinham medo demais de pedir abrigo, então simplesmente se instalaram numa cabana vazia. Você os permite ficar e trabalhar no vilarejo.",
+      "outcome1": "Ao confrontá-los, eles riem e confessam ser ladrões que vieram roubar o vilarejo. Eles o dominam e fogem com 250 Prata antes de desaparecer na mata.",
       "outcome2": "Você mantém distância e os observa de longe. Após vários dias eles simplesmente desaparecem, como se nunca tivessem estado ali. Você não faz ideia de quem eram."
     },
     "message": "Você conta os aldeões e encontra três a mais do que deveria haver. Estranhos surgiram entre seu povo, trabalhando e comendo como se pertencessem à sua comunidade.",
@@ -2735,7 +2735,7 @@
       }
     },
     "log": {
-      "outcome0": "Você bane a jovem da aldeia. Ela convence {{actualLeavers}} aldeões solidários a partirem com ela, abandonando seu assentamento para sempre.",
+      "outcome0": "Você bane a jovem do vilarejo. Ela convence {{actualLeavers}} aldeões solidários a partirem com ela, abandonando seu assentamento para sempre.",
       "outcome1": "Pouco depois de o sacrifício ser realizado no Monolito Negro, {{actualLeavers}} aldeões horrorizados fazem as malas e partem enojados.",
       "outcome2": "Você concorda em acabar com a prática do sacrifício humano. A mulher propõe destruir o Monolito Negro e erguer em seu lugar um puro obelisco branco que purifique a escuridão das mentes do povo."
     },
@@ -2770,10 +2770,10 @@
       }
     },
     "log": {
-      "sendAwayOutcome": "Você a recusa. Ela sorri com calma demais. 'Você e cada alma desta aldeia vão se arrepender', diz ela, e então se afasta.",
+      "sendAwayOutcome": "Você a recusa. Ela sorri com calma demais. 'Você e cada alma deste vilarejo vão se arrepender', diz ela, e então se afasta.",
       "welcomeOutcome": "Você recebe a mulher de cabelos ruivos. Ela agradece em voz baixa e fala de plantas que curam e que fazem mal. Oferece ajudar a construir um jardim de ervas. Os aldeões a observam com atenção."
     },
-    "message": "Uma bela mulher de cabelos ruivos chega. Diz que sua aldeia nas montanhas morreu de fome e pede para ficar. Afirma saber muito sobre plantas e seus efeitos.",
+    "message": "Uma bela mulher de cabelos ruivos chega. Diz que seu vilarejo nas montanhas morreu de fome e pede para ficar. Afirma saber muito sobre plantas e seus efeitos.",
     "title": "A Dama das Montanhas"
   },
   "liquidDeath": {
@@ -2792,7 +2792,7 @@
     },
     "message": {
       "rejected": "Certa manhã, {{deaths}} aldeões são encontrados mortos em suas cabanas. Seus lábios estão azuis como beladona esmagada. Um aldeão afirma ter visto uma mulher de cabelos ruivos perto do poço no dia anterior.",
-      "welcomed": "Certa manhã, {{deaths}} aldeões são encontrados mortos em suas cabanas. Seus lábios estão azuis como beladona esmagada. Um aldeão afirma ter visto a mulher de cabelos ruivos da aldeia da montanha perto do poço no dia anterior."
+      "welcomed": "Certa manhã, {{deaths}} aldeões são encontrados mortos em suas cabanas. Seus lábios estão azuis como beladona esmagada. Um aldeão afirma ter visto a mulher de cabelos ruivos do vilarejo da montanha perto do poço no dia anterior."
     },
     "title": "Morte líquida"
   },
@@ -2809,7 +2809,7 @@
       "believeOutcome": "O homem oferece liderar a busca pela mulher. Diz saber onde ela se esconde e que você deveria levar muitos homens.",
       "sendAwayOutcome": "Você manda embora o homem faminto. Ele não discute. Os aldeões observam a beira da floresta enquanto ele some."
     },
-    "message": "O homem faminto é trazido até você. Mal consegue falar com clareza e afirma ser o último sobrevivente de uma aldeia na montanha. Diz que o poço deles foi envenenado por uma herbalista de cabelos ruivos.",
+    "message": "O homem faminto é trazido até você. Mal consegue falar com clareza e afirma ser o último sobrevivente de um vilarejo na montanha. Diz que o poço deles foi envenenado por uma herbalista de cabelos ruivos.",
     "title": "O Homem das Montanhas"
   },
   "mountainPairNightAttack": {
@@ -2819,9 +2819,9 @@
       }
     },
     "log": {
-      "outcome": "À noite, o homem e a mulher de cabelos ruivos atacam juntos. {{deaths}} aldeões morrem antes que o resto os derrote. Antes que você possa intervir, os aldeões enforcam os dois. Eles eram cúmplices o tempo todo. No corpo do homem você encontra um mapa para uma aldeia na montanha."
+      "outcome": "À noite, o homem e a mulher de cabelos ruivos atacam juntos. {{deaths}} aldeões morrem antes que o resto os derrote. Antes que você possa intervir, os aldeões enforcam os dois. Eles eram cúmplices o tempo todo. No corpo do homem você encontra um mapa para um vilarejo na montanha."
     },
-    "message": "À noite, o homem e a mulher de cabelos ruivos atacam a aldeia juntos. {{deaths}} aldeões caem antes que o resto derrote o casal. Antes que você possa fazer qualquer coisa, os aldeões os enforcam. No corpo do homem você encontra um mapa para uma aldeia na montanha.",
+    "message": "À noite, o homem e a mulher de cabelos ruivos atacam o vilarejo juntos. {{deaths}} aldeões caem antes que o resto derrote o casal. Antes que você possa fazer qualquer coisa, os aldeões os enforcam. No corpo do homem você encontra um mapa para um vilarejo na montanha.",
     "title": "Ataque noturno"
   },
   "searchMountainLadyAmbush": {
@@ -2831,9 +2831,9 @@
       }
     },
     "log": {
-      "outcome": "O homem os leva fundo na floresta. Os aldeões caem em armadilhas. De repente a mulher de cabelos ruivos aparece, e juntos atacam seus homens. {{deaths}} aldeões morrem antes que os sobreviventes matem os dois atacantes. No corpo do homem eles encontram um mapa para uma aldeia na montanha."
+      "outcome": "O homem os leva fundo na floresta. Os aldeões caem em armadilhas. De repente a mulher de cabelos ruivos aparece, e juntos atacam seus homens. {{deaths}} aldeões morrem antes que os sobreviventes matem os dois atacantes. No corpo do homem eles encontram um mapa para um vilarejo na montanha."
     },
-    "message": "O homem os leva fundo na floresta. Os aldeões caem em armadilhas. De repente a mulher de cabelos ruivos aparece, e juntos atacam seus homens. {{deaths}} aldeões morrem antes que os sobreviventes matem os dois atacantes. No corpo do homem eles encontram um mapa para uma aldeia na montanha.",
+    "message": "O homem os leva fundo na floresta. Os aldeões caem em armadilhas. De repente a mulher de cabelos ruivos aparece, e juntos atacam seus homens. {{deaths}} aldeões morrem antes que os sobreviventes matem os dois atacantes. No corpo do homem eles encontram um mapa para um vilarejo na montanha.",
     "title": "A emboscada"
   },
   "theHoundFound": {
@@ -2845,7 +2845,7 @@
     "log": {
       "outcome": "Você aceita. Enfraquecido pelo veneno, mas ainda respirando, Cão Bruto se junta à sua companhia."
     },
-    "message": "Sua expedição encontra uma aldeia na montanha cheia de mortos envenenados. Entre os corpos jaz um homem quase morto, muito musculoso mas desfigurado, mal capaz de falar. Diz que só o chamavam de Cão Bruto. Parece ter resistido ao veneno, ainda que por pouco. Ele quer se juntar a vocês.",
+    "message": "Sua expedição encontra um vilarejo na montanha cheia de mortos envenenados. Entre os corpos jaz um homem quase morto, muito musculoso mas desfigurado, mal capaz de falar. Diz que só o chamavam de Cão Bruto. Parece ter resistido ao veneno, ainda que por pouco. Ele quer se juntar a vocês.",
     "title": "Cão Bruto"
   },
   "firstBossWave": {
@@ -2886,7 +2886,7 @@
       }
     },
     "log": {
-      "outcome0": "A caçada é um sucesso. Os caçadores voltam com muita carne. A aldeia come bem esta noite.",
+      "outcome0": "A caçada é um sucesso. Os caçadores voltam com muita carne. O vilarejo come bem esta noite.",
       "outcome1": "Os lobos os encontram antes que possam derrubar os cervos. Um caçador não retorna.",
       "outcome2": "Você ordena que os caçadores fiquem por perto. Os cervos seguem adiante, e os lobos permanecem invisíveis."
     },
@@ -2930,7 +2930,7 @@
   },
   "brimstoneFlux1": {
     "title": "O Fluxo de Enxofre",
-    "message": "Um homem pequeno e barbudo, de braços enormes, chega à aldeia. Diz que conhece a fundição e pode melhorar sua produção de aço por um tempo. Precisa de enxofre e um pouco de ouro.",
+    "message": "Um homem pequeno e barbudo, de braços enormes, chega ao vilarejo. Diz que conhece a fundição e pode melhorar sua produção de aço por um tempo. Precisa de enxofre e um pouco de ouro.",
     "choices": {
       "accept": {
         "label": "Aceitar ajuda",
