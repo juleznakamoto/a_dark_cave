@@ -981,6 +981,17 @@ html[data-adc-chrome-stage="0"] {
   cursor: pointer;
 }
 
+/* Press matches buttons (100ms ease-out) but 10% smaller. fill-box keeps the scale on the coin. */
+.village-silver-coin-body {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 100ms ease-out;
+}
+
+.village-silver-coin.is-pressed .village-silver-coin-body {
+  transform: scale(0.9);
+}
+
 .village-silver-coin-hover {
   stroke-width: 0;
 }

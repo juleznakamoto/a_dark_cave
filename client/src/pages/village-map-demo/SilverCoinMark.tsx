@@ -38,6 +38,8 @@ export function SilverCoinMark({
 }) {
   const radius = VILLAGE_SILVER_COIN_RADIUS;
   const groupRef = useRef<SVGGElement>(null);
+  const pressedRef = useRef(false);
+  const [pressed, setPressed] = useState(false);
   const [boost, setBoost] = useState(1);
   useLayoutEffect(() => {
     const svg = groupRef.current?.ownerSVGElement;
@@ -58,13 +60,34 @@ export function SilverCoinMark({
   const onPointerDown = (event: PointerEvent<SVGGElement>) => {
     event.stopPropagation();
     event.preventDefault();
+    pressedRef.current = true;
+    setPressed(true);
     onHover?.(false);
+    try {
+      event.currentTarget.setPointerCapture(event.pointerId);
+    } catch {
+      // Synthetic events may not capture. Releasing on the coin still collects.
+    }
+  };
+  const onPointerUp = (event: PointerEvent<SVGGElement>) => {
+    if (!pressedRef.current) return;
+    pressedRef.current = false;
+    setPressed(false);
+    if (event.currentTarget.hasPointerCapture?.(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+    event.stopPropagation();
+    event.preventDefault();
     onCollect?.(id);
+  };
+  const onPointerCancel = () => {
+    pressedRef.current = false;
+    setPressed(false);
   };
   return (
     <g
       ref={groupRef}
-      className="village-silver-coin"
+      className={pressed ? "village-silver-coin is-pressed" : "village-silver-coin"}
       data-testid="village-silver-coin"
       data-coin-id={id}
       data-coin-metal={metal}
@@ -74,20 +97,24 @@ export function SilverCoinMark({
       onPointerEnter={() => onHover?.(true)}
       onPointerLeave={() => onHover?.(false)}
       onPointerDown={onPointerDown}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerCancel}
     >
-      <circle r={radius + 4} fill="#000" fillOpacity={0} />
-      <g className={metal === "gold" ? "text-yellow-600" : "text-gray-400"} pointerEvents="none">
-        <circle r={RING_R} fill="none" stroke="currentColor" strokeWidth={RING_STROKE} />
-        <circle r={INNER_R} fill="currentColor" />
+      <g className="village-silver-coin-body">
+        <circle r={radius + 4} fill="#000" fillOpacity={0} />
+        <g className={metal === "gold" ? "text-yellow-600" : "text-gray-400"} pointerEvents="none">
+          <circle r={RING_R} fill="none" stroke="currentColor" strokeWidth={RING_STROKE} />
+          <circle r={INNER_R} fill="currentColor" />
+        </g>
+        <circle
+          className="village-silver-coin-hover"
+          r={OUTER_R}
+          fill="none"
+          stroke="#000"
+          vectorEffect="non-scaling-stroke"
+          pointerEvents="none"
+        />
       </g>
-      <circle
-        className="village-silver-coin-hover"
-        r={OUTER_R}
-        fill="none"
-        stroke="#000"
-        vectorEffect="non-scaling-stroke"
-        pointerEvents="none"
-      />
     </g>
   );
 }
