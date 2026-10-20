@@ -153,7 +153,7 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
   free: {
     id: "free",
     label: "free",
-    production: [{ resource: "food", amount: 5, interval: 15000 }],
+    production: [{ resource: "food", amount: 3, interval: 15000 }],
   },
 };
 

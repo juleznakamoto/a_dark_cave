@@ -877,17 +877,17 @@ describe('Scholar insight production', () => {
 });
 
 describe('idle villager production', () => {
-  it('produces 5 food per available villager each cycle', () => {
+  it('produces 3 food per available villager each cycle', () => {
     const state = createTestState({
       villagers: { ...createTestState().villagers, free: 3, gatherer: 0 },
     });
     const production = getPopulationProduction('free', 3, state);
     expect(production).toEqual([
-      expect.objectContaining({ resource: 'food', totalAmount: 15 }),
+      expect.objectContaining({ resource: 'food', totalAmount: 9 }),
     ]);
     const effects = getTotalPopulationEffects(state, ['free']);
-    // 15 produced, 3 eaten once hunting upkeep is active
-    expect(effects.food).toBe(15 - 3);
+    // 9 produced, 3 eaten once hunting upkeep is active
+    expect(effects.food).toBe(9 - 3);
   });
 
   it('produces nothing when nobody is available', () => {
@@ -927,7 +927,7 @@ describe('resource production breakdown', () => {
     expect(getResourceProductionBreakdown(state, 'food')).toEqual([
       { sourceId: VILLAGER_UPKEEP_SOURCE_ID, amount: -5 },
       { sourceId: 'iron_miner', amount: -5 },
-      { sourceId: 'free', amount: 10 },
+      { sourceId: 'free', amount: 6 },
     ]);
     expect(getResourceProductionBreakdown(state, 'iron')).toEqual([
       { sourceId: 'iron_miner', amount: 5 },
@@ -948,7 +948,7 @@ describe('resource production breakdown', () => {
         amount: -DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
       },
       { sourceId: 'hunter', amount: 5 },
-      { sourceId: 'free', amount: 20 },
+      { sourceId: 'free', amount: 12 },
     ]);
   });
 
