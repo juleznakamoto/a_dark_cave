@@ -78,7 +78,7 @@ export const caveMineActions: Record<string, Action> = {
     },
     cost: {
       "resources.food": 10,
-      "resources.torch": 2,
+      "resources.torch": 1,
     },
     effects: (state: GameState) => {
       const bonus = state.BTP === 1 ? 1 : 0;
@@ -106,7 +106,7 @@ export const caveMineActions: Record<string, Action> = {
     },
     cost: {
       "resources.food": 20,
-      "resources.torch": 4,
+      "resources.torch": 3,
     },
     effects: (state: GameState) => {
       const bonus = state.BTP === 1 ? 1 : 0;
@@ -134,7 +134,7 @@ export const caveMineActions: Record<string, Action> = {
     },
     cost: {
       "resources.food": 20,
-      "resources.torch": 4,
+      "resources.torch": 3,
     },
     effects: (state: GameState) => {
       const bonus = state.BTP === 1 ? 1 : 0;

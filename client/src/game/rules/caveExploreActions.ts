@@ -546,7 +546,7 @@ export const caveExploreActions: Record<string, Action> = {
       "buildings.blacksmith": 0,
     },
     cost: {
-      "resources.torch": 2,
+      "resources.torch": 1,
     },
     effects: {
       "resources.wood": "random(5,10)",
@@ -570,7 +570,7 @@ export const caveExploreActions: Record<string, Action> = {
       "tools.iron_lantern": false,
     },
     cost: {
-      "resources.torch": 4,
+      "resources.torch": 3,
       "resources.food": 25,
     },
     effects: (state: GameState) => {

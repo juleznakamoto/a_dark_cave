@@ -87,10 +87,10 @@ describe("lantern torch cost", () => {
     );
   }
 
-  it("uses the raised mine bases before any lantern", () => {
-    expect(torchCost("mineStone", 2)).toBe(2);
-    expect(torchCost("mineIron", 4)).toBe(4);
-    expect(torchCost("mineCoal", 4)).toBe(4);
+  it("uses the mine bases before any lantern", () => {
+    expect(torchCost("mineStone", 1)).toBe(1);
+    expect(torchCost("mineIron", 3)).toBe(3);
+    expect(torchCost("mineCoal", 3)).toBe(3);
     expect(torchCost("mineSulfur", 6)).toBe(6);
     expect(torchCost("mineObsidian", 9)).toBe(9);
     expect(torchCost("mineAdamant", 14)).toBe(14);
@@ -98,11 +98,11 @@ describe("lantern torch cost", () => {
   });
 
   it("subtracts one torch per crafted lantern tier and clamps at 0", () => {
-    expect(torchCost("mineStone", 2, "iron_lantern")).toBe(1);
-    expect(torchCost("mineStone", 2, "steel_lantern")).toBe(0);
-    expect(torchCost("mineStone", 2, "blacksteel_lantern")).toBe(0);
-    expect(torchCost("mineIron", 4, "adamant_lantern")).toBe(0);
-    expect(torchCost("mineCoal", 4, "obsidian_lantern")).toBe(1);
+    expect(torchCost("mineStone", 1, "iron_lantern")).toBe(0);
+    expect(torchCost("mineStone", 1, "steel_lantern")).toBe(0);
+    expect(torchCost("mineStone", 1, "blacksteel_lantern")).toBe(0);
+    expect(torchCost("mineIron", 3, "adamant_lantern")).toBe(0);
+    expect(torchCost("mineCoal", 3, "obsidian_lantern")).toBe(0);
     expect(torchCost("mineSulfur", 6, "blacksteel_lantern")).toBe(1);
     expect(torchCost("mineObsidian", 9, "obsidian_lantern")).toBe(6);
     expect(torchCost("mineAdamant", 14, "adamant_lantern")).toBe(10);
@@ -110,7 +110,7 @@ describe("lantern torch cost", () => {
   });
 
   it("does not let the skull lantern change torch cost", () => {
-    expect(torchCost("mineStone", 2, "skull_lantern")).toBe(2);
+    expect(torchCost("mineStone", 1, "skull_lantern")).toBe(1);
   });
 
   it("leaves food costs alone", () => {
@@ -119,20 +119,20 @@ describe("lantern torch cost", () => {
     ).toBe(10);
   });
 
-  it("charges 20 food and 4 torches for iron and coal", () => {
+  it("charges 20 food and 3 torches for iron and coal", () => {
     const state = miningState();
     const iron = applyActionCostsOnly("mineIron", state);
     const coal = applyActionCostsOnly("mineCoal", state);
     expect(iron.resources?.food).toBe(80);
-    expect(iron.resources?.torch).toBe(6);
+    expect(iron.resources?.torch).toBe(7);
     expect(coal.resources?.food).toBe(80);
-    expect(coal.resources?.torch).toBe(6);
+    expect(coal.resources?.torch).toBe(7);
   });
 
   it("charges the discounted torch cost and skips a clamped cost", () => {
-    const iron = applyActionCostsOnly("mineStone", miningState("iron_lantern", 5));
-    expect(iron.resources?.torch).toBe(4);
-    expect(iron.resources?.food).toBe(90);
+    const iron = applyActionCostsOnly("mineIron", miningState("iron_lantern", 5));
+    expect(iron.resources?.torch).toBe(3);
+    expect(iron.resources?.food).toBe(80);
 
     const steel = applyActionCostsOnly("mineStone", miningState("steel_lantern", 0));
     expect(steel.resources?.torch).toBe(0);
@@ -141,6 +141,7 @@ describe("lantern torch cost", () => {
 
   it("allows mining with no torches once the lantern covers the cost", () => {
     expect(canExecuteAction("mineStone", miningState(undefined, 0))).toBe(false);
+    expect(canExecuteAction("mineStone", miningState("iron_lantern", 0))).toBe(true);
     expect(canExecuteAction("mineStone", miningState("steel_lantern", 0))).toBe(true);
   });
 
