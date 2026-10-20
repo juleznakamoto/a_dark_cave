@@ -83,6 +83,25 @@ describe("SilverCoinMark press", () => {
     expect(onCollect).toHaveBeenCalledWith("coin-a");
   });
 
+  it("releases capture on pointer cancel without reading the event target", () => {
+    const onCollect = vi.fn();
+    const view = render(
+      <svg>
+        <SilverCoinMark id="coin-a" x={10} y={20} label="Silver" onCollect={onCollect} />
+      </svg>,
+    );
+    const coin = view.getByTestId("village-silver-coin");
+    const releasePointerCapture = vi.fn();
+    coin.setPointerCapture = vi.fn();
+    coin.releasePointerCapture = releasePointerCapture;
+
+    fireEvent.pointerDown(coin, { pointerId: 4 });
+    fireEvent.pointerCancel(coin);
+    expect(releasePointerCapture).toHaveBeenCalledWith(4);
+    expect(coin.classList.contains("is-pressed")).toBe(false);
+    expect(onCollect).not.toHaveBeenCalled();
+  });
+
   it("ignores a release that did not start on the coin", () => {
     const onCollect = vi.fn();
     const view = render(

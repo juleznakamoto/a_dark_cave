@@ -72,9 +72,9 @@ export function SilverCoinMark({
       // Synthetic events may not capture. Releasing on the coin still collects.
     }
   };
-  const releaseCapture = (target: SVGGElement) => {
+  const releaseCapture = (target: SVGGElement | null) => {
     const pointerId = capturedPointerId.current;
-    if (pointerId == null) return;
+    if (pointerId == null || target == null) return;
     capturedPointerId.current = null;
     target.releasePointerCapture(pointerId);
   };
@@ -87,10 +87,10 @@ export function SilverCoinMark({
     event.preventDefault();
     onCollect?.(id);
   };
-  const onPointerCancel = (event: PointerEvent<SVGGElement>) => {
+  const onPointerCancel = () => {
     pressedRef.current = false;
     setPressed(false);
-    releaseCapture(event.currentTarget);
+    releaseCapture(groupRef.current);
   };
   return (
     <g
