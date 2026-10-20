@@ -30,6 +30,7 @@ import {
 } from "@/components/game/gameChrome";
 import { isDemoPlayFrozen } from "@/game/demoLimit";
 import { composeMerchantSpecialItemTooltip } from "@/game/rules/eventsMerchantTooltip";
+import { composeCollectorItemTooltip } from "@/game/rules/eventsWanderingCollectorTooltip";
 import { EventChoice, type LogEntry } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
 import {
@@ -606,7 +607,12 @@ export default function TimedEventPanel() {
         )
         : null;
 
+    const collectorItemTooltip = isCollectorEvent
+      ? composeCollectorItemTooltip(choice.id)
+      : null;
+
     const tooltipContent =
+      collectorItemTooltip ??
       merchantItemTooltip ??
       (costText ||
         costBreakdown.length > 0 ||
@@ -745,6 +751,22 @@ export default function TimedEventPanel() {
   const collectorNothingChoice = isCollectorEvent
     ? eventChoices.find((c) => c.id === "sell_nothing")
     : undefined;
+  const collectorBuyGold = eventI18nVars?.goldCost;
+  const collectorSellGold = eventI18nVars?.reward;
+  const collectorBuyTitle =
+    typeof collectorBuyGold === "number"
+      ? t("ui:timedEvent.buyFor", {
+        amount: collectorBuyGold,
+        defaultValue: "Buy for {{amount}} Gold",
+      })
+      : t("ui:timedEvent.buy");
+  const collectorSellTitle =
+    typeof collectorSellGold === "number"
+      ? t("ui:timedEvent.sellFor", {
+        amount: collectorSellGold,
+        defaultValue: "Sell for {{amount}} Gold",
+      })
+      : t("ui:timedEvent.sell");
 
   const renderChoiceSection = (
     title: string,
@@ -787,21 +809,22 @@ export default function TimedEventPanel() {
       )}
       {/* Event Message */}
       {displayMessage && (
-        <div className="text-sm text-muted-foreground">{displayMessage}</div>
+        <div
+          className={cn(
+            "text-sm text-muted-foreground",
+            isCollectorEvent && "pb-3",
+          )}
+        >
+          {displayMessage}
+        </div>
       )}
 
       {/* Choices */}
-      <div className="space-y-2 pt-1">
+      <div className={isCollectorEvent ? "space-y-5" : "space-y-2 pt-1"}>
         {isCollectorEvent ? (
           <>
-            {renderChoiceSection(
-              t("ui:timedEvent.buy"),
-              collectorBuyChoices,
-            )}
-            {renderChoiceSection(
-              t("ui:timedEvent.sell"),
-              collectorSellChoices,
-            )}
+            {renderChoiceSection(collectorBuyTitle, collectorBuyChoices)}
+            {renderChoiceSection(collectorSellTitle, collectorSellChoices)}
             {collectorNothingChoice && (
               <div className="!mt-4">
                 <Button

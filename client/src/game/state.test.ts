@@ -1484,6 +1484,38 @@ describe("callMerchant execution", () => {
   });
 });
 
+describe("action abort", () => {
+  beforeEach(() => {
+    useGameStore.getState().initialize();
+  });
+
+  it("refunds spent resources without charging gold", () => {
+    const buildings = useGameStore.getState().buildings;
+    const resources = useGameStore.getState().resources;
+    useGameStore.setState({
+      buildings: { ...buildings, clerksHut: 1 },
+      resources: { ...resources, wood: 10, gold: 0 },
+      executionStartTimes: { craftTorch: Date.now() },
+      executionDurations: { craftTorch: 30 },
+      executionAbortEligible: { craftTorch: true },
+      executionSpendSnapshots: {
+        craftTorch: {
+          resourceRefund: { wood: 5 },
+          villagerRefund: {},
+          expeditionLocked: 0,
+        },
+      },
+    });
+
+    useGameStore.getState().abortActionExecution("craftTorch");
+
+    const state = useGameStore.getState();
+    expect(state.executionStartTimes?.craftTorch).toBeUndefined();
+    expect(state.resources.wood).toBe(15);
+    expect(state.resources.gold).toBe(0);
+  });
+});
+
 describe("no-op store ticks skip subscriber notify", () => {
   beforeEach(() => {
     useGameStore.getState().initialize();

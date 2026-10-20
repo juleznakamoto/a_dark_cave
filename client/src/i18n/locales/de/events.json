@@ -2498,7 +2498,7 @@
       "visit0_both": "Eine Gestalt in zerrissenen Roben nähert sich. \"Ich spüre Wert unter deinen Besitztümern\", murmelt sie. \"Verkauf mir eines, oder kaufe zurück, was andere zurückließen.\"",
       "visit0_buy": "Eine Gestalt in zerrissenen Roben nähert sich, eine Tasche verworfener Relikte an der Seite. \"Ich sammle, was andere ablehnen\", murmelt sie. \"Jedes davon kann dir gehören.\"",
       "visit1": "Die verhüllte Gestalt kehrt zurück, ihre Schritte lautlos auf dem Boden. \"Mehr Artefakte, mehr Geheimnisse\", flüstert sie. \"Lass mich wieder eines nehmen.\"",
-      "visit1_both": "Die verhüllte Gestalt kehrt zurück, still wie zuvor. \"Verkauf mir ein weiteres\", flüstert sie, \"oder nimm eines, das ich gefunden habe.\"",
+      "visit1_both": "Die verhüllte Gestalt kehrt zurück, still wie zuvor. \"Verkauf mir ein weiteres\", flüstert sie, \"oder nimm eines, das ich gefunden habe. Aber nur eines.\"",
       "visit1_buy": "Die verhüllte Gestalt kehrt mit vergessenen Relikten zurück. \"Was andere einst ablehnten, habe ich behalten\", flüstert sie. \"Jedes kann dir gehören.\""
     }
   },

@@ -193,7 +193,7 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
   // Execution time (reverse cooldown - action takes time to complete)
   executionStartTimes: Record<string, number>;
   executionDurations: Record<string, number>;
-  /** True when the player started this execution (eligible for paid abort). Prior-started executions are false/absent. */
+  /** True when the player started this execution (eligible for free abort). Prior-started executions are false/absent. */
   executionAbortEligible: Record<string, boolean>;
   /** Spend deltas captured at execution start for abort refunds (player-started only). */
   executionSpendSnapshots: Record<string, ExecutionSpendSnapshot>;

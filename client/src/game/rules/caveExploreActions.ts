@@ -228,7 +228,7 @@ const caveItems = {
     },
     {
       key: "bloodstained_belt",
-      probability: 0.01,
+      probability: 0.0075,
       isChoice: true,
       eventId: "bloodstainedBeltChoice",
       category: "clothing",

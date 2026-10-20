@@ -182,6 +182,8 @@
   "timedEvent": {
     "buy": "Kup",
     "sell": "Sprzedaj",
+    "buyFor": "Kup za {{amount}} złota",
+    "sellFor": "Sprzedaj za {{amount}} złota",
     "sayGoodbye": "Pożegnaj się",
     "discount": "{{percent}}% zniżki",
     "discountFromKnowledge": "{{percent}}% z Wiedzy{{max}}",

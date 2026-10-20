@@ -5,7 +5,7 @@
     "requiresFreeVillagers_one": "Erfordert {{count}} freien Dorfbewohner",
     "requiresFreeVillagers_other": "Erfordert {{count}} freie Dorfbewohner",
     "cooldownReduction": "-{{seconds}}s Abklingzeit",
-    "abortForGold": "Abbrechen für {{amount}} Gold",
+    "abort": "Abbrechen",
     "craftTorch_one": "Fackel",
     "craftTorch_other": "Fackeln",
     "craftBoneTotem_one": "Knochentotem",

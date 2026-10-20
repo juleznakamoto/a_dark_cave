@@ -5,7 +5,7 @@
     "requiresFreeVillagers_one": "Richiede {{count}} abitante libero",
     "requiresFreeVillagers_other": "Richiede {{count}} abitanti liberi",
     "cooldownReduction": "-{{seconds}}s Recupero",
-    "abortForGold": "Annulla per {{amount}} Oro",
+    "abort": "Annulla",
     "craftTorch_one": "Torcia",
     "craftTorch_other": "Torce",
     "craftBoneTotem_one": "Totem d'Ossa",

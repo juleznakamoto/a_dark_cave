@@ -206,6 +206,26 @@ describe('Event System', () => {
     ).toBe(true);
   });
 
+  it('still rolls a short-interval cube follow-up during EVENT_DIALOG_MIN_GAP_MS', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+    const now = Date.now();
+    const base = createInitialState();
+    const state = {
+      ...base,
+      events: { ...base.events, cube14a: true },
+      eventDialog: {
+        isOpen: false,
+        lastEndedAt: now - 1_000,
+      },
+    } as EventRollState;
+
+    const { newLogEntries } = EventManager.checkEvents(state);
+
+    expect(newLogEntries.some((entry) => entry.id.startsWith('cube14b'))).toBe(
+      true,
+    );
+  });
+
   it('still allows timed-tab spawns during EVENT_DIALOG_MIN_GAP_MS', () => {
     vi.spyOn(Math, 'random').mockReturnValue(0);
     const now = Date.now();

@@ -2498,7 +2498,7 @@
       "visit0_both": "Una figura envuelta en ropas harapientas se acerca. «Siento valor entre tus posesiones», murmura. «Véndeme una, o compra de vuelta lo que otros dejaron atrás.»",
       "visit0_buy": "Una figura envuelta en ropas harapientas se acerca, con un saco de reliquias descartadas a su lado. «Recojo lo que otros rechazan», murmura. «Cualquiera de estas puede ser tuya.»",
       "visit1": "La figura regresa, sus pasos silenciosos en el suelo. «Más artefactos, más secretos», susurra. «Déjame reclamar uno más.»",
-      "visit1_both": "La figura regresa, silenciosa como antes. «Véndeme otra», susurra, «o reclama una que encontré.»",
+      "visit1_both": "La figura regresa, silenciosa como antes. «Véndeme otra», susurra, «o reclama una que encontré. Pero solo una.»",
       "visit1_buy": "La figura regresa con reliquias olvidadas. «Lo que otros rechazaron, yo lo guardé», susurra. «Cualquiera puede ser tuya.»"
     }
   },

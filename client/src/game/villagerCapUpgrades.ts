@@ -1,13 +1,19 @@
 import type { GameState } from "@shared/schema";
 import { isInsightUnlocked, getInsightAmount } from "@/game/rules/insightReveal";
 
-/** Max villagers assignable per profession at each Insight upgrade level (0–5). */
-export const VILLAGER_CAP_BY_LEVEL = [10, 20, 30, 40, 50, 100] as const;
+/** Max villagers assignable per profession at each Insight upgrade level (0–6). */
+export const VILLAGER_CAP_BY_LEVEL = [10, 15, 20, 30, 40, 50, 100] as const;
 
 /** Gatherers use a fixed cap (not upgraded via Insight). */
 export const GATHERER_CAP = 100;
 
-export const MAX_VILLAGER_CAP_LEVEL = 5;
+export const MAX_VILLAGER_CAP_LEVEL = 6;
+
+/**
+ * Set on new games and after the one-time load shift.
+ * Older saves stored levels before the 15-cap step existed.
+ */
+export const VILLAGER_CAP_FIFTEEN_STEP_SEEN_KEY = "villagerCapFifteenStepApplied";
 
 export type VillagerCapGroupId =
   | "hunter"
@@ -124,9 +130,9 @@ export function getVillagerCapForJob(
   return getVillagerCapForGroup(state, groupId);
 }
 
-/** Insight cost to upgrade from each cap level to the next (levels 0–4 → caps 10→20 … 50→100). */
+/** Insight cost to upgrade from each cap level to the next (levels 0–5 → caps 10→15 … 50→100). */
 export const VILLAGER_CAP_UPGRADE_INSIGHT_COSTS = [
-  100, 250, 500, 750, 1000,
+  50, 100, 250, 500, 750, 1000,
 ] as const;
 
 /** Insight cost to upgrade from `level` to `level + 1`. */
@@ -203,6 +209,37 @@ export function getVillagerCapUpgradeInsightKey(
   groupId: VillagerCapGroupId,
 ): string {
   return `villager-cap-upgrade-${groupId}`;
+}
+
+/**
+ * Insert the 15-cap step under levels bought before it existed.
+ * Level 0 stays 10. Level 1 (old cap 20) becomes level 2, and so on.
+ */
+export function migrateVillagerCapFifteenStepOnLoad(
+  state: Pick<GameState, "villagerCapUpgrades" | "story">,
+): Partial<Pick<GameState, "villagerCapUpgrades" | "story">> | null {
+  if (state.story?.seen?.[VILLAGER_CAP_FIFTEEN_STEP_SEEN_KEY]) return null;
+
+  const current = state.villagerCapUpgrades ?? {};
+  let shifted = false;
+  const nextUpgrades: Record<string, number> = { ...current };
+  for (const [groupId, level] of Object.entries(current)) {
+    if (typeof level === "number" && level >= 1) {
+      nextUpgrades[groupId] = Math.min(level + 1, MAX_VILLAGER_CAP_LEVEL);
+      shifted = true;
+    }
+  }
+
+  return {
+    ...(shifted ? { villagerCapUpgrades: nextUpgrades } : {}),
+    story: {
+      ...state.story,
+      seen: {
+        ...(state.story?.seen ?? {}),
+        [VILLAGER_CAP_FIFTEEN_STEP_SEEN_KEY]: true,
+      },
+    },
+  };
 }
 
 /** Insight glyph used in resources panel and villager-cap UI. */

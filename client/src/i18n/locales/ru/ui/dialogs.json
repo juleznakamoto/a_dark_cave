@@ -182,6 +182,8 @@
   "timedEvent": {
     "buy": "Купить",
     "sell": "Продать",
+    "buyFor": "Купить за {{amount}} золота",
+    "sellFor": "Продать за {{amount}} золота",
     "sayGoodbye": "Попрощаться",
     "discount": "Скидка {{percent}} %",
     "discountFromKnowledge": "{{percent}} % от Знания{{max}}",

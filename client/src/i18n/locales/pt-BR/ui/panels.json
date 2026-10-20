@@ -5,7 +5,7 @@
     "requiresFreeVillagers_one": "Requer {{count}} aldeão livre",
     "requiresFreeVillagers_other": "Requer {{count}} aldeões livres",
     "cooldownReduction": "-{{seconds}}s de Recarga",
-    "abortForGold": "Interromper por {{amount}} de Ouro",
+    "abort": "Interromper",
     "craftTorch_one": "Tocha",
     "craftTorch_other": "Tochas",
     "craftBoneTotem_one": "Totem de Osso",

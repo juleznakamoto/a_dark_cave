@@ -6,6 +6,7 @@ import React from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import CooldownButton, {
   gameActionOutlineButtonClassName,
+  ONCE_ACTION_GLOW_CLASS,
 } from "./CooldownButton";
 import { useGameStore } from "@/game/state";
 import {
@@ -161,6 +162,53 @@ describe("CooldownButton execution wash", () => {
     expect(button.className).not.toContain("border-orange-950");
     expect(button.style.getPropertyValue("--adc-chrome-mask-x")).toMatch(
       /^\d+px$/,
+    );
+  });
+
+  it("adds a light glow on one-time crafts only", () => {
+    const { rerender } = render(
+      <CooldownButton
+        variant="outline"
+        actionId="buildWoodenHut"
+        cooldownMs={0}
+        onClick={() => { }}
+        data-testid="button-once"
+      >
+        Wooden Hut
+      </CooldownButton>,
+    );
+    expect(screen.getByTestId("button-once").className).not.toContain(
+      ONCE_ACTION_GLOW_CLASS,
+    );
+
+    rerender(
+      <CooldownButton
+        variant="outline"
+        actionId="craftStoneAxe"
+        cooldownMs={0}
+        onClick={() => { }}
+        data-testid="button-once"
+      >
+        Stone Axe
+      </CooldownButton>,
+    );
+    expect(screen.getByTestId("button-once").className).toContain(
+      ONCE_ACTION_GLOW_CLASS,
+    );
+
+    rerender(
+      <CooldownButton
+        variant="outline"
+        actionId="craftTorches"
+        cooldownMs={0}
+        onClick={() => { }}
+        data-testid="button-once"
+      >
+        Torches
+      </CooldownButton>,
+    );
+    expect(screen.getByTestId("button-once").className).not.toContain(
+      ONCE_ACTION_GLOW_CLASS,
     );
   });
 

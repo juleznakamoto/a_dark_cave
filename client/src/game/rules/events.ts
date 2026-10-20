@@ -320,6 +320,41 @@ export function getPendingModalEventDialogResume(state: GameState): {
   };
 }
 
+/**
+ * Average milliseconds between triggers, from `timeProbability` (minutes).
+ * Null when the event has no average and fires on the next check once its
+ * condition is true. Those still respect the dialog gap.
+ */
+function eventMeanIntervalMs(
+  event: GameEvent,
+  state: EventRollState,
+): number | null {
+  if (event.timeProbability == null) return null;
+  const minutes =
+    typeof event.timeProbability === "function"
+      ? event.timeProbability(state)
+      : event.timeProbability;
+  if (!Number.isFinite(minutes) || minutes <= 0) return 0;
+  return minutes * 60 * 1000;
+}
+
+/**
+ * Dialog spacing holds ordinary random events. It does not hold a beat whose
+ * own average wait is already shorter than the gap.
+ */
+function isHeldByEventDialogGap(
+  event: GameEvent,
+  state: EventRollState,
+  gapActive: boolean,
+): boolean {
+  if (!gapActive || event.showAsTimedTab) return false;
+  const meanMs = eventMeanIntervalMs(event, state);
+  if (meanMs != null && meanMs < GAME_CONSTANTS.EVENT_DIALOG_MIN_GAP_MS) {
+    return false;
+  }
+  return true;
+}
+
 export class EventManager {
   static checkEvents(state: EventRollState): {
     newLogEntries: LogEntry[];
@@ -360,8 +395,8 @@ export class EventManager {
       }
 
       // Recent EventDialog close: only block another modal/log event, not timed tabs.
-      // Intentional follow-ups bypass this by calling setEventDialog directly.
-      if (!event.showAsTimedTab && isEventDialogGapActive) continue;
+      // Short-interval beats (cube follow-ups) and setEventDialog follow-ups skip this.
+      if (isHeldByEventDialogGap(event, state, isEventDialogGapActive)) continue;
 
       // Check if event is on cooldown (cooldownPercent of its time probability must pass)
       if (event.timeProbability && eventCooldowns[event.id]) {

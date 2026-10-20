@@ -10,8 +10,6 @@ export const GAME_CONSTANTS = {
    * average time between events the same.
    */
   EVENT_CHECK_INTERVAL: 1000, // Roll events once per second
-  /** Gold cost to abort an in-progress player-started timed action and refund its spent costs. */
-  ACTION_ABORT_GOLD_COST: 25,
   /** Wall-clock seconds to call the travelling merchant after clicking the button. */
   CALL_MERCHANT_EXECUTION_SECONDS: 5,
   /** Play-time ms before the merchant can be called again after a visit ends. */
@@ -19,13 +17,15 @@ export const GAME_CONSTANTS = {
   /** Wall-clock ms the merchant timed tab stays open after arrival. */
   CALL_MERCHANT_VISIT_DURATION_MS: 4 * 60 * 1000,
   /** Minimum wall-clock gap between one timed-tab visit ending and the next random spawn. */
-  TIMED_TAB_MIN_GAP_MS: 45_000,
+  TIMED_TAB_MIN_GAP_MS: 90_000,
   /**
    * Minimum wall-clock gap after an EventDialog closes before the next random (non-timed-tab)
-   * event can spawn. Intentional follow-ups (choice outcomes, combat, rewards) open via
-   * `setEventDialog` / schedulers and are not blocked by this gap.
+   * event can spawn. Beats whose own average wait is shorter than this gap keep that
+   * shorter timing (cube follow-ups, due attack waves). Intentional follow-ups
+   * (choice outcomes, combat, rewards) open via `setEventDialog` / schedulers and
+   * are not blocked by this gap.
    */
-  EVENT_DIALOG_MIN_GAP_MS: 45_000,
+  EVENT_DIALOG_MIN_GAP_MS: 90_000,
   /** First call costs this much gold; each subsequent call adds `CALL_MERCHANT_GOLD_PER_CALL`. */
   CALL_MERCHANT_BASE_GOLD: 10,
   CALL_MERCHANT_GOLD_PER_CALL: 10,

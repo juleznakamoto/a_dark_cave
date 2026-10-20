@@ -5,7 +5,7 @@
     "requiresFreeVillagers_one": "Requiere {{count}} aldeano libre",
     "requiresFreeVillagers_other": "Requiere {{count}} aldeanos libres",
     "cooldownReduction": "-{{seconds}} s de recarga",
-    "abortForGold": "Cancelar por {{amount}} de oro",
+    "abort": "Cancelar",
     "craftTorch_one": "Antorcha",
     "craftTorch_other": "Antorchas",
     "craftBoneTotem_one": "Tótem de hueso",

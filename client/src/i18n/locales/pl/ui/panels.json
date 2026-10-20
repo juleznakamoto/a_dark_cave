@@ -7,7 +7,7 @@
     "requiresFreeVillagers_few": "Wymaga {{count}} wolnych wieśniaków",
     "requiresFreeVillagers_many": "Wymaga {{count}} wolnych wieśniaków",
     "cooldownReduction": "-{{seconds}}s odnowienia",
-    "abortForGold": "Przerwij za {{amount}} złota",
+    "abort": "Przerwij",
     "craftTorch_one": "Pochodnia",
     "craftTorch_other": "Pochodnie",
     "craftTorch_few": "Pochodnie",

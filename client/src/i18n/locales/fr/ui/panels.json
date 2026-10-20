@@ -5,7 +5,7 @@
     "requiresFreeVillagers_one": "Nécessite {{count}} villageois libre",
     "requiresFreeVillagers_other": "Nécessite {{count}} villageois libres",
     "cooldownReduction": "-{{seconds}} s de recharge",
-    "abortForGold": "Annuler pour {{amount}} pièces d'or",
+    "abort": "Annuler",
     "craftTorch_one": "Torche",
     "craftTorch_other": "Torches",
     "craftBoneTotem_one": "Totem d'os",

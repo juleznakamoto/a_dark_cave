@@ -2347,7 +2347,7 @@
       "visit1": "La figura in vesti ritorna, i passi silenziosi sul terreno. 'Più artefatti, più segreti', sussurra. 'Lascia che ne reclami un altro.'",
       "visit0_both": "Una figura avvolta in vesti laceri si avvicina. 'Percepisco valore tra i tuoi averi,' mormora. 'Vendimi uno, o ricomprati ciò che altri hanno lasciato.'",
       "visit0_buy": "Una figura avvolta in vesti laceri si avvicina, una bisaccia di reliquie scartate al fianco. 'Raccolgo ciò che altri rifiutano,' mormora. 'Ognuna di queste può essere tua.'",
-      "visit1_both": "La figura in vesti ritorna, silenziosa come prima. 'Vendimi un altro,' sussurra, 'o prendi uno che ho trovato.'",
+      "visit1_both": "La figura in vesti ritorna, silenziosa come prima. 'Vendimi un altro,' sussurra, 'o prendi uno che ho trovato. Ma solo uno.'",
       "visit1_buy": "La figura in vesti ritorna con reliquie dimenticate. 'Ciò che altri un tempo rifiutarono, io l'ho tenuto,' sussurra. 'Ognuna può essere tua.'"
     }
   },

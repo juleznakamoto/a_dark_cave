@@ -2586,7 +2586,7 @@
       "visit0_both": "Postać owinięta w postrzępione szaty zbliża się. 'Czuję wartość wśród twoich posiadłości,' mamrocze. 'Sprzedaj mi jedną albo odkup to, co inni zostawili.'",
       "visit0_buy": "Postać owinięta w postrzępione szaty zbliża się, sakwa odrzuconych reliktów u boku. 'Zbieram to, czego inni odmawiają,' mamrocze. 'Każda z tych rzeczy może być twoja.'",
       "visit1": "Zakapturzona postać wraca, kroki bezdźwięczne na ziemi. 'Więcej artefaktów, więcej sekretów,' szepcze. 'Pozwól mi znów wziąć jeden.'",
-      "visit1_both": "Zakapturzona postać wraca, cicha jak wcześniej. 'Sprzedaj mi kolejny,' szepcze, 'albo weź jeden, który znalazłem.'",
+      "visit1_both": "Zakapturzona postać wraca, cicha jak wcześniej. 'Sprzedaj mi kolejny,' szepcze, 'albo weź jeden, który znalazłem. Ale tylko jeden.'",
       "visit1_buy": "Zakapturzona postać wraca z zapomnianymi reliktami. 'To, czego inni kiedyś odmówili, ja zachowałem,' szepcze. 'Każdy może być twój.'"
     }
   },

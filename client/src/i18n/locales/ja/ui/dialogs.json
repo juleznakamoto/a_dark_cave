@@ -180,6 +180,8 @@
   "timedEvent": {
     "buy": "購入",
     "sell": "売却",
+    "buyFor": "{{amount}}金貨で購入",
+    "sellFor": "{{amount}}金貨で売却",
     "sayGoodbye": "別れを告げる",
     "discount": "{{percent}}%割引",
     "discountFromKnowledge": "知識から{{percent}}%{{max}}",

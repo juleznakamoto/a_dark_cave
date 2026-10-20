@@ -5,7 +5,7 @@
     "requiresFreeVillagers_one": "空き村人{{count}}人が必要",
     "requiresFreeVillagers_other": "空き村人{{count}}人が必要",
     "cooldownReduction": "クールダウン-{{seconds}}秒",
-    "abortForGold": "{{amount}}金貨で中止",
+    "abort": "中止",
     "craftTorch_one": "松明",
     "craftTorch_other": "松明",
     "craftBoneTotem_one": "骨のトーテム",

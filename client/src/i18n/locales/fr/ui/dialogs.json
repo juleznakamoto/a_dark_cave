@@ -180,6 +180,8 @@
   "timedEvent": {
     "buy": "Acheter",
     "sell": "Vendre",
+    "buyFor": "Acheter pour {{amount}} or",
+    "sellFor": "Vendre pour {{amount}} or",
     "sayGoodbye": "Dire au revoir",
     "discount": "{{percent}} % de réduction",
     "discountFromKnowledge": "{{percent}} % grâce au Savoir{{max}}",

@@ -7,7 +7,7 @@
     "requiresFreeVillagers_many": "Требуется {{count}} свободных жителей",
     "requiresFreeVillagers_other": "Требуется {{count}} свободных жителей",
     "cooldownReduction": "-{{seconds}}с перезарядки",
-    "abortForGold": "Прервать за {{amount}} золота",
+    "abort": "Прервать",
     "craftTorch_one": "Факел",
     "craftTorch_few": "Факела",
     "craftTorch_many": "Факелов",

@@ -1704,10 +1704,10 @@
       }
     },
     "log": {
-      "repay": "He sets down {{silverReward}} Silver and walks away."
+      "repay": "He sets down {{silverReward}} Silver for the furs and walks away."
     },
-    "message": "The young man returns, this time in normal clothes. He holds out a heavy pouch. 'I said I would pay you. This is {{silverReward}} Silver.'",
-    "title": "The Young Man Returns"
+    "message": "The father who asked for furs returns, no longer in ruined clothes. He holds out a heavy pouch. 'My family survived the cold. I said I would pay you. This is {{silverReward}} Silver.'",
+    "title": "The Father Returns"
   },
   "redMaskChoice": {
     "choices": {
@@ -2613,7 +2613,7 @@
       "visit0_both": "A figure wrapped in tattered robes approaches. 'I sense value among your possessions,' he murmurs. 'Sell me one, or buy back what others left behind.'",
       "visit0_buy": "A figure wrapped in tattered robes approaches, a satchel of discarded relics at his side. 'I gather what others refuse,' he murmurs. 'Any of these can be yours.'",
       "visit1": "The robed figure returns, his steps soundless on the ground. 'More artifacts, more secrets,' he whispers. 'Let me claim one again.'",
-      "visit1_both": "The robed figure returns, silent as before. 'Sell me another,' he whispers, 'or claim one I found.'",
+      "visit1_both": "The robed figure returns, silent as before. 'Sell me another,' he whispers, 'or claim one I found. But only one.'",
       "visit1_buy": "The robed figure returns with forgotten relics. 'What others once refused, I kept,' he whispers. 'Any may be yours.'"
     }
   },

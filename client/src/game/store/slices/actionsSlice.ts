@@ -745,20 +745,11 @@ export const createActionsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
     if (!state.executionAbortEligible?.[actionId]) {
       return;
     }
-    const isFreeAbort = actionId === "callMerchant";
-    if (!isFreeAbort) {
-      if ((state.buildings.clerksHut ?? 0) < 1) {
-        return;
-      }
+    if (actionId !== "callMerchant" && (state.buildings.clerksHut ?? 0) < 1) {
+      return;
     }
     const snapshot = state.executionSpendSnapshots?.[actionId];
     if (!snapshot) {
-      return;
-    }
-    if (
-      !isFreeAbort &&
-      (state.resources.gold ?? 0) < GAME_CONSTANTS.ACTION_ABORT_GOLD_COST
-    ) {
       return;
     }
 
@@ -770,10 +761,6 @@ export const createActionsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
       );
     };
 
-    if (!isFreeAbort) {
-      get().updateResource("gold", -GAME_CONSTANTS.ACTION_ABORT_GOLD_COST);
-      addResourceChange("gold", -GAME_CONSTANTS.ACTION_ABORT_GOLD_COST);
-    }
     for (const [key, amount] of Object.entries(snapshot.resourceRefund)) {
       if (amount !== 0) {
         // Refunds may restore warehouse resources above storage (same as reward overcap)

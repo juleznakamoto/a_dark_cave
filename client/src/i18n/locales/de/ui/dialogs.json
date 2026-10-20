@@ -180,6 +180,8 @@
   "timedEvent": {
     "buy": "Kaufen",
     "sell": "Verkaufen",
+    "buyFor": "Kaufen für {{amount}} Gold",
+    "sellFor": "Verkaufen für {{amount}} Gold",
     "sayGoodbye": "Verabschieden",
     "discount": "{{percent}} % Rabatt",
     "discountFromKnowledge": "{{percent}} % durch Wissen{{max}}",

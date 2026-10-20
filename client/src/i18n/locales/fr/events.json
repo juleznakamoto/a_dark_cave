@@ -2498,7 +2498,7 @@
       "visit0_both": "Une silhouette enveloppée de robes en lambeaux s'approche. « Je sens de la valeur parmi vos possessions », murmure-t-elle. « Vendez-m'en une, ou rachetez ce que d'autres ont laissé. »",
       "visit0_buy": "Une silhouette enveloppée de robes en lambeaux s'approche, une besace de reliques délaissées à ses côtés. « Je recueille ce que les autres refusent », murmure-t-elle. « Chacune peut être vôtre. »",
       "visit1": "La silhouette revient, ses pas silencieux sur le sol. « Plus d'artefacts, plus de secrets », chuchote-t-elle. « Laissez-moi en reprendre un. »",
-      "visit1_both": "La silhouette revient, silencieuse comme avant. « Vendez-m'en une autre », chuchote-t-elle, « ou prenez-en une que j'ai trouvée. »",
+      "visit1_both": "La silhouette revient, silencieuse comme avant. « Vendez-m'en une autre », chuchote-t-elle, « ou prenez-en une que j'ai trouvée. Mais une seule. »",
       "visit1_buy": "La silhouette revient avec des reliques oubliées. « Ce que d'autres ont jadis refusé, je l'ai gardé », chuchote-t-elle. « Chacune peut être vôtre. »"
     }
   },

@@ -5,7 +5,7 @@
     "requiresFreeVillagers_one": "需要 {{count}} 名空闲村民",
     "requiresFreeVillagers_other": "需要 {{count}} 名空闲村民",
     "cooldownReduction": "-{{seconds}} 秒冷却",
-    "abortForGold": "花费 {{amount}} 黄金中止",
+    "abort": "中止",
     "craftTorch_one": "火把",
     "craftTorch_other": "火把",
     "craftBoneTotem_one": "骨图腾",

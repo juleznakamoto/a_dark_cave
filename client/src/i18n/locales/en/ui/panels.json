@@ -5,7 +5,7 @@
     "requiresFreeVillagers_one": "Requires {{count}} free villager",
     "requiresFreeVillagers_other": "Requires {{count}} free villagers",
     "cooldownReduction": "-{{seconds}}s Cooldown",
-    "abortForGold": "Abort for {{amount}} Gold",
+    "abort": "Abort",
     "craftTorch_one": "Torch",
     "craftTorch_other": "Torches",
     "craftBoneTotem_one": "Bone Totem",

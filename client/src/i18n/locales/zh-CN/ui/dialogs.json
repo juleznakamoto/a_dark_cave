@@ -180,6 +180,8 @@
   "timedEvent": {
     "buy": "购买",
     "sell": "出售",
+    "buyFor": "以 {{amount}} 黄金购买",
+    "sellFor": "以 {{amount}} 黄金出售",
     "sayGoodbye": "告别",
     "discount": "折扣 {{percent}}%",
     "discountFromKnowledge": "知识 {{percent}}%{{max}}",

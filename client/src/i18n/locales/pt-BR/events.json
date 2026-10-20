@@ -2347,7 +2347,7 @@
       "visit1": "A figura em vestes retorna, seus passos silenciosos sobre o chão. 'Mais artefatos, mais segredos', sussurra ela. 'Deixe-me reivindicar mais um.'",
       "visit0_both": "Uma figura envolta em vestes esfarrapadas se aproxima. 'Sinto valor entre seus pertences,' murmura ela. 'Venda-me um, ou compre de volta o que outros deixaram.'",
       "visit0_buy": "Uma figura envolta em vestes esfarrapadas se aproxima, com um saco de relíquias descartadas ao lado. 'Reúno o que outros recusam,' murmura ela. 'Qualquer uma destas pode ser sua.'",
-      "visit1_both": "A figura em vestes retorna, silenciosa como antes. 'Venda-me outro,' sussurra ela, 'ou reivindique um que encontrei.'",
+      "visit1_both": "A figura em vestes retorna, silenciosa como antes. 'Venda-me outro,' sussurra ela, 'ou reivindique um que encontrei. Mas só um.'",
       "visit1_buy": "A figura em vestes retorna com relíquias esquecidas. 'O que outros recusaram, eu guardei,' sussurra ela. 'Qualquer uma pode ser sua.'"
     }
   },

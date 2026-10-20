@@ -2,7 +2,11 @@ import { beforeEach, describe, expect, it } from "vitest";
 import type { GameState } from "@shared/schema";
 import { createInitialState } from "@/game/store/createInitialState";
 import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
-import { resolveEventChoiceLabel, resolveEventMessage } from "@/i18n/eventText";
+import {
+  resolveEventChoiceLabel,
+  resolveEventMessage,
+  resolveEventTitle,
+} from "@/i18n/eventText";
 import {
   RAGGED_YOUTH_FUR_COST,
   RAGGED_YOUTH_SILVER_REWARD,
@@ -122,6 +126,12 @@ describe("ragged youth english copy", () => {
       game,
       back.i18nVars,
     );
+    expect(resolveEventTitle("raggedYouthReturn", game, back.i18nVars)).toBe(
+      "The Father Returns",
+    );
+    expect(returnText).toContain("father");
+    expect(returnText).toContain("furs");
+    expect(returnText).toContain("cold");
     expect(returnText).toContain(String(RAGGED_YOUTH_SILVER_REWARD));
     expect(returnText).toContain("Silver");
   });

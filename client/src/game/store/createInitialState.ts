@@ -4,6 +4,7 @@ import {
   GAMBLER_TUTORIAL_PLAYS,
   GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY,
 } from "@/game/gamblerSession";
+import { VILLAGER_CAP_FIFTEEN_STEP_SEEN_KEY } from "@/game/villagerCapUpgrades";
 
 const extractDefaultsFromSchema = (schema: any): any => {
   if (schema._def?.typeName === "ZodObject") {
@@ -214,6 +215,7 @@ export const createInitialState = (): GameState => ({
   story: {
     seen: {
       [GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY]: GAMBLER_TUTORIAL_PLAYS,
+      [VILLAGER_CAP_FIFTEEN_STEP_SEEN_KEY]: true,
     },
     merchantPurchases: 0,
   },

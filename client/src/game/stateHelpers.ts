@@ -18,7 +18,10 @@ import {
   getLifetimeStorageMaxHits,
 } from "./resourceStorageMax";
 import { getTotalEventDeathReduction } from "./rules/effectsCalculation";
-import { getVillagerCapForJob } from "./villagerCapUpgrades";
+import {
+  getVillagerCapForJob,
+  migrateVillagerCapFifteenStepOnLoad,
+} from "./villagerCapUpgrades";
 import { getExecutionTime } from "./rules/executionTime";
 import { GAME_CONSTANTS } from "./constants";
 import { getGameActions } from "./rules/actionsRegistry";
@@ -1122,6 +1125,10 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   const presetPurchases = migrateVillagerPresetsPurchasedOnLoad(migrated);
   if (presetPurchases) {
     migrated = { ...migrated, ...presetPurchases };
+  }
+  const capFifteenStep = migrateVillagerCapFifteenStepOnLoad(migrated);
+  if (capFifteenStep) {
+    migrated = { ...migrated, ...capFifteenStep };
   }
   if (
     !migrated.boostApplied &&

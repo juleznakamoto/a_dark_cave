@@ -9,12 +9,12 @@ import {
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { YELLOW_CORNER_DISC_CLASS } from "@/components/game/gameChrome";
 import { X } from "lucide-react";
-import { GAME_CONSTANTS } from "@/game/constants";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { cn, formatCompactDuration } from "@/lib/utils";
 import { useInlineButtonParticles } from "@/components/ui/bubbly-button";
 import type { ParticleConfig } from "@/components/ui/bubbly-button.particles";
 import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
+import { isCraftOnceAction } from "@/game/rules/insightReveal";
 import {
   ADC_PROGRESS_WIPE_PAUSED_CLASS,
   getCssTimedWipeStyle,
@@ -68,6 +68,9 @@ export function gameActionDisabledLabelClassName(disabled = false): string {
     disabled && "opacity-60",
   );
 }
+
+/** Soft orange halo for a craft that grants one item. Buildings stay plain. */
+export const ONCE_ACTION_GLOW_CLASS = "once-action-glow";
 
 /** Cooldown / execution wash. Same token and alpha as the blocked outline border. */
 export const GAME_ACTION_COOLDOWN_WASH_CLASS = "bg-orange-950/50";
@@ -163,6 +166,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       style,
       playTimeCooldown,
       previewOverlay,
+      actionId,
       ...props
     },
     ref
@@ -172,7 +176,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const generatedButtonId = useId();
 
     // Get the action ID from the test ID or generate one
-    const actionIdFromProps = props.actionId || props.button_id || testId
+    const actionIdFromProps = actionId || props.button_id || testId
       ?.replace("button-", "")
       .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || "unknown";
 
@@ -184,6 +188,10 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const executionStart = useGameStore((s) => s.executionStartTimes?.[actionIdFromProps] || 0);
     const executionDurationSec = useGameStore((s) => s.executionDurations?.[actionIdFromProps] || 0);
     const isCompassGlowing = useGameStore((s) => s.compassGlowButton === actionIdFromProps);
+    const showOnceGlow = useMemo(
+      () => isCraftOnceAction(actionIdFromProps),
+      [actionIdFromProps],
+    );
     // Only subscribe to the 4 Hz playTime clock when this button has a play-time overlay.
     const currentPlayTime = useGameStore((s) =>
       playTimeCooldown ? (s.playTime ?? 0) : 0,
@@ -191,7 +199,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const executionAbortEligible = useGameStore((s) => s.executionAbortEligible?.[actionIdFromProps]);
     const hasAbortSnapshot = useGameStore((s) => s.executionSpendSnapshots?.[actionIdFromProps] != null);
     const hasClerksHut = useGameStore((s) => (s.buildings.clerksHut ?? 0) > 0);
-    const gold = useGameStore((s) => s.resources.gold ?? 0);
     const abortActionExecution = useGameStore((s) => s.abortActionExecution);
     // Visible freeze: pause button, sleep, on-screen modal, demo-end.
     // Execution is wall-clock, so the bar may keep running during the 3s
@@ -420,6 +427,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           "!bg-transparent hover:!bg-transparent hover:!text-foreground",
           isButtonDisabled && "active:scale-100",
           isCompassGlowing && "compass-glow",
+          showOnceGlow && ONCE_ACTION_GLOW_CLASS,
           variant === "outline" && gameActionOutlineButtonClassName(isButtonDisabled),
           className,
         )}
@@ -535,8 +543,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         hasClerksHut &&
         executionAbortEligible === true &&
         hasAbortSnapshot);
-    const canAffordAbort =
-      isFreeMerchantAbort || gold >= GAME_CONSTANTS.ACTION_ABORT_GOLD_COST;
     const abortTooltip = isFreeMerchantAbort
       ? tWithFallback(
         "ui",
@@ -545,9 +551,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       )
       : tWithFallback(
         "ui",
-        "cave.abortForGold",
-        `Abort for ${GAME_CONSTANTS.ACTION_ABORT_GOLD_COST} Gold`,
-        { amount: GAME_CONSTANTS.ACTION_ABORT_GOLD_COST },
+        "cave.abort",
+        "Abort",
       );
 
     const hasBaseTooltip = tooltip != null && tooltip !== false && tooltip !== "";
@@ -592,8 +597,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
                 className={cn(
                   // Stay fully opaque. The action button label fades while the
                   // action runs; this disc sits on that button and must not.
-                  "flex h-4 w-4 items-center justify-center rounded-full border border-red-800 bg-red-950 text-white opacity-100 shadow-sm transition-colors hover:bg-red-900",
-                  canAffordAbort ? "cursor-pointer" : "cursor-not-allowed",
+                  "flex h-4 w-4 cursor-pointer items-center justify-center rounded-full border border-red-800 bg-red-950 text-white opacity-100 shadow-sm transition-colors hover:bg-red-900",
                 )}
                 data-testid={testId ? `${testId}-abort` : undefined}
                 aria-label={abortTooltip}
@@ -601,9 +605,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
                 onClick={(e) => {
                   e.stopPropagation();
                   e.preventDefault();
-                  if (canAffordAbort) {
-                    abortActionExecution(actionIdFromProps);
-                  }
+                  abortActionExecution(actionIdFromProps);
                 }}
               >
                 <X className="h-3 w-3 stroke-[3]" />
