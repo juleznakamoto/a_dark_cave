@@ -64,7 +64,7 @@ describe("chainmasterEvents", () => {
       ).toBe(750);
     });
 
-    it("sellBook grants gold and resolves", () => {
+    it("sellBook grants gold, resolves, and marks book sold for collector resell", () => {
       const choice = chainmasterEvents.chainmasterCollector.choices!.find(
         (c) => c.id === "sellBook",
       )!;
@@ -73,6 +73,7 @@ describe("chainmasterEvents", () => {
       expect(result.resources?.gold).toBe(1000 + CHAINMASTER_SELL_GOLD);
       expect(result.relics?.leatherbound_book).toBe(false);
       expect(result.story?.seen?.chainmasterCollectorResolved).toBe(true);
+      expect(result.story?.seen?.leatherboundBookSoldToCollector).toBe(true);
       expect(result._logMessageKey).toBe("sellOutcome");
     });
 

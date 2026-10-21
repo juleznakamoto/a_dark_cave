@@ -2629,7 +2629,8 @@
       "whisper0": "The collector sighs and turns away. 'In my travels, I uncovered many relics of the ancient civilization. They were far more advanced than we ever were,' he whispers before fading into the dark.",
       "whisper1": "A low hum seeps from beneath the hood. 'The great explosion destroyed most artifacts of the ancient civilization. What little remains is scattered and rare,' he murmurs.",
       "whisper2": "A faint breath escapes the collector. 'I learned much of the ancient civilization on my journeys. Before the great explosion, there was no magic in this world. It was born in that moment,' he whispers as he departs.",
-      "whisperGeneric": "The collector nods once and slips away."
+      "whisperGeneric": "The collector nods once and slips away.",
+      "leatherboundLearnOutcome": "You pay for the leatherbound book. The collector opens it and reads in a low voice. It belonged to a long-dead slaver who called himself the Chainmaster. He branded his slaves with a chain mark. The knowledge weighs heavily on your mind."
     },
     "title": "The Wandering Collector",
     "message": {

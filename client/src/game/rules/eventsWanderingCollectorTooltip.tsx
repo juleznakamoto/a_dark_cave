@@ -23,8 +23,17 @@ export function collectorTradeItemId(choiceId: string): string | null {
 /** Same effects and description as the side-panel item tooltip. */
 export function composeCollectorItemTooltip(choiceId: string) {
   const itemId = collectorTradeItemId(choiceId);
-  if (!itemId || !isCollectorItem(itemId)) return null;
-  const category = getCollectorItemCategory(itemId);
+  // leatherbound_book is a Chainmaster resell, not in COLLECTOR_ITEMS.
+  if (
+    !itemId ||
+    (!isCollectorItem(itemId) && itemId !== "leatherbound_book")
+  ) {
+    return null;
+  }
+  const category =
+    itemId === "leatherbound_book"
+      ? "relics"
+      : getCollectorItemCategory(itemId);
   const itemType = category === "weapons" ? "weapon" : "blessing";
   return renderItemTooltip(
     itemId,

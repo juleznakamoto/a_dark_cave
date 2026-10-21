@@ -32,4 +32,16 @@ describe("composeCollectorItemTooltip", () => {
     expect(composeCollectorItemTooltip("sell_nothing")).toBeNull();
     expect(composeCollectorItemTooltip("buy_not_a_relic")).toBeNull();
   });
+
+  it("shows the leatherbound book resell tooltip", async () => {
+    await ensureGameplayLocalesLoaded();
+    await i18n.changeLanguage("en");
+
+    const tip = composeCollectorItemTooltip("buy_leatherbound_book");
+    expect(tip).not.toBeNull();
+    render(<>{tip}</>);
+    expect(
+      screen.getByText(/Ancient book bound in leather/),
+    ).toBeInTheDocument();
+  });
 });

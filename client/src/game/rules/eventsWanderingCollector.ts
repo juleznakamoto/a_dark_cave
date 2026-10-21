@@ -5,6 +5,7 @@ import {
   getEffectName,
 } from "@/i18n/resolveGameText";
 import { weaponEffects } from "./effects";
+import { isGameStoryCompleted } from "./eventsAttackWaves";
 import {
   COLLECTOR_MAX_OFFERS,
   clearCollectorItemRejectedInSeen,
@@ -18,7 +19,14 @@ const COLLECTOR_BUY_BASE_REWARD = 100;
 const COLLECTOR_BUY_REWARD_STEP = 50;
 const COLLECTOR_SELL_BASE_COST = 200;
 const COLLECTOR_SELL_COST_STEP = 100;
-const COLLECTOR_MAX_VISITS = 7;
+export const COLLECTOR_MAX_VISITS = 7;
+
+/** Fixed gold price when the collector resells the leatherbound book after a Chainmaster sell. */
+export const LEATHERBOUND_BOOK_RESELL_GOLD = 1000;
+export const LEATHERBOUND_BOOK_ITEM_ID = "leatherbound_book";
+export const LEATHERBOUND_BOOK_BUY_CHOICE_ID = `buy_${LEATHERBOUND_BOOK_ITEM_ID}`;
+/** Madness granted when buying the book teaches Chainmaster secrets. */
+export const LEATHERBOUND_BOOK_RESELL_MADNESS = 2;
 
 /** UI slice carried on the timed-tab store for this visit (not on GameState schema). */
 export type CollectorTimedTabTradeState = {
@@ -48,6 +56,25 @@ function getCollectorVisitCount(state: GameState): number {
   return typeof visitCountValue === "number" ? visitCountValue : 0;
 }
 
+/** Sold the book and has not yet unlocked Chainmaster via buyback. */
+export function isAwaitingLeatherboundBookBuyback(state: GameState): boolean {
+  return (
+    state.story?.seen?.leatherboundBookSoldToCollector === true &&
+    !state.books?.book_of_chainmaster
+  );
+}
+
+/**
+ * After selling the leatherbound book to the Chainmaster collector, the wandering
+ * collector can offer it back (teaches Chainmaster on purchase).
+ * Mid-game: even visit counts. After story ending: every visit until bought.
+ */
+export function shouldOfferLeatherboundBookResell(state: GameState): boolean {
+  if (!isAwaitingLeatherboundBookBuyback(state)) return false;
+  if (isGameStoryCompleted(state)) return true;
+  return getCollectorVisitCount(state) % 2 === 0;
+}
+
 /** Gold the collector pays when buying from the player. */
 function getCollectorBuyReward(visitCount: number): number {
   return COLLECTOR_BUY_BASE_REWARD + visitCount * COLLECTOR_BUY_REWARD_STEP;
@@ -59,7 +86,13 @@ function getCollectorSellCost(visitCount: number): number {
 }
 
 function visitGateMet(state: GameState, visitCount: number): boolean {
-  if (visitCount >= COLLECTOR_MAX_VISITS) return false;
+  // After the story ending, keep returning past the usual visit cap until the
+  // sold leatherbound book is bought back (Chainmaster unlock).
+  if (visitCount >= COLLECTOR_MAX_VISITS) {
+    return (
+      isAwaitingLeatherboundBookBuyback(state) && isGameStoryCompleted(state)
+    );
+  }
   if (visitCount === 0) return state.buildings.woodenHut >= 6;
   if (visitCount === 1) return state.buildings.woodenHut >= 10;
   if (visitCount === 2) return state.buildings.stoneHut >= 4;
@@ -204,13 +237,21 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
       return {
         reward: getCollectorBuyReward(visitCount),
         goldCost: getCollectorSellCost(visitCount),
+        leatherboundBookCost: LEATHERBOUND_BOOK_RESELL_GOLD,
       };
     },
     condition: (state: GameState) => {
       const ownedItems = getOwnedCollectorItems(state);
       const rejectedItems = getRejectedCollectorItems(state);
-      // Arrive with only buy stock, only sell stock, or both
-      if (ownedItems.length === 0 && rejectedItems.length === 0) return false;
+      const offerLeatherbound = shouldOfferLeatherboundBookResell(state);
+      // Arrive with only buy stock, only sell stock, leatherbound resell, or both
+      if (
+        ownedItems.length === 0 &&
+        rejectedItems.length === 0 &&
+        !offerLeatherbound
+      ) {
+        return false;
+      }
 
       const visitCount = getCollectorVisitCount(state);
       return visitGateMet(state, visitCount);
@@ -219,7 +260,9 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
       const visitCount = getCollectorVisitCount(state);
       // First visit vs every return visit (no special "final visit" copy)
       const visitKey = visitCount === 0 ? 0 : 1;
-      const hasGoods = getRejectedCollectorItems(state).length > 0;
+      const hasGoods =
+        getRejectedCollectorItems(state).length > 0 ||
+        shouldOfferLeatherboundBookResell(state);
       const hasOwned = getOwnedCollectorItems(state).length > 0;
       if (hasGoods && hasOwned) return `visit${visitKey}_both`;
       if (hasGoods) return `visit${visitKey}_buy`;
@@ -273,6 +316,43 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
                   itemId,
                 ),
               },
+            } as any;
+          },
+        });
+      }
+
+      if (shouldOfferLeatherboundBookResell(state)) {
+        choices.push({
+          id: LEATHERBOUND_BOOK_BUY_CHOICE_ID,
+          label: collectorOfferLabel(LEATHERBOUND_BOOK_ITEM_ID),
+          cost: `${LEATHERBOUND_BOOK_RESELL_GOLD} gold`,
+          effect: (innerState: GameState) => {
+            return {
+              resources: {
+                ...innerState.resources,
+                gold:
+                  (innerState.resources.gold || 0) - LEATHERBOUND_BOOK_RESELL_GOLD,
+              },
+              books: {
+                ...innerState.books,
+                book_of_chainmaster: true,
+              },
+              chainmasterSkills: { level: 0 },
+              stats: {
+                ...innerState.stats,
+                madnessFromEvents:
+                  (innerState.stats.madnessFromEvents || 0) +
+                  LEATHERBOUND_BOOK_RESELL_MADNESS,
+              },
+              story: {
+                ...innerState.story,
+                seen: {
+                  ...innerState.story.seen,
+                  // Must set false (not delete): mergeStateUpdates spreads seen.
+                  leatherboundBookSoldToCollector: false,
+                },
+              },
+              _logMessageKey: "leatherboundLearnOutcome",
             } as any;
           },
         });

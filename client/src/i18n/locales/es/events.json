@@ -2514,7 +2514,8 @@
       "whisper0": "El coleccionista suspira y se aparta. «En mis viajes descubrí muchas reliquias de la civilización antigua. Estaban mucho más avanzados que nosotros», susurra antes de desvanecerse en la oscuridad.",
       "whisper1": "Un zumbido bajo se filtra desde debajo de la capucha. «La gran explosión destruyó la mayoría de los artefactos de la civilización antigua. Lo poco que queda está disperso y es raro», murmura.",
       "whisper2": "Un aliento débil escapa del coleccionista. «Aprendí mucho sobre la civilización antigua en mis viajes. Antes de la gran explosión no había magia en este mundo. Nació en aquel momento», susurra mientras se marcha.",
-      "whisperGeneric": "El coleccionista asiente una vez y se esfuma."
+      "whisperGeneric": "El coleccionista asiente una vez y se esfuma.",
+      "leatherboundLearnOutcome": "Pagas por el libro encuadernado en cuero. El coleccionista lo abre y lee en voz baja. Perteneció a un esclavista muerto hace mucho que se llamaba el Maestro de Cadenas. Marcaba a sus esclavos con un símbolo de cadena. El conocimiento pesa en tu mente."
     },
     "title": "El coleccionista errante",
     "message": {

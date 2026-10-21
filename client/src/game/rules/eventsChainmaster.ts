@@ -111,15 +111,26 @@ export const chainmasterEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "sellBook",
-        effect: (state: GameState) => ({
-          ...removeLeatherboundBook(state),
-          ...resolveCollector(state),
-          resources: {
-            ...state.resources,
-            gold: (state.resources.gold || 0) + CHAINMASTER_SELL_GOLD,
-          },
-          _logMessageKey: "sellOutcome",
-        }),
+        effect: (state: GameState) => {
+          const resolved = resolveCollector(state);
+          return {
+            ...removeLeatherboundBook(state),
+            ...resolved,
+            story: {
+              ...resolved.story!,
+              seen: {
+                ...resolved.story!.seen,
+                // Lets the wandering collector resell the book later.
+                leatherboundBookSoldToCollector: true,
+              },
+            },
+            resources: {
+              ...state.resources,
+              gold: (state.resources.gold || 0) + CHAINMASTER_SELL_GOLD,
+            },
+            _logMessageKey: "sellOutcome",
+          };
+        },
       },
       {
         id: "learnSecrets",

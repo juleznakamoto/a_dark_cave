@@ -2363,7 +2363,8 @@
       "whisper0": "Il collezionista sospira e si volta. 'Nei miei viaggi, ho scoperto molte reliquie dell'antica civiltà. Erano molto più avanzati di quanto noi siamo mai stati,' sussurra prima di svanire nel buio.",
       "whisper1": "Un sommesso ronzio filtra da sotto il cappuccio. 'La grande esplosione distrusse la maggior parte degli artefatti dell'antica civiltà. Quel poco che resta è sparso e raro,' mormora.",
       "whisper2": "Un debole respiro sfugge al collezionista. 'Ho appreso molto dell'antica civiltà nei miei viaggi. Prima della grande esplosione, non c'era magia in questo mondo. Nacque in quel momento,' sussurra mentre se ne va.",
-      "whisperGeneric": "Il collezionista annuisce una volta e se ne va."
+      "whisperGeneric": "Il collezionista annuisce una volta e se ne va.",
+      "leatherboundLearnOutcome": "Paghi per il libro rilegato in pelle. Il collezionista lo apre e legge a bassa voce. Apparteneva a uno schiavista morto da tempo che si faceva chiamare il Maestro delle Catene. Marchiava i suoi schiavi con un segno a catena. La conoscenza pesa sulla tua mente."
     },
     "title": "Il Collezionista Errante",
     "message": {

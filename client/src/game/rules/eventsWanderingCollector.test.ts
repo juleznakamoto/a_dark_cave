@@ -2,8 +2,13 @@ import { describe, expect, it } from "vitest";
 import { createInitialState } from "@/game/state";
 import type { GameState } from "@shared/schema";
 import {
+  COLLECTOR_MAX_VISITS,
   getCollectorDepartureLogKey,
+  LEATHERBOUND_BOOK_BUY_CHOICE_ID,
+  LEATHERBOUND_BOOK_RESELL_GOLD,
+  LEATHERBOUND_BOOK_RESELL_MADNESS,
   shouldEndCollectorVisitAfterTrade,
+  shouldOfferLeatherboundBookResell,
   wanderingCollectorEvents,
 } from "./eventsWanderingCollector";
 import {
@@ -123,7 +128,11 @@ describe("wandering_collector buy/sell", () => {
 
     const vars =
       typeof event.i18nVars === "function" ? event.i18nVars(state) : {};
-    expect(vars).toEqual({ reward: 100, goldCost: 200 });
+    expect(vars).toEqual({
+      reward: 100,
+      goldCost: 200,
+      leatherboundBookCost: LEATHERBOUND_BOOK_RESELL_GOLD,
+    });
 
     const choices =
       typeof event.choices === "function" ? event.choices(state) : [];
@@ -311,6 +320,127 @@ describe("wandering_collector buy/sell", () => {
 
     const vars =
       typeof event.i18nVars === "function" ? event.i18nVars(state) : {};
-    expect(vars).toEqual({ reward: 150, goldCost: 300 }); // sell: 200 + 100*1
+    expect(vars).toEqual({
+      reward: 150,
+      goldCost: 300,
+      leatherboundBookCost: LEATHERBOUND_BOOK_RESELL_GOLD,
+    }); // sell: 200 + 100*1
+  });
+});
+
+describe("leatherbound book resell", () => {
+  const event = wanderingCollectorEvents.wandering_collector;
+
+  it("offers on even visit counts after the book was sold to the Chainmaster collector", () => {
+    const evenVisit = baseState({
+      buildings: { woodenHut: 6 } as any,
+      story: {
+        seen: { leatherboundBookSoldToCollector: true, collectorVisitCount: 0 },
+        merchantPurchases: 0,
+        heavySleeperHours: 0,
+      },
+    });
+    expect(shouldOfferLeatherboundBookResell(evenVisit)).toBe(true);
+    expect(event.condition(evenVisit)).toBe(true);
+    expect(event.message?.(evenVisit as any)).toBe("visit0_buy");
+
+    const choices =
+      typeof event.choices === "function" ? event.choices(evenVisit) : [];
+    expect(choices.some((c) => c.id === LEATHERBOUND_BOOK_BUY_CHOICE_ID)).toBe(
+      true,
+    );
+  });
+
+  it("skips the offer on odd visit counts", () => {
+    const oddVisit = baseState({
+      buildings: { woodenHut: 10 } as any,
+      story: {
+        seen: { leatherboundBookSoldToCollector: true, collectorVisitCount: 1 },
+        merchantPurchases: 0,
+        heavySleeperHours: 0,
+      },
+    });
+    expect(shouldOfferLeatherboundBookResell(oddVisit)).toBe(false);
+    expect(event.condition(oddVisit)).toBe(false);
+  });
+
+  it("buy teaches Chainmaster secrets and clears the sold flag", () => {
+    const state = baseState({
+      buildings: { woodenHut: 6 } as any,
+      resources: { gold: 1500 } as any,
+      stats: { madnessFromEvents: 1 } as any,
+      story: {
+        seen: {
+          leatherboundBookSoldToCollector: true,
+          chainmasterCollectorResolved: true,
+          collectorVisitCount: 0,
+        },
+        merchantPurchases: 0,
+        heavySleeperHours: 0,
+      },
+    });
+
+    const buy = (
+      typeof event.choices === "function" ? event.choices(state) : []
+    ).find((c) => c.id === LEATHERBOUND_BOOK_BUY_CHOICE_ID)!;
+    const result = buy.effect(state);
+
+    expect(result.books?.book_of_chainmaster).toBe(true);
+    expect(result.chainmasterSkills?.level).toBe(0);
+    expect(result.stats?.madnessFromEvents).toBe(
+      1 + LEATHERBOUND_BOOK_RESELL_MADNESS,
+    );
+    expect(result.resources?.gold).toBe(1500 - LEATHERBOUND_BOOK_RESELL_GOLD);
+    expect(result.story?.seen?.leatherboundBookSoldToCollector).toBe(false);
+    expect((result as any)._logMessageKey).toBe("leatherboundLearnOutcome");
+  });
+
+  it("keeps returning after story ending until the book is bought back", () => {
+    const pastCap = baseState({
+      buildings: { woodenHut: 10, stoneHut: 10 } as any,
+      events: { cube15a: true } as any,
+      story: {
+        seen: {
+          leatherboundBookSoldToCollector: true,
+          collectorVisitCount: COLLECTOR_MAX_VISITS,
+          fourthWaveVictory: true,
+          eighthWaveVictory: true,
+        },
+        merchantPurchases: 0,
+        heavySleeperHours: 0,
+      },
+    });
+    expect(shouldOfferLeatherboundBookResell(pastCap)).toBe(true);
+    expect(event.condition(pastCap)).toBe(true);
+
+    const withoutSale = baseState({
+      buildings: { woodenHut: 10, stoneHut: 10 } as any,
+      events: { cube15a: true } as any,
+      story: {
+        seen: {
+          collectorVisitCount: COLLECTOR_MAX_VISITS,
+          fourthWaveVictory: true,
+          eighthWaveVictory: true,
+        },
+        merchantPurchases: 0,
+        heavySleeperHours: 0,
+      },
+    });
+    expect(event.condition(withoutSale)).toBe(false);
+
+    const beforeEnding = baseState({
+      buildings: { woodenHut: 10, stoneHut: 10 } as any,
+      story: {
+        seen: {
+          leatherboundBookSoldToCollector: true,
+          collectorVisitCount: COLLECTOR_MAX_VISITS,
+          fourthWaveVictory: true,
+          eighthWaveVictory: true,
+        },
+        merchantPurchases: 0,
+        heavySleeperHours: 0,
+      },
+    });
+    expect(event.condition(beforeEnding)).toBe(false);
   });
 });

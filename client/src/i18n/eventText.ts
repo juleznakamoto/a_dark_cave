@@ -190,7 +190,18 @@ export function resolveEventChoiceCost(
 
   // Dynamic buy choices (e.g. wandering_collector buy_bone_dice)
   if (choiceId.startsWith("buy_")) {
-    const shared = tEvent(catalogId, "choices._buyItem.cost", vars);
+    // Leatherbound book resell uses a fixed 1000 gold, not the visit goldCost.
+    const buyVars =
+      choiceId === "buy_leatherbound_book" && vars
+        ? {
+            ...vars,
+            goldCost:
+              typeof vars.leatherboundBookCost === "number"
+                ? vars.leatherboundBookCost
+                : 1000,
+          }
+        : vars;
+    const shared = tEvent(catalogId, "choices._buyItem.cost", buyVars);
     if (shared) return shared;
   }
 

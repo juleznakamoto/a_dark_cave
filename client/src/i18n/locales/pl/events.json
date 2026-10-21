@@ -2602,7 +2602,8 @@
       "whisper0": "Kolekcjoner wzdycha i odwraca się. 'W podróżach odkryłem wiele reliktów starożytnej cywilizacji. Byli daleko bardziej zaawansowani niż my kiedykolwiek,' szepcze, zanim zblednie w mroku.",
       "whisper1": "Niski szum sączy się spod kaptura. 'Wielki wybuch zniszczył większość artefaktów starożytnej cywilizacji. To, co zostało, jest rozproszone i rzadkie,' mamrocze.",
       "whisper2": "Cichy oddech uchodzi z kolekcjonera. 'Wiele nauczyłem się o starożytnej cywilizacji w podróżach. Przed wielkim wybuchem nie było w tym świecie magii. Narodziła się w tamtej chwili,' szepcze, odchodząc.",
-      "whisperGeneric": "Kolekcjoner kiwa raz głową i wnika w cień."
+      "whisperGeneric": "Kolekcjoner kiwa raz głową i wnika w cień.",
+      "leatherboundLearnOutcome": "Płacisz za księgę w skórzanej oprawie. Kolekcjoner otwiera ją i czyta cicho. Należała do dawno zmarłego handlarza niewolników, który zwał się Mistrzem Łańcuchów. Piętnował niewolników znakiem łańcucha. Wiedza ciąży na twoim umyśle."
     },
     "title": "Wędrowny kolekcjoner",
     "message": {

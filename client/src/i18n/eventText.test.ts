@@ -286,6 +286,17 @@ describe("resolveEventChoiceReward", () => {
     ).toBe("250 Gold");
   });
 
+  it("uses fixed leatherbound book resell cost for buy_leatherbound_book", () => {
+    expect(
+      resolveEventChoiceCost(
+        "wandering_collector",
+        "buy_leatherbound_book",
+        undefined,
+        { goldCost: 250, leatherboundBookCost: 1000 },
+      ),
+    ).toBe("1000 Gold");
+  });
+
   it("does not apply shared sell reward to sell_nothing", () => {
     expect(
       resolveEventChoiceReward("wandering_collector", "sell_nothing", {

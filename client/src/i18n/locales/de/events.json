@@ -2514,7 +2514,8 @@
       "whisper0": "Der Sammler seufzt und wendet sich ab. „Auf meinen Reisen habe ich viele Relikte der alten Zivilisation entdeckt. Sie waren weit fortgeschrittener als wir je waren“, flüstert er, bevor er in der Dunkelheit verschwindet.",
       "whisper1": "Ein leises Summen dringt unter der Kapuze hervor. „Die große Explosion zerstörte die meisten Artefakte der alten Zivilisation. Was übrig blieb, ist verstreut und selten“, murmelt er.",
       "whisper2": "Ein schwacher Atem entweicht dem Sammler. „Ich habe auf meinen Reisen viel über die alte Zivilisation gelernt. Vor der großen Explosion gab es keine Magie in dieser Welt. Sie wurde in jenem Moment geboren“, flüstert er, während er geht.",
-      "whisperGeneric": "Der Sammler nickt einmal und entschwindet."
+      "whisperGeneric": "Der Sammler nickt einmal und entschwindet.",
+      "leatherboundLearnOutcome": "Du zahlst für das ledergebundene Buch. Der Sammler öffnet es und liest mit leiser Stimme. Es gehörte einem längst toten Sklavenhalter, der sich Kettenmeister nannte. Er brandmarkte seine Sklaven mit einem Kettenzeichen. Das Wissen lastet schwer auf deinem Geist."
     },
     "title": "Der wandernde Sammler",
     "message": {

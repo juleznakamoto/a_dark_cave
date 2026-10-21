@@ -2514,7 +2514,8 @@
       "whisper0": "Le collectionneur soupire et se détourne. « Au cours de mes voyages, j'ai découvert de nombreuses reliques de la civilisation ancienne. Elle était bien plus avancée que nous ne l'avons jamais été », murmure-t-il avant de se fondre dans l'obscurité.",
       "whisper1": "Un faible bourdonnement s'échappe de sous sa capuche. « La grande explosion a détruit la plupart des artefacts de la civilisation ancienne. Ce qui reste est dispersé et rare », murmure-t-il.",
       "whisper2": "Un souffle ténu échappe au collectionneur. « J'ai beaucoup appris sur la civilisation ancienne au cours de mes voyages. Avant la grande explosion, il n'y avait pas de magie dans ce monde. Elle est née à cet instant », murmure-t-il en partant.",
-      "whisperGeneric": "Le collectionneur hoche la tête une fois et s'éloigne."
+      "whisperGeneric": "Le collectionneur hoche la tête une fois et s'éloigne.",
+      "leatherboundLearnOutcome": "Vous payez pour le livre relié de cuir. Le collectionneur l'ouvre et lit d'une voix basse. Il appartenait à un esclavagiste mort depuis longtemps qui se nommait le Maître des chaînes. Il marquait ses esclaves d'un symbole de chaîne. Ce savoir pèse lourdement sur votre esprit."
     },
     "title": "Le Collectionneur errant",
     "message": {
