@@ -2,7 +2,7 @@ import type { GameState } from "@shared/schema";
 import { INITIAL_GOAL } from "@/game/diceFifteenGame";
 
 /** First-time gambler visit: this many free practice rounds (no gold) before real wagers. */
-export const GAMBLER_TUTORIAL_PLAYS = 3;
+export const GAMBLER_TUTORIAL_PLAYS = 2;
 
 export const GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY =
   "gamblerTutorialPlaysRemaining" as const;

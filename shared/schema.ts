@@ -1144,8 +1144,9 @@ export const gameStateSchema = z.object({
       /** True until a losing outcome applies the stake deduction (stake is not taken at bet time). */
       stakeNotYetDeducted: z.boolean().default(true),
       /**
-       * Up to 3 during first-visit practice; otherwise 2 with Bone Dice, 1 without. Decremented when
-       * the player dismisses the outcome screen (not on wager).
+       * 2 during first-visit practice or with Bone Dice; 1 without. Decremented when
+       * the player dismisses the outcome screen (not on wager). Max stays 3 so an
+       * in-progress visit from the old 3-round practice still loads.
        */
       roundsRemainingThisEvent: z.number().int().min(1).max(3).optional(),
       /**

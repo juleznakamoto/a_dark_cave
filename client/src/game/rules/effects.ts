@@ -396,7 +396,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
         },
       },
       generalBonuses: {
-        madness: 4,
+        madness: 5,
       },
     },
   },
@@ -982,7 +982,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         luck: 5,
-        madness: 4,
+        madness: 5,
       },
     },
   },
