@@ -1,8 +1,13 @@
-import { app, BrowserWindow, ipcMain, shell } from "electron";
+import { app, BrowserWindow, ipcMain, Menu, shell } from "electron";
 import { readFile, writeFile, mkdir, unlink } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { existsSync, readFileSync } from "node:fs";
-import { startLoopbackServer, type LoopbackServer } from "./loopbackServer";
+import {
+  LOOPBACK_PORT_FILE,
+  parseStoredLoopbackPort,
+  startLoopbackServer,
+  type LoopbackServer,
+} from "./loopbackServer";
 import {
   enableSteamOverlay,
   initSteam,
@@ -173,6 +178,30 @@ function resolveClientDir(): string {
   return join(app.getAppPath(), "dist", "public");
 }
 
+/** Last loopback port. Reusing it keeps the page origin, so the saved language sticks. */
+async function readStoredLoopbackPort(): Promise<number | null> {
+  try {
+    const raw = await readFile(
+      join(app.getPath("userData"), LOOPBACK_PORT_FILE),
+      "utf-8",
+    );
+    return parseStoredLoopbackPort(raw);
+  } catch {
+    return null;
+  }
+}
+
+async function rememberLoopbackPort(port: number): Promise<void> {
+  try {
+    const file = join(app.getPath("userData"), LOOPBACK_PORT_FILE);
+    await mkdir(dirname(file), { recursive: true });
+    await writeFile(file, `${port}\n`, "utf-8");
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.warn("[STEAM] loopback port remember failed:", error);
+  }
+}
+
 /** Windows taskbar / window icon (dev: repo `build-resources/`; packaged: `resources/icon.ico`). */
 function resolveWindowIcon(): string | undefined {
   const candidates = [
@@ -185,6 +214,17 @@ function resolveWindowIcon(): string | undefined {
   return undefined;
 }
 
+/**
+ * Windows shows Electron's default File/Edit/View bar when Alt is pressed
+ * (`autoHideMenuBar` only hides it until then). Players Alt+Tab constantly,
+ * so the bar has to be gone before the window is created. macOS keeps its
+ * app menu; this strip is Windows/Linux only.
+ */
+function hideAltMenuBar(): void {
+  if (process.platform === "darwin") return;
+  Menu.setApplicationMenu(null);
+}
+
 async function createWindow(): Promise<void> {
   const iconPath = resolveWindowIcon();
   const trailer = isTrailerCaptureMode();
@@ -192,6 +232,7 @@ async function createWindow(): Promise<void> {
     // eslint-disable-next-line no-console
     console.log("[TRAILER] 1920x1080 frameless capture window (1x scale)");
   }
+  hideAltMenuBar();
   mainWindow = new BrowserWindow({
     title: APP_WINDOW_TITLE,
     ...(iconPath ? { icon: iconPath } : {}),
@@ -215,7 +256,6 @@ async function createWindow(): Promise<void> {
       }),
     backgroundColor: "#000000",
     show: false,
-    autoHideMenuBar: true,
     webPreferences: {
       preload: join(__dirname, "preload.cjs"),
       contextIsolation: true,
@@ -223,6 +263,11 @@ async function createWindow(): Promise<void> {
       sandbox: false, // preload uses ipcRenderer; keep isolation on for safety
     },
   });
+
+  if (process.platform !== "darwin") {
+    mainWindow.removeMenu();
+    mainWindow.setMenuBarVisibility(false);
+  }
 
   mainWindow.once("ready-to-show", () => mainWindow?.show());
 
@@ -237,7 +282,15 @@ async function createWindow(): Promise<void> {
   if (DEV_SERVER_URL) {
     await mainWindow.loadURL(DEV_SERVER_URL);
   } else {
-    loopback = await startLoopbackServer(resolveClientDir());
+    const storedPort = await readStoredLoopbackPort();
+    loopback = await startLoopbackServer(resolveClientDir(), storedPort);
+    if (storedPort !== null && loopback.port !== storedPort) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[STEAM] loopback port ${storedPort} was busy; using ${loopback.port}. Language and text size saved on the previous port will not carry over.`,
+      );
+    }
+    await rememberLoopbackPort(loopback.port);
     await mainWindow.loadURL(loopback.url + "/");
   }
 

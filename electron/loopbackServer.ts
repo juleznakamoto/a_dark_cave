@@ -10,6 +10,11 @@ import { extname, join, normalize } from "node:path";
  * NOT work under the `file://` protocol. Serving the built SPA over
  * `http://127.0.0.1:<port>` keeps that routing intact while staying fully
  * offline. The server binds only to the loopback interface.
+ *
+ * The port stays in a fixed range and is remembered. Chromium stores the
+ * chosen language (and text size) under the page origin, and the port is
+ * part of that origin. A new random port on every launch looked like a new
+ * site, so the game forgot the language and used the OS language instead.
  */
 
 const MIME_TYPES: Record<string, string> = {
@@ -51,17 +56,84 @@ async function tryReadFile(filePath: string): Promise<Buffer | null> {
 
 export interface LoopbackServer {
   url: string;
+  port: number;
   close: () => Promise<void>;
 }
 
-/**
- * Serve `rootDir` (the Vite `dist/public` output) on a random loopback port with
- * SPA fallback to `index.html` for unknown non-asset routes.
- */
-export async function startLoopbackServer(rootDir: string): Promise<LoopbackServer> {
+/** Written under Electron userData so the next launch reuses the same origin. */
+export const LOOPBACK_PORT_FILE = "loopback-port.txt";
+
+export const STEAM_LOOPBACK_PORT_BASE = 47331;
+export const STEAM_LOOPBACK_PORT_SPAN = 20;
+
+export interface LoopbackPortRange {
+  base: number;
+  span: number;
+}
+
+export const STEAM_LOOPBACK_PORTS: LoopbackPortRange = {
+  base: STEAM_LOOPBACK_PORT_BASE,
+  span: STEAM_LOOPBACK_PORT_SPAN,
+};
+
+export function parseStoredLoopbackPort(
+  raw: string | null | undefined,
+  range: LoopbackPortRange = STEAM_LOOPBACK_PORTS,
+): number | null {
+  if (!raw) return null;
+  const parsed = Number.parseInt(raw.trim(), 10);
+  if (!Number.isInteger(parsed)) return null;
+  if (parsed < range.base || parsed >= range.base + range.span) return null;
+  return parsed;
+}
+
+/** Saved port first, then the rest of the range, so a busy port does not rotate the origin. */
+export function loopbackPortCandidates(
+  storedPort: number | null,
+  range: LoopbackPortRange = STEAM_LOOPBACK_PORTS,
+): number[] {
+  const ports: number[] = [];
+  const remembered = parseStoredLoopbackPort(
+    storedPort === null ? null : String(storedPort),
+    range,
+  );
+  if (remembered !== null) ports.push(remembered);
+  for (let offset = 0; offset < range.span; offset += 1) {
+    const port = range.base + offset;
+    if (!ports.includes(port)) ports.push(port);
+  }
+  return ports;
+}
+
+function isAddrInUse(error: unknown): boolean {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    (error as { code?: string }).code === "EADDRINUSE"
+  );
+}
+
+function listenOn(server: Server, port: number): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const onError = (error: Error) => {
+      server.off("listening", onListening);
+      reject(error);
+    };
+    const onListening = () => {
+      server.off("error", onError);
+      resolve();
+    };
+    server.once("error", onError);
+    server.once("listening", onListening);
+    server.listen(port, "127.0.0.1");
+  });
+}
+
+function createSpaServer(rootDir: string): Server {
   const indexPath = join(rootDir, "index.html");
 
-  const server: Server = createServer(async (req, res) => {
+  return createServer(async (req, res) => {
     try {
       const rawPath = decodeURIComponent((req.url ?? "/").split("?")[0].split("#")[0]);
       // Prevent path traversal: normalize and re-anchor under rootDir.
@@ -96,19 +168,38 @@ export async function startLoopbackServer(rootDir: string): Promise<LoopbackServ
       res.end("Internal server error");
     }
   });
+}
 
-  await new Promise<void>((resolve) => {
-    server.listen(0, "127.0.0.1", resolve);
-  });
+/**
+ * Serve `rootDir` (the Vite `dist/public` output) on a stable loopback port
+ * with SPA fallback to `index.html` for unknown non-asset routes.
+ */
+export async function startLoopbackServer(
+  rootDir: string,
+  storedPort: number | null = null,
+  range: LoopbackPortRange = STEAM_LOOPBACK_PORTS,
+): Promise<LoopbackServer> {
+  const candidates = loopbackPortCandidates(storedPort, range);
+  let lastError: unknown;
+  for (const port of candidates) {
+    const server = createSpaServer(rootDir);
+    try {
+      await listenOn(server, port);
+      return {
+        url: `http://127.0.0.1:${port}`,
+        port,
+        close: () =>
+          new Promise<void>((resolve) => {
+            server.close(() => resolve());
+          }),
+      };
+    } catch (error) {
+      lastError = error;
+      if (!isAddrInUse(error)) throw error;
+    }
+  }
 
-  const address = server.address();
-  const port = typeof address === "object" && address ? address.port : 0;
-
-  return {
-    url: `http://127.0.0.1:${port}`,
-    close: () =>
-      new Promise<void>((resolve) => {
-        server.close(() => resolve());
-      }),
-  };
+  const end = range.base + range.span - 1;
+  const detail = lastError instanceof Error ? lastError.message : String(lastError ?? "unknown");
+  throw new Error(`Loopback ports ${range.base}-${end} are all in use (${detail})`);
 }
