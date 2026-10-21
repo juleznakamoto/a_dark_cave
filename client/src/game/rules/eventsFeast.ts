@@ -121,6 +121,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
       return meetsFeastUnlock(config, state);
     },
     timeProbability: 20,
+    cooldownPercent: 0.4,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
@@ -162,6 +163,7 @@ const feastRecurringEvent: GameEvent = {
     return state.feastState.lastAcceptedLevel >= RECURRING_FEAST_LEVEL;
   },
   timeProbability: RECURRING_FEAST_TIME_PROBABILITY,
+  cooldownPercent: 0.4,
   priority: 3,
   repeatable: true,
   showAsTimedTab: true,

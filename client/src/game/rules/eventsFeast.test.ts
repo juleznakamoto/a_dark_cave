@@ -66,6 +66,8 @@ describe("feast ladder", () => {
     });
     expect(feastEvents.feastRecurring.condition(after)).toBe(true);
     expect(feastEvents.feastRecurring.timeProbability).toBe(90);
+    expect(feastEvents.feastRecurring.cooldownPercent).toBe(0.4);
+    expect(feastEvents.feast1.cooldownPercent).toBe(0.4);
   });
 
   it("accepting recurring feast does not block future offers", () => {
