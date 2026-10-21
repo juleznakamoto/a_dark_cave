@@ -80,6 +80,8 @@ function unreadLineIsFlashing(
 
 /** Center fill when a filter toggle is on. */
 const LOG_FILTER_ACTIVE_DOT_PX = 3;
+/** Filter chrome unlocks once the log has this many non-start-screen lines. */
+const LOG_FILTER_MIN_ENTRIES = 5;
 
 function LogFilterOrbButton({
   active,
@@ -146,12 +148,14 @@ function LogTypeFilter({
   onToggleNewVillagers,
   onToggleOther,
   clearInvite,
+  fadedIn,
 }: {
   showNewVillagers: boolean;
   showOther: boolean;
   onToggleNewVillagers: () => void;
   onToggleOther: () => void;
   clearInvite: boolean;
+  fadedIn: boolean;
 }) {
   const { t } = useUiTranslation();
   const newVillagersLabel = t("logPanel.filterNewVillagers", {
@@ -165,9 +169,10 @@ function LogTypeFilter({
     <div
       className={cn(
         // right-0: line up with footer Social (log column already has pr-2).
-        "group/log-filter absolute right-1 z-10 flex flex-col items-center gap-1.5 border-0 bg-transparent py-2 pl-2 pr-0 shadow-none outline-none transition-[bottom] duration-200",
+        "group/log-filter absolute right-1 z-10 flex flex-col items-center gap-1.5 border-0 bg-transparent py-2 pl-2 pr-0 shadow-none outline-none transition-[bottom,opacity] duration-1000 ease-out",
         // Web invite CTA sits over the log corner on desktop; lift while it is painted.
         clearInvite ? "bottom-1 md:bottom-14" : "bottom-1",
+        fadedIn ? "opacity-100" : "opacity-0",
       )}
       data-testid="log-type-filter"
     >
@@ -208,6 +213,7 @@ function LogPanel() {
   const prevLogLengthRef = useRef(log.length);
   // Bumped when the next unread pulse expires, so a quiet log still stops flashing.
   const [flashNow, setFlashNow] = useState(() => Date.now());
+  const [filterFadedIn, setFilterFadedIn] = useState(false);
   const markReadTimeoutsRef = useRef(
     new Map<string, ReturnType<typeof setTimeout>>(),
   );
@@ -227,18 +233,43 @@ function LogPanel() {
     setPerfUiCounter("logReadEntries", readLogIds.length);
   }, [readLogIds]);
 
+  const eligibleLogCount = useMemo(
+    () =>
+      log.filter((entry) => !isStartScreenNarrativeLogEntry(entry)).length,
+    [log, i18n.language],
+  );
+  const filterUnlocked = eligibleLogCount >= LOG_FILTER_MIN_ENTRIES;
+
+  useEffect(() => {
+    if (!filterUnlocked) {
+      setFilterFadedIn(false);
+      return;
+    }
+    // Paint at opacity 0 first, then fade in on the next frames.
+    let frame2 = 0;
+    const frame1 = requestAnimationFrame(() => {
+      frame2 = requestAnimationFrame(() => setFilterFadedIn(true));
+    });
+    return () => {
+      cancelAnimationFrame(frame1);
+      cancelAnimationFrame(frame2);
+    };
+  }, [filterUnlocked]);
+
   // Get only the last entries and reverse them so latest is at top
   const recentEntries = useMemo(
     () =>
       log
         .filter((entry) => !isStartScreenNarrativeLogEntry(entry))
         .filter((entry) => {
+          // Type filters only apply once the filter chrome has unlocked.
+          if (!filterUnlocked) return true;
           if (isNewVillagerLogEntry(entry)) return showNewVillagers;
           return showOther;
         })
         .slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
         .reverse(),
-    [log, i18n.language, showNewVillagers, showOther],
+    [log, i18n.language, showNewVillagers, showOther, filterUnlocked],
   );
 
   // Auto-scroll the log viewport to the newest entry (top). Do not use
@@ -409,15 +440,18 @@ function LogPanel() {
           </div>
         </div>
       </ScrollAreaWithIndicator>
-      <LogTypeFilter
-        showNewVillagers={showNewVillagers}
-        showOther={showOther}
-        onToggleNewVillagers={() =>
-          setLogFilterShowNewVillagers(!showNewVillagers)
-        }
-        onToggleOther={() => setLogFilterShowOther(!showOther)}
-        clearInvite={inviteFloatingRendered}
-      />
+      {filterUnlocked ? (
+        <LogTypeFilter
+          showNewVillagers={showNewVillagers}
+          showOther={showOther}
+          onToggleNewVillagers={() =>
+            setLogFilterShowNewVillagers(!showNewVillagers)
+          }
+          onToggleOther={() => setLogFilterShowOther(!showOther)}
+          clearInvite={inviteFloatingRendered}
+          fadedIn={filterFadedIn}
+        />
+      ) : null}
     </div>
   );
 }

@@ -163,23 +163,48 @@ describe("LogPanel mark read", () => {
 
 describe("LogPanel type filter", () => {
   beforeEach(() => {
+    const now = Date.now();
     useGameStore.setState({
       log: [
         {
           id: "log-other-1",
           message: "Other line",
-          timestamp: Date.now(),
+          timestamp: now,
+          type: "system",
+        },
+        {
+          id: "log-other-2",
+          message: "Second other line",
+          timestamp: now + 1,
+          type: "system",
+        },
+        {
+          id: "log-other-3",
+          message: "Third other line",
+          timestamp: now + 2,
+          type: "system",
+        },
+        {
+          id: "log-other-4",
+          message: "Fourth other line",
+          timestamp: now + 3,
           type: "system",
         },
         {
           id: "log-villager-1",
           message: "A stranger approaches and joins the village.",
-          timestamp: Date.now() + 1,
+          timestamp: now + 4,
           type: "system",
           newVillagers: true,
         },
       ],
-      readLogIds: ["log-other-1", "log-villager-1"],
+      readLogIds: [
+        "log-other-1",
+        "log-other-2",
+        "log-other-3",
+        "log-other-4",
+        "log-villager-1",
+      ],
       logFilterShowNewVillagers: true,
       logFilterShowOther: true,
     });
@@ -194,12 +219,33 @@ describe("LogPanel type filter", () => {
     });
   });
 
-  it("hides other lines when the red filter is toggled off", () => {
+  it("hides the filter until at least five log lines exist", () => {
+    useGameStore.setState({
+      log: [
+        {
+          id: "log-other-1",
+          message: "Other line",
+          timestamp: Date.now(),
+          type: "system",
+        },
+      ],
+      readLogIds: ["log-other-1"],
+    });
+    const { queryByTestId } = render(<LogPanel />);
+    expect(queryByTestId("log-type-filter")).toBeNull();
+  });
+
+  it("hides other lines when the red filter is toggled off", async () => {
     const { getByTestId, queryByText } = render(<LogPanel />);
     expect(queryByText("Other line")).not.toBeNull();
     expect(
       queryByText("A stranger approaches and joins the village."),
     ).not.toBeNull();
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
 
     fireEvent.click(getByTestId("log-filter-other"));
 
@@ -209,8 +255,13 @@ describe("LogPanel type filter", () => {
     ).not.toBeNull();
   });
 
-  it("hides new-villager lines when the white filter is toggled off", () => {
+  it("hides new-villager lines when the white filter is toggled off", async () => {
     const { getByTestId, queryByText } = render(<LogPanel />);
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
 
     fireEvent.click(getByTestId("log-filter-new-villagers"));
 
@@ -220,8 +271,13 @@ describe("LogPanel type filter", () => {
     expect(queryByText("Other line")).not.toBeNull();
   });
 
-  it("shows an empty log when both filters are off", () => {
+  it("shows an empty log when both filters are off", async () => {
     const { getByTestId, queryByText } = render(<LogPanel />);
+
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
 
     fireEvent.click(getByTestId("log-filter-new-villagers"));
     fireEvent.click(getByTestId("log-filter-other"));
