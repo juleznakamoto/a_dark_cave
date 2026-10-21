@@ -3,9 +3,9 @@ import { getGameActions } from "./actionsRegistry";
 import type { Action } from "@shared/schema";
 
 export const INSIGHT_REVEAL_DURATION_MS = 3_000;
-/** Insight cost to unveil a first-ring (tier 0 / leftmost) achievement title. */
-export const ACHIEVEMENT_TITLE_INSIGHT_COST_TIER_0 = 250;
-/** Insight cost to unveil achievement titles on outer rings (tier 1+). */
+/** Insight cost to unveil a basic-category achievement title. */
+export const ACHIEVEMENT_TITLE_INSIGHT_COST_BASIC = 250;
+/** Insight cost to unveil non-basic achievement titles. */
 export const ACHIEVEMENT_TITLE_INSIGHT_COST = 500;
 /** Prefix for `insightRevealing` keys while an achievement title reveal animates. */
 export const ACHIEVEMENT_TITLE_INSIGHT_KEY_PREFIX = "achievementTitle:";
@@ -20,14 +20,12 @@ export function parseAchievementTitleInsightKey(key: string): string | null {
 }
 
 /**
- * Ring index from `{category}-{ring}-…` IDs (e.g. `basic-0-woodGatherer` → 0).
- * First ring stays cheaper; unknown shapes use the higher default cost.
+ * Cost from `{category}-…` IDs (e.g. `basic-0-woodGatherer`).
+ * Basic category is cheaper; everything else uses the default.
  */
 export function getAchievementTitleInsightCost(achievementId: string): number {
-  const parts = achievementId.split("-");
-  const ringIndex = Number(parts[1]);
-  if (parts.length >= 2 && Number.isInteger(ringIndex) && ringIndex === 0) {
-    return ACHIEVEMENT_TITLE_INSIGHT_COST_TIER_0;
+  if (achievementId.startsWith("basic-")) {
+    return ACHIEVEMENT_TITLE_INSIGHT_COST_BASIC;
   }
   return ACHIEVEMENT_TITLE_INSIGHT_COST;
 }

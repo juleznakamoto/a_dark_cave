@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import {
-  ACHIEVEMENT_TITLE_INSIGHT_COST_TIER_0,
+  ACHIEVEMENT_TITLE_INSIGHT_COST,
   BUILDING_DESCRIPTIONS_INSIGHT_KEY,
   CRAFT_DESCRIPTIONS_INSIGHT_KEY,
   getAchievementTitleInsightKey,
@@ -299,7 +299,7 @@ describe("revealAchievementTitle", () => {
       },
       resources: {
         ...useGameStore.getState().resources,
-        insight: ACHIEVEMENT_TITLE_INSIGHT_COST_TIER_0,
+        insight: ACHIEVEMENT_TITLE_INSIGHT_COST,
       },
       revealedAchievementTitles: [],
     });
