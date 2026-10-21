@@ -1,16 +1,18 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { MODE_FRAMES, ThinkingOrb, type ModeFrame } from "thinking-orbs";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
 import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
 import { GAME_CONSTANTS } from "@/game/constants";
+import { useInviteFriendsFloatingRendered } from "@/components/game/inviteFriendsFloatingUi";
 import {
   isNewVillagerLogEntry,
   resolveLogPanelMessage,
 } from "@/i18n/logDisplay";
 import { isStartScreenNarrativeLogEntry } from "@/i18n/resolveGameText";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { setPerfUiCounter } from "@/lib/perfProbe";
+import { cn } from "@/lib/utils";
 
 // Extended log entry type to support "production" type if it exists in the data
 type ExtendedLogEntry =
@@ -29,6 +31,12 @@ const NEW_VILLAGER_ORB_COLOR = "rgb(255, 255, 255)";
 // thinking-orbs only draws at 20, 32, or 64. Paint at 20 and show it smaller.
 const UNREAD_ORB_DRAW = 20;
 const UNREAD_ORB_PX = 12;
+/**
+ * Filter toggles: paint at ThinkingOrb's smallest native size (20), then
+ * CSS-shrink to 18. Only 20 / 32 / 64 are valid size props.
+ */
+const LOG_FILTER_ORB_DRAW = 20 as const;
+const LOG_FILTER_ORB_PX = 16;
 /** `hsl(0, 87.6%, 52.55%)`, the `--primary` token. ThinkingOrb only accepts rgb() or hex. */
 const UNREAD_ORB_COLOR = "rgb(240, 28, 28)";
 
@@ -70,16 +78,130 @@ function unreadLineIsFlashing(
   );
 }
 
+/** Center fill when a filter toggle is on. */
+const LOG_FILTER_ACTIVE_DOT_PX = 3;
+
+function LogFilterOrbButton({
+  active,
+  color,
+  label,
+  testId,
+  onToggle,
+}: {
+  active: boolean;
+  color: string;
+  label: string;
+  testId: string;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      data-testid={testId}
+      aria-pressed={active}
+      aria-label={label}
+      onClick={onToggle}
+      className={cn(
+        "inline-flex items-center justify-center rounded-sm p-0.5 transition-opacity duration-150",
+        active
+          ? "opacity-60 group-hover/log-filter:opacity-100"
+          : "opacity-25 group-hover/log-filter:opacity-55",
+      )}
+    >
+      <span
+        className="relative inline-flex shrink-0 items-center justify-center"
+        style={{ width: LOG_FILTER_ORB_PX, height: LOG_FILTER_ORB_PX }}
+        aria-hidden={true}
+      >
+        <ThinkingOrb
+          state="breathing"
+          size={LOG_FILTER_ORB_DRAW}
+          theme="dark"
+          frame={unreadOrbFrame}
+          color={color}
+          className="absolute inset-0"
+          style={{ width: LOG_FILTER_ORB_PX, height: LOG_FILTER_ORB_PX }}
+          dotSize={2.5}
+          dots={0.4}
+          paused
+        />
+        {active ? (
+          <span
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
+            style={{
+              width: LOG_FILTER_ACTIVE_DOT_PX,
+              height: LOG_FILTER_ACTIVE_DOT_PX,
+              backgroundColor: color,
+            }}
+          />
+        ) : null}
+      </span>
+    </button>
+  );
+}
+
+function LogTypeFilter({
+  showNewVillagers,
+  showOther,
+  onToggleNewVillagers,
+  onToggleOther,
+  clearInvite,
+}: {
+  showNewVillagers: boolean;
+  showOther: boolean;
+  onToggleNewVillagers: () => void;
+  onToggleOther: () => void;
+  clearInvite: boolean;
+}) {
+  const { t } = useUiTranslation();
+  const newVillagersLabel = t("logPanel.filterNewVillagers", {
+    defaultValue: "New villagers",
+  });
+  const otherLabel = t("logPanel.filterOther", {
+    defaultValue: "Other messages",
+  });
+
+  return (
+    <div
+      className={cn(
+        // right-0: line up with footer Social (log column already has pr-2).
+        "group/log-filter absolute right-1 z-10 flex flex-col items-center gap-1.5 border-0 bg-transparent py-2 pl-2 pr-0 shadow-none outline-none transition-[bottom] duration-200",
+        // Web invite CTA sits over the log corner on desktop; lift while it is painted.
+        clearInvite ? "bottom-1 md:bottom-14" : "bottom-1",
+      )}
+      data-testid="log-type-filter"
+    >
+      <LogFilterOrbButton
+        active={showNewVillagers}
+        color={NEW_VILLAGER_ORB_COLOR}
+        label={newVillagersLabel}
+        testId="log-filter-new-villagers"
+        onToggle={onToggleNewVillagers}
+      />
+      <LogFilterOrbButton
+        active={showOther}
+        color={UNREAD_ORB_COLOR}
+        label={otherLabel}
+        testId="log-filter-other"
+        onToggle={onToggleOther}
+      />
+    </div>
+  );
+}
+
 function LogPanel() {
-  const { i18n } = useTranslation("ui");
+  const { i18n } = useUiTranslation();
   const log = useGameStore((s) => s.log);
   const readLogIds = useGameStore((s) => s.readLogIds);
   const markLogEntryRead = useGameStore((s) => s.markLogEntryRead);
+  const inviteFloatingRendered = useInviteFriendsFloatingRendered();
   const readEntries = useMemo(() => new Set(readLogIds), [readLogIds]);
   const topRef = useRef<HTMLDivElement>(null);
   const prevLogLengthRef = useRef(log.length);
   // Bumped when the next unread pulse expires, so a quiet log still stops flashing.
   const [flashNow, setFlashNow] = useState(() => Date.now());
+  const [showNewVillagers, setShowNewVillagers] = useState(true);
+  const [showOther, setShowOther] = useState(true);
   const markReadTimeoutsRef = useRef(
     new Map<string, ReturnType<typeof setTimeout>>(),
   );
@@ -104,9 +226,13 @@ function LogPanel() {
     () =>
       log
         .filter((entry) => !isStartScreenNarrativeLogEntry(entry))
+        .filter((entry) => {
+          if (isNewVillagerLogEntry(entry)) return showNewVillagers;
+          return showOther;
+        })
         .slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
         .reverse(),
-    [log, i18n.language],
+    [log, i18n.language, showNewVillagers, showOther],
   );
 
   // Auto-scroll the log viewport to the newest entry (top). Do not use
@@ -148,14 +274,14 @@ function LogPanel() {
   }, [recentEntries, readEntries, flashNow]);
 
   return (
-    <div className="h-full min-h-0 overflow-hidden">
+    <div className="relative h-full min-h-0 overflow-hidden">
       <ScrollAreaWithIndicator
         className="h-full w-full"
         scrollAreaId="event-log"
       >
         <div className="pl-0 relative">
           <div ref={topRef} />
-          <div className="space-y-[calc(0.25rem*0.5)] md:space-y-1 text-sm pb-1">
+          <div className="space-y-[calc(0.25rem*0.5)] md:space-y-1 text-sm pb-10 pr-6">
             {recentEntries.map((entry: any, index: number) => {
               const typedEntry = entry as ExtendedLogEntry;
               const isUnread = !readEntries.has(typedEntry.id);
@@ -277,6 +403,13 @@ function LogPanel() {
           </div>
         </div>
       </ScrollAreaWithIndicator>
+      <LogTypeFilter
+        showNewVillagers={showNewVillagers}
+        showOther={showOther}
+        onToggleNewVillagers={() => setShowNewVillagers((prev) => !prev)}
+        onToggleOther={() => setShowOther((prev) => !prev)}
+        clearInvite={inviteFloatingRendered}
+      />
     </div>
   );
 }

@@ -262,5 +262,9 @@
   "map": {
     "playGrowth": "Reproduzir o crescimento da vila",
     "stopGrowth": "Parar o crescimento da vila"
+  },
+  "logPanel": {
+    "filterNewVillagers": "Novos aldeões",
+    "filterOther": "Outras mensagens"
   }
 }

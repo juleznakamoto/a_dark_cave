@@ -160,3 +160,69 @@ describe("LogPanel mark read", () => {
     expect(unreadMarker(row)).not.toBeNull();
   });
 });
+
+describe("LogPanel type filter", () => {
+  beforeEach(() => {
+    useGameStore.setState({
+      log: [
+        {
+          id: "log-other-1",
+          message: "Other line",
+          timestamp: Date.now(),
+          type: "system",
+        },
+        {
+          id: "log-villager-1",
+          message: "A stranger approaches and joins the village.",
+          timestamp: Date.now() + 1,
+          type: "system",
+          newVillagers: true,
+        },
+      ],
+      readLogIds: ["log-other-1", "log-villager-1"],
+    });
+  });
+
+  afterEach(() => {
+    useGameStore.setState({ log: [], readLogIds: [] });
+  });
+
+  it("hides other lines when the red filter is toggled off", () => {
+    const { getByTestId, queryByText } = render(<LogPanel />);
+    expect(queryByText("Other line")).not.toBeNull();
+    expect(
+      queryByText("A stranger approaches and joins the village."),
+    ).not.toBeNull();
+
+    fireEvent.click(getByTestId("log-filter-other"));
+
+    expect(queryByText("Other line")).toBeNull();
+    expect(
+      queryByText("A stranger approaches and joins the village."),
+    ).not.toBeNull();
+  });
+
+  it("hides new-villager lines when the white filter is toggled off", () => {
+    const { getByTestId, queryByText } = render(<LogPanel />);
+
+    fireEvent.click(getByTestId("log-filter-new-villagers"));
+
+    expect(
+      queryByText("A stranger approaches and joins the village."),
+    ).toBeNull();
+    expect(queryByText("Other line")).not.toBeNull();
+  });
+
+  it("shows an empty log when both filters are off", () => {
+    const { getByTestId, queryByText } = render(<LogPanel />);
+
+    fireEvent.click(getByTestId("log-filter-new-villagers"));
+    fireEvent.click(getByTestId("log-filter-other"));
+
+    expect(queryByText("Other line")).toBeNull();
+    expect(
+      queryByText("A stranger approaches and joins the village."),
+    ).toBeNull();
+    expect(queryByText("No messages for this filter.")).toBeNull();
+  });
+});

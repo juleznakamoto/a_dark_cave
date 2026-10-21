@@ -286,5 +286,9 @@
   "map": {
     "playGrowth": "Odtwórz rozwój wioski",
     "stopGrowth": "Zatrzymaj rozwój wioski"
+  },
+  "logPanel": {
+    "filterNewVillagers": "Nowi mieszkańcy",
+    "filterOther": "Inne wiadomości"
   }
 }

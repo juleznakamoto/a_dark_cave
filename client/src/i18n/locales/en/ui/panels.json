@@ -262,5 +262,9 @@
   "map": {
     "playGrowth": "Play village growth",
     "stopGrowth": "Stop village growth"
+  },
+  "logPanel": {
+    "filterNewVillagers": "New villagers",
+    "filterOther": "Other messages"
   }
 }

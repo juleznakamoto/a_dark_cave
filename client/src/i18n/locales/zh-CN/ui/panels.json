@@ -262,5 +262,9 @@
   "map": {
     "playGrowth": "播放村庄发展",
     "stopGrowth": "停止村庄发展"
+  },
+  "logPanel": {
+    "filterNewVillagers": "新村民",
+    "filterOther": "其他消息"
   }
 }

@@ -12,6 +12,11 @@ import {
 import { REFERRAL_REWARD_GOLD } from "@/game/socialPromptAuto";
 import { isInviteFriendsFloatingButtonVisible } from "@/game/socialPromoExclusiveReward";
 import { InviteFriendsTooltip } from "@/components/game/InviteFriendsMenuItem";
+import {
+  dismissInviteFriendsFloating,
+  setInviteFriendsFloatingRendered,
+  useInviteFriendsFloatingDismissed,
+} from "@/components/game/inviteFriendsFloatingUi";
 import { useTranslation } from "react-i18next";
 import { GAME_FOOTER_INSET } from "./gameChrome";
 import { Z_INDEX } from "@/lib/z-index";
@@ -29,7 +34,7 @@ export default function InviteFriendsFloatingButton() {
     (s) => s.signupWelcomeGoldClaimed === true,
   );
   const [sessionSignedIn, setSessionSignedIn] = useState<boolean | null>(null);
-  const [dismissed, setDismissed] = useState(false);
+  const dismissed = useInviteFriendsFloatingDismissed();
 
   useEffect(() => {
     let cancelled = false;
@@ -54,7 +59,14 @@ export default function InviteFriendsFloatingButton() {
     signupWelcomeGoldClaimed,
   });
 
-  if (dismissed || !showFloatingInvite || shopDialogOpen) {
+  const visible = !dismissed && showFloatingInvite && !shopDialogOpen;
+
+  useEffect(() => {
+    setInviteFriendsFloatingRendered(visible);
+    return () => setInviteFriendsFloatingRendered(false);
+  }, [visible]);
+
+  if (!visible) {
     return null;
   }
 
@@ -125,7 +137,7 @@ export default function InviteFriendsFloatingButton() {
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
-              setDismissed(true);
+              dismissInviteFriendsFloating();
             }}
           >
             <X className="h-2.5 w-2.5 stroke-[3]" />

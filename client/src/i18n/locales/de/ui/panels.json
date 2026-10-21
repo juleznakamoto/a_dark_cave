@@ -262,5 +262,9 @@
   "map": {
     "playGrowth": "Dorfwachstum abspielen",
     "stopGrowth": "Dorfwachstum stoppen"
+  },
+  "logPanel": {
+    "filterNewVillagers": "Neue Dorfbewohner",
+    "filterOther": "Andere Nachrichten"
   }
 }

@@ -286,5 +286,9 @@
   "map": {
     "playGrowth": "Показать рост деревни",
     "stopGrowth": "Остановить рост деревни"
+  },
+  "logPanel": {
+    "filterNewVillagers": "Новые жители",
+    "filterOther": "Прочие сообщения"
   }
 }

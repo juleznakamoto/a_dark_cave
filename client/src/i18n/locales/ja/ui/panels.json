@@ -262,5 +262,9 @@
   "map": {
     "playGrowth": "村の発展を再生",
     "stopGrowth": "村の発展を停止"
+  },
+  "logPanel": {
+    "filterNewVillagers": "新しい村人",
+    "filterOther": "その他のメッセージ"
   }
 }

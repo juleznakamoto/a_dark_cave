@@ -262,5 +262,9 @@
   "map": {
     "playGrowth": "Reproducir el crecimiento de la aldea",
     "stopGrowth": "Detener el crecimiento de la aldea"
+  },
+  "logPanel": {
+    "filterNewVillagers": "Nuevos aldeanos",
+    "filterOther": "Otros mensajes"
   }
 }

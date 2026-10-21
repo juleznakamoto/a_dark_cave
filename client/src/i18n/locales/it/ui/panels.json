@@ -262,5 +262,9 @@
   "map": {
     "playGrowth": "Riproduci la crescita del villaggio",
     "stopGrowth": "Ferma la crescita del villaggio"
+  },
+  "logPanel": {
+    "filterNewVillagers": "Nuovi abitanti",
+    "filterOther": "Altri messaggi"
   }
 }
