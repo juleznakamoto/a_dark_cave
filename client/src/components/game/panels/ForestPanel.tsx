@@ -66,30 +66,30 @@ function getForestPanelTradeActiveTier(action: Action, state: GameState): number
 
   const tieredSw = sw as Record<number, Record<string, number>>;
   let activeTier = 1;
-  if (tieredSw[3]) {
-    const tier3Satisfied = Object.entries(tieredSw[3]).every(
+
+  // Same resolution as actionEffects: last satisfied numeric tier wins.
+  for (const tierKey of Object.keys(tieredSw)) {
+    const tierConditions = tieredSw[Number(tierKey)];
+    if (!tierConditions) continue;
+
+    const tierSatisfied = Object.entries(tierConditions).every(
       ([key, value]) => {
-        const [category, prop] = key.split(".");
-        return (
-          (state[category as keyof GameState]?.[prop as never] as number | undefined) ||
-          0
-        ) >= value;
+        const pathParts = key.split(".");
+        let current: any = state;
+        for (const part of pathParts) {
+          current = current?.[part];
+        }
+        if (key.startsWith("buildings.")) {
+          if (value === 0) return (current || 0) === 0;
+          return (current || 0) >= value;
+        }
+        return (current || 0) >= value;
       },
     );
-    if (tier3Satisfied) activeTier = 3;
+
+    if (tierSatisfied) activeTier = Number(tierKey);
   }
-  if (activeTier === 1 && tieredSw[2]) {
-    const tier2Satisfied = Object.entries(tieredSw[2]).every(
-      ([key, value]) => {
-        const [category, prop] = key.split(".");
-        return (
-          (state[category as keyof GameState]?.[prop as never] as number | undefined) ||
-          0
-        ) >= value;
-      },
-    );
-    if (tier2Satisfied) activeTier = 2;
-  }
+
   return activeTier;
 }
 

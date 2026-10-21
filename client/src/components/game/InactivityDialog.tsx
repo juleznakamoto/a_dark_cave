@@ -38,7 +38,7 @@ export default function InactivityDialog() {
         hideClose={true}
         hideOverlay={true}
         customBackground={
-          <div className="fixed inset-0 z-[200] bg-black/50 backdrop-blur-sm animate-fade-in" />
+          <div className="fixed inset-0 z-[200] bg-black/80 animate-fade-in" />
         }
       >
         <DialogHeader>

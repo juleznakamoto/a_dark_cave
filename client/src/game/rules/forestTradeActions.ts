@@ -516,10 +516,16 @@ export const forestTradeActions: Record<string, Action> = {
         "buildings.merchantsGuild": 0,
       },
       2: {
-        "buildings.grandBazaar": 1,
+        "buildings.tradePost": 1,
+        "tools.steel_lantern": 1,
+        "buildings.grandBazaar": 0,
         "buildings.merchantsGuild": 0,
       },
       3: {
+        "buildings.grandBazaar": 1,
+        "buildings.merchantsGuild": 0,
+      },
+      4: {
         "buildings.merchantsGuild": 1,
       },
     },
@@ -528,22 +534,28 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.silver": 20,
       },
       2: {
-        "resources.silver": 100,
+        "resources.silver": 40,
       },
       3: {
+        "resources.silver": 100,
+      },
+      4: {
         "resources.silver": 200,
-      }
+      },
     },
     effects: {
       1: {
         "resources.gold": 5,
       },
       2: {
-        "resources.gold": 25,
+        "resources.gold": 10,
       },
       3: {
+        "resources.gold": 25,
+      },
+      4: {
         "resources.gold": 50,
-      }
+      },
     },
   },
 

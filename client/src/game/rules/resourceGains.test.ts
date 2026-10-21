@@ -1659,13 +1659,25 @@ describe('Resource Gain Tests', () => {
       expect(effectUpdates.resources?.silver).toBe(state.resources.silver - 20);
     });
 
-    it('tradeSilverForGold (tier 3) produces correct amount', () => {
+    it('tradeSilverForGold (tier 2, steel lantern) produces correct amount', () => {
+      const state = createTestState({
+        buildings: { tradePost: 1 },
+        tools: { steel_lantern: true },
+      });
+      const effectUpdates = applyActionEffects('tradeSilverForGold', state);
+
+      // Tier 2 gives 10 gold at the 4:1 silver rate
+      expect(effectUpdates.resources?.gold).toBe(state.resources.gold + 10);
+      expect(effectUpdates.resources?.silver).toBe(state.resources.silver - 40);
+    });
+
+    it('tradeSilverForGold (tier 4) produces correct amount', () => {
       const state = createTestState({
         buildings: { merchantsGuild: 1 },
       });
       const effectUpdates = applyActionEffects('tradeSilverForGold', state);
 
-      // Tier 3 gives 50 gold
+      // Tier 4 gives 50 gold
       expect(effectUpdates.resources?.gold).toBe(state.resources.gold + 50);
       // Costs 200 silver
       expect(effectUpdates.resources?.silver).toBe(state.resources.silver - 200);

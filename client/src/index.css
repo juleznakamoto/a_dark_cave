@@ -857,12 +857,10 @@ html[data-adc-chrome-stage="0"] {
 @keyframes fade-in {
   0% {
     background: transparent;
-    backdrop-filter: blur(0);
   }
 
   100% {
-    background: #000;
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.8);
   }
 }
 
