@@ -117,7 +117,7 @@
       }
     },
     "log": {
-      "outcome0": "Idziesz za błotnistymi śladami przez wioskę. Prowadzą od jednego miejsca zbrodni do drugiego. Odciski pasują do twoich butów. Groza przychodzi powoli: to byłeś ty, opętany głodem pierścienia. Gdy wieśniacy poznają prawdę, osiemnastu ucieka, nie chcąc zostać przy takim przeklętym stworzeniu.",
+      "outcome0": "Idziesz za błotnistymi śladami przez wioskę. Prowadzą od jednego miejsca zbrodni do drugiego. Odciski pasują do twoich butów. Groza przychodzi powoli: to byłeś ty, opętany głodem pierścienia. Gdy wieśniacy poznają prawdę, {{deaths}} ucieka, nie chcąc zostać przy takim przeklętym stworzeniu.",
       "outcome1": "Drżącymi rękami podnosisz siekierę. Pierścień pulsuje, gdy spada ostrze. Agonia rozdziera ramię, gdy kość pęka. Podnosisz odcięty palec i widzisz drobne czarne nitki, jak macki, wrastające głęboko w ciało."
     },
     "message": "Budzisz się o świcie, ubranie przesiąknięte świeżą krwią. To nie twoja. Wieśniak zjawia się w posiadłości, twarz blada ze zgrozy. 'Ośmioro nie żyje,' szepcze. 'Rozszarpani w nocy.' Pierścień na palcu pulsuje rozdzierającym bólem.",

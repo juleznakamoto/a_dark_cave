@@ -100,7 +100,7 @@
       }
     },
     "log": {
-      "outcome0": "Sigues huellas embarradas por la aldea y te conducen a cada escena del crimen, una tras otra. Las marcas coinciden con tus propias botas. El horror se revela lentamente: fuiste tú, poseído por el hambre del anillo. Cuando los aldeanos descubren la verdad, dieciocho huyen, incapaces de permanecer cerca de una criatura tan maldita.",
+      "outcome0": "Sigues huellas embarradas por la aldea y te conducen a cada escena del crimen, una tras otra. Las marcas coinciden con tus propias botas. El horror se revela lentamente: fuiste tú, poseído por el hambre del anillo. Cuando los aldeanos descubren la verdad, {{deaths}} huyen, incapaces de permanecer cerca de una criatura tan maldita.",
       "outcome1": "Con manos temblorosas, alzas el hacha. El anillo palpita cuando cae la hoja. La agonía te desgarra el brazo al quebrarse el hueso. Al levantar el dedo amputado, ves pequeños hilos negros, como tentáculos, hundidos profundamente en su carne."
     },
     "message": "Despiertas con el alba, la ropa empapada en sangre fresca. No es tuya. Un aldeano llega a la finca, pálido de horror. 'Ocho han muerto', susurra. 'Despedazados en la noche'. El anillo en tu dedo late con un dolor agónico.",

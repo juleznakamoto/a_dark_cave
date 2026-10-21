@@ -100,7 +100,7 @@
       }
     },
     "log": {
-      "outcome0": "Mentre segui impronte fangose attraverso il villaggio, queste conducono a ogni scena del delitto, una dopo l'altra. Le impronte corrispondono ai tuoi stessi stivali. L'orrore si fa strada lentamente - eri tu, posseduto dalla fame dell'anello. Quando gli abitanti scoprono la verità, diciotto fuggono, non volendo restare vicino a una creatura tanto maledetta.",
+      "outcome0": "Mentre segui impronte fangose attraverso il villaggio, queste conducono a ogni scena del delitto, una dopo l'altra. Le impronte corrispondono ai tuoi stessi stivali. L'orrore si fa strada lentamente - eri tu, posseduto dalla fame dell'anello. Quando gli abitanti scoprono la verità, {{deaths}} fuggono, non volendo restare vicino a una creatura tanto maledetta.",
       "outcome1": "Con mani tremanti, sollevi l'ascia. L'anello pulsa mentre la lama cade. L'agonia ti squarcia il braccio mentre l'osso si frantuma. Sollevando il dito reciso, vedi piccoli fili neri, come tentacoli, affondati nella sua carne."
     },
     "message": "Ti svegli allo spuntare dell'alba, i vestiti zuppi di sangue fresco. Non è il tuo. Un abitante arriva alla tenuta, il volto pallido di orrore. 'Otto sono morti,' sussurra. 'Fatti a pezzi nella notte.' L'anello al tuo dito pulsa di un dolore lancinante.",

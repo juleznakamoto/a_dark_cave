@@ -160,6 +160,9 @@ export const ringEvents: Record<string, GameEvent> = {
           return {
             ...deathResult,
             _logMessageKey: "outcome0",
+            _logMessageVars: {
+              deaths: deathResult.villagersKilled ?? 0,
+            },
           };
         },
       },

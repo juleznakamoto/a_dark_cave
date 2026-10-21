@@ -100,7 +100,7 @@
       }
     },
     "log": {
-      "outcome0": "Als du den schlammigen Fußspuren durch das Dorf folgst, führen sie dich zu einem Mordort nach dem anderen. Die Abdrücke passen zu deinen eigenen Stiefeln. Das Grauen dämmert langsam - du warst es, besessen vom Hunger des Rings. Als die Dorfbewohner die Wahrheit erfahren, fliehen achtzehn von ihnen, unfähig, in der Nähe eines so verfluchten Wesens zu bleiben.",
+      "outcome0": "Als du den schlammigen Fußspuren durch das Dorf folgst, führen sie dich zu einem Mordort nach dem anderen. Die Abdrücke passen zu deinen eigenen Stiefeln. Das Grauen dämmert langsam - du warst es, besessen vom Hunger des Rings. Als die Dorfbewohner die Wahrheit erfahren, fliehen {{deaths}} von ihnen, unfähig, in der Nähe eines so verfluchten Wesens zu bleiben.",
       "outcome1": "Mit zitternden Händen hebst du deine Axt. Der Ring pulsiert, als die Klinge fällt. Qual reißt durch deinen Arm, als Knochen splittert. Als du den abgetrennten Finger hochhebst, siehst du kleine schwarze Fäden wie Tentakel, tief in sein Fleisch gebohrt."
     },
     "message": "Du erwachst im ersten Licht des Morgens, deine Kleidung von frischem Blut durchnässt. Es ist nicht deins. Ein Dorfbewohner kommt zum Anwesen, das Gesicht bleich vor Entsetzen. 'Acht sind tot', flüstert er. 'In der Nacht zerfetzt.' Der Ring an deinem Finger pocht vor quälendem Schmerz.",

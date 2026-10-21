@@ -100,7 +100,7 @@
       }
     },
     "log": {
-      "outcome0": "Enquanto você segue pegadas enlameadas pelo vilarejo, elas levam a cada cena de assassinato, uma após a outra. As pegadas combinam com suas próprias botas. O horror surge lentamente - foi você, possuído pela fome do anel. Quando os aldeões descobrem a verdade, dezoito fogem, sem querer permanecer perto de uma criatura tão amaldiçoada.",
+      "outcome0": "Enquanto você segue pegadas enlameadas pelo vilarejo, elas levam a cada cena de assassinato, uma após a outra. As pegadas combinam com suas próprias botas. O horror surge lentamente - foi você, possuído pela fome do anel. Quando os aldeões descobrem a verdade, {{deaths}} fogem, sem querer permanecer perto de uma criatura tão amaldiçoada.",
       "outcome1": "Com as mãos trêmulas, você ergue seu machado. O anel pulsa enquanto a lâmina desce. A agonia rasga seu braço enquanto o osso se despedaça. Erguendo o dedo decepado, você vê pequenos fios negros, como tentáculos, fincados profundamente em sua carne."
     },
     "message": "Você acorda ao romper do amanhecer, suas roupas encharcadas de sangue fresco. Não é o seu. Um aldeão chega à propriedade, o rosto pálido de horror. 'Oito estão mortos,' ele sussurra. 'Dilacerados durante a noite.' O anel em seu dedo lateja com uma dor agonizante.",

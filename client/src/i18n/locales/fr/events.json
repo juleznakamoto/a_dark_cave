@@ -100,7 +100,7 @@
       }
     },
     "log": {
-      "outcome0": "En suivant des empreintes boueuses à travers le village, vous les voyez mener à chaque scène de meurtre, l'une après l'autre. Les traces correspondent à vos propres bottes. L'horreur se révèle lentement - c'était vous, possédé par la faim de l'anneau. Quand les villageois découvrent la vérité, dix-huit fuient, refusant de rester près d'une créature aussi maudite.",
+      "outcome0": "En suivant des empreintes boueuses à travers le village, vous les voyez mener à chaque scène de meurtre, l'une après l'autre. Les traces correspondent à vos propres bottes. L'horreur se révèle lentement - c'était vous, possédé par la faim de l'anneau. Quand les villageois découvrent la vérité, {{deaths}} fuient, refusant de rester près d'une créature aussi maudite.",
       "outcome1": "Les mains tremblantes, vous levez votre hache. L'anneau palpite quand la lame s'abat. Une agonie vous déchire le bras tandis que l'os éclate. En soulevant le doigt tranché, vous voyez de petits filaments noirs, semblables à des tentacules, enfoncés profondément dans sa chair."
     },
     "message": "Vous vous réveillez à l'aube, vos vêtements imbibés de sang frais. Ce n'est pas le vôtre. Un villageois arrive au domaine, le visage blême d'horreur. 'Huit sont morts,' murmure-t-il. 'Déchiquetés dans la nuit.' L'anneau à votre doigt bat d'une douleur atroce.",
