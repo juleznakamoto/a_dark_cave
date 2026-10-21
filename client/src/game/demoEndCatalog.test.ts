@@ -21,6 +21,7 @@ import {
   isDemoEndAttackWaveRevealed,
   isDemoEndBastionHealRevealed,
   isDemoEndBastionRepairRevealed,
+  getAdjacentUnlockedCubeEventIds,
   isDemoEndCubeEventCompleted,
   isDemoEndEstateSkillUnlocked,
   isDemoEndVillageJobRevealed,
@@ -254,6 +255,45 @@ describe("demoEndCatalog", () => {
     expect(isDemoEndCubeEventCompleted(found, "cubeDiscovery")).toBe(true);
     expect(isDemoEndCubeEventCompleted(found, "cube01")).toBe(true);
     expect(isDemoEndCubeEventCompleted(found, "cube02")).toBe(false);
+  });
+
+  it("pages unlocked cube events in story order and skips locked ones", () => {
+    const none = gameStateSchema.parse({});
+    expect(getAdjacentUnlockedCubeEventIds(none, "cubeDiscovery")).toEqual({
+      previousId: null,
+      nextId: null,
+    });
+
+    const early = gameStateSchema.parse({
+      relics: { whispering_cube: true },
+      events: { cube01: true, cube02: true },
+    });
+    expect(getAdjacentUnlockedCubeEventIds(early, "cubeDiscovery")).toEqual({
+      previousId: null,
+      nextId: "cube01",
+    });
+    expect(getAdjacentUnlockedCubeEventIds(early, "cube01")).toEqual({
+      previousId: "cubeDiscovery",
+      nextId: "cube02",
+    });
+    expect(getAdjacentUnlockedCubeEventIds(early, "cube02")).toEqual({
+      previousId: "cube01",
+      nextId: null,
+    });
+    expect(getAdjacentUnlockedCubeEventIds(early, "cube03")).toEqual({
+      previousId: null,
+      nextId: null,
+    });
+
+    const slaughterEnding = gameStateSchema.parse({
+      events: { cube14d: true, cube15a: true },
+    });
+    expect(getAdjacentUnlockedCubeEventIds(slaughterEnding, "cube15a")).toEqual({
+      previousId: "cube14d",
+      nextId: null,
+    });
+    expect(isDemoEndCubeEventCompleted(slaughterEnding, "cube15b")).toBe(false);
+    expect(isDemoEndCubeEventCompleted(slaughterEnding, "cube14a")).toBe(false);
   });
 
   it("keeps owned buildings and later catalog rows for demo-end", () => {

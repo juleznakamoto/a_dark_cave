@@ -175,6 +175,8 @@
     "fallbackTitle": "囁く立方体",
     "fallbackMessage": "立方体が古い秘密を囁く…",
     "close": "閉じる",
+    "previous": "前の立方体",
+    "next": "次の立方体",
     "completionLog": "この旅は終わった。ここから続けるか、新しいゲームを始めよう。度胸があるなら、残酷モードでも。"
   },
   "timedEvent": {

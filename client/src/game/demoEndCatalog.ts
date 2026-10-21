@@ -318,6 +318,24 @@ export function isDemoEndCubeEventCompleted(
   return state.events[id] === true || state.events[baseEventId] === true;
 }
 
+/** Previous and next finished cube whispers, in story order. Locked branches are skipped. */
+export function getAdjacentUnlockedCubeEventIds(
+  state: Pick<GameState, "events" | "relics">,
+  currentEventId: string,
+): { previousId: string | null; nextId: string | null } {
+  const unlocked = DEMO_END_CUBE_EVENT_IDS.filter((eventId) =>
+    isDemoEndCubeEventCompleted(state, eventId),
+  );
+  const index = unlocked.indexOf(currentEventId);
+  if (index < 0) {
+    return { previousId: null, nextId: null };
+  }
+  return {
+    previousId: index > 0 ? (unlocked[index - 1] ?? null) : null,
+    nextId: index < unlocked.length - 1 ? (unlocked[index + 1] ?? null) : null,
+  };
+}
+
 export function isDemoEndEstateSkillUnlocked(
   state: GameState,
   id: DemoEndEstateSkillId,

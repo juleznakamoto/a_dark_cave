@@ -175,6 +175,8 @@
     "fallbackTitle": "Der flüsternde Würfel",
     "fallbackMessage": "Der Würfel flüstert uralte Geheimnisse…",
     "close": "Schließen",
+    "previous": "Vorheriger Würfel",
+    "next": "Nächster Würfel",
     "completionLog": "Du hast diese Reise abgeschlossen. Fahre hier fort oder starte ein neues Spiel. Vielleicht im Grausamen Modus, wenn du dich traust."
   },
   "timedEvent": {

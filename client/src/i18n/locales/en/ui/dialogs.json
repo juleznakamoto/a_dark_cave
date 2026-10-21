@@ -175,6 +175,8 @@
     "fallbackTitle": "The Whispering Cube",
     "fallbackMessage": "The cube whispers ancient secrets...",
     "close": "Close",
+    "previous": "Previous cube",
+    "next": "Next cube",
     "completionLog": "You have finished this journey. Continue here or start a new game. Maybe in Cruel Mode, if you dare."
   },
   "timedEvent": {

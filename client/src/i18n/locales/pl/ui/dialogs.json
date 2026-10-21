@@ -177,6 +177,8 @@
     "fallbackTitle": "Szeptająca kostka",
     "fallbackMessage": "Kostka szepcze pradawne sekrety…",
     "close": "Zamknij",
+    "previous": "Poprzednia kostka",
+    "next": "Następna kostka",
     "completionLog": "Ukończyłeś tę podróż. Kontynuuj tutaj albo zacznij nową grę. Może w trybie okrutnym, jeśli się odważysz."
   },
   "timedEvent": {

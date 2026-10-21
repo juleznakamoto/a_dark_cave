@@ -1462,6 +1462,12 @@ html.adc-text-large .game-panel-produce-effects {
   transform: none;
 }
 
+/* Cube side arrows keep their own opacity. The lock's 0.5 would brighten
+   them when the close button becomes clickable. */
+.adc-dialog-open-click-lock button.cube-event-arrow {
+  opacity: 0.7;
+}
+
 /* Shared dialog X: square hit target + icon grow slightly with Large text. */
 .adc-dialog-close {
   width: calc(1.5rem * var(--adc-control-scale, 1));
@@ -2035,6 +2041,27 @@ html.adc-text-large .game-panel-produce-effects {
 
 .cube-dialog-glow {
   animation: cube-glow-pulse 3s ease-in-out infinite;
+}
+
+/* The shared dialog enter animation replaces the centering translate, then
+   the frame snaps upward when it ends. Side arrows jump with that snap.
+   Fade only, and leave the centering transform alone. */
+@keyframes cube-dialog-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.cube-dialog-content[data-state="open"] {
+  animation: cube-dialog-fade 200ms ease-out;
+}
+
+.cube-dialog-content[data-state="closed"] {
+  animation: none;
 }
 
 @keyframes madness-glow-pulse {

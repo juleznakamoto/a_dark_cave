@@ -171,6 +171,8 @@
     "fallbackTitle": "O Cubo Sussurrante",
     "fallbackMessage": "O cubo sussurra segredos ancestrais...",
     "close": "Fechar",
+    "previous": "Cubo anterior",
+    "next": "Próximo cubo",
     "completionLog": "Você concluiu esta jornada. Continue aqui ou inicie um novo jogo. Talvez no Modo Cruel, se tiver coragem."
   },
   "timedEvent": {

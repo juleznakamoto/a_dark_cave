@@ -175,6 +175,8 @@
     "fallbackTitle": "低语立方体",
     "fallbackMessage": "立方体低语着古老的秘密……",
     "close": "关闭",
+    "previous": "上一个立方体",
+    "next": "下一个立方体",
     "completionLog": "你已完成这段旅程。留在这里，或开始新游戏。如果你敢，就试试残酷模式。"
   },
   "timedEvent": {

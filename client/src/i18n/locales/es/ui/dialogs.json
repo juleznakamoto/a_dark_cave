@@ -175,6 +175,8 @@
     "fallbackTitle": "El cubo susurrante",
     "fallbackMessage": "El cubo susurra secretos antiguos…",
     "close": "Cerrar",
+    "previous": "Cubo anterior",
+    "next": "Cubo siguiente",
     "completionLog": "Has terminado este viaje. Quédate aquí o empieza una nueva partida. Quizá en Modo cruel, si te atreves."
   },
   "timedEvent": {

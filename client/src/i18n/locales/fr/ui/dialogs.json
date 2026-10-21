@@ -175,6 +175,8 @@
     "fallbackTitle": "Le cube murmurant",
     "fallbackMessage": "Le cube murmure d'anciens secrets…",
     "close": "Fermer",
+    "previous": "Cube précédent",
+    "next": "Cube suivant",
     "completionLog": "Vous avez terminé ce voyage. Restez ici ou commencez une nouvelle partie. Peut-être en Mode cruel, si vous osez."
   },
   "timedEvent": {
