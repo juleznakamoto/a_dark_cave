@@ -44,10 +44,10 @@ const PRICES = {
   blacksteel: 3.0,
   torch: 0.3,
   black_powder: 0.5,
-  ember_bomb: 50,
+  ember_bomb: 100,
   ashfire_dust: 1,
-  ashfire_bomb: 100,
-  void_bomb: 150,
+  ashfire_bomb: 200,
+  void_bomb: 300,
   silver: 0.25,
   gold: 1,
 } as const;
