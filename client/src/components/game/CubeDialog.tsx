@@ -78,7 +78,6 @@ export default function CubeDialog({
   const { t } = useTranslation("ui");
   const chromeOn = useDestroyedChrome();
   const glowRef = useRef<HTMLDivElement>(null);
-  const openLockKeyRef = useRef(event?.id);
   const events = useGameStore((s) => s.events);
   const relics = useGameStore((s) => s.relics);
 
@@ -241,7 +240,7 @@ export default function CubeDialog({
   return (
     <Dialog open={isOpen} onOpenChange={() => { }}>
       <DialogContent
-        openClickLockKey={openLockKeyRef.current}
+        openClickLockKey={event.id}
         className="cube-dialog-content [&>.adc-dialog-close]:hidden border-2 border-gray-400 shadow-2xl p-6 h-[21rem] max-h-[21rem] flex flex-col overflow-visible z-[100]"
         style={{
           ...chromeRuleColorStyle("#9ca3af"),
