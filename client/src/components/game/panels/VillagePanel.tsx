@@ -744,6 +744,13 @@ export default function VillagePanel() {
           showWhen: () => buildings.heartfire > 0,
         },
         {
+          id: "tameWolf",
+          label: "Tame Wolf",
+          showWhen: () =>
+            Boolean(state.clothing?.alphas_hide) &&
+            !state.fellowship?.grey_one,
+        },
+        {
           id: "callMerchant",
           label: "Call Merchant",
           showWhen: () =>

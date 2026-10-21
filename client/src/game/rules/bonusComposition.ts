@@ -34,6 +34,7 @@ import {
   CROWS_EYE_UPGRADES,
   HUNT_BONUSES,
   getChainmasterProductionBonus,
+  getGreyOneHuntBonusPercent,
 } from "./skillUpgrades";
 import { villageBuildActions } from "./villageBuildActions";
 
@@ -185,6 +186,17 @@ function getActionBonusComposition(
       ),
       percent: huntBonus,
     });
+  }
+
+  if (actionId === "hunt") {
+    const greyOneHunt = getGreyOneHuntBonusPercent(state);
+    if (greyOneHunt > 0) {
+      pushLine(lines, {
+        sourceId: "grey_one",
+        sourceLabel: getEffectName("fellowship", "grey_one", "Grey One"),
+        percent: greyOneHunt,
+      });
+    }
   }
 
   return lines;

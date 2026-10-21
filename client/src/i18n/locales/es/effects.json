@@ -383,6 +383,10 @@
     "the_hound": {
       "description": "Superviviente musculoso y desfigurado de una aldea de montaña envenenada.",
       "name": "Sabueso Bruto"
+    },
+    "grey_one": {
+      "description": "Cachorro de lobo tomado junto al alfa abatido y domesticado.",
+      "name": "El Gris"
     }
   },
   "tools": {

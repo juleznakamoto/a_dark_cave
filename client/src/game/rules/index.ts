@@ -45,6 +45,7 @@ import { forestWoodenCabinActions } from "./forestWoodenCabin";
 import { forestResearchActions } from "./forestResearchActions";
 import { getFinanceExpeditionTier } from "./financeExpedition";
 import { bastionActions } from "./bastionActions";
+import { villageUtilityActions } from "./villageUtilityActions";
 import { getExecutionTime } from "./executionTime";
 import {
   DEMO_WOODEN_HUT_LIMIT,
@@ -66,6 +67,7 @@ registerActions({
   ...forestWoodenCabinActions,
   ...forestResearchActions,
   ...bastionActions,
+  ...villageUtilityActions,
 });
 
 // Export the registry getter for external use

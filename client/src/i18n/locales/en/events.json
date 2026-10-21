@@ -2845,6 +2845,15 @@
     "message": "The wizard stands at the entrance to his tower, 'The weapons are forged. We now possess what we need to stand against the creatures of the depths of the cave. The darkness below will soon learn that this village will not fall without a fight. We are ready.'",
     "title": "The Final Preparation"
   },
+  "trapSuggestion": {
+    "choices": {
+      "prepareTraps": {
+        "label": "Prepare traps"
+      }
+    },
+    "message": "The villagers suggest laying traps around the village to better protect against wolves and other foes.",
+    "title": "Village Defense"
+  },
   "wolfAttack": {
     "choices": {
       "defendVillage": {
@@ -2855,46 +2864,26 @@
       }
     },
     "log": {
-      "outcome0": "The villagers defeat the wolf pack! You slay the alpha wolf and claim its hide as a trophy. It radiates with primal power.",
-      "outcome0_first": "The villagers defeat the wolf pack! You slay the alpha wolf and claim its hide as a trophy. It radiates with primal power. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
+      "outcome0": "The villagers defeat the wolf pack! You slay the alpha wolf and claim its hide as a trophy. It radiates with primal power. Beside the slain alpha is a wolf pup. You take it with you to tame.",
       "outcome1": "The villagers huddle in their huts as the wolves prowl outside. By dawn, the wolves have departed without finding anyone, leaving only scratches and terror behind.",
-      "outcome1_first": "The villagers huddle in their huts as the wolves prowl outside. By dawn, the wolves have departed without finding anyone, leaving only scratches and terror behind. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
       "defend_noDeaths": "The villagers fight desperately against the wolves. The villagers survive the attack.",
-      "defend_noDeaths_first": "The villagers fight desperately against the wolves. The villagers survive the attack. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
       "defend_noDeaths_hut": "The villagers fight desperately against the wolves. The villagers survive the attack. In their rampage, the wolves destroy one of the huts, leaving only splintered wood.",
-      "defend_noDeaths_hut_first": "The villagers fight desperately against the wolves. The villagers survive the attack. In their rampage, the wolves destroy one of the huts, leaving only splintered wood. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
       "defend_noDeaths_food": "The villagers fight desperately against the wolves. The villagers survive the attack. In the chaos, the wolves ravage your stores.",
-      "defend_noDeaths_food_first": "The villagers fight desperately against the wolves. The villagers survive the attack. In the chaos, the wolves ravage your stores. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
       "defend_noDeaths_food_hut": "The villagers fight desperately against the wolves. The villagers survive the attack. In the chaos, the wolves ravage your stores. In their rampage, the wolves destroy one of the huts, leaving only splintered wood.",
-      "defend_noDeaths_food_hut_first": "The villagers fight desperately against the wolves. The villagers survive the attack. In the chaos, the wolves ravage your stores. In their rampage, the wolves destroy one of the huts, leaving only splintered wood. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
       "defend_oneDeath": "The villagers fight desperately against the wolves. One villager falls to the wolves' supernatural fury.",
-      "defend_oneDeath_first": "The villagers fight desperately against the wolves. One villager falls to the wolves' supernatural fury. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
       "defend_oneDeath_hut": "The villagers fight desperately against the wolves. One villager falls to the wolves' supernatural fury. In their rampage, the wolves destroy one of the huts, leaving only splintered wood.",
-      "defend_oneDeath_hut_first": "The villagers fight desperately against the wolves. One villager falls to the wolves' supernatural fury. In their rampage, the wolves destroy one of the huts, leaving only splintered wood. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
       "defend_oneDeath_food": "The villagers fight desperately against the wolves. One villager falls to the wolves' supernatural fury. In the chaos, the wolves ravage your stores.",
-      "defend_oneDeath_food_first": "The villagers fight desperately against the wolves. One villager falls to the wolves' supernatural fury. In the chaos, the wolves ravage your stores. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
       "defend_oneDeath_food_hut": "The villagers fight desperately against the wolves. One villager falls to the wolves' supernatural fury. In the chaos, the wolves ravage your stores. In their rampage, the wolves destroy one of the huts, leaving only splintered wood.",
-      "defend_oneDeath_food_hut_first": "The villagers fight desperately against the wolves. One villager falls to the wolves' supernatural fury. In the chaos, the wolves ravage your stores. In their rampage, the wolves destroy one of the huts, leaving only splintered wood. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
       "defend_manyDeaths": "The villagers fight desperately against the wolves. The villagers fall to the wolves' supernatural fury.",
-      "defend_manyDeaths_first": "The villagers fight desperately against the wolves. The villagers fall to the wolves' supernatural fury. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
       "defend_manyDeaths_hut": "The villagers fight desperately against the wolves. The villagers fall to the wolves' supernatural fury. In their rampage, the wolves destroy one of the huts, leaving only splintered wood.",
-      "defend_manyDeaths_hut_first": "The villagers fight desperately against the wolves. The villagers fall to the wolves' supernatural fury. In their rampage, the wolves destroy one of the huts, leaving only splintered wood. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
       "defend_manyDeaths_food": "The villagers fight desperately against the wolves. The villagers fall to the wolves' supernatural fury. In the chaos, the wolves ravage your stores.",
-      "defend_manyDeaths_food_first": "The villagers fight desperately against the wolves. The villagers fall to the wolves' supernatural fury. In the chaos, the wolves ravage your stores. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
       "defend_manyDeaths_food_hut": "The villagers fight desperately against the wolves. The villagers fall to the wolves' supernatural fury. In the chaos, the wolves ravage your stores. In their rampage, the wolves destroy one of the huts, leaving only splintered wood.",
-      "defend_manyDeaths_food_hut_first": "The villagers fight desperately against the wolves. The villagers fall to the wolves' supernatural fury. In the chaos, the wolves ravage your stores. In their rampage, the wolves destroy one of the huts, leaving only splintered wood. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
       "hide_noDeaths": "The villagers huddle in their huts as the wolves prowl outside. By dawn, the wolves have departed, leaving only scratches and terror behind.",
-      "hide_noDeaths_first": "The villagers huddle in their huts as the wolves prowl outside. By dawn, the wolves have departed, leaving only scratches and terror behind. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
       "hide_noDeaths_food": "The villagers huddle in their huts as the wolves prowl outside. The wolves ransack your supplies, then vanish at dawn, leaving only scratches and terror behind.",
-      "hide_noDeaths_food_first": "The villagers huddle in their huts as the wolves prowl outside. The wolves ransack your supplies, then vanish at dawn, leaving only scratches and terror behind. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
       "hide_oneDeath": "The villagers huddle in their huts as the wolves prowl outside. One villager who ventured out is found torn apart at sunrise.",
-      "hide_oneDeath_first": "The villagers huddle in their huts as the wolves prowl outside. One villager who ventured out is found torn apart at sunrise. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
       "hide_oneDeath_food": "The villagers huddle in their huts as the wolves prowl outside. One villager who ventured out is found torn apart at sunrise. The wolves ransack your supplies before vanishing at dawn.",
-      "hide_oneDeath_food_first": "The villagers huddle in their huts as the wolves prowl outside. One villager who ventured out is found torn apart at sunrise. The wolves ransack your supplies before vanishing at dawn. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
       "hide_manyDeaths": "The villagers huddle in their huts as the wolves prowl outside. Several villagers are dragged from their huts, their screams echoing through the night.",
-      "hide_manyDeaths_first": "The villagers huddle in their huts as the wolves prowl outside. Several villagers are dragged from their huts, their screams echoing through the night. The villagers suggest you lay traps around the village to better protect against wolves and other foes.",
-      "hide_manyDeaths_food": "The villagers huddle in their huts as the wolves prowl outside. Several villagers are dragged from their huts, their screams echoing through the night. The wolves ransack your supplies before vanishing at dawn.",
-      "hide_manyDeaths_food_first": "The villagers huddle in their huts as the wolves prowl outside. Several villagers are dragged from their huts, their screams echoing through the night. The wolves ransack your supplies before vanishing at dawn. The villagers suggest you lay traps around the village to better protect against wolves and other foes."
+      "hide_manyDeaths_food": "The villagers huddle in their huts as the wolves prowl outside. Several villagers are dragged from their huts, their screams echoing through the night. The wolves ransack your supplies before vanishing at dawn."
     },
     "message": "Close to midnight, wolves emerge from the darkness, their eyes glowing with unnatural hunger. Their howls carry malice as they circle the village.",
     "title": "Wolf Attack"

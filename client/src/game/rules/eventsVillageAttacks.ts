@@ -48,7 +48,6 @@ function wolfDefendLogKey(
   deaths: number,
   foodLoss: number,
   hutDestroyed: boolean,
-  firstAttack: boolean,
 ): string {
   const parts = [
     "defend",
@@ -56,21 +55,15 @@ function wolfDefendLogKey(
   ];
   if (foodLoss > 0) parts.push("food");
   if (hutDestroyed) parts.push("hut");
-  if (firstAttack) parts.push("first");
   return parts.join("_");
 }
 
-function wolfHideLogKey(
-  deaths: number,
-  foodLoss: number,
-  firstAttack: boolean,
-): string {
+function wolfHideLogKey(deaths: number, foodLoss: number): string {
   const parts = [
     "hide",
     deathsKey(deaths, "noDeaths", "oneDeath", "manyDeaths"),
   ];
   if (foodLoss > 0) parts.push("food");
-  if (firstAttack) parts.push("first");
   return parts.join("_");
 }
 
@@ -316,7 +309,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           );
 
           if (Math.random() < victoryChance) {
-            // Victory! Get Alpha's Hide. First kill still unlocks village traps.
+            // Victory! Get Alpha's Hide. Trap unlock follows via trapSuggestion.
             return {
               clothing: {
                 ...state.clothing,
@@ -334,9 +327,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                   firstWolfAttack: true,
                 },
               },
-              _logMessageKey: !state.story.seen.firstWolfAttack
-                ? "outcome0_first"
-                : "outcome0",
+              _logMessageKey: "outcome0",
             };
           }
 
@@ -403,7 +394,6 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               actualDeaths,
               foodLoss,
               hutDestroyed,
-              !state.story.seen.firstWolfAttack,
             ),
           };
         },
@@ -435,9 +425,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                   firstWolfAttack: true,
                 },
               },
-              _logMessageKey: !state.story.seen.firstWolfAttack
-                ? "outcome1_first"
-                : "outcome1",
+              _logMessageKey: "outcome1",
             };
           } else {
             const luck = getTotalLuck(state);
@@ -486,13 +474,37 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                 firstWolfAttack: true,
               },
             },
-            _logMessageKey: wolfHideLogKey(
-              actualDeaths,
-              foodLoss,
-              !state.story.seen.firstWolfAttack,
-            ),
+            _logMessageKey: wolfHideLogKey(actualDeaths, foodLoss),
           };
         },
+      },
+    ],
+  },
+
+  /**
+   * Follow-up after the first wolf attack (win or lose). One choice unlocks
+   * village traps; legacy saves with firstWolfAttack already set are migrated.
+   */
+  trapSuggestion: {
+    id: "trapSuggestion",
+    condition: (state: GameState) =>
+      Boolean(state.story.seen.firstWolfAttack) &&
+      !state.story.seen.villageTrapsSuggested,
+    timeProbability: 0.05,
+    priority: 10,
+    repeatable: false,
+    choices: [
+      {
+        id: "prepareTraps",
+        effect: (state: GameState) => ({
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              villageTrapsSuggested: true,
+            },
+          },
+        }),
       },
     ],
   },

@@ -14,6 +14,7 @@ import {
   getFinanceExpeditionGoldCost,
   getFinanceExpeditionFoodCost,
 } from "@/game/rules/forestResearchActions";
+import { handleTameWolf } from "@/game/rules/villageUtilityActions";
 import { killVillagers } from "@/game/stateHelpers";
 import { getProvokeAttackWaveExecutionUpdates } from "@/game/rules/bastionActions";
 // Import all handlers from the modular action files
@@ -721,6 +722,8 @@ export function executeGameAction(
 
     case "financeExpedition":
       return handleFinanceExpedition(state, result);
+    case "tameWolf":
+      return handleTameWolf(state, result);
 
     // Forest Trade Actions
     case "tradeGoldForFood":

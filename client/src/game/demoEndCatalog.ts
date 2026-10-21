@@ -94,6 +94,7 @@ export const DEMO_END_ESTATE_SKILL_IDS = [
   "feralHowl",
   "crowsEye",
   "disgracedPrior",
+  "greyOne",
   "chainmaster",
 ] as const;
 
@@ -124,6 +125,7 @@ export const DEMO_END_VILLAGE_UTILITY_ACTION_IDS = [
   "feedFire",
   "callMerchant",
   "invest",
+  "tameWolf",
 ] as const;
 
 export type DemoEndVillageUtilityActionId =
@@ -162,7 +164,7 @@ export function isDemoEndVillagePresetSlotRevealed(
 }
 
 export function isDemoEndVillageUtilityRevealed(
-  state: Pick<GameState, "buildings">,
+  state: Pick<GameState, "buildings" | "clothing">,
   id: DemoEndVillageUtilityActionId,
 ): boolean {
   switch (id) {
@@ -172,6 +174,8 @@ export function isDemoEndVillageUtilityRevealed(
       return (state.buildings.tradePost ?? 0) >= 1;
     case "invest":
       return (state.buildings.coinhouse ?? 0) >= 1;
+    case "tameWolf":
+      return state.clothing.alphas_hide === true;
   }
 }
 
@@ -353,6 +357,8 @@ export function isDemoEndEstateSkillUnlocked(
       return state.fellowship.one_eyed_crow === true;
     case "disgracedPrior":
       return state.fellowship.disgraced_prior === true;
+    case "greyOne":
+      return state.fellowship.grey_one === true;
     case "chainmaster":
       return state.books.book_of_chainmaster === true;
   }

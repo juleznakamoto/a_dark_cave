@@ -383,6 +383,10 @@
     "the_hound": {
       "description": "Muskularny, zniekształcony ocalały z zatrutej górskiej wioski.",
       "name": "Brutalny Ogar"
+    },
+    "grey_one": {
+      "description": "Wilcze szczenię zabrane spod zabitego alfy i oswojone.",
+      "name": "Szary"
     }
   },
   "tools": {

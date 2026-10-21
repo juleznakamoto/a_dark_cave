@@ -1871,6 +1871,15 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
       generalBonuses: {},
     },
   },
+  grey_one: {
+    id: "grey_one",
+    name: "Grey One",
+    description:
+      "Wolf pup taken from beside the slain alpha and tamed.",
+    bonuses: {
+      generalBonuses: {},
+    },
+  },
 };
 
 // Building effects are derived from villageBuildActions

@@ -66,6 +66,7 @@ describe("demoEndCatalog", () => {
       "feralHowl",
       "crowsEye",
       "disgracedPrior",
+      "greyOne",
       "chainmaster",
     ]);
     const locked = gameStateSchema.parse({});
@@ -138,11 +139,13 @@ describe("demoEndCatalog", () => {
       "feedFire",
       "callMerchant",
       "invest",
+      "tameWolf",
     ]);
     const locked = gameStateSchema.parse({});
     expect(isDemoEndVillageUtilityRevealed(locked, "feedFire")).toBe(false);
     expect(isDemoEndVillageUtilityRevealed(locked, "callMerchant")).toBe(false);
     expect(isDemoEndVillageUtilityRevealed(locked, "invest")).toBe(false);
+    expect(isDemoEndVillageUtilityRevealed(locked, "tameWolf")).toBe(false);
     const unlocked = gameStateSchema.parse({
       buildings: { heartfire: 1, tradePost: 1, coinhouse: 1 },
     });

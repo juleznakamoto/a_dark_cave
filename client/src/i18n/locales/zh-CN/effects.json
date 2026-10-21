@@ -383,6 +383,10 @@
     "the_hound": {
       "description": "来自中毒山村的健壮却毁容的幸存者。",
       "name": "蛮犬"
+    },
+    "grey_one": {
+      "description": "从头狼身旁带走并驯养的幼狼。",
+      "name": "灰者"
     }
   },
   "tools": {

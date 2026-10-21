@@ -558,6 +558,13 @@
   "invest": {
     "label": "Investi"
   },
+  "tameWolf": {
+    "description": "Addomestica il lupo trovato vicino all'alfa morto.",
+    "label": "Addomesticare il lupo",
+    "log": {
+      "complete": "Il cucciolo è addomesticato. Il Grigio si è unito alla tua compagnia."
+    }
+  },
   "layTrap": {
     "label": "Disponi Trappola",
     "log": {

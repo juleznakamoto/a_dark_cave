@@ -383,6 +383,10 @@
     "the_hound": {
       "description": "Survivant musclé et défiguré d'un village de montagne empoisonné.",
       "name": "Chien Brutal"
+    },
+    "grey_one": {
+      "description": "Louveteau pris auprès de l'alpha abattu, puis apprivoisé.",
+      "name": "Le Gris"
     }
   },
   "tools": {

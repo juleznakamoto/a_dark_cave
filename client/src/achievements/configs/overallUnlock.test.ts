@@ -8,6 +8,7 @@ import {
   CRUSHING_STRIKE_UPGRADES,
   DISGRACED_PRIOR_UPGRADES,
   FERAL_HOWL_UPGRADES,
+  GREY_ONE_UPGRADES,
   HUNTING_SKILL_UPGRADES,
   SLEEP_INTENSITY_UPGRADES,
   SLEEP_LENGTH_UPGRADES,
@@ -142,6 +143,7 @@ describe("overall achievement tab unlock", () => {
     state.disgracedPriorSkills = {
       level: DISGRACED_PRIOR_UPGRADES.length - 1,
     };
+    state.greyOneSkills = { level: GREY_ONE_UPGRADES.length - 1 };
     state.chainmasterSkills = { level: CHAINMASTER_UPGRADES.length - 1 };
 
     expect(hasAnyOverallAchievementReached(state)).toBe(true);

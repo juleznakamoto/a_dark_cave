@@ -574,6 +574,13 @@
   "invest": {
     "label": "Invertir"
   },
+  "tameWolf": {
+    "description": "Domestica al lobo que encontraste junto al alfa muerto.",
+    "label": "Domesticar lobo",
+    "log": {
+      "complete": "El cachorro está domesticado. El Gris se ha unido a tu compañía."
+    }
+  },
   "layTrap": {
     "label": "Colocar trampa",
     "log": {

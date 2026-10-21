@@ -28,6 +28,8 @@ import {
   CROWS_EYE_UPGRADES,
   DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
   DISGRACED_PRIOR_UPGRADES,
+  GREY_ONE_UPGRADES,
+  getGreyOneEffectLines,
 } from "@/game/rules/skillUpgrades";
 import { isTraderShopUnlocked, stackTimedDebuff } from "@/game/stateHelpers";
 import { focusTooltip } from "@/game/rules/tooltips";
@@ -48,7 +50,7 @@ import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { formatTooltipCostLine } from "@/i18n/tooltipLabels";
 import { TooltipCostLines } from "@/game/rules/tooltips";
-import { getResourceName } from "@/i18n/resolveGameText";
+import { getEffectName, getResourceName } from "@/i18n/resolveGameText";
 import { useDemoEndCatalogActive, useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { isDemoPlayFrozen } from "@/game/demoLimit";
 import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
@@ -104,6 +106,7 @@ interface SkillUpgradeRowProps {
   level: number;
   maxLevel?: number;
   upgradeCost: number;
+  costResource?: "gold" | "bones";
   canAfford: boolean;
   tooltipId: string;
   buttonId: string;
@@ -117,6 +120,7 @@ function SkillUpgradeRow({
   level,
   maxLevel = 5,
   upgradeCost,
+  costResource = "gold",
   canAfford,
   tooltipId,
   buttonId,
@@ -125,11 +129,12 @@ function SkillUpgradeRow({
   description,
 }: SkillUpgradeRowProps) {
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
-  const gold = useGameStore((s) => s.resources.gold ?? 0);
+  const available = useGameStore((s) => s.resources[costResource] ?? 0);
   const canUpgrade = canAfford;
-  const openShop = useEstateGoldShopClick(canUpgrade);
-  const costLine = formatTooltipCostLine(upgradeCost, "gold", {
-    available: gold,
+  const goldShopClick = useEstateGoldShopClick(canUpgrade);
+  const openShop = costResource === "gold" ? goldShopClick : undefined;
+  const costLine = formatTooltipCostLine(upgradeCost, costResource, {
+    available,
   });
   return (
     <div className="w-full space-y-1 pt-2">
@@ -150,7 +155,7 @@ function SkillUpgradeRow({
               tooltipId={tooltipId}
               disabled={!canUpgrade && !openShop}
               onClick={openShop}
-              onMouseEnter={() => setHighlightedResources(["gold"])}
+              onMouseEnter={() => setHighlightedResources([costResource])}
               onMouseLeave={() => setHighlightedResources([])}
             >
               <ImproveButton
@@ -184,6 +189,7 @@ const ESTATE_SKILL_TITLE_KEYS: Record<DemoEndEstateSkillId, string> = {
   feralHowl: "estate.feralHowl",
   crowsEye: "estate.crowsEye",
   disgracedPrior: "estate.tirelessWorker",
+  greyOne: "Grey One",
   chainmaster: "estate.chainmaster",
 };
 
@@ -234,6 +240,8 @@ function getEstateSkillLevelZeroDescription(
       return t("estate.crowsEyeSummary", {
         percent: CROWS_EYE_UPGRADES[0].doubleChance,
       });
+    case "greyOne":
+      return getGreyOneEffectLines(GREY_ONE_UPGRADES[0]).join(", ");
     case "disgracedPrior": {
       const cur = DISGRACED_PRIOR_UPGRADES[0];
       const upkeepText = t("estate.priorUpkeepShort", {
@@ -343,6 +351,7 @@ export default function EstatePanel({
     combatSkills,
     fellowship,
     disgracedPriorSkills,
+    greyOneSkills,
     chainmasterSkills,
     books,
     setHighlightedResources,
@@ -361,6 +370,7 @@ export default function EstatePanel({
       combatSkills: s.combatSkills,
       fellowship: s.fellowship,
       disgracedPriorSkills: s.disgracedPriorSkills,
+      greyOneSkills: s.greyOneSkills,
       chainmasterSkills: s.chainmasterSkills,
       books: s.books,
       setHighlightedResources: s.setHighlightedResources,
@@ -579,17 +589,22 @@ export default function EstatePanel({
     upgrades: { cost: number }[],
     getCurrentLevel: (s: ReturnType<typeof useGameStore.getState>) => number,
     applyLevel: (s: ReturnType<typeof useGameStore.getState>, newLevel: number) => Partial<ReturnType<typeof useGameStore.getState>>,
+    currency: "gold" | "bones" = "gold",
   ) => {
     if (isDemoPlayFrozen(useGameStore.getState())) return;
     useGameStore.setState((state) => {
       const currentLevel = getCurrentLevel(state);
       if (currentLevel >= 5) return state;
       const next = upgrades[currentLevel + 1];
-      if (!next || state.resources.gold < next.cost) return state;
+      const available = state.resources[currency] ?? 0;
+      if (!next || available < next.cost) return state;
       return {
         ...state,
         ...applyLevel(state, currentLevel + 1),
-        resources: { ...state.resources, gold: state.resources.gold - next.cost },
+        resources: {
+          ...state.resources,
+          [currency]: available - next.cost,
+        },
       };
     });
   };
@@ -614,6 +629,18 @@ export default function EstatePanel({
       (s) => s.disgracedPriorSkills?.level ?? 0,
       (_s, level) => ({ disgracedPriorSkills: { level } }),
     );
+
+  const handleGreyOneUpgrade = () => {
+    handleSkillUpgrade(
+      GREY_ONE_UPGRADES,
+      (s) => s.greyOneSkills?.level ?? 0,
+      (_s, level) => ({ greyOneSkills: { level } }),
+      "bones",
+    );
+    const store = useGameStore.getState();
+    store.updateEffects();
+    store.updateStats();
+  };
 
   const handleChainmasterUpgrade = () => {
     if (isDemoPlayFrozen(useGameStore.getState())) return;
@@ -958,6 +985,7 @@ export default function EstatePanel({
               fellowship.the_hound ||
               fellowship.one_eyed_crow ||
               fellowship.disgraced_prior ||
+              fellowship.grey_one ||
               books.book_of_chainmaster) && (
                 <div className="space-y-1 pt-2">
                   <div className={GAME_TAB_SECTION_HEADER_ROW}>
@@ -1217,6 +1245,51 @@ export default function EstatePanel({
                       <RedactedEstateUpgradeRow
                         id="disgracedPrior"
                         title={t(ESTATE_SKILL_TITLE_KEYS.disgracedPrior)}
+                      />
+                    )
+                  )}
+
+                  {/* Grey One */}
+                  {fellowship.grey_one ? (() => {
+                    const lvl = greyOneSkills?.level ?? 0;
+                    const cur = GREY_ONE_UPGRADES[lvl];
+                    const nxt = GREY_ONE_UPGRADES[lvl + 1];
+                    const delta = nxt
+                      ? {
+                        madness: nxt.madness - cur.madness,
+                        luck: nxt.luck - cur.luck,
+                        strength: nxt.strength - cur.strength,
+                        huntBonus: nxt.huntBonus - cur.huntBonus,
+                      }
+                      : null;
+                    const deltaLines = delta ? getGreyOneEffectLines(delta) : [];
+                    return (
+                      <SkillUpgradeRow
+                        title={getEffectName("fellowship", "grey_one", "Grey One")}
+                        level={lvl}
+                        upgradeCost={nxt?.cost ?? 0}
+                        costResource="bones"
+                        canAfford={(resources.bones ?? 0) >= (nxt?.cost ?? Infinity)}
+                        tooltipId="upgrade-grey-one-button"
+                        buttonId="upgrade-grey-one"
+                        onUpgrade={handleGreyOneUpgrade}
+                        tooltipContent={
+                          deltaLines.length > 0
+                            ? deltaLines.map((line) => <div key={line}>{line}</div>)
+                            : <div>{t("estate.maxLevel")}</div>
+                        }
+                        description={getGreyOneEffectLines(cur).join(", ")}
+                      />
+                    );
+                  })() : (
+                    catalogActive && (
+                      <RedactedEstateUpgradeRow
+                        id="greyOne"
+                        title={getEffectName(
+                          "fellowship",
+                          "grey_one",
+                          ESTATE_SKILL_TITLE_KEYS.greyOne,
+                        )}
                       />
                     )
                   )}

@@ -543,7 +543,7 @@ Color/contrast authority: `basic-0-woodGatherer.png`. Dest filenames match Steam
 
 ### Good Company
 
-`item-3-fellowship` — Recruit all six fellowship companions.
+`item-3-fellowship` — Recruit all seven fellowship companions.
 
 - [ ] 1. Six simple tokens or stones in a ring
 - [ ] 2. Six cloaked silhouettes, tiny

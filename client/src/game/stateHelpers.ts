@@ -603,6 +603,8 @@ export function buildGameState(state: any): GameState {
 }
 
 const TRADER_SHOP_UNLOCK_V2_APPLIED_KEY = "traderShopUnlockV2Applied";
+/** One-shot: traps used to unlock from firstWolfAttack inline copy. */
+const TRAP_SUGGESTION_V2_APPLIED_KEY = "trapSuggestionV2Applied";
 
 /**
  * One-time load migration: before `traderSettles`, the real-money Trader tab unlocked at
@@ -624,6 +626,31 @@ export function migrateTraderShopUnlockOnLoad(
   seen[TRADER_SHOP_UNLOCK_V2_APPLIED_KEY] = true;
   if (shouldGrandfatherUnlock) {
     seen.traderSettled = true;
+  }
+
+  return {
+    story: {
+      ...state.story,
+      seen,
+      merchantPurchases: state.story?.merchantPurchases ?? 0,
+    },
+  };
+}
+
+/**
+ * Traps used to unlock from `firstWolfAttack` (suggestion baked into wolf
+ * outcomes). New flow: trapSuggestion event sets `villageTrapsSuggested`.
+ * Grandfather existing saves that already saw the first wolf attack.
+ */
+export function migrateTrapSuggestionUnlockOnLoad(
+  state: Pick<GameState, "story">,
+): Partial<Pick<GameState, "story">> | null {
+  const seen = { ...(state.story?.seen ?? {}) };
+  if (seen[TRAP_SUGGESTION_V2_APPLIED_KEY]) return null;
+
+  seen[TRAP_SUGGESTION_V2_APPLIED_KEY] = true;
+  if (seen.firstWolfAttack && !seen.villageTrapsSuggested) {
+    seen.villageTrapsSuggested = true;
   }
 
   return {
@@ -927,6 +954,7 @@ export function hydrateLoadedGameState<T extends Partial<GameState>>(
     | "clothing"
     | "relics"
     | "combatSkills"
+    | "greyOneSkills"
     | "flags"
   > {
   const defaults = gameStateSchema.parse({});
@@ -969,6 +997,10 @@ export function hydrateLoadedGameState<T extends Partial<GameState>>(
     combatSkills: {
       ...defaults.combatSkills,
       ...savedState.combatSkills,
+    },
+    greyOneSkills: {
+      ...defaults.greyOneSkills,
+      ...savedState.greyOneSkills,
     },
   };
   return repairUnlockFlags(withItems, defaults.flags);
@@ -1106,6 +1138,10 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   const trader = migrateTraderShopUnlockOnLoad(migrated);
   if (trader?.story) {
     migrated = { ...migrated, story: trader.story };
+  }
+  const trapSuggestion = migrateTrapSuggestionUnlockOnLoad(migrated);
+  if (trapSuggestion?.story) {
+    migrated = { ...migrated, story: trapSuggestion.story };
   }
   const postCompletion = migratePostCompletionAttackWavesOnLoad(migrated);
   if (postCompletion) {

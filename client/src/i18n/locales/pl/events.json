@@ -2818,6 +2818,15 @@
     "message": "Czarodziej stoi u wejścia do wieży. 'Broń jest wykuta. Mamy teraz to, czego potrzeba, by stanąć przeciw stworom z głębin jaskini. Ciemność poniżej wkrótce pozna, że ta wioska nie padnie bez walki. Jesteśmy gotowi.'",
     "title": "Ostateczne przygotowanie"
   },
+  "trapSuggestion": {
+    "choices": {
+      "prepareTraps": {
+        "label": "Przygotować pułapki"
+      }
+    },
+    "message": "Wieśniacy radzą rozstawić pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
+    "title": "Obrona wioski"
+  },
   "wolfAttack": {
     "choices": {
       "defendVillage": {
@@ -2828,46 +2837,26 @@
       }
     },
     "log": {
-      "outcome0": "Wieśniacy pokonują watahę wilków! Zabijasz wilka alfa i zabierasz jego skórę jako trofeum. Promieniuje pierwotną mocą.",
-      "outcome0_first": "Wieśniacy pokonują watahę wilków! Zabijasz wilka alfa i zabierasz jego skórę jako trofeum. Promieniuje pierwotną mocą. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
+      "outcome0": "Wieśniacy pokonują watahę wilków! Zabijasz wilka alfa i zabierasz jego skórę jako trofeum. Promieniuje pierwotną mocą. Obok zabitego alfy leży wilcze szczenię. Zabierasz je ze sobą, by je oswoić.",
       "outcome1": "Wieśniacy tulą się w chatach, gdy wilki krążą na zewnątrz. Do świtu wilki odeszły, nikogo nie znalazłszy, zostawiając tylko zadrapania i terror.",
-      "outcome1_first": "Wieśniacy tulą się w chatach, gdy wilki krążą na zewnątrz. Do świtu wilki odeszły, nikogo nie znalazłszy, zostawiając tylko zadrapania i terror. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
       "defend_noDeaths": "Wieśniacy walczą rozpaczliwie z wilkami. Wieśniacy przetrwali atak.",
-      "defend_noDeaths_first": "Wieśniacy walczą rozpaczliwie z wilkami. Wieśniacy przetrwali atak. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
       "defend_noDeaths_hut": "Wieśniacy walczą rozpaczliwie z wilkami. Wieśniacy przetrwali atak. W szale wilki niszczą jedną z chat, zostawiając tylko rozszczepione drewno.",
-      "defend_noDeaths_hut_first": "Wieśniacy walczą rozpaczliwie z wilkami. Wieśniacy przetrwali atak. W szale wilki niszczą jedną z chat, zostawiając tylko rozszczepione drewno. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
       "defend_noDeaths_food": "Wieśniacy walczą rozpaczliwie z wilkami. Wieśniacy przetrwali atak. W chaosie wilki pustoszą twoje składy.",
-      "defend_noDeaths_food_first": "Wieśniacy walczą rozpaczliwie z wilkami. Wieśniacy przetrwali atak. W chaosie wilki pustoszą twoje składy. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
       "defend_noDeaths_food_hut": "Wieśniacy walczą rozpaczliwie z wilkami. Wieśniacy przetrwali atak. W chaosie wilki pustoszą twoje składy. W szale wilki niszczą jedną z chat, zostawiając tylko rozszczepione drewno.",
-      "defend_noDeaths_food_hut_first": "Wieśniacy walczą rozpaczliwie z wilkami. Wieśniacy przetrwali atak. W chaosie wilki pustoszą twoje składy. W szale wilki niszczą jedną z chat, zostawiając tylko rozszczepione drewno. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
       "defend_oneDeath": "Wieśniacy walczą rozpaczliwie z wilkami. Jeden wieśniak pada pod nadprzyrodzoną furią wilków.",
-      "defend_oneDeath_first": "Wieśniacy walczą rozpaczliwie z wilkami. Jeden wieśniak pada pod nadprzyrodzoną furią wilków. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
       "defend_oneDeath_hut": "Wieśniacy walczą rozpaczliwie z wilkami. Jeden wieśniak pada pod nadprzyrodzoną furią wilków. W szale wilki niszczą jedną z chat, zostawiając tylko rozszczepione drewno.",
-      "defend_oneDeath_hut_first": "Wieśniacy walczą rozpaczliwie z wilkami. Jeden wieśniak pada pod nadprzyrodzoną furią wilków. W szale wilki niszczą jedną z chat, zostawiając tylko rozszczepione drewno. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
       "defend_oneDeath_food": "Wieśniacy walczą rozpaczliwie z wilkami. Jeden wieśniak pada pod nadprzyrodzoną furią wilków. W chaosie wilki pustoszą twoje składy.",
-      "defend_oneDeath_food_first": "Wieśniacy walczą rozpaczliwie z wilkami. Jeden wieśniak pada pod nadprzyrodzoną furią wilków. W chaosie wilki pustoszą twoje składy. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
       "defend_oneDeath_food_hut": "Wieśniacy walczą rozpaczliwie z wilkami. Jeden wieśniak pada pod nadprzyrodzoną furią wilków. W chaosie wilki pustoszą twoje składy. W szale wilki niszczą jedną z chat, zostawiając tylko rozszczepione drewno.",
-      "defend_oneDeath_food_hut_first": "Wieśniacy walczą rozpaczliwie z wilkami. Jeden wieśniak pada pod nadprzyrodzoną furią wilków. W chaosie wilki pustoszą twoje składy. W szale wilki niszczą jedną z chat, zostawiając tylko rozszczepione drewno. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
       "defend_manyDeaths": "Wieśniacy walczą rozpaczliwie z wilkami. Wieśniacy padają pod nadprzyrodzoną furią wilków.",
-      "defend_manyDeaths_first": "Wieśniacy walczą rozpaczliwie z wilkami. Wieśniacy padają pod nadprzyrodzoną furią wilków. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
       "defend_manyDeaths_hut": "Wieśniacy walczą rozpaczliwie z wilkami. Wieśniacy padają pod nadprzyrodzoną furią wilków. W szale wilki niszczą jedną z chat, zostawiając tylko rozszczepione drewno.",
-      "defend_manyDeaths_hut_first": "Wieśniacy walczą rozpaczliwie z wilkami. Wieśniacy padają pod nadprzyrodzoną furią wilków. W szale wilki niszczą jedną z chat, zostawiając tylko rozszczepione drewno. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
       "defend_manyDeaths_food": "Wieśniacy walczą rozpaczliwie z wilkami. Wieśniacy padają pod nadprzyrodzoną furią wilków. W chaosie wilki pustoszą twoje składy.",
-      "defend_manyDeaths_food_first": "Wieśniacy walczą rozpaczliwie z wilkami. Wieśniacy padają pod nadprzyrodzoną furią wilków. W chaosie wilki pustoszą twoje składy. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
       "defend_manyDeaths_food_hut": "Wieśniacy walczą rozpaczliwie z wilkami. Wieśniacy padają pod nadprzyrodzoną furią wilków. W chaosie wilki pustoszą twoje składy. W szale wilki niszczą jedną z chat, zostawiając tylko rozszczepione drewno.",
-      "defend_manyDeaths_food_hut_first": "Wieśniacy walczą rozpaczliwie z wilkami. Wieśniacy padają pod nadprzyrodzoną furią wilków. W chaosie wilki pustoszą twoje składy. W szale wilki niszczą jedną z chat, zostawiając tylko rozszczepione drewno. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
       "hide_noDeaths": "Wieśniacy tulą się w chatach, gdy wilki krążą na zewnątrz. Do świtu wilki odeszły, zostawiając tylko zadrapania i terror.",
-      "hide_noDeaths_first": "Wieśniacy tulą się w chatach, gdy wilki krążą na zewnątrz. Do świtu wilki odeszły, zostawiając tylko zadrapania i terror. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
       "hide_noDeaths_food": "Wieśniacy tulą się w chatach, gdy wilki krążą na zewnątrz. Wilki plądrują zapasy, potem znikają o świcie, zostawiając tylko zadrapania i terror.",
-      "hide_noDeaths_food_first": "Wieśniacy tulą się w chatach, gdy wilki krążą na zewnątrz. Wilki plądrują zapasy, potem znikają o świcie, zostawiając tylko zadrapania i terror. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
       "hide_oneDeath": "Wieśniacy tulą się w chatach, gdy wilki krążą na zewnątrz. Jeden wieśniak, który wyszedł, zostaje znaleziony rozszarpany o świcie.",
-      "hide_oneDeath_first": "Wieśniacy tulą się w chatach, gdy wilki krążą na zewnątrz. Jeden wieśniak, który wyszedł, zostaje znaleziony rozszarpany o świcie. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
       "hide_oneDeath_food": "Wieśniacy tulą się w chatach, gdy wilki krążą na zewnątrz. Jeden wieśniak, który wyszedł, zostaje znaleziony rozszarpany o świcie. Wilki plądrują zapasy, zanim znikną o świcie.",
-      "hide_oneDeath_food_first": "Wieśniacy tulą się w chatach, gdy wilki krążą na zewnątrz. Jeden wieśniak, który wyszedł, zostaje znaleziony rozszarpany o świcie. Wilki plądrują zapasy, zanim znikną o świcie. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
       "hide_manyDeaths": "Wieśniacy tulą się w chatach, gdy wilki krążą na zewnątrz. Kilku wieśniaków zostaje wywleczonych z chat, ich krzyki niosą się przez noc.",
-      "hide_manyDeaths_first": "Wieśniacy tulą się w chatach, gdy wilki krążą na zewnątrz. Kilku wieśniaków zostaje wywleczonych z chat, ich krzyki niosą się przez noc. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami.",
-      "hide_manyDeaths_food": "Wieśniacy tulą się w chatach, gdy wilki krążą na zewnątrz. Kilku wieśniaków zostaje wywleczonych z chat, ich krzyki niosą się przez noc. Wilki plądrują zapasy, zanim znikną o świcie.",
-      "hide_manyDeaths_food_first": "Wieśniacy tulą się w chatach, gdy wilki krążą na zewnątrz. Kilku wieśniaków zostaje wywleczonych z chat, ich krzyki niosą się przez noc. Wilki plądrują zapasy, zanim znikną o świcie. Wieśniacy radzą, byś rozstawił pułapki wokół wioski, by lepiej chronić się przed wilkami i innymi wrogami."
+      "hide_manyDeaths_food": "Wieśniacy tulą się w chatach, gdy wilki krążą na zewnątrz. Kilku wieśniaków zostaje wywleczonych z chat, ich krzyki niosą się przez noc. Wilki plądrują zapasy, zanim znikną o świcie."
     },
     "message": "Blisko północy wilki wyłaniają się z ciemności, oczy świecące nienaturalnym głodem. Ich wycie niesie złośliwość, gdy krążą wokół wioski.",
     "title": "Atak wilków"

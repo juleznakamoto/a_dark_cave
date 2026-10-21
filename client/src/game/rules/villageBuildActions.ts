@@ -1024,7 +1024,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "story.seen.firstWolfAttack": true,
+        "story.seen.villageTrapsSuggested": true,
         "buildings.traps": 0,
       },
     },

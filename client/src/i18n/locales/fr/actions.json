@@ -574,6 +574,13 @@
   "invest": {
     "label": "Investir"
   },
+  "tameWolf": {
+    "description": "Apprivoisez le loup trouvé près de l'alpha mort.",
+    "label": "Apprivoiser le loup",
+    "log": {
+      "complete": "Le louveteau est apprivoisé. Le Gris a rejoint votre compagnie."
+    }
+  },
   "layTrap": {
     "label": "Poser un piège",
     "log": {

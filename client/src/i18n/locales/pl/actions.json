@@ -574,6 +574,13 @@
   "invest": {
     "label": "Zainwestuj"
   },
+  "tameWolf": {
+    "description": "Oswój wilka znalezionego przy zabitym alfie.",
+    "label": "Oswoić wilka",
+    "log": {
+      "complete": "Wilcze szczenię zostało oswojone. Szary dołączył do twojej drużyny."
+    }
+  },
   "layTrap": {
     "label": "Zastaw pułapkę",
     "log": {

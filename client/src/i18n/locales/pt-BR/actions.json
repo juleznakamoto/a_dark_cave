@@ -558,6 +558,13 @@
   "invest": {
     "label": "Investir"
   },
+  "tameWolf": {
+    "description": "Domestique o lobo que você encontrou perto do alfa morto.",
+    "label": "Domesticar lobo",
+    "log": {
+      "complete": "O filhote está domesticado. O Cinzento entrou para a sua irmandade."
+    }
+  },
   "layTrap": {
     "label": "Armar Armadilha",
     "log": {

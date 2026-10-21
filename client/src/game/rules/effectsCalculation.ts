@@ -14,6 +14,8 @@ import {
   HUNT_BONUSES,
   DISGRACED_PRIOR_UPGRADES,
   CROWS_EYE_UPGRADES,
+  getGreyOneHuntBonusPercent,
+  getGreyOneTier,
 } from "./skillUpgrades";
 import { CRUEL_MODE } from "../cruelMode";
 import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
@@ -403,6 +405,11 @@ export const getActionBonuses = (
     }
   }
 
+  const greyOneHunt = getGreyOneHuntBonusPercent(state);
+  if (actionId === "hunt" && greyOneHunt > 0) {
+    resourceMultiplier += greyOneHunt / 100;
+  }
+
   // Add building bonuses
   Object.entries(state.buildings).forEach(([buildingKey, buildingCount]) => {
     if (buildingCount > 0) {
@@ -687,6 +694,25 @@ export const getAllActionBonuses = (
           flatBonus: 0,
         });
       }
+    }
+  }
+
+  const greyOneHuntBonus = getGreyOneHuntBonusPercent(state);
+  if (greyOneHuntBonus > 0) {
+    const existingHuntIndex = actionBonuses.findIndex((b) => b.id === "hunt");
+    if (existingHuntIndex >= 0) {
+      const existing = actionBonuses[existingHuntIndex];
+      existing.multiplier += greyOneHuntBonus / 100;
+      const percentBonus = Math.round((existing.multiplier - 1) * 100);
+      existing.displayValue = `${percentBonus}%`;
+    } else {
+      actionBonuses.push({
+        id: "hunt",
+        label: getBonusSidebarLabel("hunt"),
+        displayValue: `${greyOneHuntBonus}%`,
+        multiplier: 1 + greyOneHuntBonus / 100,
+        flatBonus: 0,
+      });
     }
   }
 
@@ -1354,6 +1380,13 @@ export const calculateTotalEffects = (state: GameState) => {
       }
     }
   });
+
+  const greyOne = getGreyOneTier(state);
+  if (greyOne) {
+    if (greyOne.madness) effects.statBonuses.madness += greyOne.madness;
+    if (greyOne.luck) effects.statBonuses.luck += greyOne.luck;
+    if (greyOne.strength) effects.statBonuses.strength += greyOne.strength;
+  }
 
   return effects;
 };

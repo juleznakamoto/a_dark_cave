@@ -1,5 +1,8 @@
 // Centralized skill upgrade configurations and combat tuning shared with combat UI.
 
+import { tWithFallback } from "@/i18n/resolveGameText";
+import { getUiTooltip } from "@/i18n/tooltipLabels";
+
 // Crushing Strike upgrade configurations (Combat skill from Restless Knight)
 export const CRUSHING_STRIKE_UPGRADES = [
   {
@@ -313,4 +316,69 @@ export function getChainmasterProductionBonus(state: {
   if (!state.books?.book_of_chainmaster) return 0;
   const level = state.chainmasterSkills?.level ?? 0;
   return CHAINMASTER_UPGRADES[level]?.productionBonus ?? 0;
+}
+
+/**
+ * Grey One (tamed wolf pup). Each tier stores the full current package.
+ * A stat omitted from a later tier in the design notes keeps the previous value.
+ */
+export const GREY_ONE_UPGRADES = [
+  { level: 0, madness: -1, luck: 1, strength: 0, huntBonus: 0, cost: 0, currency: null },
+  { level: 1, madness: -1, luck: 1, strength: 1, huntBonus: 25, cost: 5000, currency: "bones" as const },
+  { level: 2, madness: -3, luck: 3, strength: 1, huntBonus: 25, cost: 7500, currency: "bones" as const },
+  { level: 3, madness: -3, luck: 3, strength: 3, huntBonus: 50, cost: 10000, currency: "bones" as const },
+  { level: 4, madness: -5, luck: 5, strength: 3, huntBonus: 50, cost: 12500, currency: "bones" as const },
+  { level: 5, madness: -5, luck: 5, strength: 5, huntBonus: 100, cost: 15000, currency: "bones" as const },
+];
+
+export type GreyOneTier = (typeof GREY_ONE_UPGRADES)[number];
+
+export function getGreyOneTier(state: {
+  fellowship?: { grey_one?: boolean };
+  greyOneSkills?: { level?: number };
+}): GreyOneTier | null {
+  if (!state.fellowship?.grey_one) return null;
+  const level = state.greyOneSkills?.level ?? 0;
+  return GREY_ONE_UPGRADES[level] ?? GREY_ONE_UPGRADES[0];
+}
+
+export function getGreyOneHuntBonusPercent(state: {
+  fellowship?: { grey_one?: boolean };
+  greyOneSkills?: { level?: number };
+}): number {
+  return getGreyOneTier(state)?.huntBonus ?? 0;
+}
+
+/** Player-facing lines for the current tier, or for a delta object with the same fields. */
+export function getGreyOneEffectLines(tier: {
+  madness: number;
+  luck: number;
+  strength: number;
+  huntBonus: number;
+}): string[] {
+  const lines: string[] = [];
+  if (tier.madness) {
+    lines.push(
+      getUiTooltip("madnessStat", "Madness:{{sign}}{{value}}", {
+        sign: tier.madness > 0 ? " +" : " ",
+        value: tier.madness,
+      }),
+    );
+  }
+  if (tier.luck) {
+    lines.push(getUiTooltip("luck", "Luck: +{{value}}", { value: tier.luck }));
+  }
+  if (tier.strength) {
+    lines.push(
+      getUiTooltip("strength", "Strength: +{{value}}", { value: tier.strength }),
+    );
+  }
+  if (tier.huntBonus) {
+    lines.push(
+      tWithFallback("ui", "estate.skillHuntBonus", "+{{amount}}% Hunt Bonus", {
+        amount: tier.huntBonus,
+      }),
+    );
+  }
+  return lines;
 }

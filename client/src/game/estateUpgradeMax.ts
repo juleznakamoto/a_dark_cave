@@ -6,6 +6,7 @@ import {
   CRUSHING_STRIKE_UPGRADES,
   DISGRACED_PRIOR_UPGRADES,
   FERAL_HOWL_UPGRADES,
+  GREY_ONE_UPGRADES,
   HUNTING_SKILL_UPGRADES,
   SLEEP_INTENSITY_UPGRADES,
   SLEEP_LENGTH_UPGRADES,
@@ -24,6 +25,7 @@ export const ESTATE_UPGRADE_MAXER_KEYS = [
   "feralHowl",
   "crowsEye",
   "disgracedPrior",
+  "greyOne",
   "chainmaster",
 ] as const;
 
@@ -39,6 +41,7 @@ const ESTATE_UPGRADE_MAX_LEVEL: Record<EstateUpgradeMaxerKey, number> = {
   feralHowl: FERAL_HOWL_UPGRADES.length - 1,
   crowsEye: CROWS_EYE_UPGRADES.length - 1,
   disgracedPrior: DISGRACED_PRIOR_UPGRADES.length - 1,
+  greyOne: GREY_ONE_UPGRADES.length - 1,
   chainmaster: CHAINMASTER_UPGRADES.length - 1,
 };
 
@@ -63,6 +66,8 @@ function getEstateUpgradeLevel(
       return state.crowsEyeSkills?.level ?? 0;
     case "disgracedPrior":
       return state.disgracedPriorSkills?.level ?? 0;
+    case "greyOne":
+      return state.greyOneSkills?.level ?? 0;
     case "chainmaster":
       return state.chainmasterSkills?.level ?? 0;
   }

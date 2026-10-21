@@ -574,6 +574,13 @@
   "invest": {
     "label": "Investieren"
   },
+  "tameWolf": {
+    "description": "Zähme den Wolf, den du neben dem toten Alphawolf gefunden hast.",
+    "label": "Wolf zähmen",
+    "log": {
+      "complete": "Das Wolfsjunge ist gezähmt. Der Graue hat sich deiner Gemeinschaft angeschlossen."
+    }
+  },
   "layTrap": {
     "label": "Falle legen",
     "log": {

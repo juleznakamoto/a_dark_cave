@@ -383,6 +383,10 @@
     "the_hound": {
       "description": "Muscular, disfigured survivor from a poisoned mountain village.",
       "name": "Brute Hound"
+    },
+    "grey_one": {
+      "description": "Wolf pup taken from beside the slain alpha and tamed.",
+      "name": "Grey One"
     }
   },
   "tools": {

@@ -88,7 +88,12 @@ import {
   isItemAbsolved,
 } from "@/game/itemAbsolution";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
-import { POISON_ARROWS_DOT_FIGHT_ROUNDS } from "@/game/rules/skillUpgrades";
+import {
+  GREY_ONE_UPGRADES,
+  POISON_ARROWS_DOT_FIGHT_ROUNDS,
+  getGreyOneEffectLines,
+  getGreyOneTier,
+} from "@/game/rules/skillUpgrades";
 
 /** Moon phase for n fragments: 1→◔, 2→◑, 3→◕, 4→● (index = n − 1). */
 const MAP_FRAGMENT_MOON_GLYPHS = ["◔", "◑", "◕", "●"] as const;
@@ -773,18 +778,33 @@ export function renderItemTooltip(
             ? "fellowship"
             : "clothing";
 
-  // Fellowship has no stat bonuses; still show a one-time unlock as an effect line.
+  // Fellowship has no static stat block; show a one-time unlock, or Grey One's current tier.
   if (itemType === "fellowship") {
-    const unlockEffectLine = showEffects ? getItemUnlockEffectLine(itemId) : null;
+    const greyOneLines =
+      itemId === "grey_one" && showEffects
+        ? getGreyOneEffectLines(
+            getGreyOneTier(useGameStore.getState() as unknown as GameState) ??
+              GREY_ONE_UPGRADES[0],
+          )
+        : [];
+    const unlockEffectLine =
+      showEffects && itemId !== "grey_one"
+        ? getItemUnlockEffectLine(itemId)
+        : null;
     const hasFellowshipTitle = Boolean(showTitle && effect.name);
     const hasFellowshipDescription = Boolean(
       showDescription && effect.description,
     );
-    if (!hasFellowshipTitle && !hasFellowshipDescription && !unlockEffectLine) {
+    if (
+      !hasFellowshipTitle &&
+      !hasFellowshipDescription &&
+      !unlockEffectLine &&
+      greyOneLines.length === 0
+    ) {
       return null;
     }
     const descriptionHasContentAbove = Boolean(
-      hasFellowshipTitle || unlockEffectLine,
+      hasFellowshipTitle || unlockEffectLine || greyOneLines.length > 0,
     );
     return (
       <div className="text-xs">
@@ -797,6 +817,14 @@ export function renderItemTooltip(
           <>
             {hasFellowshipTitle && <ActionTooltipSeparator />}
             <div>{unlockEffectLine}</div>
+          </>
+        )}
+        {greyOneLines.length > 0 && (
+          <>
+            {hasFellowshipTitle && <ActionTooltipSeparator />}
+            {greyOneLines.map((line) => (
+              <div key={line}>{line}</div>
+            ))}
           </>
         )}
         {hasFellowshipDescription && (

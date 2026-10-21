@@ -10,6 +10,7 @@ describe("item Good Company", () => {
 
     expect(seg?.maxCount).toBe(FELLOWSHIP_MEMBER_ORDER.length);
     expect(FELLOWSHIP_MEMBER_ORDER).toContain("one_eyed_crow");
-    expect(FELLOWSHIP_MEMBER_ORDER).toHaveLength(6);
+    expect(FELLOWSHIP_MEMBER_ORDER).toContain("grey_one");
+    expect(FELLOWSHIP_MEMBER_ORDER).toHaveLength(7);
   });
 });

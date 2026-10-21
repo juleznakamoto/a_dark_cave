@@ -254,6 +254,7 @@ const ALWAYS_FULL_CLOUD_SLICES = [
   "chainmasterSkills",
   "crowsEyeSkills",
   "disgracedPriorSkills",
+  "greyOneSkills",
   "weaponEnchantments",
   "absolvedItems",
   "merchantTrades",

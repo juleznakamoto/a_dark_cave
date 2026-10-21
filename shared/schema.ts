@@ -28,6 +28,7 @@ const fellowshipShape = {
   one_eyed_crow: z.boolean().default(false),
   disgraced_prior: z.boolean().default(false),
   the_hound: z.boolean().default(false),
+  grey_one: z.boolean().default(false),
 };
 
 /** Canonical order of fellowship members for UI display. */
@@ -931,6 +932,13 @@ export const gameStateSchema = z.object({
     .default({ level: 0 }),
 
   disgracedPriorSkills: z
+    .object({
+      level: z.number().default(0),
+    })
+    .default({ level: 0 }),
+
+  /** Grey One (tamed wolf) upgrade track. Level 0 applies as soon as he joins. */
+  greyOneSkills: z
     .object({
       level: z.number().default(0),
     })

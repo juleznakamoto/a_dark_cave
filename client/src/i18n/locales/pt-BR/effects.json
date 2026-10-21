@@ -383,6 +383,10 @@
     "the_hound": {
       "description": "Sobrevivente musculoso e desfigurado de um vilarejo na montanha envenenada.",
       "name": "Cão Bruto"
+    },
+    "grey_one": {
+      "description": "Filhote de lobo levado de junto do alfa abatido e domesticado.",
+      "name": "O Cinzento"
     }
   },
   "tools": {

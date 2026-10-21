@@ -383,6 +383,10 @@
     "the_hound": {
       "description": "Sopravvissuto muscoloso e sfigurato di un villaggio di montagna avvelenato.",
       "name": "Segugio Bruto"
+    },
+    "grey_one": {
+      "description": "Cucciolo di lupo preso accanto all'alfa ucciso e addomesticato.",
+      "name": "Il Grigio"
     }
   },
   "tools": {

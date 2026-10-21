@@ -574,6 +574,13 @@
   "invest": {
     "label": "投資"
   },
+  "tameWolf": {
+    "description": "倒した首領のそばで見つけた狼を飼い慣らす。",
+    "label": "狼を飼い慣らす",
+    "log": {
+      "complete": "狼の仔は飼い慣らされた。灰色の者が仲間に加わる。"
+    }
+  },
   "layTrap": {
     "label": "罠を仕掛ける",
     "log": {

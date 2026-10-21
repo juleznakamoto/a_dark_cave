@@ -574,6 +574,13 @@
   "invest": {
     "label": "Invest"
   },
+  "tameWolf": {
+    "description": "Tame the wolf you found near the dead alpha.",
+    "label": "Tame Wolf",
+    "log": {
+      "complete": "The wolf pup is tamed. Grey One has joined your fellowship."
+    }
+  },
   "layTrap": {
     "label": "Lay Trap",
     "log": {

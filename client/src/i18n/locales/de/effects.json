@@ -383,6 +383,10 @@
     "the_hound": {
       "description": "Muskulöser, entstellter Überlebender eines vergifteten Bergdorfs.",
       "name": "Brutaler Hund"
+    },
+    "grey_one": {
+      "description": "Wolfsjunges, das neben dem erschlagenen Alphawolf lag und gezähmt wurde.",
+      "name": "Der Graue"
     }
   },
   "tools": {

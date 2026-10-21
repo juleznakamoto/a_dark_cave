@@ -181,6 +181,7 @@ export function buildCombatDemoGameState(
       one_eyed_crow: true,
       disgraced_prior: true,
       the_hound: config.feralHowl,
+      grey_one: false,
     },
     combatSkills: {
       crushingStrikeLevel: config.crushingStrikeLevel,
