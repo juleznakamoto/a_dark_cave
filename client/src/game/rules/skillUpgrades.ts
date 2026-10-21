@@ -327,8 +327,8 @@ export const GREY_ONE_UPGRADES = [
   { level: 1, madness: -1, luck: 1, strength: 1, huntBonus: 25, cost: 5000, currency: "bones" as const },
   { level: 2, madness: -3, luck: 3, strength: 1, huntBonus: 25, cost: 7500, currency: "bones" as const },
   { level: 3, madness: -3, luck: 3, strength: 3, huntBonus: 50, cost: 10000, currency: "bones" as const },
-  { level: 4, madness: -5, luck: 5, strength: 3, huntBonus: 50, cost: 12500, currency: "bones" as const },
-  { level: 5, madness: -5, luck: 5, strength: 5, huntBonus: 100, cost: 15000, currency: "bones" as const },
+  { level: 4, madness: -5, luck: 5, strength: 3, huntBonus: 50, cost: 15000, currency: "bones" as const },
+  { level: 5, madness: -5, luck: 5, strength: 5, huntBonus: 100, cost: 20000, currency: "bones" as const },
 ];
 
 export type GreyOneTier = (typeof GREY_ONE_UPGRADES)[number];
