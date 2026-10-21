@@ -542,6 +542,10 @@ export const gameStateSchema = z.object({
   log: z.array(logEntrySchema).default([]),
   /** Event-log line ids the player has read. Pruned to ids still in `log`. */
   readLogIds: z.array(z.string()).default([]),
+  /** Event-log filter: show new-villager (white orb) lines. */
+  logFilterShowNewVillagers: z.boolean().default(true),
+  /** Event-log filter: show non-villager (red orb) lines. */
+  logFilterShowOther: z.boolean().default(true),
   current_population: z.number().min(0).default(0),
   total_population: z.number().min(0).default(0),
   templeDedicated: z.boolean().default(false),

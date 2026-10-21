@@ -371,6 +371,10 @@ export const createUiSlice: GameStoreCreator<Partial<GameStore>> = (set, get) =>
     }));
   },
 
+  setLogFilterShowNewVillagers: (show: boolean) =>
+    set({ logFilterShowNewVillagers: show }),
+  setLogFilterShowOther: (show: boolean) => set({ logFilterShowOther: show }),
+
   toggleDevMode: () => {
     // Dev mode is controlled by NODE_ENV - no-op in production
   },

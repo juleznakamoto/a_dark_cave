@@ -180,11 +180,18 @@ describe("LogPanel type filter", () => {
         },
       ],
       readLogIds: ["log-other-1", "log-villager-1"],
+      logFilterShowNewVillagers: true,
+      logFilterShowOther: true,
     });
   });
 
   afterEach(() => {
-    useGameStore.setState({ log: [], readLogIds: [] });
+    useGameStore.setState({
+      log: [],
+      readLogIds: [],
+      logFilterShowNewVillagers: true,
+      logFilterShowOther: true,
+    });
   });
 
   it("hides other lines when the red filter is toggled off", () => {

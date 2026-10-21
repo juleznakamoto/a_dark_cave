@@ -194,14 +194,20 @@ function LogPanel() {
   const log = useGameStore((s) => s.log);
   const readLogIds = useGameStore((s) => s.readLogIds);
   const markLogEntryRead = useGameStore((s) => s.markLogEntryRead);
+  const showNewVillagers = useGameStore(
+    (s) => s.logFilterShowNewVillagers !== false,
+  );
+  const showOther = useGameStore((s) => s.logFilterShowOther !== false);
+  const setLogFilterShowNewVillagers = useGameStore(
+    (s) => s.setLogFilterShowNewVillagers,
+  );
+  const setLogFilterShowOther = useGameStore((s) => s.setLogFilterShowOther);
   const inviteFloatingRendered = useInviteFriendsFloatingRendered();
   const readEntries = useMemo(() => new Set(readLogIds), [readLogIds]);
   const topRef = useRef<HTMLDivElement>(null);
   const prevLogLengthRef = useRef(log.length);
   // Bumped when the next unread pulse expires, so a quiet log still stops flashing.
   const [flashNow, setFlashNow] = useState(() => Date.now());
-  const [showNewVillagers, setShowNewVillagers] = useState(true);
-  const [showOther, setShowOther] = useState(true);
   const markReadTimeoutsRef = useRef(
     new Map<string, ReturnType<typeof setTimeout>>(),
   );
@@ -406,8 +412,10 @@ function LogPanel() {
       <LogTypeFilter
         showNewVillagers={showNewVillagers}
         showOther={showOther}
-        onToggleNewVillagers={() => setShowNewVillagers((prev) => !prev)}
-        onToggleOther={() => setShowOther((prev) => !prev)}
+        onToggleNewVillagers={() =>
+          setLogFilterShowNewVillagers(!showNewVillagers)
+        }
+        onToggleOther={() => setLogFilterShowOther(!showOther)}
         clearInvite={inviteFloatingRendered}
       />
     </div>

@@ -366,6 +366,8 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
   addLogEntry: (entry: LogEntry) => void;
   /** Remember an event-log line as read so a refresh does not mark it new again. */
   markLogEntryRead: (entryId: string) => void;
+  setLogFilterShowNewVillagers: (show: boolean) => void;
+  setLogFilterShowOther: (show: boolean) => void;
   checkEvents: () => void;
   applyEventChoice: (
     choiceId: string,
