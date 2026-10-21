@@ -56,7 +56,7 @@
     },
     "artifactTarnishedCompass": {
       "doubleGain": "5% de chance de dobrar os ganhos das ações",
-      "luck": "+5 de Sorte",
+      "luck": "+4 de Sorte",
       "unlocksStoryline": "Desbloqueia a trama da Bússola"
     },
     "artifactCrowHarness": {

@@ -56,7 +56,7 @@
     },
     "artifactTarnishedCompass": {
       "doubleGain": "5% di probabilità di raddoppiare i guadagni delle azioni",
-      "luck": "+5 Fortuna",
+      "luck": "+4 Fortuna",
       "unlocksStoryline": "Sblocca la trama della Bussola"
     },
     "artifactCrowHarness": {

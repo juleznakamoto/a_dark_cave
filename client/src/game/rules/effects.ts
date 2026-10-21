@@ -785,7 +785,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Ancient golden crown radiating with mysterious power",
     bonuses: {
       generalBonuses: {
-        luck: 5,
+        luck: 4,
         knowledge: 3,
         madness: 4,
       },
@@ -799,7 +799,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Timeworn amulet bringing good fortune",
     bonuses: {
       generalBonuses: {
-        luck: 5,
+        luck: 4,
       },
     },
   },
@@ -915,7 +915,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Mystical mantle woven from shimmering raven feathers",
     bonuses: {
       generalBonuses: {
-        luck: 5,
+        luck: 4,
         strength: 3,
       },
     },
@@ -1728,7 +1728,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Ancient relic for those seeking guidance.",
     bonuses: {
       generalBonuses: {
-        luck: 5,
+        luck: 4,
         actionBonusChance: 0.05, // 5% chance to double action gains
       },
       actionBonuses: {
