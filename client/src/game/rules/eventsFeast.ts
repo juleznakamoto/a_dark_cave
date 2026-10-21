@@ -1,6 +1,7 @@
 import type { GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
 import { formatNumber } from "@/lib/utils";
+import { GREAT_FEAST_DURATION_MS } from "@shared/shopItems";
 
 interface FeastConfig {
   level: number;
@@ -11,6 +12,10 @@ interface FeastConfig {
   sixthWaveVictory?: boolean;
   eighthWaveVictory?: boolean;
   foodCost: number;
+  /** When set, this ladder step is the juggler Great Feast (food + gold). */
+  goldCost?: number;
+  /** Message variant for the juggler visit (`first` / `return`). */
+  jugglerVisit?: "first" | "return";
 }
 
 const FEAST_DURATION_MS = 10 * 60 * 1000;
@@ -19,16 +24,29 @@ const RECURRING_FEAST_LEVEL = 11;
 const RECURRING_FEAST_FOOD_COST = 20000;
 /** Average minutes between recurring feast offers after the ladder is complete. */
 const RECURRING_FEAST_TIME_PROBABILITY = 90;
+const FEAST_COOLDOWN_PERCENT = 0.4;
 
 const feastConfigs: FeastConfig[] = [
   { level: 1, woodenHuts: 2, foodCost: 100 },
   { level: 2, woodenHuts: 4, foodCost: 250 },
   { level: 3, woodenHuts: 6, foodCost: 500 },
-  { level: 4, woodenHuts: 8, foodCost: 1000 },
+  {
+    level: 4,
+    woodenHuts: 8,
+    foodCost: 1000,
+    goldCost: 100,
+    jugglerVisit: "first",
+  },
   { level: 5, stoneHuts: 1, foodCost: 2500 },
   { level: 6, stoneHuts: 5, foodCost: 5000 },
   { level: 7, stoneHuts: 9, foodCost: 7500 },
-  { level: 8, secondWaveVictory: true, foodCost: 10000 },
+  {
+    level: 8,
+    secondWaveVictory: true,
+    foodCost: 10000,
+    goldCost: 1000,
+    jugglerVisit: "return",
+  },
   { level: 9, fourthWaveVictory: true, foodCost: 12500 },
   { level: 10, sixthWaveVictory: true, foodCost: 15000 },
   { level: 11, eighthWaveVictory: true, foodCost: 20000 },
@@ -69,6 +87,22 @@ function meetsFeastUnlock(config: FeastConfig, state: GameState): boolean {
   return false;
 }
 
+function feastLadderCondition(config: FeastConfig, state: GameState): boolean {
+  if (!state.flags?.forestUnlocked) {
+    return false;
+  }
+  if (isFeastBlockedByActiveBuff(state)) {
+    return false;
+  }
+  if (state.feastState.lastAcceptedLevel < config.level - 1) {
+    return false;
+  }
+  if (state.feastState.lastAcceptedLevel >= config.level) {
+    return false;
+  }
+  return meetsFeastUnlock(config, state);
+}
+
 function buildFeastActivation(
   state: GameState,
   foodCost: number,
@@ -96,7 +130,36 @@ function buildFeastActivation(
   };
 }
 
-function createFeastEvent(config: FeastConfig): GameEvent {
+function buildJugglerGreatFeastActivation(
+  state: GameState,
+  foodCost: number,
+  goldCost: number,
+  lastAcceptedLevel: number,
+  eventId: string,
+) {
+  return {
+    resources: {
+      ...state.resources,
+      food: state.resources.food - foodCost,
+      gold: state.resources.gold - goldCost,
+    },
+    feastState: {
+      ...state.feastState,
+      lastAcceptedLevel,
+    },
+    greatFeastState: {
+      isActive: true,
+      endTime: Date.now() + GREAT_FEAST_DURATION_MS,
+    },
+    triggeredEvents: {
+      ...(state.triggeredEvents || {}),
+      [eventId]: true,
+    },
+    _logMessageKey: "outcome1",
+  };
+}
+
+function createVillageFeastEvent(config: FeastConfig): GameEvent {
   const { level, foodCost } = config;
   const eventId = `feast${level}`;
   const formattedFoodCost = formatNumber(foodCost);
@@ -105,23 +168,9 @@ function createFeastEvent(config: FeastConfig): GameEvent {
     id: eventId,
     i18nKey: "feast",
     i18nVars: { foodCost: formattedFoodCost },
-    condition: (state: GameState) => {
-      if (!state.flags?.forestUnlocked) {
-        return false;
-      }
-      if (isFeastBlockedByActiveBuff(state)) {
-        return false;
-      }
-      if (state.feastState.lastAcceptedLevel < level - 1) {
-        return false;
-      }
-      if (state.feastState.lastAcceptedLevel >= level) {
-        return false;
-      }
-      return meetsFeastUnlock(config, state);
-    },
+    condition: (state: GameState) => feastLadderCondition(config, state),
     timeProbability: 20,
-    cooldownPercent: 0.4,
+    cooldownPercent: FEAST_COOLDOWN_PERCENT,
     priority: 3,
     repeatable: true,
     showAsTimedTab: true,
@@ -148,6 +197,62 @@ function createFeastEvent(config: FeastConfig): GameEvent {
   };
 }
 
+function createJugglerGreatFeastEvent(config: FeastConfig): GameEvent {
+  const { level, foodCost, goldCost = 0, jugglerVisit = "first" } = config;
+  const eventId = `feast${level}`;
+  const formattedFoodCost = formatNumber(foodCost);
+  const formattedGoldCost = formatNumber(goldCost);
+
+  return {
+    id: eventId,
+    i18nKey: "jugglerGreatFeast",
+    i18nVars: {
+      foodCost: formattedFoodCost,
+      goldCost: formattedGoldCost,
+    },
+    message: () => jugglerVisit,
+    condition: (state: GameState) => feastLadderCondition(config, state),
+    timeProbability: 20,
+    cooldownPercent: FEAST_COOLDOWN_PERCENT,
+    priority: 3,
+    repeatable: true,
+    showAsTimedTab: true,
+    timedTabDuration: 4 * 60 * 1000,
+    choices: [
+      {
+        id: "makeGreatFeast",
+        effect: (state: GameState) =>
+          buildJugglerGreatFeastActivation(
+            state,
+            foodCost,
+            goldCost,
+            level,
+            eventId,
+          ),
+      },
+      {
+        id: "noFeast",
+        effect: () => ({
+          _logMessageKey: "outcome2",
+        }),
+      },
+    ],
+    fallbackChoice: {
+      id: "doNothing",
+      effect: () => ({
+        _logMessageKey: "outcome3",
+      }),
+    },
+  };
+}
+
+function createFeastEvent(config: FeastConfig): GameEvent {
+  if (config.goldCost !== undefined) {
+    return createJugglerGreatFeastEvent(config);
+  }
+  return createVillageFeastEvent(config);
+}
+
 /** After ladder level 11, feast offers keep returning at a fixed cost. */
 const feastRecurringEvent: GameEvent = {
   id: "feastRecurring",
@@ -163,7 +268,7 @@ const feastRecurringEvent: GameEvent = {
     return state.feastState.lastAcceptedLevel >= RECURRING_FEAST_LEVEL;
   },
   timeProbability: RECURRING_FEAST_TIME_PROBABILITY,
-  cooldownPercent: 0.4,
+  cooldownPercent: FEAST_COOLDOWN_PERCENT,
   priority: 3,
   repeatable: true,
   showAsTimedTab: true,

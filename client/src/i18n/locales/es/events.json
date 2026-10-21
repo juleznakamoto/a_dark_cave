@@ -845,6 +845,30 @@
     "message": "Los aldeanos proponen organizar un banquete. Un breve consuelo para aliviar su cansancio y calmar sus mentes.",
     "title": "Banquete de la aldea"
   },
+  "jugglerGreatFeast": {
+    "title": "El malabarista",
+    "message": {
+      "first": "Aparece un hombre vestido de malabarista, con ropa raída. Cuenta que vivió en un castillo donde celebraba grandes banquetes, hasta que una peste mató a casi todos. Ofrece celebrar un gran banquete.",
+      "return": "El malabarista regresa con la misma ropa raída. Sigue buscando un nuevo castillo, pero aún no ha encontrado uno. Ofrece celebrar otro gran banquete."
+    },
+    "choices": {
+      "makeGreatFeast": {
+        "cost": "{{foodCost}} comida, {{goldCost}} oro",
+        "label": "Celebrar gran banquete"
+      },
+      "noFeast": {
+        "label": "Rechazar el banquete"
+      },
+      "doNothing": {
+        "label": "Sin decisión"
+      }
+    },
+    "log": {
+      "outcome1": "El malabarista se pone manos a la obra. Las mesas se llenan, suena la música y, por un tiempo, la aldea olvida sus penas.",
+      "outcome2": "Rechazas. El malabarista se inclina con un ademán que disimula mal su decepción, y se marcha.",
+      "outcome3": "Pasa el tiempo y el malabarista se aleja. La oportunidad de un gran banquete se desvanece."
+    }
+  },
   "feedingRing": {
     "choices": {
       "keepRing": {

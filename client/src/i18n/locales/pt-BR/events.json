@@ -799,6 +799,30 @@
     "message": "Os aldeões propõem organizar um banquete. Um breve conforto para aliviar o cansaço e acalmar as mentes.",
     "title": "Banquete do Vilarejo"
   },
+  "jugglerGreatFeast": {
+    "title": "O malabarista",
+    "message": {
+      "first": "Aparece um homem vestido de malabarista, com roupas surradas. Ele conta que viveu num castelo onde promovia grandes banquetes, até que uma peste matou quase todos. Oferece promover um grande banquete.",
+      "return": "O malabarista volta com as mesmas roupas surradas. Ainda procura um novo castelo, mas ainda não encontrou. Oferece promover outro grande banquete."
+    },
+    "choices": {
+      "makeGreatFeast": {
+        "cost": "{{foodCost}} comida, {{goldCost}} ouro",
+        "label": "Promover grande banquete"
+      },
+      "noFeast": {
+        "label": "Recusar o banquete"
+      },
+      "doNothing": {
+        "label": "Nenhuma Decisão Tomada"
+      }
+    },
+    "log": {
+      "outcome1": "O malabarista põe-se a trabalhar. As mesas se enchem, a música sobe e, por um tempo, o vilarejo esquece suas agruras.",
+      "outcome2": "Você recusa. O malabarista faz uma reverência elaborada que mal esconde a decepção, e parte.",
+      "outcome3": "O tempo passa, e o malabarista se afasta. A chance de um grande banquete se esvai."
+    }
+  },
   "feedingRing": {
     "choices": {
       "keepRing": {

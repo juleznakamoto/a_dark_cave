@@ -913,6 +913,30 @@
     "message": "The villagers propose organizing a feast. A short comfort to ease their weariness and quiet their minds.",
     "title": "Village Feast"
   },
+  "jugglerGreatFeast": {
+    "title": "The Juggler",
+    "message": {
+      "first": "A man dressed as a juggler in worn-out clothes appears. He tells you he once lived in a castle where he held great feasts, until a plague killed nearly everyone. He offers to hold a great feast.",
+      "return": "The juggler returns in the same worn-out clothes. He is still looking for a new castle but has yet to find one. He offers to hold another great feast."
+    },
+    "choices": {
+      "makeGreatFeast": {
+        "cost": "{{foodCost}} food, {{goldCost}} gold",
+        "label": "Hold great feast"
+      },
+      "noFeast": {
+        "label": "Refuse feast"
+      },
+      "doNothing": {
+        "label": "No Decision Made"
+      }
+    },
+    "log": {
+      "outcome1": "The juggler gets to work. Tables fill with food, music rises, and for a while, the village forgets its troubles.",
+      "outcome2": "You decline. The juggler bows with a flourish, hiding his disappointment poorly, then leaves.",
+      "outcome3": "Time passes, and the juggler wanders off. The chance for a great feast slips away."
+    }
+  },
   "feedingRing": {
     "choices": {
       "keepRing": {

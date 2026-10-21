@@ -67,6 +67,9 @@ describe("purchase sfx", () => {
     expect(shouldPlayPurchaseSfx("mercenaryDemand", "giveRing", {})).toBe(
       false,
     );
+    expect(shouldPlayPurchaseSfx("feast4", "makeGreatFeast", {})).toBe(true);
+    expect(shouldPlayPurchaseSfx("feast8", "makeGreatFeast", {})).toBe(true);
+    expect(shouldPlayPurchaseSfx("feast4", "noFeast", {})).toBe(false);
     expect(shouldPlayPurchaseSfx("slaveTrader", "sellVillagers", {})).toBe(
       false,
     );

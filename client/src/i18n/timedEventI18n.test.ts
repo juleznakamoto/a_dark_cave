@@ -152,6 +152,8 @@ describe("timed tab event i18n", () => {
     expect(resolveTimedEventCatalogId("boneDevourer1")).toBe("boneDevourer");
     expect(resolveTimedEventCatalogId("woodcutter3")).toBe("woodcutter");
     expect(resolveTimedEventCatalogId("feast2")).toBe("feast");
+    expect(resolveTimedEventCatalogId("feast4")).toBe("jugglerGreatFeast");
+    expect(resolveTimedEventCatalogId("feast8")).toBe("jugglerGreatFeast");
     expect(resolveTimedEventCatalogId("merchant")).toBe("merchant");
   });
 

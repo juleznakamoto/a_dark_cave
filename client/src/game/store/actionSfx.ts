@@ -60,6 +60,8 @@ const PURCHASE_EVENT_CHOICES: Record<string, ReadonlySet<string>> = {
   witchsCurse: new Set(["payGold"]),
   mercenaryDemand: new Set(["payGold"]),
   mercenaryReturnDemand: new Set(["payGold"]),
+  feast4: new Set(["makeGreatFeast"]),
+  feast8: new Set(["makeGreatFeast"]),
 };
 
 export function playPurchaseSfx(): void {

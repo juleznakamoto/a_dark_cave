@@ -845,6 +845,30 @@
     "message": "Die Dorfbewohner schlagen ein Fest vor. Ein kurzer Trost, um ihre Müdigkeit zu lindern und ihre Gedanken zu beruhigen.",
     "title": "Dorffest"
   },
+  "jugglerGreatFeast": {
+    "title": "Der Jongleur",
+    "message": {
+      "first": "Ein Mann in abgetragenen Jongleurskleidern erscheint. Er erzählt, er habe einst in einem Schloss große Feste ausgerichtet, bis eine Seuche fast alle dahinraffte. Er bietet an, ein großes Fest zu veranstalten.",
+      "return": "Der Jongleur kehrt in denselben abgetragenen Kleidern zurück. Er sucht noch immer ein neues Schloss, hat aber noch keines gefunden. Er bietet an, erneut ein großes Fest zu veranstalten."
+    },
+    "choices": {
+      "makeGreatFeast": {
+        "cost": "{{foodCost}} Nahrung, {{goldCost}} Gold",
+        "label": "Großes Fest ausrichten"
+      },
+      "noFeast": {
+        "label": "Fest ablehnen"
+      },
+      "doNothing": {
+        "label": "Keine Entscheidung"
+      }
+    },
+    "log": {
+      "outcome1": "Der Jongleur macht sich an die Arbeit. Die Tische füllen sich, Musik erklingt, und für eine Weile vergisst das Dorf seine Sorgen.",
+      "outcome2": "Du lehnst ab. Der Jongleur verbeugt sich mit einer Geste, die seine Enttäuschung schlecht verbirgt, und geht.",
+      "outcome3": "Die Zeit vergeht, und der Jongleur zieht weiter. Die Chance auf ein großes Fest schwindet."
+    }
+  },
   "feedingRing": {
     "choices": {
       "keepRing": {

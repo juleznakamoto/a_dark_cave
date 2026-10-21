@@ -53,6 +53,9 @@ export function resolveVillageEffectAnnouncementTheme(
   if (isTimedEffectActivated(changes.feastState as TimedEffectSlice)) {
     return "feast";
   }
+  if (isTimedEffectActivated(changes.greatFeastState as TimedEffectSlice)) {
+    return "feast";
+  }
   if (isTimedEffectActivated(changes.solsticeState as TimedEffectSlice)) {
     return "solstice";
   }

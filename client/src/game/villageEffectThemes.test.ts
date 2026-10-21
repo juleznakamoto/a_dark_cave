@@ -8,6 +8,11 @@ describe("resolveVillageEffectAnnouncementTheme", () => {
         feastState: { isActive: true, endTime: Date.now() + 60_000 },
       }),
     ).toBe("feast");
+    expect(
+      resolveVillageEffectAnnouncementTheme("feast4", {
+        greatFeastState: { isActive: true, endTime: Date.now() + 60_000 },
+      }),
+    ).toBe("feast");
     expect(resolveVillageEffectAnnouncementTheme("feast2", {})).toBe("feast");
   });
 

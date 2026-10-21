@@ -845,6 +845,30 @@
     "message": "Les villageois proposent d'organiser un festin. Un bref réconfort pour apaiser leur lassitude et calmer leurs esprits.",
     "title": "Festin du village"
   },
+  "jugglerGreatFeast": {
+    "title": "Le Jongleur",
+    "message": {
+      "first": "Un homme vêtu comme un jongleur, en habits usés, apparaît. Il raconte qu'il vivait autrefois dans un château où il organisait de grands festins, jusqu'au jour où une peste emporta presque tout le monde. Il propose d'organiser un grand festin.",
+      "return": "Le jongleur revient dans les mêmes habits usés. Il cherche encore un nouveau château, mais n'en a pas trouvé. Il propose d'organiser un autre grand festin."
+    },
+    "choices": {
+      "makeGreatFeast": {
+        "cost": "{{foodCost}} nourriture, {{goldCost}} or",
+        "label": "Organiser un grand festin"
+      },
+      "noFeast": {
+        "label": "Refuser le festin"
+      },
+      "doNothing": {
+        "label": "Aucune décision prise"
+      }
+    },
+    "log": {
+      "outcome1": "Le jongleur se met au travail. Les tables se remplissent, la musique s'élève, et pour un temps le village oublie ses peines.",
+      "outcome2": "Vous refusez. Le jongleur s'incline avec une fioriture qui masque mal sa déception, puis s'en va.",
+      "outcome3": "Le temps passe, et le jongleur s'éloigne. L'occasion d'un grand festin s'évanouit."
+    }
+  },
   "feedingRing": {
     "choices": {
       "keepRing": {

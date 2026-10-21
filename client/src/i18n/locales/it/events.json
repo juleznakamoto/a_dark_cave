@@ -799,6 +799,30 @@
     "message": "Gli abitanti propongono di organizzare un banchetto. Un breve conforto per alleviare la loro stanchezza e quietare le loro menti.",
     "title": "Banchetto del Villaggio"
   },
+  "jugglerGreatFeast": {
+    "title": "Il giocoliere",
+    "message": {
+      "first": "Compare un uomo vestito da giocoliere, con abiti logori. Racconta di aver vissuto in un castello dove organizzava grandi banchetti, finché una pestilenza non uccise quasi tutti. Propone di organizzare un grande banchetto.",
+      "return": "Il giocoliere torna con gli stessi abiti logori. Cerca ancora un nuovo castello, ma non ne ha ancora trovato uno. Propone di organizzare un altro grande banchetto."
+    },
+    "choices": {
+      "makeGreatFeast": {
+        "cost": "{{foodCost}} cibo, {{goldCost}} oro",
+        "label": "Organizza un grande banchetto"
+      },
+      "noFeast": {
+        "label": "Rifiuta il banchetto"
+      },
+      "doNothing": {
+        "label": "Nessuna Decisione Presa"
+      }
+    },
+    "log": {
+      "outcome1": "Il giocoliere si mette all'opera. Le tavole si riempiono, la musica si alza e per un po' il villaggio dimentica i suoi guai.",
+      "outcome2": "Rifiuti. Il giocoliere fa un inchino elaborato che nasconde male la delusione, poi se ne va.",
+      "outcome3": "Il tempo passa e il giocoliere se ne va. L'occasione di un grande banchetto svanisce."
+    }
+  },
   "feedingRing": {
     "choices": {
       "keepRing": {

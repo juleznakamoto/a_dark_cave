@@ -913,6 +913,30 @@
     "message": "Wieśniacy proponują urządzenie uczty. Krótka ulga, by złagodzić zmęczenie i uciszyć umysły.",
     "title": "Uczta wioski"
   },
+  "jugglerGreatFeast": {
+    "title": "Żongler",
+    "message": {
+      "first": "Pojawia się mężczyzna w wytartych ubraniach żonglera. Opowiada, że mieszkał w zamku, gdzie urządzał wielkie uczty, aż plaga zabiła niemal wszystkich. Proponuje urządzić wielką ucztę.",
+      "return": "Żongler wraca w tych samych wytartych ubraniach. Wciąż szuka nowego zamku, ale jeszcze żadnego nie znalazł. Proponuje urządzić kolejną wielką ucztę."
+    },
+    "choices": {
+      "makeGreatFeast": {
+        "cost": "{{foodCost}} żywności, {{goldCost}} złota",
+        "label": "Urządź wielką ucztę"
+      },
+      "noFeast": {
+        "label": "Odmów uczty"
+      },
+      "doNothing": {
+        "label": "Brak decyzji"
+      }
+    },
+    "log": {
+      "outcome1": "Żongler zabiera się do pracy. Stoły wypełniają się jedzeniem, muzyka się wznosi, a wioska na chwilę zapomina o kłopotach.",
+      "outcome2": "Odmawiasz. Żongler kłania się z gestem, który słabo kryje rozczarowanie, i odchodzi.",
+      "outcome3": "Czas mija, a żongler odchodzi. Szansa na wielką ucztę ulatnia się."
+    }
+  },
   "feedingRing": {
     "choices": {
       "keepRing": {
