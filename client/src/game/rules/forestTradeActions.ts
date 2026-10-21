@@ -525,7 +525,7 @@ export const forestTradeActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.silver": 25,
+        "resources.silver": 20,
       },
       2: {
         "resources.silver": 100,
