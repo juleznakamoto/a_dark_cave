@@ -1682,5 +1682,17 @@ describe('Resource Gain Tests', () => {
       // Costs 200 silver
       expect(effectUpdates.resources?.silver).toBe(state.resources.silver - 200);
     });
+
+    it('tradeSilverForGold (tier 5, merchants guild + adamant lantern) produces correct amount', () => {
+      const state = createTestState({
+        buildings: { merchantsGuild: 1 },
+        tools: { adamant_lantern: true },
+      });
+      const effectUpdates = applyActionEffects('tradeSilverForGold', state);
+
+      // Tier 5 gives 100 gold at the 4:1 silver rate
+      expect(effectUpdates.resources?.gold).toBe(state.resources.gold + 100);
+      expect(effectUpdates.resources?.silver).toBe(state.resources.silver - 400);
+    });
   });
 });

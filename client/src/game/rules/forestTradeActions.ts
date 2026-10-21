@@ -528,6 +528,10 @@ export const forestTradeActions: Record<string, Action> = {
       4: {
         "buildings.merchantsGuild": 1,
       },
+      5: {
+        "buildings.merchantsGuild": 1,
+        "tools.adamant_lantern": 1,
+      },
     },
     cost: {
       1: {
@@ -542,6 +546,9 @@ export const forestTradeActions: Record<string, Action> = {
       4: {
         "resources.silver": 200,
       },
+      5: {
+        "resources.silver": 400,
+      },
     },
     effects: {
       1: {
@@ -555,6 +562,9 @@ export const forestTradeActions: Record<string, Action> = {
       },
       4: {
         "resources.gold": 50,
+      },
+      5: {
+        "resources.gold": 100,
       },
     },
   },
