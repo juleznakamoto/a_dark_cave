@@ -59,6 +59,7 @@ import { INSIGHT_GLYPH, INSIGHT_TEXT_CLASS } from "@/game/villagerCapUpgrades";
 import { userOwnsShopItemFromPurchaseRows } from "@shared/shopPurchaseEligibility";
 import {
   GREAT_FEAST_DURATION_MS,
+  createShopGreatFeastActivation,
   SHOP_ITEMS,
   HIGHLIGHTS_ORDER,
   getHighlightsOrder,
@@ -1702,19 +1703,14 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
         });
       }
 
-      // Activate a Great Feast
-      const endTime = Date.now() + GREAT_FEAST_DURATION_MS;
-
+      // Activate a Great Feast (shop: full 30 min / 5x / +25%)
       useGameStore.setState((state) => ({
         feastActivations: {
           // Changed from feastPurchases to feastActivations
           ...state.feastActivations,
           [purchaseId]: purchase - 1, // Decrement activationsRemaining
         },
-        greatFeastState: {
-          isActive: true,
-          endTime: endTime,
-        },
+        greatFeastState: createShopGreatFeastActivation(),
       }));
 
       gameState.addLogEntry({

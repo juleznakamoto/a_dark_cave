@@ -338,3 +338,22 @@ export function isSteamEditionActive(devGameMode?: DevGameMode): boolean {
   if (isSimulatedSteamGameMode(mode)) return true;
   return import.meta.env.DEV && !isSteamBuild && mode !== "normal";
 }
+
+/**
+ * Steam desktop client (or DEV Steam Game / Playtest / Demo / End simulation).
+ * False for public web, CrazyGames, itch, and Galaxy — use for content that
+ * should not appear in browser builds even when those portals share other
+ * Steam-like edition flags.
+ */
+export function isSteamDesktopEditionActive(
+  devGameMode?: DevGameMode,
+): boolean {
+  if (isSteamBuild) return true;
+  if (!import.meta.env.DEV) return false;
+  const mode = resolveDevGameMode(devGameMode);
+  return (
+    isSimulatedSteamGameMode(mode) ||
+    mode === "steamDemo" ||
+    mode === "demoEnd"
+  );
+}

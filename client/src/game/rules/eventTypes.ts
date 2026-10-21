@@ -29,8 +29,8 @@ export interface GameEvent {
   showAsTimedTab?: boolean;
   timedTabDuration?: number; // Duration in milliseconds
   skipEventLog?: boolean; // Skip adding to visible event log
-  /** Shared i18n catalog id (e.g. feast1 → feast) */
-  i18nKey?: string;
+  /** Shared i18n catalog id (e.g. feast1 → feast); may depend on edition. */
+  i18nKey?: string | (() => string);
   /** Interpolation vars for catalog strings (e.g. foodCost); may depend on state */
   i18nVars?:
   | Record<string, string | number>

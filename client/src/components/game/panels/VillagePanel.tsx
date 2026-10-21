@@ -691,9 +691,11 @@ export default function VillagePanel() {
     const updateFeastProgress = () => {
       const now = Date.now();
       if (greatFeastState?.isActive && greatFeastState.endTime > now) {
+        const greatFeastDuration =
+          greatFeastState.durationMs || GREAT_FEAST_DURATION_MS;
         const greatFeastElapsed =
-          GREAT_FEAST_DURATION_MS - (greatFeastState.endTime - now);
-        setFeastProgress((greatFeastElapsed / GREAT_FEAST_DURATION_MS) * 100);
+          greatFeastDuration - (greatFeastState.endTime - now);
+        setFeastProgress((greatFeastElapsed / greatFeastDuration) * 100);
       } else if (feastState?.isActive && feastState.endTime > now) {
         const state = useGameStore.getState();
         const baseDuration = 10 * 60 * 1000; // 10 minutes

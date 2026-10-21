@@ -1,14 +1,29 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createInitialState } from "@/game/state";
 import type { GameState } from "@shared/schema";
-import { GREAT_FEAST_DURATION_MS } from "@shared/shopItems";
+import {
+  JUGGLER_GREAT_FEAST_DURATION_MS,
+  JUGGLER_GREAT_FEAST_PRODUCTION_MULTIPLIER,
+  JUGGLER_GREAT_FEAST_STRANGER_APPROACH_BONUS,
+} from "@shared/shopItems";
 import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
 import {
+  getEventCatalogId,
   resolveEventChoiceLabel,
   resolveEventMessage,
   resolveEventTitle,
 } from "@/i18n/eventText";
 import { feastEvents } from "./eventsFeast";
+
+vi.mock("@/lib/edition", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/edition")>();
+  return {
+    ...actual,
+    isSteamDesktopEditionActive: vi.fn(actual.isSteamDesktopEditionActive),
+  };
+});
+
+import { isSteamDesktopEditionActive } from "@/lib/edition";
 
 function baseState(overrides: Partial<GameState> = {}): GameState {
   const initial = createInitialState() as GameState;
@@ -16,14 +31,27 @@ function baseState(overrides: Partial<GameState> = {}): GameState {
     ...initial,
     flags: { ...initial.flags, forestUnlocked: true },
     feastState: { isActive: false, endTime: 0, lastAcceptedLevel: 0 },
-    greatFeastState: { isActive: false, endTime: 0 },
+    greatFeastState: {
+      isActive: false,
+      endTime: 0,
+      durationMs: 30 * 60 * 1000,
+      productionMultiplier: 5,
+      strangerApproachBonus: 0.25,
+    },
     ...overrides,
   };
+}
+
+function firstChoice(eventId: "feast4" | "feast8") {
+  const choices = feastEvents[eventId].choices;
+  const list = typeof choices === "function" ? choices(baseState()) : choices;
+  return list![0]!;
 }
 
 describe("feast ladder", () => {
   beforeEach(async () => {
     await ensureGameplayLocalesLoaded("en");
+    vi.mocked(isSteamDesktopEditionActive).mockReturnValue(false);
   });
 
   it("keeps levels 1–8 unlocks and updates 9–11 costs/gates", () => {
@@ -106,24 +134,44 @@ describe("feast ladder", () => {
     expect(feastEvents.feastRecurring.condition(afterExpire)).toBe(true);
   });
 
-  it("replaces levels 4 and 8 with juggler Great Feast offers", () => {
-    expect(feastEvents.feast4.i18nKey).toBe("jugglerGreatFeast");
-    expect(feastEvents.feast8.i18nKey).toBe("jugglerGreatFeast");
+  it("uses a normal Village Feast on web for levels 4 and 8", () => {
+    expect(getEventCatalogId(feastEvents.feast4)).toBe("feast");
+    expect(getEventCatalogId(feastEvents.feast8)).toBe("feast");
+    expect(firstChoice("feast4").id).toBe("makeFeast");
+    expect(firstChoice("feast8").id).toBe("makeFeast");
+
+    const state = baseState({
+      resources: {
+        ...(createInitialState() as GameState).resources,
+        food: 5_000,
+        gold: 250,
+      },
+      buildings: {
+        ...(createInitialState() as GameState).buildings,
+        woodenHut: 8,
+      },
+      feastState: { isActive: false, endTime: 0, lastAcceptedLevel: 3 },
+    });
+    const result = firstChoice("feast4").effect!(state);
+    expect(result.resources?.food).toBe(4_000);
+    expect(result.resources?.gold).toBe(250);
+    expect(result.feastState?.isActive).toBe(true);
+    expect(result.greatFeastState).toBeUndefined();
+  });
+
+  it("uses the juggler Great Feast on Steam for levels 4 and 8", async () => {
+    vi.mocked(isSteamDesktopEditionActive).mockReturnValue(true);
+
+    expect(getEventCatalogId(feastEvents.feast4)).toBe("jugglerGreatFeast");
+    expect(getEventCatalogId(feastEvents.feast8)).toBe("jugglerGreatFeast");
+    expect(firstChoice("feast4").id).toBe("makeGreatFeast");
     expect(feastEvents.feast4.message?.(baseState())).toBe("first");
     expect(feastEvents.feast8.message?.(baseState())).toBe("return");
-    expect(feastEvents.feast4.i18nVars).toMatchObject({
+
+    const firstVars = {
       foodCost: "1'000",
       goldCost: "100",
-    });
-    expect(feastEvents.feast8.i18nVars).toMatchObject({
-      foodCost: "10'000",
-      goldCost: "1'000",
-    });
-    expect(feastEvents.feast4.choices?.[0]?.id).toBe("makeGreatFeast");
-    expect(feastEvents.feast8.choices?.[0]?.id).toBe("makeGreatFeast");
-
-    const firstVars = feastEvents.feast4.i18nVars as Record<string, string>;
-    const returnVars = feastEvents.feast8.i18nVars as Record<string, string>;
+    };
     expect(resolveEventTitle("jugglerGreatFeast", baseState(), firstVars)).toBe(
       "The Juggler",
     );
@@ -136,19 +184,9 @@ describe("feast ladder", () => {
       ),
     ).toContain("plague");
     expect(
-      resolveEventMessage(
-        "jugglerGreatFeast",
-        feastEvents.feast8.message,
-        baseState(),
-        returnVars,
-      ),
-    ).toContain("still looking for a new castle");
-    expect(
       resolveEventChoiceLabel("jugglerGreatFeast", "makeGreatFeast", firstVars),
     ).toBe("Hold great feast");
-  });
 
-  it("accepting the juggler feast starts a Great Feast and advances the ladder", () => {
     const before = Date.now();
     const state = baseState({
       resources: {
@@ -162,23 +200,29 @@ describe("feast ladder", () => {
       },
       feastState: { isActive: false, endTime: 0, lastAcceptedLevel: 3 },
     });
-
-    expect(feastEvents.feast4.condition(state)).toBe(true);
-
-    const effect = feastEvents.feast4.choices![0]!.effect!;
-    const result = effect(state);
-
+    const result = firstChoice("feast4").effect!(state);
     expect(result.resources?.food).toBe(4_000);
     expect(result.resources?.gold).toBe(150);
     expect(result.feastState?.lastAcceptedLevel).toBe(4);
     expect(result.feastState?.isActive).toBe(false);
     expect(result.greatFeastState?.isActive).toBe(true);
+    expect(result.greatFeastState?.productionMultiplier).toBe(
+      JUGGLER_GREAT_FEAST_PRODUCTION_MULTIPLIER,
+    );
+    expect(result.greatFeastState?.strangerApproachBonus).toBe(
+      JUGGLER_GREAT_FEAST_STRANGER_APPROACH_BONUS,
+    );
+    expect(result.greatFeastState?.durationMs).toBe(
+      JUGGLER_GREAT_FEAST_DURATION_MS,
+    );
     expect(result.greatFeastState?.endTime).toBeGreaterThanOrEqual(
-      before + GREAT_FEAST_DURATION_MS,
+      before + JUGGLER_GREAT_FEAST_DURATION_MS,
     );
   });
 
-  it("accepting the return juggler feast uses level-8 costs and return copy", () => {
+  it("accepting the return juggler feast uses level-8 costs on Steam", () => {
+    vi.mocked(isSteamDesktopEditionActive).mockReturnValue(true);
+
     const state = baseState({
       resources: {
         ...(createInitialState() as GameState).resources,
@@ -196,18 +240,11 @@ describe("feast ladder", () => {
     });
 
     expect(feastEvents.feast8.condition(state)).toBe(true);
-    expect(feastEvents.feast8.message?.(state)).toBe("return");
-    expect(feastEvents.feast8.i18nVars).toMatchObject({
-      foodCost: "10'000",
-      goldCost: "1'000",
-    });
-
-    const effect = feastEvents.feast8.choices![0]!.effect!;
-    const result = effect(state);
+    const result = firstChoice("feast8").effect!(state);
     expect(result.resources?.food).toBe(10_000);
     expect(result.resources?.gold).toBe(1_000);
     expect(result.feastState?.lastAcceptedLevel).toBe(8);
-    expect(result.greatFeastState?.isActive).toBe(true);
+    expect(result.greatFeastState?.productionMultiplier).toBe(3);
+    expect(result.greatFeastState?.strangerApproachBonus).toBe(0.15);
   });
 });
-

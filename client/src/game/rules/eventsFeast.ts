@@ -1,7 +1,8 @@
-import type { GameEvent } from "./eventTypes";
+import type { EventChoice, GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
 import { formatNumber } from "@/lib/utils";
-import { GREAT_FEAST_DURATION_MS } from "@shared/shopItems";
+import { isSteamDesktopEditionActive } from "@/lib/edition";
+import { createJugglerGreatFeastActivation } from "@shared/shopItems";
 
 interface FeastConfig {
   level: number;
@@ -12,7 +13,7 @@ interface FeastConfig {
   sixthWaveVictory?: boolean;
   eighthWaveVictory?: boolean;
   foodCost: number;
-  /** When set, this ladder step is the juggler Great Feast (food + gold). */
+  /** When set, Steam uses the juggler Great Feast for this ladder step. */
   goldCost?: number;
   /** Message variant for the juggler visit (`first` / `return`). */
   jugglerVisit?: "first" | "return";
@@ -147,16 +148,60 @@ function buildJugglerGreatFeastActivation(
       ...state.feastState,
       lastAcceptedLevel,
     },
-    greatFeastState: {
-      isActive: true,
-      endTime: Date.now() + GREAT_FEAST_DURATION_MS,
-    },
+    greatFeastState: createJugglerGreatFeastActivation(),
     triggeredEvents: {
       ...(state.triggeredEvents || {}),
       [eventId]: true,
     },
     _logMessageKey: "outcome1",
   };
+}
+
+function villageFeastChoices(
+  foodCost: number,
+  level: number,
+  eventId: string,
+): EventChoice[] {
+  return [
+    {
+      id: "makeFeast",
+      effect: (state: GameState) =>
+        buildFeastActivation(state, foodCost, level, eventId),
+    },
+    {
+      id: "noFeast",
+      effect: () => ({
+        _logMessageKey: "outcome2",
+      }),
+    },
+  ];
+}
+
+function jugglerGreatFeastChoices(
+  foodCost: number,
+  goldCost: number,
+  level: number,
+  eventId: string,
+): EventChoice[] {
+  return [
+    {
+      id: "makeGreatFeast",
+      effect: (state: GameState) =>
+        buildJugglerGreatFeastActivation(
+          state,
+          foodCost,
+          goldCost,
+          level,
+          eventId,
+        ),
+    },
+    {
+      id: "noFeast",
+      effect: () => ({
+        _logMessageKey: "outcome2",
+      }),
+    },
+  ];
 }
 
 function createVillageFeastEvent(config: FeastConfig): GameEvent {
@@ -175,19 +220,7 @@ function createVillageFeastEvent(config: FeastConfig): GameEvent {
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
-    choices: [
-      {
-        id: "makeFeast",
-        effect: (state: GameState) =>
-          buildFeastActivation(state, foodCost, level, eventId),
-      },
-      {
-        id: "noFeast",
-        effect: () => ({
-          _logMessageKey: "outcome2",
-        }),
-      },
-    ],
+    choices: villageFeastChoices(foodCost, level, eventId),
     fallbackChoice: {
       id: "doNothing",
       effect: () => ({
@@ -197,7 +230,11 @@ function createVillageFeastEvent(config: FeastConfig): GameEvent {
   };
 }
 
-function createJugglerGreatFeastEvent(config: FeastConfig): GameEvent {
+/**
+ * Ladder slots 4 and 8: Steam desktop uses the juggler Great Feast (food + gold);
+ * web and portal builds use a normal Village Feast (food only).
+ */
+function createFeastSlotEvent(config: FeastConfig): GameEvent {
   const { level, foodCost, goldCost = 0, jugglerVisit = "first" } = config;
   const eventId = `feast${level}`;
   const formattedFoodCost = formatNumber(foodCost);
@@ -205,12 +242,14 @@ function createJugglerGreatFeastEvent(config: FeastConfig): GameEvent {
 
   return {
     id: eventId,
-    i18nKey: "jugglerGreatFeast",
-    i18nVars: {
-      foodCost: formattedFoodCost,
-      goldCost: formattedGoldCost,
-    },
-    message: () => jugglerVisit,
+    i18nKey: () =>
+      isSteamDesktopEditionActive() ? "jugglerGreatFeast" : "feast",
+    i18nVars: () =>
+      isSteamDesktopEditionActive()
+        ? { foodCost: formattedFoodCost, goldCost: formattedGoldCost }
+        : { foodCost: formattedFoodCost },
+    message: () =>
+      isSteamDesktopEditionActive() ? jugglerVisit : "default",
     condition: (state: GameState) => feastLadderCondition(config, state),
     timeProbability: 20,
     cooldownPercent: FEAST_COOLDOWN_PERCENT,
@@ -218,25 +257,10 @@ function createJugglerGreatFeastEvent(config: FeastConfig): GameEvent {
     repeatable: true,
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
-    choices: [
-      {
-        id: "makeGreatFeast",
-        effect: (state: GameState) =>
-          buildJugglerGreatFeastActivation(
-            state,
-            foodCost,
-            goldCost,
-            level,
-            eventId,
-          ),
-      },
-      {
-        id: "noFeast",
-        effect: () => ({
-          _logMessageKey: "outcome2",
-        }),
-      },
-    ],
+    choices: () =>
+      isSteamDesktopEditionActive()
+        ? jugglerGreatFeastChoices(foodCost, goldCost, level, eventId)
+        : villageFeastChoices(foodCost, level, eventId),
     fallbackChoice: {
       id: "doNothing",
       effect: () => ({
@@ -247,8 +271,8 @@ function createJugglerGreatFeastEvent(config: FeastConfig): GameEvent {
 }
 
 function createFeastEvent(config: FeastConfig): GameEvent {
-  if (config.goldCost !== undefined) {
-    return createJugglerGreatFeastEvent(config);
+  if (config.jugglerVisit !== undefined) {
+    return createFeastSlotEvent(config);
   }
   return createVillageFeastEvent(config);
 }

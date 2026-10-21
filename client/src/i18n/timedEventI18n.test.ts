@@ -152,8 +152,9 @@ describe("timed tab event i18n", () => {
     expect(resolveTimedEventCatalogId("boneDevourer1")).toBe("boneDevourer");
     expect(resolveTimedEventCatalogId("woodcutter3")).toBe("woodcutter");
     expect(resolveTimedEventCatalogId("feast2")).toBe("feast");
-    expect(resolveTimedEventCatalogId("feast4")).toBe("jugglerGreatFeast");
-    expect(resolveTimedEventCatalogId("feast8")).toBe("jugglerGreatFeast");
+    // Levels 4/8 are Village Feast on web; Steam desktop switches to jugglerGreatFeast.
+    expect(resolveTimedEventCatalogId("feast4")).toBe("feast");
+    expect(resolveTimedEventCatalogId("feast8")).toBe("feast");
     expect(resolveTimedEventCatalogId("merchant")).toBe("merchant");
   });
 

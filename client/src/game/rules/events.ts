@@ -801,7 +801,7 @@ export class EventManager {
       hasEffect: typeof choice.effect === 'function',
     });
 
-    const catalogId = eventDefinition.i18nKey ?? eventId;
+    const catalogId = getEventCatalogId(eventDefinition);
     const i18nVars =
       typeof eventDefinition.i18nVars === "function"
         ? eventDefinition.i18nVars(state)

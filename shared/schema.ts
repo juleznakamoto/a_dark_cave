@@ -597,10 +597,19 @@ export const gameStateSchema = z.object({
     .object({
       isActive: z.boolean().default(false),
       endTime: z.number().default(0),
+      /** Total duration when activated; used for progress UI. Defaults to shop length. */
+      durationMs: z.number().default(30 * 60 * 1000),
+      /** Village production multiplier while active (shop 5, Steam juggler 3). */
+      productionMultiplier: z.number().default(5),
+      /** Absolute stranger-approach bonus while active (shop 0.25, Steam juggler 0.15). */
+      strangerApproachBonus: z.number().default(0.25),
     })
     .default({
       isActive: false,
       endTime: 0,
+      durationMs: 30 * 60 * 1000,
+      productionMultiplier: 5,
+      strangerApproachBonus: 0.25,
     }),
 
   solsticeState: z

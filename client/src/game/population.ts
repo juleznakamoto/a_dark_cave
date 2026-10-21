@@ -526,8 +526,12 @@ export const getPopulationProduction = (
   // Feast multipliers - temporary, inactive during sleep
   if (!excludeTemporary) {
     if (isGreatFeast) {
+      const greatFeastMultiplier =
+        greatFeastState.productionMultiplier ?? 5;
       baseProduction.forEach((prod) => {
-        scale(prod, "greatVillageFeast", (n) => Math.ceil(n * 5.0));
+        scale(prod, "greatVillageFeast", (n) =>
+          Math.ceil(n * greatFeastMultiplier),
+        );
       });
     } else if (isFeast) {
       baseProduction.forEach((prod) => {

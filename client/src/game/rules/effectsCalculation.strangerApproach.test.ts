@@ -244,6 +244,20 @@ describe("getStrangerApproachProbability", () => {
     expect(result.probability).toBeCloseTo(0.05 + GREAT_FEAST_STRANGER_APPROACH_BONUS);
   });
 
+  it("should use the stored strangerApproachBonus for juggler Great Feasts", () => {
+    const state = createMockState({
+      villagers: { ...createInitialState().villagers, free: 9 },
+      buildings: { ...createInitialState().buildings, woodenHut: 5 },
+      greatFeastState: {
+        isActive: true,
+        endTime: Date.now() + 60_000,
+        strangerApproachBonus: 0.15,
+      },
+    });
+    const result = getStrangerApproachProbability(state);
+    expect(result.fromGreatFeast).toBe(0.15);
+  });
+
   it("should not add fromGreatFeast when the Great Feast has expired", () => {
     const state = createMockState({
       villagers: { ...createInitialState().villagers, free: 9 },

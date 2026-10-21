@@ -31,6 +31,47 @@ export interface ShopItem {
 
 /** Duration of an activated Great Feast (shop purchase), in milliseconds. */
 export const GREAT_FEAST_DURATION_MS = 30 * 60 * 1000;
+/** Shop Great Feast village production multiplier. */
+export const GREAT_FEAST_PRODUCTION_MULTIPLIER = 5;
+/** Shop Great Feast stranger-approach bonus (absolute probability add). */
+export const GREAT_FEAST_STRANGER_APPROACH_BONUS = 0.25;
+
+/** Steam juggler Great Feast duration (ladder slots 4 and 8). */
+export const JUGGLER_GREAT_FEAST_DURATION_MS = 15 * 60 * 1000;
+export const JUGGLER_GREAT_FEAST_PRODUCTION_MULTIPLIER = 3;
+export const JUGGLER_GREAT_FEAST_STRANGER_APPROACH_BONUS = 0.15;
+
+export type GreatFeastActivation = {
+  isActive: true;
+  endTime: number;
+  durationMs: number;
+  productionMultiplier: number;
+  strangerApproachBonus: number;
+};
+
+export function createShopGreatFeastActivation(
+  now = Date.now(),
+): GreatFeastActivation {
+  return {
+    isActive: true,
+    endTime: now + GREAT_FEAST_DURATION_MS,
+    durationMs: GREAT_FEAST_DURATION_MS,
+    productionMultiplier: GREAT_FEAST_PRODUCTION_MULTIPLIER,
+    strangerApproachBonus: GREAT_FEAST_STRANGER_APPROACH_BONUS,
+  };
+}
+
+export function createJugglerGreatFeastActivation(
+  now = Date.now(),
+): GreatFeastActivation {
+  return {
+    isActive: true,
+    endTime: now + JUGGLER_GREAT_FEAST_DURATION_MS,
+    durationMs: JUGGLER_GREAT_FEAST_DURATION_MS,
+    productionMultiplier: JUGGLER_GREAT_FEAST_PRODUCTION_MULTIPLIER,
+    strangerApproachBonus: JUGGLER_GREAT_FEAST_STRANGER_APPROACH_BONUS,
+  };
+}
 
 export const SHOP_ITEMS: Record<string, ShopItem> = {
   gold_100_free: {

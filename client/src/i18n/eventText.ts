@@ -4,8 +4,13 @@ import type { GameState } from "@shared/schema";
 
 type TranslateOptions = Record<string, string | number | boolean | undefined>;
 
-export function getEventCatalogId(event: { id: string; i18nKey?: string }): string {
-  return event.i18nKey ?? event.id;
+export function getEventCatalogId(event: {
+  id: string;
+  i18nKey?: string | (() => string);
+}): string {
+  const key =
+    typeof event.i18nKey === "function" ? event.i18nKey() : event.i18nKey;
+  return key ?? event.id;
 }
 
 function eventKey(catalogId: string, suffix: string): string {

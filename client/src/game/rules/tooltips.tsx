@@ -724,6 +724,11 @@ export const feastTooltip: TooltipConfig = {
 
     if (isGreatFeast) {
       const remainingMs = greatFeastState.endTime - Date.now();
+      const productionMultiplier =
+        greatFeastState.productionMultiplier ?? 5;
+      const strangerBonus =
+        greatFeastState.strangerApproachBonus ??
+        GREAT_FEAST_STRANGER_APPROACH_BONUS;
       return (
         <>
           <div className="font-bold">
@@ -731,14 +736,14 @@ export const feastTooltip: TooltipConfig = {
           </div>
           <div>
             {getUiTooltip("productionBonus", "Production Bonus: {{value}}", {
-              value: "400%",
+              value: `${Math.round((productionMultiplier - 1) * 100)}%`,
             })}
           </div>
           <div>
             {getUiTooltip(
               "newVillagerChanceBonus",
               "New Villager Chance +{{percent}}%",
-              { percent: Math.round(GREAT_FEAST_STRANGER_APPROACH_BONUS * 100) },
+              { percent: Math.round(strangerBonus * 100) },
             )}
           </div>
           <div>{formatEffectRemaining(remainingMs)}</div>

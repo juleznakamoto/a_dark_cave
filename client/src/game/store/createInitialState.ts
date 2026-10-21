@@ -82,6 +82,9 @@ export const createInitialState = (): GameState => ({
   greatFeastState: {
     isActive: false,
     endTime: 0,
+    durationMs: 30 * 60 * 1000,
+    productionMultiplier: 5,
+    strangerApproachBonus: 0.25,
   },
   solsticeState: {
     isActive: false,

@@ -761,6 +761,7 @@ const HEARTFIRE_VILLAGER_BONUS: Record<number, number> = {
   5: 0.1,
 };
 
+/** Shop Great Feast stranger-approach bonus (legacy export; prefer state field). */
 export const GREAT_FEAST_STRANGER_APPROACH_BONUS = 0.25;
 
 export function getStrangerApproachProbability(state: GameState): {
@@ -817,8 +818,9 @@ export function getStrangerApproachProbability(state: GameState): {
 
   const fromGreatFeast =
     state.greatFeastState?.isActive &&
-      state.greatFeastState.endTime > Date.now()
-      ? GREAT_FEAST_STRANGER_APPROACH_BONUS
+    state.greatFeastState.endTime > Date.now()
+      ? (state.greatFeastState.strangerApproachBonus ??
+        GREAT_FEAST_STRANGER_APPROACH_BONUS)
       : 0;
 
   const heartfireLevel = state.heartfireState?.level || 0;

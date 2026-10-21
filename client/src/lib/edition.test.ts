@@ -91,6 +91,14 @@ describe("CrazyGames edition", () => {
     edition.setDevGameModeOverride("normal");
   });
 
+  it("limits Steam-desktop-only content to Steam builds and DEV Steam modes", async () => {
+    const edition = await loadEdition();
+    expect(edition.isSteamDesktopEditionActive("normal")).toBe(false);
+    expect(edition.isSteamDesktopEditionActive("steamGame")).toBe(true);
+    expect(edition.isSteamDesktopEditionActive("steamDemo")).toBe(true);
+    expect(edition.isSteamDesktopEditionActive("crazyGamesDemo")).toBe(false);
+  });
+
   it("treats /itch as a local-only capped demo that still links to Steam", async () => {
     vi.stubGlobal("window", {
       location: { pathname: "/itch" },
