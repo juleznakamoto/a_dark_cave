@@ -188,13 +188,13 @@ export function nominalDurationToPlayTimeMs(durationMin: number): number {
   return durationMin * 60 * 1000 * getInvestmentDurationScale();
 }
 
-/** Production: 20 min between waves after an investment completes. Dev: 20 s. */
+/** Production: 15 min between waves after an investment completes. Dev: 20 s. */
 export function getInvestmentWaveGapMs(): number {
-  return import.meta.env.DEV ? 20 * 1000 : 20 * 60 * 1000;
+  return import.meta.env.DEV ? 20 * 1000 : 15 * 60 * 1000;
 }
 
 /** Production wave gap; persisted `nextWavePlayTime` uses {@link getInvestmentWaveGapMs} at schedule time. */
-export const INVESTMENT_WAVE_GAP_MS = 20 * 60 * 1000;
+export const INVESTMENT_WAVE_GAP_MS = 15 * 60 * 1000;
 
 export type InvestmentOffer = {
   durationMin: InvestmentDurationMin;

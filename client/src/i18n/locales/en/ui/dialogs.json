@@ -102,7 +102,7 @@
       "profit": "The profit you gain in case of success.",
       "lucky": "Chance on success to multiply your profit by {{multiplier}}.",
       "loss": "The gold you lose in case of failure.",
-      "wait": "After each investment, it takes 20 minutes for new offers to appear."
+      "wait": "After each investment, it takes 15 minutes for new offers to appear."
     }
   },
   "gambler": {

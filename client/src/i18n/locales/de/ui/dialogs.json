@@ -102,7 +102,7 @@
       "profit": "Der Gewinn bei Erfolg.",
       "lucky": "Chance bei Erfolg, den Gewinn mit {{multiplier}} zu multiplizieren.",
       "loss": "Das Gold, das du bei Misserfolg verlierst.",
-      "wait": "Nach jeder Investition dauert es 20 Minuten, bis neue Angebote erscheinen."
+      "wait": "Nach jeder Investition dauert es 15 Minuten, bis neue Angebote erscheinen."
     }
   },
   "gambler": {

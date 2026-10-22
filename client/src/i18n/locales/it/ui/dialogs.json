@@ -98,7 +98,7 @@
       "profit": "Il profitto che ottieni in caso di successo.",
       "lucky": "Probabilità in caso di successo di moltiplicare il tuo profitto per {{multiplier}}.",
       "loss": "L'oro che perdi in caso di fallimento.",
-      "wait": "Dopo ogni investimento, servono 20 minuti perché appaiano nuove offerte."
+      "wait": "Dopo ogni investimento, servono 15 minuti perché appaiano nuove offerte."
     }
   },
   "gambler": {

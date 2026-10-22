@@ -104,7 +104,7 @@
       "profit": "Zysk przy sukcesie.",
       "lucky": "Szansa, że przy sukcesie zysk mnoży się przez {{multiplier}}.",
       "loss": "Złoto, które tracisz przy porażce.",
-      "wait": "Po każdej inwestycji nowe oferty pojawiają się po 20 minutach."
+      "wait": "Po każdej inwestycji nowe oferty pojawiają się po 15 minutach."
     }
   },
   "gambler": {
