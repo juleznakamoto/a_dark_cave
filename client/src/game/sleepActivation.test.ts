@@ -7,6 +7,7 @@ import {
   canActivateSleep,
   isEstateUnlocked,
   shouldAutoSleepOnInactivity,
+  tryActivateSleepForExit,
 } from "./sleepActivation";
 import { handleInactivity, startGameLoop, stopGameLoop } from "./loop";
 
@@ -53,6 +54,32 @@ describe("sleepActivation", () => {
     expect(state.idleModeState.startTime).toBeGreaterThan(0);
     expect(state.inactivityDialogOpen).toBe(false);
     expect(saveModule.saveGame).toHaveBeenCalled();
+  });
+
+  it("tryActivateSleepForExit marks a session without opening the dialog", () => {
+    useGameStore.getState().initialize(buildDevSave("sleep-unlocked"));
+
+    expect(tryActivateSleepForExit()).toBe(true);
+
+    const state = useGameStore.getState();
+    expect(state.idleModeState.isActive).toBe(true);
+    expect(state.idleModeState.needsDisplay).toBe(true);
+    expect(state.idleModeState.startTime).toBeGreaterThan(0);
+    expect(state.idleModeDialog.isOpen).toBe(false);
+  });
+
+  it("tryActivateSleepForExit skips when sleep is not allowed", () => {
+    useGameStore.getState().initialize(buildDevSave("village"));
+
+    expect(tryActivateSleepForExit()).toBe(false);
+    expect(useGameStore.getState().idleModeState.isActive).toBe(false);
+  });
+
+  it("tryActivateSleepForExit is a no-op when already sleeping", () => {
+    useGameStore.getState().initialize(buildDevSave("sleep-active"));
+
+    expect(tryActivateSleepForExit()).toBe(false);
+    expect(useGameStore.getState().idleModeState.isActive).toBe(true);
   });
 });
 

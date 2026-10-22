@@ -39,9 +39,16 @@ async function flushLiveGame(): Promise<void> {
   const state = useGameStore.getState();
   if (!hasLiveGameToFlush(state)) return;
 
+  // Estate + Sleep ready: fall asleep on close so offline progress accrues.
+  // Sync mutation before save; dialog restore happens on next load.
+  const { tryActivateSleepForExit } = await import("./sleepActivation");
+  if (tryActivateSleepForExit()) {
+    logger.log("[SAVE] Auto-started sleep on exit");
+  }
+
   const { saveGame } = await import("./save");
   const { buildGameState } = await import("./stateHelpers");
-  await saveGame(buildGameState(state), false, { force: true });
+  await saveGame(buildGameState(useGameStore.getState()), false, { force: true });
 }
 
 function flushLiveGameOnce(): Promise<void> {

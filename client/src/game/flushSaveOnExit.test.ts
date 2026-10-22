@@ -7,6 +7,7 @@ const saveGame = vi.fn().mockResolvedValue({
   cloudSkipped: true,
 });
 const buildGameState = vi.fn((state: unknown) => state);
+const tryActivateSleepForExit = vi.fn().mockReturnValue(false);
 const steamOnWillQuit = vi.fn();
 const steamNotifyQuitSaveComplete = vi.fn();
 const getState = vi.fn();
@@ -17,6 +18,11 @@ vi.mock("./save", () => ({
 
 vi.mock("./stateHelpers", () => ({
   buildGameState: (state: unknown) => buildGameState(state),
+}));
+
+vi.mock("./sleepActivation", () => ({
+  tryActivateSleepForExit: (...args: unknown[]) =>
+    tryActivateSleepForExit(...args),
 }));
 
 vi.mock("./state", () => ({
@@ -48,6 +54,8 @@ describe("flushSaveOnExit", () => {
       cloudSkipped: true,
     });
     buildGameState.mockClear();
+    tryActivateSleepForExit.mockReset();
+    tryActivateSleepForExit.mockReturnValue(false);
     steamNotifyQuitSaveComplete.mockClear();
     steamOnWillQuit.mockReset();
     steamOnWillQuit.mockReturnValue(vi.fn());
@@ -160,7 +168,33 @@ describe("flushSaveOnExit", () => {
     const stop = installFlushSaveOnExit();
     window.dispatchEvent(new Event("pagehide"));
     await vi.waitFor(() => {
+      expect(tryActivateSleepForExit).toHaveBeenCalled();
       expect(saveGame).toHaveBeenCalledWith(live, false, { force: true });
+    });
+    stop();
+  });
+
+  it("saves after auto-sleep mutates state on pagehide", async () => {
+    const awake = {
+      flags: { gameStarted: true },
+      isGameLoopActive: true,
+      idleModeState: { isActive: false, startTime: 0, needsDisplay: false },
+    };
+    const sleeping = {
+      ...awake,
+      idleModeState: { isActive: true, startTime: 42, needsDisplay: true },
+    };
+    getState.mockReturnValue(awake);
+    tryActivateSleepForExit.mockImplementation(() => {
+      getState.mockReturnValue(sleeping);
+      return true;
+    });
+    const { installFlushSaveOnExit } = await import("./flushSaveOnExit");
+    const stop = installFlushSaveOnExit();
+    window.dispatchEvent(new Event("pagehide"));
+    await vi.waitFor(() => {
+      expect(tryActivateSleepForExit).toHaveBeenCalled();
+      expect(saveGame).toHaveBeenCalledWith(sleeping, false, { force: true });
     });
     stop();
   });

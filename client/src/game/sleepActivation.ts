@@ -35,17 +35,17 @@ export function shouldAutoSleepOnInactivity(state: GameState): boolean {
 }
 
 /**
- * Start Sleep the same way the Estate Sleep button does:
- * persist session first, then open the dialog.
+ * Mark a sleep session active in the store without opening the dialog.
+ * Callers must gate eligibility (Estate button, AFK, or exit). Returns false
+ * when demo play is frozen; true if already sleeping or newly activated.
  */
-export async function beginSleepMode(): Promise<boolean> {
+export function markSleepSessionActive(now = Date.now()): boolean {
   const before = useGameStore.getState();
   if (isDemoPlayFrozen(before)) return false;
   if (before.idleModeDialog?.isOpen || before.idleModeState?.isActive) {
     return true;
   }
 
-  const now = Date.now();
   useGameStore.setState({
     idleModeState: {
       isActive: true,
@@ -53,6 +53,28 @@ export async function beginSleepMode(): Promise<boolean> {
       needsDisplay: true,
     },
   });
+  return true;
+}
+
+/**
+ * On tab close / Steam quit: start Sleep when allowed so offline progress
+ * accrues. No dialog (the page is going away); the exit flush persists state.
+ */
+export function tryActivateSleepForExit(): boolean {
+  const before = useGameStore.getState();
+  if (!shouldAutoSleepOnInactivity(before)) return false;
+  if (before.idleModeDialog?.isOpen || before.idleModeState?.isActive) {
+    return false;
+  }
+  return markSleepSessionActive();
+}
+
+/**
+ * Start Sleep the same way the Estate Sleep button does:
+ * persist session first, then open the dialog.
+ */
+export async function beginSleepMode(): Promise<boolean> {
+  if (!markSleepSessionActive()) return false;
 
   try {
     await saveGame(useGameStore.getState(), false);
