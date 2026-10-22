@@ -17,6 +17,11 @@
     }
   },
   "alchemistArrives": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
     "message": "L'alchimista emerge dalla sua sala: 'Ho condotto esperimenti giorno e notte.' Solleva una fiala di polvere scintillante. 'Ho creato qualcosa di straordinario e terribilmente pericoloso.'",
     "title": "La Scoperta dell'Alchimista"
   },
@@ -1494,7 +1499,13 @@
     "title": "La Figura Snella"
   },
   "portalDiscovered": {
-    "message": "Nelle camere più basse della cittadella trovi un colossale cancello forgiato in un metallo sconosciuto e inflessibile. Forse le creazioni dell'alchimista riusciranno ad aprirlo."
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "Nelle camere più basse della cittadella trovi un colossale cancello forgiato in un metallo sconosciuto e inflessibile. Forse le creazioni dell'alchimista riusciranno ad aprirlo.",
+    "title": "L'antico cancello"
   },
   "redMaskChoice": {
     "choices": {
@@ -2558,24 +2569,56 @@
     "title": "La Maledizione della Strega"
   },
   "wizardArrives": {
-    "message": "Un piccolo uomo anziano con una lunga barba grigia in un logoro cappotto grigio si avvicina all'insediamento. I suoi occhi brillano di antica saggezza e potere. 'Sono un mago,' dichiara con voce che echeggia di autorità arcana. 'Costruiscimi una torre, e ti aiuterò con poteri oltre la comprensione mortale.'"
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "Un piccolo uomo anziano con una lunga barba grigia in un logoro cappotto grigio si avvicina all'insediamento. I suoi occhi brillano di antica saggezza e potere. 'Sono un mago,' dichiara con voce che echeggia di autorità arcana. 'Costruiscimi una torre, e ti aiuterò con poteri oltre la comprensione mortale.'",
+    "title": "Il mago"
   },
   "wizardBloodstone": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
     "message": "Il mago torna da un viaggio nella foresta. 'Ho consultato un vecchio amico, un mago eremita che dimora nel profondo dei boschi,' dice gravemente. 'Ha parlato della pietra di sangue che ci serve. Giace nel Tempio Sommerso, un antico santuario ormai per metà annegato nelle paludi della foresta.'",
     "title": "Il Tempio Sommerso"
   },
   "wizardBloodstoneStaff": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
     "message": "Il mago esamina le gemme di pietra di sangue che hai recuperato dal Tempio Sommerso. 'Con queste pietre di sangue, ora abbiamo tutto ciò che ci serve. Ora possiamo fabbricare il Bastone di Pietrasangue. Insieme alla Spada di Vetro di Gelo, avremo i mezzi per affrontare l'oscurità che si cela nel profondo.'",
     "title": "Il Bastone di Pietrasangue"
   },
   "wizardDecryptsScrolls": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
     "message": "Il mago esce dalla sua torre, 'Ho decifrato le antiche pergamene,' dice. 'Le creature del profondo possono essere uccise solo con armi di grande potere: una spada di vetro di gelo e un bastone coronato di pietra di sangue. Nel profondo della foresta giace la tomba di un antico re i cui tesori potrebbero contenere il vetro di gelo che ci serve.'",
     "title": "Conoscenza Antica"
   },
   "wizardFrostglassSword": {
-    "message": "Il mago esamina il vetro di gelo, luce fredda che danza sulla sua superficie. 'L'hai trovato. Ora, la Spada di Vetro di Gelo può essere forgiata.'"
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "Il mago esamina il vetro di gelo, luce fredda che danza sulla sua superficie. 'L'hai trovato. Ora, la Spada di Vetro di Gelo può essere forgiata.'",
+    "title": "La spada di vetro di gelo"
   },
   "wizardNecromancerCastle": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
     "message": "Il mago ti chiama alla sua torre: 'Ho saputo di un castello nel profondo delle terre selvagge, l'antico dominio di un negromante morto da tempo. Tra le sue mura giacciono antiche pergamene che parlano di come possiamo sconfiggere ciò che dimora nelle profondità della caverna.'",
     "title": "Il Castello del Negromante"
   },
@@ -2601,6 +2644,11 @@
     "title": "L'Offerta del Mago"
   },
   "wizardReadyForBattle": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
     "message": "Il mago sta all'ingresso della sua torre, 'Le armi sono forgiate. Ora possediamo ciò che ci serve per fronteggiare le creature delle profondità della caverna. L'oscurità del profondo imparerà presto che questo villaggio non cadrà senza combattere. Siamo pronti.'",
     "title": "La Preparazione Finale"
   },

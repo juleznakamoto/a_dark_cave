@@ -16,15 +16,20 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 1,
     priority: 5,
     repeatable: false,
-    effect: (state: GameState) => ({
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          portalDiscovered: true,
-        },
+    choices: [
+      {
+        id: "continue",
+        effect: (state: GameState) => ({
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              portalDiscovered: true,
+            },
+          },
+        }),
       },
-    }),
+    ],
   },
 
   /**
@@ -52,16 +57,21 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     priority: 5,
     repeatable: true,
-    effect: (state: GameState) => ({
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          alchemistArrives: true,
-          canMakeAshfireDust: true,
-        },
+    choices: [
+      {
+        id: "continue",
+        effect: (state: GameState) => ({
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              alchemistArrives: true,
+              canMakeAshfireDust: true,
+            },
+          },
+        }),
       },
-    }),
+    ],
   },
 
   veinrootIntroduction: {
@@ -266,15 +276,20 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 0.5,
     priority: 5,
     repeatable: true,
-    effect: (state: GameState) => ({
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          wizardArrives: true,
-        },
+    choices: [
+      {
+        id: "continue",
+        effect: (state: GameState) => ({
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              wizardArrives: true,
+            },
+          },
+        }),
       },
-    }),
+    ],
   },
 
   wizardNecromancerCastle: {
@@ -286,15 +301,20 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 1.0,
     priority: 5,
     repeatable: true,
-    effect: (state: GameState) => ({
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          wizardNecromancerCastle: true,
-        },
+    choices: [
+      {
+        id: "continue",
+        effect: (state: GameState) => ({
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              wizardNecromancerCastle: true,
+            },
+          },
+        }),
       },
-    }),
+    ],
   },
 
   wizardDecryptsScrolls: {
@@ -307,20 +327,25 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 0.5,
     priority: 5,
     repeatable: true,
-    effect: (state: GameState) => ({
-      relics: {
-        ...state.relics,
-        ancient_scrolls: false,
+    choices: [
+      {
+        id: "continue",
+        effect: (state: GameState) => ({
+          relics: {
+            ...state.relics,
+            ancient_scrolls: false,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              wizardDecryptsScrolls: true,
+              wizardHillGrave: true,
+            },
+          },
+        }),
       },
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          wizardDecryptsScrolls: true,
-          wizardHillGrave: true,
-        },
-      },
-    }),
+    ],
   },
 
   wizardFrostglassSword: {
@@ -333,15 +358,20 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 0.5,
     priority: 5,
     repeatable: true,
-    effect: (state: GameState) => ({
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          wizardFrostglassSword: true,
-        },
+    choices: [
+      {
+        id: "continue",
+        effect: (state: GameState) => ({
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              wizardFrostglassSword: true,
+            },
+          },
+        }),
       },
-    }),
+    ],
   },
 
   wizardBloodstone: {
@@ -352,15 +382,20 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 0.02,
     priority: 5,
     repeatable: true,
-    effect: (state: GameState) => ({
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          wizardBloodstone: true,
-        },
+    choices: [
+      {
+        id: "continue",
+        effect: (state: GameState) => ({
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              wizardBloodstone: true,
+            },
+          },
+        }),
       },
-    }),
+    ],
   },
 
   wizardBloodstoneStaff: {
@@ -372,15 +407,20 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 0.5,
     priority: 5,
     repeatable: true,
-    effect: (state: GameState) => ({
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          wizardBloodstoneStaff: true,
-        },
+    choices: [
+      {
+        id: "continue",
+        effect: (state: GameState) => ({
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              wizardBloodstoneStaff: true,
+            },
+          },
+        }),
       },
-    }),
+    ],
   },
 
   wizardReadyForBattle: {
@@ -393,15 +433,20 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 0.5,
     priority: 5,
     repeatable: true,
-    effect: (state: GameState) => ({
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          wizardReadyForBattle: true,
-        },
+    choices: [
+      {
+        id: "continue",
+        effect: (state: GameState) => ({
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              wizardReadyForBattle: true,
+            },
+          },
+        }),
       },
-    }),
+    ],
   },
 
   /**

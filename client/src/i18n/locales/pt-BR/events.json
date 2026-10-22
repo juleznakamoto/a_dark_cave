@@ -17,6 +17,11 @@
     }
   },
   "alchemistArrives": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
     "message": "O alquimista emerge de seu salão: 'Tenho conduzido experimentos dia e noite.' Ele ergue um frasco de poeira reluzente. 'Criei algo extraordinário e terrivelmente perigoso.'",
     "title": "A Descoberta do Alquimista"
   },
@@ -1494,7 +1499,13 @@
     "title": "A Figura Esguia"
   },
   "portalDiscovered": {
-    "message": "Nas câmaras mais baixas da cidadela você encontra um portão colossal forjado de um metal desconhecido e inflexível. Talvez as criações do alquimista consigam abri-lo."
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Nas câmaras mais baixas da cidadela você encontra um portão colossal forjado de um metal desconhecido e inflexível. Talvez as criações do alquimista consigam abri-lo.",
+    "title": "O portão antigo"
   },
   "redMaskChoice": {
     "choices": {
@@ -2558,24 +2569,56 @@
     "title": "A Maldição da Bruxa"
   },
   "wizardArrives": {
-    "message": "Um pequeno homem idoso de longa barba grisalha, num casaco cinza desgastado, se aproxima do assentamento. Seus olhos reluzem de antiga sabedoria e poder. 'Sou um mago,' declara ele com voz que ecoa autoridade arcana. 'Construa-me uma torre, e eu o auxiliarei com poderes além da compreensão mortal.'"
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Um pequeno homem idoso de longa barba grisalha, num casaco cinza desgastado, se aproxima do assentamento. Seus olhos reluzem de antiga sabedoria e poder. 'Sou um mago,' declara ele com voz que ecoa autoridade arcana. 'Construa-me uma torre, e eu o auxiliarei com poderes além da compreensão mortal.'",
+    "title": "O mago"
   },
   "wizardBloodstone": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
     "message": "O mago retorna de uma jornada à floresta. 'Consultei um velho amigo, um mago eremita que habita nas profundezas da mata,' diz ele gravemente. 'Ele falou da pedra-de-sangue de que precisamos. Ela jaz no Templo Submerso, um antigo santuário agora meio afogado nos pântanos da floresta.'",
     "title": "O Templo Submerso"
   },
   "wizardBloodstoneStaff": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
     "message": "O mago examina as gemas de pedra-de-sangue que você recuperou do Templo Submerso. 'Com estas pedras-de-sangue, agora temos tudo de que precisamos. Agora podemos criar o Cajado de Pedra-de-Sangue. Junto com a Espada de Vidro-de-Gelo, teremos os meios para enfrentar a escuridão que se esconde lá embaixo.'",
     "title": "O Cajado de Pedra-de-Sangue"
   },
   "wizardDecryptsScrolls": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
     "message": "O mago sai de sua torre, 'Decifrei os pergaminhos antigos,' diz ele. 'As criaturas lá embaixo só podem ser mortas com armas de grande poder: uma espada de vidro-de-gelo e um cajado coroado com pedra-de-sangue. Nas profundezas da floresta jaz o túmulo de um antigo rei cujos tesouros podem guardar o vidro-de-gelo de que precisamos.'",
     "title": "Conhecimento Antigo"
   },
   "wizardFrostglassSword": {
-    "message": "O mago examina o vidro-de-gelo, luz fria dançando por sua superfície. 'Você o encontrou. Agora, a Espada de Vidro-de-Gelo pode ser forjada.'"
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "O mago examina o vidro-de-gelo, luz fria dançando por sua superfície. 'Você o encontrou. Agora, a Espada de Vidro-de-Gelo pode ser forjada.'",
+    "title": "A Espada de Vidro-de-Gelo"
   },
   "wizardNecromancerCastle": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
     "message": "O mago o chama à sua torre: 'Soube de um castelo nas profundezas da selva, o antigo domínio de um necromante há muito morto. Dentro de suas paredes jazem pergaminhos antigos que falam de como podemos derrotar o que habita as profundezas da caverna.'",
     "title": "O Castelo do Necromante"
   },
@@ -2601,6 +2644,11 @@
     "title": "A Oferta do Mago"
   },
   "wizardReadyForBattle": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
     "message": "O mago está à entrada de sua torre, 'As armas estão forjadas. Agora possuímos o que precisamos para enfrentar as criaturas das profundezas da caverna. A escuridão lá embaixo logo aprenderá que este vilarejo não cairá sem luta. Estamos prontos.'",
     "title": "O Preparo Final"
   },

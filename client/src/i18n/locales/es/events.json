@@ -17,6 +17,11 @@
     }
   },
   "alchemistArrives": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
     "message": "El alquimista emerge de su salón: 'He estado realizando experimentos día y noche', dice, sosteniendo un vial de polvo resplandeciente. 'He creado algo extraordinario y terriblemente peligroso'.",
     "title": "El descubrimiento del alquimista"
   },
@@ -1625,7 +1630,13 @@
     "title": "La puerta cae"
   },
   "portalDiscovered": {
-    "message": "En las cámaras más bajas de la ciudadela encuentras una puerta colosal forjada con un metal desconocido e inflexible. Quizá las creaciones del alquimista puedan abrirla."
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "En las cámaras más bajas de la ciudadela encuentras una puerta colosal forjada con un metal desconocido e inflexible. Quizá las creaciones del alquimista puedan abrirla.",
+    "title": "La puerta antigua"
   },
   "redMaskChoice": {
     "choices": {
@@ -2709,24 +2720,56 @@
     "title": "La maldición de la bruja"
   },
   "wizardArrives": {
-    "message": "Un anciano pequeño, de larga barba gris y abrigo gris gastado, se acerca al asentamiento. Sus ojos brillan con sabiduría y poder antiguos. 'Soy un mago', declara con una voz que resuena con autoridad arcana. 'Construidme una torre y os ayudaré con poderes más allá del saber mortal'."
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Un anciano pequeño, de larga barba gris y abrigo gris gastado, se acerca al asentamiento. Sus ojos brillan con sabiduría y poder antiguos. 'Soy un mago', declara con una voz que resuena con autoridad arcana. 'Construidme una torre y os ayudaré con poderes más allá del saber mortal'.",
+    "title": "El mago"
   },
   "wizardBloodstone": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
     "message": "El mago regresa de un viaje al bosque. 'He consultado con un viejo amigo, un mago ermitaño que habita en lo profundo del bosque', dice con gravedad. 'Me habló de la piedra de sangre que necesitamos. Yace en el Templo Hundido, un antiguo santuario ahora medio ahogado en los pantanos del bosque'.",
     "title": "El Templo Hundido"
   },
   "wizardBloodstoneStaff": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
     "message": "El mago examina las gemas de piedra de sangre que recuperaste del Templo Hundido. 'Con estas piedras de sangre, ya tenemos todo lo necesario. Ahora podemos fabricar el Bastón de Piedra de Sangre. Junto con la Espada de Cristal de Escarcha, tendremos los medios para enfrentar la oscuridad que acecha abajo'.",
     "title": "El Bastón de Piedra de Sangre"
   },
   "wizardDecryptsScrolls": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
     "message": "El mago sale de su torre. 'He descifrado los pergaminos antiguos', dice. 'Las criaturas de abajo solo pueden morir con armas de gran poder: una espada de cristal de escarcha y un bastón coronado con piedra de sangre. En lo profundo del bosque yace la tumba de un rey antiguo, cuyos tesoros podrían contener el cristal de escarcha que necesitamos'.",
     "title": "Conocimiento antiguo"
   },
   "wizardFrostglassSword": {
-    "message": "El mago examina el cristal de escarcha, mientras una luz fría danza sobre su superficie. 'Lo has encontrado. Ahora puede forjarse la Espada de Cristal de Escarcha'."
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "El mago examina el cristal de escarcha, mientras una luz fría danza sobre su superficie. 'Lo has encontrado. Ahora puede forjarse la Espada de Cristal de Escarcha'.",
+    "title": "La espada de cristal de escarcha"
   },
   "wizardNecromancerCastle": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
     "message": "El mago te llama a su torre: 'He sabido de un castillo en lo profundo de la espesura, antiguo dominio de un nigromante muerto hace mucho. Dentro de sus muros yacen pergaminos antiguos que hablan de cómo podemos derrotar lo que habita en las profundidades de la cueva'.",
     "title": "El castillo del nigromante"
   },
@@ -2752,6 +2795,11 @@
     "title": "La oferta del mago"
   },
   "wizardReadyForBattle": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
     "message": "El mago se alza a la entrada de su torre. 'Las armas están forjadas. Ahora poseemos lo necesario para resistir a las criaturas de las profundidades de la cueva. La oscuridad de abajo pronto aprenderá que esta aldea no caerá sin luchar. Estamos listos'.",
     "title": "La preparación final"
   },

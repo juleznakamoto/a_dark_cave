@@ -34,6 +34,11 @@
     }
   },
   "alchemistArrives": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
     "message": "The alchemist emerges from his hall: 'I have been conducting experiments day and night.' He holds up a vial of shimmering dust. 'I've created something extraordinary and terribly dangerous.'",
     "title": "The Alchemist's Discovery"
   },
@@ -1702,7 +1707,13 @@
     "title": "The Gate Falls"
   },
   "portalDiscovered": {
-    "message": "In the citadel's lowest chambers you find a colossal gate forged from an unknown, unyielding metal. Perhaps the alchemist creations will be able to open it."
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "In the citadel's lowest chambers you find a colossal gate forged from an unknown, unyielding metal. Perhaps the alchemist creations will be able to open it.",
+    "title": "The Ancient Gate"
   },
   "raggedYouth": {
     "choices": {
@@ -2824,24 +2835,56 @@
     "title": "The Witch's Curse"
   },
   "wizardArrives": {
-    "message": "A small old man with a long grey beard in a weathered grey coat approaches the settlement. His eyes gleam with ancient wisdom and power. 'I am a wizard,' he declares in a voice echoing with arcane authority. 'Build me a tower, and I shall aid you with powers beyond mortal ken.'"
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "A small old man with a long grey beard in a weathered grey coat approaches the settlement. His eyes gleam with ancient wisdom and power. 'I am a wizard,' he declares in a voice echoing with arcane authority. 'Build me a tower, and I shall aid you with powers beyond mortal ken.'",
+    "title": "The Wizard"
   },
   "wizardBloodstone": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
     "message": "The wizard returns from a journey into the forest. 'I have consulted with an old friend, a hermit wizard who dwells deep in the woods,' he says gravely. 'He spoke of the bloodstone we need. It lies within the Sunken Temple, an ancient shrine now half-drowned in the swamps of the forest.'",
     "title": "The Sunken Temple"
   },
   "wizardBloodstoneStaff": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
     "message": "The wizard examines the bloodstone gems you've retrieved from the Sunken Temple. 'With these bloodstones, we now have everything we need. Now we can craft the Bloodstone Staff. Together with the Frostglass Sword, we will have the means to face the darkness that lurks below.'",
     "title": "The Bloodstone Staff"
   },
   "wizardDecryptsScrolls": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
     "message": "The wizard steps from his tower, 'I have decrypted the ancient scrolls,' he says. 'The creatures below can only be slain with weapons of great power: a sword of frostglass and a staff crowned with bloodstone. Deep in the forest lies the grave of an ancient king whose treasures may hold the frostglass we need.'",
     "title": "Ancient Knowledge"
   },
   "wizardFrostglassSword": {
-    "message": "The wizard examines the frostglass, cold light dancing across its surface. 'You have found it. Now, the Frostglass Sword can be forged.'"
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "The wizard examines the frostglass, cold light dancing across its surface. 'You have found it. Now, the Frostglass Sword can be forged.'",
+    "title": "The Frostglass Sword"
   },
   "wizardNecromancerCastle": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
     "message": "The wizard calls you to his tower: 'I have learned of a castle deep in the wilderness, the former domain of a long-dead necromancer. Within its walls lie ancient scrolls that speak of how we can defeat what dwells in the depths of the cave.'",
     "title": "The Necromancer's Castle"
   },
@@ -2867,6 +2910,11 @@
     "title": "The Wizard's Offer"
   },
   "wizardReadyForBattle": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
     "message": "The wizard stands at the entrance to his tower, 'The weapons are forged. We now possess what we need to stand against the creatures of the depths of the cave. The darkness below will soon learn that this village will not fall without a fight. We are ready.'",
     "title": "The Final Preparation"
   },

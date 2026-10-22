@@ -17,6 +17,11 @@
     }
   },
   "alchemistArrives": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
     "message": "L'alchimiste surgit de son hall : 'J'ai mené des expériences nuit et jour,' dit-il en tenant une fiole de poussière miroitante. 'J'ai créé quelque chose d'extraordinaire et de terriblement dangereux.'",
     "title": "La Découverte de l'alchimiste"
   },
@@ -1625,7 +1630,13 @@
     "title": "La Porte tombe"
   },
   "portalDiscovered": {
-    "message": "Dans les chambres les plus basses de la citadelle, vous trouvez une porte colossale forgée dans un métal inconnu et inflexible. Peut-être les créations de l'alchimiste sauront-elles l'ouvrir."
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "message": "Dans les chambres les plus basses de la citadelle, vous trouvez une porte colossale forgée dans un métal inconnu et inflexible. Peut-être les créations de l'alchimiste sauront-elles l'ouvrir.",
+    "title": "La porte ancienne"
   },
   "redMaskChoice": {
     "choices": {
@@ -2709,24 +2720,56 @@
     "title": "La Malédiction de la sorcière"
   },
   "wizardArrives": {
-    "message": "Un petit vieil homme à la longue barbe grise, vêtu d'un manteau gris usé, approche de la colonie. Ses yeux brillent d'une sagesse et d'une puissance anciennes. 'Je suis un sorcier,' déclare-t-il d'une voix résonnant d'autorité arcanique. 'Bâtissez-moi une tour, et je vous aiderai avec des pouvoirs au-delà de l'entendement des mortels.'"
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "message": "Un petit vieil homme à la longue barbe grise, vêtu d'un manteau gris usé, approche de la colonie. Ses yeux brillent d'une sagesse et d'une puissance anciennes. 'Je suis un sorcier,' déclare-t-il d'une voix résonnant d'autorité arcanique. 'Bâtissez-moi une tour, et je vous aiderai avec des pouvoirs au-delà de l'entendement des mortels.'",
+    "title": "Le sorcier"
   },
   "wizardBloodstone": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
     "message": "Le sorcier revient d'un voyage dans la forêt. 'J'ai consulté un vieil ami, un sorcier ermite qui demeure au profond des bois,' dit-il gravement. 'Il m'a parlé de la pierre de sang dont nous avons besoin. Elle se trouve dans le Temple Englouti, un ancien sanctuaire désormais à demi noyé dans les marais de la forêt.'",
     "title": "Le Temple Englouti"
   },
   "wizardBloodstoneStaff": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
     "message": "Le sorcier examine les gemmes de pierre de sang que vous avez rapportées du Temple Englouti. 'Avec ces pierres de sang, nous avons désormais tout ce qu'il nous faut. Nous pouvons maintenant fabriquer le Bâton de pierre de sang. Avec l'Épée de verre-givre, nous aurons les moyens d'affronter les ténèbres qui rôdent en dessous.'",
     "title": "Le Bâton de pierre de sang"
   },
   "wizardDecryptsScrolls": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
     "message": "Le sorcier sort de sa tour. 'J'ai déchiffré les anciens parchemins,' dit-il. 'Les créatures d'en bas ne peuvent être tuées qu'avec des armes de grande puissance : une épée de verre-givre et un bâton couronné de pierre de sang. Au profond de la forêt repose la tombe d'un ancien roi, dont les trésors pourraient contenir le verre-givre dont nous avons besoin.'",
     "title": "Savoir ancien"
   },
   "wizardFrostglassSword": {
-    "message": "Le sorcier examine le verre-givre, une lumière froide dansant sur sa surface. 'Vous l'avez trouvé. Maintenant, l'Épée de verre-givre peut être forgée.'"
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "message": "Le sorcier examine le verre-givre, une lumière froide dansant sur sa surface. 'Vous l'avez trouvé. Maintenant, l'Épée de verre-givre peut être forgée.'",
+    "title": "L'Épée de verre-givre"
   },
   "wizardNecromancerCastle": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
     "message": "Le sorcier vous appelle dans sa tour : 'J'ai appris l'existence d'un château au profond des terres sauvages, ancien domaine d'un nécromancien mort depuis longtemps. Dans ses murs reposent des parchemins anciens qui disent comment nous pouvons vaincre ce qui demeure dans les profondeurs de la grotte.'",
     "title": "Le Château du nécromancien"
   },
@@ -2752,6 +2795,11 @@
     "title": "L'Offre du sorcier"
   },
   "wizardReadyForBattle": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
     "message": "Le sorcier se tient à l'entrée de sa tour. 'Les armes sont forgées. Nous possédons désormais ce qu'il nous faut pour tenir tête aux créatures des profondeurs de la grotte. Les ténèbres d'en bas apprendront bientôt que ce village ne tombera pas sans combattre. Nous sommes prêts.'",
     "title": "La Préparation finale"
   },

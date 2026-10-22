@@ -34,6 +34,11 @@
     }
   },
   "alchemistArrives": {
+    "choices": {
+      "continue": {
+        "label": "Kontynuuj"
+      }
+    },
     "message": "Alchemik wychodzi ze swojej hali: 'Prowadziłem eksperymenty dniem i nocą.' Unosi fiolkę mieniącego się pyłu. 'Stworzyłem coś niezwykłego i straszliwie niebezpiecznego.'",
     "title": "Odkrycie alchemika"
   },
@@ -1704,7 +1709,13 @@
     "title": "Brama pada"
   },
   "portalDiscovered": {
-    "message": "W najniższych komnatach cytadeli znajdujesz kolosalną bramę wykutą z nieznanego, nieustępliwego metalu. Być może twory alchemika zdołają ją otworzyć."
+    "choices": {
+      "continue": {
+        "label": "Kontynuuj"
+      }
+    },
+    "message": "W najniższych komnatach cytadeli znajdujesz kolosalną bramę wykutą z nieznanego, nieustępliwego metalu. Być może twory alchemika zdołają ją otworzyć.",
+    "title": "Starożytna brama"
   },
   "redMaskChoice": {
     "choices": {
@@ -2797,24 +2808,56 @@
     "title": "Klątwa wiedźmy"
   },
   "wizardArrives": {
-    "message": "Niski stary człowiek z długą siwą brodą, w wytartym szarym płaszczu, zbliża się do osady. Jego oczy błyszczą starożytną mądrością i mocą. 'Jestem czarodziejem,' oświadcza głosem niosącym się z arkanicznym autorytetem. 'Zbuduj mi wieżę, a wspomogę cię mocami poza śmiertelnym pojęciem.'"
+    "choices": {
+      "continue": {
+        "label": "Kontynuuj"
+      }
+    },
+    "message": "Niski stary człowiek z długą siwą brodą, w wytartym szarym płaszczu, zbliża się do osady. Jego oczy błyszczą starożytną mądrością i mocą. 'Jestem czarodziejem,' oświadcza głosem niosącym się z arkanicznym autorytetem. 'Zbuduj mi wieżę, a wspomogę cię mocami poza śmiertelnym pojęciem.'",
+    "title": "Czarodziej"
   },
   "wizardBloodstone": {
+    "choices": {
+      "continue": {
+        "label": "Kontynuuj"
+      }
+    },
     "message": "Czarodziej wraca z podróży do lasu. 'Naradziłem się ze starym przyjacielem, czarodziejem-pustelnikiem, który mieszka głęboko w gęstwinie,' mówi poważnie. 'Mówił o krwawym kamieniu, którego potrzebujemy. Leży w Zatopionej Świątyni, starożytnej kapliczce, teraz na wpół zatopionej w bagnach lasu.'",
     "title": "Zatopiona Świątynia"
   },
   "wizardBloodstoneStaff": {
+    "choices": {
+      "continue": {
+        "label": "Kontynuuj"
+      }
+    },
     "message": "Czarodziej ogląda klejnoty krwawego kamienia, które wydobyłeś z Zatopionej Świątyni. 'Z tymi krwawymi kamieniami mamy już wszystko, czego potrzeba. Teraz możemy wykuć Kostur krwawego kamienia. Razem z Mieczem z mrozoszkła będziemy mieli środki, by stawić czoła ciemności, która czai się poniżej.'",
     "title": "Kostur krwawego kamienia"
   },
   "wizardDecryptsScrolls": {
+    "choices": {
+      "continue": {
+        "label": "Kontynuuj"
+      }
+    },
     "message": "Czarodziej wychodzi z wieży. 'Odszyfrowałem starożytne zwoje,' mówi. 'Stwory poniżej można zabić tylko bronią wielkiej mocy: mieczem z mrozoszkła i kosturem zwieńczonym krwawym kamieniem. Głęboko w lesie leży grób starożytnego króla, którego skarby mogą kryć mrozoszkło, którego potrzebujemy.'",
     "title": "Starożytna wiedza"
   },
   "wizardFrostglassSword": {
-    "message": "Czarodziej ogląda mrozoszkło, zimne światło tańczy po jego powierzchni. 'Znalazłeś je. Teraz można wykuć Miecz z mrozoszkła.'"
+    "choices": {
+      "continue": {
+        "label": "Kontynuuj"
+      }
+    },
+    "message": "Czarodziej ogląda mrozoszkło, zimne światło tańczy po jego powierzchni. 'Znalazłeś je. Teraz można wykuć Miecz z mrozoszkła.'",
+    "title": "Miecz z mrozoszkła"
   },
   "wizardNecromancerCastle": {
+    "choices": {
+      "continue": {
+        "label": "Kontynuuj"
+      }
+    },
     "message": "Czarodziej wzywa cię do swojej wieży: 'Dowiedziałem się o zamku głęboko w dziczy, dawnej siedzibie dawno zmarłego nekromanty. W jego murach leżą starożytne zwoje, które mówią, jak pokonać to, co mieszka w głębinach jaskini.'",
     "title": "Zamek nekromanty"
   },
@@ -2840,6 +2883,11 @@
     "title": "Oferta czarodzieja"
   },
   "wizardReadyForBattle": {
+    "choices": {
+      "continue": {
+        "label": "Kontynuuj"
+      }
+    },
     "message": "Czarodziej stoi u wejścia do wieży. 'Broń jest wykuta. Mamy teraz to, czego potrzeba, by stanąć przeciw stworom z głębin jaskini. Ciemność poniżej wkrótce pozna, że ta wioska nie padnie bez walki. Jesteśmy gotowi.'",
     "title": "Ostateczne przygotowanie"
   },

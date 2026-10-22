@@ -17,6 +17,11 @@
     }
   },
   "alchemistArrives": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
     "message": "Der Alchemist tritt aus seiner Halle: 'Ich habe Tag und Nacht Experimente durchgeführt', sagt er und hält eine Phiole mit schimmerndem Staub hoch. 'Ich habe etwas Außergewöhnliches und furchtbar Gefährliches erschaffen.'",
     "title": "Die Entdeckung des Alchemisten"
   },
@@ -1625,7 +1630,13 @@
     "title": "Das Tor fällt"
   },
   "portalDiscovered": {
-    "message": "In den tiefsten Kammern der Zitadelle findest du ein kolossales Tor, geschmiedet aus einem unbekannten, unnachgiebigen Metall. Vielleicht können die Schöpfungen des Alchemisten es öffnen."
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "message": "In den tiefsten Kammern der Zitadelle findest du ein kolossales Tor, geschmiedet aus einem unbekannten, unnachgiebigen Metall. Vielleicht können die Schöpfungen des Alchemisten es öffnen.",
+    "title": "Das uralte Tor"
   },
   "redMaskChoice": {
     "choices": {
@@ -2709,24 +2720,56 @@
     "title": "Der Fluch der Hexe"
   },
   "wizardArrives": {
-    "message": "Ein kleiner alter Mann mit langem grauem Bart und verwittertem grauem Mantel nähert sich der Siedlung. Seine Augen glänzen vor alter Weisheit und Macht. 'Ich bin ein Zauberer', erklärt er mit einer Stimme, die vor arkaner Autorität hallt. 'Baue mir einen Turm, und ich werde dir mit Kräften jenseits sterblicher Vorstellung helfen.'"
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "message": "Ein kleiner alter Mann mit langem grauem Bart und verwittertem grauem Mantel nähert sich der Siedlung. Seine Augen glänzen vor alter Weisheit und Macht. 'Ich bin ein Zauberer', erklärt er mit einer Stimme, die vor arkaner Autorität hallt. 'Baue mir einen Turm, und ich werde dir mit Kräften jenseits sterblicher Vorstellung helfen.'",
+    "title": "Der Zauberer"
   },
   "wizardBloodstone": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
     "message": "Der Zauberer kehrt von einer Reise in den Wald zurück. 'Ich habe mich mit einem alten Freund beraten, einem Einsiedlerzauberer, der tief in den Wäldern lebt', sagt er ernst. 'Er sprach von dem Blutstein, den wir brauchen. Er liegt im Versunkenen Tempel, einem alten Schrein, der nun halb in den Sümpfen des Waldes ertrunken ist.'",
     "title": "Der Versunkene Tempel"
   },
   "wizardBloodstoneStaff": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
     "message": "Der Zauberer untersucht die Blutsteine, die du aus dem Versunkenen Tempel geborgen hast. 'Mit diesen Blutsteinen haben wir nun alles, was wir brauchen. Jetzt können wir den Blutsteinstab herstellen. Zusammen mit dem Frostglasschwert werden wir die Mittel haben, der Dunkelheit entgegenzutreten, die unten lauert.'",
     "title": "Der Blutsteinstab"
   },
   "wizardDecryptsScrolls": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
     "message": "Der Zauberer tritt aus seinem Turm. 'Ich habe die alten Schriftrollen entschlüsselt', sagt er. 'Die Kreaturen dort unten können nur mit Waffen großer Macht erschlagen werden: einem Schwert aus Frostglas und einem Stab, gekrönt mit Blutstein. Tief im Wald liegt das Grab eines alten Königs, dessen Schätze das Frostglas bergen könnten, das wir brauchen.'",
     "title": "Altes Wissen"
   },
   "wizardFrostglassSword": {
-    "message": "Der Zauberer untersucht das Frostglas, kaltes Licht tanzt über seine Oberfläche. 'Du hast es gefunden. Nun kann das Frostglasschwert geschmiedet werden.'"
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "message": "Der Zauberer untersucht das Frostglas, kaltes Licht tanzt über seine Oberfläche. 'Du hast es gefunden. Nun kann das Frostglasschwert geschmiedet werden.'",
+    "title": "Das Frostglasschwert"
   },
   "wizardNecromancerCastle": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
     "message": "Der Zauberer ruft dich in seinen Turm: 'Ich habe von einer Burg tief in der Wildnis erfahren, dem einstigen Reich eines lange toten Nekromanten. In ihren Mauern liegen alte Schriftrollen, die davon sprechen, wie wir besiegen können, was in den Tiefen der Höhle haust.'",
     "title": "Die Burg des Nekromanten"
   },
@@ -2752,6 +2795,11 @@
     "title": "Das Angebot des Zauberers"
   },
   "wizardReadyForBattle": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
     "message": "Der Zauberer steht am Eingang seines Turms. 'Die Waffen sind geschmiedet. Wir besitzen nun, was wir brauchen, um uns den Kreaturen aus den Tiefen der Höhle entgegenzustellen. Die Dunkelheit dort unten wird bald lernen, dass dieses Dorf nicht kampflos fällt. Wir sind bereit.'",
     "title": "Die letzte Vorbereitung"
   },
