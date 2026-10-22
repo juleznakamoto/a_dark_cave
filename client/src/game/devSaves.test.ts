@@ -5,7 +5,6 @@ import {
   isForestTabVisible,
   isVillageTabVisible,
 } from "@shared/repairUnlockFlags";
-import { getTotalPopulationEffects } from "@/game/population";
 import { useGameStore } from "./state";
 import { DEV_SAVE_CATALOG, DEV_SAVE_IDS, parseDevSaveId } from "./devSaveIds";
 import {
@@ -16,13 +15,7 @@ import {
   isDevSaveFixtureGameId,
 } from "./devSaves";
 import { SOCIAL_PROMPT_AUTO_OPEN_COUNT } from "./socialPromptAuto";
-
-function canActivateSleep(state: ReturnType<typeof buildDevSave>): boolean {
-  const effects = getTotalPopulationEffects(state, Object.keys(state.villagers), {
-    excludeTemporaryBonuses: true,
-  });
-  return (effects.wood || 0) > 0 && (effects.food || 0) > 0;
-}
+import { canActivateSleep } from "./sleepActivation";
 
 describe("dev save catalog", () => {
   it("starts with six named milestones", () => {

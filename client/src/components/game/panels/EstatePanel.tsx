@@ -8,6 +8,7 @@ import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { Button } from "@/components/ui/button";
 import { ImproveButton } from "@/components/ui/improve-button";
 import { getTotalPopulationEffects } from "@/game/population";
+import { beginSleepMode, canActivateSleep } from "@/game/sleepActivation";
 import {
   EstateStyleProgress,
   SharedProgressShaderHost,
@@ -344,7 +345,6 @@ export default function EstatePanel({
     events,
     relics,
     setEventDialog,
-    setIdleModeDialog,
     sleepUpgrades,
     huntingSkills,
     crowsEyeSkills,
@@ -363,7 +363,6 @@ export default function EstatePanel({
       events: s.events,
       relics: s.relics,
       setEventDialog: s.setEventDialog,
-      setIdleModeDialog: s.setIdleModeDialog,
       sleepUpgrades: s.sleepUpgrades,
       huntingSkills: s.huntingSkills,
       crowsEyeSkills: s.crowsEyeSkills,
@@ -520,29 +519,10 @@ export default function EstatePanel({
   );
   const woodProduction = totalEffects.wood || 0;
   const foodProduction = totalEffects.food || 0;
-  const canActivateIdle = woodProduction > 0 && foodProduction > 0;
+  const canActivateIdle = canActivateSleep(state);
 
   const handleActivateIdleMode = async () => {
-    if (isDemoPlayFrozen(useGameStore.getState())) return;
-    const now = Date.now();
-
-    // Set idle mode state before opening dialog
-    useGameStore.setState({
-      idleModeState: {
-        isActive: true,
-        startTime: now,
-        needsDisplay: true,
-      },
-    });
-
-    // Get the MOST RECENT game state right before saving
-    const currentState = useGameStore.getState();
-
-    // Immediately save to Supabase so user can close tab
-    const { saveGame } = await import("@/game/save");
-    await saveGame(currentState, false);
-
-    setIdleModeDialog(true);
+    await beginSleepMode();
   };
 
   // Generic upgrade handler

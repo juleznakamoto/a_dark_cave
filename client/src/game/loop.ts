@@ -60,6 +60,10 @@ import { processTimedEffects } from "./timedEffects";
 import { tickObsidianOrbFocus } from "@/game/obsidianOrb";
 import { tickVillageMapSilver } from "@/game/villageMapSilver";
 import { isLocalOnlyEdition, shouldSyncSteamAchievements } from "@/lib/edition";
+import {
+  beginSleepMode,
+  shouldAutoSleepOnInactivity,
+} from "./sleepActivation";
 let gameLoopRunning = false;
 let gameLoopTimer: ReturnType<typeof setTimeout> | null = null;
 /** Set while the loop is started so the timer can call the nested tick. */
@@ -775,7 +779,27 @@ export function clearExpiredTimedEventTab() {
   useGameStore.getState().setTimedEventTab(false);
 }
 
-async function handleInactivity() {
+/** Exported for tests; normally triggered by the inactivity interval. */
+export async function handleInactivity() {
+  // Estate + Sleep ready: fall asleep instead of the AFK dialog.
+  // Keep the loop running; Sleep owns pause / production while open.
+  if (shouldAutoSleepOnInactivity(useGameStore.getState())) {
+    isInactive = true;
+    try {
+      logger.log("[GAME LOOP] Auto-starting sleep after inactivity timeout");
+      const started = await beginSleepMode();
+      if (started) {
+        lastUserActivity = Date.now();
+        return;
+      }
+      logger.warn(
+        "[GAME LOOP] Auto-sleep failed; falling back to inactivity dialog",
+      );
+    } finally {
+      isInactive = false;
+    }
+  }
+
   isInactive = true;
 
   // Stop the game loop

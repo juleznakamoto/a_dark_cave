@@ -1441,9 +1441,14 @@ export default function VillagePanel() {
           <Button
             onMouseDown={(e) => {
               if (e.button !== 0) return;
-              if (currentCount > 0) {
-                startHold(() => unassignVillager(jobId), false);
+              if (currentCount <= 0) return;
+              // Ctrl/Cmd or Shift + left click: ±10 (same as right click)
+              if (e.ctrlKey || e.metaKey || e.shiftKey) {
+                e.preventDefault();
+                unassignVillager(jobId, 10);
+                return;
               }
+              startHold(() => unassignVillager(jobId), false);
             }}
             onMouseUp={() => stopHold(false)}
             onMouseLeave={() => stopHold(false)}
@@ -1487,9 +1492,14 @@ export default function VillagePanel() {
           <Button
             onMouseDown={(e) => {
               if (e.button !== 0) return;
-              if (canAssignMore) {
-                startHold(() => assignVillager(jobId), false);
+              if (!canAssignMore) return;
+              // Ctrl/Cmd or Shift + left click: ±10 (same as right click)
+              if (e.ctrlKey || e.metaKey || e.shiftKey) {
+                e.preventDefault();
+                assignVillager(jobId, 10);
+                return;
               }
+              startHold(() => assignVillager(jobId), false);
             }}
             onMouseUp={() => stopHold(false)}
             onMouseLeave={() => stopHold(false)}
