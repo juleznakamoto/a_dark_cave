@@ -22,6 +22,10 @@ import {
   GAME_ACTION_BUTTON_STACK_CLASS,
 } from "@/components/CooldownButton";
 import { cn } from "@/lib/utils";
+import {
+  shouldPulseTimerUrgency,
+  TIMER_URGENCY_PULSE_CLASS,
+} from "@/game/timerUrgencyPulse";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
   GAME_TAB_PANEL_BODY,
@@ -797,7 +801,11 @@ export default function TimedEventPanel() {
           <div className="flex items-center min-w-0 flex-wrap gap-x-1">
             <span className="font-semibold">{displayTitle}</span>
             <span
-              className="inline-block w-[5ch] shrink-0 text-right tabular-nums text-muted-foreground"
+              className={cn(
+                "inline-block w-[5ch] shrink-0 text-right tabular-nums text-muted-foreground",
+                shouldPulseTimerUrgency(timeRemaining) &&
+                  TIMER_URGENCY_PULSE_CLASS,
+              )}
               aria-live="polite"
               data-testid="timed-event-time"
             >

@@ -137,6 +137,7 @@ import {
   TIMED_EVENT_TAB_LABEL_DEFAULTS,
   TIMED_EVENT_TAB_LABEL_KEYS,
 } from "@/components/game/timedEventTabLabel";
+import { TIMER_URGENCY_PULSE_MS } from "@/game/timerUrgencyPulse";
 
 const TAB_ICON_SIZE = TAB_ICON_SIZE_CLASS;
 
@@ -677,7 +678,7 @@ export default function GameContainer() {
         return;
       }
 
-      if (remaining <= 30000) {
+      if (remaining <= TIMER_URGENCY_PULSE_MS) {
         setTimedEventTabPulseClass("timer-tab-pulse-red");
       } else if (!hasViewedCurrentTimedEvent) {
         setTimedEventTabPulseClass("timer-tab-pulse-green");
@@ -728,7 +729,7 @@ export default function GameContainer() {
             0,
             (timer.duration || 0) - (timer.elapsedTime || 0),
           );
-          if (remaining <= 30000) {
+          if (remaining <= TIMER_URGENCY_PULSE_MS) {
             shouldPulse = true;
           }
         }

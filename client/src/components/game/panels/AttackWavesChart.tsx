@@ -30,6 +30,11 @@ import {
   getAttackWaveDisplayName,
   getPostCompletionAttackWaveDisplayName,
 } from "@/i18n/attackWaveLabels";
+import { cn } from "@/lib/utils";
+import {
+  shouldPulseTimerUrgency,
+  TIMER_URGENCY_PULSE_CLASS,
+} from "@/game/timerUrgencyPulse";
 
 const PROVOKE_ACTION_ID = "provokeAttackWave" as const;
 
@@ -86,6 +91,12 @@ export default function AttackWavesChart({
   };
 
   const activeWave = waves.find((wave) => !wave.completed && wave.conditionMet);
+  const activeWaveRemainingMs = activeWave
+    ? getTimeRemaining(activeWave.id)
+    : 0;
+  const postCompletionRemainingMs = getTimeRemaining(
+    POST_COMPLETION_ATTACK_WAVE_ID,
+  );
   const postCompletionActive = isPostCompletionAttackWavesActive(state);
   const postCompletionWaveNumber = postCompletionActive
     ? getPostCompletionWaveNumber(state)
@@ -169,9 +180,17 @@ export default function AttackWavesChart({
             <span className="text-xs font-medium text-foreground">
               {getAttackWaveDisplayName(activeWave.id)}
             </span>
-            <span className="text-xs text-muted-foreground">
+            <span
+              className={cn(
+                "text-xs text-muted-foreground",
+                attackWaveTimers?.[activeWave.id] &&
+                  shouldPulseTimerUrgency(activeWaveRemainingMs) &&
+                  TIMER_URGENCY_PULSE_CLASS,
+              )}
+              data-testid="attack-wave-time"
+            >
               {attackWaveTimers?.[activeWave.id]
-                ? formatTime(getTimeRemaining(activeWave.id))
+                ? formatTime(activeWaveRemainingMs)
                 : t("attackWaves.calm")}
             </span>
           </div>
@@ -218,7 +237,15 @@ export default function AttackWavesChart({
             <span className="text-xs font-medium text-foreground">
               {getPostCompletionAttackWaveDisplayName(postCompletionWaveNumber)}
             </span>
-            <span className="text-xs text-muted-foreground">
+            <span
+              className={cn(
+                "text-xs text-muted-foreground",
+                attackWaveTimers?.[POST_COMPLETION_ATTACK_WAVE_ID]?.provoked &&
+                  shouldPulseTimerUrgency(postCompletionRemainingMs) &&
+                  TIMER_URGENCY_PULSE_CLASS,
+              )}
+              data-testid="attack-wave-time-post"
+            >
               {getPostCompletionTimerLabel()}
             </span>
           </div>
