@@ -86,7 +86,7 @@
     "rest": "Отдых",
     "sleep": "Сон",
     "focus": "Фокус",
-    "sleepTooltipReady": "Пусть мир идёт дальше без вас",
+    "sleepTooltipReady": "Пусть мир идёт дальше без вас (Режим Idle)",
     "sleepTooltipBlocked": "Требуется положительное производство дерева и еды (бонусы производства не учитываются)",
     "sleepTooltipCurrentProduction": "Текущее производство:",
     "focusRewardTooltip_one": "Удвоенные награды за действия на {{count}} минуту",
@@ -248,7 +248,7 @@
   "achievements": {
     "notUnlocked": "Еще не открыто.",
     "chartUnavailable": "График недоступен",
-    "claim": "Забрать",
+    "claim": "Забрать награды",
     "unlockTitleForInsight": "Открыть название за {{cost}} Проницательности",
     "completeLog": "Достижение завершено: {{name}}: {{rewards}}",
     "categories": {

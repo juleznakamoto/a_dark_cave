@@ -78,7 +78,7 @@
     "rest": "休息",
     "sleep": "睡眠",
     "focus": "专注",
-    "sleepTooltipReady": "在你离开时让世界继续运转",
+    "sleepTooltipReady": "在你离开时让世界继续运转（挂机模式）",
     "sleepTooltipBlocked": "需要木材与食物产量为正（不含产量加成）",
     "sleepTooltipCurrentProduction": "当前产量：",
     "focusRewardTooltip_one": "行动双倍奖励 {{count}} 分钟",
@@ -224,7 +224,7 @@
   "achievements": {
     "notUnlocked": "尚未解锁。",
     "chartUnavailable": "图表不可用",
-    "claim": "领取",
+    "claim": "领取奖励",
     "unlockTitleForInsight": "花费 {{cost}} 洞见解锁标题",
     "completeLog": "成就完成：{{name}}：{{rewards}}",
     "categories": {

@@ -78,7 +78,7 @@
     "rest": "Rest",
     "sleep": "Sleep",
     "focus": "Focus",
-    "sleepTooltipReady": "Let the world move on in your absence",
+    "sleepTooltipReady": "Let the world move on in your absence (Idle Mode)",
     "sleepTooltipBlocked": "Requires positive wood and food production (production bonuses excluded)",
     "sleepTooltipCurrentProduction": "Current production:",
     "focusRewardTooltip_one": "Get 2x rewards on actions for {{count}} minute",
@@ -224,7 +224,7 @@
   "achievements": {
     "notUnlocked": "Not yet unlocked.",
     "chartUnavailable": "Chart unavailable",
-    "claim": "Claim",
+    "claim": "Claim Rewards",
     "unlockTitleForInsight": "Unlock title for {{cost}} Insight",
     "completeLog": "{{name}} Achievement complete: {{rewards}}",
     "categories": {

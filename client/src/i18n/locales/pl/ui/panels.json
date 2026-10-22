@@ -86,7 +86,7 @@
     "rest": "Odpoczynek",
     "sleep": "Śpij",
     "focus": "Skupienie",
-    "sleepTooltipReady": "Pozwól światu toczyć się pod twoją nieobecność",
+    "sleepTooltipReady": "Pozwól światu toczyć się pod twoją nieobecność (Tryb Idle)",
     "sleepTooltipBlocked": "Wymaga dodatniej produkcji drewna i żywności (premie produkcji nie liczą się)",
     "sleepTooltipCurrentProduction": "Bieżąca produkcja:",
     "focusRewardTooltip_one": "2x nagrody z akcji przez {{count}} minutę",
@@ -248,7 +248,7 @@
   "achievements": {
     "notUnlocked": "Jeszcze nie odblokowano.",
     "chartUnavailable": "Wykres niedostępny",
-    "claim": "Odbierz",
+    "claim": "Odbierz nagrody",
     "unlockTitleForInsight": "Odblokuj tytuł za {{cost}} wglądu",
     "completeLog": "Osiągnięcie {{name}} ukończone: {{rewards}}",
     "categories": {

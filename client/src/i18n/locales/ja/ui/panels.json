@@ -78,7 +78,7 @@
     "rest": "休息",
     "sleep": "睡眠",
     "focus": "集中",
-    "sleepTooltipReady": "不在のあいだも世界を進める",
+    "sleepTooltipReady": "不在のあいだも世界を進める（放置モード）",
     "sleepTooltipBlocked": "木材と食料の生産がプラスである必要がある（生産ボーナスは除く）",
     "sleepTooltipCurrentProduction": "現在の生産：",
     "focusRewardTooltip_one": "{{count}}分間、行動の報酬が2倍",
@@ -224,7 +224,7 @@
   "achievements": {
     "notUnlocked": "まだ解放されていない。",
     "chartUnavailable": "グラフを表示できません",
-    "claim": "受け取る",
+    "claim": "報酬を受け取る",
     "unlockTitleForInsight": "{{cost}}洞察で称号を解放",
     "completeLog": "{{name}}の実績達成：{{rewards}}",
     "categories": {

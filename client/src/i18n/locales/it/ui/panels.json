@@ -78,7 +78,7 @@
     "rest": "Riposa",
     "sleep": "Dormi",
     "focus": "Concentrazione",
-    "sleepTooltipReady": "Lascia che il mondo prosegua in tua assenza",
+    "sleepTooltipReady": "Lascia che il mondo prosegua in tua assenza (Modalità Idle)",
     "sleepTooltipBlocked": "Richiede una produzione positiva di legno e cibo (bonus di produzione esclusi)",
     "sleepTooltipCurrentProduction": "Produzione attuale:",
     "focusRewardTooltip_one": "Ottieni ricompense 2x sulle azioni per {{count}} minuto",
@@ -224,7 +224,7 @@
   "achievements": {
     "notUnlocked": "Non ancora sbloccato.",
     "chartUnavailable": "Grafico non disponibile",
-    "claim": "Riscatta",
+    "claim": "Riscatta Ricompense",
     "unlockTitleForInsight": "Sblocca titolo per {{cost}} Intuizione",
     "completeLog": "Obiettivo {{name}} completato: {{rewards}}",
     "categories": {

@@ -78,7 +78,7 @@
     "rest": "Ruhe",
     "sleep": "Schlafen",
     "focus": "Fokus",
-    "sleepTooltipReady": "Lass die Welt in deiner Abwesenheit weitergehen",
+    "sleepTooltipReady": "Lass die Welt in deiner Abwesenheit weitergehen (Idle-Modus)",
     "sleepTooltipBlocked": "Erfordert positive Holz- und Nahrungsproduktion (Produktionsboni ausgenommen)",
     "sleepTooltipCurrentProduction": "Aktuelle Produktion:",
     "focusRewardTooltip_one": "Erhalte 2x Belohnungen bei Aktionen für {{count}} Minute",
@@ -224,7 +224,7 @@
   "achievements": {
     "notUnlocked": "Noch nicht freigeschaltet.",
     "chartUnavailable": "Diagramm nicht verfügbar",
-    "claim": "Einfordern",
+    "claim": "Belohnungen nehmen",
     "unlockTitleForInsight": "Titel für {{cost}} Einsicht freischalten",
     "completeLog": "Erfolg abgeschlossen: {{name}}: {{rewards}}",
     "categories": {

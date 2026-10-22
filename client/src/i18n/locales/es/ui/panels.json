@@ -78,7 +78,7 @@
     "rest": "Descanso",
     "sleep": "Dormir",
     "focus": "Enfoque",
-    "sleepTooltipReady": "Deja que el mundo siga adelante en tu ausencia",
+    "sleepTooltipReady": "Deja que el mundo siga adelante en tu ausencia (Modo Idle)",
     "sleepTooltipBlocked": "Requiere producción positiva de madera y comida (bonificaciones de producción excluidas)",
     "sleepTooltipCurrentProduction": "Producción actual:",
     "focusRewardTooltip_one": "Obtén recompensas x2 en acciones durante {{count}} minuto",
@@ -224,7 +224,7 @@
   "achievements": {
     "notUnlocked": "Aún no desbloqueado.",
     "chartUnavailable": "Gráfico no disponible",
-    "claim": "Reclamar",
+    "claim": "Reclamar recompensas",
     "unlockTitleForInsight": "Desbloquear título por {{cost}} Perspicacia",
     "completeLog": "Logro completado: {{name}}: {{rewards}}",
     "categories": {
