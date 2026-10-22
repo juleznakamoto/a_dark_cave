@@ -81,10 +81,10 @@ export function ActionInsightBadge({ timeRemainingMs }: ActionInsightBadgeProps)
         defaultValue:
           "Extend time by {{minutes}} min for {{cost}} {{resource}}",
         minutes: PROLONG_MINUTES,
-        cost: `${formatNumber(insight)} / ${formatNumber(TIMED_EVENT_TAB_PROLONG_INSIGHT_COST)}`,
+        cost: formatNumber(TIMED_EVENT_TAB_PROLONG_INSIGHT_COST),
         resource: insightResource,
       }),
-    [t, i18n.language, insight, insightResource],
+    [t, i18n.language, insightResource],
   );
 
   if (!canShow) return null;
