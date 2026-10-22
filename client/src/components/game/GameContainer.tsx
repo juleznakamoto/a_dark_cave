@@ -1288,7 +1288,7 @@ export default function GameContainer() {
           {/* Pause Overlay - covers panels; header and footer stay above */}
           {isPaused && (
             <div
-              className="fixed inset-0 bg-black/50 pointer-events-auto overlay-fade-in"
+              className="fixed inset-0 bg-black/30 pointer-events-auto overlay-fade-in"
               style={{
                 top: GAME_HEADER_INSET,
                 bottom: GAME_FOOTER_INSET,
