@@ -330,7 +330,8 @@ export const forestScoutActions: Record<string, Action> = {
   blackreachCanyon: {
     id: "blackreachCanyon",
     label: "Blackreach Canyon",
-    minVillagers: 0,
+    minVillagers: 10,
+    expeditionVillagersRequired: () => 10,
     show_when: {
       "tools.crow_harness": true,
       "buildings.darkEstate": 1,
@@ -347,7 +348,8 @@ export const forestScoutActions: Record<string, Action> = {
   steelDelivery: {
     id: "steelDelivery",
     label: "Steel Delivery",
-    minVillagers: 0,
+    minVillagers: 6,
+    expeditionVillagersRequired: () => 6,
     show_when: {
       "story.seen.steelDeliveryUnlocked": true,
       "!story.seen.steelDeliveryCompleted": true,

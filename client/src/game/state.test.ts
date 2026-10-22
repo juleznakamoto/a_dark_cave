@@ -489,6 +489,11 @@ describe("Reward Dialog System", () => {
           ...initialState.resources,
           food: 10000,
         },
+        current_population: 10,
+        villagers: {
+          ...initialState.villagers,
+          free: 10,
+        },
       });
 
       useGameStore.getState().executeAction("blackreachCanyon");
