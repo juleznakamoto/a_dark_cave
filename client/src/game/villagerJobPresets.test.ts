@@ -117,10 +117,10 @@ describe("villagerJobPresets - Insight unlock", () => {
   });
 
   it("uses escalating Insight costs per slot index", () => {
-    expect(getPresetUnlockCost(0)).toBe(2500);
-    expect(getPresetUnlockCost(1)).toBe(5000);
-    expect(getPresetUnlockCost(2)).toBe(7500);
-    expect(getPresetUnlockCost(4)).toBe(12500);
+    expect(getPresetUnlockCost(0)).toBe(1000);
+    expect(getPresetUnlockCost(1)).toBe(2500);
+    expect(getPresetUnlockCost(2)).toBe(5000);
+    expect(getPresetUnlockCost(4)).toBe(10000);
   });
 
   it("offers the next slot only when a further archive building exists", () => {
@@ -128,7 +128,7 @@ describe("villagerJobPresets - Insight unlock", () => {
       buildings: { scribesOffice: 1 } as any,
     } as any);
     expect(getNextPurchasablePresetSlotIndex(oneBuilding)).toBe(0);
-    expect(getNextPresetUnlockCost(oneBuilding)).toBe(2500);
+    expect(getNextPresetUnlockCost(oneBuilding)).toBe(1000);
 
     const oneBuildingBought = makeState({
       buildings: { scribesOffice: 1 } as any,
@@ -142,7 +142,7 @@ describe("villagerJobPresets - Insight unlock", () => {
       villagerPresetsPurchased: 2,
     } as any);
     expect(getNextPurchasablePresetSlotIndex(twoBuildingsOneBought)).toBe(2);
-    expect(getNextPresetUnlockCost(twoBuildingsOneBought)).toBe(7500);
+    expect(getNextPresetUnlockCost(twoBuildingsOneBought)).toBe(5000);
   });
 
   it("can purchase only with Insight unlocked and enough Insight", () => {
@@ -151,13 +151,13 @@ describe("villagerJobPresets - Insight unlock", () => {
     };
     const broke = makeState({
       ...base,
-      resources: { insight: 2499 } as any,
+      resources: { insight: 999 } as any,
     } as any);
     expect(canPurchasePresetSlot(broke)).toBe(false);
 
     const ready = makeState({
       ...base,
-      resources: { insight: 2500 } as any,
+      resources: { insight: 1000 } as any,
     } as any);
     expect(canPurchasePresetSlot(ready)).toBe(true);
   });

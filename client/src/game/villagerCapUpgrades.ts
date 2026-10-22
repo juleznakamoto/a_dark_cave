@@ -160,7 +160,7 @@ export const CONSTRUCTION_BOOST_INSIGHT_PER_MINUTE = 250;
 
 /** Insight cost per villager job preset slot (bought sequentially after each archive building tier). */
 export const PRESET_SLOT_INSIGHT_COSTS = [
-  2500, 5000, 7500, 10000, 12500,
+  1000, 2500, 5000, 7500, 10000,
 ] as const;
 
 /** Insight cost to unlock preset slot at 0-based purchase index. */

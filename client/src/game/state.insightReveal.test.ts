@@ -179,7 +179,7 @@ describe("purchaseVillagerPresetSlot", () => {
       },
       resources: {
         ...useGameStore.getState().resources,
-        insight: 2500,
+        insight: 1000,
       },
       villagerPresetsPurchased: 0,
     });

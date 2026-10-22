@@ -104,9 +104,9 @@ describe("villagerCapUpgrades", () => {
   });
 
   it("defines preset slot unlock costs", () => {
-    expect(getPresetSlotUnlockCost(0)).toBe(2500);
-    expect(getPresetSlotUnlockCost(1)).toBe(5000);
-    expect(getPresetSlotUnlockCost(4)).toBe(12500);
+    expect(getPresetSlotUnlockCost(0)).toBe(1000);
+    expect(getPresetSlotUnlockCost(1)).toBe(2500);
+    expect(getPresetSlotUnlockCost(4)).toBe(10000);
   });
 
   it("reads and clamps stored upgrade levels", () => {
