@@ -309,6 +309,18 @@
     },
     "title": "Marcas antiguas"
   },
+  "torchBagFound": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "log": {
+      "outcome0": "Encuentras una bolsa vieja y polvorienta con 25 antorchas en la cueva."
+    },
+    "message": "Encuentras una bolsa vieja y polvorienta con 25 antorchas en la cueva.",
+    "title": "Bolsa polvorienta"
+  },
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {

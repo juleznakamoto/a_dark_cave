@@ -309,6 +309,18 @@
     },
     "title": "Uralte Zeichen"
   },
+  "torchBagFound": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "log": {
+      "outcome0": "Du findest eine alte, staubige Tasche mit 25 Fackeln in der Höhle."
+    },
+    "message": "Du findest eine alte, staubige Tasche mit 25 Fackeln in der Höhle.",
+    "title": "Staubige Tasche"
+  },
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {

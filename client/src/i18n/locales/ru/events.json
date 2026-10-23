@@ -309,6 +309,18 @@
     },
     "title": "Древние знаки"
   },
+  "torchBagFound": {
+    "choices": {
+      "continue": {
+        "label": "Продолжить"
+      }
+    },
+    "log": {
+      "outcome0": "В пещере вы находите старую пыльную сумку с 25 факелами."
+    },
+    "message": "В пещере вы находите старую пыльную сумку с 25 факелами.",
+    "title": "Пыльная сумка"
+  },
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {

@@ -309,6 +309,18 @@
     },
     "title": "Marques anciennes"
   },
+  "torchBagFound": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "log": {
+      "outcome0": "Vous trouvez un vieux sac poussiéreux contenant 25 torches dans la grotte."
+    },
+    "message": "Vous trouvez un vieux sac poussiéreux contenant 25 torches dans la grotte.",
+    "title": "Sac poussiéreux"
+  },
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {

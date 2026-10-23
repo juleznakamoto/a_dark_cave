@@ -309,6 +309,18 @@
     },
     "title": "古老标记"
   },
+  "torchBagFound": {
+    "choices": {
+      "continue": {
+        "label": "继续"
+      }
+    },
+    "log": {
+      "outcome0": "你在洞穴中发现一个陈旧落灰的袋子，里面有 25 支火把。"
+    },
+    "message": "你在洞穴中发现一个陈旧落灰的袋子，里面有 25 支火把。",
+    "title": "落灰的袋子"
+  },
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {

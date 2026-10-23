@@ -377,6 +377,18 @@
     },
     "title": "Starożytne znaki"
   },
+  "torchBagFound": {
+    "choices": {
+      "continue": {
+        "label": "Kontynuuj"
+      }
+    },
+    "log": {
+      "outcome0": "W jaskini znajdujesz stary, zakurzony worek z 25 pochodniami."
+    },
+    "message": "W jaskini znajdujesz stary, zakurzony worek z 25 pochodniami.",
+    "title": "Zakurzony worek"
+  },
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {

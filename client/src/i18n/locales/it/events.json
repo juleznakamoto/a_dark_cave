@@ -2938,6 +2938,18 @@
     },
     "title": "Antiche incisioni"
   },
+  "torchBagFound": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "log": {
+      "outcome0": "Trovi una vecchia borsa polverosa con 25 Torce nella caverna."
+    },
+    "message": "Trovi una vecchia borsa polverosa con 25 Torce nella caverna.",
+    "title": "Borsa polverosa"
+  },
   "deerHerd": {
     "choices": {
       "keepThemHere": {

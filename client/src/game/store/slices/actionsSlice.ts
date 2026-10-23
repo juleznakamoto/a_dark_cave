@@ -204,6 +204,7 @@ import {
   resolveEventOutcomeTitle,
   getClarityElixirCaveEventId,
   getCaveWallMarkingsEventId,
+  getTorchBagEventId,
 } from "../rewards";
 import { mergeStateUpdates } from "../mergeStateUpdates";
 import { defaultGameState } from "../createInitialState";
@@ -530,7 +531,8 @@ export const createActionsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
         (entry) =>
           Boolean(entry.choices?.length) &&
           !getClarityElixirCaveEventId(entry) &&
-          !getCaveWallMarkingsEventId(entry),
+          !getCaveWallMarkingsEventId(entry) &&
+          !getTorchBagEventId(entry),
       );
       if (willOpenChoiceDialog) {
         beginDialogHandoff(set);
@@ -552,6 +554,15 @@ export const createActionsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
           // Auto-apply like cave Clarity Elixir  -  RewardDialog shows Insight + narrative.
           setTimeout(() => {
             get().applyEventChoice("continue", caveWallMarkingsEventId, entry);
+          }, 100);
+          return;
+        }
+
+        const torchBagEventId = getTorchBagEventId(entry);
+        if (torchBagEventId) {
+          // Auto-apply like cave wall markings  -  RewardDialog shows torches + narrative.
+          setTimeout(() => {
+            get().applyEventChoice("continue", torchBagEventId, entry);
           }, 100);
           return;
         }

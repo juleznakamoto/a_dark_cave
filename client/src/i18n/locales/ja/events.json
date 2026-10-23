@@ -377,6 +377,18 @@
     },
     "title": "古代の印"
   },
+  "torchBagFound": {
+    "choices": {
+      "continue": {
+        "label": "続ける"
+      }
+    },
+    "log": {
+      "outcome0": "洞窟で、埃をかぶった古い袋を見つける。中には松明が25本入っていた。"
+    },
+    "message": "洞窟で、埃をかぶった古い袋を見つける。中には松明が25本入っていた。",
+    "title": "古い袋"
+  },
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {

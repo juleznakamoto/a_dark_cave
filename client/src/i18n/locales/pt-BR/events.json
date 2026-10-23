@@ -2938,6 +2938,18 @@
     },
     "title": "Marcas antigas"
   },
+  "torchBagFound": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "log": {
+      "outcome0": "Você encontra uma bolsa velha e empoeirada com 25 Tochas na caverna."
+    },
+    "message": "Você encontra uma bolsa velha e empoeirada com 25 Tochas na caverna.",
+    "title": "Bolsa empoeirada"
+  },
   "deerHerd": {
     "choices": {
       "keepThemHere": {

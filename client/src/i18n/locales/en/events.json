@@ -377,6 +377,18 @@
     },
     "title": "Ancient Markings"
   },
+  "torchBagFound": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "log": {
+      "outcome0": "You find an old, dusty bag with 25 Torches in the cave."
+    },
+    "message": "You find an old, dusty bag with 25 Torches in the cave.",
+    "title": "Dusty Bag"
+  },
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {

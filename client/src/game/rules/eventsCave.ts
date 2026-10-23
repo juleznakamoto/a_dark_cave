@@ -98,7 +98,40 @@ function createCaveWallMarkingsEvent(id: string, seenKey: string): GameEvent {
   };
 }
 
+const TORCH_BAG_AMOUNT = 25;
+
+function createTorchBagFoundEvent(): GameEvent {
+  return {
+    id: "torchBagFound",
+    i18nKey: "torchBagFound",
+    condition: () => false, // Only triggered by Explore Cave
+    priority: 5,
+    repeatable: false,
+    choices: [
+      {
+        id: "continue",
+        effect: (state: GameState) => ({
+          resources: {
+            ...state.resources,
+            torch: (state.resources.torch || 0) + TORCH_BAG_AMOUNT,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              torchBagFound: true,
+            },
+          },
+          _logMessageKey: "outcome0",
+        }),
+      },
+    ],
+  };
+}
+
 export const caveEvents: Record<string, GameEvent> = {
+  torchBagFound: createTorchBagFoundEvent(),
+
   ringOfDrownedChoice: {
     id: "ringOfDrownedChoice",
     condition: (state: GameState) => false, // Only triggered by cave exploration

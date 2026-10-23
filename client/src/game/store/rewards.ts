@@ -16,6 +16,11 @@ export function getCaveWallMarkingsEventId(entry: LogEntry): string | null {
   return eventId.startsWith("caveWallMarkings") ? eventId : null;
 }
 
+export function getTorchBagEventId(entry: LogEntry): string | null {
+  const eventId = entry.eventId || entry.id.split("-")[0];
+  return eventId === "torchBagFound" ? eventId : null;
+}
+
 const REWARD_UI_HIDDEN_STATS = new Set<string>([
   "villagerDeathsLifetime",
   "madness",

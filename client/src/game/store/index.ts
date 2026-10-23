@@ -10,6 +10,7 @@ export {
   resolveEventOutcomeTitle,
   getClarityElixirCaveEventId,
   getCaveWallMarkingsEventId,
+  getTorchBagEventId,
 } from "./rewards";
 export { mergeStateUpdates } from "./mergeStateUpdates";
 export { createInitialState, defaultGameState } from "./createInitialState";
