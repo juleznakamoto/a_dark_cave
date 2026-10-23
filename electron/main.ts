@@ -253,6 +253,9 @@ async function createWindow(): Promise<void> {
         height: 800,
         minWidth: 800,
         minHeight: 600,
+        // Steam launches borderless fullscreen. 1280x800 is the restored size
+        // after the player leaves fullscreen. Trailer capture stays windowed.
+        fullscreen: true,
       }),
     backgroundColor: "#000000",
     show: false,
@@ -269,7 +272,18 @@ async function createWindow(): Promise<void> {
     mainWindow.setMenuBarVisibility(false);
   }
 
-  mainWindow.once("ready-to-show", () => mainWindow?.show());
+  // Set before the page loads so the fullscreen button matches the window
+  // even if enter-full-screen lags behind (Windows + Steam overlay).
+  if (!trailer) {
+    fullscreenIntent = true;
+  }
+
+  mainWindow.once("ready-to-show", () => {
+    if (!trailer && mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.setFullScreen(true);
+    }
+    mainWindow?.show();
+  });
 
   // Open external links (e.g. Reddit/Instagram) in the Steam overlay browser / OS browser.
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
