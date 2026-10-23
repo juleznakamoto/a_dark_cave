@@ -36,15 +36,15 @@
       "paleCreatures": "Criaturas pálidas",
       "paleBeasts": "Bestias pálidas"
     },
-    "restlessKnightWounded": "El Caballero inquieto está herido y no puede luchar",
+    "restlessKnightWounded": "El caballero inquieto está herido y no puede luchar",
     "elderWizardWounded": "El mago anciano está herido y no puede lanzar hechizos",
     "noCasualties": "Ningún aldeano murió.",
     "oneCasualty": "1 aldeano murió.",
     "manyCasualties": "{{count}} aldeanos murieron.",
     "fellowInjured": "{{name}} resultó herido.",
     "buildingDamaged": "{{name}} resultó dañado.",
-    "silverClaimed": "{{amount}} plata recibida.",
-    "goldClaimed": "{{amount}} oro recibido."
+    "silverClaimed": "Obtienes {{amount}} de plata.",
+    "goldClaimed": "Obtienes {{amount}} de oro."
   },
   "bastion": {
     "heal": "Curar",

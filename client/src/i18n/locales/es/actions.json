@@ -3,25 +3,25 @@
     "label": "Animales"
   },
   "banditLair": {
-    "description": "Caza al bandido que robó la daga del mercader.",
+    "description": "Da caza al bandido que robó la daga del comerciante.",
     "label": "Guarida de bandidos",
     "log": {
-      "success": "Tu grupo sigue al bandido hasta una guarida destartalada. Lo abrumas, recuperas la daga del mercader y encuentras 250 plata escondida entre su botín.",
+      "success": "Tu grupo sigue el rastro del bandido hasta una guarida destartalada. Lo reduce, recupera la daga del comerciante y encuentra 250 de plata escondida entre su botín.",
       "failure": "Los aldeanos buscan en las colinas pero no logran acorralar al bandido. El rastro se enfría y la daga sigue en sus manos."
     }
   },
   "blackreachCanyon": {
-    "description": "Desciende al Cañón Blackreach en busca de un cuervo.",
+    "description": "Desciende al Cañón de Blackreach en busca de un cuervo.",
     "label": "Cañón de Blackreach",
     "log": {
-      "success": "Te adentras en lo profundo del Cañón de Blackreach. Allí, posado sobre un pilar de piedra, se encuentra un magnífico cuervo tuerto. Con el arnés, te acercas con cuidado y creas un vínculo con la criatura. El Cuervo tuerto se ha unido a tu comunidad."
+      "success": "Te adentras en lo profundo del Cañón de Blackreach. Allí, posado sobre un pilar de piedra, se encuentra un magnífico cuervo tuerto. Con el arnés, te acercas con cuidado y creas un vínculo con la criatura. El Cuervo tuerto se ha unido a tu compañía."
     }
   },
   "blastPortal": {
     "description": "Destroza la antigua puerta y libera lo que quedó sellado dentro.",
-    "label": "Estallar la puerta",
+    "label": "Volar la puerta",
     "log": {
-      "complete": "Las bombas de brasa detonan en un brillante destello de fuego y luz. La antigua puerta se resquebraja y se desmorona. Lo que estaba sellado en su interior ahora está libre."
+      "complete": "Las bombas de brasas detonan en un brillante destello de fuego y luz. La antigua puerta se resquebraja y se desmorona. Lo que estaba sellado en su interior ahora está libre."
     }
   },
   "boneTotems": {
@@ -52,7 +52,7 @@
     "label": "Finca negra"
   },
   "buildBlackMonolith": {
-    "description": "Monumento oscuro construido para sacrificios vivos",
+    "description": "Monumento oscuro construido para sacrificios de seres vivos",
     "label": "Monolito negro"
   },
   "buildBlacksmith": {
@@ -68,7 +68,7 @@
     "label": "Osario"
   },
   "buildHerbGarden": {
-    "description": "Bancales cultivados de plantas útiles, cuidadosamente atendidos por sus muchos usos.",
+    "description": "Bancales de plantas útiles, cuidados con esmero por sus muchos usos.",
     "label": "Jardín de hierbas"
   },
   "buildBottomlessPit": {
@@ -84,7 +84,7 @@
     "label": "Sala de constructores"
   },
   "buildBuildersGuild": {
-    "description": "Un gremio de maestros constructores que comanda toda la capacidad de construcción de la aldea",
+    "description": "Un gremio de maestros constructores que dirige toda la capacidad de construcción de la aldea",
     "label": "Gremio de constructores"
   },
   "buildCabin": {
@@ -137,7 +137,7 @@
   },
   "buildGrandArchive": {
     "description": "Una vasta bóveda de pergaminos que conserva todo lo que la aldea ha sido, cada nombre y cada esfuerzo grabados",
-    "label": "Gran Archivo"
+    "label": "Gran archivo"
   },
   "buildGrandBazaar": {
     "description": "Mercado extenso que atrae a más mercaderes",
@@ -299,7 +299,7 @@
     "description": "Construye un puente sobre el cañón para conectar con la tribu del bosque.",
     "label": "Puente del cañón",
     "log": {
-      "complete": "El puente del cañón está terminado. Los comerciantes Ashwraith ya pueden llegar a tu asentamiento, y tú puedes venderles mercancías a precios acordados."
+      "complete": "El puente del cañón está terminado. Los comerciantes del pueblo Espectroceniza ya pueden llegar a tu asentamiento, y tú puedes venderles mercancías a precios acordados."
     }
   },
   "castleRuins": {
@@ -327,8 +327,8 @@
     "description": "Investiga la torre derrumbada y acaba con la obra oscura que allí se trama.",
     "label": "Torre derrumbada",
     "log": {
-      "success": "Dentro de la torre encuentras a un nigromante y sus seguidores, rodeados de frascos de líquidos y jeringas toscas. Estaba recolectando la sangre de los aldeanos para oscuros experimentos. Tus hombres ponen fin a su vil obra y toman un frasco de su sangre. Entre sus herramientas, encuentras su poderosa sierra ósea.",
-      "failure": "Tu expedición llega a la Torre derrumbada, pero te atacan figuras encapuchadas en el exterior. Un hombre alto con una túnica oscura se alza entre ellos, emanando una aura de amenaza. {{count}} aldeanos caen antes de que el resto huya a salvo."
+      "success": "Dentro de la torre encuentras a un nigromante y sus seguidores, rodeados de frascos de líquidos y jeringas toscas. Estaba recolectando la sangre de los aldeanos para oscuros experimentos. Tus hombres ponen fin a su vil obra y toman un frasco de su sangre. Entre sus herramientas, encuentras su poderosa sierra de hueso.",
+      "failure": "Tu expedición llega a la Torre derrumbada, pero unas figuras encapuchadas te atacan en el exterior. Entre ellas se alza un hombre alto con una túnica oscura que irradia un aura de amenaza. {{count}} aldeanos caen antes de que el resto logre ponerse a salvo."
     }
   },
   "craftAdamantAxe": {
@@ -479,7 +479,7 @@
     "label": "Antorchas"
   },
   "craftVeinfireElixir": {
-    "label": "Elixir de fuego venal"
+    "label": "Elixir de fuego venoso"
   },
   "craftVoidBomb": {
     "label": "Bomba del vacío"
@@ -491,31 +491,31 @@
     "description": "Baja por los escalones gastados que llevan a los niveles inferiores de la cueva.",
     "label": "Descender más",
     "log": {
-      "firstVisit": "La linterna proyecta un resplandor constante mientras desciendes aún más. De repente, tus pies tocan escalones de piedra hechos por el hombre, desgastados por el tiempo."
+      "firstVisit": "El farol proyecta un resplandor constante mientras desciendes aún más. De repente, tus pies tocan escalones de piedra hechos por el hombre, desgastados por el tiempo."
     }
   },
   "encounterBeyondPortal": {
     "description": "Atraviesa la puerta rota hacia lo que hay más allá.",
-    "label": "Aventurarse más allá de la puerta"
+    "label": "Más allá de la puerta"
   },
   "exploreCave": {
-    "description": "Explora la cueva a la luz de la antorcha y recoge lo que puedas.",
+    "description": "Registra la cueva a la luz de la antorcha y recoge lo que encuentres.",
     "label": "Explorar la cueva",
     "log": {
       "debrisScroll": "Entre los escombros descubres un pergamino antiguo con sabiduría para sobrevivir en este mundo implacable.",
       "torchBag": "Encuentras una bolsa vieja y polvorienta con 25 antorchas en la cueva.",
-      "firstVisit": "La luz de la antorcha ilumina las paredes de la cueva. En el resplandor parpadeante, notas un camino que conduce más profundo en las cavernas."
+      "firstVisit": "La luz de la antorcha ilumina las paredes de la cueva. En el resplandor parpadeante, adviertes un camino que se adentra aún más en la cueva."
     }
   },
   "exploreCitadel": {
-    "description": "Explora la ciudadela en el corazón de la ciudad subterránea.",
+    "description": "Registra la ciudadela en el corazón de la ciudad subterránea.",
     "label": "Explorar la ciudadela",
     "log": {
-      "firstVisit": "En la parte más profunda de la ciudad, una ciudadela masiva se alza ante ti. Su tamaño sugiere que alberga algo de gran poder o gran peligro."
+      "firstVisit": "En la parte más profunda de la ciudad, una enorme ciudadela se alza ante ti. Su tamaño sugiere que alberga algo de gran poder o de gran peligro."
     }
   },
   "exploreRuins": {
-    "description": "Explora la ciudad perdida que duerme en la vasta caverna de abajo.",
+    "description": "Recorre la ciudad perdida que duerme en la vasta caverna de abajo.",
     "label": "Explorar las ruinas",
     "log": {
       "firstVisit": "Al final de las escaleras, una vasta caverna se abre ante ti. En la oscuridad yacen las ruinas de una ciudad perdida, los restos de una civilización hace mucho desaparecida."
@@ -532,14 +532,14 @@
     "description": "Cruza las aguas negras del lago subterráneo hasta una pequeña isla en su centro.",
     "label": "Lago subterráneo",
     "log": {
-      "complete": "Con el sombrío resplandor de la linterna de cráneo, desciendes al lago subterráneo y construyes una pequeña barca. En una diminuta isla en medio del lago oscuro yacen tesoros olvidados en la sombra, intactos desde hace eras."
+      "complete": "Con el sombrío resplandor del farol de cráneo, desciendes al lago subterráneo y construyes una pequeña barca. En una diminuta isla en medio del lago oscuro yacen tesoros olvidados en la sombra, intactos desde hace eras."
     }
   },
   "feedFire": {
     "label": "Alimentar el fuego"
   },
   "financeExpedition": {
-    "description": "Financiar una expedición liderada por eruditos a templos y ruinas del bosque",
+    "description": "Financia una expedición dirigida por eruditos a templos y ruinas del bosque",
     "label": "Financiar expedición",
     "log": {
       "complete": "La expedición de investigación regresa del bosque. Los eruditos pasan días catalogando inscripciones, reliquias erosionadas y fragmentos de un conocimiento olvidado."
@@ -549,7 +549,7 @@
     "description": "Limpia la cueva de bestias para salvar a la tribu de la cazadora.",
     "label": "Cueva del bosque",
     "log": {
-      "success": "Cuando los aldeanos descienden a la cueva, feroces sabuesos irrumpen de la oscuridad en manadas implacables. Los gritos resuenan mientras las garras desgarran y los dientes muerden. Cuando cae la última bestia, cada aldeano vive, y la tribu de la cazadora queda salvada.",
+      "success": "Cuando los aldeanos descienden a la cueva, feroces sabuesos irrumpen de la oscuridad en manadas implacables. Los gritos resuenan mientras las garras desgarran y los dientes muerden. Cuando cae la última bestia, todos los aldeanos siguen con vida y la tribu de la cazadora está a salvo.",
       "failure": "Cuando la expedición entra en la cueva, es abrumada por una manada de brutales sabuesos. {{count}} aldeanos son destrozados por mandíbulas salvajes antes de que los supervivientes logren retirarse."
     }
   },
@@ -567,10 +567,10 @@
     }
   },
   "hillGrave": {
-    "description": "Entra en la tumba del cerro y busca cristal de escarcha en la cámara funeraria.",
+    "description": "Entra en la tumba de la colina y busca cristal de escarcha en la cámara funeraria.",
     "label": "Tumba de la colina",
     "log": {
-      "success": "Tu expedición navega con cuidado las traicioneras trampas de la tumba de la colina. Los aldeanos desactivan los antiguos mecanismos y llegan a la cámara funeraria. Entre los tesoros del rey, descubres frostglass puro, frío como el vacío mismo.",
+      "success": "Tu expedición sortea con cuidado las traicioneras trampas de la tumba de la colina. Los aldeanos desactivan los antiguos mecanismos y llegan a la cámara funeraria. Entre los tesoros del rey, descubres cristal de escarcha puro, frío como el propio vacío.",
       "failure": "Tu expedición entra en la tumba de la colina pero carece de la habilidad para sortear sus trampas mortales. {{count}} aldeanos caen ante las últimas defensas del rey antes de que los supervivientes huyan horrorizados, dejando los cuerpos de sus compañeros en la tumba maldita."
     }
   },
@@ -588,7 +588,7 @@
     "description": "Investiga la extraña cabaña de madera en el bosque.",
     "label": "Cabaña de madera",
     "log": {
-      "success": "La cabaña pertenece al cazador que te vendió carne. El matadero está lleno de ganchos, y ninguno sostuvo un ciervo. Cazaba personas, y la comida que intercambiaba era su carne. En la cabaña encuentras el arco del tratante.",
+      "success": "La cabaña pertenece al cazador que te vendió carne. El matadero está lleno de ganchos, y en ninguno colgó jamás un ciervo. Cazaba personas, y la comida que intercambiaba era su carne. En la cabaña encuentras el arco del comerciante.",
       "failure": "Al acercarte a la cabaña, salen flechas de la oscuridad de la puerta. Cada disparo mata. Las puntas son de hueso. {{count}} aldeanos mueren antes de que el resto huya."
     }
   },
@@ -606,7 +606,7 @@
     "description": "Coloca un lazo gigante para atrapar a una gran bestia.",
     "label": "Colocar trampa",
     "log": {
-      "trapSuccessNoDeaths": "¡La trampa gigante funciona a la perfección! Un enorme oso negro con ojos rojos brillantes queda atrapado. Los aldeanos abatten a la bestia sobrenatural y reclaman su maldita piel negra como trofeo.",
+      "trapSuccessNoDeaths": "¡La trampa gigante funciona a la perfección! Un enorme oso negro con ojos rojos brillantes queda atrapado. Los aldeanos abaten a la bestia sobrenatural y se quedan su maldita piel negra como trofeo.",
       "trapSuccessWithDeaths_one": "¡La trampa gigante atrapa a un colosal oso negro con ojos rojos ardientes! {{count}} aldeano cae ante sus garras sobrenaturales antes de que la bestia sea finalmente abatida. Reclamas su maldita piel negra como un trofeo duramente ganado.",
       "trapSuccessWithDeaths_other": "¡La trampa gigante atrapa a un colosal oso negro con ojos rojos ardientes! {{count}} aldeanos caen ante sus garras sobrenaturales antes de que la bestia sea finalmente abatida. Reclamas su maldita piel negra como un trofeo duramente ganado.",
       "trapSuccessHeavy": "La trampa gigante atrapa a un colosal oso negro con ojos como brasas ardientes. {{count}} aldeanos caen ante su furia sobrenatural antes de que la bestia sea finalmente abatida. Reclamas su maldita piel negra.",
@@ -633,7 +633,7 @@
     "description": "Ceba una trampa en la orilla del lago subterráneo y espera a que algo pique.",
     "label": "Cebar trampa",
     "log": {
-      "complete": "Colocas una trampa enorme al borde del lago subterráneo, cebo de montones de carne. Pasan horas antes de que las aguas negras estallen y un titánico horror tentacular surja de las profundidades y caiga en la trampa."
+      "complete": "Colocas una trampa enorme al borde del lago subterráneo, cebada con montones de carne. Pasan horas antes de que las aguas negras estallen y un titánico horror tentacular surja de las profundidades y caiga en la trampa."
     }
   },
   "mineAdamant": {
@@ -704,8 +704,8 @@
     "description": "Sigue el humo que asciende hasta un campamento de forajidos.",
     "label": "Humo ascendente",
     "log": {
-      "success": "Tu expedición encuentra un campamento de forajidos. La lucha es brutal, pero ganas. En un cofre encuentras 500 oro.",
-      "successKeyBonus": " Con tu llave esqueleto abres un compartimento oculto y encuentras otros 250 oro.",
+      "success": "Tu expedición encuentra un campamento de forajidos. La lucha es brutal, pero vences. En un cofre encuentras 500 de oro.",
+      "successKeyBonus": " Con tu llave maestra abres un compartimento oculto y encuentras otros 250 de oro.",
       "captiveOne": " 1 cautivo del campamento decide unirse a la aldea.",
       "captivesOther": " {{count}} cautivos del campamento deciden unirse a la aldea.",
       "failure": "Tu expedición llega a un campamento de forajidos, pero la lucha sale terriblemente mal. {{count}} aldeanos caen antes de que los supervivientes huyan de vuelta a la aldea."
@@ -722,20 +722,20 @@
   },
   "searchMountainLady": {
     "description": "Envía una expedición a buscar a la Dama de la Montaña.",
-    "label": "Buscar a la dama de las montañas"
+    "label": "Buscar a la Dama de la Montaña"
   },
   "steelDelivery": {
     "description": "Entrega acero a la tribu del pantano.",
     "label": "Entrega de acero",
     "log": {
-      "success": "Tu caravana entrega el acero a la Tribu del Pantano como prometiste. A cambio, la tribu te presenta Placas de Quitina obtenidas de criaturas del pantano. Pueden usarse para construir poderosas fortificaciones."
+      "success": "Tu caravana entrega el acero a la Tribu del Pantano, como prometiste. A cambio, la tribu te entrega placas de quitina obtenidas de criaturas del pantano. Con ellas se pueden construir poderosas fortificaciones."
     }
   },
   "sunkenTemple": {
     "description": "Atraviesa el pantano hasta un antiguo templo medio sumergido.",
     "label": "Templo hundido",
     "log": {
-      "success": "Tu expedición vadea las aguas del pantano para llegar al antiguo templo semihundido. A pesar de los peligros que acechan en las aguas oscuras, los aldeanos navegan con cuidado por los salones sumergidos y encuentran las gemas de bloodstone en el sanctum interior del templo.",
+      "success": "Tu expedición vadea las aguas del pantano para llegar al antiguo templo semihundido. A pesar de los peligros que acechan en las aguas oscuras, los aldeanos avanzan con cuidado por las salas sumergidas y encuentran las gemas de piedra de sangre en el santuario interior del templo.",
       "failure": "Tu expedición se adentra en el pantano en busca del templo hundido. Las aguas turbias ocultan horrores indescriptibles. Criaturas abominables nacidas de magia antigua surgen de las profundidades y arrastran a {{count}} aldeanos bajo la superficie antes de que los supervivientes huyan."
     }
   },
@@ -783,7 +783,7 @@
     "label": "Elixir de perspicacia"
   },
   "tradeGoldForVeinfireElixir": {
-    "label": "Comprar elixir de fuego venal"
+    "label": "Comprar elixir de fuego venoso"
   },
   "tradeGoldForWood": {
     "label": "Comprar madera"
@@ -792,14 +792,14 @@
     "label": "Comprar oro"
   },
   "ventureDeeper": {
-    "description": "Sigue el camino más adentro de la cueva, hacia las cavernas más allá.",
+    "description": "Sigue el camino que se adentra en la cueva, hacia las cavernas que se abren más allá.",
     "label": "Adentrarse más",
     "log": {
       "tarnishedAmulet": "En las sombras de la cueva, algo brilla. Encuentras un amuleto deslustrado.",
+      "fangCharm": "Encajado en una grieta de la pared encuentras un amuleto de colmillos negros. Son demasiado grandes para cualquier cosa que debiera vivir aquí.",
       "silverSack": "Encuentras un pequeño saco de cuero con 50 de plata.",
       "mapFragment": "En el suelo de la cueva encuentras un fragmento de mapa hecho jirones.",
-      "firstVisit": "El aire se vuelve más frío a medida que desciendes más profundo en la cueva. Las paredes parecen antinaturalmente lisas, como si alguien las hubiera moldeado.",
-      "fangCharm": "Encajado en una grieta de la pared encuentras un amuleto de colmillos negros. Son demasiado grandes para cualquier cosa que debería vivir aquí."
+      "firstVisit": "El aire se vuelve más frío a medida que te adentras por el camino en la cueva. Las paredes parecen antinaturalmente lisas, como si alguien las hubiera moldeado."
     }
   }
 }

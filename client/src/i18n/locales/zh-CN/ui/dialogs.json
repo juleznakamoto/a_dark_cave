@@ -38,7 +38,7 @@
     "playlightTitle": "试玩 1 款游戏",
     "discoverGames": "试玩",
     "inviteTitle": "邀请 1 位好友",
-    "inviteDesc": "最多可邀请 {{cap}} 位好友。每次双方各得 {{amount}} 黄金（{{count}}/{{cap}} 已邀请）。",
+    "inviteDesc": "最多可邀请 {{cap}} 位好友。每邀请一位，双方各得 {{amount}} 黄金（已邀请 {{count}}/{{cap}}）。",
     "copyInviteLink": "复制邀请链接",
     "progressComplete": "你已完成所有任务，奖励即将到来。",
     "tasksRemaining_one": "还剩 1 项任务",
@@ -57,11 +57,11 @@
         "actionSubscribe": "订阅"
       },
       "instagram": {
-        "title": "照片墙",
+        "title": "Instagram",
         "actionFollow": "关注"
       },
       "reddit": {
-        "title": "红迪",
+        "title": "Reddit",
         "actionJoin": "加入"
       }
     }
@@ -77,7 +77,7 @@
     "linkCopiedDesc": "分享给好友，每人可获得 {{amount}} 黄金。",
     "copyFailed": "无法复制邀请链接",
     "copyFailedNotSignedIn": "请登录后再复制邀请链接",
-    "tooltip": "<bold>邀请好友</bold>，双方各得 {{amount}} 黄金。最多邀请 {{cap}} 位。({{count}}/{{cap}} 已邀请)"
+    "tooltip": "<bold>邀请好友</bold>，双方各得 {{amount}} 黄金。最多可邀请 {{cap}} 位。（已邀请 {{count}}/{{cap}}）"
   },
   "invest": {
     "title": "投资",
@@ -120,7 +120,7 @@
     "gamesRemaining": "剩余 {{remaining}}/{{total}} 局。",
     "requiresLuck": "需要 {{luck}} 点幸运解锁",
     "bet": "赌注：",
-    "practiceBet": "练习 (0 黄金)",
+    "practiceBet": "练习（0 黄金）",
     "goal": "目标：",
     "you": "你",
     "gambler": "赌徒",
@@ -157,7 +157,7 @@
     "usernameEmpty": "用户名不能为空",
     "usernameTooLong": "用户名不能超过 20 个字符",
     "mustSignIn": "须登录后才能设置用户名",
-    "usernameNotAllowed": "用户名不允许",
+    "usernameNotAllowed": "不允许使用此用户名",
     "usernameInappropriate": "用户名含不当用语，请换一个。",
     "usernameTaken": "用户名已被占用",
     "usernameTakenDesc": "用户名已被占用，请换一个。",
@@ -223,11 +223,11 @@
   "galaxy": {
     "title": "试玩到此为止",
     "description": "请将完整版加入 Steam 愿望单，以便在发布后继续旅程。",
+    "storeHeaderLink": "加入愿望单",
     "wishlistButton": "加入 Steam 愿望单",
     "feedbackButton": "反馈",
     "startNewGameButton": "开始新游戏",
     "continuePlayingButton": "继续游戏",
-    "seeWhatsNextButton": "看看即将到来的内容",
-    "storeHeaderLink": "加入愿望单"
+    "seeWhatsNextButton": "看看即将到来的内容"
   }
 }

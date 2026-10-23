@@ -2,15 +2,15 @@
   "action": {
     "0-chopWood": {
       "label": "伐木能手",
-      "description": "将采集木材升级到10级。"
+      "description": "将“砍伐木材”升级到10级。"
     },
     "0-craftTorches": {
       "label": "火把工匠",
-      "description": "将火把升级到10级。"
+      "description": "将“制作火把”升级到10级。"
     },
     "0-exploreCave": {
       "label": "洞穴探索者",
-      "description": "将探索洞穴升级到10级。"
+      "description": "将“探索洞穴”升级到10级。"
     },
     "0-gamblerWins": {
       "label": "老练赌徒",
@@ -18,35 +18,35 @@
     },
     "0-hunt": {
       "label": "猎人",
-      "description": "将狩猎升级到10级。"
+      "description": "将“狩猎”升级到10级。"
     },
     "1-mineAdamant": {
       "label": "精金矿工",
-      "description": "将精金升级到10级。"
+      "description": "将“开采精金”升级到10级。"
     },
     "1-mineCoal": {
       "label": "煤矿工",
-      "description": "将煤炭升级到10级。"
+      "description": "将“开采煤炭”升级到10级。"
     },
     "1-mineIron": {
       "label": "铁矿工",
-      "description": "将铁升级到10级。"
+      "description": "将“开采铁矿”升级到10级。"
     },
     "1-mineMoonstone": {
       "label": "月石矿工",
-      "description": "将月石升级到10级。"
+      "description": "将“开采月石”升级到10级。"
     },
     "1-mineObsidian": {
       "label": "黑曜石矿工",
-      "description": "将黑曜石升级到10级。"
+      "description": "将“开采黑曜石”升级到10级。"
     },
     "1-mineStone": {
       "label": "采石工",
-      "description": "将石头升级到10级。"
+      "description": "将“开采石头”升级到10级。"
     },
     "1-mineSulfur": {
       "label": "硫磺矿工",
-      "description": "将硫磺升级到10级。"
+      "description": "将“开采硫磺”升级到10级。"
     },
     "2-animals": {
       "label": "牲祭者",
@@ -58,11 +58,11 @@
     },
     "2-craftBoneTotems": {
       "label": "骨图腾工匠",
-      "description": "将骨图腾升级到10级。"
+      "description": "将“制作骨图腾”升级到10级。"
     },
     "2-craftLeatherTotems": {
       "label": "皮图腾工匠",
-      "description": "将皮图腾升级到10级。"
+      "description": "将“制作皮图腾”升级到10级。"
     },
     "2-leatherTotems": {
       "label": "皮祭者",
@@ -90,11 +90,11 @@
     },
     "4-insightful": {
       "label": "洞察者",
-      "description": "累计花费10'000洞见。"
+      "description": "累计花费10,000洞见。"
     },
     "4-investor": {
       "label": "投资者",
-      "description": "累计投资2'500黄金。"
+      "description": "累计投资2,500黄金。"
     },
     "4-luckyInvestor": {
       "label": "幸运投资者",
@@ -259,8 +259,8 @@
       "description": "制作全部七件皮革制品。"
     },
     "2-schematic_weapons": {
-      "label": "图纸",
-      "description": "制作三件图纸武器。"
+      "label": "蓝图",
+      "description": "制作三件蓝图武器。"
     },
     "3-ancient_books": {
       "label": "古老智慧",

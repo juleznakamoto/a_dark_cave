@@ -9,7 +9,7 @@
       },
       "free": {
         "q": "Ist A Dark Cave kostenlos?",
-        "a": "Ja. Du kannst im Browser auf <site>a-dark-cave.com</site> kostenlos spielen. Es gibt vollständig optionale Käufe."
+        "a": "Ja. Du kannst im Browser auf <site>a-dark-cave.com</site> kostenlos spielen. Käufe sind komplett optional."
       },
       "idle": {
         "q": "Ist es ein Idle- oder Clicker-Spiel?",
@@ -21,7 +21,7 @@
       },
       "like": {
         "q": "Welchen Spielen ähnelt es?",
-        "a": "Wenn dir A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13 oder KEROS-9 gefallen, zielt das auf diesen Geschmack. Es ist nicht mit ihnen verbunden."
+        "a": "Wenn dir A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13 oder KEROS-9 gefallen, dürfte dir auch dieses Spiel gefallen. Es steht in keiner Verbindung zu ihnen."
       },
       "phone": {
         "q": "Kann ich auf dem Handy spielen?",
@@ -57,7 +57,7 @@
       },
       "help": {
         "q": "Wo bekomme ich Hilfe?",
-        "a": "Schreib an <email>support@a-dark-cave.com</email> oder frag im <reddit>A Dark Cave Subreddit</reddit>."
+        "a": "Schreib an <email>support@a-dark-cave.com</email> oder frag im <reddit>A-Dark-Cave-Subreddit</reddit>."
       }
     },
     "about": {
@@ -68,7 +68,7 @@
       "how1": "Du fängst mit nichts an. Nach und nach schaltest du Gegenstände, Gebäude, Fähigkeiten, Berufe, Gefährten und vieles mehr frei. Eine Geschichte entfaltet sich, reich an Lore, über die Vergangenheit einer Zivilisation, die zuvor lebte. Je tiefer du in die Höhle gehst, desto mehr erfährst du. Aber die Gefahr wächst ebenfalls.",
       "how2": "Das Spiel ist aktiv. Du triffst Entscheidungen, die das Spiel beeinflussen. Es gibt auch einen Idle-Modus, damit das Spiel weiterlaufen kann, während du weg bist. Das Spiel hat ein Ende, oder vielleicht mehr als eines.",
       "likedHeading": "Wenn du ältere Incremental-Spiele mochtest",
-      "liked1": "Die meisten finden den Weg hierher über A Dark Room, Kittens Game, Universal Paperclips, Candy Box und ähnliche Spiele. Einige Mechaniken dieser Spiele findest du auch in A Dark Cave. A Dark Cave ist in der Grafik minimalistisch, aber ich habe Animationen von Hand gemacht, viele Sounds hinzugefügt und es für Desktop und Mobilgerät gebaut, damit es in unsere Zeit passt.",
+      "liked1": "Die meisten finden den Weg hierher über A Dark Room, Kittens Game, Universal Paperclips, Candy Box und ähnliche Spiele. Einige Mechaniken dieser Spiele findest du auch in A Dark Cave. A Dark Cave ist in der Grafik minimalistisch, aber ich habe Animationen von Hand gemacht, viele Sounds hinzugefügt und es für Desktop und Mobilgeräte gebaut, damit es dazu passt, wie wir heute spielen.",
       "whoHeading": "Für wen es ist",
       "who1": "Es ist für Leute, die Spiele mögen, die einfach anfangen und absichtlich komplizierter werden. Nicht weil ein Tutorial in Minute eins zwanzig Systeme ablädt, sondern weil du dir das Nächste verdient hast.",
       "who2": "Wenn du knallige Grafik willst, ist das das falsche Spiel. Der größte Teil des Spiels ist Text, mit ein paar (hoffentlich) lohnenden Animationen dazwischen. Ich habe viel Zeit in eine interessante Geschichte gesteckt, die eng mit unserer Geschichte und Zukunft verbunden ist.",

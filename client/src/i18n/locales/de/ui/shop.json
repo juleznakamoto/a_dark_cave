@@ -5,11 +5,11 @@
     "forSale": "Zum Verkauf",
     "forSalePlaythroughNote": "Käufe können in jedem Durchlauf erneut verwendet werden.",
     "purchases": "Käufe",
-    "srDescription": "Shop für Gold, Artefakte, Verstärkungen und Pakete",
+    "srDescription": "Shop für Gold, Artefakte, Verstärkungen und Bundles",
     "highlights": "Empfehlungen",
     "gold": "Gold",
     "boosts": "Verstärkungen",
-    "bundles": "Pakete",
+    "bundles": "Bundles",
     "mostPopular": "Am beliebtesten",
     "threeXValue": "Wert",
     "availableInOneHour": "Verfügbar in 1 Stunde",
@@ -19,7 +19,7 @@
     "alreadyPurchased": "Bereits gekauft",
     "continueCheckout": "Weiter",
     "feastAvailable": "{{name}} ({{remaining}}/{{total}} verfügbar)",
-    "cruelModeActivateHint": "(zum Spielen aktivieren und neues Spiel starten)",
+    "cruelModeActivateHint": "Aktivieren, dann neues Spiel starten",
     "firstPurchaseInsightBannerBefore": "Erhalte",
     "firstPurchaseInsightBannerBeforePlaylight": "Als Playlight-Spieler erhältst du",
     "firstPurchaseInsightBannerBeforeItch": "Als itch.io-Spieler erhältst du",
@@ -39,7 +39,7 @@
     "legalConsent": "Sofortiger Zugang zu digitalen Inhalten nach dem Kauf.",
     "termsOfService": "AGB",
     "rightOfWithdrawal": "Widerruf",
-    "completePurchaseFor": "Kauf abschließen für {{price}}",
+    "completePurchaseFor": "Kauf für {{price}} abschließen",
     "paymentFailed": "Zahlung fehlgeschlagen",
     "tooManyPaymentRequests": "Zu viele Zahlungsanfragen. Bitte versuche es später erneut.",
     "cruelModeDeactivatedLog": "Grausamer Modus deaktiviert. Neue Spiele verwenden den normalen Schwierigkeitsgrad.",
@@ -59,17 +59,17 @@
     "tradersSonDiscount": "{{percent}} % zusätzlicher Rabatt durch das Ereignis „Sohn des Händlers“.",
     "journeyCompleteDiscount": "Sonderrabatt für den Abschluss des Spiels",
     "artifactSkullLantern": {
-      "unlocksStoryline": "Schaltet die Schädellaternenhandlung frei",
+      "unlocksStoryline": "Schaltet den Schädellaternen-Handlungsstrang frei",
       "caveExplore": "Höhlenerkundung: +150 % Bonus, -3 s Abklingzeit",
-      "mining": "Abbau: +150 % Bonus, -3s Abklingzeit"
+      "mining": "Abbau: +150 % Bonus, -3 s Abklingzeit"
     },
     "artifactTarnishedCompass": {
-      "unlocksStoryline": "Schaltet die Kompasshandlung frei",
+      "unlocksStoryline": "Schaltet den Kompass-Handlungsstrang frei",
       "doubleGain": "5 % Chance, Aktionsgewinne zu verdoppeln",
       "luck": "+4 Glück"
     },
     "artifactCrowHarness": {
-      "unlocksStoryline": "Schaltet die Krähenhandlung frei",
+      "unlocksStoryline": "Schaltet den Krähen-Handlungsstrang frei",
       "doubleGain": "bis zu 10 % Chance, Aktionsgewinne zu verdoppeln",
       "addsFellowshipMember": "Fügt einen Gefährten hinzu"
     },

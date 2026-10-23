@@ -246,7 +246,7 @@ describe("i18n runtime", () => {
         "{{count}} villager falls",
         { count: 2 },
       ),
-    ).toContain("2 жителя погибают");
+    ).toContain("2 жителя гибнут");
     expect(
       getActionLogMessage(
         "layTrap",
@@ -254,7 +254,7 @@ describe("i18n runtime", () => {
         "{{count}} villager falls",
         { count: 5 },
       ),
-    ).toContain("5 жителей погибают");
+    ).toContain("5 жителей гибнут");
 
     expect(
       resolveEventLogMessage("offerToTheForestGods", "outcome4", {
@@ -459,7 +459,7 @@ describe("i18n runtime", () => {
 
     await i18n.changeLanguage("de");
     expect(resolveEventTitle("solsticeGathering", undefined, state)).toBe(
-      "Sonnenwend-Fest",
+      "Sonnenwendfest",
     );
     const deMsg = resolveEventMessage("solsticeGathering", undefined, state);
     expect(deMsg).toContain("längste Nacht");

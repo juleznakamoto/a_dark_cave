@@ -17,11 +17,11 @@
       },
       "sleepMode": {
         "q": "¿Qué es el modo sueño?",
-        "a": "El modo sueño hace que los aldeanos produzcan recursos mientras no juegas, parecido a un modo idle. La duración del sueño define cuánto tiempo puedes quedarte en modo sueño, y la intensidad del sueño define qué parte de tu producción normal recibes (sin bonus)."
+        "a": "El modo sueño hace que los aldeanos produzcan recursos mientras no juegas, parecido a un modo idle. La duración del sueño define cuánto tiempo puedes quedarte en modo sueño, y la intensidad del sueño define qué parte de tu producción normal recibes (sin bonificaciones)."
       },
       "like": {
         "q": "¿A qué juegos se parece?",
-        "a": "Si te gustan A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13 o KEROS-9, va en ese gusto. No está afiliado a ellos."
+        "a": "Si te gustan A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13 o KEROS-9, este juego está pensado para ti. No está afiliado a ellos."
       },
       "phone": {
         "q": "¿Puedo jugar en el móvil?",
@@ -68,16 +68,16 @@
       "how1": "Empiezas sin nada. Poco a poco desbloqueas objetos, edificios, habilidades, oficios, miembros de la compañía y mucho más. Se despliega una historia, rica en lore, sobre el pasado de una civilización que vivió antes. Aprendes más cuanto más profundo vas en la cueva. Pero el peligro también crece.",
       "how2": "El juego es activo. Tomas decisiones que influyen en la partida. También hay un modo idle para que el juego avance mientras no estás. El juego tiene un final, o quizá más de uno.",
       "likedHeading": "Si te gustaban los incrementales antiguos",
-      "liked1": "La gente suele llegar aquí desde A Dark Room, Kittens Game, Universal Paperclips, Candy Box y juegos así. Encontrarás algunas mecánicas de esos juegos también en A Dark Cave. A Dark Cave es minimalista en sus gráficos, pero hice animaciones a mano, añadí muchos sonidos y lo hice funcionar en escritorio y móvil para que encaje en nuestro tiempo.",
+      "liked1": "La gente suele llegar aquí desde A Dark Room, Kittens Game, Universal Paperclips, Candy Box y juegos similares. En A Dark Cave también encontrarás algunas de sus mecánicas. A Dark Cave es minimalista en lo gráfico, pero hice las animaciones a mano, añadí muchos sonidos y lo adapté a escritorio y móvil para que encaje con nuestra forma actual de jugar.",
       "whoHeading": "Para quién es",
-      "who1": "Es para quienes les gustan los juegos que empiezan simples y se vuelven más complicados a propósito. No porque un tutorial te suelte veinte sistemas en el minuto uno, sino porque te ganaste el siguiente.",
+      "who1": "Es para quienes disfrutan de los juegos que empiezan siendo simples y se vuelven más complejos a propósito. No porque un tutorial te suelte veinte sistemas en el primer minuto, sino porque te has ganado el siguiente.",
       "who2": "Si quieres gráficos llamativos, este es el juego equivocado. La mayor parte del juego es texto, con algunas animaciones (ojalá) gratificantes en medio. Dediqué mucho tiempo a una historia interesante, muy ligada a nuestra historia y a nuestro futuro.",
       "platformsHeading": "Plataformas",
       "platforms1": "Juega en un navegador de escritorio o móvil. No hay app en App Store ni en Google Play. El progreso se guarda en tu dispositivo. Puedes crear una cuenta si quieres un guardado en la nube.",
       "platforms2": "<steam>Steam</steam> (Windows) es un juego de pago con una <demo>demo gratuita</demo>. El juego de navegador sigue siendo gratis.",
       "platforms3": "El juego está en inglés, alemán, francés, español, italiano, portugués (Brasil), chino simplificado, japonés, polaco y ruso.",
       "meHeading": "Quién soy",
-      "me1": "Soy Julian Bauer. Construí A Dark Cave yo solo. Si algo está roto, o solo quieres escribir, escribe a <email>support@a-dark-cave.com</email>.",
+      "me1": "Soy Julian Bauer. Hice A Dark Cave yo solo. Si algo no funciona o simplemente quieres contactar conmigo, escribe a <email>support@a-dark-cave.com</email>.",
       "play": "Jugar",
       "faq": "FAQ",
       "steam": "Steam",

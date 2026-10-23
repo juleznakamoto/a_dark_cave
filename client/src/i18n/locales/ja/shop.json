@@ -32,7 +32,7 @@
   },
   "cruel_mode": {
     "activationMessage": "残酷モードを発動した。新しいゲームを始め、究極の試練に臨め。",
-    "description": "より残酷な世界でもう一度遊ぶ。物語が広がり、品物が増え、敵はより致命的になり、さらに多くの内容がある。",
+    "description": "より残酷な世界でもう一度遊ぶ。物語が広がり、品物が増え、敵はより凶悪になり、ほかにも多くの要素が加わる。",
     "name": "残酷モード"
   },
   "full_game": {
@@ -41,9 +41,9 @@
     "name": "製品版"
   },
   "gold_1000": {
-    "activationMessage": "1'000金貨を所持品に加えた。",
+    "activationMessage": "1,000金貨を所持品に加えた。",
     "description": "そこそこの量の金貨",
-    "name": "1'000金貨"
+    "name": "1,000金貨"
   },
   "gold_100_free": {
     "activationMessage": "100金貨を贈り物として所持品に加えた！",
@@ -51,34 +51,34 @@
     "name": "100金貨の贈り物"
   },
   "gold_15000": {
-    "activationMessage": "15'000金貨を所持品に加えた。",
-    "description": "不敬な量の金貨",
-    "name": "15'000金貨"
+    "activationMessage": "15,000金貨を所持品に加えた。",
+    "description": "罰当たりなほどの金貨",
+    "name": "15,000金貨"
   },
   "gold_20000": {
-    "activationMessage": "20'000金貨を所持品に加えた。",
-    "description": "不敬な量の金貨",
-    "name": "20'000金貨"
+    "activationMessage": "20,000金貨を所持品に加えた。",
+    "description": "罰当たりなほどの金貨",
+    "name": "20,000金貨"
   },
   "gold_30000": {
-    "activationMessage": "30'000金貨を所持品に加えた。",
+    "activationMessage": "30,000金貨を所持品に加えた。",
     "description": "冒涜的な量の金貨",
-    "name": "30'000金貨"
+    "name": "30,000金貨"
   },
   "gold_250": {
-    "activationMessage": "1'000金貨を所持品に加えた。",
+    "activationMessage": "1,000金貨を所持品に加えた。",
     "description": "そこそこの量の金貨",
-    "name": "1'000金貨"
+    "name": "1,000金貨"
   },
   "gold_2500": {
-    "activationMessage": "2'500金貨を所持品に加えた。",
+    "activationMessage": "2,500金貨を所持品に加えた。",
     "description": "かなりの財宝",
-    "name": "2'500金貨"
+    "name": "2,500金貨"
   },
   "gold_5000": {
-    "activationMessage": "5'000金貨を所持品に加えた。",
-    "description": "金貨の富",
-    "name": "5'000金貨"
+    "activationMessage": "5,000金貨を所持品に加えた。",
+    "description": "ひと財産の金貨",
+    "name": "5,000金貨"
   },
   "great_feast_1": {
     "activationMessage": "大宴会が始まった！",
@@ -97,7 +97,7 @@
   },
   "tarnished_compass": {
     "activationMessage": "くすんだ羅針盤を所持品に加えた。古の魔力が、行いを助けるかもしれない。",
-    "description": "滅びた文明の遺物。針は隠された場所を指す。羅針盤の物語を解放する。",
+    "description": "消えた文明の遺物。針は隠された場所を指す。羅針盤の物語を解放する。",
     "name": "くすんだ羅針盤"
   }
 }

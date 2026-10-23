@@ -28,7 +28,7 @@
     "firstPurchaseInsightBannerInsight": "Wgląd",
     "firstPurchaseInsightBannerAfter": "za darmo przy pierwszym zakupie",
     "firstPurchaseInsightCheckoutFree": "za darmo",
-    "firstPurchaseInsightGranted": "Prezent za pierwszy zakup: +{{amount}} {{glyph}} Wgląd",
+    "firstPurchaseInsightGranted": "Prezent za pierwszy zakup: +{{amount}} {{glyph}} wglądu",
     "loadingPayment": "Ładowanie systemu płatności...",
     "paymentSrDescription": "Dokończ płatność za {{name}}",
     "originalPrice": "Cena regularna",
@@ -54,8 +54,6 @@
     "freeGoldClaimedLog": "Odebrano {{amount}} złota. Wróć jutro, jeśli przetrwasz noc.",
     "freeGoldCooldownLog_one": "Darmowe złoto możesz znów odebrać za {{hours}} godzinę.",
     "freeGoldCooldownLog_other": "Darmowe złoto możesz znów odebrać za {{hours}} godz.",
-    "freeGoldCooldownLog_few": "Darmowe złoto możesz znów odebrać za {{hours}} godziny.",
-    "freeGoldCooldownLog_many": "Darmowe złoto możesz znów odebrać za {{hours}} godzin.",
     "freeItemAdded": "{{name}} dodano do zakupów. Otwórz kartę Zakupy, żeby to aktywować.",
     "tradersGratitudeDiscount": "{{percent}}% dodatkowej zniżki dzięki wydarzeniu Wdzięczność handlarza",
     "tradersSonDiscount": "{{percent}}% dodatkowej zniżki z wydarzenia Syn handlarza.",
@@ -71,7 +69,7 @@
       "luck": "+4 Szczęścia"
     },
     "artifactCrowHarness": {
-      "unlocksStoryline": "Odblokowuje wątek Kruka",
+      "unlocksStoryline": "Odblokowuje wątek Wrony",
       "doubleGain": "do 10% szansy na podwojenie zysków z akcji",
       "addsFellowshipMember": "Dodaje towarzysza drużyny"
     },
@@ -95,6 +93,8 @@
     "securePurchaseTitle": "Zabezpiecz zakup",
     "securePurchaseBody": "Zakup jest zapisany tylko w tej przeglądarce. Utwórz konto, żeby zachować zakupy i postęp przy zmianie urządzenia albo wyczyszczeniu danych przeglądarki.",
     "securePurchaseSignUp": "Zarejestruj się",
-    "securePurchaseLater": "Może później"
+    "securePurchaseLater": "Może później",
+    "freeGoldCooldownLog_few": "Darmowe złoto możesz znów odebrać za {{hours}} godziny.",
+    "freeGoldCooldownLog_many": "Darmowe złoto możesz znów odebrać za {{hours}} godzin."
   }
 }

@@ -27,9 +27,9 @@
     "feralHowl": "野性の咆哮",
     "poisonArrows": "毒矢",
     "critChance": "クリティカル確率{{percent}}%",
-    "critFromLuck": "{{percent}}%は{{stat}}による{{maxSuffix}}",
+    "critFromLuck": "{{stat}}による分：{{percent}}%{{maxSuffix}}",
     "critFromLuckMaxSuffix": "（上限）",
-    "critFromItems": "{{percent}}%はアイテムによる",
+    "critFromItems": "アイテムによる分：{{percent}}%",
     "critDamage": "クリティカルダメージ+{{percent}}%",
     "missChance": "ミス確率{{percent}}%（{{stat}}に依存）",
     "enemies": {
@@ -52,7 +52,7 @@
   },
   "attackWaves": {
     "title": "襲撃波",
-    "calm": "今は、静かだ...",
+    "calm": "今は静かだ……。",
     "soon": "まもなく",
     "provoke": "誘発",
     "postCompletion": "第{{waveNumber}}波",
@@ -62,13 +62,13 @@
       "thirdWave": "第3波",
       "fourthWave": "第4波",
       "fifthWave": "第5波",
-      "firstBossWave": "ボス波",
+      "firstBossWave": "ボスの襲来",
       "sixthWave": "第6波",
       "seventhWave": "第7波",
       "eighthWave": "第8波",
       "ninthWave": "第9波",
       "tenthWave": "第10波",
-      "secondBossWave": "最終ボス波"
+      "secondBossWave": "最終ボスの襲来"
     }
   },
   "fortifications": {

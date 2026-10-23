@@ -4,14 +4,14 @@
     "fight": "Walcz",
     "fighting": "Walka...",
     "startFight": "Rozpocznij walkę",
-    "roundTitle": "Walka - runda {{round}}",
-    "bossRoundTitle": "Walka z bossem - runda {{round}}",
+    "roundTitle": "Walka – runda {{round}}",
+    "bossRoundTitle": "Walka z bossem – runda {{round}}",
     "youLost": "Przegrywasz",
     "youWin": "Wygrywasz",
     "bastion": "Bastion",
     "fortress": "Twierdza",
     "items": "Przedmioty",
-    "integrity": "Integralność",
+    "integrity": "Wytrzymałość",
     "attack": "Atak",
     "defense": "Obrona",
     "healChance": "Szansa na leczenie",
@@ -27,11 +27,11 @@
     "feralHowl": "Dziki ryk",
     "poisonArrows": "Zatrute strzały",
     "critChance": "{{percent}}% szansy na cios krytyczny",
-    "critFromLuck": "{{percent}}% z {{stat}}{{maxSuffix}}",
+    "critFromLuck": "{{percent}}% (źródło: {{stat}}{{maxSuffix}})",
     "critFromLuckMaxSuffix": " (maks.)",
     "critFromItems": "{{percent}}% z przedmiotów",
     "critDamage": "+{{percent}}% obrażeń od ciosu krytycznego",
-    "missChance": "{{percent}}% szansy na pudło (zależnie od {{stat}})",
+    "missChance": "{{percent}}% szansy na pudło (zależy od: {{stat}})",
     "enemies": {
       "paleCreatures": "Blade stworzenia",
       "paleBeasts": "Blade bestie"
@@ -41,8 +41,8 @@
     "noCasualties": "Żaden wieśniak nie zginął.",
     "oneCasualty": "Zginął 1 wieśniak.",
     "manyCasualties": "Zginęło {{count}} wieśniaków.",
-    "fellowInjured": "{{name}} odniósł rany.",
-    "buildingDamaged": "{{name}} został uszkodzony.",
+    "fellowInjured": "Ranny towarzysz: {{name}}.",
+    "buildingDamaged": "Uszkodzono: {{name}}.",
     "silverClaimed": "Odebrano {{amount}} srebra.",
     "goldClaimed": "Odebrano {{amount}} złota."
   },
@@ -88,6 +88,6 @@
     "damaged": "(uszkodzone)",
     "attack": "+{{value}} ataku",
     "defense": "+{{value}} obrony",
-    "integrity": "+{{value}} integralności"
+    "integrity": "+{{value}} wytrzymałości"
   }
 }

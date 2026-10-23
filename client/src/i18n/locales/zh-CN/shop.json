@@ -41,9 +41,9 @@
     "name": "完整版"
   },
   "gold_1000": {
-    "activationMessage": "1'000 黄金已加入你的库存。",
+    "activationMessage": "1,000 黄金已加入你的库存。",
     "description": "一笔可观的黄金",
-    "name": "1'000 黄金"
+    "name": "1,000 黄金"
   },
   "gold_100_free": {
     "activationMessage": "100 黄金已作为礼物加入你的库存！",
@@ -51,34 +51,34 @@
     "name": "100 黄金赠礼"
   },
   "gold_15000": {
-    "activationMessage": "15'000 黄金已加入你的库存。",
+    "activationMessage": "15,000 黄金已加入你的库存。",
     "description": "近乎亵渎的巨量黄金",
-    "name": "15'000 黄金"
+    "name": "15,000 黄金"
   },
   "gold_20000": {
-    "activationMessage": "20'000 黄金已加入你的库存。",
+    "activationMessage": "20,000 黄金已加入你的库存。",
     "description": "近乎亵渎的巨量黄金",
-    "name": "20'000 黄金"
+    "name": "20,000 黄金"
   },
   "gold_30000": {
-    "activationMessage": "30'000 黄金已加入你的库存。",
+    "activationMessage": "30,000 黄金已加入你的库存。",
     "description": "亵渎神明的巨量黄金",
-    "name": "30'000 黄金"
+    "name": "30,000 黄金"
   },
   "gold_250": {
-    "activationMessage": "1'000 黄金已加入你的库存。",
+    "activationMessage": "1,000 黄金已加入你的库存。",
     "description": "一笔可观的黄金",
-    "name": "1'000 黄金"
+    "name": "1,000 黄金"
   },
   "gold_2500": {
-    "activationMessage": "2'500 黄金已加入你的库存。",
+    "activationMessage": "2,500 黄金已加入你的库存。",
     "description": "一份丰厚的宝藏",
-    "name": "2'500 黄金"
+    "name": "2,500 黄金"
   },
   "gold_5000": {
-    "activationMessage": "5'000 黄金已加入你的库存。",
+    "activationMessage": "5,000 黄金已加入你的库存。",
     "description": "一大笔黄金财富",
-    "name": "5'000 黄金"
+    "name": "5,000 黄金"
   },
   "great_feast_1": {
     "activationMessage": "盛宴已经开始！",

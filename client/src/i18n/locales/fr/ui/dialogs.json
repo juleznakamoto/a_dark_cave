@@ -1,13 +1,13 @@
 {
   "event": {
     "fallbackTitle": "Événement",
-    "knowledgeTimeBonus": "+{{seconds}}s de temps de décision grâce au Savoir{{maxSuffix}}",
+    "knowledgeTimeBonus": "+{{seconds}} s de temps de décision grâce au Savoir{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (max.)",
-    "successChance": "Chance de réussite : {{percent}}%",
-    "successChanceBase": "Base : {{percent}}%",
-    "successChanceStatLine": "{{statValue}} {{statName}} * {{percentPerPoint}}% = {{contribution}}%",
-    "successChanceCruel": "Mode cruel : {{percent}}%",
-    "influencedBy": "Influencé par :"
+    "successChance": "Chance de réussite : {{percent}} %",
+    "successChanceBase": "Base : {{percent}} %",
+    "successChanceStatLine": "{{statValue}} {{statName}} * {{percentPerPoint}} % = {{contribution}} %",
+    "successChanceCruel": "Mode cruel : {{percent}} %",
+    "influencedBy": "Influencé par :"
   },
   "reward": {
     "actionReward": "Récompense d'action",
@@ -43,14 +43,14 @@
     "progressComplete": "Vous avez terminé toutes les tâches. Vous recevrez bientôt votre récompense.",
     "tasksRemaining_one": "1 tâche restante",
     "tasksRemaining_other": "{{count}} tâches restantes",
-    "exclusiveRewardEffect": "{{percent}} % de chance de doubler les gains d'actions",
+    "exclusiveRewardEffect": "{{percent}} % de chance de doubler les gains d'actions",
     "progressAriaLabel": "Récompense exclusive",
-    "alreadyClaimedReward": "Vous avez déjà récupéré cette récompense !",
+    "alreadyClaimedReward": "Vous avez déjà récupéré cette récompense !",
     "resourceBonus": "+{{amount}} {{resource}}",
-    "playlightDiscoverRewardLog": "Vous avez reçu {{amount}} {{resource}} pour avoir essayé un jeu !",
-    "marketingSubscribeLog": "Vous avez reçu {{amount}} pièces d'or pour vous être abonné aux mises à jour par e-mail !",
-    "followRewardLog": "Vous avez reçu {{amount}} {{resource}} pour nous suivre sur {{platform}} !",
-    "subscribeRewardLog": "Vous avez reçu {{amount}} {{resource}} pour vous être abonné sur {{platform}} !",
+    "playlightDiscoverRewardLog": "Vous avez reçu {{amount}} {{resource}} pour avoir essayé un jeu !",
+    "marketingSubscribeLog": "Vous avez reçu {{amount}} pièces d'or pour vous être abonné aux mises à jour par e-mail !",
+    "followRewardLog": "Vous avez reçu {{amount}} {{resource}} pour nous avoir suivis sur {{platform}} !",
+    "subscribeRewardLog": "Vous avez reçu {{amount}} {{resource}} pour votre abonnement sur {{platform}} !",
     "platforms": {
       "youtube": {
         "title": "YouTube",
@@ -67,17 +67,17 @@
     }
   },
   "referral": {
-    "invitedLog": "Vous avez invité quelqu'un de nouveau dans ce monde ! +{{amount}} pièces d'or"
+    "invitedLog": "Vous avez invité quelqu'un de nouveau dans ce monde ! +{{amount}} pièces d'or"
   },
   "invite": {
     "button": "Inviter",
     "copyInviteCode": "Copier le code d'invitation",
     "goldBonus": "+{{amount}} or",
-    "linkCopied": "Lien d'invitation copié !",
+    "linkCopied": "Lien d'invitation copié !",
     "linkCopiedDesc": "Partagez-le avec des amis pour gagner {{amount}} or chacun.",
     "copyFailed": "Impossible de copier le lien d'invitation",
     "copyFailedNotSignedIn": "Connectez-vous pour copier votre lien d'invitation",
-    "tooltip": "<bold>Invitez vos amis</bold> - vous recevrez tous les deux {{amount}} or. Vous pouvez inviter jusqu'à {{cap}} amis. ({{count}}/{{cap}} invités)."
+    "tooltip": "<bold>Invitez vos amis</bold> – vous recevrez tous les deux {{amount}} or. Vous pouvez inviter jusqu'à {{cap}} amis. ({{count}}/{{cap}} invités)."
   },
   "invest": {
     "title": "Investir",
@@ -87,8 +87,8 @@
     "infoAriaLabel": "Expliquer les investissements et le tableau des stratégies",
     "unlockTooltip": "Se débloque avec {{building}}",
     "minutes": "{{count}} min",
-    "luckyChanceTop": "Coup de chance {{percent}} % ({{fromLuck}} % grâce à la Chance)",
-    "luckyChanceLine": "{{percent}} % Coup de chance : {{gold}}",
+    "luckyChanceTop": "Coup de chance {{percent}} % ({{fromLuck}} % grâce à la Chance)",
+    "luckyChanceLine": "{{percent}} % Coup de chance : {{gold}}",
     "headers": {
       "time": "Durée",
       "success": "Succès",
@@ -106,24 +106,24 @@
     }
   },
   "gambler": {
-    "title": "Le joueur obsédé",
-    "srDescription": "Jeu de dés contre le joueur obsédé",
+    "title": "Le parieur obsédé",
+    "srDescription": "Jeu de dés contre le parieur obsédé",
     "rulesAriaLabel": "Règles du jeu de dés",
-    "rulesTurns": "Vous et le joueur lancez le dé à tour de rôle.",
+    "rulesTurns": "Le parieur et vous lancez le dé à tour de rôle.",
     "rulesTotals": "Les lancers de chaque joueur s'additionnent.",
     "rulesGoal": "L'objectif est fixé à 15.",
     "rulesWinLose": "Si un joueur atteint exactement l'objectif, il gagne. S'il le dépasse, il perd.",
     "rulesStand": "Si le joueur actif a plus de points que l'adversaire, il peut choisir de ne pas lancer.",
-    "tutorialIntro": "Pour vous apprendre le jeu, le joueur propose de jouer {{count}} fois sans mise.",
-    "boneDiceIntro": "Placez votre mise. Posséder des Dés d'os vous permet de jouer deux fois contre le joueur.",
+    "tutorialIntro": "Pour vous apprendre le jeu, le parieur propose de jouer {{count}} fois sans mise.",
+    "boneDiceIntro": "Placez votre mise. Posséder des Dés d'os vous permet de jouer deux fois contre le parieur.",
     "placeBet": "Placez votre mise.",
     "gamesRemaining": "{{remaining}} sur {{total}} parties restantes.",
-    "requiresLuck": "Nécessite {{luck}} Chance pour débloquer",
-    "bet": "Mise :",
+    "requiresLuck": "Nécessite {{luck}} de Chance pour être débloqué",
+    "bet": "Mise :",
     "practiceBet": "Entraînement (0 or)",
-    "goal": "Objectif :",
+    "goal": "Objectif :",
     "you": "Vous",
-    "gambler": "Joueur",
+    "gambler": "Parieur",
     "roll": "Lancer",
     "noRoll": "Ne pas lancer",
     "youWin": "Vous gagnez",
@@ -133,8 +133,8 @@
     "goldLost": "-{{amount}} or",
     "practiceWinRemaining": "Vous avez gagné la manche d'entraînement (sans mise d'or). {{remaining}} sur {{total}} parties d'entraînement restantes.",
     "practiceLoseRemaining": "Vous avez perdu la manche d'entraînement (sans mise d'or). {{remaining}} sur {{total}} parties d'entraînement restantes.",
-    "practiceWinComplete": "Vous avez gagné la manche d'entraînement (sans mise d'or). Entraînement terminé - vous pouvez miser de l'or.",
-    "practiceLoseComplete": "Vous avez perdu la manche d'entraînement (sans mise d'or). Entraînement terminé - vous pouvez miser de l'or."
+    "practiceWinComplete": "Vous avez gagné la manche d'entraînement (sans mise d'or). Entraînement terminé – vous pouvez miser de l'or.",
+    "practiceLoseComplete": "Vous avez perdu la manche d'entraînement (sans mise d'or). Entraînement terminé – vous pouvez miser de l'or."
   },
   "leaderboard": {
     "title": "Classement",
@@ -142,13 +142,13 @@
     "prod": "Prod",
     "rank": "#",
     "player": "Joueur",
-    "completionTime": "Temps de complétion",
+    "completionTime": "Temps final",
     "noEntries": "Aucune entrée pour l'instant",
-    "lastUpdated": "Dernière mise à jour : {{time}}",
-    "recentCompletionsNote": "Seules les complétions des 6 derniers mois sont affichées.",
-    "username": "Nom d'utilisateur :",
+    "lastUpdated": "Dernière mise à jour : {{time}}",
+    "recentCompletionsNote": "Seules les parties terminées au cours des 6 derniers mois sont affichées.",
+    "username": "Nom d'utilisateur :",
     "notSet": "Non défini",
-    "currentPlaytime": "Temps de jeu actuel :",
+    "currentPlaytime": "Temps de jeu actuel :",
     "enterName": "Entrer un nom",
     "normalMode": "Mode normal",
     "cruelMode": "Mode cruel",
@@ -177,7 +177,7 @@
     "close": "Fermer",
     "previous": "Cube précédent",
     "next": "Cube suivant",
-    "completionLog": "Vous avez terminé ce voyage. Restez ici ou commencez une nouvelle partie. Peut-être en Mode cruel, si vous osez."
+    "completionLog": "Vous avez terminé ce voyage. Restez ici ou commencez une nouvelle partie. Peut-être en mode cruel, si vous osez."
   },
   "timedEvent": {
     "buy": "Acheter",
@@ -185,16 +185,16 @@
     "buyFor": "Acheter pour {{amount}} or",
     "sellFor": "Vendre pour {{amount}} or",
     "sayGoodbye": "Dire au revoir",
-    "discount": "{{percent}} % de réduction",
-    "discountFromKnowledge": "{{percent}} % grâce au Savoir{{max}}",
+    "discount": "{{percent}} % de réduction",
+    "discountFromKnowledge": "{{percent}} % grâce au Savoir{{max}}",
     "knowledgeMax": " (max.)",
-    "discountFromRing": "5 % grâce à l'Anneau d'obéissance",
+    "discountFromRing": "5 % grâce à l'Anneau d'obéissance",
     "prolongForInsight": "Prolonger le temps de {{minutes}} min pour {{cost}} {{resource}}"
   },
   "share": {
     "title": "Voir votre progression",
-    "resources": "Ressources : {{percent}} %",
-    "achievements": "Succès : {{percent}} %",
+    "resources": "Ressources : {{percent}} %",
+    "achievements": "Succès : {{percent}} %",
     "killedCreatures": "Créatures tuées",
     "highestAttackWave": "Plus haute vague d'attaque",
     "cruelMode": "Mode cruel",
@@ -212,10 +212,10 @@
     "errorDesc": "Une erreur s'est produite lors de la génération de l'image."
   },
   "feedback": {
-    "title": "Retour",
-    "message": "Avez-vous rencontré des bugs ou des problèmes de traduction, ou avez-vous des suggestions ? J'aimerais beaucoup vous lire.",
+    "title": "Commentaires",
+    "message": "Avez-vous rencontré des bugs ou des problèmes de traduction, ou avez-vous des suggestions ? J'aimerais beaucoup vous lire.",
     "openForm": "Donner un avis",
-    "contactVia": "Vous pouvez aussi me contacter via :",
+    "contactVia": "Vous pouvez aussi me contacter via :",
     "reddit": "Reddit",
     "instagram": "Instagram",
     "email": "E-mail"
@@ -223,11 +223,11 @@
   "galaxy": {
     "title": "La démo s'arrête ici",
     "description": "Ajoutez le jeu complet à votre liste de souhaits Steam pour poursuivre l'aventure à sa sortie.",
+    "storeHeaderLink": "Liste de souhaits",
     "wishlistButton": "Ajouter à la liste de souhaits Steam",
     "feedbackButton": "Commentaires",
     "startNewGameButton": "Nouvelle partie",
     "continuePlayingButton": "Continuer à jouer",
-    "seeWhatsNextButton": "Voir ce qui vient",
-    "storeHeaderLink": "Liste de souhaits"
+    "seeWhatsNextButton": "Voir la suite"
   }
 }

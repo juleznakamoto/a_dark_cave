@@ -9,8 +9,8 @@
     "deactivate": "停用"
   },
   "status": {
-    "loading": "加载中...",
-    "processing": "处理中...",
+    "loading": "加载中……",
+    "processing": "处理中……",
     "free": "免费",
     "error": "错误",
     "success": "成功！",
@@ -35,7 +35,7 @@
     "wood": "木材",
     "stone": "石头",
     "food": "食物",
-    "veinroot": "脉络根",
+    "veinroot": "脉根",
     "bones": "骨头",
     "fur": "毛皮",
     "leather": "皮革",

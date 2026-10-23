@@ -1,20 +1,20 @@
 {
   "endScreen": {
-    "pageTitle": "Viaggio Completato - A Dark Cave",
+    "pageTitle": "Viaggio completato – A Dark Cave",
     "trustBadge": "Ben fatto!",
     "headline1": "Il tuo viaggio finisce qui",
     "headline2": "",
-    "subtitle1": "Almeno per ora...",
-    "subtitle2": "La Modalità Crudele attende con un'esperienza di gioco più lunga e più difficile.",
+    "subtitle1": "Almeno per ora…",
+    "subtitle2": "La Modalità crudele attende con un'esperienza di gioco più lunga e più difficile.",
     "subtitle2Discount": "Completare il gioco ha sbloccato uno sconto.",
-    "cruelMode": "⛤ Modalità Crudele",
+    "cruelMode": "⛤ Modalità crudele",
     "cruelModeBadge": "Sconto speciale",
     "cruelModeComingSoon": "Prossimamente",
     "feedback": "Feedback",
     "feedbackBlurb": "Hai trovato bug o problemi di traduzione, o hai suggerimenti? Mi farebbe piacere ricevere il tuo feedback.",
     "buyMeACoffee": "Supporta",
-    "continuePlaying": "Continua a Giocare",
-    "moreGames": "Altri Giochi",
+    "continuePlaying": "Continua a giocare",
+    "moreGames": "Altri giochi",
     "rateOnItch": "Valuta su itch.io",
     "writeReview": "Scrivi una recensione"
   }

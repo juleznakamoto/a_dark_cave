@@ -1,7 +1,7 @@
 {
   "settings": {
     "title": "Configurações",
-    "music": "Ambiente",
+    "music": "Som ambiente",
     "sound": "Som",
     "emails": "E-mails",
     "gameMode": "Modo de jogo",
@@ -43,6 +43,14 @@
     "demoStartNewJourney": "Começar uma nova jornada",
     "recommendedBy": "Recomendado por"
   },
+  "errorScreen": {
+    "message": "Estamos cavando mais fundo. Volte em breve.",
+    "reload": "Recarregar o jogo",
+    "repeatMessage": "Recarregar não trouxe o fogo de volta. Você pode apagar o cache e acender fogo de novo.",
+    "returnToCave": "Apagar o cache",
+    "saveKept": "Não foi possível abrir o último salvamento, então este é um jogo novo. O salvamento antigo continua neste dispositivo.",
+    "saveKeptDismiss": "Continuar"
+  },
   "footer": {
     "trader": "Mercador",
     "openShop": "Abrir Loja",
@@ -54,10 +62,12 @@
     "pressKit": "Imprensa",
     "imprint": "Aviso Legal",
     "contact": "Contato",
+    "feedback": "Feedback",
+    "openFeedback": "Abrir o formulário de feedback",
     "pauseGame": "Pausar jogo",
     "resumeGame": "Retomar jogo",
-    "muteMusic": "Silenciar ambiente",
-    "unmuteMusic": "Ativar ambiente",
+    "muteMusic": "Silenciar som ambiente",
+    "unmuteMusic": "Ativar som ambiente",
     "muteSfx": "Silenciar efeitos sonoros",
     "unmuteSfx": "Ativar efeitos sonoros",
     "cruelModeActive": "Modo Cruel ativo",
@@ -65,8 +75,6 @@
     "demoProgress": "Progresso da demo",
     "demoProgressHint": "Você pode construir até {{count}} cabanas de madeira na demo.",
     "demoEnded": "Demo encerrada",
-    "feedback": "Feedback",
-    "openFeedback": "Abrir o formulário de feedback",
     "progress": "Progresso",
     "social": "Social",
     "email": "E-mail",
@@ -88,6 +96,7 @@
     "signedOut": "Sessão encerrada com sucesso",
     "signOutError": "Erro ao sair",
     "gameSaved": "Jogo salvo com sucesso",
+    "cloudSaveFailed": "Salvo neste dispositivo, mas a sincronização na nuvem falhou. O salvamento automático tentará de novo.",
     "saveFailed": "Falha ao salvar o jogo",
     "accountDeleted": "Sua conta foi excluída",
     "accountDeletedDesc": "Você foi desconectado e o salvamento local deste dispositivo foi apagado.",
@@ -100,8 +109,7 @@
     "unsubscribedDesc": "Você não receberá mais e-mails de marketing nossos.",
     "preferenceUpdateFailed": "Não foi possível atualizar a preferência",
     "enterFullscreen": "Tela cheia",
-    "exitFullscreen": "Sair da tela cheia",
-    "cloudSaveFailed": "Salvo neste dispositivo, mas a sincronização na nuvem falhou. O autosalvamento tentará de novo."
+    "exitFullscreen": "Sair da tela cheia"
   },
   "pauseHotkey": {
     "hintPrefix": "Use ",
@@ -110,13 +118,5 @@
   },
   "villageHotkeyTutorial": {
     "dismiss": "Dispensar"
-  },
-  "errorScreen": {
-    "message": "Estamos cavando mais fundo. Volte em breve.",
-    "reload": "Recarregar o jogo",
-    "repeatMessage": "Recarregar não trouxe o fogo de volta. Você pode apagar o cache e acender fogo de novo.",
-    "returnToCave": "Apagar o cache",
-    "saveKept": "O último save não abriu, então este é um jogo novo. O save antigo continua neste aparelho.",
-    "saveKeptDismiss": "Continuar"
   }
 }

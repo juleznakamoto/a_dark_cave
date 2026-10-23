@@ -76,7 +76,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "100 Gold-Investition abgeschlossen: Erfolg. Du hast 109 Gold erhalten.",
+      "Investition von 100 Gold abgeschlossen: Erfolg. Du hast 109 Gold erhalten.",
     );
   });
 
@@ -189,7 +189,7 @@ describe("resolveLogPanelMessage", () => {
       }),
     );
     expect(text).toBe(
-      "Du hast 10 Gold an den besessenen Spieler verloren.",
+      "Du hast 10 Gold an den besessenen Glücksspieler verloren.",
     );
   });
 
@@ -199,7 +199,7 @@ describe("resolveLogPanelMessage", () => {
       systemEntry("You lost 10 gold to the obsessed gambler."),
     );
     expect(text).toBe(
-      "Du hast 10 Gold an den besessenen Spieler verloren.",
+      "Du hast 10 Gold an den besessenen Glücksspieler verloren.",
     );
   });
 
@@ -258,7 +258,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Die Glutbomben detonieren in einem hellen Feuerblitz. Das alte Tor bricht und bröckelt. Was auch immer darin eingeschlossen war, ist jetzt frei.",
+      "Die Glutbomben detonieren in einem grellen Blitz aus Feuer und Licht. Das uralte Tor bekommt Risse und zerfällt. Was auch immer darin versiegelt war, ist jetzt frei.",
     );
   });
 
@@ -282,7 +282,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Als die Expedition die Höhle betritt, wird sie von einem Rudel brutaler Hunde überwältigt. 3 Dorfbewohner werden von wütenden Kiefern zerrissen, bevor die Überlebenden sich zurückziehen können.",
+      "Als die Expedition die Höhle betritt, wird sie von einem Rudel brutaler Hunde überwältigt. 3 Dorfbewohner werden von wilden Fängen zerrissen, bevor die Überlebenden sich zurückziehen können.",
     );
   });
 
@@ -294,7 +294,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Du wagst dich tief in die Schwarzklamm vor. Dort, auf einer Steinsäule sitzend, thront eine prächtige einäugige Krähe. Mit dem Geschirr näherst du dich vorsichtig und schließt eine Bindung mit dem Wesen. Die Einäugige Krähe ist deiner Gemeinschaft beigetreten.",
+      "Du wagst dich tief in die Schwarzklamm vor. Dort, auf einer Steinsäule, thront eine prächtige einäugige Krähe. Mit dem Geschirr näherst du dich ihr vorsichtig und gewinnst ihr Vertrauen. Die Einäugige Krähe schließt sich deinen Gefährten an.",
     );
   });
 
@@ -306,7 +306,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Kurz nachdem eure Expedition die verfluchten Burgruinen betritt, strömen Dutzende Untote aus verborgenen Kammern. In der verzweifelten Schlacht, die folgt, werden 8 Dorfbewohner von der übernatürlichen Horde überwältigt. Die Überlebenden fliehen in Panik.",
+      "Kurz nachdem deine Expedition die verfluchten Burgruinen betreten hat, strömen Dutzende Untote aus verborgenen Kammern. In der verzweifelten Schlacht, die folgt, werden 8 Dorfbewohner von der übernatürlichen Horde überwältigt. Die Überlebenden fliehen in Panik.",
     );
   });
 
@@ -318,7 +318,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Eure Expedition wird von grotesken Untoten-Experimenten überfallen, die der Nekromant zurückgelassen hat. 3 Dorfbewohner fallen den Untoten zum Opfer, bevor es den Überlebenden gelingt, sich zurückzuziehen.",
+      "Deine Expedition wird von grotesken Untoten-Experimenten überfallen, die der Nekromant zurückgelassen hat. 3 Dorfbewohner fallen den Untoten zum Opfer, bevor es den Überlebenden gelingt, sich zurückzuziehen.",
     );
   });
 
@@ -332,7 +332,7 @@ describe("resolveLogPanelMessage", () => {
       type: "event",
     });
     expect(text).toBe(
-      "Der Zauberer ruft dich in seinen Turm: 'Ich habe von einer Burg tief in der Wildnis erfahren, dem einstigen Reich eines lange toten Nekromanten. In ihren Mauern liegen alte Schriftrollen, die davon sprechen, wie wir besiegen können, was in den Tiefen der Höhle haust.'",
+      "Der Zauberer ruft dich in seinen Turm: „Ich habe von einer Burg tief in der Wildnis erfahren, dem einstigen Reich eines lange toten Nekromanten. In ihren Mauern liegen alte Schriftrollen, die davon sprechen, wie wir besiegen können, was in den Tiefen der Höhle haust.“",
     );
   });
 
@@ -344,7 +344,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Eure Expedition betritt das Hügelgrab, verfügt aber nicht über das Geschick, seine tödlichen Fallen zu überwinden. 2 Dorfbewohner fallen den letzten Verteidigungen des Königs zum Opfer, bevor die Überlebenden voller Entsetzen fliehen und die Körper ihrer Gefährten im verfluchten Grab zurücklassen.",
+      "Deine Expedition betritt das Hügelgrab, doch ihr fehlt das Geschick, die tödlichen Fallen zu überwinden. 2 Dorfbewohner fallen den letzten Schutzvorrichtungen des Königs zum Opfer, bevor die Überlebenden voller Entsetzen fliehen und die Leichen ihrer Gefährten im verfluchten Grab zurücklassen.",
     );
   });
 
@@ -356,7 +356,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Eure Expedition navigiert geschickt durch die tückischen Fallen des Hügelgrabs. Die Dorfbewohner entschärfen die alten Mechanismen und erreichen die Grabkammer. Unter den Schätzen des Königs entdeckt ihr reines Frostglas, kalt wie die Leere selbst.",
+      "Deine Expedition bahnt sich vorsichtig einen Weg durch die tückischen Fallen des Hügelgrabs. Die Dorfbewohner entschärfen die alten Mechanismen und erreichen die Grabkammer. Unter den Schätzen des Königs entdeckst du reines Frostglas, kalt wie die Leere selbst.",
     );
   });
 
@@ -366,7 +366,7 @@ describe("resolveLogPanelMessage", () => {
       "Your expedition carefully navigates the treacherous traps of the hill grave. Your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover pure frostglass, cold as the void itself.",
     );
     expect(text).toBe(
-      "Eure Expedition navigiert geschickt durch die tückischen Fallen des Hügelgrabs. Die Dorfbewohner entschärfen die alten Mechanismen und erreichen die Grabkammer. Unter den Schätzen des Königs entdeckt ihr reines Frostglas, kalt wie die Leere selbst.",
+      "Deine Expedition bahnt sich vorsichtig einen Weg durch die tückischen Fallen des Hügelgrabs. Die Dorfbewohner entschärfen die alten Mechanismen und erreichen die Grabkammer. Unter den Schätzen des Königs entdeckst du reines Frostglas, kalt wie die Leere selbst.",
     );
   });
 
@@ -378,7 +378,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Die Expedition zu den Burgruinen des toten Nekromanten ist erfolgreich! Tief im Inneren findet ihr die in dunkle Seide gewickelten alten Schriftrollen, die kryptisches Wissen darüber offenbaren, wie man besiegen kann, was tief in der Höhle eingesperrt wurde.",
+      "Die Expedition zu den Burgruinen des toten Nekromanten ist erfolgreich! Tief im Inneren findest du die in dunkle Seide gewickelten alten Schriftrollen, die kryptisches Wissen darüber offenbaren, wie man besiegen kann, was tief in der Höhle eingesperrt wurde.",
     );
   });
 
@@ -390,7 +390,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Im Turm findet ihr einen Nekromanten und seine Anhänger, umgeben von Fläschchen mit Flüssigkeiten und groben Spritzen. Er sammelte das Blut der Dorfbewohner für finstere Experimente. Eure Männer setzen seinem abscheulichen Werk ein Ende und nehmen eine Phiole seines Blutes. Unter seinen Werkzeugen findet ihr seine mächtige Knochensäge.",
+      "Im Turm findest du einen Nekromanten und seine Anhänger, umgeben von Fläschchen mit Flüssigkeiten und groben Spritzen. Er zapfte den Dorfbewohnern Blut für finstere Experimente ab. Deine Männer setzen seinem abscheulichen Werk ein Ende und nehmen eine Phiole seines Blutes mit. Unter seinen Werkzeugen findest du seine mächtige Knochensäge.",
     );
   });
 
@@ -402,7 +402,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Eure Expedition erreicht den eingestürzten Turm, doch draußen werdet ihr von vermummten Gestalten angegriffen. Ein großer Mann in dunkler Robe steht unter ihnen und strahlt Bedrohung aus. 4 Dorfbewohner fallen, bevor die anderen in Sicherheit fliehen.",
+      "Deine Expedition erreicht den eingestürzten Turm, wird aber draußen von vermummten Gestalten angegriffen. Ein großer Mann in dunkler Robe steht unter ihnen und strahlt Bedrohung aus. 4 Dorfbewohner fallen, bevor die anderen sich in Sicherheit bringen.",
     );
   });
 
@@ -412,7 +412,7 @@ describe("resolveLogPanelMessage", () => {
       "Inside the tower you find a necromancer and his followers, surrounded by vials of liquids and crude syringes. He was harvesting the villagers' blood for dark experiments. Your men put an end to his vile work and take a vial of his blood. Among his tools, you find his powerful bone saw.",
     );
     expect(text).toBe(
-      "Im Turm findet ihr einen Nekromanten und seine Anhänger, umgeben von Fläschchen mit Flüssigkeiten und groben Spritzen. Er sammelte das Blut der Dorfbewohner für finstere Experimente. Eure Männer setzen seinem abscheulichen Werk ein Ende und nehmen eine Phiole seines Blutes. Unter seinen Werkzeugen findet ihr seine mächtige Knochensäge.",
+      "Im Turm findest du einen Nekromanten und seine Anhänger, umgeben von Fläschchen mit Flüssigkeiten und groben Spritzen. Er zapfte den Dorfbewohnern Blut für finstere Experimente ab. Deine Männer setzen seinem abscheulichen Werk ein Ende und nehmen eine Phiole seines Blutes mit. Unter seinen Werkzeugen findest du seine mächtige Knochensäge.",
     );
   });
 
@@ -424,7 +424,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Eure Gruppe verfolgt den Banditen zu einem wackeligen Unterschlupf. Ihr überwältigt ihn, bergt den Dolch des Händlers und findet 250 Silber unter seiner Beute.",
+      "Deine Gruppe verfolgt den Banditen bis zu einem baufälligen Unterschlupf, überwältigt ihn, birgt den Dolch des Händlers und findet 250 Silber in seiner Beute.",
     );
   });
 
@@ -446,7 +446,7 @@ describe("resolveLogPanelMessage", () => {
       "Your party tracks the bandit to a ramshackle lair. You overwhelm him, recover the trader's dagger, and find 250 silver stashed among his plunder.",
     );
     expect(text).toBe(
-      "Eure Gruppe verfolgt den Banditen zu einem wackeligen Unterschlupf. Ihr überwältigt ihn, bergt den Dolch des Händlers und findet 250 Silber unter seiner Beute.",
+      "Deine Gruppe verfolgt den Banditen bis zu einem baufälligen Unterschlupf, überwältigt ihn, birgt den Dolch des Händlers und findet 250 Silber in seiner Beute.",
     );
   });
 
@@ -456,7 +456,7 @@ describe("resolveLogPanelMessage", () => {
       "The expedition to the dead necromancer's castle ruins proves successful! Deep within the you find the ancient scrolls wrapped in dark silk, revealing cryptic knowledge about how to defeat what was locked deep in the cave.",
     );
     expect(text).toBe(
-      "Die Expedition zu den Burgruinen des toten Nekromanten ist erfolgreich! Tief im Inneren findet ihr die in dunkle Seide gewickelten alten Schriftrollen, die kryptisches Wissen darüber offenbaren, wie man besiegen kann, was tief in der Höhle eingesperrt wurde.",
+      "Die Expedition zu den Burgruinen des toten Nekromanten ist erfolgreich! Tief im Inneren findest du die in dunkle Seide gewickelten alten Schriftrollen, die kryptisches Wissen darüber offenbaren, wie man besiegen kann, was tief in der Höhle eingesperrt wurde.",
     );
   });
 
@@ -520,7 +520,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Noch 2 von 3 Übungsspielen.",
+      "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Noch 2 von 3 Übungsspielen übrig.",
     );
   });
 });

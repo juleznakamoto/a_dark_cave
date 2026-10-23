@@ -2,10 +2,10 @@
   "combat": {
     "skillsTitle": "战斗技能",
     "fight": "战斗",
-    "fighting": "战斗中...",
+    "fighting": "战斗中……",
     "startFight": "开始战斗",
     "roundTitle": "战斗 - 第 {{round}} 回合",
-    "bossRoundTitle": "首领战 – 第{{round}}回合",
+    "bossRoundTitle": "首领战 - 第 {{round}} 回合",
     "youLost": "你输了",
     "youWin": "你赢了",
     "bastion": "堡垒",
@@ -36,8 +36,8 @@
       "paleCreatures": "苍白生物",
       "paleBeasts": "苍白野兽"
     },
-    "restlessKnightWounded": "不安骑士受伤，无法战斗",
-    "elderWizardWounded": "长老法师受伤，无法施法",
+    "restlessKnightWounded": "不眠骑士受伤，无法战斗",
+    "elderWizardWounded": "老巫师受伤，无法施法",
     "noCasualties": "没有村民死亡。",
     "oneCasualty": "1 名村民死亡。",
     "manyCasualties": "{{count}} 名村民死亡。",

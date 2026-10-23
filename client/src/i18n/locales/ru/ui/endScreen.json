@@ -1,12 +1,12 @@
 {
   "endScreen": {
-    "pageTitle": "Путешествие завершено - A Dark Cave",
+    "pageTitle": "Путешествие завершено — A Dark Cave",
     "trustBadge": "Отлично!",
     "headline1": "Ваше путешествие заканчивается здесь",
     "headline2": "",
     "subtitle1": "По крайней мере, пока…",
-    "subtitle2": "Жестокий режим ждёт с более длинным и сложным геймплеем.",
-    "subtitle2Discount": "Прохождение игры открыло скидку.",
+    "subtitle2": "Вас ждёт Жестокий режим — более долгий и сложный.",
+    "subtitle2Discount": "За прохождение игры вам открыта скидка.",
     "cruelMode": "⛤ Жестокий режим",
     "cruelModeBadge": "Особая скидка",
     "cruelModeComingSoon": "Скоро",
@@ -16,6 +16,6 @@
     "continuePlaying": "Продолжить игру",
     "moreGames": "Больше игр",
     "rateOnItch": "Оценить на itch.io",
-    "writeReview": "Написать обзор"
+    "writeReview": "Написать отзыв"
   }
 }

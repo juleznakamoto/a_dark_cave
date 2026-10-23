@@ -6,15 +6,15 @@
     "description": "Traquez le bandit qui a volé la dague du marchand.",
     "label": "Repaire de bandits",
     "log": {
-      "success": "Votre groupe traque le bandit jusqu'à un repaire délabré. Vous l'accablez, récupérez la dague du marchand et trouvez 250 argent cachés dans son butin.",
-      "failure": "Les villageois fouillent les collines mais ne parviennent pas à acculer le bandit. La piste se refroidit, et la dague est toujours entre ses mains."
+      "success": "Votre groupe traque le bandit jusqu'à un repaire délabré. Vous le maîtrisez, récupérez la dague du marchand et trouvez 250 argent cachés dans son butin.",
+      "failure": "Les villageois fouillent les collines mais ne parviennent pas à acculer le bandit. La piste se perd, et la dague est toujours entre ses mains."
     }
   },
   "blackreachCanyon": {
     "description": "Descendez dans le canyon de Blackreach à la recherche d'un corbeau.",
     "label": "Canyon de Blackreach",
     "log": {
-      "success": "Vous vous aventurez au fond du Canyon de Blackreach. Là, perché sur un pilier de pierre, se tient un magnifique corbeau borgne. À l'aide du harnais, vous vous approchez prudemment et vous liez à la créature. Le Corbeau borgne a rejoint votre communauté."
+      "success": "Vous vous aventurez au fond du canyon de Blackreach. Là, perché sur un pilier de pierre, se tient un magnifique corbeau borgne. À l'aide du harnais, vous vous approchez prudemment et vous liez à la créature. Le Corbeau borgne a rejoint votre compagnie."
     }
   },
   "blastPortal": {
@@ -104,7 +104,7 @@
     "label": "Comptoir des monnaies"
   },
   "buildConsecratedPaleCross": {
-    "description": "Monument colossal d'os blanchis amplifiant grandement les sacrifices des totems d'os.",
+    "description": "Monument colossal d'os blanchis amplifiant grandement les sacrifices de totems d'os.",
     "label": "Croix pâle consacrée"
   },
   "buildDarkEstate": {
@@ -136,7 +136,7 @@
     "label": "Tente de fourrure"
   },
   "buildGrandArchive": {
-    "description": "Une vaste voûte de parchemins préservant tout ce que le village a été, chaque nom et chaque labeur gravés",
+    "description": "Un immense dépôt de parchemins préservant tout ce que le village a été, chaque nom et chaque labeur consignés",
     "label": "Grandes Archives"
   },
   "buildGrandBazaar": {
@@ -196,7 +196,7 @@
     "label": "Guilde des marchands"
   },
   "buildPaleCross": {
-    "description": "Monument colossal d'os blanchis amplifiant les sacrifices des totems d'os.",
+    "description": "Monument colossal d'os blanchis amplifiant les sacrifices de totems d'os.",
     "label": "Croix pâle"
   },
   "buildPalisades": {
@@ -212,7 +212,7 @@
     "label": "Fonderie majeure"
   },
   "buildQuarry": {
-    "description": "Carrière de pierre augmentant la production de pierre des récolteurs",
+    "description": "Carrière de pierre augmentant la production de pierre des collecteurs",
     "label": "Carrière"
   },
   "buildRecordsHall": {
@@ -236,7 +236,7 @@
     "label": "Fosse peu profonde"
   },
   "buildShrine": {
-    "description": "Saint sanctuaire offrant une meilleure protection contre la folie",
+    "description": "Sanctuaire sacré offrant une meilleure protection contre la folie",
     "label": "Sanctuaire"
   },
   "buildStoneHut": {
@@ -273,7 +273,7 @@
   },
   "buildTreasury": {
     "description": "Coffre-fort qui permet de risquer des sommes bien plus importantes",
-    "label": "Trésor"
+    "label": "Trésorerie"
   },
   "buildVillageWarehouse": {
     "description": "Grand entrepôt capable de stocker de vastes quantités",
@@ -299,14 +299,14 @@
     "description": "Construisez un pont au-dessus du canyon pour rejoindre la tribu de la forêt.",
     "label": "Pont du canyon",
     "log": {
-      "complete": "Le pont du canyon est achevé. Les marchands Ashwraith peuvent désormais atteindre votre colonie - et vous pouvez leur vendre des marchandises à des tarifs convenus."
+      "complete": "Le pont du canyon est achevé. Les marchands du peuple des Cendres peuvent désormais atteindre votre colonie, et vous pouvez leur vendre des marchandises à des tarifs convenus."
     }
   },
   "castleRuins": {
     "description": "Pillez le château du nécromancien mort depuis longtemps, au plus profond de la forêt.",
     "label": "Ruines du château",
     "log": {
-      "success": "L'expédition vers les ruines du château du nécromancien défunt est couronnée de succès ! Au plus profond, vous trouvez d'anciens parchemins enveloppés de soie noire, révélant des connaissances antiques sur la façon de vaincre ce qui fut enfermé au fond de la grotte.",
+      "success": "L'expédition vers les ruines du château du nécromancien défunt est couronnée de succès ! Au plus profond, vous trouvez d'anciens parchemins enveloppés de soie noire, révélant des connaissances obscures sur la façon de vaincre ce qui fut enfermé au fond de la grotte.",
       "minorFailure": "Votre expédition est prise en embuscade par d'atroces expériences de morts-vivants laissées par le nécromancien. {{count}} villageois tombent face aux morts-vivants avant que les survivants ne parviennent à se replier.",
       "majorFailure": "Peu après l'entrée de votre expédition dans les ruines maudites du château, des dizaines de créatures mortes-vivantes jaillissent de chambres cachées. Dans la bataille désespérée qui s'ensuit, {{count}} villageois sont submergés par la horde surnaturelle. Les survivants fuient terrifiés."
     }
@@ -328,7 +328,7 @@
     "label": "Tour effondrée",
     "log": {
       "success": "Dans la tour, vous trouvez un nécromancien et ses disciples, entourés de fioles de liquides et de seringues grossières. Il collectait le sang des villageois pour de sombres expériences. Vos hommes mettent fin à son œuvre infâme et prennent une fiole de son sang. Parmi ses outils, vous trouvez sa puissante scie à os.",
-      "failure": "Votre expédition atteint la Tour effondrée, mais vous êtes attaqués par des figures encapuchonnées à l'extérieur. Un grand homme en robe sombre se tient parmi eux, dégageant une aura de menace. {{count}} villageois tombent avant que les autres ne fuient en sécurité."
+      "failure": "Votre expédition atteint la Tour effondrée, mais vous êtes attaqués par des silhouettes encapuchonnées à l'extérieur. Un grand homme en robe sombre se tient parmi elles, dégageant une aura de menace. {{count}} villageois tombent avant que les autres ne se mettent à l'abri."
     }
   },
   "craftAdamantAxe": {
@@ -452,7 +452,7 @@
     "label": "Bottes d'ombre"
   },
   "craftSkeletonKey": {
-    "label": "Clé squelette"
+    "label": "Passe-partout"
   },
   "craftSteelAxe": {
     "label": "Hache d'acier"
@@ -502,7 +502,7 @@
     "description": "Fouillez la grotte à la lueur d'une torche et ramassez ce que vous trouvez.",
     "label": "Explorer la grotte",
     "log": {
-      "debrisScroll": "Parmi les débris, vous découvrez un parchemin ancien contenant la sagesse pour survivre dans ce monde impitoyable.",
+      "debrisScroll": "Parmi les débris, vous découvrez un parchemin usé par le temps, porteur d'une sagesse utile pour endurer ce monde impitoyable.",
       "torchBag": "Vous trouvez un vieux sac poussiéreux contenant 25 torches dans la grotte.",
       "firstVisit": "La lumière de la torche éclaire les parois de la grotte. Dans la lueur vacillante, vous remarquez un chemin menant plus profondément dans les cavernes."
     }
@@ -532,7 +532,7 @@
     "description": "Traversez les eaux noires du lac souterrain jusqu'à une petite île en son centre.",
     "label": "Lac souterrain",
     "log": {
-      "complete": "À la lueur sinistre de la lanterne crânienne, vous descendez vers le lac souterrain et construisez une petite barque. Sur une minuscule île au milieu du lac sombre, des trésors oubliés gisent dans l'ombre, intacts depuis des âges."
+      "complete": "À la lueur sinistre de la lanterne-crâne, vous descendez vers le lac souterrain et construisez une petite barque. Sur une minuscule île au milieu du lac sombre, des trésors oubliés gisent dans l'ombre, intacts depuis des siècles."
     }
   },
   "feedFire": {
@@ -549,7 +549,7 @@
     "description": "Débarrassez la grotte des bêtes pour sauver la tribu de la chasseresse.",
     "label": "Grotte forestière",
     "log": {
-      "success": "Alors que les villageois descendent dans la grotte, des chiens sauvages jaillissent des ténèbres en meutes implacables. Les cris résonnent tandis que griffes déchirent et dents claquent. Quand la dernière bête tombe, chaque villageois vit, et la tribu de la chasseresse est sauvée.",
+      "success": "Alors que les villageois descendent dans la grotte, des chiens sauvages jaillissent des ténèbres en meutes implacables. Les cris résonnent tandis que les griffes déchirent et que les crocs claquent. Quand la dernière bête tombe, tous les villageois sont saufs, et la tribu de la chasseresse est sauvée.",
       "failure": "Lorsque l'expédition entre dans la grotte, elle est submergée par une meute de chiens brutaux. {{count}} villageois sont déchiquetés par des mâchoires sauvages avant que les survivants ne parviennent à se replier."
     }
   },
@@ -567,11 +567,11 @@
     }
   },
   "hillGrave": {
-    "description": "Entrez dans la tombe de la colline et cherchez du verre de givre dans la chambre funéraire.",
+    "description": "Entrez dans la tombe de la colline et cherchez du verre-givre dans la chambre funéraire.",
     "label": "Tombe de la colline",
     "log": {
-      "success": "Votre expédition traverse habilement les pièges traîtres de la tombe de la colline. Les villageois désactivent les anciens mécanismes et atteignent la chambre funéraire. Parmi les trésors du roi, vous découvrez du frostglass pur, froid comme le vide lui-même.",
-      "failure": "Votre expédition entre dans la tombe de la colline mais manque de l'habileté pour naviguer dans ses pièges mortels. {{count}} villageois succombent aux dernières défenses du roi avant que les survivants ne battent en retraite, horrifiés, laissant les corps de leurs compagnons dans la tombe maudite."
+      "success": "Votre expédition déjoue prudemment les pièges perfides de la tombe de la colline. Les villageois désactivent les anciens mécanismes et atteignent la chambre funéraire. Parmi les trésors du roi, vous découvrez du verre-givre pur, froid comme le vide lui-même.",
+      "failure": "Votre expédition entre dans la tombe de la colline mais n'a pas l'habileté nécessaire pour déjouer ses pièges mortels. {{count}} villageois succombent aux dernières défenses du roi avant que les survivants ne battent en retraite, horrifiés, laissant les corps de leurs compagnons dans la tombe maudite."
     }
   },
   "humans": {
@@ -606,11 +606,11 @@
     "description": "Posez un collet géant pour capturer une grande bête.",
     "label": "Poser un piège",
     "log": {
-      "trapSuccessNoDeaths": "Le piège géant fonctionne à la perfection ! Un énorme ours noir aux yeux rouges brillants est pris. Les villageois abattent la bête surnaturelle et revendiquent sa fourrure noire maudite comme trophée.",
-      "trapSuccessWithDeaths_one": "Le piège géant capture un colossal ours noir aux yeux rouges ardents ! {{count}} villageois tombe sous ses griffes surnaturelles avant que la bête ne soit enfin abattue. Vous revendiquez sa fourrure noire maudite comme un trophée durement gagné.",
-      "trapSuccessWithDeaths_other": "Le piège géant capture un colossal ours noir aux yeux rouges ardents ! {{count}} villageois tombent sous ses griffes surnaturelles avant que la bête ne soit enfin abattue. Vous revendiquez sa fourrure noire maudite comme un trophée durement gagné.",
-      "trapSuccessHeavy": "Le piège géant capture un colossal ours noir aux yeux comme des braises ardentes. {{count}} villageois tombent sous sa fureur surnaturelle avant que la bête ne soit enfin maîtrisée. Vous revendiquez sa fourrure noire maudite.",
-      "trapFailed": "Le piège géant est posé, mais lorsque vous le vérifiez, seules d'énormes marques de griffes se trouvent à côté. Ce qui rôde dans ces forêts est trop rusé pour votre piège... cette fois."
+      "trapSuccessNoDeaths": "Le piège géant fonctionne à la perfection ! Un énorme ours noir aux yeux rouges brillants est pris. Les villageois abattent la bête surnaturelle et revendiquent sa fourrure noire maudite comme trophée.",
+      "trapSuccessWithDeaths_one": "Le piège géant capture un colossal ours noir aux yeux rouges ardents ! {{count}} villageois tombe sous ses griffes surnaturelles avant que la bête ne soit enfin abattue. Vous revendiquez sa fourrure noire maudite comme un trophée durement gagné.",
+      "trapSuccessWithDeaths_other": "Le piège géant capture un colossal ours noir aux yeux rouges ardents ! {{count}} villageois tombent sous ses griffes surnaturelles avant que la bête ne soit enfin abattue. Vous revendiquez sa fourrure noire maudite comme un trophée durement gagné.",
+      "trapSuccessHeavy": "Le piège géant capture un colossal ours noir aux yeux pareils à des braises ardentes. {{count}} villageois tombent sous sa fureur surnaturelle avant que la bête ne soit enfin maîtrisée. Vous revendiquez sa fourrure noire maudite.",
+      "trapFailed": "Le piège géant est posé, mais lorsque vous revenez le vérifier, vous ne trouvez à côté que d'énormes traces de griffes. Ce qui rôde dans ces forêts est trop rusé pour votre piège… cette fois."
     }
   },
   "leatherTotems": {
@@ -633,49 +633,49 @@
     "description": "Appâtez un piège sur la rive du lac souterrain et attendez que quelque chose s'y prenne.",
     "label": "Appâter le piège",
     "log": {
-      "complete": "Vous installez un piège immense au bord du lac souterrain, appâté avec des montagnes de viande. Des heures passent avant que les eaux noires n'explosent et qu'un titansque horreur tentaculaire ne surgisse des profondeurs pour y tomber."
+      "complete": "Vous installez un piège immense au bord du lac souterrain, appâté avec des monceaux de viande. Des heures passent avant que les eaux noires ne se soulèvent et qu'une horreur titanesque et tentaculaire ne surgisse des profondeurs pour ramper jusque dans le piège."
     }
   },
   "mineAdamant": {
     "label": "Adamant",
     "log": {
-      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
+      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
     }
   },
   "mineMoonstone": {
     "label": "Pierre de lune",
     "log": {
-      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
+      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
     }
   },
   "mineCoal": {
     "label": "Charbon",
     "log": {
-      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
+      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
     }
   },
   "mineIron": {
     "label": "Fer",
     "log": {
-      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
+      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
     }
   },
   "mineObsidian": {
     "label": "Obsidienne",
     "log": {
-      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
+      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
     }
   },
   "mineStone": {
     "label": "Pierre",
     "log": {
-      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
+      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
     }
   },
   "mineSulfur": {
     "label": "Soufre",
     "log": {
-      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
+      "natharitSilverVein": "La pioche de natharit révèle une veine d'argent ! +{{amount}} {{resource}}"
     }
   },
   "mining": {
@@ -705,7 +705,7 @@
     "label": "Fumée montante",
     "log": {
       "success": "Votre expédition trouve un camp de hors-la-loi. Le combat est brutal, mais vous l'emportez. Dans un coffre, vous trouvez 500 or.",
-      "successKeyBonus": " Avec votre clé squelette, vous ouvrez un compartiment caché et trouvez 250 or supplémentaires.",
+      "successKeyBonus": "Avec votre passe-partout, vous ouvrez un compartiment caché et trouvez 250 or supplémentaires.",
       "captiveOne": " 1 captif du camp choisit de rejoindre le village.",
       "captivesOther": " {{count}} captifs du camp choisissent de rejoindre le village.",
       "failure": "Votre expédition atteint un camp de hors-la-loi, mais le combat tourne terriblement mal. {{count}} villageois tombent avant que les survivants ne fuient vers le village."
@@ -721,21 +721,21 @@
     "label": "Vendre l'acier"
   },
   "searchMountainLady": {
-    "description": "Envoyez une expédition pour trouver la Dame de la Montagne.",
-    "label": "Chercher la dame des montagnes"
+    "description": "Envoyez une expédition pour trouver la Dame des montagnes.",
+    "label": "Chercher la Dame des montagnes"
   },
   "steelDelivery": {
     "description": "Livrez de l'acier à la tribu du marais.",
     "label": "Livraison d'acier",
     "log": {
-      "success": "Votre caravane livre l'acier à la Tribu des Marais comme promis. En retour, la tribu vous offre des Plaques de Chitine récoltées sur les créatures des marais. Elles peuvent servir à construire de puissantes fortifications."
+      "success": "Votre caravane livre l'acier à la tribu du marais comme promis. En retour, la tribu vous offre des plaques de chitine récoltées sur les créatures des marais. Elles peuvent servir à construire de puissantes fortifications."
     }
   },
   "sunkenTemple": {
     "description": "Traversez le marais jusqu'à un temple ancien à demi englouti.",
     "label": "Temple englouti",
     "log": {
-      "success": "Votre expédition traverse les eaux marécageuses pour atteindre l'ancien temple à moitié englouti. Malgré les dangers qui rôdent dans les eaux sombres, les villageois naviguent prudemment dans les salles submergées et trouvent les gemmes de bloodstone dans le sanctuaire intérieur du temple.",
+      "success": "Votre expédition traverse les eaux marécageuses pour atteindre l'ancien temple à moitié englouti. Malgré les dangers qui rôdent dans les eaux sombres, les villageois progressent prudemment dans les salles submergées et trouvent les gemmes de pierre de sang dans le sanctuaire intérieur du temple.",
       "failure": "Votre expédition s'aventure dans le marais à la recherche du temple englouti. Les eaux troubles cachent des horreurs indicibles. D'abominables créatures nées de la magie ancienne surgissent des profondeurs et entraînent {{count}} villageois sous la surface avant que les survivants ne fuient."
     }
   },
@@ -793,13 +793,13 @@
   },
   "ventureDeeper": {
     "description": "Suivez le sentier plus profondément dans la grotte, vers les cavernes au-delà.",
-    "label": "S'aventurer plus profond",
+    "label": "S'aventurer plus loin",
     "log": {
-      "tarnishedAmulet": "Dans l'ombre de la grotte, quelque chose scintille. Vous trouvez un amulette ternie.",
+      "tarnishedAmulet": "Dans l'ombre de la grotte, quelque chose scintille. Vous trouvez une amulette ternie.",
+      "fangCharm": "Dans une fissure de la paroi, vous trouvez, coincé, un charme de crocs noirs. Ils sont bien trop grands pour tout ce qui devrait vivre ici.",
       "silverSack": "Vous trouvez un petit sac en cuir contenant 50 pièces d'argent.",
       "mapFragment": "Sur le sol de la grotte, vous trouvez un fragment de carte déchiré.",
-      "firstVisit": "L'air devient plus froid à mesure que vous descendez plus profondément dans la grotte. Les parois semblent anormalement lisses, comme façonnées par quelqu'un.",
-      "fangCharm": "Calé dans une fissure du mur, vous trouvez un charme de crocs noirs. Ils sont bien trop grands pour tout ce qui devrait vivre ici."
+      "firstVisit": "L'air devient plus froid à mesure que vous descendez plus profondément dans la grotte. Les parois semblent anormalement lisses, comme façonnées par quelqu'un."
     }
   }
 }

@@ -1,20 +1,17 @@
 {
-  "tradeGoldForInsightPotion": {
-    "label": "Elixir de Perspicácia"
-  },
   "animals": {
     "label": "Animais"
   },
   "banditLair": {
-    "description": "Cace o bandido que roubou a adaga do comerciante.",
+    "description": "Cace o bandido que roubou a adaga do mercador.",
     "label": "Covil do Bandido",
     "log": {
-      "success": "Seu grupo rastreia o bandido até um covil em ruínas. Você o domina, recupera a adaga do mercador e encontra 250 Prata escondidas em meio à pilhagem.",
+      "success": "Seu grupo rastreia o bandido até um covil em ruínas. Você o domina, recupera a adaga do mercador e encontra 250 de prata escondidas em meio à pilhagem.",
       "failure": "Os aldeões vasculham as colinas, mas não conseguem encurralar o bandido. A trilha esfria, e ele continua com a adaga."
     }
   },
   "blackreachCanyon": {
-    "description": "Desça o Cânion Blackreach em busca de um corvo.",
+    "description": "Desça o Cânion de Alcance Negro em busca de um corvo.",
     "label": "Cânion de Alcance Negro",
     "log": {
       "success": "Você se embrenha fundo no Cânion de Alcance Negro. Lá, pousado sobre um pilar de pedra, está um magnífico corvo caolho. Usando o arreio, você se aproxima com cuidado e cria um vínculo com a criatura. O Corvo Caolho juntou-se à sua irmandade."
@@ -69,6 +66,10 @@
   "buildBoneyard": {
     "description": "Terreno onde os mortos são sepultados, aliviando o luto dos aldeões.",
     "label": "Ossário"
+  },
+  "buildHerbGarden": {
+    "description": "Canteiros cultivados de plantas úteis, cuidadosamente tratados por seus muitos usos.",
+    "label": "Jardim de Ervas"
   },
   "buildBottomlessPit": {
     "description": "Poço extremamente profundo que alcança os materiais mais raros",
@@ -133,6 +134,10 @@
   "buildFurTents": {
     "description": "Abrigo quente de pele usado pela tribo errante",
     "label": "Tenda de Pele"
+  },
+  "buildGrandArchive": {
+    "description": "Uma vasta câmara de pergaminhos que preserva tudo o que o vilarejo foi, cada nome e cada labuta gravados",
+    "label": "Grande Arquivo"
   },
   "buildGrandBazaar": {
     "description": "Mercado vasto que atrai mais mercadores",
@@ -210,9 +215,17 @@
     "description": "Pedreira que aumenta a produção de pedra dos coletores",
     "label": "Pedreira"
   },
+  "buildRecordsHall": {
+    "description": "Um salão repleto de prateleiras com livros-razão e listas desgastados, a memória do vilarejo registrada em tinta e mantida em ordem",
+    "label": "Salão de Registros"
+  },
   "buildSanctum": {
     "description": "Sacrário divino que oferece a maior proteção contra a escuridão",
     "label": "Sacrário"
+  },
+  "buildScribesOffice": {
+    "description": "Uma sala tranquila onde os escribas mantêm um registro cuidadoso de cada mão a trabalhar, para que nenhum labor seja esquecido",
+    "label": "Escritório do Escriba"
   },
   "buildScriptorium": {
     "description": "Centro de sabedoria onde estudiosos reúnem Conhecimento",
@@ -278,11 +291,15 @@
     "description": "Cabana simples de madeira que oferece abrigo básico",
     "label": "Cabana de Madeira"
   },
+  "exploreMountainVillage": {
+    "description": "Faça a longa subida até o vilarejo no alto das montanhas.",
+    "label": "Explorar Vilarejo da Montanha"
+  },
   "canyonBridge": {
     "description": "Construa uma ponte sobre o cânion para se ligar à tribo da floresta.",
     "label": "Ponte do Cânion",
     "log": {
-      "complete": "A ponte do cânion está completa. Os mercadores Espectro de Cinzas agora podem chegar ao seu assentamento, e você pode vender seus produtos para eles pelos preços combinados."
+      "complete": "A ponte do cânion está concluída. Os comerciantes Espectro de Cinzas agora podem chegar ao seu assentamento, e você pode vender produtos a eles pelos preços combinados."
     }
   },
   "castleRuins": {
@@ -381,7 +398,7 @@
     "label": "Manto do Sumo Sacerdote"
   },
   "craftFurCloak": {
-    "label": "Capa de pele"
+    "label": "Capa de Pele"
   },
   "craftHunterCloak": {
     "label": "Capa do Caçador"
@@ -414,7 +431,7 @@
     "label": "Arco Mestre"
   },
   "craftNightshadeBow": {
-    "label": "Arco Beladona"
+    "label": "Arco de Beladona"
   },
   "craftObsidianAxe": {
     "label": "Machado de Obsidiana"
@@ -479,7 +496,7 @@
   },
   "encounterBeyondPortal": {
     "description": "Passe pelo portão quebrado rumo ao que há além.",
-    "label": "Aventurar-se além do Portão"
+    "label": "Aventurar-se Além do Portão"
   },
   "exploreCave": {
     "description": "Vasculhe a caverna à luz da tocha e junte o que puder encontrar.",
@@ -515,15 +532,15 @@
     "description": "Atravesse as águas negras do lago subterrâneo até uma ilhota no centro.",
     "label": "Lago Subterrâneo",
     "log": {
-      "complete": "Usando o brilho sombrio da lanterna de caveira, você desce até o lago subterrâneo e constrói um pequeno barco. Numa pequena ilha no meio do lago escuro, tesouros esquecidos jazem nas sombras, intocados por eras."
+      "complete": "Usando o brilho sombrio da lanterna de caveira, você desce até o lago subterrâneo e constrói um pequeno barco. Numa pequena ilha no meio do lago escuro, tesouros esquecidos jazem nas sombras, intocados há eras."
     }
   },
   "feedFire": {
     "label": "Alimentar o Fogo"
   },
   "financeExpedition": {
-    "description": "Financiar uma expedição liderada por estudiosos a templos e ruínas na floresta",
-    "label": "Financiar expedição",
+    "description": "Financie uma expedição liderada por estudiosos a templos e ruínas na floresta",
+    "label": "Financiar Expedição",
     "log": {
       "complete": "A expedição de pesquisa retorna da floresta. Estudiosos passam dias catalogando inscrições, relíquias desgastadas e fragmentos de conhecimento esquecido."
     }
@@ -532,7 +549,7 @@
     "description": "Limpe a caverna das feras para salvar a tribo da caçadora.",
     "label": "Caverna da Floresta",
     "log": {
-      "success": "Conforme os aldeões descem a caverna, cães selvagens irrompem da escuridão em matilhas implacáveis. Gritos ecoam enquanto garras rasgam e dentes estalam. Quando a última fera tomba, cada aldeão vive, e a tribo da caçadora está salva.",
+      "success": "Conforme os aldeões descem à caverna, cães selvagens irrompem da escuridão em matilhas implacáveis. Gritos ecoam enquanto garras rasgam e dentes estalam. Quando a última fera tomba, todos os aldeões estão vivos, e a tribo da caçadora está salva.",
       "failure": "Quando a expedição entra na caverna, é dominada por uma matilha de cães brutais. {{count}} aldeões são despedaçados por mandíbulas selvagens antes que os sobreviventes consigam recuar."
     }
   },
@@ -546,11 +563,11 @@
     "description": "Procure a biblioteca oculta nas profundezas da caverna.",
     "label": "Biblioteca Oculta",
     "log": {
-      "complete": "O mapa do monastério o conduz fundo na caverna até a biblioteca oculta, onde você encontra um códice."
+      "complete": "O mapa do mosteiro o conduz fundo na caverna até a biblioteca oculta, onde você encontra um códice."
     }
   },
   "hillGrave": {
-    "description": "Entre na sepultura do outeiro e procure vidro-gelo na câmara funerária.",
+    "description": "Entre no túmulo da colina e procure vidro-de-gelo na câmara funerária.",
     "label": "Túmulo da Colina",
     "log": {
       "success": "Sua expedição contorna com cuidado as armadilhas traiçoeiras do túmulo da colina. Os aldeões desarmam os antigos mecanismos e alcançam a câmara funerária. Entre os tesouros do rei, você descobre vidro-de-gelo puro, frio como o próprio vazio.",
@@ -571,7 +588,7 @@
     "description": "Investigue a estranha cabana de madeira na floresta.",
     "label": "Cabana de Madeira",
     "log": {
-      "success": "A cabana pertence ao caçador que lhe vendeu carne. O matadouro está cheio de ganchos, e nenhum segurou um cervo. Ele caçava pessoas, e a comida que trocava era a carne delas. Na cabana você encontra o arco do mercador.",
+      "success": "A cabana pertence ao caçador que lhe vendeu carne. O matadouro está cheio de ganchos, e nenhum deles jamais pendurou um cervo. Ele caçava pessoas, e a comida que trocava era a carne delas. Na cabana você encontra o arco do mercador.",
       "failure": "Ao se aproximar da cabana, flechas vêm da escuridão da porta. Cada tiro mata. As pontas são de osso. {{count}} aldeões morrem antes que o resto fuja."
     }
   },
@@ -580,7 +597,7 @@
   },
   "tameWolf": {
     "description": "Domestique o lobo que você encontrou perto do alfa morto.",
-    "label": "Domesticar lobo",
+    "label": "Domesticar Lobo",
     "log": {
       "complete": "O filhote está domesticado. O Cinzento entrou para a sua irmandade."
     }
@@ -687,8 +704,8 @@
     "description": "Siga a fumaça que sobe até um acampamento de foras da lei.",
     "label": "Fumaça Subindo",
     "log": {
-      "success": "Sua expedição encontra um acampamento de foras da lei. A luta é brutal, mas você vence. Num baú, você encontra 500 Ouro.",
-      "successKeyBonus": " Com sua chave-mestra, você abre um compartimento oculto e encontra mais 250 Ouro.",
+      "success": "Sua expedição encontra um acampamento de foras da lei. A luta é brutal, mas você vence. Num baú, você encontra 500 de ouro.",
+      "successKeyBonus": " Com sua chave-mestra, você abre um compartimento oculto e encontra mais 250 de ouro.",
       "captiveOne": " 1 cativo do acampamento decide se juntar ao vilarejo.",
       "captivesOther": " {{count}} cativos do acampamento decidem se juntar ao vilarejo.",
       "failure": "Sua expedição alcança um acampamento de foras da lei, mas a luta dá terrivelmente errado. {{count}} aldeões caem antes que os sobreviventes fujam de volta ao vilarejo."
@@ -702,6 +719,10 @@
   },
   "sellSteelBatch": {
     "label": "Vender Aço"
+  },
+  "searchMountainLady": {
+    "description": "Envie uma expedição para encontrar a Dama das Montanhas.",
+    "label": "Procurar a Dama das Montanhas"
   },
   "steelDelivery": {
     "description": "Entregue aço à tribo do pântano.",
@@ -758,6 +779,9 @@
   "tradeGoldForVoidBomb": {
     "label": "Comprar Bomba do Vazio"
   },
+  "tradeGoldForInsightPotion": {
+    "label": "Elixir de Perspicácia"
+  },
   "tradeGoldForVeinfireElixir": {
     "label": "Comprar Elixir de Fogo Venoso"
   },
@@ -772,34 +796,10 @@
     "label": "Avançar Mais Fundo",
     "log": {
       "tarnishedAmulet": "Nas sombras da caverna, algo reluz. Você encontra um Amuleto Manchado.",
-      "silverSack": "Você encontra um pequeno saco de couro contendo 50 Prata.",
+      "fangCharm": "Encaixado numa fenda da parede, você encontra um amuleto de presas pretas. Elas são grandes demais para qualquer coisa que deveria viver aqui.",
+      "silverSack": "Você encontra um pequeno saco de couro contendo 50 de prata.",
       "mapFragment": "No chão da caverna, você encontra um fragmento esfarrapado de um mapa.",
-      "firstVisit": "O ar fica mais frio conforme você desce o caminho mais fundo na caverna. As paredes ao seu redor parecem estranhamente lisas, como se moldadas por alguém.",
-      "fangCharm": "Encaixado numa fenda da parede, você encontra um amuleto de presas pretas. Elas são grandes demais para qualquer coisa que deveria viver aqui."
+      "firstVisit": "O ar fica mais frio conforme você desce o caminho mais fundo na caverna. As paredes ao seu redor parecem estranhamente lisas, como se moldadas por alguém."
     }
-  },
-  "buildGrandArchive": {
-    "description": "Uma vasta câmara de pergaminhos que preserva tudo o que o vilarejo foi, cada nome e cada labuta gravados",
-    "label": "Grande Arquivo"
-  },
-  "buildRecordsHall": {
-    "description": "Um salão repleto de prateleiras com livros-razão e listas desgastados, a memória do vilarejo registrada em tinta e mantida em ordem",
-    "label": "Salão de Registros"
-  },
-  "buildScribesOffice": {
-    "description": "Uma sala tranquila onde os escribas mantêm um registro cuidadoso de cada mão a trabalhar, para que nenhum labor seja esquecido",
-    "label": "Escritório do Escriba"
-  },
-  "buildHerbGarden": {
-    "description": "Canteiros cultivados de plantas úteis, cuidadosamente tratados por seus muitos usos.",
-    "label": "Jardim de ervas"
-  },
-  "exploreMountainVillage": {
-    "description": "Faça a longa subida até a aldeia no alto das montanhas.",
-    "label": "Explorar o vilarejo da montanha"
-  },
-  "searchMountainLady": {
-    "description": "Envie uma expedição para encontrar a Senhora da Montanha.",
-    "label": "Procurar a dama das montanhas"
   }
 }

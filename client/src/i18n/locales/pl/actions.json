@@ -6,22 +6,22 @@
     "description": "Wytrop bandytę, który ukradł sztylet handlarza.",
     "label": "Legowisko bandyty",
     "log": {
-      "success": "Twoja drużyna tropi bandytę do rozpadającego się legowiska. Pokonujesz go, odzyskujesz sztylet handlarza i znajdujesz 250 srebra ukryte wśród łupów.",
+      "success": "Twoja drużyna trafia tropem bandyty do rozpadającej się kryjówki. Pokonujesz go, odzyskujesz sztylet handlarza i znajdujesz 250 srebra ukryte wśród łupów.",
       "failure": "Wieśniacy przeszukują wzgórza, lecz nie udaje im się osaczyć bandyty. Ślad stygnie, a sztylet wciąż jest w jego rękach."
     }
   },
   "blackreachCanyon": {
-    "description": "Zejdź do Kanionu Blackreach w poszukiwaniu wrony.",
+    "description": "Zejdź do Kanionu Czarnodolu w poszukiwaniu wrony.",
     "label": "Kanion Czarnodolu",
     "log": {
-      "success": "Zapuszczasz się głęboko w Kanion Czarnodolu. Tam, na kamiennym filarze, siedzi wspaniały jednooki kruk. Z pomocą uprzęży ostrożnie się zbliżasz i zawierasz więź z istotą. Jednooki kruk dołączył do twojej wspólnoty."
+      "success": "Zapuszczasz się głęboko w Kanion Czarnodolu. Tam, na kamiennym filarze, siedzi wspaniała jednooka wrona. Z pomocą uprzęży ostrożnie się zbliżasz i zawierasz więź z ptakiem. Jednooka wrona dołączyła do twojej drużyny."
     }
   },
   "blastPortal": {
     "description": "Rozbij starożytną bramę i uwolnij to, co zostało w niej zapieczętowane.",
-    "label": "Wysadź wrota",
+    "label": "Wysadź bramę",
     "log": {
-      "complete": "Bomby żaru wybuchają w jaskrawym błysku ognia i światła. Starożytne wrota pękają i kruszeją. Cokolwiek było w nich zamknięte, jest teraz wolne."
+      "complete": "Bomby żaru wybuchają w jaskrawym błysku ognia i światła. Starożytna brama pęka i rozsypuje się. Cokolwiek było w niej zamknięte, jest teraz wolne."
     }
   },
   "boneTotems": {
@@ -148,7 +148,7 @@
     "label": "Wielka kuźnia"
   },
   "buildGrandHunterLodge": {
-    "description": "Najwyższa chata myśliwska dla mistrzów łowów",
+    "description": "Najwspanialsza chata myśliwska dla mistrzów łowów",
     "label": "Wielka chata myśliwych"
   },
   "buildGrandRepository": {
@@ -160,7 +160,7 @@
     "label": "Duża chata myśliwego"
   },
   "buildGreatVault": {
-    "description": "Najwyższy skarbiec, zdolny pomieścić ogromne zasoby",
+    "description": "Największy skarbiec, zdolny pomieścić ogromne zasoby",
     "label": "Wielki skarbiec"
   },
   "buildHeartfire": {
@@ -168,7 +168,7 @@
     "label": "Ogień serca"
   },
   "buildHighTannery": {
-    "description": "Najwyższa garbarnia dla biegłych rzemieślników skóry",
+    "description": "Najwspanialsza garbarnia dla biegłych rzemieślników skóry",
     "label": "Wysoka garbarnia"
   },
   "buildImprovedTraps": {
@@ -192,7 +192,7 @@
     "label": "Mistrzowska odlewnia"
   },
   "buildMerchantsGuild": {
-    "description": "Potężna gildia sprowadzająca najlepsze transakcje i handlarzy",
+    "description": "Potężna gildia zapewniająca najkorzystniejsze transakcje i najlepszych handlarzy",
     "label": "Gildia handlarzy"
   },
   "buildPaleCross": {
@@ -260,7 +260,7 @@
     "label": "Świątynia"
   },
   "buildTimberMill": {
-    "description": "Młyn obrabiający drewno sprawniej",
+    "description": "Tartak, który sprawniej obrabia drewno",
     "label": "Tartak"
   },
   "buildTradePost": {
@@ -284,7 +284,7 @@
     "label": "Strażnica"
   },
   "buildWizardTower": {
-    "description": "Mistyczna wieża, w której czarodziej prowadzi arkaniczne badania",
+    "description": "Mistyczna wieża, w której czarodziej prowadzi tajemne badania",
     "label": "Wieża czarodzieja"
   },
   "buildWoodenHut": {
@@ -296,7 +296,7 @@
     "label": "Zbadaj górską wioskę"
   },
   "canyonBridge": {
-    "description": "Zbuduj most przez kanion, by połączyć się z plemieniem lasu.",
+    "description": "Zbuduj most przez kanion, by połączyć się z leśnym plemieniem.",
     "label": "Most przez kanion",
     "log": {
       "complete": "Most przez kanion stoi gotowy. Handlarze Popiołowych Widm mogą teraz dotrzeć do twojej osady, a ty możesz sprzedawać im towary po ustalonych stawkach."
@@ -452,7 +452,7 @@
     "label": "Buty cienia"
   },
   "craftSkeletonKey": {
-    "label": "Klucz szkieletowy"
+    "label": "Wytrych"
   },
   "craftSteelAxe": {
     "label": "Stalowy topór"
@@ -496,7 +496,7 @@
   },
   "encounterBeyondPortal": {
     "description": "Przejdź przez rozbitą bramę ku temu, co leży poza nią.",
-    "label": "Wyjdź za wrota"
+    "label": "Wyjdź za bramę"
   },
   "exploreCave": {
     "description": "Przeszukaj jaskinię w świetle pochodni i zbierz, co znajdziesz.",
@@ -567,7 +567,7 @@
     }
   },
   "hillGrave": {
-    "description": "Wejdź do grobu na wzgórzu i szukaj mroźnego szkła w komorze grobowej.",
+    "description": "Wejdź do kurhanu i szukaj mrozoszkła w komorze grobowej.",
     "label": "Kurhan",
     "log": {
       "success": "Wyprawa ostrożnie pokonuje zdradliwe pułapki kurhanu. Wieśniacy rozbrajają starożytne mechanizmy i docierają do komory grobowej. Wśród skarbów króla odkrywacie czyste mrozoszkło, zimne jak sama pustka.",
@@ -597,7 +597,7 @@
   },
   "tameWolf": {
     "description": "Oswój wilka znalezionego przy zabitym alfie.",
-    "label": "Oswoić wilka",
+    "label": "Oswój wilka",
     "log": {
       "complete": "Wilcze szczenię zostało oswojone. Szary dołączył do twojej drużyny."
     }
@@ -609,10 +609,10 @@
       "trapSuccessNoDeaths": "Olbrzymia pułapka działa bezbłędnie! W sidłach tkwi ogromny czarny niedźwiedź o żarzących się czerwonych oczach. Wieśniacy zabijają nadprzyrodzoną bestię i biorą jej przeklęte czarne futro jako trofeum.",
       "trapSuccessWithDeaths_one": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o palących się czerwonych oczach! {{count}} wieśniak pada pod jego nadprzyrodzonymi pazurami, zanim bestia zostaje wreszcie zabita. Bierzesz jej przeklęte czarne futro jako drogo okupione trofeum.",
       "trapSuccessWithDeaths_other": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o palących się czerwonych oczach! {{count}} wieśniaków pada pod jego nadprzyrodzonymi pazurami, zanim bestia zostaje wreszcie zabita. Bierzesz jej przeklęte czarne futro jako drogo okupione trofeum.",
-      "trapSuccessWithDeaths_few": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o palących się czerwonych oczach! {{count}} wieśniacy padają pod jego nadprzyrodzonymi pazurami, zanim bestia zostaje wreszcie zabita. Bierzesz jej przeklęte czarne futro jako drogo okupione trofeum.",
-      "trapSuccessWithDeaths_many": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o palących się czerwonych oczach! {{count}} wieśniaków pada pod jego nadprzyrodzonymi pazurami, zanim bestia zostaje wreszcie zabita. Bierzesz jej przeklęte czarne futro jako drogo okupione trofeum.",
       "trapSuccessHeavy": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o oczach jak żarzące się węgle. {{count}} wieśniaków pada pod jego nadprzyrodzonym szałem, zanim bestia zostaje wreszcie pokonana. Bierzesz jej przeklęte czarne futro.",
-      "trapFailed": "Olbrzymia pułapka jest zastawiona, lecz przy sprawdzeniu obok niej widać tylko wielkie ślady pazurów. Cokolwiek krąży po tych lasach, jest zbyt przebiegłe na twoją pułapkę... tym razem."
+      "trapFailed": "Olbrzymia pułapka jest zastawiona, lecz przy sprawdzeniu obok niej widać tylko wielkie ślady pazurów. Cokolwiek krąży po tych lasach, jest zbyt przebiegłe na twoją pułapkę... tym razem.",
+      "trapSuccessWithDeaths_few": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o palących się czerwonych oczach! {{count}} wieśniacy padają pod jego nadprzyrodzonymi pazurami, zanim bestia zostaje wreszcie zabita. Bierzesz jej przeklęte czarne futro jako drogo okupione trofeum.",
+      "trapSuccessWithDeaths_many": "Olbrzymia pułapka łapie kolosalnego czarnego niedźwiedzia o palących się czerwonych oczach! {{count}} wieśniaków pada pod jego nadprzyrodzonymi pazurami, zanim bestia zostaje wreszcie zabita. Bierzesz jej przeklęte czarne futro jako drogo okupione trofeum."
     }
   },
   "leatherTotems": {
@@ -635,49 +635,49 @@
     "description": "Załóż przynętę w pułapce na brzegu podziemnego jeziora i czekaj, aż coś się złapie.",
     "label": "Załóż przynętę",
     "log": {
-      "complete": "Na brzegu podziemnego jeziora ustawiasz ogromną pułapkę, przynętą stosami mięsa. Mijają godziny, nim czarne wody wybuchają, a tytaniczna, mackowata zgroza wynurza się z głębin i wpełza w sidła."
+      "complete": "Na brzegu podziemnego jeziora ustawiasz ogromną pułapkę z przynętą ze stosów mięsa. Mijają godziny, nim czarne wody wzburzają się gwałtownie, a tytaniczna, mackowata zgroza wynurza się z głębin i wpełza w sidła."
     }
   },
   "mineAdamant": {
     "label": "Adamant",
     "log": {
-      "natharitSilverVein": "Kilof Natharit odsłania żyłę srebra! +{{amount}} {{resource}}"
+      "natharitSilverVein": "Kilof z natharitu odsłania żyłę srebra! +{{amount}} {{resource}}"
     }
   },
   "mineMoonstone": {
     "label": "Kamień księżycowy",
     "log": {
-      "natharitSilverVein": "Kilof Natharit odsłania żyłę srebra! +{{amount}} {{resource}}"
+      "natharitSilverVein": "Kilof z natharitu odsłania żyłę srebra! +{{amount}} {{resource}}"
     }
   },
   "mineCoal": {
     "label": "Węgiel",
     "log": {
-      "natharitSilverVein": "Kilof Natharit odsłania żyłę srebra! +{{amount}} {{resource}}"
+      "natharitSilverVein": "Kilof z natharitu odsłania żyłę srebra! +{{amount}} {{resource}}"
     }
   },
   "mineIron": {
     "label": "Żelazo",
     "log": {
-      "natharitSilverVein": "Kilof Natharit odsłania żyłę srebra! +{{amount}} {{resource}}"
+      "natharitSilverVein": "Kilof z natharitu odsłania żyłę srebra! +{{amount}} {{resource}}"
     }
   },
   "mineObsidian": {
     "label": "Obsydian",
     "log": {
-      "natharitSilverVein": "Kilof Natharit odsłania żyłę srebra! +{{amount}} {{resource}}"
+      "natharitSilverVein": "Kilof z natharitu odsłania żyłę srebra! +{{amount}} {{resource}}"
     }
   },
   "mineStone": {
     "label": "Kamień",
     "log": {
-      "natharitSilverVein": "Kilof Natharit odsłania żyłę srebra! +{{amount}} {{resource}}"
+      "natharitSilverVein": "Kilof z natharitu odsłania żyłę srebra! +{{amount}} {{resource}}"
     }
   },
   "mineSulfur": {
     "label": "Siarka",
     "log": {
-      "natharitSilverVein": "Kilof Natharit odsłania żyłę srebra! +{{amount}} {{resource}}"
+      "natharitSilverVein": "Kilof z natharitu odsłania żyłę srebra! +{{amount}} {{resource}}"
     }
   },
   "mining": {
@@ -687,7 +687,7 @@
     "description": "Idź według mapy okultysty do komnaty, w której wciąż kryją się jego tajemnice.",
     "label": "Komnata okultysty",
     "log": {
-      "complete": "Idąc za mapą okultysty, znajdujesz komnatę z jego skarbami. Wśród nich jest jego grymuar, pełen zakazanej wiedzy i arkanicznych tajemnic."
+      "complete": "Idąc za mapą okultysty, znajdujesz komnatę z jego skarbami. Wśród nich jest jego grymuar, pełen zakazanej wiedzy i tajemnych sekretów."
     }
   },
   "provokeAttackWave": {
@@ -704,10 +704,10 @@
   },
   "risingSmoke": {
     "description": "Podążaj za wznoszącym się dymem do obozu banitów.",
-    "label": "Wschodzący dym",
+    "label": "Wznoszący się dym",
     "log": {
       "success": "Wyprawa odnajduje obóz banitów. Walka jest okrutna, lecz zwyciężasz. W skrzyni znajdujesz 500 złota.",
-      "successKeyBonus": " Kluczem szkieletowym otwierasz ukrytą przegródkę i znajdujesz kolejne 250 złota.",
+      "successKeyBonus": " Wytrychem otwierasz ukrytą skrytkę i znajdujesz kolejne 250 złota.",
       "captiveOne": " 1 jeniec z obozu postanawia dołączyć do wioski.",
       "captivesOther": " {{count}} jeńców z obozu postanawia dołączyć do wioski.",
       "failure": "Wyprawa dociera do obozu banitów, lecz walka idzie fatalnie. {{count}} wieśniaków pada, zanim ocalali uciekają z powrotem do wioski."
@@ -723,7 +723,7 @@
     "label": "Sprzedaj stal"
   },
   "searchMountainLady": {
-    "description": "Wyślij wyprawę, by odnaleźć Damę Gór.",
+    "description": "Wyślij wyprawę, by odnaleźć Górską Panią.",
     "label": "Szukaj Górskiej Pani"
   },
   "steelDelivery": {

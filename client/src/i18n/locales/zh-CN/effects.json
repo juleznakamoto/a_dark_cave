@@ -60,7 +60,7 @@
     },
     "blood_baptized": {
       "description": "沐浴强大生物之血后获得",
-      "name": "血洗之身"
+      "name": "血之洗礼"
     },
     "bloodstained_belt": {
       "description": "染着陈旧血迹的皮带",
@@ -120,11 +120,15 @@
     },
     "elder_scroll": {
       "description": "记载禁忌知识的古老卷轴",
-      "name": "古老卷轴"
+      "name": "上古卷轴"
     },
     "explorer_pack": {
       "description": "制作精良的皮背包，减轻肩上的负担",
       "name": "探索者背包"
+    },
+    "fang_charm": {
+      "description": "一串来自巨型生物的黑色獠牙",
+      "name": "獠牙护符"
     },
     "feeding_ring": {
       "description": "某个清晨出现的戒指，似乎与你的手指融为一体",
@@ -145,6 +149,10 @@
     "forests_grace": {
       "description": "森林中的鹿似乎更不容易注意到你",
       "name": "森林恩典"
+    },
+    "brimstone_infusion": {
+      "description": "炼钢工产出 +1 钢",
+      "name": "硫磺灌注"
     },
     "fresh_blood": {
       "description": "陌生人更常接近村庄",
@@ -208,7 +216,7 @@
     },
     "moon_bracelet": {
       "description": "由恒久白石制成的精致无重量手环",
-      "name": "月石手环"
+      "name": "月之手环"
     },
     "muttering_amulet": {
       "description": "发出怪异声响的神秘护符",
@@ -227,7 +235,7 @@
       "name": "黑曜石宝珠"
     },
     "obsidian_orb_schematic": {
-      "description": "锻造强大黑曜石宝珠的图纸",
+      "description": "锻造强大黑曜石宝珠的蓝图",
       "name": "黑曜石宝珠"
     },
     "occultist_grimoire": {
@@ -349,14 +357,6 @@
     "wooden_figure": {
       "description": "雕刻着触手怪物的木像，令人不安",
       "name": "木雕像"
-    },
-    "fang_charm": {
-      "description": "一串来自巨型生物的黑色獠牙",
-      "name": "獠牙护符"
-    },
-    "brimstone_infusion": {
-      "description": "炼钢工产出 +1 钢",
-      "name": "硫磺灌注"
     }
   },
   "fellowship": {
@@ -365,8 +365,8 @@
       "name": "灰怨女猎手"
     },
     "disgraced_prior": {
-      "description": "被教团逐出的前任修院长。以无尽劳作赎罪。",
-      "name": "堕落修道院长"
+      "description": "被教团逐出的前任修道院长。以无尽劳作赎罪。",
+      "name": "蒙羞的修道院长"
     },
     "elder_wizard": {
       "description": "生命将尽的老巫师，很久以前便掌握了奥术之火。",
@@ -573,8 +573,8 @@
       "name": "长弓"
     },
     "manhunter_bow": {
-      "description": "为人猎而张弦的弓",
-      "name": "猎人之弓"
+      "description": "为猎杀人类而张弦的弓。",
+      "name": "猎人者之弓"
     },
     "master_bow": {
       "description": "终极之弓，威力与掌控无可匹敌",
@@ -601,7 +601,7 @@
       "name": "风暴晶戟"
     },
     "veinfire_elixir": {
-      "description": "由稀有脉络根蒸馏而成的炼金疗伤灵药",
+      "description": "由稀有脉根蒸馏而成的炼金疗伤灵药",
       "name": "脉火灵药"
     },
     "void_bomb": {

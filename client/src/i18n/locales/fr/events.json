@@ -1,7 +1,24 @@
 {
+  "abandonedCart": {
+    "choices": {
+      "leaveCart": {
+        "label": "Laisser la charrette"
+      },
+      "takeFood": {
+        "label": "Prendre la nourriture"
+      }
+    },
+    "log": {
+      "outcome0": "Les villageois ramènent les sacs. La nourriture est encore bonne.",
+      "outcome1": "La nourriture était empoisonnée. Deux villageois s'effondrent après les premières bouchées.",
+      "outcome2": "Vous laissez la charrette où elle est. Rien ne se passe."
+    },
+    "message": "À l'orée de la forêt, des villageois trouvent une charrette abandonnée chargée de nourriture. Que doivent-ils faire ?",
+    "title": "La charrette abandonnée"
+  },
   "cartographer": {
     "title": "Le cartographe",
-    "message": "Un jeune homme arrive au village. Son sac à dos est plein de cartes et d'étranges instruments. Il dit vouloir cartographier le monde et propose de t'apprendre à dessiner des cartes détaillées pour {{silverCost}} argent. 'Si tu ne peux pas payer maintenant, je reviendrai', dit-il.",
+    "message": "Un jeune homme arrive au village. Son sac à dos est plein de cartes et d'étranges instruments. Il dit vouloir cartographier le monde et propose de vous apprendre à dessiner des cartes détaillées pour {{silverCost}} argent. « Si vous ne pouvez pas payer maintenant, je reviendrai », dit-il.",
     "choices": {
       "accept": {
         "label": "Payer {{silverCost}} argent",
@@ -12,8 +29,8 @@
       }
     },
     "log": {
-      "outcome0": "Tu le paies. Il reste et te l'apprend. Tu peux désormais dessiner une carte détaillée du village.",
-      "outcome1": "Tu le renvoies sans payer. 'Je reviendrai', dit-il, et il quitte le village."
+      "outcome0": "Vous le payez. Il reste et vous enseigne son art. Vous pouvez désormais dessiner une carte détaillée du village.",
+      "outcome1": "Vous le renvoyez sans payer. « Je reviendrai », dit-il, et il quitte le village."
     }
   },
   "alchemistArrives": {
@@ -22,8 +39,8 @@
         "label": "Continuer"
       }
     },
-    "message": "L'alchimiste surgit de son hall : 'J'ai mené des expériences nuit et jour,' dit-il en tenant une fiole de poussière miroitante. 'J'ai créé quelque chose d'extraordinaire et de terriblement dangereux.'",
-    "title": "La Découverte de l'alchimiste"
+    "message": "L'alchimiste sort de sa salle : « J'ai mené des expériences nuit et jour. » Il brandit une fiole de poussière miroitante. « J'ai créé quelque chose d'extraordinaire et de terriblement dangereux. »",
+    "title": "La découverte de l'alchimiste"
   },
   "ashwraithCanyonTradeOffer": {
     "choices": {
@@ -31,8 +48,8 @@
         "label": "Continuer"
       }
     },
-    "message": "La Chasseresse des Cendres approche. 'Mon peuple souhaite commercer,' dit-elle, 'mais entre nos terres s'ouvre un profond canyon. Il nous faut un pont pour que les caravanes puissent passer. Construisez-le, et nos deux peuples prospéreront.'",
-    "title": "Un Pont pour le commerce"
+    "message": "La Chasseresse des Cendres approche. « Mon peuple souhaite commercer », dit-elle, « mais entre nos terres s'ouvre un profond canyon. Il nous faut un pont pour que les caravanes puissent passer. Construisez-le, et nos deux peuples prospéreront. »",
+    "title": "Un pont pour le commerce"
   },
   "bastionBecomesFortress": {
     "message": "Votre bastion est devenu une puissante forteresse de pierre et d'acier."
@@ -44,7 +61,7 @@
       }
     },
     "message": "Les passages de la grotte derrière la porte semblent enfin dégagés. Vous semblez avoir massacré les créatures pâles. Vous pouvez enfin vous aventurer au-delà de la porte.",
-    "title": "Au-delà de la Porte"
+    "title": "Au-delà de la porte"
   },
   "blackenedMirror": {
     "choices": {
@@ -61,7 +78,7 @@
       "outcome1": "Vous déclinez l'offre du marchand. Le miroir disparaît avec lui dans la nuit."
     },
     "message": "Un marchand ambulant propose un grand miroir fendu, serti de fer noir. Il dégage une aura froide et contre nature. Il prétend qu'il peut révéler des aperçus de l'avenir.",
-    "title": "Le Miroir noirci"
+    "title": "Le miroir noirci"
   },
   "blacksmithHammerChoice": {
     "choices": {
@@ -73,15 +90,15 @@
       }
     },
     "log": {
-      "outcome0": "Vous saisissez l'ancien marteau, sentant son poids et son équilibre. Malgré les âges écoulés, il demeure un chef-d'œuvre de forge.",
+      "outcome0": "Vous saisissez l'ancien marteau, sentant son poids et son équilibre. Malgré les siècles écoulés, il demeure un chef-d'œuvre de forge.",
       "outcome1": "Vous décidez de laisser le marteau où il repose, par respect pour le dernier lieu de repos du géant."
     },
-    "message": "Au cœur de la forêt, vous découvrez les ruines d'un bâtiment de pierre doté d'une immense fournaise. Vous trouvez les restes squelettiques de ce qui devait être un géant, et près d'eux un magnifique marteau de forgeron. Le prenez-vous ?",
-    "title": "La Forge du géant"
+    "message": "Au cœur de la forêt, vous découvrez les ruines d'un bâtiment de pierre doté d'une immense fournaise. Vous trouvez les restes squelettiques de ce qui devait être un géant, et près d'eux un magnifique marteau de forgeron. Le prenez-vous ?",
+    "title": "La forge du géant"
   },
   "blindDruidBlessing": {
-    "message": "Un druide aveugle émerge de la forêt. Il s'approche du sanctuaire et hoche la tête avec approbation. 'Les dieux de la forêt sont satisfaits de votre dévotion, ils vous accordent leur bénédiction.'",
-    "title": "Le Druide aveugle"
+    "message": "Un druide aveugle émerge de la forêt. Il s'approche du sanctuaire et hoche la tête avec approbation. « Les dieux de la forêt sont satisfaits de votre dévotion, ils vous accordent leur bénédiction. »",
+    "title": "Le druide aveugle"
   },
   "bloodDrainedVillagers": {
     "choices": {
@@ -105,10 +122,10 @@
       }
     },
     "log": {
-      "outcome0": "En suivant des empreintes boueuses à travers le village, vous les voyez mener à chaque scène de meurtre, l'une après l'autre. Les traces correspondent à vos propres bottes. L'horreur se révèle lentement - c'était vous, possédé par la faim de l'anneau. Quand les villageois découvrent la vérité, {{deaths}} fuient, refusant de rester près d'une créature aussi maudite.",
+      "outcome0": "En suivant des empreintes boueuses à travers le village, vous les voyez mener à chaque scène de meurtre, l'une après l'autre. Les traces correspondent à vos propres bottes. L'horreur se révèle lentement – c'était vous, possédé par la faim de l'anneau. Quand les villageois découvrent la vérité, {{deaths}} fuient, refusant de rester près d'une créature aussi maudite.",
       "outcome1": "Les mains tremblantes, vous levez votre hache. L'anneau palpite quand la lame s'abat. Une agonie vous déchire le bras tandis que l'os éclate. En soulevant le doigt tranché, vous voyez de petits filaments noirs, semblables à des tentacules, enfoncés profondément dans sa chair."
     },
-    "message": "Vous vous réveillez à l'aube, vos vêtements imbibés de sang frais. Ce n'est pas le vôtre. Un villageois arrive au domaine, le visage blême d'horreur. 'Huit sont morts,' murmure-t-il. 'Déchiquetés dans la nuit.' L'anneau à votre doigt bat d'une douleur atroce.",
+    "message": "Vous vous réveillez à l'aube, vos vêtements imbibés de sang frais. Ce n'est pas le vôtre. Un villageois arrive au domaine, le visage blême d'horreur. « Huit sont morts », murmure-t-il. « Déchiquetés dans la nuit. » L'anneau à votre doigt bat d'une douleur atroce.",
     "title": "Réveil ensanglanté"
   },
   "bloodInWater": {
@@ -123,7 +140,7 @@
     "log": {
       "outcome0": "Vous buvez au puits malgré la teinte rouge. L'eau est froide et insipide, et au bout de quelques instants elle paraît soudain redevenir claire. Votre esprit semble vous avoir trompé.",
       "outcome1": "Vous buvez longuement. Le goût de cuivre envahit votre bouche, épais et chaud. Cette nuit, vous rêvez de vous noyer dans une eau rouge et vous vous réveillez encore avec ce goût sur la langue.",
-      "outcome2": "Vous refusez de boire, mais les villageois continuent de remplir leurs coupes. Leurs lèvres se teintent de rouge tandis qu'ils vous sourient, comme si rien n'allait."
+      "outcome2": "Vous refusez de boire, mais les villageois continuent de remplir leurs coupes. Leurs lèvres se teintent de rouge tandis qu'ils vous sourient, comme si de rien n'était."
     },
     "message": "L'eau du village coule rouge pendant trois jours. Les villageois ne semblent pas le remarquer, la buvant comme si rien n'avait changé. Vous sentez le cuivre et le fer, mais ils affirment qu'elle a le goût d'une eau de source pure.",
     "title": "Du sang dans l'eau"
@@ -140,10 +157,10 @@
     },
     "log": {
       "outcome0": "Les villageois sont offerts aux lycanthropes. Tandis que la lune de sang pâlit, la paix revient au village. Du moins pour l'instant.",
-      "outcome1": "Les lycanthropes attaquent, mais vos défenses tiennent. Leur chef tombe, et dans son cadavre vous récoltez du Sang de lycan, encore chaud et bouillonnant de puissance.",
-      "outcome2": "Les lycanthropes submergent vos défenses et envahissent la colonie ! La lune de sang pâlit, mais la menace demeure.",
-      "outcome3": "Les lycanthropes attaquent, mais vos défenses tiennent. Leur chef tombe, et dans son cadavre vous récoltez du Sang de lycan, encore chaud et bouillonnant de puissance.",
-      "outcome4": "Les lycanthropes submergent vos défenses et envahissent la colonie ! La lune de sang pâlit, mais la menace demeure."
+      "outcome1": "Les lycanthropes attaquent, mais vos défenses tiennent. Leur chef tombe, et sur son cadavre vous prélevez du Sang de lycan, encore chaud et bouillonnant de puissance.",
+      "outcome2": "Les lycanthropes submergent vos défenses et envahissent la colonie ! La lune de sang pâlit, mais la menace demeure.",
+      "outcome3": "Les lycanthropes attaquent, mais vos défenses tiennent. Leur chef tombe, et sur son cadavre vous prélevez du Sang de lycan, encore chaud et bouillonnant de puissance.",
+      "outcome4": "Les lycanthropes submergent vos défenses et envahissent la colonie ! La lune de sang pâlit, mais la menace demeure."
     },
     "message": {
       "default": "La lune devient rouge sang. Les anciens parlent de lycanthropes. D'anciens pactes exigent le sacrifice de {{sacrificeAmount}} villageois pour apaiser les bêtes. Si vous refusez, elles veilleront à satisfaire leur faim."
@@ -167,8 +184,8 @@
       "outcome1": "Vous laissez la ceinture là où elle pend. Quel que soit le sang qui l'a imprégnée, vous préférez ne pas porter cette histoire avec vous.",
       "outcome2": "L'un de vos hommes la boucle avant que vous puissiez l'arrêter. Il rit, puis suffoque tandis que la ceinture se resserre. Ses mains griffent le cuir, mais rien ne cède. Quand vous l'atteignez, il est trop tard."
     },
-    "message": "Suspendue à une pointe rouillée dans la paroi de la grotte, vous trouvez une épaisse ceinture de cuir, sombre de vieilles taches de sang. La prenez-vous ?",
-    "title": "Ceinture tachée de sang"
+    "message": "À une pointe rouillée plantée dans la paroi de la grotte pend une épaisse ceinture de cuir, sombre de vieilles taches de sang. La prenez-vous ?",
+    "title": "Ceinture ensanglantée"
   },
   "boneArmyAttack": {
     "choices": {
@@ -180,7 +197,7 @@
       }
     },
     "log": {
-      "outcome0": "Les villageois vainquent l'armée d'os ! Les os et le silence jonchent le champ de bataille. Vous arrachez la Couronne du Dévoreur à ses restes et remplissez une fiole de son sang pâle et visqueux.",
+      "outcome0": "Les villageois vainquent l'armée d'os ! Les os et le silence jonchent le champ de bataille. Vous arrachez la Couronne du Dévoreur à ses restes et remplissez une fiole de son sang pâle et visqueux.",
       "outcome1": "Les villageois se cachent, terrorisés, tandis que l'armée d'os fouille le village. Les créatures squelettiques finissent par repartir, leur but inaccompli.",
       "defend_noDeaths": "Les villageois combattent désespérément l'armée d'os. Les villageois survivent à l'assaut.",
       "defend_noDeaths_hut": "Les villageois combattent désespérément l'armée d'os. Les villageois survivent à l'assaut. Les créatures squelettiques déchirent l'une des huttes et la réduisent en gravats.",
@@ -201,18 +218,18 @@
       "hide_manyDeaths": "Les villageois se cachent, terrifiés, tandis que l'armée d'os fouille le village. Les villageois qui ont tenté de fuir sont tués par les créatures d'os.",
       "hide_manyDeaths_loot": "Les villageois se cachent, terrifiés, tandis que l'armée d'os fouille le village. Les villageois qui ont tenté de fuir sont tués par les créatures d'os. L'armée pille vos provisions avant de disparaître dans l'obscurité."
     },
-    "message": "La terre tremble lorsque des créatures squelettiques émergent de la forêt. Le Dévoreur d'Os a utilisé les os que vous avez échangés pour forger une légion impie. Les orbites creuses et des armes d'os aiguisées à la main, ils approchent de la cité.",
-    "title": "L'Armée d'os"
+    "message": "La terre tremble lorsque des créatures squelettiques émergent de la forêt. Le Dévoreur d'os a utilisé les os que vous avez échangés pour forger une légion impie. Les orbites creuses et des armes d'os aiguisées à la main, ils approchent de la cité.",
+    "title": "L'armée d'os"
   },
   "boneDevourer": {
-    "title": "Le Dévoreur d'Os",
+    "title": "Le Dévoreur d'os",
     "message": {
-      "firstTime": "Une créature difforme se traîne jusqu'aux portes, sa forme voûtée couverte d'une peau pâle et tendue. Elle parle d'une voix râpeuse : 'Je cherche des os. Je paie {{silverReward}} Argent.'",
-      "repeat": "La créature revient aux portes, sa forme voûtée toujours couverte d'une peau pâle et tendue. Elle parle de sa voix râpeuse familière : 'Je cherche des os. Je paie {{silverReward}} Argent.'"
+      "firstTime": "Une créature difforme se traîne jusqu'aux portes, sa forme voûtée couverte d'une peau pâle et tendue. Elle parle d'une voix râpeuse : « Je cherche des os. Je paie {{silverReward}} argent. »",
+      "repeat": "La créature revient aux portes, sa forme voûtée toujours couverte d'une peau pâle et tendue. Elle parle de sa voix râpeuse familière : « Je cherche des os. Je paie {{silverReward}} argent. »"
     },
     "choices": {
       "sellBones": {
-        "label": "Vendre {{boneCost}} Os",
+        "label": "Vendre {{boneCost}} os",
         "cost": "{{boneCost}} os"
       },
       "refuse": {
@@ -237,11 +254,11 @@
       "level4": "Le chasseur revient. Il dit qu'il lui faut plus d'os pour ses pointes de flèche mortelles. Il offre une viande pâle et maigre, sans aucune fourrure. Il offre {{foodReward}} de nourriture.",
       "level4Repeat": "Le chasseur revient, chargé de beaucoup de viande. Il lui faut encore des os pour les pointes de flèche. Il offre {{foodReward}} de nourriture.",
       "level5": "Le chasseur apparaît et pose un gros ballot de viande. Elle est encore tiède. Il dit qu'il a été occupé, et qu'il a encore beaucoup de travail. Mais il lui faut plus d'os. Il offre {{foodReward}} de nourriture.",
-      "level5Repeat": "Le chasseur attend à la lisière du village. La viande qu'il offre a une odeur nette, et il y en a bien trop. Il veut encore des os pour les pointes de flèche. Il offre {{foodReward}} de nourriture."
+      "level5Repeat": "Le chasseur attend à la lisière du village. La viande qu'il offre sent le propre, et il y en a bien trop. Il veut encore des os pour les pointes de flèche. Il offre {{foodReward}} de nourriture."
     },
     "choices": {
       "giveBones": {
-        "label": "Vendre {{boneCost}} Os",
+        "label": "Vendre {{boneCost}} os",
         "cost": "{{boneCost}} os"
       },
       "refuse": {
@@ -266,6 +283,57 @@
       "outcome1": "Les chasseurs marquent l'endroit. Un groupe plus nombreux pourra partir quand vous serez prêt."
     }
   },
+  "brimstoneFlux1": {
+    "title": "Le flux de soufre",
+    "message": "Un petit homme barbu aux bras énormes arrive au village. Il dit connaître la fonderie et pouvoir améliorer votre production d'acier pour un temps. Il a besoin de soufre, et d'un peu d'or.",
+    "choices": {
+      "accept": {
+        "label": "Accepter l'aide",
+        "cost": "{{sulfurCost}} soufre, {{goldCost}} or"
+      },
+      "sendAway": {
+        "label": "Renvoyer"
+      }
+    },
+    "log": {
+      "accept": "Il commence son travail. Peu après, le four brûle plus fort que jamais.",
+      "sendAway": "Le forgeron hausse les épaules et part. Il dit qu'il reviendra peut-être."
+    }
+  },
+  "brimstoneFlux2": {
+    "title": "Un autre flux de soufre",
+    "message": "Le petit forgeron revient, la barbe brûlée sur les bords. Il dit pouvoir réveiller les fours à nouveau, mais cela coûtera plus cette fois.",
+    "choices": {
+      "accept": {
+        "label": "Accepter son aide",
+        "cost": "{{sulfurCost}} soufre, {{goldCost}} or"
+      },
+      "sendAway": {
+        "label": "Renvoyer"
+      }
+    },
+    "log": {
+      "accept": "Il alimente le four à nouveau. La production d'acier augmente aussitôt.",
+      "sendAway": "Il part sans discuter. Il dit qu'il reviendra peut-être."
+    }
+  },
+  "brimstoneFlux3": {
+    "title": "L'infusion de soufre",
+    "message": "Le forgeron revient. Il propose d'améliorer la fonderie de façon permanente. Mais cela vous coûtera.",
+    "choices": {
+      "accept": {
+        "label": "Apprendre sa méthode",
+        "cost": "{{sulfurCost}} soufre, {{goldCost}} or"
+      },
+      "sendAway": {
+        "label": "Renvoyer"
+      }
+    },
+    "log": {
+      "accept": "Il améliore le four et part avant l'aube. Les forgerons d'acier produisent plus désormais.",
+      "sendAway": "Il vous regarde, déçu, puis part. Il dit qu'il reviendra peut-être."
+    }
+  },
   "boneDiceChoice": {
     "choices": {
       "doNothing": {
@@ -283,7 +351,7 @@
       "outcome1": "Vous décidez de les laisser sur le sol de la grotte. En vous éloignant, vous les entendez tinter une fois, comme s'ils se lançaient eux-mêmes en guise d'adieu.",
       "outcome2": "Votre hésitation semble irriter l'ancienne magie tapie dans les dés. Ils roulent de votre main jusque dans les ténèbres."
     },
-    "message": "En descendant plus loin, vous trouvez un jeu de dés d'os gravés de runes anciennes. Ces dés ont connu beaucoup de fortune et beaucoup de tragédie. Les gardez-vous ?",
+    "message": "En descendant plus loin, vous trouvez un jeu de dés d'os gravés de runes anciennes. Ces dés ont connu beaucoup de fortune et beaucoup de tragédie. Les gardez-vous ?",
     "title": "Les Dés d'os"
   },
   "clarityElixirCaveFound": {
@@ -330,8 +398,8 @@
     "log": {
       "outcome0": "Vous acceptez la sagesse de l'ancienne. Les villageois hochent la tête dans une approbation silencieuse. La voie vers la construction de l'ultime monument aux dieux est désormais ouverte."
     },
-    "message": "Une vieille femme aux yeux voilés s'approche de vous. 'Nous devons mettre fin à l'effusion de sang humain,' déclare-t-elle. 'Les anciens dieux exigent un grand monument en leur honneur. Alors seulement ils nous accorderont leur faveur durable.'",
-    "title": "L'Exigence de l'ancienne"
+    "message": "Une vieille femme aux yeux voilés s'approche de vous. « Nous devons mettre fin à l'effusion de sang humain », déclare-t-elle. « Les anciens dieux exigent un grand monument en leur honneur. Alors seulement ils nous accorderont leur faveur durable. »",
+    "title": "L'exigence de l'ancienne"
   },
   "boneyardPlea": {
     "choices": {
@@ -339,7 +407,7 @@
         "label": "Continuer"
       }
     },
-    "message": "Une délégation de villageois vous trouve : 'Beaucoup des nôtres sont morts. Il nous faut un lieu convenable pour enterrer nos morts, afin qu'ils puissent enfin reposer.'",
+    "message": "Une délégation de villageois vous trouve : « Beaucoup des nôtres sont morts. Il nous faut un lieu convenable pour enterrer nos morts, afin qu'ils puissent enfin reposer. »",
     "title": "Enterrer les morts"
   },
   "cannibalRaid": {
@@ -365,8 +433,8 @@
       "hide_oneDeath_loot": "Les villageois se cachent, terrifiés, tandis que les cannibales fouillent le village. Un villageois est enlevé. Les cannibales pillent librement vos réserves avant de s'éclipser.",
       "hide_manyDeaths": "Les villageois se cachent, terrifiés, tandis que les cannibales fouillent le village. Plusieurs villageois sont tués ou enlevés.",
       "hide_manyDeaths_loot": "Les villageois se cachent, terrifiés, tandis que les cannibales fouillent le village. Plusieurs villageois sont tués ou enlevés. Les cannibales pillent librement vos réserves avant de s'éclipser.",
-      "victory_one": "Les villageois repoussent les cannibales ! Un villageois tombe au combat, mais la tribu bat en retraite, vaincue. Parmi les corps, vous trouvez un collier primitif fait d'os humains.",
-      "victory_many": "Les villageois combattent vaillamment et repoussent les cannibales ! Plusieurs villageois tombent au combat, mais la tribu est forcée de battre en retraite. Parmi les corps, vous trouvez un collier primitif fait d'os humains."
+      "victory_one": "Les villageois repoussent les cannibales ! Un villageois tombe au combat, mais la tribu bat en retraite, vaincue. Parmi les corps, vous trouvez un collier primitif fait d'os humains.",
+      "victory_many": "Les villageois combattent vaillamment et repoussent les cannibales ! Plusieurs villageois tombent au combat, mais la tribu est forcée de battre en retraite. Parmi les corps, vous trouvez un collier primitif fait d'os humains."
     },
     "message": "Des tambours de guerre résonnent dans la nuit alors qu'une tribu de cannibales surgit des terres sauvages. Ils avancent vers le village avec des armes grossières et de terribles intentions.",
     "title": "Raid cannibale"
@@ -385,12 +453,12 @@
     "log": {
       "fallback": "Le collectionneur hausse les épaules et disparaît dans la brume forestière. Il murmure qu'il reviendra peut-être.",
       "fallbackLast": "Le collectionneur s'en va sans un mot. Vous sentez que vous ne le reverrez plus.",
-      "learnOutcome": "Vous payez le collectionneur et il lit le livre d'une voix basse. Il appartenait à un esclavagiste mort depuis longtemps qui se faisait appeler le Maître des chaînes. Il marqua ses esclaves d'un signe de chaîne. Le savoir pèse lourdement sur votre esprit.",
-      "sellOutcome": "Le collectionneur compte l'or et prend le livre. « Il appartenait à un esclavagiste qui se faisait appeler le Maître des chaînes », dit-il. « Il marquait ses esclaves d'un signe de chaîne. La marque ne s'efface jamais vraiment. »"
+      "learnOutcome": "Vous payez le collectionneur et il vous lit le livre à voix basse. Il appartenait à un esclavagiste mort depuis longtemps qui se faisait appeler le Maître des chaînes. Il marquait ses esclaves d'un signe de chaîne. Le savoir pèse lourdement sur votre esprit.",
+      "sellOutcome": "Le collectionneur compte l'or et prend le livre. « Il appartenait à un esclavagiste qui se faisait appeler le Maître des chaînes », dit-il. « Il marquait ses esclaves d'un signe de chaîne. »"
     },
     "message": {
-      "lastChance": "Le collectionneur errant réapparaît. Son regard se fixe sur le livre relié de cuir. « C'est ma dernière offre », dit-il doucement. « Vendez-le pour {{sellGold}} pièces d'or, ou payez {{teachCost}} pièces d'or et je vous enseignerai ce qui y est écrit. »",
-      "offer": "Le collectionneur errant apparaît, son regard attardé sur le livre relié de cuir. « J'achèterai ce livre pour {{sellGold}} pièces d'or », propose-t-il, « ou pour {{teachCost}} pièces d'or je peux vous enseigner ses secrets. »"
+      "lastChance": "Le collectionneur errant réapparaît. Son regard se fixe sur le livre relié de cuir. « C'est ma dernière offre », dit-il doucement. « Vendez-le pour {{sellGold}} pièces d'or, ou payez {{teachCost}} pièces d'or et je vous enseignerai ce qui y est écrit. »",
+      "offer": "Le collectionneur errant apparaît, son regard attardé sur le livre relié de cuir. « J'achèterai ce livre pour {{sellGold}} pièces d'or », propose-t-il, « ou pour {{teachCost}} pièces d'or je peux vous enseigner ses secrets. »"
     },
     "title": "L'offre du collectionneur"
   },
@@ -403,8 +471,8 @@
     "log": {
       "outcome0": "Vous suivez la boussole profondément dans les bois, où vous déterrez un petit coffre d'une construction extraordinairement robuste. Vous ne pouvez pas l'ouvrir, alors vous le rapportez avec vous."
     },
-    "message": "Vous vous réveillez dans la nuit à cause d'un son étrange. L'aiguille ternie de la boussole tourne follement dans l'obscurité. Quand vous la saisissez, elle s'arrête, pointant fermement dans une direction.",
-    "title": "L'Aiguille éveillée"
+    "message": "Vous vous réveillez dans la nuit à cause d'un son étrange. L'aiguille de la boussole ternie tourne follement dans l'obscurité. Quand vous la saisissez, elle s'arrête, pointant fermement dans une direction.",
+    "title": "L'aiguille éveillée"
   },
   "creatureInHut": {
     "choices": {
@@ -426,17 +494,17 @@
   "cthulhuFigure": {
     "choices": {
       "discardFigure": {
-        "label": "Jeter"
+        "label": "La jeter"
       },
       "keepFigure": {
-        "label": "Le garder"
+        "label": "La garder"
       }
     },
     "log": {
       "outcome0": "Vous décidez de garder la figurine. Son aura étrange met les villageois mal à l'aise.",
       "outcome1": "Vous jetez la figurine. La forêt semble regarder en silence tandis qu'elle disparaît."
     },
-    "message": "À la lisière de la forêt, on trouve une petite figurine de bois, sculptée de traits tentaculaires. Elle dégage une aura étrange. La gardez-vous ?",
+    "message": "À la lisière de la forêt, on trouve une petite figurine de bois, sculptée de traits tentaculaires. Elle dégage une aura étrange. La gardez-vous ?",
     "title": "Une étrange figurine de bois"
   },
   "cube01": {
@@ -445,7 +513,7 @@
         "label": "Fermer"
       }
     },
-    "message": "Vous vous réveillez dans la nuit tandis que le cube se met à bourdonner doucement. Lorsque vous touchez sa surface, ses pulsations s'accélèrent jusqu'à suivre exactement les battements de votre cœur. Une voix douce et mélodieuse émerge parmi les grésillements : « Aucun dossier trouvé... identité non confirmée. » Puis le cube se tait.",
+    "message": "Vous vous réveillez dans la nuit tandis que le cube se met à bourdonner doucement. Lorsque vous touchez sa surface, ses pulsations s'accélèrent jusqu'à suivre exactement les battements de votre cœur. Une voix douce et mélodieuse émerge parmi les grésillements : « Aucun dossier trouvé… identité non confirmée. » Puis le cube se tait.",
     "title": "Le cube s'éveille"
   },
   "cubeLostCivilization": {
@@ -454,7 +522,7 @@
         "label": "Fermer"
       }
     },
-    "message": "Un soir, tandis que vous êtes assis près du feu, le cube se met soudain à parler : « Il y a bien longtemps, une grande civilisation prospérait sur ce monde, mais elle s'effondra et son savoir fut perdu au fil des âges. »",
+    "message": "Un soir, tandis que vous êtes assis près du feu, le cube se met soudain à parler : « Il y a bien longtemps, une grande civilisation prospérait sur ce monde, mais elle s'effondra et son savoir fut perdu au fil des âges. »",
     "title": "La civilisation perdue"
   },
   "cube02": {
@@ -463,7 +531,7 @@
         "label": "Fermer"
       }
     },
-    "message": "« Dans un passé lointain, un ordre de guerriers fut envoyé au plus profond des grottes. Ils devinrent les gardiens de quelque chose d'une importance capitale. »",
+    "message": "« Dans un passé lointain, un ordre de guerriers fut envoyé au plus profond des grottes. Ils devinrent les gardiens de quelque chose d'une importance capitale. »",
     "title": "Les gardiens"
   },
   "cube03": {
@@ -472,7 +540,7 @@
         "label": "Fermer"
       }
     },
-    "message": "« La tribu des guerriers devint une vaste cité souterraine, à l'abri du monde d'en haut, protégeant encore ce pour quoi elle avait été envoyée des vies plus tôt. »",
+    "message": "« La tribu des guerriers devint une vaste cité souterraine, à l'abri du monde d'en haut, protégeant encore ce pour quoi elle avait été envoyée des vies plus tôt. »",
     "title": "La cité souterraine"
   },
   "cube04": {
@@ -481,7 +549,7 @@
         "label": "Fermer"
       }
     },
-    "message": "« Bien que le souvenir de ce qu'ils gardaient se soit effacé en légende, leur vigilance demeura. De génération en génération, les guerriers tinrent leur serment sacré, veillant sur ce qui se trouvait au plus profond de la cité. »",
+    "message": "« Bien que le souvenir de ce qu'ils gardaient se soit effacé en légende, leur vigilance demeura. De génération en génération, les guerriers tinrent leur serment sacré, veillant sur ce qui se trouvait au plus profond de la cité. »",
     "title": "Le serment sacré"
   },
   "cube05": {
@@ -490,7 +558,7 @@
         "label": "Fermer"
       }
     },
-    "message": "« Longtemps après la mort des habitants de la cité souterraine, l'objet de leur dévotion demeurait : une porte colossale et impénétrable, forgée avec une technologie oubliée, cachée dans les chambres les plus basses de la cité. »",
+    "message": "« Longtemps après la mort des habitants de la cité souterraine, l'objet de leur dévotion demeurait : une porte colossale et impénétrable, forgée avec une technologie oubliée, cachée dans les chambres les plus basses de la cité. »",
     "title": "La porte scellée"
   },
   "cubeLostKnowledge": {
@@ -499,7 +567,7 @@
         "label": "Fermer"
       }
     },
-    "message": "La surface du cube vacille d'une lueur pâle. « Recherche dans les archives... données corrompues... récupération impossible. Quelque chose d'une grande importance pour l'ancienne civilisation était protégé par la porte, ou enfermé derrière elle. »",
+    "message": "La surface du cube vacille d'une lueur pâle. « Recherche dans les archives… données corrompues… récupération impossible. Quelque chose d'une grande importance pour l'ancienne civilisation était protégé par la porte, ou enfermé derrière elle. »",
     "title": "Le savoir perdu"
   },
   "cube06": {
@@ -508,7 +576,7 @@
         "label": "Fermer"
       }
     },
-    "message": "Lorsque la porte se brise, le cube tremble dans vos mains et devient chaud. Un murmure doux mais urgent s'en échappe : « J'ai retrouvé le savoir perdu. »",
+    "message": "Lorsque la porte se brise, le cube tremble dans vos mains et devient chaud. Un murmure doux mais urgent s'en échappe : « J'ai retrouvé le savoir perdu. »",
     "title": "La porte s'ouvre"
   },
   "cube07": {
@@ -517,7 +585,7 @@
         "label": "Fermer"
       }
     },
-    "message": "« La civilisation antique qui forgea la porte possédait un savoir et une technologie bien au-delà de l'ère actuelle. Elle fabriqua même des dispositifs conçus pour être implantés dans le crâne, renforçant l'esprit et le corps. »",
+    "message": "« La civilisation antique qui forgea la porte possédait un savoir et une technologie bien au-delà de l'ère actuelle. Elle fabriqua même des dispositifs conçus pour être implantés dans le crâne, renforçant l'esprit et le corps. »",
     "title": "Technologie antique"
   },
   "cube08": {
@@ -526,7 +594,7 @@
         "label": "Fermer"
       }
     },
-    "message": "« Les dirigeants ordonnèrent que chaque citoyen porte un dispositif dans la tête. Une petite faction commença à exprimer ses inquiétudes et forma une résistance, comprenant les dangers cachés dans cette technologie. »",
+    "message": "« Les dirigeants ordonnèrent que chaque citoyen porte un dispositif dans la tête. Une petite faction commença à exprimer ses inquiétudes et forma une résistance, comprenant les dangers cachés dans cette technologie. »",
     "title": "La résistance"
   },
   "cube09": {
@@ -535,7 +603,7 @@
         "label": "Fermer"
       }
     },
-    "message": "« Grâce aux dispositifs, la civilisation prospéra. Une ère de paix et de progrès sans précédent commença ; leur savoir et leur art atteignirent des sommets qu'on ne reverrait plus jamais. »",
+    "message": "« Grâce aux dispositifs, la civilisation prospéra. Une ère de paix et de progrès sans précédent commença ; leur savoir et leur art atteignirent des sommets qu'on ne reverrait plus jamais. »",
     "title": "L'âge d'or"
   },
   "cubeHesitant": {
@@ -553,8 +621,8 @@
         "label": "Fermer"
       }
     },
-    "message": "« Le savoir circulait instantanément et la société prospérait. Derrière le progrès, les dispositifs crâniens orchestrèrent les pensées de l'humanité, reliant les esprits dans un réseau silencieux et inévitable. »",
-    "title": "La grande effondrement"
+    "message": "« Le savoir circulait instantanément et la société prospérait. Derrière le progrès, les dispositifs crâniens orchestraient les pensées de l'humanité, reliant les esprits dans un réseau silencieux auquel nul ne pouvait échapper. »",
+    "title": "L'esprit collectif"
   },
   "cube11": {
     "choices": {
@@ -562,8 +630,8 @@
         "label": "Fermer"
       }
     },
-    "message": "« Un jour, sans avertissement, une impulsion électrique inimaginable balaya la planète. Chaque dispositif de la civilisation, y compris ceux implantés dans les crânes, fut anéanti. »",
-    "title": "L'esprit collectif"
+    "message": "« Un jour, sans avertissement, une impulsion électrique inimaginable balaya la planète. Chaque dispositif de la civilisation, y compris ceux implantés dans les crânes, fut anéanti. »",
+    "title": "Le grand effondrement"
   },
   "cube12": {
     "choices": {
@@ -571,7 +639,7 @@
         "label": "Fermer"
       }
     },
-    "message": "« Les rares survivants ne purent vivre sans les dispositifs. La plupart moururent. La civilisation régressa. Le savoir sombra dans l'oubli. La nature reprit les terres, ne laissant que des ruines enfouies là où la grandeur avait trôné. »",
+    "message": "« Les rares survivants ne purent vivre sans les dispositifs. La plupart moururent. La civilisation régressa. Le savoir sombra dans l'oubli. La nature reprit les terres, ne laissant que des ruines enfouies là où la grandeur avait trôné. »",
     "title": "Fin de la civilisation"
   },
   "cube13": {
@@ -589,7 +657,7 @@
         "label": "Continuer"
       }
     },
-    "message": "« Lorsque la résistance s'opposa aux dispositifs crâniens, elle fut exilée dans les profondeurs de la montagne, scellée derrière la porte. Sans issue, ils creusèrent toujours plus profond. Dans l'isolement et l'obscurité, leurs esprits s'érodèrent et ils sombrèrent dans la folie et la dégénérescence. »",
+    "message": "« Lorsque la résistance s'opposa aux dispositifs crâniens, elle fut exilée dans les profondeurs de la montagne, scellée derrière la porte. Sans issue, ils creusèrent toujours plus profond. Dans l'isolement et l'obscurité, leurs esprits s'érodèrent et ils sombrèrent dans la folie et la dégénérescence. »",
     "title": "Les exilés"
   },
   "cube14b": {
@@ -598,7 +666,7 @@
         "label": "Continuer"
       }
     },
-    "message": "« Un jour, au fond de la terre, ils trouvèrent un monolithe d'un minerai inconnu. Ils en forgèrent un explosif pour détruire la porte. Mais la bombe ne perça pas la porte ; elle déclencha une impulsion électrique à l'échelle de la planète, détruisant tous les dispositifs et mettant fin à la civilisation. »",
+    "message": "« Un jour, au fond de la terre, ils trouvèrent un monolithe d'un minerai inconnu. Ils en forgèrent un explosif pour détruire la porte. Mais la bombe ne perça pas la porte ; elle déclencha une impulsion électrique à l'échelle de la planète, détruisant tous les dispositifs et mettant fin à la civilisation. »",
     "title": "Le minerai inconnu"
   },
   "cube14c": {
@@ -607,7 +675,7 @@
         "label": "Continuer"
       }
     },
-    "message": "« Peu après l'explosion, un homme proche commença à se dématérialiser ; sa forme vacillait, demi-transparente pendant quelques secondes. Terrifié et rendu fou par ce qui s'était passé, il se donna la mort quelques instants plus tard. »",
+    "message": "« Peu après l'explosion, un homme proche commença à se dématérialiser ; sa forme vacillait, demi-transparente pendant quelques secondes. Terrifié et rendu fou par ce qui s'était passé, il se donna la mort quelques instants plus tard. »",
     "title": "L'homme vacillant"
   },
   "cube14d": {
@@ -616,7 +684,7 @@
         "label": "Fermer"
       }
     },
-    "message": "« Désespérés, les survivants supposèrent que le minerai pourrait les aider à passer la porte. Avec ses derniers fragments, ils construisirent une bombe plus petite et placèrent leur homme le plus sain devant la porte. Dès l'explosion, il devint spectral, translucide, puis disparut de l'autre côté. »",
+    "message": "« Désespérés, les survivants supposèrent que le minerai pourrait les aider à passer la porte. Avec ses derniers fragments, ils construisirent une bombe plus petite et placèrent devant la porte, avec elle, le plus sain d'esprit d'entre eux. Dès l'explosion, il devint spectral, translucide, puis disparut de l'autre côté. »",
     "title": "À travers la porte"
   },
   "cube15a": {
@@ -634,7 +702,7 @@
         "label": "Fermer"
       }
     },
-    "message": "Quand leur récit prend fin, l'un des survivants s'avance et vous désigne : « Tu es l'homme qui a disparu à travers la porte. Tu es l'un des nôtres. »",
+    "message": "Quand leur récit prend fin, l'un des survivants s'avance et vous désigne : « Vous êtes l'homme qui a disparu à travers la porte. Vous êtes l'un des nôtres. »",
     "title": "La reconnaissance"
   },
   "cube16a": {
@@ -643,7 +711,7 @@
         "label": "Fermer"
       }
     },
-    "message": "À côté des créatures abattues, vous trouvez ce qui semble être l'un des dispositifs crâniens. Il est brisé, mais vous pouvez encore y lire quelques lettres : « N**RAL**K ».",
+    "message": "À côté des créatures abattues, vous trouvez ce qui semble être l'un des dispositifs crâniens. Il est brisé, mais vous pouvez encore y lire quelques lettres : « N**RAL**K ».",
     "title": "Le dispositif crânien"
   },
   "cube16b": {
@@ -652,7 +720,7 @@
         "label": "Fermer"
       }
     },
-    "message": "Les créatures vous remettent ce qui semble être l'un des dispositifs crâniens. Il est brisé, mais vous pouvez encore y lire quelques lettres : « N**RAL**K ».",
+    "message": "Les créatures vous remettent ce qui semble être l'un des dispositifs crâniens. Il est brisé, mais vous pouvez encore y lire quelques lettres : « N**RAL**K ».",
     "title": "Le dispositif crânien"
   },
   "cubeDiscovery": {
@@ -673,8 +741,8 @@
     "log": {
       "outcome0": "Le villageois s'éloigne en hâte, ignorant la sombre vérité. L'anneau s'est bien repu."
     },
-    "message": "Un villageois blême accourt vers vous, haletant de terreur. 'Le camp des mercenaires... ils sont tous morts. Ils se sont entretués dans la nuit. Nous avons trouvé de l'argent parmi les cadavres.'",
-    "title": "Le Massacre"
+    "message": "Un villageois blême accourt vers vous, haletant de terreur. « Le camp des mercenaires… ils sont tous morts. Ils se sont entretués dans la nuit. Nous avons trouvé de l'argent parmi les cadavres. »",
+    "title": "Le massacre"
   },
   "deerHerd": {
     "choices": {
@@ -690,7 +758,7 @@
       "outcome1": "Les loups les trouvent avant qu'ils puissent abattre les cerfs. Un chasseur ne revient pas.",
       "outcome2": "Vous ordonnez aux chasseurs de rester près du village. Les cerfs s'éloignent, et les loups restent invisibles."
     },
-    "message": "Les chasseurs signalent une grande harde de cerfs dans la forêt, mais la zone se trouve près d'une tanière de loups. Les envoyez-vous chasser là-bas ?",
+    "message": "Les chasseurs signalent une grande harde de cerfs dans la forêt, mais la zone se trouve près d'une tanière de loups. Les envoyez-vous chasser là-bas ?",
     "title": "La harde de cerfs"
   },
   "desperateAmputation": {
@@ -740,29 +808,29 @@
       "outcome1": "Vous baissez vos armes et tentez de les comprendre. Par gestes et paroles brisées, ils partagent des fragments de leur histoire, vous laissant sans voix."
     },
     "message": "Dans les profondeurs au-delà de la porte brisée, vous trouvez des créatures qui n'attaquent pas. Leurs formes sont vaguement humaines, tordues par des générations dans les ténèbres. Elles font des gestes, tentant de communiquer par des mots brisés et des signes.",
-    "title": "Les Habitants d'en bas"
+    "title": "Les habitants d'en bas"
   },
   "establishTradeProposal": {
     "choices": {
       "mountainMonastery": {
-        "label": "Monastère de la Montagne"
+        "label": "Monastère de la montagne"
       },
       "swampTribe": {
-        "label": "Tribu du Marais"
+        "label": "Tribu du marais"
       },
       "shoreFishermen": {
-        "label": "Pêcheurs du Rivage"
+        "label": "Pêcheurs du rivage"
       }
     },
     "log": {
-      "outcome0": "Vous envoyez le corbeau borgne porter un message au Monastère de la Montagne. Vous attendez son retour.",
-      "outcome1": "Vous envoyez le corbeau borgne porter un message à la Tribu du Marais. Vous attendez son retour.",
-      "outcome2": "Vous envoyez le corbeau borgne porter un message aux Pêcheurs du Rivage. Vous attendez son retour."
+      "outcome0": "Vous envoyez le corbeau borgne porter un message au monastère de la montagne. Vous attendez son retour.",
+      "outcome1": "Vous envoyez le corbeau borgne porter un message à la tribu du marais. Vous attendez son retour.",
+      "outcome2": "Vous envoyez le corbeau borgne porter un message aux pêcheurs du rivage. Vous attendez son retour."
     },
     "title": "Établir le commerce",
     "message": {
-      "firstTime": "Un ancien du village vous aborde et recommande d'envoyer le corbeau porter un message pour établir le commerce. Où envoyer un message en premier ?",
-      "repeat": "L'ancien du village revient. « Le corbeau s'est avéré utile. Devons-nous envoyer un autre message ? »"
+      "firstTime": "Un ancien du village vous aborde et recommande d'envoyer le corbeau porter un message pour établir le commerce. Où envoyer un message en premier ?",
+      "repeat": "L'ancien du village revient. « Le corbeau s'est avéré utile. Devons-nous envoyer un autre message ? »"
     }
   },
   "exiledScholarVisit": {
@@ -780,13 +848,13 @@
       "outcome2": "Vous renvoyez l'érudit. Il part avec un soupir déçu, mais vous sentez qu'il pourrait revenir.",
       "outcome3": "L'érudit s'en va, contrarié par votre indécision."
     },
-    "message": "Un érudit des arts sombres approche de votre domaine. En voyant les trois fioles de sang, il dit, avec une excitation contenue : 'Je peux créer un mélange qui vous accordera une grande puissance.'",
-    "title": "L'Érudit exilé"
+    "message": "Un érudit des arts sombres approche de votre domaine. En voyant les trois fioles de sang, il dit, avec une excitation contenue : « Je peux créer un mélange qui vous accordera une grande puissance. »",
+    "title": "L'érudit exilé"
   },
   "insightBlessingOffer": {
     "choices": {
       "receiveBlessing": {
-        "cost": "{{insightCost}} Perspicacité",
+        "cost": "{{insightCost}} perspicacité",
         "label": "Recevoir la bénédiction"
       },
       "sendAway": {
@@ -804,7 +872,7 @@
   "obsidianOrbVisit": {
     "choices": {
       "payGold": {
-        "cost": "250 Or",
+        "cost": "250 or",
         "label": "Payer 250 or"
       },
       "payVillagers": {
@@ -816,7 +884,7 @@
       }
     },
     "log": {
-      "outcome0": "Vous payez la femme et elle vous révèle le secret de l'orbe d'obsidienne. Vous recevez le schéma.",
+      "outcome0": "Vous payez la femme et elle vous révèle le secret de l'orbe d'obsidienne.",
       "outcome1": "Vingt villageois sont emmenés enchaînés. La femme partage le savoir, mais le village est écœuré par ce qui a été fait.",
       "outcome2": "Vous la renvoyez. Elle dit qu'elle pourra revenir quand vous serez prêt.",
       "outcome3": "Le temps est écoulé. Elle part en disant qu'elle pourra revenir quand vous serez prêt."
@@ -835,10 +903,10 @@
     },
     "log": {
       "outcome0": "En y regardant de plus près, ce n'était apparemment qu'une illusion d'optique. Vous poussez un soupir de soulagement.",
-      "outcome1": "Vous vous penchez près de l'un des visages. Ses yeux s'ouvrent brusquement et il murmure votre nom. Vous reconnaissez le visage de quelqu'un mort depuis longtemps.",
+      "outcome1": "Vous vous penchez près de l'un des visages. Ses yeux s'ouvrent brusquement et il murmure votre nom. Vous reconnaissez le visage de quelqu'un qui est mort il y a longtemps.",
       "outcome2": "Vous tentez d'ignorer les visages, mais ils se multiplient. Bientôt, chaque surface de bois du village porte la marque d'âmes torturées. Un matin, ils ont tous disparu, comme s'ils n'avaient jamais été là."
     },
-    "message": "Les murs de bois de vos huttes ont commencé à montrer des visages - des expressions tordues et agonisantes qui semblent pousser depuis l'autre côté. Ils articulent des cris silencieux et des supplications. Les villageois les contournent comme s'ils avaient toujours été là.",
+    "message": "Les murs de bois de vos huttes ont commencé à montrer des visages – des expressions tordues et agonisantes qui semblent pousser depuis l'autre côté. Ils articulent des cris silencieux et des supplications. Les villageois les contournent comme s'ils avaient toujours été là.",
     "title": "Visages dans les murs"
   },
   "feast": {
@@ -855,7 +923,7 @@
       }
     },
     "log": {
-      "outcome1": "Les villageois se rassemblent pour un festin ! La lassitude s'efface et les esprits se relèvent, ne serait-ce qu'un instant.",
+      "outcome1": "Les villageois se rassemblent pour un festin ! La lassitude s'efface et le moral remonte, ne serait-ce qu'un instant.",
       "outcome2": "Vous déclinez la proposition de festin. Les villageois acceptent votre décision, bien que déçus.",
       "outcome3": "Le temps passe et l'occasion d'organiser un festin disparaît."
     },
@@ -863,7 +931,7 @@
     "title": "Festin du village"
   },
   "jugglerGreatFeast": {
-    "title": "Le Jongleur",
+    "title": "Le jongleur",
     "message": {
       "first": "Un homme vêtu comme un jongleur, en habits usés, apparaît. Il raconte qu'il vivait autrefois dans un château où il organisait de grands festins, jusqu'au jour où une peste emporta presque tout le monde. Il propose d'organiser un grand festin.",
       "return": "Le jongleur revient dans les mêmes habits usés. Il cherche encore un nouveau château, mais n'en a pas trouvé. Il propose d'organiser un autre grand festin."
@@ -899,11 +967,11 @@
       "outcome0": "Votre doigt vous lance doucement, mais vous le laissez tranquille pour l'instant. Cela ressemble presque à une faible pulsation contre votre peau.",
       "outcome1": "Vous avez beau essayer, l'anneau ne se retire pas. Il semble presque soudé à votre chair. Votre doigt vous lance doucement, mais vous le laissez tranquille pour l'instant. Cela ressemble presque à une faible pulsation contre votre peau."
     },
-    "message": "Vous vous éveillez au cœur de la nuit, paralysé. Vous sentez une présence dressée près de votre lit, silencieuse et immobile. Avant que la terreur ne vous saisisse, le sommeil vous arrache de nouveau au vide. À l'aube, vous trouvez un anneau inconnu à l'un de vos doigts.",
-    "title": "La Terreur nocturne"
+    "message": "Vous vous éveillez au cœur de la nuit, paralysé. Vous sentez une présence dressée près de votre lit, silencieuse et immobile. Avant que la terreur ne vous saisisse, le sommeil vous replonge dans le néant. À l'aube, vous trouvez un anneau inconnu à l'un de vos doigts.",
+    "title": "La terreur nocturne"
   },
   "fifthWave": {
-    "message": "D'innombrables figures pâles émergent de la grotte, leurs formes indicibles, avançant sur la cité.",
+    "message": "D'innombrables silhouettes pâles émergent de la grotte, leurs formes indicibles, avançant sur la cité.",
     "title": "La cinquième vague"
   },
   "findElderScroll": {
@@ -913,7 +981,7 @@
       }
     },
     "log": {
-      "outcome0": "Vous prenez l'ancien parchemin sur les pierres froides. Un savoir interdit couvre son parchemin fragilisé par l'âge."
+      "outcome0": "Vous prenez l'ancien parchemin posé sur les pierres froides. Un savoir interdit couvre sa surface fragilisée par l'âge."
     },
     "message": "Pendant la nuit, alors que vous empruntez un sentier étroit, quelque chose bouge au bord de votre vision, comme une ombre fuyant la lueur du feu. Vous la suivez, et là, sur les pierres froides, repose un ancien parchemin.",
     "title": "L'ancien parchemin"
@@ -927,12 +995,21 @@
         "label": "Continuer"
       }
     },
-    "message": "Un villageois âgé s'approche de vous, les yeux lourds de savoir. 'Vous avez fait vos premiers pas dans ce monde cruel,' dit-il doucement. 'Bientôt, vous devrez décider si vous êtes prêt à affronter ce qui vous attend.'",
-    "title": "L'Ancien du village"
+    "message": "Un villageois âgé s'approche de vous, les yeux lourds de savoir. « Vous avez fait vos premiers pas dans ce monde cruel », dit-il doucement. « Bientôt, vous devrez décider si vous êtes prêt à affronter ce qui vous attend. »",
+    "title": "L'ancien du village"
   },
   "firstWave": {
-    "message": "Des figures pâles émergent de la grotte, enfin libérées ; leurs yeux de braise percent l'obscurité tandis qu'elles marchent vers la cité.",
+    "message": "Des silhouettes pâles émergent de la grotte, enfin libérées ; leurs yeux de braise percent l'obscurité tandis qu'elles marchent vers la cité.",
     "title": "La première vague"
+  },
+  "forestFear": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "message": "Quelque chose dans les bois a tué un villageois. C'était grand et rapide. Personne ne l'a vu clairement. Les chasseurs et les collecteurs ont trop peur d'entrer dans la forêt.",
+    "title": "Quelque chose dans les bois"
   },
   "forestTribeHelpRequest": {
     "choices": {
@@ -941,9 +1018,9 @@
       }
     },
     "log": {
-      "outcome0": "Les yeux de la sauvageonne s'illuminent d'espoir. 'Vous êtes notre seule chance,' dit-elle. 'La grotte des bêtes se trouve au profond de la forêt. Que les dieux vous protègent.'"
+      "outcome0": "Les yeux de la sauvageonne s'illuminent d'espoir. « Vous êtes notre seule chance », dit-elle. « La grotte des bêtes se trouve au plus profond de la forêt. Que les dieux vous protègent. »"
     },
-    "message": "Une sauvageonne émerge de la forêt, son corps pâle couvert de marques tribales et de cicatrices. 'Je viens d'une tribu des bois,' dit-elle avec urgence. 'Des bêtes brutales vivant dans une grotte de la forêt nous attaquent sans relâche. Nous faisons face à l'extinction. Je vous en prie, aidez-nous à survivre.'",
+    "message": "Une sauvageonne émerge de la forêt, son corps pâle couvert de marques tribales et de cicatrices. « Je viens d'une tribu des bois », dit-elle avec urgence. « Des bêtes brutales vivant dans une grotte de la forêt nous attaquent sans relâche. Notre tribu va s'éteindre. Je vous en prie, aidez-nous à survivre. »",
     "title": "Une supplication désespérée"
   },
   "fourthWave": {
@@ -960,12 +1037,12 @@
       }
     },
     "log": {
-      "outcome0": "Le blizzard frappe avec une force brutale. Toute la production ralentit jusqu'à ramper, tandis que les villageois luttent pour survivre au froid.",
+      "outcome0": "Le blizzard frappe avec une force brutale. Toute la production tourne au ralenti, tandis que les villageois luttent pour survivre au froid.",
       "outcome2": "Grâce aux réserves de bois de chauffage et de nourriture, les villageois survivent au blizzard indemnes.",
-      "outcome3": "Le blizzard frappe avec une force brutale. Toute la production ralentit jusqu'à ramper, tandis que les villageois luttent pour survivre au froid."
+      "outcome3": "Le blizzard frappe avec une force brutale. Toute la production tourne au ralenti, tandis que les villageois luttent pour survivre au froid."
     },
     "message": "Des vents glacés hurlent à travers le village. Les anciens avertissent qu'un terrible blizzard approche. Il faut se préparer, ou les conséquences seront funestes.",
-    "title": "Chutegivre"
+    "title": "Le grand gel"
   },
   "gambler": {
     "choices": {
@@ -976,13 +1053,13 @@
         "label": "Refuser"
       }
     },
-    "leaveAfterGames": "Le joueur range ses dés, esquisse un dernier sourire tortu et disparaît dans l'obscurité des bois.",
+    "leaveAfterGames": "Le parieur range ses dés, esquisse un dernier sourire tortu et disparaît dans l'obscurité des bois.",
     "log": {
-      "outcome0": "Le joueur hausse les épaules, empoche ses dés et se glisse dans l'obscurité sans un mot de plus.",
-      "outcome1": "Le joueur hausse les épaules, empoche ses dés et se glisse dans l'obscurité sans un mot de plus."
+      "outcome0": "Le parieur hausse les épaules, empoche ses dés et se glisse dans l'obscurité sans un mot de plus.",
+      "outcome1": "Le parieur hausse les épaules, empoche ses dés et se glisse dans l'obscurité sans un mot de plus."
     },
-    "message": "Le joueur est assis en tailleur près du feu, les yeux fixés sur les dés. 'Placez votre mise,' souffle-t-il avec un sourire de travers, 'et voyons qui endure.'",
-    "title": "Le Joueur obsédé"
+    "message": "Le parieur est assis en tailleur près du feu, les yeux fixés sur les dés. « Placez votre mise », souffle-t-il avec un sourire de travers, « et voyons qui tiendra le coup. »",
+    "title": "Le parieur obsédé"
   },
   "giftedRingDiscovery": {
     "choices": {
@@ -991,7 +1068,7 @@
       }
     },
     "log": {
-      "outcome0": "Vous tenez l'anneau dans votre main. Il paraît doux, faiblement chaud et accueillant."
+      "outcome0": "Vous tenez l'anneau dans votre main. Il paraît doux, légèrement tiède et accueillant."
     },
     "message": "Un matin, sur une souche près de l'entrée de la grotte, vous trouvez un anneau, comme si quelqu'un l'avait laissé là pour vous.",
     "title": "Un cadeau inattendu"
@@ -1002,7 +1079,7 @@
         "label": "Éviter le lac"
       },
       "investigate": {
-        "label": "Enquêter sur le lac"
+        "label": "Explorer le lac"
       }
     },
     "log": {
@@ -1014,10 +1091,10 @@
       "lakeDrownMany": "La créature surgit comme un cauchemar, la beauté masquant une intention mortelle. D'une force surnaturelle, elle entraîne les villageois sous l'eau. Il ne reste que des ondulations et des cris étouffés tandis que les autres fuient terrifiés."
     },
     "message": {
-      "firstTime": "En ramassant du bois dans la forêt, les villageois découvrent un lac caché parmi les arbres. Un villageois jure avoir vu brièvement surgir une silhouette semblable à une femme, au regard beau et pourtant inhumain. Que faites-vous ?",
-      "repeat": "En ramassant du bois dans la forêt, les villageois retournent au lac caché parmi les arbres. Une fois de plus, un villageois jure avoir vu brièvement surgir une silhouette semblable à une femme, au regard beau et pourtant inhumain. Que faites-vous ?"
+      "firstTime": "En ramassant du bois dans la forêt, les villageois découvrent un lac caché parmi les arbres. Un villageois jure avoir vu brièvement surgir une silhouette semblable à une femme, au regard beau et pourtant inhumain. Que faites-vous ?",
+      "repeat": "En ramassant du bois dans la forêt, les villageois retournent au lac caché parmi les arbres. Une fois de plus, un villageois jure avoir vu brièvement surgir une silhouette semblable à une femme, au regard beau et pourtant inhumain. Que faites-vous ?"
     },
-    "title": "Le Lac caché"
+    "title": "Le lac caché"
   },
   "hollowKingScepterChoice": {
     "choices": {
@@ -1032,15 +1109,15 @@
       }
     },
     "log": {
-      "outcome0": "Vous saisissez le Sceptre du Roi Creux et sentez une puissance immense vous traverser. Un savoir ancien inonde votre esprit, avec les souvenirs du Roi de ses derniers jours de folie.",
-      "outcome1": "Vous décidez de laisser le sceptre du Roi mort à sa place. En vous détournant, vous jureriez entendre un faible murmure de déception résonner dans la salle du trône vide.",
+      "outcome0": "Vous saisissez le Sceptre du Roi creux et sentez une puissance immense vous traverser. Un savoir ancien inonde votre esprit, avec les souvenirs du roi sur ses derniers jours de folie.",
+      "outcome1": "Vous décidez de laisser le sceptre du roi mort à sa place. En vous détournant, vous jureriez entendre un faible murmure de déception résonner dans la salle du trône vide.",
       "outcome2": "Alors que vous restez figé dans l'indécision, les hommes deviennent impatients et avides. L'un tend la main vers le sceptre, puis un autre. Bientôt ils se battent avec férocité. Dans la mêlée sanglante, {{actualDeaths}} membres de votre compagnie meurent, leur sang se mêlant à la poussière des âges."
     },
-    "message": "Dans la salle du trône de la citadelle, vous trouvez un magnifique sceptre d'obsidienne. Il a dû appartenir au roi de cette cité perdue. Un savoir sombre en émane. Le gardez-vous ?",
-    "title": "Le Sceptre du Roi Creux"
+    "message": "Dans la salle du trône de la citadelle, vous trouvez un magnifique sceptre d'obsidienne. Il a dû appartenir au roi de cette cité perdue. Un savoir sombre en émane. Le gardez-vous ?",
+    "title": "Le sceptre du Roi creux"
   },
   "humanSacrificeDemand": {
-    "message": "Les villageois se rassemblent autour du monolithe, les yeux vides. 'Les animaux ne suffisent pas,' murmurent-ils à l'unisson. 'Les ténèbres exigent davantage. Elles ont faim d'âmes humaines.' Ils vous regardent, attendant votre ordre pour accomplir l'ultime sacrifice.",
+    "message": "Les villageois se rassemblent autour du monolithe, les yeux vides. « Les animaux ne suffisent pas », murmurent-ils à l'unisson. « Les ténèbres exigent davantage. Elles ont faim d'âmes humaines. » Ils vous regardent, attendant votre ordre pour accomplir l'ultime sacrifice.",
     "title": "Faim obscure"
   },
   "lakeCreatureDead": {
@@ -1050,7 +1127,7 @@
       }
     },
     "log": {
-      "outcome0": "En observant les restes, le forgeron déclare : 'Ses os ne ressemblent à rien de ce que j'ai jamais vu. Je peux en forger un puissant grand bouclier.'"
+      "outcome0": "En observant les restes, le forgeron déclare : « Ses os ne ressemblent à rien de ce que j'ai jamais vu. Je peux en forger un puissant grand bouclier. »"
     },
     "message": "Des hommes ont trouvé la créature du lac sur la rive du lac souterrain, morte de ce qui semble être la vieillesse.",
     "title": "Fin d'un âge"
@@ -1066,11 +1143,11 @@
       }
     },
     "log": {
-      "outcome0": "Les derniers soubresauts violents de la créature secouent la caverne tandis que les hommes enfoncent leurs lances dans son corps tortillant. En contemplant les os massifs de la créature, le forgeron déclare qu'il peut les forger en un puissant grand bouclier.",
-      "outcome1": "Vous ouvrez le piège et reculez. La créature observe un instant, puis plonge dans les profondeurs, remontant pour recracher un petit coffre pourri. À l'intérieur reposent des pièces d'or étincelantes. Elle disparaît dans les profondeurs noires, ne laissant que des rides."
+      "outcome0": "Les derniers soubresauts violents de la créature secouent la caverne tandis que les hommes enfoncent leurs lances dans son corps qui se tord. En contemplant les os massifs de la créature, le forgeron déclare qu'il peut en forger un puissant grand bouclier.",
+      "outcome1": "Vous ouvrez le piège et reculez. La créature observe un instant, puis plonge dans les profondeurs, remontant pour recracher un petit coffre pourri. À l'intérieur reposent des pièces d'or étincelantes. Elle disparaît dans l'abîme noir, ne laissant que des remous."
     },
-    "message": "La créature massive se tord dans le piège, ses tentacules fouettant les barreaux d'acier. Ses yeux anciens vous considèrent avec ce qui pourrait être de l'intelligence. Que ferez-vous ?",
-    "title": "Le Destin de la créature"
+    "message": "La créature massive se tord dans le piège, ses tentacules fouettant les barreaux d'acier. Ses yeux anciens vous considèrent avec ce qui pourrait être de l'intelligence. Que ferez-vous ?",
+    "title": "Le destin de la créature"
   },
   "ladyFromTheMountains": {
     "choices": {
@@ -1082,11 +1159,11 @@
       }
     },
     "log": {
-      "sendAwayOutcome": "Tu la refuses. Elle sourit trop calmement. 'Toi et chaque âme de ce village le regretterez,' dit-elle, puis elle s'éloigne.",
-      "welcomeOutcome": "Tu accueilles la femme aux cheveux roux. Elle te remercie doucement et parle de plantes qui guérissent et qui nuisent. Elle propose d'aider à construire un jardin d'herbes. Les villageois l'observent avec attention."
+      "sendAwayOutcome": "Vous refusez de l'accueillir. Elle sourit trop calmement. « Vous et chaque âme de ce village le regretterez », dit-elle, puis elle s'éloigne.",
+      "welcomeOutcome": "Vous accueillez la femme aux cheveux roux. Elle vous remercie doucement et parle de plantes qui guérissent et qui nuisent. Elle propose d'aider à construire un jardin d'herbes. Les villageois l'observent avec attention."
     },
     "message": "Une belle femme aux cheveux roux arrive. Elle dit que son village dans les montagnes est mort de famine, et demande à rester. Elle affirme bien connaître les plantes et leurs effets.",
-    "title": "La Dame des Montagnes"
+    "title": "La Dame des montagnes"
   },
   "lastSurvivor": {
     "choices": {
@@ -1098,11 +1175,11 @@
       }
     },
     "log": {
-      "outcome0": "Le survivant reçoit abri et soins. Cette nuit-là, il vous appelle dans sa hutte. Bien qu'il soit mourant, ses yeux sont clairs. 'Merci pour votre bonté, que la fortune vous favorise toujours,' murmure-t-il dans son dernier souffle.",
+      "outcome0": "Le survivant reçoit abri et soins. Cette nuit-là, il vous appelle dans sa hutte. Bien qu'il soit mourant, ses yeux sont clairs. « Merci pour votre bonté, que la fortune vous favorise toujours », murmure-t-il dans son dernier souffle.",
       "outcome1": "Vous repoussez le mourant. Il s'en va et on le retrouve mort dans la forêt voisine le lendemain. Les villageois sont horrifiés et écœurés par votre cruauté."
     },
     "message": "Un étranger arrive au village, à peine accroché à la vie. Il parle de sa colonie au nord, où les pénuries de nourriture ont poussé les villageois à s'entretuer de désespoir. Il demande à rester quelques nuits pour se rétablir.",
-    "title": "Le Dernier survivant"
+    "title": "Le dernier survivant"
   },
   "liquidDeath": {
     "choices": {
@@ -1119,8 +1196,8 @@
       "searchOutcome": "Il n'y a plus rien à boire. {{deaths}} villageois âgés meurent de soif. La femme est introuvable, mais les chercheurs ramènent un homme affamé de la forêt."
     },
     "message": {
-      "rejected": "Un matin, {{deaths}} villageois sont trouvés morts dans leurs huttes. Leurs lèvres sont bleues comme de la morelle écrasée. Un villageois affirme avoir vu une femme aux cheveux roux près du puits la veille.",
-      "welcomed": "Un matin, {{deaths}} villageois sont trouvés morts dans leurs huttes. Leurs lèvres sont bleues comme de la morelle écrasée. Un villageois affirme avoir vu la femme aux cheveux roux du village de montagne près du puits la veille."
+      "rejected": "Un matin, {{deaths}} villageois sont trouvés morts dans leurs huttes. Leurs lèvres sont bleues comme de la belladone écrasée. Un villageois affirme avoir vu une femme aux cheveux roux près du puits la veille.",
+      "welcomed": "Un matin, {{deaths}} villageois sont trouvés morts dans leurs huttes. Leurs lèvres sont bleues comme de la belladone écrasée. Un villageois affirme avoir vu la femme aux cheveux roux du village de montagne près du puits la veille."
     },
     "title": "Mort liquide"
   },
@@ -1130,7 +1207,7 @@
         "label": "Garder le livre"
       }
     },
-    "message": "Dans une ruine en lisière de forêt, votre expédition trouve un ancien livre relié de cuir, orné sur la couverture d'un symbole de chaîne gravé à feu. Les pages sont couvertes d'une écriture que vous ne pouvez pas lire.",
+    "message": "Dans une ruine de la forêt, votre expédition trouve un ancien livre relié de cuir, orné sur la couverture d'un symbole de chaîne marqué au fer. Les pages sont couvertes d'une écriture que vous ne pouvez pas lire.",
     "title": "Livre relié de cuir"
   },
   "leatherHarnessGratefulReturn": {
@@ -1142,7 +1219,7 @@
     "log": {
       "outcome0": "Vous glissez l'anneau à votre doigt. Il vous va parfaitement. La femme sourit et prend congé, le pas plus léger."
     },
-    "message": "La femme du village revient vers vous, le visage rayonnant de gratitude. 'Je devais vous remercier comme il se doit,' dit-elle d'une voix chaude. 'Les choses se sont... très bien passées. J'ai fabriqué cet anneau pour vous.' Elle vous tend un anneau auquel est attaché un anneau plus petit.",
+    "message": "La femme du village revient vers vous, le visage rayonnant de gratitude. « Je devais vous remercier comme il se doit », dit-elle d'une voix chaude. « Les choses se sont… très bien passées. J'ai fabriqué cet anneau pour vous. » Elle vous tend un anneau auquel est attaché un anneau plus petit.",
     "title": "Un retour reconnaissant"
   },
   "leatherHarnessRequest": {
@@ -1156,10 +1233,10 @@
       }
     },
     "log": {
-      "outcome1": "Vous lui remettez le cuir. Elle le prend avec un sourire reconnaissant, les yeux brillants. 'Merci. Il sera... très surpris.' Elle s'éloigne en hâte, serrant les peaux contre sa poitrine.",
+      "outcome1": "Vous lui remettez le cuir. Elle le prend avec un sourire reconnaissant, les yeux brillants. « Merci. Il sera… très surpris. » Elle s'éloigne en hâte, serrant les peaux contre sa poitrine.",
       "outcome2": "Vous refusez. Elle hoche la tête, une déception passant sur son visage, puis retourne au village sans un mot de plus."
     },
-    "message": "Une femme du village s'approche de vous, les joues légèrement rosies. Elle hésite avant de parler, les yeux baissés : 'Je me demandais si vous pourriez épargner un peu de cuir. J'aimerais fabriquer quelque chose... pour mon partenaire. Un harnais. Pour lui faire une surprise.'",
+    "message": "Une femme du village s'approche de vous, les joues légèrement rosies. Elle hésite avant de parler, les yeux baissés : « Je me demandais si vous pourriez me céder un peu de cuir. J'aimerais fabriquer quelque chose… pour mon compagnon. Un harnais. Pour lui faire une surprise. »",
     "title": "Une femme du village"
   },
   "manFromTheMountains": {
@@ -1172,11 +1249,11 @@
       }
     },
     "log": {
-      "believeOutcome": "L'homme propose de mener la recherche de la femme. Il dit savoir où elle se cache, et que tu devrais amener beaucoup d'hommes.",
-      "sendAwayOutcome": "Tu renvoies l'homme affamé. Il ne discute pas. Les villageois regardent la lisière tandis qu'il disparaît."
+      "believeOutcome": "L'homme propose de mener la recherche de la femme. Il dit savoir où elle se cache, et que vous devriez emmener beaucoup d'hommes.",
+      "sendAwayOutcome": "Vous renvoyez l'homme affamé. Il ne discute pas. Les villageois fixent la lisière tandis qu'il disparaît."
     },
-    "message": "L'homme affamé est amené devant toi. À peine capable de parler clairement, il affirme être le dernier survivant d'un village de montagne. Il dit que leur puits a été empoisonné par une herboriste aux cheveux roux.",
-    "title": "L'Homme des Montagnes"
+    "message": "L'homme affamé est amené devant vous. À peine capable de parler clairement, il affirme être le dernier survivant d'un village de montagne. Il dit que leur puits a été empoisonné par une herboriste aux cheveux roux.",
+    "title": "L'homme des montagnes"
   },
   "madBeduine": {
     "choices": {
@@ -1184,15 +1261,15 @@
         "label": "Autoriser à rester"
       },
       "turnAway": {
-        "label": "Se détourner"
+        "label": "Le renvoyer"
       }
     },
     "log": {
       "outcome0": "Vous accordez l'abri à l'étranger. À l'aube, il a disparu. Seules ses robes restent, et en leur sein repose un livre relié en peau humaine. Ses pages murmurent un savoir interdit.",
       "outcome1": "Vous refusez l'entrée à l'étranger. Il part en hurlant des malédictions dans une langue étrangère. Avant l'aube, une tribu barbare attaque comme appelée par ses cris, tuant {{actualDeaths}} villageois. Au matin, vous trouvez au sol un livre relié en peau humaine."
     },
-    "message": "Le soir venu, une silhouette en robe approche depuis les terres sauvages. Ses yeux brûlent de folie tandis qu'il marmonne dans une langue étrangère, ses gestes brusques et troublants. Les villageois deviennent nerveux. Autorisez-vous ce Bédouin à passer la nuit ?",
-    "title": "Le Bédouin fou"
+    "message": "Le soir venu, une silhouette en robe approche depuis les terres sauvages. Ses yeux brûlent de folie tandis qu'il marmonne dans une langue étrangère, ses gestes brusques et troublants. Les villageois deviennent nerveux. Autorisez-vous ce Bédouin à passer la nuit ?",
+    "title": "Le bédouin fou"
   },
   "mapFragmentsAssembled": {
     "choices": {
@@ -1200,7 +1277,7 @@
         "label": "Continuer"
       }
     },
-    "message": "Vous assemblez les fragments de carte. Ils révèlent la carte d'un sanctuaire oublié au profond du marais.",
+    "message": "Vous assemblez les fragments de carte. Ils révèlent le chemin d'un sanctuaire oublié au plus profond du marais.",
     "title": "Une carte révélée"
   },
   "masterArcher": {
@@ -1214,7 +1291,7 @@
         "label": "Payer 200 or"
       },
       "doNothing": {
-        "label": "Aucune décision"
+        "label": "Aucune décision prise"
       },
       "refuseArcherHelp": {
         "label": "Refuser son offre"
@@ -1224,15 +1301,15 @@
       "outcome0": "Votre indécision frustre l'archer. Il secoue la tête et s'en va, emportant son expertise ailleurs.",
       "outcome2": "Le maître archer prend le paiement et commence aussitôt à entraîner vos chasseurs.",
       "outcome4": "Le maître archer prend l'or avec un hochement de tête et commence aussitôt à entraîner vos chasseurs.",
-      "outcome5": "L'archer hoche la tête. 'Je reviendrai si vous changez d'avis,' dit-il, puis disparaît dans la forêt."
+      "outcome5": "L'archer hoche la tête. « Je reviendrai si vous changez d'avis », dit-il, puis disparaît dans la forêt."
     },
     "message": "Un homme en manteau de cuir rouge sombre arrive avec un sourire assuré et des yeux perçants. Il propose d'aider vos archers, disant qu'il peut affûter leur visée et améliorer leurs talents de chasse. Si vous acceptez, il restera et se mettra au travail.",
-    "title": "Le Maître archer"
+    "title": "Le maître archer"
   },
   "mercenaryDemand": {
     "choices": {
       "giveRing": {
-        "label": "Donner l'anneau nourricier"
+        "label": "Donner l'Anneau affamé"
       },
       "payGold": {
         "cost": "100 or",
@@ -1243,18 +1320,18 @@
       }
     },
     "log": {
-      "outcome0": "Vous remettez l'or. Le mercenaire le compte lentement, un sourire cruel au visage. 'Un plaisir de faire affaire,' dit-il avant de disparaître.",
+      "outcome0": "Vous remettez l'or. Le mercenaire le compte lentement, un sourire cruel au visage. « Un plaisir de faire affaire », dit-il avant de disparaître.",
       "outcome1": "Le mercenaire fait signe à ses hommes d'attaquer. La bataille est féroce, mais les villageois l'emportent. Les mercenaires fuient dans la forêt, laissant derrière eux leurs armes et leurs blessés.",
       "outcome2": "Le mercenaire fait signe à ses hommes d'attaquer. Malgré tous vos efforts, vous êtes submergé. {{deaths}} villageois tombent avant que les mercenaires ne battent enfin en retraite, satisfaits du carnage.",
-      "outcome3": "Vous lui offrez l'anneau nourricier que vous gardiez encore dans un coffre verrouillé. Le mercenaire l'examine avec intérêt et le glisse à son propre doigt. 'Un bel anneau,' dit-il, 'mais pas assez. Je reviendrai demain pour récupérer l'or.'"
+      "outcome3": "Vous lui offrez l'Anneau affamé que vous gardiez encore dans un coffre verrouillé. Le mercenaire l'examine avec intérêt et le glisse à son propre doigt. « Un bel anneau », dit-il, « mais pas assez. Je reviendrai demain pour récupérer l'or. »"
     },
-    "message": "Un mercenaire balafré arrive au village, la main posée sur sa lame. 'Je ne suis pas là pour chercher des ennuis. Payez-moi 100 pièces d'or, et je garderai les choses paisibles. Refusez, et mes hommes réduiront cet endroit en cendres.'",
-    "title": "Le Mercenaire"
+    "message": "Un mercenaire balafré arrive au village, la main posée sur sa lame. « Je ne suis pas là pour chercher des ennuis. Payez-moi 100 pièces d'or, et je veillerai à ce que tout reste calme. Refusez, et mes hommes réduiront cet endroit en cendres. »",
+    "title": "Le mercenaire"
   },
   "mercenaryReturnDemand": {
     "choices": {
       "giveRing": {
-        "label": "Donner l'anneau nourricier"
+        "label": "Donner l'Anneau affamé"
       },
       "payGold": {
         "cost": "200 or",
@@ -1265,13 +1342,13 @@
       }
     },
     "log": {
-      "outcome0": "Vous payez l'or, les mains tremblantes de rage. Le mercenaire rit. 'Choix malin. Je ne viendrai plus vous déranger... probablement.' Il disparaît dans les bois avec ses hommes.",
+      "outcome0": "Vous payez l'or, les mains tremblantes de rage. Le mercenaire rit. « Choix malin. Je ne viendrai plus vous déranger… probablement. » Il disparaît dans les bois avec ses hommes.",
       "outcome1": "Vous refusez. Les mercenaires attaquent, mais cette fois vous êtes prêt. Après un combat brutal, ils se dispersent dans les terres sauvages, laissant leurs morts derrière eux.",
       "outcome2": "Votre défi vous coûte cher. Les mercenaires ravagent le village, tuant {{deaths}} personnes avant de repartir enfin, riant de la destruction qu'ils ont causée.",
-      "outcome3": "Vous lui offrez l'anneau nourricier que vous gardiez encore dans un coffre verrouillé. Le mercenaire l'examine avec intérêt et le glisse à son propre doigt. 'Un bel anneau,' dit-il, 'mais pas assez. Je reviendrai demain pour récupérer l'or.'"
+      "outcome3": "Vous lui offrez l'Anneau affamé que vous gardiez encore dans un coffre verrouillé. Le mercenaire l'examine avec intérêt et le glisse à son propre doigt. « Un bel anneau », dit-il, « mais pas assez. Je reviendrai demain pour récupérer l'or. »"
     },
-    "message": "Le mercenaire est de retour, et cette fois il amène plus d'hommes. 'Les temps sont durs,' dit-il avec un sourire. 'Le prix a augmenté. 200 pièces d'or, ou les choses vont se gâter.'",
-    "title": "Le Retour du mercenaire"
+    "message": "Le mercenaire est de retour, et cette fois il amène plus d'hommes. « Les temps sont durs », dit-il avec un sourire. « Le prix a augmenté. 200 pièces d'or, ou les choses vont se gâter. »",
+    "title": "Le retour du mercenaire"
   },
   "merchant": {
     "choices": {
@@ -1282,16 +1359,16 @@
     "log": {
       "outcome0": "Vous faites vos adieux au marchand. Il incline son chapeau et marmonne à propos de la route qui l'attend."
     },
-    "message": "Un marchand marqué par les routes arrive, sa charrette débordant de marchandises. Ses yeux brillent d'avarice tandis qu'il murmure : 'J'ai des objets rares à vendre'.",
+    "message": "Un marchand marqué par les routes arrive, sa charrette débordant de marchandises. Ses yeux brillent d'avarice tandis qu'il murmure : « J'ai des objets rares à vendre ».",
     "title": "Marchand itinérant",
     "toolTrades": {
       "trade_nightshade_bow_schematic": {
         "label": "Schéma d'arc de belladone",
-        "message": "Vous achetez le schéma d'arc de belladone. Le marchand affiche un sourire sombre : « La conception de cet arc est cruelle. Ses flèches empoisonneront vos ennemis. »"
+        "message": "Vous achetez le schéma d'arc de belladone. Le marchand affiche un sourire sombre : « La conception de cet arc est cruelle. Ses flèches empoisonneront vos ennemis. »"
       },
       "trade_skull_lantern": {
-        "label": "Lanterne crânienne",
-        "message": "Vous achetez la lanterne crânienne. Forgée dans de l'os maudit, sa lueur inquiétante vous guidera dans les profondeurs les plus reculées."
+        "label": "Lanterne-crâne",
+        "message": "Vous achetez la lanterne-crâne. Forgée dans de l'os maudit, sa lueur inquiétante vous guidera dans les profondeurs les plus reculées."
       },
       "trade_tarnished_compass": {
         "label": "Boussole ternie",
@@ -1310,8 +1387,8 @@
         "message": "Vous achetez un fragment de carte déchiré."
       },
       "trade_crow_harness": {
-        "label": "Harnais de corbeau",
-        "message": "Vous achetez le harnais de corbeau. Un harnais spécialement conçu pour les corbeaux messagers."
+        "label": "Harnais à corbeau",
+        "message": "Vous achetez le harnais à corbeau. Un harnais spécialement conçu pour les corbeaux messagers."
       },
       "trade_clarity_elixir": {
         "label": "Élixir de clarté",
@@ -1322,39 +1399,39 @@
         "message": "Vous achetez une fiole d'élixir feu-veine."
       },
       "trade_book_of_trials": {
-        "message": "Vous achetez le Livre des épreuves. Le marchand sourit d'un air entendu : « Un guide pour ceux qui cherchent à suivre leur voyage. »",
+        "message": "Vous achetez le Livre des épreuves. Le marchand sourit d'un air entendu : « Un guide pour ceux qui cherchent à suivre leur voyage. »",
         "label": "Livre des épreuves"
       },
       "trade_book_of_absolution": {
-        "message": "Vous achetez le Livre de l'absolution. Le marchand baisse la voix : « Un rite pour ceux qui gardent ce qu'ils ne devraient pas. La Perspicacité peut laver un peu de la tache. »",
+        "message": "Vous achetez le Livre de l'absolution. Le marchand baisse la voix : « Un rite pour ceux qui gardent ce qu'ils ne devraient pas. La perspicacité peut laver un peu de la tache. »",
         "label": "Livre de l'absolution"
       },
       "trade_reinforced_rope": {
-        "message": "Vous achetez la corde renforcée. Cette corde résiste à une tension immense et peut atteindre des lieux dans les chambres les plus profondes de la grotte.",
+        "message": "Vous achetez la corde renforcée. Cette corde résiste à une tension immense et permet d'atteindre les recoins des chambres les plus profondes de la grotte.",
         "label": "Corde renforcée"
       },
       "trade_occultist_map": {
-        "message": "Alors que vous achetez la carte de l'occultiste, le marchand murmure : « Un vieil occultiste a caché ses secrets dans une chambre au plus profond de la grotte. Cette carte vous guidera. »",
+        "message": "Alors que vous achetez la carte de l'occultiste, le marchand murmure : « Un vieil occultiste a caché ses secrets dans une chambre au plus profond de la grotte. Cette carte vous guidera. »",
         "label": "Carte de l'occultiste"
       },
       "trade_giant_trap": {
-        "message": "Alors que vous achetez le piège géant, le marchand sourit : « Ceci peut piéger quelque chose de gigantesque dans les bois. Utilisez-le avec sagesse. »",
+        "message": "Alors que vous achetez le piège géant, le marchand sourit : « Ceci peut piéger quelque chose de gigantesque dans les bois. Utilisez-le avec sagesse. »",
         "label": "Piège géant"
       },
       "trade_arbalest_schematic": {
-        "message": "Vous achetez le schéma d'arbalète. Le marchand déploie un plan complexe : « Une conception de maître ingénieur. Avec ceci, vous pourrez fabriquer une arme puissante. »",
+        "message": "Vous achetez le schéma d'arbalète. Le marchand déploie un plan complexe : « Une conception de maître ingénieur. Avec ceci, vous pourrez fabriquer une arme puissante. »",
         "label": "Schéma d'arbalète"
       },
       "trade_compound_bow": {
-        "message": "Vous achetez l'arc composite. Le marchand hoche la tête avec approbation : « Une arme de haute précision venue de la civilisation disparue. Elle vous servira bien. »",
+        "message": "Vous achetez l'arc composite. Le marchand hoche la tête avec approbation : « Une arme de haute précision venue de la civilisation disparue. Elle vous servira bien. »",
         "label": "Arc composite"
       },
       "trade_stormglass_halberd_schematic": {
-        "message": "Vous achetez le schéma de hallebarde de verre-tempête. Le marchand révèle les plans délavés : « Avec cette conception, vous pourrez forger une hallebarde d'une puissance formidable. »",
+        "message": "Vous achetez le schéma de hallebarde de verre-tempête. Le marchand révèle les plans délavés : « Avec cette conception, vous pourrez forger une hallebarde d'une puissance formidable. »",
         "label": "Schéma de hallebarde de verre-tempête"
       },
       "trade_natharit_pickaxe": {
-        "message": "Vous achetez la pioche de natharit. Le marchand vous tend l'outil robuste : « Une pioche extrêmement durable, faite d'un matériau inconnu. Sa qualité est exceptionnelle. »",
+        "message": "Vous achetez la pioche de natharit. Le marchand vous tend l'outil robuste : « Une pioche extrêmement durable, faite d'un matériau inconnu. Sa qualité est exceptionnelle. »",
         "label": "Pioche de natharit"
       }
     },
@@ -1368,9 +1445,9 @@
       }
     },
     "log": {
-      "outcome": "La nuit, l'homme et la femme aux cheveux roux attaquent ensemble. {{deaths}} villageois meurent avant que les autres ne les submergent. Avant que tu puisses intervenir, les villageois les pendent tous les deux. Ils étaient complices depuis le début. Sur le corps de l'homme, tu trouves une carte vers un village de montagne."
+      "outcome": "La nuit, l'homme et la femme aux cheveux roux attaquent ensemble. {{deaths}} villageois meurent avant que les autres ne les maîtrisent. Avant que vous puissiez intervenir, les villageois les pendent tous les deux. Ils étaient complices depuis le début. Sur le corps de l'homme, vous trouvez une carte menant à un village de montagne."
     },
-    "message": "La nuit, l'homme et la femme aux cheveux roux attaquent le village ensemble. {{deaths}} villageois tombent avant que les autres ne submergent le couple. Avant que tu puisses rien faire, les villageois les pendent. Sur le corps de l'homme, tu trouves une carte vers un village de montagne.",
+    "message": "La nuit, l'homme et la femme aux cheveux roux attaquent le village ensemble. {{deaths}} villageois tombent avant que les autres ne maîtrisent le couple. Avant que vous ayez pu faire quoi que ce soit, les villageois les pendent. Sur le corps de l'homme, vous trouvez une carte menant à un village de montagne.",
     "title": "Attaque nocturne"
   },
   "searchMountainLadyAmbush": {
@@ -1401,12 +1478,12 @@
     },
     "log": {
       "outcome0": "Vous déclinez l'offre du moine. Il s'incline avec respect et reprend le chemin des montagnes.",
-      "outcome2": "Le moine accepte votre tribut d'un hochement solennel et révèle des plans détaillés pour une clé squelette. “On dit que cette clé ouvre n'importe quelle serrure,” dit-il avant de partir.",
-      "outcome4": "Les yeux du moine s'écarquillent à la vue de l'or. 'Cela aidera grandement le monastère,' dit-il en sortant des plans détaillés pour une clé squelette. “On dit que cette clé ouvre n'importe quelle serrure,” dit-il avant de partir.",
+      "outcome2": "Le moine accepte votre tribut d'un hochement de tête solennel et dévoile des plans détaillés de passe-partout. « On dit que cette clé ouvre n'importe quelle serrure », dit-il avant de partir.",
+      "outcome4": "Les yeux du moine s'écarquillent à la vue de l'or. « Cela aidera grandement le monastère », dit-il en sortant des plans détaillés de passe-partout. « On dit que cette clé ouvre n'importe quelle serrure », dit-il avant de partir.",
       "outcome5": "Vous déclinez l'offre du moine. Il s'incline avec respect et reprend le chemin des montagnes."
     },
-    "message": "Un moine venu d'un monastère de montagne arrive au village. 'J'ai appris que vous aviez trouvé un coffre mystérieux,' dit-il doucement. 'Le monastère sait comment l'ouvrir. Offrez un tribut, et je partagerai le secret.'",
-    "title": "Le Moine de la montagne"
+    "message": "Un moine venu d'un monastère de montagne arrive au village. « J'ai appris que vous aviez trouvé un coffre mystérieux », dit-il doucement. « Le monastère sait comment l'ouvrir. Offrez un tribut, et je partagerai le secret. »",
+    "title": "Le moine de la montagne"
   },
   "monasteryResponse": {
     "choices": {
@@ -1420,11 +1497,11 @@
     },
     "log": {
       "outcome0": "Vous avez mis trop longtemps à décider. L'offre des moines expire.",
-      "outcome2": "Vous payez les moines pour leur carte. Elle révèle l'emplacement de la Bibliothèque Cachée au profond de la grotte.",
+      "outcome2": "Vous payez les moines pour leur carte. Elle révèle l'emplacement de la bibliothèque cachée au plus profond de la grotte.",
       "outcome3": "Vous déclinez l'offre des moines. L'occasion est perdue."
     },
-    "message": "Le corbeau borgne revient du Monastère de la Montagne avec un parchemin scellé. Les moines proposent de vous vendre une carte menant à une bibliothèque cachée au profond de la grotte. Ils demandent 250 pièces d'or.",
-    "title": "Message du Monastère de la Montagne"
+    "message": "Le corbeau borgne revient du monastère de la montagne avec un parchemin scellé. Les moines proposent de vous vendre une carte menant à une bibliothèque cachée au plus profond de la grotte. Ils demandent 250 pièces d'or.",
+    "title": "Message du monastère de la montagne"
   },
   "monolithDemand": {
     "message": "Les villageois exigent de construire un monolithe au centre du village, un monument destiné à apaiser les ténèbres qui rampent dans leurs esprits. Par le sacrifice d'animaux, ils veulent trouver la paix.",
@@ -1444,8 +1521,8 @@
       "outcome0": "Au moment où vous entendez le premier tintement, les ténèbres vous avalent tout entier. Vous rêvez d'une vaste cité de verre et d'acier, pleine de lumières étranges et de gens qui se déplacent avec un but que vous ne comprenez pas. À votre réveil, la cloche a disparu, mais une marque en forme de cloche brûle sur votre avant-bras.",
       "outcome1": "Le risque est trop grand. Ce même jour, un marchand arrive et offre 500 pièces d'or pour la cloche. Vous acceptez aussitôt, soulagé d'être débarrassé de l'objet maudit. Le marchand repart avec un sourire entendu."
     },
-    "message": "Vous ouvrez le coffre scellé avec la clé squelette. À l'intérieur, posée sur un velours fané, repose une cloche d'or couverte de gravures grotesques et de symboles étranges inscrits sur toute sa surface.",
-    "title": "La Cloche mystérieuse"
+    "message": "Vous ouvrez le coffre scellé avec le passe-partout. À l'intérieur, posée sur un velours fané, repose une cloche d'or couverte de gravures grotesques et de symboles étranges inscrits sur toute sa surface.",
+    "title": "La cloche mystérieuse"
   },
   "mysteriousBook": {
     "choices": {
@@ -1456,7 +1533,7 @@
     "log": {
       "outcome0": "À l'intérieur se trouve un livre dont vous ne pouvez deviner l'âge. Sa couverture a disparu depuis longtemps, ses pages sont déchirées, et pourtant les lettres parfaitement tracées restent nettes. En tournant les pages avec précaution, vous comprenez qu'il enseigne le lent façonnage de soi par la répétition."
     },
-    "message": "Un soir tardif, vous entendez un léger coup à la porte du domaine. Quand vous l'ouvrez, il n'y a personne, seulement quelque chose relié de cuir brun sombre posé sur le seuil.",
+    "message": "Tard un soir, vous entendez un léger coup à la porte du domaine. Quand vous l'ouvrez, il n'y a personne, seulement quelque chose relié de cuir brun sombre posé sur le seuil.",
     "title": "Un coup discret"
   },
   "mysteriousNote": {
@@ -1469,7 +1546,7 @@
       "outcome0": "Vous froissez la note et la laissez tomber de vos doigts. Vous comprenez les mots, mais ils ne vous disent rien. Tandis que le papier s'éloigne, vous percevez quelque chose porté par le vent, faible et lointain. On dirait des sanglots doux et solitaires qui s'éteignent dans la nuit."
     },
     "title": "Une note mystérieuse",
-    "message": "À la tombée du jour, vous trouvez un papier sur le seuil de votre domaine. Quelqu'un a laissé un mot d'une écriture soignée et élégante :\n « J'espère que vous appréciez votre séjour ici. Si c'est le cas, pensez à soutenir la suite du voyage, en visitant la boutique ou en faisant un don. Votre aide maintient ce monde vivant et libre. Merci ! »"
+    "message": "À la tombée du jour, vous trouvez un papier sur le seuil de votre domaine. Quelqu'un a laissé un mot d'une écriture soignée et élégante :\n « J'espère que vous appréciez votre séjour ici. Si c'est le cas, pensez à soutenir la suite du voyage, en visitant la boutique ou en faisant un don. Votre aide permet à ce monde de rester vivant et gratuit. Merci ! »"
   },
   "mysteriousWoman": {
     "log": {
@@ -1483,8 +1560,8 @@
       "man": "L'homme mystérieux"
     },
     "message": {
-      "woman": "Une jeune femme attrayante, finement vêtue, arrive au domaine au coucher du soleil. Elle vous sourit chaleureusement et demande : « Puis-je abriter dans votre hutte pour la nuit ? J'ai voyagé loin et n'ai nulle part ailleurs où aller. »",
-      "man": "Un jeune homme attrayant, finement vêtu, arrive au domaine au coucher du soleil. Il vous sourit chaleureusement et demande : « Puis-je abriter dans votre hutte pour la nuit ? J'ai voyagé loin et n'ai nulle part ailleurs où aller. »"
+      "woman": "Une jeune femme attrayante, finement vêtue, arrive au domaine au coucher du soleil. Elle vous sourit chaleureusement et demande : « Puis-je m'abriter dans votre hutte pour la nuit ? J'ai voyagé loin et n'ai nulle part ailleurs où aller. »",
+      "man": "Un jeune homme attrayant, finement vêtu, arrive au domaine au coucher du soleil. Il vous sourit chaleureusement et demande : « Puis-je m'abriter dans votre hutte pour la nuit ? J'ai voyagé loin et n'ai nulle part ailleurs où aller. »"
     },
     "choices": {
       "allowStay": {
@@ -1495,8 +1572,8 @@
       },
       "refuseStay": {
         "label": {
-          "woman": "La refuser",
-          "man": "Le refuser"
+          "woman": "La renvoyer",
+          "man": "Le renvoyer"
         }
       }
     }
@@ -1520,18 +1597,18 @@
     "log": {
       "ignoreForced": "Vous ignorez l'offre. Le Viking finit par cracher au sol et s'en va avec sa hache de guerre, marmonnant au sujet de votre manque de respect.",
       "ignoreNormal": "Vous ignorez l'offre. Le Viking finit par hocher la tête et s'en va avec sa hache de guerre.",
-      "buyForced": "Le Viking prend le paiement avec un sourire froid. « Peut-être auriez-vous dû être plus généreux plus tôt, au lieu de m'attaquer. La hache vous aurait alors coûté bien moins cher », dit-il avant de partir.",
+      "buyForced": "Le Viking prend le paiement avec un sourire froid. « Peut-être auriez-vous dû être plus généreux plus tôt, au lieu de m'attaquer. La hache vous aurait alors coûté bien moins cher », dit-il avant de partir.",
       "buyNormal": "Satisfait de l'échange, le Viking hoche la tête avec approbation et s'en va.",
-      "declineForced": "Vous refusez l'offre. Le Viking crache au sol et marmonne des malédictions en partant avec sa hache de guerre. « Vous auriez dû me payer quand vous en aviez l'occasion », grogne-t-il.",
+      "declineForced": "Vous refusez l'offre. Le Viking crache au sol et marmonne des malédictions en partant avec sa hache de guerre. « Vous auriez dû me payer quand vous en aviez l'occasion », grogne-t-il.",
       "declineNormal": "Vous refusez l'offre. Le Viking hoche la tête avec respect et s'en va avec sa hache de guerre."
     },
-    "message": "Le bâtisseur viking revient dans votre village, portant une magnifique hache de guerre. 'J'ai forgé cette Hache de guerre nordique dans ma patrie. Elle sera vôtre... pour un prix.'",
-    "title": "Le Retour du Viking"
+    "message": "Le bâtisseur viking revient dans votre village, portant une magnifique hache de guerre. « J'ai forgé cette Hache de guerre nordique dans ma patrie. Elle sera vôtre… pour un prix. »",
+    "title": "Le retour du Viking"
   },
   "oddTrinket": {
     "choices": {
       "discardTrinket": {
-        "label": "Jeter"
+        "label": "Le jeter"
       },
       "drinkTrinket": {
         "label": "Le boire"
@@ -1542,13 +1619,13 @@
       "outcome1": "Vous décidez de ne pas prendre le risque et lancez la fiole dans les bois. Elle disparaît dans les broussailles.",
       "outcome2": "Votre hésitation vous coûte cher. La fiole glisse de vos doigts et se brise sur un rocher, l'élixir ambré s'infiltrant dans la terre."
     },
-    "message": "En coupant du bois, vous trouvez une fiole d'élixir ambré lumineux. Le liquide tourbillonne de façon hypnotique. Le buvez-vous ?",
+    "message": "En coupant du bois, vous trouvez une fiole d'élixir ambré lumineux. Le liquide tourbillonne de façon hypnotique. Le buvez-vous ?",
     "title": "L'étrange élixir"
   },
   "offerToTheForestGods": {
     "choices": {
       "noDecision": {
-        "label": "Aucune décision"
+        "label": "Aucune décision prise"
       },
       "refuse": {
         "label": "Ne faire aucun sacrifice"
@@ -1567,7 +1644,7 @@
       "outcome3": "Vous refusez le sacrifice. La forêt reste silencieuse pour l'instant. La menace persiste.",
       "outcome5": "Votre indécision met les villageois en colère. {{actualDepartures}} villageois, frustrés par votre manque de commandement, rassemblent leurs affaires et partent avec dégoût.",
       "outcome4_one": "Vous refusez le sacrifice. Cette nuit, {{actualDisappearances}} villageois erre dans les bois comme en somnambulisme, attiré par une voix que lui seul pouvait entendre. Il n'est jamais revu.",
-      "outcome4_other": "Vous refusez le sacrifice. Cette nuit, {{actualDisappearances}} villageois errent dans les bois comme en somnambulisme, attirés par une voix que eux seuls pouvaient entendre. Ils ne sont jamais revus."
+      "outcome4_other": "Vous refusez le sacrifice. Cette nuit, {{actualDisappearances}} villageois errent dans les bois comme en somnambulisme, attirés par une voix qu'eux seuls pouvaient entendre. Ils ne sont jamais revus."
     },
     "message": "Pendant la chasse, des villageois signalent des silhouettes inquiétantes dans la forêt. Ils sont terrifiés. Les anciens du village disent que les dieux de la forêt exigent quatre villageois en sacrifice.",
     "title": "Offrande aux dieux de la forêt"
@@ -1594,8 +1671,8 @@
       "outcome3": "Vous découvrez un groupe de conspirateurs et ordonnez leur exécution. La justice est rapide, et la peur recule.",
       "outcome4": "Vous consacrez le corps à la croix. Les villageois reculent de dégoût, mais la puissance de la croix semble avoir grandi."
     },
-    "message": "Un matin, les villageois font une découverte cruelle. Un jeune homme pend crucifié sur la Croix Pâle, la tête baissée et le corps oscillant faiblement dans le vent froid du matin.",
-    "title": "La Croix Pâle à l'aube"
+    "message": "Un matin, les villageois font une découverte cruelle. Un jeune homme pend crucifié sur la Croix pâle, la tête baissée et le corps oscillant faiblement dans le vent froid du matin.",
+    "title": "La Croix pâle à l'aube"
   },
   "paleCrossProposal": {
     "choices": {
@@ -1607,11 +1684,11 @@
       }
     },
     "log": {
-      "outcome0": "Le druide incline la tête. 'Alors qu'elle soit dressée.'",
-      "outcome1": "'Peut-être était-ce de la sagesse. Peut-être était-ce de la peur,' dit le druide avant de s'enfoncer dans la forêt."
+      "outcome0": "Le druide incline la tête. « Alors qu'elle soit dressée. »",
+      "outcome1": "« Peut-être était-ce de la sagesse. Peut-être était-ce de la peur », dit le druide avant de s'enfoncer dans la forêt."
     },
-    "message": "Le druide aveugle revient, ses yeux laiteux posés sur les totems d'os : 'Vous avez beaucoup offert aux dieux. Élevez-leur un symbole pour prouver votre dévotion.'",
-    "title": "La Croix Pâle"
+    "message": "Le druide aveugle revient, ses yeux laiteux posés sur les totems d'os : « Vous avez beaucoup offert aux dieux. Élevez-leur un symbole pour prouver votre dévotion. »",
+    "title": "La Croix pâle"
   },
   "paleFigure": {
     "choices": {
@@ -1629,8 +1706,8 @@
       "outcome3": "Les villageois restent près du village. Au soir, la silhouette a disparu.",
       "outcome4": "À l'aube, l'un des villageois qui prétendaient avoir vu la silhouette est retrouvé mort dans son lit, le visage figé par la terreur."
     },
-    "message": "À l'aube, des villageois aperçoivent une grande silhouette pâle et mince à la lisière des bois. Que faites-vous ?",
-    "title": "La Silhouette mince"
+    "message": "À l'aube, des villageois aperçoivent une grande silhouette pâle et mince à la lisière des bois. Que faites-vous ?",
+    "title": "La silhouette mince"
   },
   "portalBlasted": {
     "choices": {
@@ -1638,8 +1715,8 @@
         "label": "Continuer"
       }
     },
-    "message": "Les bombes braise explosent dans un éclat de feu et de lumière. L'ancienne porte se fissure et s'effondre. Ce qui était scellé à l'intérieur est désormais libre.",
-    "title": "La Porte tombe"
+    "message": "Les bombes de braise explosent dans un éclat de feu et de lumière. L'ancienne porte se fissure et s'effondre. Ce qui était scellé à l'intérieur est désormais libre.",
+    "title": "La porte tombe"
   },
   "portalDiscovered": {
     "choices": {
@@ -1649,6 +1726,35 @@
     },
     "message": "Dans les chambres les plus basses de la citadelle, vous trouvez une porte colossale forgée dans un métal inconnu et inflexible. Peut-être les créations de l'alchimiste sauront-elles l'ouvrir.",
     "title": "La porte ancienne"
+  },
+  "raggedYouth": {
+    "choices": {
+      "doNotHelp": {
+        "label": "Ne pas aider"
+      },
+      "giveFur": {
+        "cost": "{{furCost}} fourrure",
+        "label": "Donner {{furCost}} fourrure"
+      }
+    },
+    "log": {
+      "attack": "L'homme se met en colère. Il attaque et tue un villageois, puis s'enfuit.",
+      "thanks": "« Merci. Merci infiniment », dit-il, et il s'éloigne en hâte avec les fourrures."
+    },
+    "message": "Un jeune homme aux vêtements en lambeaux apparaît. « Je campe à l'extérieur du village. Ma famille a besoin de fourrures pour survivre au froid. Je ne peux pas payer maintenant, mais je paierai plus tard. »",
+    "title": "Un père aux abois"
+  },
+  "raggedYouthReturn": {
+    "choices": {
+      "takeSilver": {
+        "label": "Prendre l'argent"
+      }
+    },
+    "log": {
+      "repay": "Il dépose {{silverReward}} argent pour les fourrures et s'en va."
+    },
+    "message": "Le père qui avait demandé des fourrures revient, et ses vêtements ne sont plus en lambeaux. Il tend une bourse bien lourde. « Ma famille a survécu au froid. J'avais dit que je vous paierais. Voici {{silverReward}} argent. »",
+    "title": "Le retour du père"
   },
   "redMaskChoice": {
     "choices": {
@@ -1663,8 +1769,8 @@
       "outcome0": "Vous ramassez le masque de cuir cramoisi. Il est chaud au toucher.",
       "outcome1": "Vous décidez que le cadeau du corbeau porte trop de mystère. En vous éloignant, vous entendez l'appel du corbeau résonner entre les arbres."
     },
-    "message": "Pendant la chasse, vous voyez un corbeau noir étrangement grand qui vous fixe depuis un arbre brisé. Quand vous vous en approchez, il croasse soudain, comme s'il répétait un mot encore et encore. Puis il s'envole. Devant l'arbre repose un masque de cuir rouge profond. Le prenez-vous ?",
-    "title": "Le Cadeau du corbeau"
+    "message": "Pendant la chasse, vous voyez un corbeau noir étrangement grand qui vous fixe depuis un arbre brisé. Quand vous vous en approchez, il croasse soudain, comme s'il répétait un mot encore et encore. Puis il s'envole. Devant l'arbre repose un masque de cuir rouge profond. Le prenez-vous ?",
+    "title": "Le cadeau du corbeau"
   },
   "restlessKnight": {
     "choices": {
@@ -1680,16 +1786,16 @@
       }
     },
     "log": {
-      "outcome0": "Le chevalier a attendu, mais vous n'avez pas répondu. 'Peut-être une autre fois,' dit-il avant de poursuivre sa route.",
-      "outcome2": "Le chevalier parle : 'Au-delà des montagnes de l'est se trouve une cité morte de tours de pierre géantes, touchant presque les nuages. Des fenêtres vides regardent le pays comme d'innombrables yeux. La nature a gravi chaque mur et rempli les rues de racines. Personne n'y a vécu depuis des âges.'",
-      "outcome3": "Vos paroles intriguent le chevalier, et il parle : 'Au-delà des montagnes de l'est se trouve une cité morte de tours de pierre géantes, touchant presque les nuages. Des fenêtres vides regardent le pays comme d'innombrables yeux. La nature a gravi chaque mur et rempli les rues de racines. Personne n'y a vécu depuis des âges.'",
-      "outcome4": "Le chevalier écoute vos paroles, mais secoue la tête. 'Vos mots sont sincères, mais mon savoir a de la valeur. Peut-être nos chemins se croiseront-ils encore.' Il repart sans partager son récit.",
-      "outcome5": "Vous déclinez l'offre du chevalier. Il hoche la tête avec respect. 'Peut-être nos chemins se croiseront-ils encore,' dit-il avant de poursuivre sa route."
+      "outcome0": "Le chevalier a attendu, mais vous n'avez pas répondu. « Peut-être une autre fois », dit-il avant de poursuivre sa route.",
+      "outcome2": "Le chevalier parle : « Au-delà des montagnes de l'est se trouve une cité morte de tours de pierre géantes, touchant presque les nuages. Des fenêtres vides regardent le pays comme d'innombrables yeux. La nature a gravi chaque mur et rempli les rues de racines. Personne n'y a vécu depuis des siècles. »",
+      "outcome3": "Vos paroles intriguent le chevalier, et il parle : « Au-delà des montagnes de l'est se trouve une cité morte de tours de pierre géantes, touchant presque les nuages. Des fenêtres vides regardent le pays comme d'innombrables yeux. La nature a gravi chaque mur et rempli les rues de racines. Personne n'y a vécu depuis des siècles. »",
+      "outcome4": "Le chevalier écoute vos paroles, mais secoue la tête. « Vos mots sont sincères, mais mon savoir a de la valeur. Peut-être nos chemins se croiseront-ils encore. » Il repart sans partager son récit.",
+      "outcome5": "Vous déclinez l'offre du chevalier. Il hoche la tête avec respect. « Peut-être nos chemins se croiseront-ils encore », dit-il avant de poursuivre sa route."
     },
     "title": "Le Chevalier sans repos",
     "message": {
-      "firstTime": "Un chevalier en armure usée arrive au village. 'J'ai vu beaucoup du monde,' dit-il d'une voix caverneuse. 'Pour un peu d'or, je partagerai ce que j'ai vu lors de mes voyages.'",
-      "repeat": "À nouveau, le chevalier en armure usée arrive au village. 'J'ai vu beaucoup du monde,' dit-il d'une voix caverneuse. 'Pour un peu d'or, je partagerai ce que j'ai vu lors de mes voyages.'"
+      "firstTime": "Un chevalier en armure usée arrive au village. « J'ai beaucoup vu du monde », dit-il d'une voix caverneuse. « Pour un peu d'or, je partagerai ce que j'ai vu lors de mes voyages. »",
+      "repeat": "À nouveau, le chevalier en armure usée arrive au village. « J'ai beaucoup vu du monde », dit-il d'une voix caverneuse. « Pour un peu d'or, je partagerai ce que j'ai vu lors de mes voyages. »"
     }
   },
   "restlessKnightBurden": {
@@ -1706,8 +1812,8 @@
       "outcome1": "Il parle du collectionneur de dispositifs crâniens dans le désert. Il capturait des humains pour leur implanter les appareils, sans pitié et sans succès. Le chevalier a trouvé une tranchée remplie de centaines de morts.",
       "outcome2": "Vous refusez. Son visage se crispe, il fait un bref signe de tête et ne dit rien. Le poids continue de reposer sur lui seul."
     },
-    "message": "Le chevalier sans repos vient à vous. 'Il y a une chose dont je n'ai jamais parlé,' dit-il. 'Je voulais épargner tout le monde. Mais vous pourriez vouloir la savoir.'",
-    "title": "Le Fardeau indicible"
+    "message": "Le chevalier sans repos vient à vous. « Il y a une chose dont je n'ai jamais parlé », dit-il. « Je voulais en épargner tout le monde. Mais peut-être voudrez-vous la connaître. »",
+    "title": "Le fardeau indicible"
   },
   "restlessKnightCoast": {
     "choices": {
@@ -1727,14 +1833,14 @@
       }
     },
     "log": {
-      "outcome0": "Le chevalier a attendu, mais vous n'avez pas répondu. 'Peut-être une autre fois,' dit-il avant de poursuivre sa route.",
-      "outcome2": "Le chevalier raconte : 'Sur le rivage de l'océan, j'ai trouvé une cité morte, à demi reprise par les vagues. Parmi ses ruines reposent d'immenses vaisseaux de métal, leurs coques rouillées défiant encore le temps. Les anciens régnaient jadis sur les mers avec ces géants, désormais échoués et silencieux sur le sable.'",
-      "outcome4": "Satisfait du repas, le chevalier raconte : 'Sur le rivage de l'océan, j'ai trouvé une cité morte, à demi reprise par les vagues. Parmi ses ruines reposent d'immenses vaisseaux de métal, leurs coques rouillées défiant encore le temps. Les anciens régnaient jadis sur les mers avec ces géants, désormais échoués et silencieux sur le sable.'",
-      "outcome5": "Vos paroles touchent le chevalier. Il parle : 'Sur le rivage de l'océan, j'ai trouvé une cité morte, à demi reprise par les vagues. Parmi ses ruines reposent d'immenses vaisseaux de métal, leurs coques rouillées défiant encore le temps. Les anciens régnaient jadis sur les mers avec ces géants, désormais échoués et silencieux sur le sable.'",
-      "outcome6": "Le chevalier écoute, mais reste impassible. 'Vos paroles sont sincères, mais ce savoir est précieux. Peut-être une autre fois.' Il repart sans partager sa découverte.",
-      "outcome7": "Vous déclinez son offre. Le chevalier hoche solennellement la tête. 'Très bien. Les secrets du rivage resteront avec moi pour l'instant,' dit-il avant de s'éloigner."
+      "outcome0": "Le chevalier a attendu, mais vous n'avez pas répondu. « Peut-être une autre fois », dit-il avant de poursuivre sa route.",
+      "outcome2": "Le chevalier raconte : « Sur le rivage de l'océan, j'ai trouvé une cité morte, à demi reprise par les vagues. Parmi ses ruines reposent d'immenses vaisseaux de métal, leurs coques rouillées défiant encore le temps. Les anciens régnaient jadis sur les mers avec ces géants, désormais échoués et silencieux sur le sable. »",
+      "outcome4": "Satisfait du repas, le chevalier raconte : « Sur le rivage de l'océan, j'ai trouvé une cité morte, à demi reprise par les vagues. Parmi ses ruines reposent d'immenses vaisseaux de métal, leurs coques rouillées défiant encore le temps. Les anciens régnaient jadis sur les mers avec ces géants, désormais échoués et silencieux sur le sable. »",
+      "outcome5": "Vos paroles touchent le chevalier. Il parle : « Sur le rivage de l'océan, j'ai trouvé une cité morte, à demi reprise par les vagues. Parmi ses ruines reposent d'immenses vaisseaux de métal, leurs coques rouillées défiant encore le temps. Les anciens régnaient jadis sur les mers avec ces géants, désormais échoués et silencieux sur le sable. »",
+      "outcome6": "Le chevalier écoute, mais reste impassible. « Vos paroles sont sincères, mais ce savoir est précieux. Peut-être une autre fois. » Il repart sans partager sa découverte.",
+      "outcome7": "Vous déclinez son offre. Le chevalier hoche solennellement la tête. « Très bien. Les secrets du rivage resteront avec moi pour l'instant », dit-il avant de s'éloigner."
     },
-    "message": "Le chevalier apparaît une fois encore. 'J'ai voyagé jusqu'à une cité sur le rivage d'un océan,' dit-il. 'Ce que j'y ai trouvé défie toute croyance. Je partagerai ce savoir, pour un prix.'",
+    "message": "Le chevalier apparaît une fois encore. « J'ai voyagé jusqu'à une cité sur le rivage d'un océan », dit-il. « Ce que j'y ai trouvé dépasse l'entendement. Je partagerai ce savoir, pour un prix. »",
     "title": "Récits du rivage"
   },
   "restlessKnightDesert": {
@@ -1755,15 +1861,15 @@
       }
     },
     "log": {
-      "outcome0": "Le chevalier a attendu, mais vous n'avez pas répondu. 'Peut-être une autre fois,' dit-il avant de poursuivre sa route.",
-      "outcome2": "Le chevalier hoche la tête avec satisfaction. 'Un prix équitable. Je défendrai votre peuple de ma vie.' Il retire son heaume usé, révélant un visage balafré mais déterminé. Le chevalier sans repos a rejoint votre compagnie.",
-      "outcome4": "Le chevalier accepte l'argent avec une révérence solennelle. 'Je défendrai votre peuple de ma vie.' Il retire son heaume usé, révélant un visage balafré mais déterminé. Le chevalier sans repos a rejoint votre compagnie.",
-      "outcome5": "'Votre but semble noble,' les yeux du chevalier s'illuminent. 'Ce serait un honneur de me tenir à vos côtés.' Il retire son heaume usé, révélant un visage balafré mais déterminé. Le chevalier sans repos a rejoint votre compagnie.",
-      "outcome6": "Le chevalier écoute, mais secoue la tête. 'Les mots seuls ne peuvent nourrir un guerrier. Je dois donc poursuivre ma route, pour l'instant,' dit-il en se détournant et en partant.",
-      "outcome7": "Vous déclinez son offre. Le chevalier hoche la tête avec compréhension. 'Je respecte votre décision. Je dois donc poursuivre ma route, pour l'instant,' dit-il en se détournant et en partant."
+      "outcome0": "Le chevalier a attendu, mais vous n'avez pas répondu. « Peut-être une autre fois », dit-il avant de poursuivre sa route.",
+      "outcome2": "Le chevalier hoche la tête avec satisfaction. « Un prix équitable. Je défendrai votre peuple de ma vie. » Il retire son heaume usé, révélant un visage balafré mais déterminé. Le chevalier sans repos a rejoint votre compagnie.",
+      "outcome4": "Le chevalier accepte l'argent avec une révérence solennelle. « Je défendrai votre peuple de ma vie. » Il retire son heaume usé, révélant un visage balafré mais déterminé. Le chevalier sans repos a rejoint votre compagnie.",
+      "outcome5": "« Votre but semble noble. » Les yeux du chevalier s'illuminent. « Ce serait un honneur de me tenir à vos côtés. » Il retire son heaume usé, révélant un visage balafré mais déterminé. Le chevalier sans repos a rejoint votre compagnie.",
+      "outcome6": "Le chevalier écoute, mais secoue la tête. « Les mots seuls ne peuvent nourrir un guerrier. Je dois donc poursuivre ma route, pour l'instant », dit-il en se détournant et en partant.",
+      "outcome7": "Vous déclinez son offre. Le chevalier hoche la tête avec compréhension. « Je respecte votre décision. Je dois donc poursuivre ma route, pour l'instant », dit-il en se détournant et en partant."
     },
-    "message": "Le chevalier revient. 'J'ai voyagé loin au sud, jusqu'à un vaste désert. Là, j'ai rencontré un homme voué à retrouver la technologie perdue des anciens. Il m'a montré des dispositifs autrefois implantés dans le crâne, capables d'aiguiser les sens au-delà des limites naturelles.' Il marque une pause. 'J'ai assez voyagé. Vous pourriez avoir besoin d'une lame vétérane. Je vous offre mes services au combat, si vous les acceptez.'",
-    "title": "Le Dernier voyage du chevalier"
+    "message": "Le chevalier revient. « J'ai voyagé loin au sud, jusqu'à un vaste désert. Là, j'ai rencontré un homme voué à retrouver la technologie perdue des anciens. Il m'a montré des dispositifs autrefois implantés dans le crâne, capables d'aiguiser les sens au-delà des limites naturelles. » Il marque une pause. « J'ai assez voyagé. Une lame aguerrie pourrait vous être utile. Je vous offre mes services au combat, si vous les acceptez. »",
+    "title": "Le dernier voyage du chevalier"
   },
   "restlessKnightMountains": {
     "choices": {
@@ -1780,19 +1886,19 @@
       }
     },
     "log": {
-      "outcome0": "Le chevalier a attendu, mais vous n'avez pas répondu. 'Peut-être une autre fois,' dit-il avant de poursuivre sa route.",
-      "outcome2": "Le chevalier partage sa découverte : 'Haut dans les montagnes se trouve un monastère taillé dans les falaises. Les savants qui s'y rassemblaient pour étudier le passé parlent d'une civilisation avancée, bien au-delà de notre compréhension. Pourtant, quelque chose a précipité leur monde dans la ruine.'",
-      "outcome4": "Reconnaissant pour le repas, le chevalier partage sa découverte : 'Haut dans les montagnes se trouve un monastère taillé dans les falaises. Les savants qui y étudient le passé parlent d'une civilisation bien au-delà de notre compréhension. Leur art était si avancé qu'il nous semblerait magique. Pourtant, quelque chose a précipité leur monde dans la ruine.'",
-      "outcome5": "Vous déclinez son offre. Le chevalier hoche la tête. 'Le savoir restera donc avec moi,' dit-il, et repart."
+      "outcome0": "Le chevalier a attendu, mais vous n'avez pas répondu. « Peut-être une autre fois », dit-il avant de poursuivre sa route.",
+      "outcome2": "Le chevalier partage sa découverte : « Haut dans les montagnes se trouve un monastère taillé dans les falaises. Les savants qui s'y rassemblaient pour étudier le passé parlent d'une civilisation avancée, bien au-delà de notre compréhension. Pourtant, quelque chose a précipité leur monde dans la ruine. »",
+      "outcome4": "Reconnaissant pour le repas, le chevalier partage sa découverte : « Haut dans les montagnes se trouve un monastère taillé dans les falaises. Les savants qui y étudient le passé parlent d'une civilisation bien au-delà de notre compréhension. Leur art était si avancé qu'il nous semblerait magique. Pourtant, quelque chose a précipité leur monde dans la ruine. »",
+      "outcome5": "Vous déclinez son offre. Le chevalier hoche la tête. « Le savoir restera donc avec moi », dit-il, et repart."
     },
-    "message": "Le chevalier revient, son armure éraflée et cabossée. 'J'ai trouvé quelque chose d'extraordinaire dans les montagnes,' dit-il. 'Je vous en parlerai, pour un prix.'",
+    "message": "Le chevalier revient, son armure éraflée et cabossée. « J'ai trouvé quelque chose d'extraordinaire dans les montagnes », dit-il. « Je vous en parlerai, pour un prix. »",
     "title": "Retour des montagnes"
   },
   "riddleOfAges": {
     "title": "Voix dans l'obscurité",
     "message": {
-      "original": "La silhouette voilée revient au domaine sous la pâle clarté de la lune. Sa voix résonne : « Le matin, il marche à quatre pattes ; à midi, sur deux ; le soir, sur trois. »",
-      "variant": "La silhouette voilée revient au domaine sous la pâle clarté de la lune. Sa voix résonne : « Il ne peut te blesser, mais te laisse des cicatrices. »"
+      "original": "La silhouette voilée revient au domaine sous la pâle clarté de la lune. Sa voix résonne : « Le matin, il marche à quatre pattes ; à midi, sur deux ; le soir, sur trois. »",
+      "variant": "La silhouette voilée revient au domaine sous la pâle clarté de la lune. Sa voix résonne : « Il ne peut te blesser, mais te laisse des cicatrices. »"
     },
     "choices": {
       "answerEarth": {
@@ -1812,15 +1918,15 @@
       }
     },
     "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
       "success_second": "La silhouette hoche à peine la tête et disparaît dans la nuit. À l'aube, une bourse de cuir usée remplie d'or gît là où elle se tenait."
     }
   },
   "riddleOfAges_variant": {
     "title": "Voix dans l'obscurité",
     "message": {
-      "original": "La silhouette voilée revient au domaine sous la pâle clarté de la lune. Sa voix résonne : « Le matin, il marche à quatre pattes ; à midi, sur deux ; le soir, sur trois. »",
-      "variant": "La silhouette voilée revient au domaine sous la pâle clarté de la lune. Sa voix résonne : « Il ne peut te blesser, mais te laisse des cicatrices. »"
+      "original": "La silhouette voilée revient au domaine sous la pâle clarté de la lune. Sa voix résonne : « Le matin, il marche à quatre pattes ; à midi, sur deux ; le soir, sur trois. »",
+      "variant": "La silhouette voilée revient au domaine sous la pâle clarté de la lune. Sa voix résonne : « Il ne peut te blesser, mais te laisse des cicatrices. »"
     },
     "choices": {
       "answerNightmares": {
@@ -1840,15 +1946,15 @@
       }
     },
     "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
       "success_second": "La silhouette hoche à peine la tête et disparaît dans la nuit. À l'aube, une bourse de cuir usée remplie d'or gît là où elle se tenait."
     }
   },
   "riddleOfDevourer": {
     "title": "Un visiteur nocturne",
     "message": {
-      "original": "Une fois encore, la silhouette mystérieuse apparaît au domaine. Elle murmure d'une voix basse : « Il dévore toute chose, réduit les os en poussière, tue les rois, use les montagnes, efface les villes. »",
-      "variant": "Une fois encore, la silhouette mystérieuse apparaît au domaine. Elle murmure d'une voix basse : « Il a des doigts, mais ni chair, ni plumes, ni écailles, ni os. »"
+      "original": "Une fois encore, la silhouette mystérieuse apparaît au domaine. Elle murmure d'une voix basse : « Il dévore toute chose, réduit les os en poussière, tue les rois, use les montagnes, efface les villes. »",
+      "variant": "Une fois encore, la silhouette mystérieuse apparaît au domaine. Elle murmure d'une voix basse : « Il a des doigts, mais ni chair, ni plumes, ni écailles, ni os. »"
     },
     "choices": {
       "answerMan": {
@@ -1868,15 +1974,15 @@
       }
     },
     "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
-      "success_third": "La silhouette incline la tête en signe de reconnaissance silencieuse avant de reculer dans la pénombre. Au matin, une bourse usée d'or est trouvée devant la porte."
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "success_third": "La silhouette incline la tête en signe de reconnaissance silencieuse avant de reculer dans la pénombre. Au matin, une vieille bourse remplie d'or est trouvée devant la porte."
     }
   },
   "riddleOfDevourer_variant": {
     "title": "Un visiteur nocturne",
     "message": {
-      "original": "Une fois encore, la silhouette mystérieuse apparaît au domaine. Elle murmure d'une voix basse : « Il dévore toute chose, réduit les os en poussière, tue les rois, use les montagnes, efface les villes. »",
-      "variant": "Une fois encore, la silhouette mystérieuse apparaît au domaine. Elle murmure d'une voix basse : « Il a des doigts, mais ni chair, ni plumes, ni écailles, ni os. »"
+      "original": "Une fois encore, la silhouette mystérieuse apparaît au domaine. Elle murmure d'une voix basse : « Il dévore toute chose, réduit les os en poussière, tue les rois, use les montagnes, efface les villes. »",
+      "variant": "Une fois encore, la silhouette mystérieuse apparaît au domaine. Elle murmure d'une voix basse : « Il a des doigts, mais ni chair, ni plumes, ni écailles, ni os. »"
     },
     "choices": {
       "answerFin": {
@@ -1896,15 +2002,15 @@
       }
     },
     "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
-      "success_third": "La silhouette incline la tête en signe de reconnaissance silencieuse avant de reculer dans la pénombre. Au matin, une bourse usée d'or est trouvée devant la porte."
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "success_third": "La silhouette incline la tête en signe de reconnaissance silencieuse avant de reculer dans la pénombre. Au matin, une vieille bourse remplie d'or est trouvée devant la porte."
     }
   },
   "riddleOfEternal": {
     "title": "L'hôte inconnu",
     "message": {
-      "original": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix porte dans la nuit : « Tes yeux sont ouverts, je suis là ; tes yeux sont fermés, je suis là aussi. »",
-      "variant": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix porte dans la nuit : « Les pauvres m'ont, les riches en ont besoin. Si tu me manges, tu meurs. »"
+      "original": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix porte dans la nuit : « Tes yeux sont ouverts, je suis là ; tes yeux sont fermés, je suis là aussi. »",
+      "variant": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix porte dans la nuit : « Les pauvres m'ont, les riches ont besoin de moi. Si tu me manges, tu meurs. »"
     },
     "choices": {
       "answerLight": {
@@ -1924,22 +2030,22 @@
       }
     },
     "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
       "success_fifth": "La silhouette incline la tête en révérence silencieuse avant de disparaître complètement. Un grand sac d'or gît là où elle se tenait."
     }
   },
   "riddleOfEternal_variant": {
     "title": "L'hôte inconnu",
     "message": {
-      "original": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix porte dans la nuit : « Tes yeux sont ouverts, je suis là ; tes yeux sont fermés, je suis là aussi. »",
-      "variant": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix porte dans la nuit : « Les pauvres m'ont, les riches en ont besoin. Si tu me manges, tu meurs. »"
+      "original": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix porte dans la nuit : « Tes yeux sont ouverts, je suis là ; tes yeux sont fermés, je suis là aussi. »",
+      "variant": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix porte dans la nuit : « Les pauvres m'ont, les riches ont besoin de moi. Si tu me manges, tu meurs. »"
     },
     "choices": {
       "answerPoison": {
         "label": "Poison"
       },
       "answerAir": {
-        "label": "or"
+        "label": "Or"
       },
       "answerNothing": {
         "label": "Rien"
@@ -1952,15 +2058,15 @@
       }
     },
     "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
       "success_fifth": "La silhouette incline la tête en révérence silencieuse avant de disparaître complètement. Un grand sac d'or gît là où elle se tenait."
     }
   },
   "riddleOfTears": {
     "title": "Un hôte encapuchonné",
     "message": {
-      "original": "La silhouette voilée réapparaît une fois de plus au domaine. Elle murmure : « Il vole sans ailes, pleure sans yeux, les ténèbres le suivent partout. »",
-      "variant": "La silhouette voilée réapparaît une fois de plus au domaine. Elle murmure : « Doux, délicat, soyeux, mais si tu es enveloppé en moi, tu cries. »"
+      "original": "La silhouette voilée réapparaît une fois de plus au domaine. Elle murmure : « Il vole sans ailes, pleure sans yeux, les ténèbres le suivent partout. »",
+      "variant": "La silhouette voilée réapparaît une fois de plus au domaine. Elle murmure : « Doux, délicat, soyeux, mais si je t'enveloppe, tu hurles. »"
     },
     "choices": {
       "answerNight": {
@@ -1980,15 +2086,15 @@
       }
     },
     "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
       "success_fourth": "La silhouette baisse un instant sa tête encapuchonnée avant de se dissoudre dans les ombres. Un petit sac d'or reste sur le sol froid."
     }
   },
   "riddleOfTears_variant": {
     "title": "Un hôte encapuchonné",
     "message": {
-      "original": "La silhouette voilée réapparaît une fois de plus au domaine. Elle murmure : « Il vole sans ailes, pleure sans yeux, les ténèbres le suivent partout. »",
-      "variant": "La silhouette voilée réapparaît une fois de plus au domaine. Elle murmure : « Doux, délicat, soyeux, mais si tu es enveloppé en moi, tu cries. »"
+      "original": "La silhouette voilée réapparaît une fois de plus au domaine. Elle murmure : « Il vole sans ailes, pleure sans yeux, les ténèbres le suivent partout. »",
+      "variant": "La silhouette voilée réapparaît une fois de plus au domaine. Elle murmure : « Doux, délicat, soyeux, mais si je t'enveloppe, tu hurles. »"
     },
     "choices": {
       "answerNightmares": {
@@ -2008,7 +2114,7 @@
       }
     },
     "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
       "success_fourth": "La silhouette baisse un instant sa tête encapuchonnée avant de se dissoudre dans les ombres. Un petit sac d'or reste sur le sol froid."
     }
   },
@@ -2029,8 +2135,8 @@
       "outcome1": "Vous décidez que le risque est trop grand. En vous détournant, vous entendez derrière vous un faible plouf, comme si quelque chose était tombé dans une eau profonde, bien qu'il n'y ait pas d'eau à proximité.",
       "outcome2": "Votre hésitation se révèle fatale. L'un de vos hommes, incapable de résister à l'anneau mystérieux, le ramasse. Aussitôt, de l'eau se met à jaillir de sa bouche en un torrent sans fin. Il se noie sur la terre sèche."
     },
-    "message": "Au profond de la cité oubliée, vous trouvez un étrange anneau dont l'eau goutte sans cesse. Le gardez-vous ?",
-    "title": "Anneau des Noyés"
+    "message": "Au plus profond de la cité oubliée, vous trouvez un étrange anneau dont l'eau goutte sans cesse. Le gardez-vous ?",
+    "title": "L'anneau du noyé"
   },
   "risingSmokeRumor": {
     "choices": {
@@ -2055,11 +2161,11 @@
       "dedicate_dagon": "La bénédiction de Dagon coule plus puissamment qu'avant.",
       "dedicate_flame": "La Première Flamme brûle plus vivement qu'avant.",
       "dedicate_raven": "La Marque du corbeau se renforce.",
-      "dedicate_ash": "L'Étreinte cendrée est plus forte qu'avant.",
+      "dedicate_ash": "L'Étreinte cendreuse est plus forte qu'avant.",
       "dedicate_unknown": ""
     },
-    "message": "Le druide aveugle émerge : 'Le Sanctum est achevé,' dit-il, sa voix portant le poids d'une sagesse ancienne. 'Vous devez maintenant choisir : approfondir votre dévotion à la voie que vous avez choisie, ou embrasser tous les dieux et leurs dons. Choisissez avec sagesse.'",
-    "title": "La Dédicace du Sanctum"
+    "message": "Le druide aveugle émerge : « Le Sanctum est achevé », dit-il, sa voix portant le poids d'une sagesse ancienne. « Vous devez maintenant choisir : approfondir votre dévotion à la voie que vous avez choisie, ou embrasser tous les dieux et leurs dons. Choisissez avec sagesse. »",
+    "title": "La dédicace du Sanctum"
   },
   "scholarResearchProposal": {
     "choices": {
@@ -2067,15 +2173,15 @@
         "label": "Continuer"
       }
     },
-    "message": "Une jeune érudite vient te trouver, notes de terrain et carte dessinée à la main sous le bras. Elle parle de temples oubliés et de sanctuaires cachés au cœur de la forêt. Avec assez d'or, elle pourrait mener des expéditions en pleine nature et ramener des connaissances longtemps réputées perdues.",
+    "message": "Une jeune érudite vient vous trouver, notes de terrain et carte dessinée à la main sous le bras. Elle parle de temples oubliés et de sanctuaires cachés au cœur de la forêt. Avec des fonds suffisants, elle pourrait mener des expéditions en pleine nature et ramener des connaissances que l'on croyait perdues depuis longtemps.",
     "title": "La proposition de l'érudite"
   },
   "secondWave": {
-    "message": "Les créatures reviennent en plus grand nombre, armées d'armes d'os brut, luisant d'une lumière impure.",
+    "message": "Les créatures reviennent en plus grand nombre, brandissant des armes d'os grossières qui luisent d'une lumière impure.",
     "title": "La deuxième vague"
   },
   "seventhWave": {
-    "message": "Les créatures avancent de nouveau, un tapis grouillant de membres et de dents qui grattent vers la cité.",
+    "message": "Les créatures avancent de nouveau, un tapis grouillant de membres et de dents qui rampe vers la cité.",
     "title": "La septième vague"
   },
   "shadowFluteChoice": {
@@ -2084,10 +2190,10 @@
         "label": "Ne rien faire"
       },
       "keepFlute": {
-        "label": "Le garder"
+        "label": "La garder"
       },
       "leaveFlute": {
-        "label": "Le laisser"
+        "label": "La laisser"
       }
     },
     "log": {
@@ -2095,8 +2201,8 @@
       "outcome1": "Vous reposez soigneusement la flûte. Les ombres retrouvent leur immobilité naturelle, et l'atmosphère oppressante se dissipe.",
       "outcome2": "Votre hésitation coûte cher. Les ombres deviennent affamées et violentes, se tordant d'une vie contre nature. Elles déferlent et dévorent {{actualDevoured}} membres de votre compagnie. Leurs cris résonnent brièvement avant d'être avalés par le silence."
     },
-    "message": "Au profond de la grotte, vous découvrez une flûte d'os d'une facture troublante. Lorsque vous en jouez, les ombres autour de vous commencent à bouger de manière contre nature, comme si elles dansaient au son d'une mélodie. La gardez-vous ?",
-    "title": "La Flûte des ombres"
+    "message": "Au plus profond de la grotte, vous découvrez une flûte d'os d'une facture troublante. Lorsque vous en jouez, les ombres autour de vous commencent à bouger de manière contre nature, comme si elles dansaient au son d'une mélodie. La gardez-vous ?",
+    "title": "La flûte des ombres"
   },
   "shadowsMove": {
     "choices": {
@@ -2112,7 +2218,7 @@
       "outcome1": "Les ombres se penchent vers vous. Des formes se condensent en bordure de votre vision, et quelque chose murmure votre nom d'une voix semblable à des feuilles sèches.",
       "outcome2": "Vous détournez le regard, mais le malaise vous suit. Du coin de l'œil, les ombres continuent de bouger longtemps après que vous avez cessé de les observer."
     },
-    "message": "Les ombres du village semblent bouger de travers. Elles s'étirent trop longtemps, se tordent à des angles impossibles, et parfois semblent se mouvoir indépendamment de leurs sources.",
+    "message": "Les ombres du village semblent bouger de travers. Elles s'étirent beaucoup trop loin, se tordent à des angles impossibles, et parfois semblent se mouvoir indépendamment de leurs sources.",
     "title": "Ombres mouvantes"
   },
   "shoreFishermenResponse": {
@@ -2130,8 +2236,8 @@
       "outcome2": "Les pêcheurs vous transmettent leurs techniques élaborées de construction de pièges à poissons.",
       "outcome3": "Vous déclinez l'offre des pêcheurs. L'occasion est perdue."
     },
-    "message": "Le corbeau borgne revient des Pêcheurs du Rivage avec du poisson séché en cadeau. Les pêcheurs proposent de vous enseigner les secrets de la construction de puissants pièges à poissons pour 250 pièces d'or.",
-    "title": "Message des Pêcheurs du Rivage"
+    "message": "Le corbeau borgne revient des pêcheurs du rivage avec du poisson séché en cadeau. Les pêcheurs proposent de vous enseigner les secrets de la construction de puissants pièges à poissons pour 250 pièces d'or.",
+    "title": "Message des pêcheurs du rivage"
   },
   "sixthWave": {
     "message": "L'entrée de la grotte vomit une autre marée de corps pâles. Les lances d'os claquent comme la pluie tandis qu'ils se massent pour un nouvel assaut.",
@@ -2140,7 +2246,7 @@
   "skinCrawling": {
     "choices": {
       "calm_down": {
-        "label": "Essayer de calmer"
+        "label": "Essayer de se calmer"
       },
       "keep_scratching": {
         "label": "Continuer à gratter"
@@ -2151,7 +2257,7 @@
       "outcome1": "Vous tentez de vous calmer, mais la sensation s'intensifie. Votre vision se brouille et vous vous effondrez. Dans vos rêves fiévreux, des choses anciennes murmurent votre vrai nom. À votre réveil, le grouillement a cessé, mais le souvenir persiste.",
       "outcome2": "Vous griffez frénétiquement votre peau, faisant couler le sang. Les villageois se précipitent pour vous arrêter, vous saisissant les bras. Dans votre rage démente, vous frappez violemment autour de vous, tuant {{killedVillagers}} villageois avant de vous effondrer d'épuisement. À votre réveil, le grouillement a cessé, mais le sang tache vos mains."
     },
-    "message": "Votre peau commence à grouiller - littéralement. Vous voyez des formes bouger sous la surface, semblant créer des motifs. Les villageois vous regardent tracer des sillons sanglants sur vos bras, le visage plein d'inquiétude.",
+    "message": "Votre peau commence à grouiller – littéralement. Vous voyez des formes bouger sous la surface, semblant créer des motifs. Les villageois vous regardent tracer des sillons sanglants sur vos bras, le visage plein d'inquiétude.",
     "title": "Peau grouillante"
   },
   "slaveTrader": {
@@ -2168,12 +2274,12 @@
     },
     "log": {
       "outcome0": "Vous livrez deux des villageois. Le trafiquant vous lance un sac d'acier et repart avec ses nouveaux captifs. Quand les villageois restants voient ce que vous avez fait, ils abandonnent le village avec dégoût.",
-      "outcome1": "Vos hommes attaquent l'esclavagiste ! Le combat est brutal, mais victorieux. Vous libérez les captifs et revendiquez l'acier du trafiquant. Les esclaves libérés rejoignent votre village.",
-      "outcome2": "Vos hommes attaquent le trafiquant d'esclaves, mais il est prêt ! Il riposte avec férocité. {{actualDeaths}} villageois tombent dans la lutte. Le marchand s'échappe avec ses captifs, ne laissant que la mort derrière lui.",
+      "outcome1": "Vos hommes attaquent l'esclavagiste ! Le combat est brutal, mais victorieux. Vous libérez les captifs et vous emparez de l'acier du trafiquant. Les esclaves libérés rejoignent votre village.",
+      "outcome2": "Vos hommes attaquent le trafiquant d'esclaves, mais il est prêt ! Il riposte avec férocité. {{actualDeaths}} villageois tombent dans la lutte. Le marchand s'échappe avec ses captifs, ne laissant que la mort derrière lui.",
       "outcome3": "Vous refusez l'offre vile de l'esclavagiste. Il crache par terre avec dégoût et repart avec ses captifs."
     },
-    "message": "Un homme sur une charrette tirée par deux chevaux approche du village. Une cage de fer sur la charrette retient trois esclaves misérables. Le trafiquant sourit avec cruauté : 'Je vous paierai 100 unités d'acier pour deux des villageois. Qu'en dites-vous ?'",
-    "title": "Le Trafiquant d'esclaves"
+    "message": "Un homme sur une charrette tirée par deux chevaux approche du village. Une cage de fer sur la charrette retient trois esclaves misérables. Le trafiquant sourit avec cruauté : « Je vous paierai 100 unités d'acier pour deux des villageois. Qu'en dites-vous ? »",
+    "title": "Le trafiquant d'esclaves"
   },
   "solsticeGathering": {
     "choices": {
@@ -2186,7 +2292,7 @@
         "label": "Refuser"
       },
       "doNothing": {
-        "label": "Aucune décision"
+        "label": "Aucune décision prise"
       }
     },
     "log": {
@@ -2196,21 +2302,30 @@
     "message": "Les villageois proposent une fête pour marquer la plus longue nuit de l'année. Des feux seront allumés, de la nourriture préparée et des jeux organisés. Des voyageurs pourraient venir, attirés par la lumière.",
     "title": "Fête du solstice"
   },
+  "staringDeer": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "message": "Les cerfs se comportent étrangement. Ils ne fuient pas. Ils semblent fixer les chasseurs. La chasse est facile à présent, mais les chasseurs reviennent ébranlés.",
+    "title": "Cerfs au regard fixe"
+  },
   "swampSanctuaryChoice": {
     "choices": {
       "chopBlackTree": {
         "label": "Abattre l'arbre"
       },
       "sacrificeAtTree": {
-        "cost": "1000 Nourriture",
+        "cost": "1000 nourriture",
         "label": "Sacrifier des animaux à l'arbre"
       }
     },
     "log": {
-      "outcome0": "Le bois noir résiste, mais votre peuple l'abat. Vous revendiquez le bois noir maudit.",
+      "outcome0": "Le bois noir résiste, mais votre peuple l'abat. Vous emportez le bois noir maudit.",
       "outcome2": "Le sang et la fumée montent de l'offrande. Une grâce glacée se pose sur le village."
     },
-    "message": "Votre expédition atteint le sanctuaire oublié du marais. Des ruines croulantes encerclent un arbre massif de bois noir et sombre. Que faites-vous ?",
+    "message": "Votre expédition atteint le sanctuaire oublié du marais. Des ruines croulantes encerclent un arbre massif au bois d'un noir profond. Que faites-vous ?",
     "title": "Sanctuaire du marais"
   },
   "swampTribeResponse": {
@@ -2223,11 +2338,11 @@
       }
     },
     "log": {
-      "outcome0": "Vous acceptez l'offre de la Tribu du Marais et vous préparez à envoyer la livraison d'acier au marais.",
-      "outcome1": "Vous déclinez l'offre de la Tribu du Marais. L'occasion est perdue."
+      "outcome0": "Vous acceptez l'offre de la tribu du marais et vous préparez à envoyer la livraison d'acier au marais.",
+      "outcome1": "Vous déclinez l'offre de la tribu du marais. L'occasion est perdue."
     },
-    "message": "Le corbeau borgne revient de la Tribu du Marais avec une lettre qui tombe en miettes. La tribu offre de puissantes Plaques de chitine en échange de 1000 unités d'acier livrées à son village.",
-    "title": "Message de la Tribu du Marais"
+    "message": "Le corbeau borgne revient de la tribu du marais avec une lettre qui tombe en miettes. La tribu offre de puissantes plaques de chitine en échange de 1000 unités d'acier livrées à son village.",
+    "title": "Message de la tribu du marais"
   },
   "templeDedication": {
     "choices": {
@@ -2235,7 +2350,7 @@
         "label": "Église de Dagon"
       },
       "cult_of_ravenborn": {
-        "label": "Culte des Nés-du-corbeau"
+        "label": "Culte des Nés-du-Corbeau"
       },
       "order_of_ashbringer": {
         "label": "Ordre du Porte-cendres"
@@ -2250,20 +2365,20 @@
       "outcome2": "Vous dédiez le temple au Culte des Nés-du-Corbeau, ordre énigmatique et ombreux.",
       "outcome3": "Vous dédiez le temple à l'Ordre du Porte-cendres, fraternité solennelle liée au feu."
     },
-    "message": "Peu après la construction du temple, le druide aveugle apparaît. Ses yeux laiteux semblent voir à travers votre âme lorsqu'il parle : 'Le temple doit être dédié à un dieu. Choisissez avec sagesse.'",
-    "title": "Le Druide aveugle revient"
+    "message": "Peu après la construction du temple, le druide aveugle apparaît. Ses yeux laiteux semblent voir à travers votre âme lorsqu'il parle : « Le temple doit être dédié à un dieu. Choisissez avec sagesse. »",
+    "title": "Le druide aveugle revient"
   },
   "tenthWave": {
-    "message": "Des profondeurs les plus reculées de la grotte, une masse inimaginable de créatures pâles jaillit. Elles inondent la terre comme une marée vivante, tandis que la cité se prépare à l'anéantissement.",
+    "message": "Des profondeurs les plus reculées de la grotte, une masse inimaginable de créatures pâles jaillit. Elles déferlent sur la terre comme une marée vivante, tandis que la cité se prépare au prochain assaut.",
     "title": "La dixième vague"
   },
   "firstBossWave": {
     "message": "Une grande meute de bêtes pâles mène le siège vers la cité. Leur soif de sang se lit dans chacun de leurs pas.",
-    "title": "La vague boss"
+    "title": "La vague du boss"
   },
   "secondBossWave": {
     "message": "Une armée de bêtes pâles se rassemble devant les remparts, massée pour un dernier assaut sur la cité.",
-    "title": "La vague boss finale"
+    "title": "La vague finale du boss"
   },
   "postCompletionWave": {
     "message": "Des profondeurs cachées de la grotte, des créatures pâles sans esprit continuent d'émerger, assaillant la cité sans fin.",
@@ -2276,10 +2391,10 @@
       }
     },
     "log": {
-      "outcome": "Tu acceptes. Affaibli par le poison mais respirant encore, le Chien Brutal rejoint ta compagnie."
+      "outcome": "Vous acceptez. Affaibli par le poison mais respirant encore, le Chien brutal rejoint votre compagnie."
     },
-    "message": "Votre expédition trouve un village de montagne rempli de morts empoisonnés. Parmi les corps gît un homme presque mort, très musclé mais défiguré, à peine capable de parler. Il dit qu'on l'appelait juste le Chien Brutal. Il semble avoir résisté au poison, même de justesse. Il veut se joindre à vous.",
-    "title": "Chien Brutal"
+    "message": "Votre expédition trouve un village de montagne rempli de morts empoisonnés. Parmi les corps gît un homme presque mort, très musclé mais défiguré, à peine capable de parler. Il dit qu'on l'appelait simplement le Chien brutal. Il semble avoir résisté au poison, même de justesse. Il veut se joindre à vous.",
+    "title": "Le Chien brutal"
   },
   "theDamned": {
     "choices": {
@@ -2296,11 +2411,11 @@
       "outcome2": "Vous les repoussez. Une amère inquiétude s'installe dans le village, car les villageois ne sont pas d'accord avec votre décision.",
       "outcome3": "Vous les accueillez, mais il n'y a plus de place dans le village pour d'autres habitants."
     },
-    "message": "Un groupe de jeunes hommes et femmes sort en chancelant de la forêt, à demi morts de froid et de faim. Ils avaient été laissés dans les bois en sacrifice aux dieux de la forêt, et ont pourtant survécu. Les accueillez-vous dans le village ?",
+    "message": "Un groupe de jeunes hommes et femmes sort en chancelant de la forêt, à demi morts de froid et de faim. Ils avaient été laissés dans les bois en sacrifice aux dieux de la forêt, et ont pourtant survécu. Les accueillez-vous dans le village ?",
     "title": "Les damnés"
   },
   "thirdWave": {
-    "message": "Des hordes de créatures pâles sortent de la grotte ; les cris ébranlent même la pierre, leurs armes d'os fendent le sol.",
+    "message": "Des hordes de créatures pâles sortent de la grotte ; les cris ébranlent même la pierre, leurs armes d'os fendent le sol.",
     "title": "La troisième vague"
   },
   "traders_daughter": {
@@ -2319,7 +2434,7 @@
       "outcome3": "Vous refusez. Le marchand hoche tristement la tête et part chercher seul."
     },
     "message": "Un soir, le marchand vient à vous en détresse. Sa plus jeune fille a disparu près de la lisière de la forêt, et il implore votre aide.",
-    "title": "La Fille du marchand"
+    "title": "La fille du marchand"
   },
   "traders_gratitude": {
     "choices": {
@@ -2334,8 +2449,8 @@
       "outcome0": "Vous déclinez l'offre. Le marchand vous remercie encore une fois et s'en va en silence.",
       "outcome1": "Vous déclinez l'offre. Le marchand vous remercie encore une fois et s'en va en silence."
     },
-    "message": "Le marchand revient, les yeux pleins de soulagement et de gratitude. Pour vous rendre votre bonté, il promet une généreuse réduction sur votre prochain achat.",
-    "title": "La Gratitude du marchand"
+    "message": "Le marchand revient, les yeux pleins de soulagement et de gratitude. Pour vous remercier de votre bonté, il promet une généreuse réduction sur votre prochain achat.",
+    "title": "La gratitude du marchand"
   },
   "traders_son": {
     "choices": {
@@ -2347,7 +2462,7 @@
       }
     },
     "message": "Le fils du marchand du village s'approche de vous. Il portait la dague précieuse de son père pour impressionner une femme, mais un bandit des environs l'a détroussé. Il vous demande de la récupérer.",
-    "title": "Le Fils du marchand"
+    "title": "Le fils du marchand"
   },
   "traders_son_gratitude": {
     "choices": {
@@ -2363,7 +2478,7 @@
       "outcome1": "Vous déclinez l'offre. Le jeune marchand hoche la tête, soulagé peut-être qu'aucune dette ne demeure."
     },
     "message": "Le fils du marchand revient, tenant la dague de son père. Il déborde de gratitude et vous offre une grande réduction sur votre prochain achat des marchandises de son père.",
-    "title": "La Gratitude du fils du marchand"
+    "title": "La gratitude du fils du marchand"
   },
   "traderSettles": {
     "choices": {
@@ -2372,7 +2487,7 @@
       }
     },
     "message": "Un marchand arrive au village avec sa famille. Ils ont l'air épuisés, leurs visages burinés par des années sur les routes. Ils sont enfin prêts à s'établir.",
-    "title": "Le Marchand"
+    "title": "Le marchand"
   },
   "undergroundLakeCreature": {
     "choices": {
@@ -2381,7 +2496,7 @@
       }
     },
     "message": "En explorant le lac souterrain, vous apercevez une ombre immense sous les eaux noires, quelque chose de vaste et d'invisible. Peut-être un piège pourrait-il l'attirer hors des eaux.",
-    "title": "Quelque chose dessous"
+    "title": "Quelque chose en dessous"
   },
   "undergroundLakeDiscovery": {
     "choices": {
@@ -2393,7 +2508,7 @@
       "outcome0": "Vous acceptez d'enquêter, mais les préparatifs nécessaires doivent d'abord être faits pour la descente jusqu'au lac."
     },
     "message": "Après la dernière expédition dans la grotte, deux hommes affirment avoir vu un lac souterrain. L'obscurité était trop dense pour y voir clairement. Peut-être la lanterne-crâne pourrait-elle révéler ces eaux sombres.",
-    "title": "Le Lac souterrain"
+    "title": "Le lac souterrain"
   },
   "unnamedWanderer": {
     "choices": {
@@ -2414,8 +2529,8 @@
       "outcome2": "Le vagabond fait un bref signe de tête et part vers la fosse minière pour commencer son labeur.",
       "outcome4": "Le vagabond fait un bref signe de tête et part vers la fosse minière pour commencer son labeur."
     },
-    "message": "Un homme aux vêtements déchirés approche du village, les mains marquées par des années de dur labeur. 'Je viens d'une colonie minière,' dit-il d'une voix rauque. 'Je peux travailler pour vous afin d'améliorer le rendement de vos mines.'",
-    "title": "Le Vagabond sans nom"
+    "message": "Un homme aux vêtements déchirés approche du village, les mains marquées par des années de dur labeur. « Je viens d'une colonie minière », dit-il d'une voix rauque. « Je peux travailler pour vous afin d'améliorer le rendement de vos mines. »",
+    "title": "Le vagabond sans nom"
   },
   "veiledSeer": {
     "choices": {
@@ -2428,11 +2543,11 @@
       }
     },
     "log": {
-      "outcome1": "L'oracle se tait. Son regard glisse au-delà de vous. \"De grandes épreuves vous attendent{{name}},\" dit-il doucement. \"Vous croyez que ce monde vous appartient et que vous pouvez le façonner. Mais vous êtes façonné à votre tour. Quand la vérité finale remontera à la surface, vous verrez les fils. Et alors, il sera peut-être trop tard.\"",
-      "outcome2": "L'oracle hoche la tête. \"Adieu donc{{name}},\" dit-il, et disparaît dans la brume sans un mot de plus."
+      "outcome1": "L'oracle se tait. Son regard glisse au-delà de vous. « De grandes épreuves vous attendent{{name}} », dit-il doucement. « Vous croyez que ce monde vous appartient et que vous pouvez le façonner. Mais vous êtes façonné à votre tour. Quand la vérité finale remontera à la surface, vous verrez les fils. Et alors, il sera peut-être trop tard. »",
+      "outcome2": "L'oracle hoche la tête. « Adieu donc{{name}} », dit-il, et disparaît dans la brume sans un mot de plus."
     },
-    "message": "Une silhouette encapuchonnée apparaît au crépuscule. Ses yeux brillent sous le voile. 'J'ai entrevu ce qui vous attend,' râpe-t-il. '50 pièces d'or, et je vous dirai ce qui approche.'",
-    "title": "L'Oracle voilé"
+    "message": "Une silhouette encapuchonnée apparaît au crépuscule. Ses yeux brillent sous le voile. « J'ai entrevu ce qui vous attend », souffle-t-il d'une voix rauque. « 50 pièces d'or, et je vous dirai ce qui approche. »",
+    "title": "L'oracle voilé"
   },
   "veinrootIntroduction": {
     "choices": {
@@ -2441,12 +2556,12 @@
       }
     },
     "message": "L'alchimiste s'approche de vous. Des villageois ont trouvé une racine d'aspect étrange dans la forêt et la lui ont apportée. Il a réussi à en créer une puissante potion.",
-    "title": "La Racine mystérieuse"
+    "title": "La racine mystérieuse"
   },
   "vikingBuilder": {
     "choices": {
       "acceptDeal": {
-        "cost": "250 Or",
+        "cost": "250 or",
         "label": "Payer 250 or"
       },
       "forceHim": {
@@ -2460,11 +2575,11 @@
       "outcome0": "Le bâtisseur attend un moment, puis finit par hausser les épaules et disparaît dans les terres sauvages, emportant son savoir avec lui.",
       "outcome2": "Vous payez le bâtisseur. Il enseigne aux villageois les anciennes techniques nordiques de construction des maisons longues.",
       "outcome3": "Vos hommes maîtrisent le bâtisseur et le forcent à partager son savoir. À contrecœur, il vous enseigne les secrets de la construction des maisons longues.",
-      "outcome4": "Le bâtisseur se révèle plus fort que prévu ! Il riposte férocement, tuant {{actualCasualties}} hommes avant de s'échapper dans les terres sauvages.",
+      "outcome4": "Le bâtisseur se révèle plus fort que prévu ! Il riposte férocement, tuant {{actualCasualties}} hommes avant de s'échapper dans les terres sauvages.",
       "outcome5": "Vous refusez l'offre du bâtisseur et le renvoyez. Il hausse les épaules et disparaît dans les terres sauvages, emportant son savoir avec lui."
     },
     "message": "Un jour, un homme robuste vêtu d'épaisses fourrures se tient aux portes. Il dit venir du grand nord et être un bâtisseur habile. Pour un peu d'or, il vous enseignera comment bâtir de grandes maisons capables d'abriter de nombreux villageois.",
-    "title": "Le Bâtisseur viking"
+    "title": "Le bâtisseur viking"
   },
   "villageBecomesCity": {
     "message": "Le village est devenu une cité. Ce qui n'était qu'une petite colonie se dresse désormais comme un centre prospère de pierre et de fumée."
@@ -2475,8 +2590,8 @@
         "label": "Continuer"
       }
     },
-    "message": "L'ancien du village revient, l'expression grave. 'Le temps est venu,' dit-il. 'Vous avez fait vos premiers pas sur un chemin long et impitoyable. Ce qui vous attend est plus profond, plus sombre et plus exigeant. Décidez maintenant si vous poursuivrez ce voyage.'",
-    "title": "Le Temps est venu"
+    "message": "L'ancien du village revient, l'expression grave. « Le temps est venu », dit-il. « Vous avez fait vos premiers pas sur un chemin long et impitoyable. Ce qui vous attend est plus profond, plus sombre et plus exigeant. Décidez maintenant si vous poursuivrez ce voyage. »",
+    "title": "Le temps est venu"
   },
   "villageElderNotice": {
     "choices": {
@@ -2484,8 +2599,8 @@
         "label": "Continuer"
       }
     },
-    "message": "Un ancien du village s'approche de vous. Il parle doucement. 'Vous vous tenez au début d'un long chemin rempli d'épreuves. Très bientôt, vous devrez choisir si vous poursuivrez ce voyage.'",
-    "title": "L'Avis de l'ancien"
+    "message": "Un ancien du village s'approche de vous. Il parle doucement. « Vous vous tenez au début d'un long chemin rempli d'épreuves. Très bientôt, vous devrez choisir si vous poursuivrez ce voyage. »",
+    "title": "L'avis de l'ancien"
   },
   "villagersStareAtSky": {
     "choices": {
@@ -2497,11 +2612,11 @@
       }
     },
     "log": {
-      "outcome0": "Vous saisissez le villageois le plus proche et le secouez. Il cligne une fois des yeux et redevient normal, mais murmure 'Ça vient' avant de reprendre son travail. Les autres suivent lentement.",
-      "outcome1": "Quand vous touchez un villageois, il tombe en poussière. Les autres sortent de leur transe et hurlent, pointant le ciel. L'espace d'un instant, vous le voyez aussi : quelque chose de vaste et d'affamé qui observe d'en haut.",
-      "outcome2": "Vous levez le cou vers le ciel et soudain vous le voyez : quelque chose d'immense et d'impossible qui existe entre les nuages. Votre esprit rejette ce dont il est témoin, mais l'image se grave à jamais dans votre mémoire."
+      "outcome0": "Vous saisissez le villageois le plus proche et le secouez. Il cligne une fois des yeux et redevient normal, mais murmure « Ça vient » avant de reprendre son travail. Les autres suivent lentement.",
+      "outcome1": "Quand vous touchez un villageois, il tombe en poussière. Les autres sortent de leur transe et hurlent, pointant le ciel. L'espace d'un instant, vous le voyez aussi : quelque chose de vaste et d'affamé qui observe d'en haut.",
+      "outcome2": "Vous levez le cou vers le ciel et soudain vous le voyez : quelque chose d'immense et d'impossible qui existe entre les nuages. Votre esprit rejette ce dont il est témoin, mais l'image se grave à jamais dans votre mémoire."
     },
-    "message": "Tous les villageois ont cessé leur travail et se tiennent immobiles, fixant le ciel vide. Ils restent ainsi pendant des heures, sans cligner des yeux, tandis que des larmes de liquide noir coulent sur leurs visages. Quand vous suivez leur regard, vous ne voyez que des nuages ordinaires, mais quelque chose semble terriblement faux.",
+    "message": "Tous les villageois ont cessé leur travail et se tiennent immobiles, fixant le ciel vide. Ils restent ainsi pendant des heures, sans cligner des yeux, tandis que des larmes de liquide noir coulent sur leurs visages. Quand vous suivez leur regard, vous ne voyez que des nuages ordinaires, mais quelque chose cloche terriblement.",
     "title": "Regard vers le ciel"
   },
   "villagerStares": {
@@ -2510,11 +2625,11 @@
         "label": "Éviter le villageois"
       },
       "confront": {
-        "label": "Confronter le villageois"
+        "label": "Interpeller le villageois"
       }
     },
     "log": {
-      "outcome0": "Vous confrontez le villageois. Il se tourne vers vous avec ce sourire aux yeux noirs et murmure quelque chose qui fait vaciller votre esprit. Les mots résonnent dans votre tête pendant des jours.",
+      "outcome0": "Vous interpellez le villageois. Il se tourne vers vous avec ce sourire aux yeux noirs et murmure quelque chose qui fait vaciller votre esprit. Les mots résonnent dans votre tête pendant des jours.",
       "outcome1": "À votre approche, le sourire du villageois s'élargit de façon impossible. Il s'effondre, un liquide noir coulant de ses yeux et de sa bouche. Vous comprenez qu'il est mort depuis des heures.",
       "outcome2": "Vous évitez le villageois, mais vous sentez son regard creux vous suivre partout. Le sommeil devient difficile. Après quelques nuits, on retrouve le villageois mort dans son lit, ses vêtements trempés d'une vase noire et fétide."
     },
@@ -2534,20 +2649,20 @@
       }
     },
     "log": {
-      "whisper0": "Le collectionneur soupire et se détourne. « Au cours de mes voyages, j'ai découvert de nombreuses reliques de la civilisation ancienne. Elle était bien plus avancée que nous ne l'avons jamais été », murmure-t-il avant de se fondre dans l'obscurité.",
-      "whisper1": "Un faible bourdonnement s'échappe de sous sa capuche. « La grande explosion a détruit la plupart des artefacts de la civilisation ancienne. Ce qui reste est dispersé et rare », murmure-t-il.",
-      "whisper2": "Un souffle ténu échappe au collectionneur. « J'ai beaucoup appris sur la civilisation ancienne au cours de mes voyages. Avant la grande explosion, il n'y avait pas de magie dans ce monde. Elle est née à cet instant », murmure-t-il en partant.",
+      "whisper0": "Le collectionneur soupire et se détourne. « Au cours de mes voyages, j'ai découvert de nombreuses reliques de la civilisation ancienne. Elle était bien plus avancée que nous ne l'avons jamais été », murmure-t-il avant de se fondre dans l'obscurité.",
+      "whisper1": "Un faible bourdonnement s'échappe de sous sa capuche. « La grande explosion a détruit la plupart des artefacts de la civilisation ancienne. Ce qui reste est dispersé et rare », murmure-t-il.",
+      "whisper2": "Un souffle ténu échappe au collectionneur. « J'ai beaucoup appris sur la civilisation ancienne au cours de mes voyages. Avant la grande explosion, il n'y avait pas de magie dans ce monde. Elle est née à cet instant », murmure-t-il en partant.",
       "whisperGeneric": "Le collectionneur hoche la tête une fois et s'éloigne.",
-      "leatherboundLearnOutcome": "Vous payez pour le livre relié de cuir. Le collectionneur l'ouvre et lit d'une voix basse. Il appartenait à un esclavagiste mort depuis longtemps qui se nommait le Maître des chaînes. Il marquait ses esclaves d'un symbole de chaîne. Ce savoir pèse lourdement sur votre esprit."
+      "leatherboundLearnOutcome": "Vous payez pour le livre relié de cuir. Le collectionneur l'ouvre et lit à voix basse. Il appartenait à un esclavagiste mort depuis longtemps qui se nommait le Maître des chaînes. Il marquait ses esclaves d'un symbole de chaîne. Ce savoir pèse lourdement sur votre esprit."
     },
-    "title": "Le Collectionneur errant",
+    "title": "Le collectionneur errant",
     "message": {
-      "visit0": "Une silhouette enveloppée de robes en lambeaux s'approche. Elle semble intriguée par ce que vous avez amassé. « Je sens de la valeur parmi vos possessions », murmure-t-elle. « Laissez-moi en prendre une. »",
-      "visit0_both": "Une silhouette enveloppée de robes en lambeaux s'approche. « Je sens de la valeur parmi vos possessions », murmure-t-elle. « Vendez-m'en une, ou rachetez ce que d'autres ont laissé. »",
-      "visit0_buy": "Une silhouette enveloppée de robes en lambeaux s'approche, une besace de reliques délaissées à ses côtés. « Je recueille ce que les autres refusent », murmure-t-elle. « Chacune peut être vôtre. »",
-      "visit1": "La silhouette revient, ses pas silencieux sur le sol. « Plus d'artefacts, plus de secrets », chuchote-t-elle. « Laissez-moi en reprendre un. »",
-      "visit1_both": "La silhouette revient, silencieuse comme avant. « Vendez-m'en une autre », chuchote-t-elle, « ou prenez-en une que j'ai trouvée. Mais une seule. »",
-      "visit1_buy": "La silhouette revient avec des reliques oubliées. « Ce que d'autres ont jadis refusé, je l'ai gardé », chuchote-t-elle. « Chacune peut être vôtre. »"
+      "visit0": "Une silhouette enveloppée de robes en lambeaux s'approche. Elle semble intriguée par ce que vous avez amassé. « Je sens de la valeur parmi vos possessions », murmure-t-elle. « Laissez-moi en prendre une. »",
+      "visit0_both": "Une silhouette enveloppée de robes en lambeaux s'approche. « Je sens de la valeur parmi vos possessions », murmure-t-elle. « Vendez-m'en une, ou rachetez ce que d'autres ont laissé. »",
+      "visit0_buy": "Une silhouette enveloppée de robes en lambeaux s'approche, une besace de reliques délaissées à ses côtés. « Je recueille ce que les autres refusent », murmure-t-elle. « Chacune peut être vôtre. »",
+      "visit1": "La silhouette revient, ses pas silencieux sur le sol. « Plus d'artefacts, plus de secrets », chuchote-t-elle. « Laissez-moi en reprendre un. »",
+      "visit1_both": "La silhouette revient, silencieuse comme avant. « Vendez-m'en une autre », chuchote-t-elle, « ou prenez-en une que j'ai trouvée. Mais une seule. »",
+      "visit1_buy": "La silhouette revient avec des reliques oubliées. « Ce que d'autres ont jadis refusé, je l'ai gardé », chuchote-t-elle. « Chacune peut être vôtre. »"
     }
   },
   "wanderingFirecrafter": {
@@ -2565,13 +2680,13 @@
       }
     },
     "log": {
-      "outcome0": "L'artisan du feu finit par soupirer : 'Peut-être n'êtes-vous pas encore prêt pour un tel pouvoir,' puis disparaît dans la nuit.",
-      "outcome2": "L'artisan du feu prend votre or et commence à vous enseigner l'art sombre de la création de bombes du néant. 'Usez de ce pouvoir avec sagesse,' avertit-il avant de disparaître dans les ombres.",
-      "outcome4": "L'artisan du feu prend votre argent et commence à vous enseigner l'art sombre de la création de bombes du néant. 'Usez de ce pouvoir avec sagesse,' avertit-il avant de disparaître dans les ombres.",
-      "outcome5": "Vous refusez l'offre de l'artisan du feu. Il hoche la tête d'un air entendu : 'Peut-être n'êtes-vous pas encore prêt pour un tel pouvoir,' puis disparaît dans la nuit."
+      "outcome0": "L'artisan du feu finit par soupirer : « Peut-être n'êtes-vous pas encore prêt pour un tel pouvoir », puis disparaît dans la nuit.",
+      "outcome2": "L'artisan du feu prend votre or et commence à vous enseigner l'art sombre de la création de bombes du néant. « Usez de ce pouvoir avec sagesse », avertit-il avant de disparaître dans les ombres.",
+      "outcome4": "L'artisan du feu prend votre argent et commence à vous enseigner l'art sombre de la création de bombes du néant. « Usez de ce pouvoir avec sagesse », avertit-il avant de disparaître dans les ombres.",
+      "outcome5": "Vous refusez l'offre de l'artisan du feu. Il hoche la tête d'un air entendu : « Peut-être n'êtes-vous pas encore prêt pour un tel pouvoir », puis disparaît dans la nuit."
     },
-    "message": "Une silhouette encapuchonnée en robes tachées arrive à votre village. 'Je suis un artisan du feu,' dit-elle d'une voix résonnante. 'Je peux vous enseigner à fabriquer une bombe d'une puissance extrême, qui déchire la réalité elle-même. Mais le savoir a son prix.'",
-    "title": "L'Artisan du feu errant"
+    "message": "Une silhouette encapuchonnée en robes tachées arrive à votre village. « Je suis un artisan du feu », dit-elle d'une voix résonnante. « Je peux vous enseigner à fabriquer une bombe d'une puissance extrême, qui déchire la réalité elle-même. Mais le savoir a son prix. »",
+    "title": "L'artisan du feu errant"
   },
   "wanderingTribe": {
     "choices": {
@@ -2586,14 +2701,14 @@
       "outcome0": "Vous accueillez les nomades et leur offrez votre soutien. En retour, ils apprennent à votre peuple à construire des tentes de fourrure.",
       "outcome1": "Vous refusez d'aider. Le chef de tribu hoche la tête avec respect et ramène les siens dans les terres sauvages."
     },
-    "message": "Une petite tribu de nomades approche du village. Leur chef parle : 'Nous avons voyagé loin et cherchons un endroit à appeler foyer. Aidez-nous à nous établir, et nous apprendrons à votre peuple comment dresser des tentes de fourrure.'",
-    "title": "La Tribu errante"
+    "message": "Une petite tribu de nomades approche du village. Leur chef parle : « Nous avons voyagé loin et cherchons un lieu où nous installer. Aidez-nous à nous établir, et nous apprendrons à votre peuple comment dresser des tentes de fourrure. »",
+    "title": "La tribu errante"
   },
   "whispererInTheDark": {
-    "title": "Murmure dans l'obscurité",
+    "title": "Le murmureur dans l'obscurité",
     "message": {
-      "original": "Un coup frappe à la porte du domaine. Une silhouette entièrement enveloppée de robes sombres se tient dans l'ombre dehors. Elle murmure : « Sans voix, il crie ; sans ailes, il vole ; sans dents, il mord ; sans bouche, il murmure. »",
-      "variant": "Un coup frappe à la porte du domaine. Une silhouette entièrement enveloppée de robes sombres se tient dans l'ombre dehors. Elle murmure : « Le désir d'une dame, né dans les ténèbres, brillant d'une lumière pâle. »"
+      "original": "On frappe à la porte du domaine. Une silhouette entièrement enveloppée de robes sombres se tient dans l'ombre dehors. Elle murmure : « Sans voix, il crie ; sans ailes, il vole ; sans dents, il mord ; sans bouche, il murmure. »",
+      "variant": "On frappe à la porte du domaine. Une silhouette entièrement enveloppée de robes sombres se tient dans l'ombre dehors. Elle murmure : « Le désir d'une dame, né dans les ténèbres, brillant d'une lumière pâle. »"
     },
     "choices": {
       "answerFire": {
@@ -2613,15 +2728,15 @@
       }
     },
     "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
       "success_first": "La silhouette incline légèrement la tête avant de s'estomper dans l'obscurité. Au matin, un petit sac d'or repose sur le seuil du domaine."
     }
   },
   "whispererInTheDark_variant": {
-    "title": "Murmure dans l'obscurité",
+    "title": "Le murmureur dans l'obscurité",
     "message": {
-      "original": "Un coup frappe à la porte du domaine. Une silhouette entièrement enveloppée de robes sombres se tient dans l'ombre dehors. Elle murmure : « Sans voix, il crie ; sans ailes, il vole ; sans dents, il mord ; sans bouche, il murmure. »",
-      "variant": "Un coup frappe à la porte du domaine. Une silhouette entièrement enveloppée de robes sombres se tient dans l'ombre dehors. Elle murmure : « Le désir d'une dame, né dans les ténèbres, brillant d'une lumière pâle. »"
+      "original": "On frappe à la porte du domaine. Une silhouette entièrement enveloppée de robes sombres se tient dans l'ombre dehors. Elle murmure : « Sans voix, il crie ; sans ailes, il vole ; sans dents, il mord ; sans bouche, il murmure. »",
+      "variant": "On frappe à la porte du domaine. Une silhouette entièrement enveloppée de robes sombres se tient dans l'ombre dehors. Elle murmure : « Le désir d'une dame, né dans les ténèbres, brillant d'une lumière pâle. »"
     },
     "choices": {
       "answerSilver": {
@@ -2631,7 +2746,7 @@
         "label": "Perle"
       },
       "answerGold": {
-        "label": "or"
+        "label": "Or"
       },
       "answerDiamond": {
         "label": "Diamant"
@@ -2641,7 +2756,7 @@
       }
     },
     "log": {
-      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
       "success_first": "La silhouette incline légèrement la tête avant de s'estomper dans l'obscurité. Au matin, un petit sac d'or repose sur le seuil du domaine."
     }
   },
@@ -2654,8 +2769,8 @@
     "log": {
       "outcome0": "Alors que la silhouette s'efface dans l'obscurité, une faible euphorie vous traverse, silencieuse et fugace, comme le souvenir à demi oublié d'un temps meilleur."
     },
-    "message": "La silhouette encapuchonnée apparaît de nouveau. Ses murmures glissent une dernière fois dans la nuit froide avant qu'il ne disparaisse : 'Votre sagesse a été pesée et jugée digne. Que les ombres gardent votre chemin, et que la fortune suive votre nom.'",
-    "title": "Le Don du Murmureur"
+    "message": "La silhouette encapuchonnée apparaît de nouveau. Ses murmures glissent une dernière fois dans la nuit froide avant qu'elle ne disparaisse : « Votre sagesse a été pesée et jugée digne. Que les ombres gardent votre chemin, et que la fortune suive votre nom. »",
+    "title": "Le don du murmureur"
   },
   "whisperingVoices": {
     "choices": {
@@ -2672,7 +2787,7 @@
       "outcome0": "Vous tendez l'oreille. Les voix deviennent plus claires jusqu'à ce que, le soir venu, elles disparaissent soudain.",
       "outcome1": "Vous essayez de les chasser, mais les murmures s'accrochent. Ils ne s'estompent qu'après la tombée de la nuit, mais restent dans votre mémoire."
     },
-    "message": "Vous entendez de faibles murmures dans le vent, prononçant des mots dans aucune langue que vous reconnaissiez, et pourtant vous les comprenez. Ils parlent de choses anciennes enfouies sous la terre.",
+    "message": "Vous entendez de faibles murmures dans le vent, qui prononcent des mots dans une langue que vous ne reconnaissez pas, et pourtant vous les comprenez. Ils parlent de choses anciennes enfouies sous la terre.",
     "title": "Voix murmurantes"
   },
   "whispersBeneathHut": {
@@ -2688,7 +2803,7 @@
       "outcome0": "Vous soulevez les planches du sol et trouvez une étrange amulette qui murmure faiblement.",
       "outcome1": "Vous choisissez de laisser la hutte tranquille. Les murmures s'évanouissent au matin, mais un froid demeure dans l'air."
     },
-    "message": "La nuit, de faibles murmures semblent monter de sous le plancher de l'une des huttes. Les villageois sont mal à l'aise. Enquêtez-vous ?",
+    "message": "La nuit, de faibles murmures semblent monter de sous le plancher de l'une des huttes. Les villageois sont mal à l'aise. Enquêtez-vous ?",
     "title": "Murmures sous la hutte"
   },
   "wildlingBloodOath": {
@@ -2698,10 +2813,10 @@
       }
     },
     "log": {
-      "outcome0": "Vous acceptez le serment de sang. La chasseresse entaille votre paume et la presse contre la sienne, liant le serment dans le sang. 'Dans ma tribu, on m'appelle Chasseresse des Cendres,' dit-elle. 'J'enseignerai à vos chasseurs les voies du sauvage.' La Chasseresse des Cendres a rejoint votre compagnie."
+      "outcome0": "Vous acceptez le serment de sang. La chasseresse entaille votre paume et la presse contre la sienne, liant le serment dans le sang. « Dans ma tribu, on m'appelle Chasseresse des Cendres », dit-elle. « J'enseignerai à vos chasseurs les voies du sauvage. » La Chasseresse des Cendres a rejoint votre compagnie."
     },
-    "message": "La chasseresse sauvageonne revient de la forêt. 'Vous avez sauvé ma tribu de l'extinction,' dit-elle en faisant glisser un couteau d'os sur sa paume. Le sang goutte sur la terre. 'Selon les anciennes voies de mon peuple, je vous offre un serment de sang. Je serai à jamais votre débitrice.'",
-    "title": "Le Serment de sang"
+    "message": "La chasseresse sauvageonne revient de la forêt. « Vous avez sauvé ma tribu de l'extinction », dit-elle en faisant glisser un couteau d'os sur sa paume. Le sang goutte sur la terre. « Selon les anciennes coutumes de mon peuple, je vous offre un serment de sang. Je serai à jamais votre débitrice. »",
+    "title": "Le serment de sang"
   },
   "witchsCurse": {
     "choices": {
@@ -2725,11 +2840,11 @@
       "outcome3": "Alors que vous refusez de payer, la sorcière lève ses mains noueuses et prononce des mots dans une langue oubliée. Quand elle s'en va, les villageois commencent à se sentir faibles, comme si leur force était drainée par une puissance invisible.",
       "outcome4": "Les villageois l'abattent avant qu'elle ne puisse achever sa malédiction. Avant que la sorcière ne tombe, son corps se dissout en fumée noire, ne laissant qu'une puanteur infecte.",
       "outcome5": "Les hommes attaquent, mais la sorcière est trop rapide. Dans un dernier ricanement, elle maudit le village avant de disparaître dans les bois. Une faiblesse intense s'abat sur votre peuple, sapant sa force et sa volonté.",
-      "outcome6": "Vous prononcez d'anciens mots de pouvoir, appris dans de vieux textes. La sorcière recule de peur et fuit, sa malédiction brisée avant d'avoir pu prendre racine.",
+      "outcome6": "Vous prononcez d'anciens mots de pouvoir, appris dans de vieux textes. La sorcière recule de peur et fuit, sa malédiction brisée avant d'avoir pu prendre effet.",
       "outcome7": "Vos menaces ne font qu'irriter la sorcière. Elle rit et vous maudit avec une magie noire. Quand elle s'en va, les villageois commencent à se sentir faibles, comme si leur force était drainée par une puissance invisible."
     },
-    "message": "Une vieille femme voûtée en robes déchirées arrive aux portes. La voix pleine de malice, elle exige : 'Payez-moi 50 pièces d'or, ou je vous maudirai de malheur.'",
-    "title": "La Malédiction de la sorcière"
+    "message": "Une vieille femme voûtée en robes déchirées arrive aux portes. La voix pleine de malveillance, elle exige : « Payez-moi 50 pièces d'or, ou je vous jetterai le mauvais sort. »",
+    "title": "La malédiction de la sorcière"
   },
   "wizardArrives": {
     "choices": {
@@ -2737,8 +2852,8 @@
         "label": "Continuer"
       }
     },
-    "message": "Un petit vieil homme à la longue barbe grise, vêtu d'un manteau gris usé, approche de la colonie. Ses yeux brillent d'une sagesse et d'une puissance anciennes. 'Je suis un sorcier,' déclare-t-il d'une voix résonnant d'autorité arcanique. 'Bâtissez-moi une tour, et je vous aiderai avec des pouvoirs au-delà de l'entendement des mortels.'",
-    "title": "Le sorcier"
+    "message": "Un petit vieil homme à la longue barbe grise, vêtu d'un manteau gris usé, approche de la colonie. Ses yeux brillent d'une sagesse et d'une puissance anciennes. « Je suis un mage », déclare-t-il d'une voix résonnant d'autorité arcanique. « Bâtissez-moi une tour, et je vous aiderai avec des pouvoirs au-delà de l'entendement des mortels. »",
+    "title": "Le mage"
   },
   "wizardBloodstone": {
     "choices": {
@@ -2746,8 +2861,8 @@
         "label": "Continuer"
       }
     },
-    "message": "Le sorcier revient d'un voyage dans la forêt. 'J'ai consulté un vieil ami, un sorcier ermite qui demeure au profond des bois,' dit-il gravement. 'Il m'a parlé de la pierre de sang dont nous avons besoin. Elle se trouve dans le Temple Englouti, un ancien sanctuaire désormais à demi noyé dans les marais de la forêt.'",
-    "title": "Le Temple Englouti"
+    "message": "Le mage revient d'un voyage dans la forêt. « J'ai consulté un vieil ami, un mage ermite qui demeure au plus profond des bois », dit-il gravement. « Il m'a parlé de la pierre de sang dont nous avons besoin. Elle se trouve dans le Temple englouti, un ancien sanctuaire désormais à demi noyé dans les marais de la forêt. »",
+    "title": "Le Temple englouti"
   },
   "wizardBloodstoneStaff": {
     "choices": {
@@ -2755,8 +2870,8 @@
         "label": "Continuer"
       }
     },
-    "message": "Le sorcier examine les gemmes de pierre de sang que vous avez rapportées du Temple Englouti. 'Avec ces pierres de sang, nous avons désormais tout ce qu'il nous faut. Nous pouvons maintenant fabriquer le Bâton de pierre de sang. Avec l'Épée de verre-givre, nous aurons les moyens d'affronter les ténèbres qui rôdent en dessous.'",
-    "title": "Le Bâton de pierre de sang"
+    "message": "Le mage examine les gemmes de pierre de sang que vous avez rapportées du Temple englouti. « Avec ces pierres de sang, nous avons désormais tout ce qu'il nous faut. Nous pouvons maintenant fabriquer le Bâton de pierre de sang. Avec l'Épée de verre-givre, nous aurons les moyens d'affronter les ténèbres qui rôdent dans les profondeurs. »",
+    "title": "Le bâton de pierre de sang"
   },
   "wizardDecryptsScrolls": {
     "choices": {
@@ -2764,7 +2879,7 @@
         "label": "Continuer"
       }
     },
-    "message": "Le sorcier sort de sa tour. 'J'ai déchiffré les anciens parchemins,' dit-il. 'Les créatures d'en bas ne peuvent être tuées qu'avec des armes de grande puissance : une épée de verre-givre et un bâton couronné de pierre de sang. Au profond de la forêt repose la tombe d'un ancien roi, dont les trésors pourraient contenir le verre-givre dont nous avons besoin.'",
+    "message": "Le mage sort de sa tour. « J'ai déchiffré les anciens parchemins », dit-il. « Les créatures d'en bas ne peuvent être tuées qu'avec des armes de grande puissance : une épée de verre-givre et un bâton couronné de pierre de sang. Au plus profond de la forêt repose la tombe d'un ancien roi, dont les trésors pourraient contenir le verre-givre dont nous avons besoin. »",
     "title": "Savoir ancien"
   },
   "wizardFrostglassSword": {
@@ -2773,8 +2888,8 @@
         "label": "Continuer"
       }
     },
-    "message": "Le sorcier examine le verre-givre, une lumière froide dansant sur sa surface. 'Vous l'avez trouvé. Maintenant, l'Épée de verre-givre peut être forgée.'",
-    "title": "L'Épée de verre-givre"
+    "message": "Le mage examine le verre-givre, une lumière froide dansant sur sa surface. « Vous l'avez trouvé. Maintenant, l'Épée de verre-givre peut être forgée. »",
+    "title": "L'épée de verre-givre"
   },
   "wizardNecromancerCastle": {
     "choices": {
@@ -2782,8 +2897,8 @@
         "label": "Continuer"
       }
     },
-    "message": "Le sorcier vous appelle dans sa tour : 'J'ai appris l'existence d'un château au profond des terres sauvages, ancien domaine d'un nécromancien mort depuis longtemps. Dans ses murs reposent des parchemins anciens qui disent comment nous pouvons vaincre ce qui demeure dans les profondeurs de la grotte.'",
-    "title": "Le Château du nécromancien"
+    "message": "Le mage vous appelle dans sa tour : « J'ai appris l'existence d'un château au plus profond des terres sauvages, ancien domaine d'un nécromancien mort depuis longtemps. Dans ses murs reposent des parchemins anciens qui disent comment nous pouvons vaincre ce qui demeure dans les profondeurs de la grotte. »",
+    "title": "Le château du nécromancien"
   },
   "wizardOffer": {
     "choices": {
@@ -2796,15 +2911,15 @@
       }
     },
     "log": {
-      "outcome0": "Votre indécision frustre le sorcier. Il secoue la tête. 'Je resterai donc dans ma tour. Peut-être nos chemins se croiseront-ils encore quand le besoin sera plus grand,' dit-il avant de partir.",
-      "outcome2": "Le sorcier hoche la tête avec satisfaction. 'Un prix équitable pour mes services. Je défendrai votre peuple par le feu arcanique.' Il retire sa capuche usée, révélant des yeux anciens qui brillent d'une puissance déclinante. L'Ancien Sorcier a rejoint votre compagnie.",
-      "outcome3": "Vous déclinez l'offre du sorcier. Il hoche la tête avec compréhension. 'Je resterai donc dans ma tour. Peut-être nos chemins se croiseront-ils encore quand le besoin sera plus grand,' dit-il avant de partir."
+      "outcome0": "Votre indécision frustre le mage. Il secoue la tête. « Je resterai donc dans ma tour. Peut-être nos chemins se croiseront-ils encore quand le besoin sera plus grand », dit-il avant de partir.",
+      "outcome2": "Le mage hoche la tête avec satisfaction. « Un prix équitable pour mes services. Je défendrai votre peuple par le feu arcanique. » Il retire sa capuche usée, révélant des yeux anciens qui brillent d'une puissance déclinante. Le Vieux mage a rejoint votre compagnie.",
+      "outcome3": "Vous déclinez l'offre du mage. Il hoche la tête avec compréhension. « Je resterai donc dans ma tour. Peut-être nos chemins se croiseront-ils encore quand le besoin sera plus grand », dit-il avant de partir."
     },
     "message": {
-      "firstVisit": "Le vieux mage s'approche de vous. « J'ai vécu longtemps et vu bien des choses », dit-il d'une voix lasse. « La menace à laquelle vous faites face est terrible. Pour un prix équitable, je me joindrai à vous dans le combat contre les ennemis qui émergent des profondeurs. »",
-      "repeat": "Le vieux mage s'approche de vous à nouveau. « Mon offre de me joindre à vous dans le combat contre les ennemis des profondeurs tient toujours. Pour un prix équitable, je me joindrai à vous. »"
+      "firstVisit": "Le vieux mage s'approche de vous. « J'ai vécu longtemps et vu bien des choses », dit-il d'une voix lasse. « La menace à laquelle vous faites face est terrible. Pour un prix équitable, je me joindrai à vous dans le combat contre les ennemis qui émergent des profondeurs. »",
+      "repeat": "Le vieux mage s'approche de vous à nouveau. « Mon offre de me joindre à vous dans le combat contre les ennemis des profondeurs tient toujours. Pour un prix équitable, je me joindrai à vous. »"
     },
-    "title": "L'Offre du sorcier"
+    "title": "L'offre du mage"
   },
   "wizardReadyForBattle": {
     "choices": {
@@ -2812,8 +2927,8 @@
         "label": "Continuer"
       }
     },
-    "message": "Le sorcier se tient à l'entrée de sa tour. 'Les armes sont forgées. Nous possédons désormais ce qu'il nous faut pour tenir tête aux créatures des profondeurs de la grotte. Les ténèbres d'en bas apprendront bientôt que ce village ne tombera pas sans combattre. Nous sommes prêts.'",
-    "title": "La Préparation finale"
+    "message": "Le mage se tient à l'entrée de sa tour. « Les armes sont forgées. Nous possédons désormais ce qu'il nous faut pour tenir tête aux créatures des profondeurs de la grotte. Les ténèbres d'en bas apprendront bientôt que ce village ne tombera pas sans combattre. Nous sommes prêts. »",
+    "title": "La préparation finale"
   },
   "trapSuggestion": {
     "choices": {
@@ -2834,7 +2949,7 @@
       }
     },
     "log": {
-      "outcome0": "Les villageois vainquent la meute de loups ! Vous tuez le loup alpha et revendiquez sa peau comme trophée. Elle irradie une puissance primordiale. À côté de l'alpha abattu se trouve un louveteau. Vous décidez de l'emmener pour l'apprivoiser.",
+      "outcome0": "Les villageois vainquent la meute de loups ! Vous tuez le loup alpha et prenez sa peau comme trophée. Elle irradie une puissance primordiale. À côté de l'alpha abattu se trouve un louveteau. Vous décidez de l'emmener pour l'apprivoiser.",
       "outcome1": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. À l'aube, les loups sont repartis sans trouver personne, ne laissant derrière eux que griffures et terreur.",
       "defend_noDeaths": "Les villageois combattent désespérément les loups. Les villageois survivent à l'attaque.",
       "defend_noDeaths_hut": "Les villageois combattent désespérément les loups. Les villageois survivent à l'attaque. Dans leur frénésie, les loups détruisent l'une des huttes, ne laissant que du bois éclaté.",
@@ -2855,7 +2970,7 @@
       "hide_manyDeaths": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Plusieurs villageois sont arrachés de leurs huttes, leurs cris résonnant dans la nuit.",
       "hide_manyDeaths_food": "Les villageois se blottissent dans leurs huttes tandis que les loups rôdent dehors. Plusieurs villageois sont arrachés de leurs huttes, leurs cris résonnant dans la nuit. Les loups pillent vos provisions avant de disparaître à l'aube."
     },
-    "message": "Peu avant minuit, des loups émergent des ténèbres, leurs yeux brillant d'une faim contre nature. Leurs hurlements résonnent, chargés de malice, tandis qu'ils encerclent le village.",
+    "message": "Peu avant minuit, des loups émergent des ténèbres, leurs yeux brillant d'une faim contre nature. Leurs hurlements résonnent, chargés de malveillance, tandis qu'ils encerclent le village.",
     "title": "Attaque de loups"
   },
   "woodcutter": {
@@ -2897,12 +3012,12 @@
       "successLevel6": "Le bûcheron prend la nourriture et livre le jour même un énorme stock de bois au village."
     },
     "message": {
-      "level1": "Un homme musclé portant une grande hache s'approche du village. Il contracte les bras. « Je coupe les arbres comme personne », se vante-t-il. « Donnez-moi {{foodCost}} nourriture, et je vous rapporterai {{woodReward}} bois. »",
-      "level2": "Le bûcheron revient, sa hache brillant au soleil. « Votre village a plus de bouches », observe-t-il. « Je peux vous apporter {{woodReward}} bois. Vous me donnez {{foodCost}} nourriture. Qu'en dites-vous ? »",
-      "level3": "Le bûcheron s'approche à nouveau. « Votre village tient encore », dit-il avec un sourire. « Je peux vous apporter {{woodReward}} bois si vous payez {{foodCost}} nourriture. »",
-      "level4": "Le bûcheron arrive une fois de plus. « Voulez-vous encore utiliser mes services ? {{woodReward}} bois contre {{foodCost}} nourriture », demande-t-il.",
-      "level5": "Le bûcheron apparaît avec un sourire confiant. « Et si nous concluions une affaire de plus ? {{woodReward}} bois contre {{foodCost}} nourriture. »",
-      "level6": "Le bûcheron revient au village. « Voulez-vous encore utiliser mes services ? J'offre {{woodReward}} bois contre {{foodCost}} nourriture », dit-il."
+      "level1": "Un homme musclé portant une grande hache s'approche du village. Il contracte les bras. « Je coupe les arbres comme personne », se vante-t-il. « Donnez-moi {{foodCost}} nourriture, et je vous rapporterai {{woodReward}} bois. »",
+      "level2": "Le bûcheron revient, sa hache brillant au soleil. « Votre village a plus de bouches », observe-t-il. « Je peux vous apporter {{woodReward}} bois. Vous me donnez {{foodCost}} nourriture. Qu'en dites-vous ? »",
+      "level3": "Le bûcheron s'approche à nouveau. « Votre village tient encore », dit-il avec un sourire. « Je peux vous apporter {{woodReward}} bois si vous payez {{foodCost}} nourriture. »",
+      "level4": "Le bûcheron arrive une fois de plus. « Voulez-vous encore utiliser mes services ? {{woodReward}} bois contre {{foodCost}} nourriture », demande-t-il.",
+      "level5": "Le bûcheron apparaît avec un sourire confiant. « Et si nous concluions une affaire de plus ? {{woodReward}} bois contre {{foodCost}} nourriture. »",
+      "level6": "Le bûcheron revient au village. « Voulez-vous encore utiliser mes services ? J'offre {{woodReward}} bois contre {{foodCost}} nourriture », dit-il."
     },
     "title": {
       "level1": "Le bûcheron",
@@ -2916,7 +3031,7 @@
   "wrongReflections": {
     "choices": {
       "cover_well": {
-        "label": "Bien couvrir de planches"
+        "label": "Couvrir le puits de planches"
       },
       "investigate": {
         "label": "Regarder plus profondément dans le puits"
@@ -2928,7 +3043,7 @@
       "outcome2": "Vous condamnez le puits avec des planches de bois, interdisant tout accès à l'eau impie. Bâtir un nouveau puits prend trop de temps, et {{thirstDeaths}} des villageois périssent de soif."
     },
     "message": "La surface du puits du village montre des reflets qui ne correspondent pas à la réalité. Vous vous voyez, mais plus vieux, avec des yeux creux et une bouche pleine de ténèbres.",
-    "title": "Reflets erronés"
+    "title": "Reflets impossibles"
   },
   "wrongVillagers": {
     "choices": {
@@ -2945,7 +3060,7 @@
       "outcome2": "Vous gardez vos distances et les observez de loin. Au bout de plusieurs jours, ils ont disparu, comme s'ils n'avaient jamais existé. Vous ignorez qui ils étaient."
     },
     "message": "Vous comptez les villageois et en trouvez trois de plus qu'il ne devrait y en avoir. Des étrangers sont apparus parmi votre peuple, travaillant et mangeant comme s'ils appartenaient à votre communauté.",
-    "title": "Les mauvais villageois"
+    "title": "Des villageois de trop"
   },
   "youngWomanProtest": {
     "choices": {
@@ -2961,97 +3076,11 @@
     },
     "log": {
       "outcome0": "Vous bannissez la jeune femme du village. Elle convainc {{actualLeavers}} villageois sympathisants de partir avec elle, abandonnant votre colonie pour toujours.",
-      "outcome1": "Peu après que le sacrifice a été accompli au Monolithe Noir, {{actualLeavers}} villageois horrifiés rassemblent leurs affaires et partent avec dégoût.",
-      "outcome2": "Vous acceptez de mettre fin à la pratique du sacrifice humain. La femme propose de détruire le Monolithe Noir et de bâtir à sa place un obélisque d'un blanc pur, afin de purifier les ténèbres des esprits du peuple."
+      "outcome1": "Peu après que le sacrifice a été accompli au Monolithe noir, {{actualLeavers}} villageois horrifiés rassemblent leurs affaires et partent avec dégoût.",
+      "outcome2": "Vous acceptez de mettre fin à la pratique du sacrifice humain. La femme propose de détruire le Monolithe noir et de bâtir à sa place un obélisque d'un blanc pur, afin de purifier les esprits du peuple de leurs ténèbres."
     },
-    "message": "Une jeune femme s'approche de vous, les larmes ruisselant sur son visage. 'Mes deux parents ont été sacrifiés à ce monolithe maudit,' crie-t-elle. 'Ce comportement barbare doit cesser !'",
-    "title": "La Supplication de la jeune femme"
-  },
-  "abandonedCart": {
-    "choices": {
-      "leaveCart": {
-        "label": "Laisser la charrette"
-      },
-      "takeFood": {
-        "label": "Prendre la nourriture"
-      }
-    },
-    "log": {
-      "outcome0": "Les villageois ramènent les sacs. La nourriture est encore bonne.",
-      "outcome1": "La nourriture était empoisonnée. Deux villageois s'effondrent après les premières bouchées.",
-      "outcome2": "Vous laissez la charrette où elle est. Rien ne se passe."
-    },
-    "message": "À l'orée de la forêt, des villageois trouvent une charrette abandonnée chargée de nourriture. Que doivent-ils faire ?",
-    "title": "La charrette abandonnée"
-  },
-  "forestFear": {
-    "choices": {
-      "continue": {
-        "label": "Continuer"
-      }
-    },
-    "message": "Quelque chose dans les bois a tué un villageois. C'était grand et rapide. Personne ne l'a vu clairement. Les chasseurs et les collecteurs ont trop peur d'entrer dans la forêt.",
-    "title": "Quelque chose dans les bois"
-  },
-  "staringDeer": {
-    "choices": {
-      "continue": {
-        "label": "Continuer"
-      }
-    },
-    "message": "Les cerfs se comportent étrangement. Ils ne fuient pas. Ils semblent fixer les chasseurs. La chasse est facile à présent, mais les chasseurs reviennent ébranlés.",
-    "title": "Cerfs figés"
-  },
-  "brimstoneFlux1": {
-    "title": "Le Flux de soufre",
-    "message": "Un petit homme barbu aux bras énormes arrive au village. Il dit connaître la fonderie et pouvoir améliorer votre production d'acier pour un temps. Il a besoin de soufre, et un peu d'or.",
-    "choices": {
-      "accept": {
-        "label": "Accepter l'aide",
-        "cost": "{{sulfurCost}} Soufre, {{goldCost}} Or"
-      },
-      "sendAway": {
-        "label": "Renvoyer"
-      }
-    },
-    "log": {
-      "accept": "Il commence son travail. Peu après, le four brûle plus fort que jamais.",
-      "sendAway": "Le forgeron hausse les épaules et part. Il dit qu'il reviendra peut-être."
-    }
-  },
-  "brimstoneFlux2": {
-    "title": "Un autre flux de soufre",
-    "message": "Le petit forgeron revient, la barbe brûlée sur les bords. Il dit pouvoir réveiller les fours à nouveau, mais cela coûtera plus cette fois.",
-    "choices": {
-      "accept": {
-        "label": "Accepter son aide",
-        "cost": "{{sulfurCost}} Soufre, {{goldCost}} Or"
-      },
-      "sendAway": {
-        "label": "Renvoyer"
-      }
-    },
-    "log": {
-      "accept": "Il alimente le four à nouveau. La production d'acier augmente aussitôt.",
-      "sendAway": "Il part sans discuter. Il dit qu'il reviendra peut-être."
-    }
-  },
-  "brimstoneFlux3": {
-    "title": "L'Infusion de soufre",
-    "message": "Le forgeron revient. Il propose d'améliorer la fonderie de façon permanente. Mais cela vous coûtera.",
-    "choices": {
-      "accept": {
-        "label": "Apprendre sa méthode",
-        "cost": "{{sulfurCost}} Soufre, {{goldCost}} Or"
-      },
-      "sendAway": {
-        "label": "Renvoyer"
-      }
-    },
-    "log": {
-      "accept": "Il améliore le four et part avant l'aube. Les forgerons d'acier produisent plus désormais.",
-      "sendAway": "Il vous regarde, déçu, puis part. Il dit qu'il reviendra peut-être."
-    }
+    "message": "Une jeune femme s'approche de vous, les larmes ruisselant sur son visage. « Mes deux parents ont été sacrifiés à ce monolithe maudit », crie-t-elle. « Ce comportement barbare doit cesser ! »",
+    "title": "La supplication de la jeune femme"
   },
   "wanderersLantern": {
     "choices": {

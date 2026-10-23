@@ -75,7 +75,7 @@
       "name": "Krew Kościożercy"
     },
     "bone_dice": {
-      "description": "Kości do gry wycięte z kości, wypolerowane do miękkiej, niepokojącej gładkości. Dają jedną dodatkową grę u Hazardzisty.",
+      "description": "Kostki do gry wyrzeźbione z kości, wypolerowane do miękkiej, niepokojącej gładkości. Dają jedną dodatkową grę u Hazardzisty.",
       "name": "Kości do gry"
     },
     "bone_necklace": {
@@ -151,7 +151,7 @@
       "name": "Łaska lasu"
     },
     "brimstone_infusion": {
-      "description": "Wytapiacze stali produkują +1 stali",
+      "description": "Kowale stali produkują +1 stali",
       "name": "Nasiąknięcie siarką"
     },
     "fresh_blood": {
@@ -247,8 +247,8 @@
       "name": "Dziwny eliksir"
     },
     "ravenfeather_mantle": {
-      "description": "Mistyczna mantia utkana z lśniących kruczych piór",
-      "name": "Mantia z kruczych piór"
+      "description": "Mistyczny płaszcz utkany z lśniących kruczych piór",
+      "name": "Płaszcz z kruczych piór"
     },
     "ravens_mark": {
       "description": "Obcy częściej zbliżają się do wioski",
@@ -299,7 +299,7 @@
       "name": "Buty cienia"
     },
     "shadow_flute": {
-      "description": "Kościana fletnia, od której cienie poruszają się nienaturalnie",
+      "description": "Kościany flet, od którego cienie poruszają się nienaturalnie",
       "name": "Flet cienia"
     },
     "sharp_aim": {
@@ -311,8 +311,8 @@
       "name": "Zręczne ręce"
     },
     "skeleton_key_schematic": {
-      "description": "Plan budowy klucza szkieletowego",
-      "name": "Klucz szkieletowy"
+      "description": "Plan wykonania wytrycha",
+      "name": "Wytrych"
     },
     "stonebinders_codex": {
       "description": "Tom z ukrytej biblioteki, odsłaniający sekrety sprawnego budowania",
@@ -365,16 +365,16 @@
       "name": "Łowczyni Popiołowego Widma"
     },
     "disgraced_prior": {
-      "description": "Dawny przeor wygnany ze swego zakonu. Okupuje się nieustanną pracą.",
+      "description": "Dawny przeor wygnany ze swego zakonu. Odkupuje winy nieustanną pracą.",
       "name": "Splamiony Przeor"
     },
     "elder_wizard": {
-      "description": "Stary czarodziej u kresu dni, który dawno opanował sztuki arkanicznego ognia.",
+      "description": "Stary czarodziej u kresu dni, który dawno temu opanował sztukę tajemnego ognia.",
       "name": "Stary czarodziej"
     },
     "one_eyed_crow": {
-      "description": "Mistyczny kruk z jednym przenikliwym okiem, oswojony uprzążą kruka.",
-      "name": "Jednooki kruk"
+      "description": "Mistyczna wrona z jednym przenikliwym okiem, oswojona uprzężą wrony.",
+      "name": "Jednooka wrona"
     },
     "restless_knight": {
       "description": "Weteran walk, który widział szczątki starego świata.",
@@ -423,8 +423,8 @@
       "name": "Piła kostna"
     },
     "crow_harness": {
-      "description": "Specjalnie wykonana uprząż do chwytania kruków. Można nią schwytać kruka w Kanionie Czarnodolu.",
-      "name": "Uprząż kruka"
+      "description": "Specjalnie wykonana uprząż do chwytania wron. Można nią schwytać wronę w Kanionie Czarnodolu.",
+      "name": "Uprząż wrony"
     },
     "giant_trap": {
       "description": "Ogromna pułapka zdolna schwytać olbrzymie leśne stworzenia",
@@ -452,7 +452,7 @@
     },
     "natharit_pickaxe": {
       "description": "Niezmiernie wytrzymały kilof z nieznanego materiału, o wyjątkowej jakości",
-      "name": "Kilof Natharit"
+      "name": "Kilof z natharitu"
     },
     "obsidian_axe": {
       "description": "Legendarny topór o wulkanicznych krawędziach ostrych jak brzytwa",
@@ -479,8 +479,8 @@
       "name": "Wzmocniona lina"
     },
     "skeleton_key": {
-      "description": "Tajemniczy klucz, o którym mówi się, że otwiera każdy zamek",
-      "name": "Klucz szkieletowy"
+      "description": "Tajemniczy wytrych, który podobno otwiera każdy zamek",
+      "name": "Wytrych"
     },
     "skull_lantern": {
       "description": "Wykuta z przeklętej kości, oświetla najgłębsze otchłanie",
@@ -545,7 +545,7 @@
       "name": "Kostur krwawego kamienia"
     },
     "compound_bow": {
-      "description": "Broń o wysokiej precyzji znikłej cywilizacji",
+      "description": "Precyzyjna broń znikłej cywilizacji",
       "name": "Łuk bloczkowy"
     },
     "crude_bow": {
@@ -597,7 +597,7 @@
       "name": "Stalowy miecz"
     },
     "stormglass_halberd": {
-      "description": "Najwyższa halabarda wykuta z mistrzowsko oczyszczonego adamantu",
+      "description": "Niezrównana halabarda wykuta z mistrzowsko uszlachetnionego adamantu",
       "name": "Halabarda z burzoszkła"
     },
     "veinfire_elixir": {
@@ -609,7 +609,7 @@
       "name": "Bomba pustki"
     },
     "war_bow": {
-      "description": "Bardzo potężny łuk, wykuty dla siły i precyzji",
+      "description": "Bardzo potężny łuk, wykonany z myślą o sile i precyzji",
       "name": "Łuk wojenny"
     }
   }

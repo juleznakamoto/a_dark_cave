@@ -9,8 +9,8 @@
     "deactivate": "Disattiva"
   },
   "status": {
-    "loading": "Caricamento...",
-    "processing": "Elaborazione...",
+    "loading": "Caricamento…",
+    "processing": "Elaborazione…",
     "free": "Gratis",
     "error": "Errore",
     "success": "Successo!",
@@ -32,30 +32,30 @@
     "merchant": "Mercante"
   },
   "resources": {
-    "wood": "Legno",
+    "wood": "Legna",
     "stone": "Pietra",
     "food": "Cibo",
     "veinroot": "Radicevena",
     "bones": "Ossa",
     "fur": "Pelliccia",
     "leather": "Cuoio",
-    "bone_totem": "Totem d'Ossa",
-    "leather_totem": "Totem di Cuoio",
+    "bone_totem": "Totem d'ossa",
+    "leather_totem": "Totem di cuoio",
     "iron": "Ferro",
     "coal": "Carbone",
     "sulfur": "Zolfo",
     "obsidian": "Ossidiana",
     "adamant": "Adamante",
     "steel": "Acciaio",
-    "blacksteel": "Acciaio Nero",
-    "moonstone": "Pietra di Luna",
-    "black_powder": "Polvere Nera",
-    "ember_bomb": "Bomba di Brace",
-    "ashfire_dust": "Polvere di Cenerardente",
-    "ashfire_bomb": "Bomba di Cenerardente",
-    "void_bomb": "Bomba del Vuoto",
-    "veinfire_elixir": "Elisir di Venafuoco",
-    "poison_arrows": "Frecce Avvelenate",
+    "blacksteel": "Acciaio nero",
+    "moonstone": "Pietra di luna",
+    "black_powder": "Polvere nera",
+    "ember_bomb": "Bomba di brace",
+    "ashfire_dust": "Polvere di cenerardente",
+    "ashfire_bomb": "Bomba di cenerardente",
+    "void_bomb": "Bomba del vuoto",
+    "veinfire_elixir": "Elisir di venafuoco",
+    "poison_arrows": "Frecce avvelenate",
     "torch": "Torcia",
     "silver": "Argento",
     "gold": "Oro",
@@ -71,10 +71,10 @@
     "integrity": "Integrità"
   },
   "population": {
-    "villager_one": "{{count}} Abitante",
-    "villager_other": "{{count}} Abitanti"
+    "villager_one": "{{count}} abitante",
+    "villager_other": "{{count}} abitanti"
   },
   "currency": {
-    "goldAmount": "{{amount}} Oro"
+    "goldAmount": "{{amount}} oro"
   }
 }

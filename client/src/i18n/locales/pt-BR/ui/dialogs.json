@@ -1,17 +1,13 @@
 {
-  "insightPotion": {
-    "title": "Elixir de Perspicácia",
-    "message": "Você bebe o Elixir de Perspicácia. O entendimento floresce em sua mente."
-  },
   "event": {
     "fallbackTitle": "Evento",
     "knowledgeTimeBonus": "+{{seconds}}s de Tempo de Decisão por Conhecimento{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (máx.)",
     "successChance": "Chance de Sucesso: {{percent}}%",
-    "influencedBy": "Influenciado por:",
     "successChanceBase": "Base: {{percent}}%",
     "successChanceStatLine": "{{statValue}} {{statName}} * {{percentPerPoint}}% = {{contribution}}%",
-    "successChanceCruel": "Modo Cruel: {{percent}}%"
+    "successChanceCruel": "Modo Cruel: {{percent}}%",
+    "influencedBy": "Influenciado por:"
   },
   "reward": {
     "actionReward": "Recompensa de Ação",
@@ -21,8 +17,16 @@
     "title": "Evento de Loucura",
     "change": "{{sign}} {{amount}} de Loucura"
   },
+  "insightPotion": {
+    "title": "Elixir de Perspicácia",
+    "message": "Você bebe o Elixir de Perspicácia. O entendimento floresce em sua mente."
+  },
+  "blessingOffer": {
+    "title": "Escolha uma Bênção",
+    "chooseBlessing": "Escolher"
+  },
   "socialPrompt": {
-    "title": "Ganhe recompensas",
+    "title": "Ganhe Recompensas",
     "description": "Conclua as tarefas abaixo para receber bônus. Conclua todas as tarefas para receber um item exclusivo.",
     "signUpRequiresSignInTooltip": "Entre para concluir esta tarefa",
     "signUpTitle": "Cadastre-se",
@@ -116,7 +120,7 @@
     "gamesRemaining": "{{remaining}} de {{total}} jogos restantes.",
     "requiresLuck": "Requer {{luck}} de Sorte para desbloquear",
     "bet": "Aposta:",
-    "practiceBet": "Treino (0 Ouro)",
+    "practiceBet": "Treino (0 de Ouro)",
     "goal": "Objetivo:",
     "you": "Você",
     "gambler": "Apostador",
@@ -129,8 +133,8 @@
     "goldLost": "-{{amount}} de Ouro",
     "practiceWinRemaining": "Você venceu a rodada de treino (sem ouro em jogo). {{remaining}} de {{total}} jogos de treino restantes.",
     "practiceLoseRemaining": "Você perdeu a rodada de treino (sem ouro em jogo). {{remaining}} de {{total}} jogos de treino restantes.",
-    "practiceWinComplete": "Você venceu a rodada de treino (sem ouro em jogo). Treino concluído - você já pode fazer uma aposta de ouro.",
-    "practiceLoseComplete": "Você perdeu a rodada de treino (sem ouro em jogo). Treino concluído - você já pode fazer uma aposta de ouro."
+    "practiceWinComplete": "Você venceu a rodada de treino (sem ouro em jogo). Treino concluído. Agora você pode fazer uma aposta em ouro.",
+    "practiceLoseComplete": "Você perdeu a rodada de treino (sem ouro em jogo). Treino concluído. Agora você pode fazer uma aposta em ouro."
   },
   "leaderboard": {
     "title": "Classificação",
@@ -178,14 +182,14 @@
   "timedEvent": {
     "buy": "Comprar",
     "sell": "Vender",
-    "buyFor": "Comprar por {{amount}} ouro",
-    "sellFor": "Vender por {{amount}} ouro",
+    "buyFor": "Comprar por {{amount}} de ouro",
+    "sellFor": "Vender por {{amount}} de ouro",
     "sayGoodbye": "Despedir-se",
     "discount": "{{percent}}% de desconto",
     "discountFromKnowledge": "{{percent}}% por Conhecimento{{max}}",
     "knowledgeMax": " (máx.)",
     "discountFromRing": "5% do Anel da Obediência",
-    "prolongForInsight": "Estender o tempo em {{minutes}} min por {{cost}} {{resource}}"
+    "prolongForInsight": "Estender o tempo em {{minutes}} min por {{cost}} de {{resource}}"
   },
   "share": {
     "title": "Veja seu progresso",
@@ -197,6 +201,7 @@
     "on": "Ativado",
     "off": "Desativado",
     "playTime": "Tempo de jogo",
+    "playForFreeAt": "Jogue de graça em",
     "save": "Salvar",
     "copy": "Copiar",
     "copiedTitle": "Copiado para a área de transferência",
@@ -204,30 +209,25 @@
     "copyErrorDesc": "Algo deu errado ao copiar para a área de transferência.",
     "share": "Compartilhar",
     "errorTitle": "Não foi possível criar a imagem",
-    "errorDesc": "Algo deu errado ao gerar a imagem.",
-    "playForFreeAt": "Jogue de graça em"
+    "errorDesc": "Algo deu errado ao gerar a imagem."
   },
   "feedback": {
     "title": "Feedback",
     "message": "Encontrou bugs ou problemas de tradução, ou tem sugestões? Adoraria saber.",
+    "openForm": "Enviar feedback",
     "contactVia": "Você também pode entrar em contato comigo por:",
     "reddit": "Reddit",
     "instagram": "Instagram",
-    "email": "E-mail",
-    "openForm": "Enviar feedback"
+    "email": "E-mail"
   },
   "galaxy": {
     "title": "A demo termina aqui",
     "description": "Adicione o jogo completo à sua lista de desejos na Steam para continuar a jornada quando for lançado.",
+    "storeHeaderLink": "Lista de desejos",
     "wishlistButton": "Adicionar à lista de desejos na Steam",
+    "feedbackButton": "Feedback",
     "startNewGameButton": "Iniciar novo jogo",
     "continuePlayingButton": "Continuar jogando",
-    "seeWhatsNextButton": "Ver o que vem",
-    "feedbackButton": "Feedback",
-    "storeHeaderLink": "Lista de desejos"
-  },
-  "blessingOffer": {
-    "title": "Escolha uma bênção",
-    "chooseBlessing": "Escolher"
+    "seeWhatsNextButton": "Ver o que vem por aí"
   }
 }

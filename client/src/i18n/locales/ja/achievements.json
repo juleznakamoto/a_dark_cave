@@ -2,7 +2,7 @@
   "action": {
     "0-chopWood": {
       "label": "樵",
-      "description": "「木材を集める」をレベル10まで強化する。"
+      "description": "「木を伐る」をレベル10まで強化する。"
     },
     "0-craftTorches": {
       "label": "松明職人",
@@ -41,7 +41,7 @@
       "description": "「黒曜石を採掘」をレベル10まで強化する。"
     },
     "1-mineStone": {
-      "label": "石工",
+      "label": "採石工",
       "description": "「石を採掘」をレベル10まで強化する。"
     },
     "1-mineSulfur": {
@@ -90,11 +90,11 @@
     },
     "4-insightful": {
       "label": "洞察者",
-      "description": "洞察を合計10'000消費する。"
+      "description": "洞察を合計10,000消費する。"
     },
     "4-investor": {
       "label": "投資家",
-      "description": "金貨を合計2'500投資する。"
+      "description": "金貨を合計2,500投資する。"
     },
     "4-luckyInvestor": {
       "label": "幸運な投資家",
@@ -182,7 +182,7 @@
     },
     "0-2": {
       "label": "北境の住居",
-      "description": "長屋を5棟建てる。"
+      "description": "ロングハウスを5棟建てる。"
     },
     "0-3": {
       "label": "遊牧の住居",
@@ -243,12 +243,12 @@
       "description": "鉄からアダマントまで、すべてのランタンを作る。"
     },
     "0-pickaxes": {
-      "label": "つるはし",
-      "description": "石からアダマントまで、すべてのつるはしを作る。"
+      "label": "鶴嘴",
+      "description": "石からアダマントまで、すべての鶴嘴を作る。"
     },
     "1-bows": {
       "label": "弓",
-      "description": "粗末から達人まで、すべての弓を作る。"
+      "description": "粗末な弓から達人の弓まで、すべての弓を作る。"
     },
     "1-swords": {
       "label": "剣",
@@ -282,7 +282,7 @@
   "overall": {
     "0-achievementMaxer": {
       "label": "実績の極み",
-      "description": "叙事以外の実績をすべて達成する。"
+      "description": "エピック以外の実績をすべて達成する。"
     },
     "0-caveVeteran": {
       "label": "洞窟の古参",
@@ -303,11 +303,11 @@
     "0-speedrunner": {
       "label": "最速走者",
       "detail": "5時間未満",
-      "description": "5時間以内にゲームに勝利する。"
+      "description": "5時間未満でゲームに勝利する。"
     },
     "0-supporter": {
       "label": "支援者",
-      "description": "支援者報酬の道のりを完了する。"
+      "description": "支援者報酬をすべて受け取る。"
     },
     "0-winCruel": {
       "label": "残酷な勝利",

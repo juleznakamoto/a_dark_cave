@@ -26,9 +26,9 @@
     "name": "Zestaw Gasnącego Wędrowca"
   },
   "crow_harness": {
-    "activationMessage": "Uprząż kruka została dodana do twoich narzędzi! Teraz musisz odnaleźć kruka i przywiązać go do uprzęży.",
-    "description": "Specjalnie wykonana uprząż dla kruków-posłańców. Odblokowuje wątek Kruka. Dodaje towarzysza drużyny.",
-    "name": "Uprząż kruka"
+    "activationMessage": "Uprząż wrony została dodana do twoich narzędzi! Teraz musisz odnaleźć wronę i założyć jej uprząż.",
+    "description": "Specjalnie wykonana uprząż dla wron-posłańców. Odblokowuje wątek Wrony. Dodaje towarzysza drużyny.",
+    "name": "Uprząż wrony"
   },
   "cruel_mode": {
     "activationMessage": "Tryb okrutny aktywowany! Rozpocznij nową grę, by stawić czoła ostatecznemu wyzwaniu.",
@@ -41,9 +41,9 @@
     "name": "Pełna wersja"
   },
   "gold_1000": {
-    "activationMessage": "Dodano 1'000 złota do twojego ekwipunku.",
+    "activationMessage": "Dodano 1 000 złota do twojego ekwipunku.",
     "description": "Porządna ilość złota",
-    "name": "1'000 złota"
+    "name": "1 000 złota"
   },
   "gold_100_free": {
     "activationMessage": "Dodano 100 złota do twojego ekwipunku w prezencie!",
@@ -51,34 +51,34 @@
     "name": "Prezent: 100 złota"
   },
   "gold_15000": {
-    "activationMessage": "Dodano 15'000 złota do twojego ekwipunku.",
+    "activationMessage": "Dodano 15 000 złota do twojego ekwipunku.",
     "description": "Nieświęte ilości złota",
-    "name": "15'000 złota"
+    "name": "15 000 złota"
   },
   "gold_20000": {
-    "activationMessage": "Dodano 20'000 złota do twojego ekwipunku.",
+    "activationMessage": "Dodano 20 000 złota do twojego ekwipunku.",
     "description": "Nieświęte ilości złota",
-    "name": "20'000 złota"
+    "name": "20 000 złota"
   },
   "gold_30000": {
-    "activationMessage": "Dodano 30'000 złota do twojego ekwipunku.",
+    "activationMessage": "Dodano 30 000 złota do twojego ekwipunku.",
     "description": "Bluźniercze ilości złota",
-    "name": "30'000 złota"
+    "name": "30 000 złota"
   },
   "gold_250": {
-    "activationMessage": "Dodano 1'000 złota do twojego ekwipunku.",
+    "activationMessage": "Dodano 1 000 złota do twojego ekwipunku.",
     "description": "Porządna ilość złota",
-    "name": "1'000 złota"
+    "name": "1 000 złota"
   },
   "gold_2500": {
-    "activationMessage": "Dodano 2'500 złota do twojego ekwipunku.",
+    "activationMessage": "Dodano 2 500 złota do twojego ekwipunku.",
     "description": "Pokaźny skarb",
-    "name": "2'500 złota"
+    "name": "2 500 złota"
   },
   "gold_5000": {
-    "activationMessage": "Dodano 5'000 złota do twojego ekwipunku.",
+    "activationMessage": "Dodano 5 000 złota do twojego ekwipunku.",
     "description": "Fortuna w złocie",
-    "name": "5'000 złota"
+    "name": "5 000 złota"
   },
   "great_feast_1": {
     "activationMessage": "Rozpoczęła się Wielka uczta!",

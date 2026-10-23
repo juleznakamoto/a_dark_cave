@@ -47,7 +47,7 @@
       "name": "Fourrure d'ours noir"
     },
     "black_wood": {
-      "description": "Une dalle de bois dense qui boit la lumière, issue de l'arbre du sanctuaire.",
+      "description": "Une pièce de bois dense qui boit la lumière, tirée de l'arbre du sanctuaire.",
       "name": "Bois noir"
     },
     "blackened_mirror": {
@@ -75,7 +75,7 @@
       "name": "Sang du Dévoreur"
     },
     "bone_dice": {
-      "description": "Dés taillés dans des os, polis jusqu'à une douceur troublante. Accorde une partie supplémentaire chez le joueur.",
+      "description": "Dés taillés dans des os, polis jusqu'à une douceur troublante. Accorde une partie supplémentaire chez le parieur.",
       "name": "Dés d'os"
     },
     "bone_necklace": {
@@ -126,6 +126,10 @@
       "description": "Sac à dos de cuir bien ouvragé qui allège le poids sur les épaules",
       "name": "Sac d'explorateur"
     },
+    "fang_charm": {
+      "description": "Cordon de crocs noirs provenant d'une créature massive",
+      "name": "Charme de crocs"
+    },
     "feeding_ring": {
       "description": "Anneau apparu un matin, apparemment soudé à votre doigt",
       "name": "Anneau affamé"
@@ -146,8 +150,12 @@
       "description": "Les cerfs de la forêt semblent moins vous remarquer",
       "name": "Grâce de la forêt"
     },
+    "brimstone_infusion": {
+      "description": "Les forgerons d'acier produisent +1 acier",
+      "name": "Infusion de soufre"
+    },
     "fresh_blood": {
-      "description": "Les étrangers approchent le village plus souvent",
+      "description": "Les étrangers viennent au village plus souvent",
       "name": "Sang frais"
     },
     "frostglass": {
@@ -159,7 +167,7 @@
       "name": "Bâtisseur habile"
     },
     "gifted_ring": {
-      "description": "Anneau simple que quelqu'un vous a laissé trouver",
+      "description": "Anneau simple que quelqu'un a laissé là pour que vous le trouviez",
       "name": "Anneau de fortune"
     },
     "flask_harness": {
@@ -175,7 +183,7 @@
       "name": "Robe de grand prêtre"
     },
     "hollow_king_scepter": {
-      "description": "Sceptre du roi perdu, irradiant pouvoir et folie. Les actions de minage ont 5 % de chances de doubler les récompenses.",
+      "description": "Sceptre du roi perdu, irradiant pouvoir et folie. Les actions de minage ont 5 % de chances de doubler les récompenses.",
       "name": "Sceptre du Roi creux"
     },
     "fur_cloak": {
@@ -227,12 +235,12 @@
       "name": "Orbe d'obsidienne"
     },
     "obsidian_orb_schematic": {
-      "description": "Schéma pour forger un puissant orbe d'obsidienne",
+      "description": "Plan pour fabriquer un puissant orbe d'obsidienne",
       "name": "Orbe d'obsidienne"
     },
     "occultist_grimoire": {
       "description": "Grimoire contenant le savoir impie d'un occultiste hérétique",
-      "name": "Grimoire occultiste"
+      "name": "Grimoire de l'occultiste"
     },
     "odd_trinket": {
       "description": "Élixir ambré lumineux trouvé en coupant du bois",
@@ -243,7 +251,7 @@
       "name": "Manteau de plumes de corbeau"
     },
     "ravens_mark": {
-      "description": "Les étrangers approchent le village plus souvent",
+      "description": "Les étrangers viennent au village plus souvent",
       "name": "Marque du corbeau"
     },
     "rich_veins": {
@@ -251,7 +259,7 @@
       "name": "Veines riches"
     },
     "ravens_mark_enhanced": {
-      "description": "Les étrangers approchent le village beaucoup plus souvent",
+      "description": "Les étrangers viennent au village beaucoup plus souvent",
       "name": "Grande marque du corbeau"
     },
     "rootseeker_charm": {
@@ -275,7 +283,7 @@
       "name": "Anneau du noyé"
     },
     "ring_of_obedience": {
-      "description": "Anneau avec un anneau plus petit attaché, offert par une femme heureuse",
+      "description": "Anneau auquel est attaché un anneau plus petit, offert par une femme heureuse",
       "name": "Anneau d'obéissance"
     },
     "sacrificial_tunic": {
@@ -303,8 +311,8 @@
       "name": "Mains habiles"
     },
     "skeleton_key_schematic": {
-      "description": "Plan pour fabriquer une clé squelette",
-      "name": "Clé squelette"
+      "description": "Plan pour fabriquer un passe-partout",
+      "name": "Passe-partout"
     },
     "stonebinders_codex": {
       "description": "Tome de la bibliothèque cachée révélant les secrets d'une construction efficace",
@@ -349,20 +357,12 @@
     "wooden_figure": {
       "description": "Figurine de bois sculptée représentant une créature troublante aux tentacules",
       "name": "Figurine de bois"
-    },
-    "fang_charm": {
-      "description": "Cordon de crocs noirs provenant d'une créature massive",
-      "name": "Charme de crocs"
-    },
-    "brimstone_infusion": {
-      "description": "Les forgerons d'acier produisent +1 Acier",
-      "name": "Infusion de soufre"
     }
   },
   "fellowship": {
     "ashwraith_huntress": {
       "description": "Chasseresse sauvage d'une tribu forestière liée par serment de sang.",
-      "name": "Chasseresse spectre-cendre"
+      "name": "Chasseresse des Cendres"
     },
     "disgraced_prior": {
       "description": "Ancien prieur rejeté par son ordre. Il se rachète par un labeur sans fin.",
@@ -382,7 +382,7 @@
     },
     "the_hound": {
       "description": "Survivant musclé et défiguré d'un village de montagne empoisonné.",
-      "name": "Chien Brutal"
+      "name": "Chien brutal"
     },
     "grey_one": {
       "description": "Louveteau pris auprès de l'alpha abattu, puis apprivoisé.",
@@ -420,7 +420,7 @@
     },
     "bone_saw": {
       "description": "Outil du nécromancien, anormalement efficace pour dépecer",
-      "name": "Scie d'os"
+      "name": "Scie à os"
     },
     "crow_harness": {
       "description": "Harnais spécialement conçu pour capturer les corbeaux. Peut servir à capturer un corbeau dans le canyon de Blackreach.",
@@ -455,11 +455,11 @@
       "name": "Pioche de natharit"
     },
     "obsidian_axe": {
-      "description": "Hache légendaire aux tranchants volcaniques rasoirs",
+      "description": "Hache légendaire aux tranchants volcaniques affûtés comme des rasoirs",
       "name": "Hache d'obsidienne"
     },
     "obsidian_lantern": {
-      "description": "Lanterne puissante projetant une lumière forte et inébranlable",
+      "description": "Lanterne puissante projetant une lumière forte et constante",
       "name": "Lanterne d'obsidienne"
     },
     "obsidian_pickaxe": {
@@ -480,7 +480,7 @@
     },
     "skeleton_key": {
       "description": "Clé mystérieuse censée ouvrir n'importe quelle serrure",
-      "name": "Clé squelette"
+      "name": "Passe-partout"
     },
     "skull_lantern": {
       "description": "Forgée dans un os maudit, elle éclaire les profondeurs les plus noires",
@@ -589,7 +589,7 @@
       "name": "Hache de guerre nordique"
     },
     "obsidian_sword": {
-      "description": "Lame rasoir forgée dans le verre volcanique",
+      "description": "Lame tranchante comme un rasoir, forgée dans le verre volcanique",
       "name": "Épée d'obsidienne"
     },
     "steel_sword": {
@@ -601,7 +601,7 @@
       "name": "Hallebarde de verre-tempête"
     },
     "veinfire_elixir": {
-      "description": "Élixir de soin alchimique distillé à partir de rare racine-veine",
+      "description": "Élixir de soin alchimique distillé à partir d'une racine-veine rare",
       "name": "Élixir feu-veine"
     },
     "void_bomb": {

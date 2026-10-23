@@ -1,25 +1,29 @@
 {
-  "insightPotion": {
-    "title": "Elisir di Intuizione",
-    "message": "Bevi l'Elisir di Intuizione. La comprensione fiorisce nella tua mente."
-  },
   "event": {
     "fallbackTitle": "Evento",
-    "knowledgeTimeBonus": "+{{seconds}}s di Tempo di Decisione grazie alla Conoscenza{{maxSuffix}}",
+    "knowledgeTimeBonus": "+{{seconds}}s di tempo di decisione grazie alla Conoscenza{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (max.)",
-    "successChance": "Probabilità di Successo: {{percent}}%",
-    "influencedBy": "Influenzata da:",
+    "successChance": "Probabilità di successo: {{percent}}%",
     "successChanceBase": "Base: {{percent}}%",
     "successChanceStatLine": "{{statValue}} {{statName}} * {{percentPerPoint}}% = {{contribution}}%",
-    "successChanceCruel": "Modalità Crudele: {{percent}}%"
+    "successChanceCruel": "Modalità crudele: {{percent}}%",
+    "influencedBy": "Influenzata da:"
   },
   "reward": {
-    "actionReward": "Ricompensa Azione",
-    "claimRewards": "Riscatta Ricompense"
+    "actionReward": "Ricompensa azione",
+    "claimRewards": "Riscatta ricompense"
   },
   "madness": {
-    "title": "Evento di Follia",
+    "title": "Evento di follia",
     "change": "{{sign}} {{amount}} Follia"
+  },
+  "insightPotion": {
+    "title": "Elisir di intuizione",
+    "message": "Bevi l'Elisir di intuizione. La comprensione fiorisce nella tua mente."
+  },
+  "blessingOffer": {
+    "title": "Scegli una benedizione",
+    "chooseBlessing": "Scegli"
   },
   "socialPrompt": {
     "title": "Guadagna ricompense",
@@ -34,7 +38,7 @@
     "playlightTitle": "Prova 1 gioco",
     "discoverGames": "Prova",
     "inviteTitle": "Invita 1 amico",
-    "inviteDesc": "Puoi invitare fino a {{cap}} amici. Ogni volta entrambi riceverete {{amount}} Oro ({{count}}/{{cap}} invitati).",
+    "inviteDesc": "Puoi invitare fino a {{cap}} amici. Ogni volta entrambi riceverete {{amount}} oro ({{count}}/{{cap}} invitati).",
     "copyInviteLink": "Copia link di invito",
     "progressComplete": "Hai completato tutte le attività. Riceverai presto la tua ricompensa.",
     "tasksRemaining_one": "1 attività rimanente",
@@ -44,7 +48,7 @@
     "alreadyClaimedReward": "Hai già riscattato questa ricompensa!",
     "resourceBonus": "+{{amount}} {{resource}}",
     "playlightDiscoverRewardLog": "Hai ricevuto {{amount}} {{resource}} per aver provato un gioco!",
-    "marketingSubscribeLog": "Hai ricevuto {{amount}} Oro per esserti iscritto agli aggiornamenti email!",
+    "marketingSubscribeLog": "Hai ricevuto {{amount}} oro per esserti iscritto agli aggiornamenti email!",
     "followRewardLog": "Hai ricevuto {{amount}} {{resource}} per averci seguito su {{platform}}!",
     "subscribeRewardLog": "Hai ricevuto {{amount}} {{resource}} per esserti iscritto su {{platform}}!",
     "platforms": {
@@ -63,28 +67,28 @@
     }
   },
   "referral": {
-    "invitedLog": "Hai invitato qualcuno di nuovo in questo mondo! +{{amount}} Oro"
+    "invitedLog": "Hai invitato qualcuno di nuovo in questo mondo! +{{amount}} oro"
   },
   "invite": {
     "button": "Invita",
     "copyInviteCode": "Copia codice invito",
-    "goldBonus": "+{{amount}} Oro",
+    "goldBonus": "+{{amount}} oro",
     "linkCopied": "Link di invito copiato!",
-    "linkCopiedDesc": "Condividilo con gli amici per guadagnare {{amount}} Oro ciascuno.",
+    "linkCopiedDesc": "Condividilo con gli amici per guadagnare {{amount}} oro ciascuno.",
     "copyFailed": "Impossibile copiare il link di invito",
     "copyFailedNotSignedIn": "Accedi per copiare il tuo link di invito",
-    "tooltip": "<bold>Invita i tuoi amici</bold> ed entrambi riceverete {{amount}} Oro. Puoi invitare fino a {{cap}} amici. ({{count}}/{{cap}} invitati)."
+    "tooltip": "<bold>Invita i tuoi amici</bold> ed entrambi riceverete {{amount}} oro. Puoi invitare fino a {{cap}} amici. ({{count}}/{{cap}} invitati)."
   },
   "invest": {
     "title": "Investi",
-    "strategy": "Strategia d'Investimento",
-    "amount": "Importo dell'Investimento",
-    "startInvestment": "Avvia Investimento",
+    "strategy": "Strategia d'investimento",
+    "amount": "Importo dell'investimento",
+    "startInvestment": "Avvia investimento",
     "infoAriaLabel": "Spiega gli investimenti e la tabella delle strategie",
     "unlockTooltip": "Si sblocca con {{building}}",
     "minutes": "{{count}} min",
-    "luckyChanceTop": "Colpo di fortuna {{percent}} % ({{fromLuck}} % dalla Fortuna)",
-    "luckyChanceLine": "{{percent}} % Colpo di fortuna: {{gold}}",
+    "luckyChanceTop": "Colpo di fortuna {{percent}}% ({{fromLuck}}% dalla Fortuna)",
+    "luckyChanceLine": "{{percent}}% colpo di fortuna: {{gold}}",
     "headers": {
       "time": "Tempo",
       "success": "Successo",
@@ -102,31 +106,31 @@
     }
   },
   "gambler": {
-    "title": "Il Giocatore Ossessionato",
-    "srDescription": "Gioco di dadi contro il giocatore ossessionato",
+    "title": "Lo scommettitore ossessionato",
+    "srDescription": "Gioco di dadi contro lo scommettitore ossessionato",
     "rulesAriaLabel": "Regole del gioco di dadi",
-    "rulesTurns": "Tu e il Giocatore vi alternate a lanciare un dado.",
+    "rulesTurns": "Tu e lo scommettitore vi alternate a lanciare un dado.",
     "rulesTotals": "I lanci di ogni giocatore vengono sommati.",
     "rulesGoal": "L'obiettivo è fissato a 15.",
     "rulesWinLose": "Se un giocatore raggiunge esattamente l'obiettivo, vince. Se lo supera, perde.",
     "rulesStand": "Se il giocatore di turno ha più punti totali dell'avversario, può scegliere di non lanciare.",
-    "tutorialIntro": "Per aiutarti a imparare il gioco, il Giocatore propone di giocare {{count}} volte senza puntata.",
-    "boneDiceIntro": "Piazza la tua puntata. Possedere i Dadi d'Osso ti permette di giocare due volte contro il Giocatore.",
+    "tutorialIntro": "Per aiutarti a imparare il gioco, lo scommettitore propone di giocare {{count}} volte senza puntata.",
+    "boneDiceIntro": "Piazza la tua puntata. Possedere i Dadi d'osso ti permette di giocare due volte contro lo scommettitore.",
     "placeBet": "Piazza la tua puntata.",
     "gamesRemaining": "{{remaining}} di {{total}} partite rimanenti.",
     "requiresLuck": "Richiede {{luck}} Fortuna per sbloccarsi",
     "bet": "Puntata:",
-    "practiceBet": "Pratica (0 Oro)",
+    "practiceBet": "Pratica (0 oro)",
     "goal": "Obiettivo:",
     "you": "Tu",
-    "gambler": "Giocatore",
+    "gambler": "Scommettitore",
     "roll": "Lancia",
-    "noRoll": "Non Lanciare",
+    "noRoll": "Non lanciare",
     "youWin": "Hai vinto",
     "youLose": "Hai perso",
     "practiceOutcome": "Round di pratica. Nessun oro vinto o perso.",
-    "goldWon": "+{{amount}} Oro",
-    "goldLost": "-{{amount}} Oro",
+    "goldWon": "+{{amount}} oro",
+    "goldLost": "-{{amount}} oro",
     "practiceWinRemaining": "Hai vinto il round di pratica (nessun oro in gioco). {{remaining}} di {{total}} partite di pratica rimanenti.",
     "practiceLoseRemaining": "Hai perso il round di pratica (nessun oro in gioco). {{remaining}} di {{total}} partite di pratica rimanenti.",
     "practiceWinComplete": "Hai vinto il round di pratica (nessun oro in gioco). Pratica completata. Puoi piazzare una puntata in oro.",
@@ -138,16 +142,16 @@
     "prod": "Prod",
     "rank": "#",
     "player": "Giocatore",
-    "completionTime": "Tempo di Completamento",
+    "completionTime": "Tempo di completamento",
     "noEntries": "Ancora nessuna voce",
     "lastUpdated": "Ultimo aggiornamento: {{time}}",
-    "recentCompletionsNote": "Vengono mostrate solo le completazioni degli ultimi 6 mesi.",
+    "recentCompletionsNote": "Vengono mostrati solo i completamenti degli ultimi 6 mesi.",
     "username": "Nome utente:",
     "notSet": "Non impostato",
-    "currentPlaytime": "Tempo di Gioco Attuale:",
+    "currentPlaytime": "Tempo di gioco attuale:",
     "enterName": "Inserisci nome",
-    "normalMode": "Modalità Normale",
-    "cruelMode": "Modalità Crudele",
+    "normalMode": "Modalità normale",
+    "cruelMode": "Modalità crudele",
     "loadFailed": "Impossibile caricare la classifica",
     "invalidUsername": "Nome utente non valido",
     "usernameEmpty": "Il nome utente non può essere vuoto",
@@ -162,18 +166,18 @@
     "saveFailed": "Impossibile salvare il nome utente"
   },
   "investmentResult": {
-    "title": "Risultato dell'Investimento",
-    "success": "Il tuo investimento di {{amount}} Oro ha avuto successo.",
-    "luckyChance": "Colpo di fortuna. I guadagni del tuo investimento di {{amount}} Oro sono moltiplicati per {{multiplier}}.",
-    "partialLoss": "Il tuo investimento di {{amount}} Oro è fallito."
+    "title": "Risultato dell'investimento",
+    "success": "Il tuo investimento di {{amount}} oro ha avuto successo.",
+    "luckyChance": "Colpo di fortuna. I guadagni del tuo investimento di {{amount}} oro sono moltiplicati per {{multiplier}}.",
+    "partialLoss": "Il tuo investimento di {{amount}} oro è fallito."
   },
   "cube": {
-    "fallbackTitle": "Il Cubo Sussurrante",
-    "fallbackMessage": "Il cubo sussurra antichi segreti...",
+    "fallbackTitle": "Il cubo sussurrante",
+    "fallbackMessage": "Il cubo sussurra antichi segreti…",
     "close": "Chiudi",
     "previous": "Cubo precedente",
     "next": "Cubo successivo",
-    "completionLog": "Hai completato questo viaggio. Continua qui o inizia una nuova partita. Magari in Modalità Crudele, se hai il coraggio."
+    "completionLog": "Hai completato questo viaggio. Continua qui o inizia una nuova partita. Magari in modalità crudele, se hai il coraggio."
   },
   "timedEvent": {
     "buy": "Compra",
@@ -182,21 +186,22 @@
     "sellFor": "Vendi per {{amount}} oro",
     "sayGoodbye": "Saluta",
     "discount": "{{percent}}% di sconto",
-    "discountFromKnowledge": "{{percent}}% dalla Conoscenza{{max}}",
+    "discountFromKnowledge": "{{percent}}% dalla conoscenza{{max}}",
     "knowledgeMax": " (max.)",
-    "discountFromRing": "5% dall'Anello dell'Obbedienza",
+    "discountFromRing": "5% dall'anello dell'obbedienza",
     "prolongForInsight": "Estendi il tempo di {{minutes}} min per {{cost}} {{resource}}"
   },
   "share": {
     "title": "Vedi i tuoi progressi",
-    "resources": "Risorse: {{percent}} %",
-    "achievements": "Obiettivi: {{percent}} %",
+    "resources": "Risorse: {{percent}}%",
+    "achievements": "Obiettivi: {{percent}}%",
     "killedCreatures": "Creature uccise",
     "highestAttackWave": "Ondata d'attacco più alta",
-    "cruelMode": "Modalità Crudele",
+    "cruelMode": "Modalità crudele",
     "on": "Attivo",
     "off": "Disattivo",
     "playTime": "Tempo di gioco",
+    "playForFreeAt": "Gioca gratis su",
     "save": "Salva",
     "copy": "Copia",
     "copiedTitle": "Copiato negli appunti",
@@ -204,30 +209,25 @@
     "copyErrorDesc": "Si è verificato un errore durante la copia negli appunti.",
     "share": "Condividi",
     "errorTitle": "Impossibile creare l'immagine",
-    "errorDesc": "Si è verificato un errore durante la generazione dell'immagine.",
-    "playForFreeAt": "Gioca gratis su"
+    "errorDesc": "Si è verificato un errore durante la generazione dell'immagine."
   },
   "feedback": {
     "title": "Feedback",
     "message": "Hai trovato bug o problemi di traduzione, o hai suggerimenti? Mi farebbe piacere sentirti.",
+    "openForm": "Lascia un feedback",
     "contactVia": "Puoi anche contattarmi tramite:",
     "reddit": "Reddit",
     "instagram": "Instagram",
-    "email": "Email",
-    "openForm": "Lascia un feedback"
+    "email": "Email"
   },
   "galaxy": {
     "title": "La demo finisce qui",
     "description": "Aggiungi il gioco completo alla tua lista dei desideri su Steam per continuare il viaggio al rilascio.",
+    "storeHeaderLink": "Aggiungi alla lista dei desideri",
     "wishlistButton": "Aggiungi alla lista dei desideri su Steam",
+    "feedbackButton": "Feedback",
     "startNewGameButton": "Inizia una nuova partita",
     "continuePlayingButton": "Continua a giocare",
-    "seeWhatsNextButton": "Vedi cosa arriva",
-    "feedbackButton": "Feedback",
-    "storeHeaderLink": "Aggiungi alla lista dei desideri"
-  },
-  "blessingOffer": {
-    "title": "Scegli una benedizione",
-    "chooseBlessing": "Scegli"
+    "seeWhatsNextButton": "Scopri le novità in arrivo"
   }
 }

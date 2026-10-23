@@ -4,10 +4,10 @@
     "knowledgeTimeBonus": "+{{seconds}}s czasu decyzji dzięki Wiedzy{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (maks.)",
     "successChance": "Szansa sukcesu: {{percent}}%",
-    "successChanceBase": "Baza: {{percent}}%",
+    "successChanceBase": "Podstawa: {{percent}}%",
     "successChanceStatLine": "{{statValue}} {{statName}} * {{percentPerPoint}}% = {{contribution}}%",
     "successChanceCruel": "Tryb okrutny: {{percent}}%",
-    "influencedBy": "Wpływ:"
+    "influencedBy": "Zależy od:"
   },
   "reward": {
     "actionReward": "Nagroda za akcję",
@@ -30,7 +30,7 @@
     "description": "Wykonaj zadania poniżej, by dostać premie. Wykonaj wszystkie, by dostać ekskluzywny przedmiot.",
     "signUpRequiresSignInTooltip": "Zaloguj się, żeby wykonać to zadanie",
     "signUpTitle": "Utwórz konto",
-    "signUpDesc": "Utwórz darmowe konto, żeby synchronizować postęp między urządzeniami. Bez konta postęp zapisuje się tylko lokalnie i może zginąć.",
+    "signUpDesc": "Utwórz darmowe konto, żeby synchronizować postęp między urządzeniami. Bez konta postęp zapisuje się tylko lokalnie i może przepaść.",
     "signUpButton": "Zarejestruj się",
     "emailUpdatesTitle": "Nowości e-mailem",
     "subscribe": "Zapisz się",
@@ -43,8 +43,6 @@
     "progressComplete": "Wykonałeś wszystkie zadania. Wkrótce dostaniesz nagrodę.",
     "tasksRemaining_one": "Zostało 1 zadanie",
     "tasksRemaining_other": "Zostało {{count}} zadań",
-    "tasksRemaining_few": "Zostały {{count}} zadania",
-    "tasksRemaining_many": "Zostało {{count}} zadań",
     "exclusiveRewardEffect": "{{percent}}% szansy na podwojenie zysków z akcji",
     "progressAriaLabel": "Ekskluzywna nagroda",
     "alreadyClaimedReward": "Już odebrałeś tę nagrodę!",
@@ -66,7 +64,9 @@
         "title": "Reddit",
         "actionJoin": "Dołącz"
       }
-    }
+    },
+    "tasksRemaining_few": "Zostały {{count}} zadania",
+    "tasksRemaining_many": "Zostało {{count}} zadań"
   },
   "referral": {
     "invitedLog": "Zaprosiłeś kogoś nowego do tego świata! +{{amount}} złota"
@@ -76,7 +76,7 @@
     "copyInviteCode": "Kopiuj kod zaproszenia",
     "goldBonus": "+{{amount}} złota",
     "linkCopied": "Skopiowano link zaproszenia!",
-    "linkCopiedDesc": "Udostępnij go znajomym, żeby oboje dostać {{amount}} złota.",
+    "linkCopiedDesc": "Udostępnij go znajomym – za każde zaproszenie oboje dostaniecie {{amount}} złota.",
     "copyFailed": "Nie udało się skopiować linku zaproszenia",
     "copyFailedNotSignedIn": "Zaloguj się, żeby skopiować link zaproszenia",
     "tooltip": "<bold>Zaproś znajomych</bold> i oboje dostaniecie {{amount}} złota. Możesz zaprosić do {{cap}} znajomych. ({{count}}/{{cap}} zaproszonych)."
@@ -89,7 +89,7 @@
     "infoAriaLabel": "Wyjaśnij inwestycje i tabelę strategii",
     "unlockTooltip": "Odblokowuje się po zbudowaniu: {{building}}",
     "minutes": "{{count}} min",
-    "luckyChanceTop": "Szczęśliwy traf {{percent}} % ({{fromLuck}} % z Szczęścia)",
+    "luckyChanceTop": "Szczęśliwy traf {{percent}} % ({{fromLuck}} % ze Szczęścia)",
     "luckyChanceLine": "{{percent}} % szczęśliwego trafu: {{gold}}",
     "headers": {
       "time": "Czas",
@@ -117,7 +117,7 @@
     "rulesWinLose": "Kto trafi w cel dokładnie, wygrywa. Kto go przekroczy, przegrywa.",
     "rulesStand": "Jeśli gracz przy turze ma więcej punktów niż przeciwnik, może nie rzucać.",
     "tutorialIntro": "Żebyś poznał grę, hazardzista proponuje {{count}} partii bez stawki.",
-    "boneDiceIntro": "Postaw stawkę. Kościane kości pozwalają zagrać z hazardzistą dwa razy.",
+    "boneDiceIntro": "Postaw stawkę. Kości do gry pozwalają zagrać z hazardzistą dwa razy.",
     "placeBet": "Postaw stawkę.",
     "gamesRemaining": "Zostało {{remaining}} z {{total}} gier.",
     "requiresLuck": "Wymaga {{luck}} Szczęścia do odblokowania",
@@ -130,13 +130,13 @@
     "noRoll": "Nie rzucaj",
     "youWin": "Wygrywasz",
     "youLose": "Przegrywasz",
-    "practiceOutcome": "Runda treningowa. Bez złota wygranego ani przegranego.",
+    "practiceOutcome": "Runda treningowa. Nie wygrywasz ani nie tracisz złota.",
     "goldWon": "+{{amount}} złota",
     "goldLost": "-{{amount}} złota",
-    "practiceWinRemaining": "Wygrałeś rundę treningową (złoto nie wchodziło). Zostało {{remaining}} z {{total}} gier treningowych.",
-    "practiceLoseRemaining": "Przegrałeś rundę treningową (złoto nie wchodziło). Zostało {{remaining}} z {{total}} gier treningowych.",
-    "practiceWinComplete": "Wygrałeś rundę treningową (złoto nie wchodziło). Trening ukończony. Możesz postawić złoto.",
-    "practiceLoseComplete": "Przegrałeś rundę treningową (złoto nie wchodziło). Trening ukończony. Możesz postawić złoto."
+    "practiceWinRemaining": "Wygrałeś rundę treningową (bez stawki). Zostało {{remaining}} z {{total}} gier treningowych.",
+    "practiceLoseRemaining": "Przegrałeś rundę treningową (bez stawki). Zostało {{remaining}} z {{total}} gier treningowych.",
+    "practiceWinComplete": "Wygrałeś rundę treningową (bez stawki). Trening ukończony. Możesz postawić złoto.",
+    "practiceLoseComplete": "Przegrałeś rundę treningową (bez stawki). Trening ukończony. Możesz postawić złoto."
   },
   "leaderboard": {
     "title": "Ranking",

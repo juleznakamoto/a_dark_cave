@@ -6,22 +6,22 @@
     "description": "Jage den Banditen, der den Dolch des Händlers gestohlen hat.",
     "label": "Banditenlager",
     "log": {
-      "success": "Eure Gruppe verfolgt den Banditen zu einem wackeligen Unterschlupf. Ihr überwältigt ihn, bergt den Dolch des Händlers und findet 250 Silber unter seiner Beute.",
+      "success": "Deine Gruppe verfolgt den Banditen bis zu einem baufälligen Unterschlupf, überwältigt ihn, birgt den Dolch des Händlers und findet 250 Silber in seiner Beute.",
       "failure": "Die Dorfbewohner durchsuchen die Hügel, können den Banditen aber nicht stellen. Die Spur verliert sich, und der Dolch ist noch immer in seinen Händen."
     }
   },
   "blackreachCanyon": {
-    "description": "Steige auf der Suche nach einer Krähe in den Blackreach-Canyon hinab.",
+    "description": "Steige auf der Suche nach einer Krähe in die Schwarzklamm hinab.",
     "label": "Schwarzklamm",
     "log": {
-      "success": "Du wagst dich tief in die Schwarzklamm vor. Dort, auf einer Steinsäule sitzend, thront eine prächtige einäugige Krähe. Mit dem Geschirr näherst du dich vorsichtig und schließt eine Bindung mit dem Wesen. Die Einäugige Krähe ist deiner Gemeinschaft beigetreten."
+      "success": "Du wagst dich tief in die Schwarzklamm vor. Dort, auf einer Steinsäule, thront eine prächtige einäugige Krähe. Mit dem Geschirr näherst du dich ihr vorsichtig und gewinnst ihr Vertrauen. Die Einäugige Krähe schließt sich deinen Gefährten an."
     }
   },
   "blastPortal": {
     "description": "Zertrümmere das uralte Tor und befreie, was darin versiegelt war.",
     "label": "Tor sprengen",
     "log": {
-      "complete": "Die Glutbomben detonieren in einem hellen Feuerblitz. Das alte Tor bricht und bröckelt. Was auch immer darin eingeschlossen war, ist jetzt frei."
+      "complete": "Die Glutbomben detonieren in einem grellen Blitz aus Feuer und Licht. Das uralte Tor bekommt Risse und zerfällt. Was auch immer darin versiegelt war, ist jetzt frei."
     }
   },
   "boneTotems": {
@@ -40,7 +40,7 @@
     "label": "Altar"
   },
   "buildBank": {
-    "description": "Finanzgebäude, das größere Investitionen ermöglicht",
+    "description": "Ein Kontor, in dem du größere Investitionen tätigen kannst",
     "label": "Bank"
   },
   "buildBastion": {
@@ -76,7 +76,7 @@
     "label": "Bodenlose Grube"
   },
   "buildBuildersLodge": {
-    "description": "Eine Loge, in der Meisterbaumeister den Bau im Dorf koordinieren",
+    "description": "Eine Loge, in der Baumeister die Bauarbeiten im ganzen Dorf koordinieren",
     "label": "Baumeisterloge"
   },
   "buildBuildersHall": {
@@ -84,7 +84,7 @@
     "label": "Baumeisterhalle"
   },
   "buildBuildersGuild": {
-    "description": "Eine Gilde von Meisterbaumeistern, die die volle Baukapazität des Dorfs befehligt",
+    "description": "Eine Gilde von Baumeistern, die die gesamte Baukapazität des Dorfs befehligt",
     "label": "Baumeistergilde"
   },
   "buildCabin": {
@@ -100,7 +100,7 @@
     "label": "Schreiberhütte"
   },
   "buildCoinhouse": {
-    "description": "Bescheidenes Finanzgebäude, das kleine Investitionen ermöglicht",
+    "description": "Ein bescheidenes Kontor, in dem du kleine Investitionen tätigen kannst",
     "label": "Münzhaus"
   },
   "buildConsecratedPaleCross": {
@@ -148,7 +148,7 @@
     "label": "Großschmiede"
   },
   "buildGrandHunterLodge": {
-    "description": "Höchste Jagdhütte für Meisterjäger",
+    "description": "Prächtigste Jagdhütte für Meisterjäger",
     "label": "Meisterjägerhütte"
   },
   "buildGrandRepository": {
@@ -180,7 +180,7 @@
     "label": "Schriftenwächterakademie"
   },
   "buildLonghouse": {
-    "description": "Massive nordische Hütte, die viele Dorfbewohner beherbergt",
+    "description": "Massive nordische Gemeinschaftshalle, die viele Dorfbewohner beherbergt",
     "label": "Langhaus"
   },
   "buildMasterTannery": {
@@ -192,7 +192,7 @@
     "label": "Meistergießerei"
   },
   "buildMerchantsGuild": {
-    "description": "Mächtige Gilde, die die besten Geschäfte und Händler bringt",
+    "description": "Mächtige Gilde, die die besten Geschäfte und Händler anlockt",
     "label": "Händlergilde"
   },
   "buildPaleCross": {
@@ -204,7 +204,7 @@
     "label": "Palisaden"
   },
   "buildPillarOfClarity": {
-    "description": "Reinweißer Obelisk, der die Dunkelheit aus den Gedanken reinigt",
+    "description": "Reinweißer Obelisk, der die Dunkelheit aus den Köpfen tilgt",
     "label": "Säule der Klarheit"
   },
   "buildPrimeFoundry": {
@@ -240,7 +240,7 @@
     "label": "Schrein"
   },
   "buildStoneHut": {
-    "description": "Robuste Steinbehausung mit überlegener Unterkunft",
+    "description": "Robuste Steinbehausung, die besseren Schutz bietet",
     "label": "Steinhütte"
   },
   "buildStorehouse": {
@@ -299,16 +299,16 @@
     "description": "Baue eine Brücke über den Canyon, um eine Verbindung zum Waldstamm herzustellen.",
     "label": "Canyonbrücke",
     "log": {
-      "complete": "Die Canyonbrücke ist errichtet. Ashwraith-Händler können deine Siedlung nun erreichen, und du kannst ihnen Waren zu vereinbarten Preisen verkaufen."
+      "complete": "Die Canyonbrücke ist errichtet. Aschengeist-Händler können deine Siedlung nun erreichen, und du kannst ihnen Waren zu vereinbarten Preisen verkaufen."
     }
   },
   "castleRuins": {
     "description": "Plündere die Burg des längst toten Nekromanten tief im Wald.",
     "label": "Burgruinen",
     "log": {
-      "success": "Die Expedition zu den Burgruinen des toten Nekromanten ist erfolgreich! Tief im Inneren findet ihr die in dunkle Seide gewickelten alten Schriftrollen, die kryptisches Wissen darüber offenbaren, wie man besiegen kann, was tief in der Höhle eingesperrt wurde.",
-      "minorFailure": "Eure Expedition wird von grotesken Untoten-Experimenten überfallen, die der Nekromant zurückgelassen hat. {{count}} Dorfbewohner fallen den Untoten zum Opfer, bevor es den Überlebenden gelingt, sich zurückzuziehen.",
-      "majorFailure": "Kurz nachdem eure Expedition die verfluchten Burgruinen betritt, strömen Dutzende Untote aus verborgenen Kammern. In der verzweifelten Schlacht, die folgt, werden {{count}} Dorfbewohner von der übernatürlichen Horde überwältigt. Die Überlebenden fliehen in Panik."
+      "success": "Die Expedition zu den Burgruinen des toten Nekromanten ist erfolgreich! Tief im Inneren findest du die in dunkle Seide gewickelten alten Schriftrollen, die kryptisches Wissen darüber offenbaren, wie man besiegen kann, was tief in der Höhle eingesperrt wurde.",
+      "minorFailure": "Deine Expedition wird von grotesken Untoten-Experimenten überfallen, die der Nekromant zurückgelassen hat. {{count}} Dorfbewohner fallen den Untoten zum Opfer, bevor es den Überlebenden gelingt, sich zurückzuziehen.",
+      "majorFailure": "Kurz nachdem deine Expedition die verfluchten Burgruinen betreten hat, strömen Dutzende Untote aus verborgenen Kammern. In der verzweifelten Schlacht, die folgt, werden {{count}} Dorfbewohner von der übernatürlichen Horde überwältigt. Die Überlebenden fliehen in Panik."
     }
   },
   "chopWood": {
@@ -327,8 +327,8 @@
     "description": "Untersuche den eingestürzten Turm und beende das dunkle Werk, das dort getrieben wird.",
     "label": "Eingestürzter Turm",
     "log": {
-      "success": "Im Turm findet ihr einen Nekromanten und seine Anhänger, umgeben von Fläschchen mit Flüssigkeiten und groben Spritzen. Er sammelte das Blut der Dorfbewohner für finstere Experimente. Eure Männer setzen seinem abscheulichen Werk ein Ende und nehmen eine Phiole seines Blutes. Unter seinen Werkzeugen findet ihr seine mächtige Knochensäge.",
-      "failure": "Eure Expedition erreicht den eingestürzten Turm, doch draußen werdet ihr von vermummten Gestalten angegriffen. Ein großer Mann in dunkler Robe steht unter ihnen und strahlt Bedrohung aus. {{count}} Dorfbewohner fallen, bevor die anderen in Sicherheit fliehen."
+      "success": "Im Turm findest du einen Nekromanten und seine Anhänger, umgeben von Fläschchen mit Flüssigkeiten und groben Spritzen. Er zapfte den Dorfbewohnern Blut für finstere Experimente ab. Deine Männer setzen seinem abscheulichen Werk ein Ende und nehmen eine Phiole seines Blutes mit. Unter seinen Werkzeugen findest du seine mächtige Knochensäge.",
+      "failure": "Deine Expedition erreicht den eingestürzten Turm, wird aber draußen von vermummten Gestalten angegriffen. Ein großer Mann in dunkler Robe steht unter ihnen und strahlt Bedrohung aus. {{count}} Dorfbewohner fallen, bevor die anderen sich in Sicherheit bringen."
     }
   },
   "craftAdamantAxe": {
@@ -518,7 +518,7 @@
     "description": "Durchsuche die verlorene Stadt, die in der weiten Höhlenhalle darunter schläft.",
     "label": "Ruinen erkunden",
     "log": {
-      "firstVisit": "Am Ende der Stufen öffnet sich eine weite Höhle. Im Dunkeln liegen die Ruinen einer verlorenen Stadt, Überreste einer längst vergangenen Zivilisation."
+      "firstVisit": "Am Ende der Stufen öffnet sich vor dir eine weite Höhlenhalle. Im Dunkeln liegen die Ruinen einer verlorenen Stadt, Überreste einer längst vergangenen Zivilisation."
     }
   },
   "exploreTemple": {
@@ -532,14 +532,14 @@
     "description": "Überquere das schwarze Wasser des unterirdischen Sees zu einer kleinen Insel in seiner Mitte.",
     "label": "Unterirdischer See",
     "log": {
-      "complete": "Im grimmigen Schein der Schädellaterne steigst du zum unterirdischen See hinab und baust ein kleines Boot. Auf einer winzigen Insel mitten im dunklen See liegen vergessene Schätze im Schatten, seit Ewigkeiten unberührt."
+      "complete": "Im düsteren Schein der Schädellaterne steigst du zum unterirdischen See hinab und baust ein kleines Boot. Auf einer winzigen Insel mitten im dunklen See liegen vergessene Schätze im Schatten, seit Ewigkeiten unberührt."
     }
   },
   "feedFire": {
     "label": "Feuer schüren"
   },
   "financeExpedition": {
-    "description": "Eine von Gelehrten geleitete Expedition zu Tempeln und Ruinen im Wald finanzieren",
+    "description": "Finanziere eine von Gelehrten geleitete Expedition zu Tempeln und Ruinen im Wald",
     "label": "Expedition finanzieren",
     "log": {
       "complete": "Die Forschungsexpedition kehrt aus dem Wald zurück. Gelehrte verbringen Tage damit, Inschriften, verwitterte Relikte und Fragmente vergessenen Wissens zu katalogisieren."
@@ -550,7 +550,7 @@
     "label": "Waldhöhle",
     "log": {
       "success": "Als die Dorfbewohner in die Höhle hinabsteigen, brechen wilde Hunde in unerbittlichen Rudeln aus der Dunkelheit hervor. Schreie hallen wider, während Krallen reißen und Zähne schnappen. Als die letzte Bestie fällt, lebt jeder Dorfbewohner, und der Stamm der Jägerin ist gerettet.",
-      "failure": "Als die Expedition die Höhle betritt, wird sie von einem Rudel brutaler Hunde überwältigt. {{count}} Dorfbewohner werden von wütenden Kiefern zerrissen, bevor die Überlebenden sich zurückziehen können."
+      "failure": "Als die Expedition die Höhle betritt, wird sie von einem Rudel brutaler Hunde überwältigt. {{count}} Dorfbewohner werden von wilden Fängen zerrissen, bevor die Überlebenden sich zurückziehen können."
     }
   },
   "healElderWizard": {
@@ -570,8 +570,8 @@
     "description": "Betrete das Hügelgrab und durchsuche die Grabkammer nach Frostglas.",
     "label": "Hügelgrab",
     "log": {
-      "success": "Eure Expedition navigiert geschickt durch die tückischen Fallen des Hügelgrabs. Die Dorfbewohner entschärfen die alten Mechanismen und erreichen die Grabkammer. Unter den Schätzen des Königs entdeckt ihr reines Frostglas, kalt wie die Leere selbst.",
-      "failure": "Eure Expedition betritt das Hügelgrab, verfügt aber nicht über das Geschick, seine tödlichen Fallen zu überwinden. {{count}} Dorfbewohner fallen den letzten Verteidigungen des Königs zum Opfer, bevor die Überlebenden voller Entsetzen fliehen und die Körper ihrer Gefährten im verfluchten Grab zurücklassen."
+      "success": "Deine Expedition bahnt sich vorsichtig einen Weg durch die tückischen Fallen des Hügelgrabs. Die Dorfbewohner entschärfen die alten Mechanismen und erreichen die Grabkammer. Unter den Schätzen des Königs entdeckst du reines Frostglas, kalt wie die Leere selbst.",
+      "failure": "Deine Expedition betritt das Hügelgrab, doch ihr fehlt das Geschick, die tödlichen Fallen zu überwinden. {{count}} Dorfbewohner fallen den letzten Schutzvorrichtungen des Königs zum Opfer, bevor die Überlebenden voller Entsetzen fliehen und die Leichen ihrer Gefährten im verfluchten Grab zurücklassen."
     }
   },
   "humans": {
@@ -585,11 +585,11 @@
     }
   },
   "woodenCabin": {
-    "description": "Untersuche die seltsame Holzhütte im Wald.",
+    "description": "Untersuche das seltsame Blockhaus im Wald.",
     "label": "Blockhaus",
     "log": {
-      "success": "Das Blockhaus gehört dem Jäger, der euch Fleisch verkauft hat. Im Schlachthaus hängen Haken, und an keinem hing ein Reh. Er hat Menschen gejagt, und die Nahrung, die er tauschte, war ihr Fleisch. Im Haus findet ihr den Bogen des Händlers.",
-      "failure": "Als ihr euch dem Blockhaus nähert, kommen Pfeile aus dem Dunkel der Tür. Jeder Schuss tötet. Die Pfeilspitzen sind aus Knochen. {{count}} Dorfbewohner sterben, bevor der Rest flieht."
+      "success": "Das Blockhaus gehört dem Jäger, der dir Fleisch verkauft hat. Im Schlachthaus hängen Haken, und an keinem hing je ein Reh. Er hat Menschen gejagt, und die Nahrung, die er verkaufte, war ihr Fleisch. Im Blockhaus findest du den Bogen des Händlers.",
+      "failure": "Als du dich dem Blockhaus näherst, fliegen Pfeile aus dem Dunkel der Tür. Jeder Schuss tötet. Die Pfeilspitzen sind aus Knochen. {{count}} Dorfbewohner sterben, bevor der Rest flieht."
     }
   },
   "invest": {
@@ -599,18 +599,18 @@
     "description": "Zähme den Wolf, den du neben dem toten Alphawolf gefunden hast.",
     "label": "Wolf zähmen",
     "log": {
-      "complete": "Das Wolfsjunge ist gezähmt. Der Graue hat sich deiner Gemeinschaft angeschlossen."
+      "complete": "Das Wolfsjunge ist gezähmt. Der Graue schließt sich deinen Gefährten an."
     }
   },
   "layTrap": {
     "description": "Stelle eine riesige Schlinge auf, um eine große Bestie zu fangen.",
     "label": "Falle legen",
     "log": {
-      "trapSuccessNoDeaths": "Die Riesenfalle funktioniert perfekt! Ein massiver Schwarzbär mit glühend roten Augen ist gefangen. Die Dorfbewohner erschlagen das übernatürliche Biest und beanspruchen sein verfluchtes schwarzes Fell als Trophäe.",
-      "trapSuccessWithDeaths_one": "Die Riesenfalle schnappt einen kolossalen Schwarzbären mit brennend roten Augen! {{count}} Dorfbewohner fällt seinen übernatürlichen Klauen zum Opfer, bevor das Biest endlich erlegt wird. Ihr beansprucht sein verfluchtes schwarzes Fell als hart erkämpfte Trophäe.",
-      "trapSuccessWithDeaths_other": "Die Riesenfalle schnappt einen kolossalen Schwarzbären mit brennend roten Augen! {{count}} Dorfbewohner fallen seinen übernatürlichen Klauen zum Opfer, bevor das Biest endlich erlegt wird. Ihr beansprucht sein verfluchtes schwarzes Fell als hart erkämpfte Trophäe.",
-      "trapSuccessHeavy": "Die Riesenfalle schnappt einen kolossalen Schwarzbären mit Augen wie glühende Kohlen. {{count}} Dorfbewohner fallen seiner übernatürlichen Wut zum Opfer, bevor das Biest endlich überwältigt wird. Ihr beansprucht sein verfluchtes schwarzes Fell.",
-      "trapFailed": "Die Riesenfalle ist aufgestellt, doch als ihr nachseht, findet ihr nur riesige Klauenspuren daneben. Was auch immer in diesen Wäldern umherstreift, ist zu listig für eure Falle … diesmal."
+      "trapSuccessNoDeaths": "Die Riesenfalle funktioniert perfekt! Ein massiger Schwarzbär mit glühend roten Augen hat sich darin verfangen. Die Dorfbewohner erschlagen die übernatürliche Bestie und nehmen ihr verfluchtes schwarzes Fell als Trophäe.",
+      "trapSuccessWithDeaths_one": "In der Riesenfalle verfängt sich ein kolossaler Schwarzbär mit brennend roten Augen! {{count}} Dorfbewohner fällt seinen übernatürlichen Klauen zum Opfer, bevor die Bestie endlich erlegt ist. Du nimmst ihr verfluchtes schwarzes Fell als hart erkämpfte Trophäe.",
+      "trapSuccessWithDeaths_other": "In der Riesenfalle verfängt sich ein kolossaler Schwarzbär mit brennend roten Augen! {{count}} Dorfbewohner fallen seinen übernatürlichen Klauen zum Opfer, bevor die Bestie endlich erlegt ist. Du nimmst ihr verfluchtes schwarzes Fell als hart erkämpfte Trophäe.",
+      "trapSuccessHeavy": "In der Riesenfalle verfängt sich ein kolossaler Schwarzbär mit Augen wie glühende Kohlen. {{count}} Dorfbewohner fallen seiner übernatürlichen Wut zum Opfer, bevor die Bestie endlich überwältigt ist. Du nimmst ihr verfluchtes schwarzes Fell.",
+      "trapFailed": "Die Riesenfalle ist aufgestellt, doch als du nachsiehst, findest du daneben nur riesige Klauenspuren. Was auch immer in diesen Wäldern umherstreift, ist zu listig für deine Falle … diesmal."
     }
   },
   "leatherTotems": {
@@ -626,14 +626,14 @@
     "description": "Seile dich in eine tiefe Kammer hinab, die seit Ewigkeiten unberührt ist.",
     "label": "Niedrige Kammer",
     "log": {
-      "complete": "Mit dem verstärkten Seil steigst du in die niedrige Kammer hinab. Unter den Schätzen findest du einen Meistersteinmetz-Meißel, ein Werkzeug legendärer Handwerkskunst."
+      "complete": "Mit dem verstärkten Seil steigst du in die niedrige Kammer hinab. Unter den Schätzen findest du den Meißel eines Steinmetzmeisters, ein Werkzeug legendärer Handwerkskunst."
     }
   },
   "lureLakeCreature": {
     "description": "Beködere eine Falle am Ufer des unterirdischen Sees und warte, bis etwas anbeißt.",
     "label": "Falle beködern",
     "log": {
-      "complete": "Du stellst am Rand des unterirdischen Sees eine gewaltige Falle auf, mit Bergen von Fleisch als Köder. Stunden vergehen, bis die schwarzen Wasser explodieren und ein titanisches tentakelbehaartes Ungeheuer aus den Tiefen steigt und in die Falle kriecht."
+      "complete": "Du stellst am Rand des unterirdischen Sees eine gewaltige Falle auf, mit Bergen von Fleisch als Köder. Stunden vergehen, bis das schwarze Wasser aufbricht und ein titanisches Ungeheuer mit Tentakeln aus der Tiefe steigt und in die Falle kriecht."
     }
   },
   "mineAdamant": {
@@ -704,11 +704,11 @@
     "description": "Folge dem aufsteigenden Rauch zu einem Gesetzlosenlager.",
     "label": "Aufsteigender Rauch",
     "log": {
-      "success": "Eure Expedition findet ein Gesetzlosenlager. Der Kampf ist brutal, aber ihr siegt. In einer Truhe findet ihr 500 Gold.",
-      "successKeyBonus": " Mit eurem Skelettschlüssel öffnet ihr ein verborgenes Fach und findet weitere 250 Gold.",
+      "success": "Deine Expedition findet ein Gesetzlosenlager. Der Kampf ist brutal, doch deine Leute siegen. In einer Truhe findest du 500 Gold.",
+      "successKeyBonus": " Mit deinem Skelettschlüssel öffnest du ein verborgenes Fach und findest weitere 250 Gold.",
       "captiveOne": " 1 Gefangener aus dem Lager schließt sich dem Dorf an.",
       "captivesOther": " {{count}} Gefangene aus dem Lager schließen sich dem Dorf an.",
-      "failure": "Eure Expedition erreicht ein Gesetzlosenlager, doch der Kampf verläuft schrecklich schief. {{count}} Dorfbewohner fallen, bevor die Überlebenden zurück ins Dorf fliehen."
+      "failure": "Deine Expedition erreicht ein Gesetzlosenlager, doch der Kampf geht furchtbar schief. {{count}} Dorfbewohner fallen, bevor die Überlebenden zurück ins Dorf fliehen."
     }
   },
   "sellBlacksteelBatch": {
@@ -721,22 +721,22 @@
     "label": "Stahl verkaufen"
   },
   "searchMountainLady": {
-    "description": "Schicke eine Expedition aus, um die Bergdame zu finden.",
+    "description": "Schicke eine Expedition aus, um die Dame aus den Bergen zu finden.",
     "label": "Bergdame suchen"
   },
   "steelDelivery": {
     "description": "Liefere Stahl an den Sumpfstamm.",
     "label": "Stahllieferung",
     "log": {
-      "success": "Eure Karawane liefert den Stahl wie versprochen an den Sumpfstamm. Im Gegenzug überreicht euch der Stamm Chitinplatten, die von Sumpfkreaturen gewonnen wurden. Diese können für mächtige Befestigungen genutzt werden."
+      "success": "Deine Karawane liefert den Stahl wie versprochen an den Sumpfstamm. Im Gegenzug überreicht dir der Stamm Chitinplatten, gewonnen von Sumpfkreaturen. Damit lassen sich mächtige Befestigungen errichten."
     }
   },
   "sunkenTemple": {
     "description": "Wate durch den Sumpf zu einem uralten, halb versunkenen Tempel.",
     "label": "Versunkener Tempel",
     "log": {
-      "success": "Eure Expedition watet durch die Sumpfgewässer zum uralten halb versunkenen Tempel. Trotz der Gefahren in den dunklen Wassern navigieren die Dorfbewohner vorsichtig durch die überfluteten Hallen und finden die Blutsteine im inneren Heiligtum des Tempels.",
-      "failure": "Eure Expedition wagt sich in den Sumpf auf der Suche nach dem versunkenen Tempel. Die trüben Gewässer bergen unaussprechliche Schrecken. Abscheuliche Kreaturen aus uralter Magie steigen aus der Tiefe empor und ziehen {{count}} Dorfbewohner unter die Oberfläche, bevor die Überlebenden fliehen."
+      "success": "Deine Expedition watet durch die Sumpfgewässer zum uralten, halb versunkenen Tempel. Trotz der Gefahren in den dunklen Wassern bewegen sich die Dorfbewohner vorsichtig durch die überfluteten Hallen und finden die Blutsteine im inneren Heiligtum des Tempels.",
+      "failure": "Deine Expedition wagt sich auf der Suche nach dem versunkenen Tempel in den Sumpf. Die trüben Gewässer bergen unaussprechliche Schrecken. Abscheuliche Kreaturen, geboren aus uralter Magie, steigen aus der Tiefe empor und ziehen {{count}} Dorfbewohner unter die Oberfläche, bevor die Überlebenden fliehen."
     }
   },
   "swampSanctuary": {
@@ -796,10 +796,10 @@
     "label": "Tiefer vordringen",
     "log": {
       "tarnishedAmulet": "In den Schatten der Höhle glitzert etwas. Du findest ein Angelaufenes Amulett.",
+      "fangCharm": "In einem Riss in der Wand findest du einen Talisman aus schwarzen Reißzähnen. Sie sind viel zu groß für alles, was hier leben sollte.",
       "silverSack": "Du findest einen kleinen Ledersack mit 50 Silber.",
       "mapFragment": "Auf dem Höhlenboden findest du ein zerrissenes Kartenfragment.",
-      "firstVisit": "Die Luft wird kälter, während du den Pfad tiefer in die Höhle hinabsteigst. Die Wände wirken unnatürlich glatt, als hätte sie jemand geformt.",
-      "fangCharm": "In einem Riss in der Wand findest du einen Talisman aus schwarzen Reißzähnen. Sie sind viel zu groß für alles, was hier leben sollte."
+      "firstVisit": "Die Luft wird kälter, während du den Pfad tiefer in die Höhle hinabsteigst. Die Wände wirken unnatürlich glatt, als hätte sie jemand geformt."
     }
   }
 }

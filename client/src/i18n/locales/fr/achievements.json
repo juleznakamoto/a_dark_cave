@@ -13,8 +13,8 @@
       "description": "Améliorez Explorer la grotte au niveau 10."
     },
     "0-gamblerWins": {
-      "label": "Joueur aguerri",
-      "description": "Battez le joueur 10 fois."
+      "label": "Parieur aguerri",
+      "description": "Battez le parieur 10 fois."
     },
     "0-hunt": {
       "label": "Chasseur",
@@ -90,11 +90,11 @@
     },
     "4-insightful": {
       "label": "Perspicace",
-      "description": "Dépensez 10'000 de perspicacité au total."
+      "description": "Dépensez 10 000 points de perspicacité au total."
     },
     "4-investor": {
       "label": "Investisseur",
-      "description": "Investissez 2'500 d'or au total."
+      "description": "Investissez 2 500 or au total."
     },
     "4-luckyInvestor": {
       "label": "Investisseur chanceux",
@@ -124,31 +124,31 @@
   "basic": {
     "0-coalMiner": {
       "label": "Récolter du charbon",
-      "description": "Récoltez 500 de charbon au total."
+      "description": "Récoltez 500 unités de charbon au total."
     },
     "0-hunter": {
       "label": "Chasseur",
-      "description": "Récoltez 500 de nourriture au total."
+      "description": "Récoltez 500 unités de nourriture au total."
     },
     "0-ironMiner": {
       "label": "Récolter du fer",
-      "description": "Récoltez 500 de fer au total."
+      "description": "Récoltez 500 unités de fer au total."
     },
     "0-steelForger": {
       "label": "Forger de l'acier",
-      "description": "Forgez 250 d'acier au total."
+      "description": "Forgez 250 unités d'acier au total."
     },
     "0-stoneMiner": {
       "label": "Récolter de la pierre",
-      "description": "Récoltez 500 de pierre au total."
+      "description": "Récoltez 500 unités de pierre au total."
     },
     "0-tanner": {
       "label": "Tanneur",
-      "description": "Récoltez 250 de cuir au total."
+      "description": "Récoltez 250 unités de cuir au total."
     },
     "0-woodGatherer": {
       "label": "Récolter du bois",
-      "description": "Récoltez 500 de bois au total."
+      "description": "Récoltez 500 unités de bois au total."
     },
     "1-builder": {
       "label": "Construire des bâtiments",
@@ -248,7 +248,7 @@
     },
     "1-bows": {
       "label": "Arcs",
-      "description": "Fabriquez chaque arc du grossier au maître."
+      "description": "Fabriquez tous les arcs, de l'arc grossier à l'arc de maître."
     },
     "1-swords": {
       "label": "Épées",
@@ -301,7 +301,7 @@
       "description": "Maximisez chaque amélioration de l'onglet Domaine."
     },
     "0-speedrunner": {
-      "label": "Sprinteur",
+      "label": "Speedrunner",
       "detail": "<5 heures",
       "description": "Gagnez une partie en moins de 5 heures."
     },

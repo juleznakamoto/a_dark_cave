@@ -2,195 +2,195 @@
   "action": {
     "0-chopWood": {
       "label": "Taglialegna",
-      "description": "Migliora Raccogli Legno al livello 10."
+      "description": "Migliora «Raccogli legna» al livello 10."
     },
     "0-craftTorches": {
-      "label": "Fabbricante di Torce",
-      "description": "Migliora Torce al livello 10."
+      "label": "Fabbricante di torce",
+      "description": "Migliora «Torce» al livello 10."
     },
     "0-exploreCave": {
-      "label": "Esploratore di Caverne",
-      "description": "Migliora Esplora Caverna al livello 10."
+      "label": "Esploratore di caverne",
+      "description": "Migliora «Esplora caverna» al livello 10."
     },
     "0-gamblerWins": {
-      "label": "Giocatore Esperto",
-      "description": "Vinci 10 volte contro il giocatore."
+      "label": "Scommettitore esperto",
+      "description": "Vinci 10 volte contro lo scommettitore."
     },
     "0-hunt": {
       "label": "Cacciatore",
-      "description": "Migliora Caccia al livello 10."
+      "description": "Migliora «Caccia» al livello 10."
     },
     "1-mineAdamant": {
-      "label": "Minatore di Adamante",
-      "description": "Migliora Adamante al livello 10."
+      "label": "Minatore di adamante",
+      "description": "Migliora «Adamante» al livello 10."
     },
     "1-mineCoal": {
-      "label": "Minatore di Carbone",
-      "description": "Migliora Carbone al livello 10."
+      "label": "Minatore di carbone",
+      "description": "Migliora «Carbone» al livello 10."
     },
     "1-mineIron": {
-      "label": "Minatore di Ferro",
-      "description": "Migliora Ferro al livello 10."
+      "label": "Minatore di ferro",
+      "description": "Migliora «Ferro» al livello 10."
     },
     "1-mineMoonstone": {
-      "label": "Minatore di Pietra di Luna",
-      "description": "Migliora Pietra di Luna al livello 10."
+      "label": "Minatore di pietra di luna",
+      "description": "Migliora «Pietra di luna» al livello 10."
     },
     "1-mineObsidian": {
-      "label": "Minatore di Ossidiana",
-      "description": "Migliora Ossidiana al livello 10."
+      "label": "Minatore di ossidiana",
+      "description": "Migliora «Ossidiana» al livello 10."
     },
     "1-mineStone": {
-      "label": "Minatore di Pietra",
-      "description": "Migliora Pietra al livello 10."
+      "label": "Minatore di pietra",
+      "description": "Migliora «Pietra» al livello 10."
     },
     "1-mineSulfur": {
-      "label": "Minatore di Zolfo",
-      "description": "Migliora Zolfo al livello 10."
+      "label": "Minatore di zolfo",
+      "description": "Migliora «Zolfo» al livello 10."
     },
     "2-animals": {
-      "label": "Sacrificatore di Animali",
+      "label": "Sacrificatore di animali",
       "description": "Sacrifica animali 10 volte."
     },
     "2-boneTotems": {
-      "label": "Sacrificatore di Ossa",
+      "label": "Sacrificatore di ossa",
       "description": "Sacrifica totem d'ossa 20 volte."
     },
     "2-craftBoneTotems": {
-      "label": "Fabbricante di Totem d'Ossa",
-      "description": "Migliora Totem d'Ossa al livello 10."
+      "label": "Fabbricante di totem d'ossa",
+      "description": "Migliora «Totem d'ossa» al livello 10."
     },
     "2-craftLeatherTotems": {
-      "label": "Fabbricante di Totem di Cuoio",
-      "description": "Migliora Totem di Cuoio al livello 10."
+      "label": "Fabbricante di totem di cuoio",
+      "description": "Migliora «Totem di cuoio» al livello 10."
     },
     "2-leatherTotems": {
-      "label": "Sacrificatore di Cuoio",
+      "label": "Sacrificatore di cuoio",
       "description": "Sacrifica totem di cuoio 20 volte."
     },
     "3-ashfireBombs": {
-      "label": "Fabbricante di Bombe di Cenerardente",
-      "description": "Crea 20 Bombe di Cenerardente."
+      "label": "Fabbricante di bombe di cenerardente",
+      "description": "Crea 20 Bombe di cenerardente."
+    },
+    "3-burningVeins": {
+      "label": "Vene ardenti",
+      "description": "Usa 10 Elisir di venafuoco."
     },
     "3-emberBombs": {
-      "label": "Fabbricante di Bombe di Brace",
-      "description": "Crea 20 Bombe di Brace."
+      "label": "Fabbricante di bombe di brace",
+      "description": "Crea 20 Bombe di brace."
     },
     "3-veinfireElixir": {
-      "label": "Fabbricante di Elisir di Venafuoco",
-      "description": "Crea 10 Elisir di Venafuoco."
+      "label": "Fabbricante di elisir di venafuoco",
+      "description": "Crea 10 Elisir di venafuoco."
     },
     "4-feedFire": {
-      "label": "Guardiano del Fuoco",
+      "label": "Guardiano del fuoco",
       "description": "Alimenta il fuoco 100 volte."
+    },
+    "4-insightful": {
+      "label": "Perspicace",
+      "description": "Spendi 10.000 intuizione in totale."
     },
     "4-investor": {
       "label": "Investitore",
-      "description": "Investi 2'500 di oro in totale."
+      "description": "Investi 2.500 oro in totale."
+    },
+    "4-luckyInvestor": {
+      "label": "Investitore fortunato",
+      "description": "Riesci in 10 investimenti."
     },
     "4-mentalClarity": {
-      "label": "Lucidità Mentale",
-      "description": "Usa 5 Elisir di Chiarezza."
+      "label": "Lucidità mentale",
+      "description": "Usa 5 Elisir di chiarezza."
     },
     "4-merchantPurchases": {
       "label": "Affarista",
       "description": "Effettua 100 acquisti dal mercante."
     },
+    "4-pileOfDead": {
+      "label": "Mucchio di morti",
+      "description": "Perdi 250 abitanti in totale."
+    },
     "4-solsticeGatherings": {
-      "label": "Celebrante del Solstizio",
+      "label": "Celebrante del solstizio",
       "description": "Organizza 10 raduni del solstizio."
     },
     "4-wellRested": {
       "label": "Dormiglione",
       "description": "Riposa per 20 ore in totale."
-    },
-    "3-burningVeins": {
-      "label": "Vene Ardenti",
-      "description": "Usa 10 Elisir di Venafuoco."
-    },
-    "4-insightful": {
-      "label": "Perspicace",
-      "description": "Spendi 10'000 di Intuizione in totale."
-    },
-    "4-luckyInvestor": {
-      "label": "Investitore Fortunato",
-      "description": "Riesci in 10 investimenti."
-    },
-    "4-pileOfDead": {
-      "label": "Mucchio di Morti",
-      "description": "Perdi 250 abitanti in totale."
     }
   },
   "basic": {
     "0-coalMiner": {
-      "label": "Raccogli Carbone",
+      "label": "Raccogli carbone",
       "description": "Raccogli 500 carbone in totale."
     },
     "0-hunter": {
       "label": "Cacciatore",
-      "description": "Raccogli 500 cibo in totale."
+      "description": "Raccogli 500 unità di cibo in totale."
     },
     "0-ironMiner": {
-      "label": "Raccogli Ferro",
+      "label": "Raccogli ferro",
       "description": "Raccogli 500 ferro in totale."
     },
     "0-steelForger": {
-      "label": "Forgia Acciaio",
+      "label": "Forgia acciaio",
       "description": "Forgia 250 acciaio in totale."
     },
     "0-stoneMiner": {
-      "label": "Raccogli Pietra",
+      "label": "Raccogli pietra",
       "description": "Raccogli 500 pietra in totale."
-    },
-    "0-woodGatherer": {
-      "label": "Raccogli Legno",
-      "description": "Raccogli 500 legno in totale."
-    },
-    "1-builder": {
-      "label": "Costruisci Edifici",
-      "description": "Possiedi almeno 5 edifici."
-    },
-    "1-communityBuilder": {
-      "label": "Costruisci una Comunità",
-      "description": "Raggiungi una popolazione di 10."
-    },
-    "1-explorer": {
-      "label": "Esplora la Caverna",
-      "description": "Esplora la caverna 20 volte."
-    },
-    "1-toolCrafter": {
-      "label": "Fabbrica Strumenti",
-      "description": "Possiedi 5 strumenti diversi."
-    },
-    "1-torchCrafter": {
-      "label": "Fabbrica Torce",
-      "description": "Crea 50 torce in totale."
     },
     "0-tanner": {
       "label": "Conciatore",
       "description": "Raccogli 250 cuoio in totale."
+    },
+    "0-woodGatherer": {
+      "label": "Raccogli legna",
+      "description": "Raccogli 500 unità di legna in totale."
+    },
+    "1-builder": {
+      "label": "Costruisci edifici",
+      "description": "Possiedi almeno 5 edifici."
+    },
+    "1-communityBuilder": {
+      "label": "Costruisci una comunità",
+      "description": "Raggiungi una popolazione di 10."
+    },
+    "1-explorer": {
+      "label": "Esplora la caverna",
+      "description": "Esplora la caverna 20 volte."
+    },
+    "1-toolCrafter": {
+      "label": "Fabbrica strumenti",
+      "description": "Possiedi 5 strumenti diversi."
+    },
+    "1-torchCrafter": {
+      "label": "Fabbrica torce",
+      "description": "Crea 50 torce in totale."
     }
   },
   "building": {
     "0-0": {
-      "label": "Riparo Basilare",
-      "description": "Costruisci 10 Capanne di Legno."
+      "label": "Riparo basilare",
+      "description": "Costruisci 10 Capanne di legno."
     },
     "0-1": {
-      "label": "Riparo Robusto",
-      "description": "Costruisci 10 Capanne di Pietra."
+      "label": "Riparo robusto",
+      "description": "Costruisci 10 Capanne di pietra."
     },
     "0-2": {
-      "label": "Riparo Nordico",
-      "description": "Costruisci 5 Case Lunghe."
+      "label": "Riparo nordico",
+      "description": "Costruisci 5 Case lunghe."
     },
     "0-3": {
-      "label": "Riparo Nomade",
-      "description": "Costruisci 5 Tende di Pelliccia."
+      "label": "Riparo nomade",
+      "description": "Costruisci 5 Tende di pelliccia."
     },
     "1-0": {
       "label": "Cacciatori",
-      "description": "Costruisci la Capanna di Caccia e tutti i potenziamenti."
+      "description": "Costruisci la Capanna di caccia e tutti i potenziamenti."
     },
     "1-1": {
       "label": "Forgiatori",
@@ -201,36 +201,36 @@
       "description": "Costruisci la Fonderia e tutti i potenziamenti."
     },
     "1-3": {
-      "label": "Conciatori di Pelli",
+      "label": "Conciatori di pelli",
       "description": "Costruisci la Conceria e tutti i potenziamenti."
     },
     "2-0": {
       "label": "Minatori",
-      "description": "Costruisci il Pozzo Superficiale e tutti i potenziamenti."
+      "description": "Costruisci il Pozzo superficiale e tutti i potenziamenti."
     },
     "3-0": {
       "label": "Mercanti",
-      "description": "Costruisci l'Avamposto Commerciale e tutti i potenziamenti."
+      "description": "Costruisci l'Avamposto commerciale e tutti i potenziamenti."
     },
     "3-1": {
       "label": "Approvvigionatori",
-      "description": "Costruisci la Capanna delle Scorte e tutti i potenziamenti."
+      "description": "Costruisci la Capanna delle scorte e tutti i potenziamenti."
     },
     "3-2": {
       "label": "Studiosi",
-      "description": "Costruisci la Capanna dello Scrivano e tutti i potenziamenti."
+      "description": "Costruisci la Capanna dello scrivano e tutti i potenziamenti."
     },
     "3-3": {
       "label": "Sacerdoti",
       "description": "Costruisci l'Altare e tutti i potenziamenti."
     },
     "4-0": {
-      "label": "Mura del Mastio",
+      "label": "Mura del mastio",
       "description": "Costruisci le Palizzate e tutti i potenziamenti."
     },
     "4-1": {
-      "label": "Posto di Vedetta",
-      "description": "Costruisci la Torre di Guardia e tutti i potenziamenti."
+      "label": "Posto di vedetta",
+      "description": "Costruisci la Torre di guardia e tutti i potenziamenti."
     }
   },
   "item": {
@@ -248,14 +248,14 @@
     },
     "1-bows": {
       "label": "Archi",
-      "description": "Crea ogni arco dal grezzo al maestro."
+      "description": "Crea ogni arco, da quello rudimentale a quello del maestro."
     },
     "1-swords": {
       "label": "Spade",
       "description": "Crea ogni spada dal ferro all'adamante."
     },
     "2-explorer_pack": {
-      "label": "Lavori in Cuoio",
+      "label": "Lavori in cuoio",
       "description": "Crea tutte e sette le opere in cuoio."
     },
     "2-schematic_weapons": {
@@ -263,26 +263,42 @@
       "description": "Crea tre armi da schema."
     },
     "3-ancient_books": {
-      "label": "Saggezza Antica",
+      "label": "Saggezza antica",
       "description": "Raccogli tutti e quattro i libri antichi."
     },
     "3-fellowship": {
-      "label": "Buona Compagnia",
+      "label": "Buona compagnia",
       "description": "Recluta tutti e sette i compagni."
     },
     "4-blacksteel_equipment": {
-      "label": "Equipaggiamento da Guerra Oscuro",
-      "description": "Crea tutti e tre gli oggetti di guerra in Acciaio Nero."
+      "label": "Equipaggiamento da guerra oscuro",
+      "description": "Crea tutti e tre gli oggetti di guerra in acciaio nero."
     },
     "4-blacksteel_tools": {
-      "label": "Strumenti Oscuri",
-      "description": "Crea tutti e tre gli strumenti in Acciaio Nero."
+      "label": "Strumenti oscuri",
+      "description": "Crea tutti e tre gli strumenti in acciaio nero."
     }
   },
   "overall": {
+    "0-achievementMaxer": {
+      "label": "Massimizzatore di obiettivi",
+      "description": "Completa ogni obiettivo non Epico."
+    },
+    "0-caveVeteran": {
+      "label": "Veterano della caverna",
+      "description": "Vinci 3 partite."
+    },
     "0-endurant": {
       "label": "Resistente",
       "description": "Gioca 30 ore in tutte le partite."
+    },
+    "0-resourceMaxer": {
+      "label": "Massimizzatore di risorse",
+      "description": "Raggiungi la capacità del Grande caveau con ogni risorsa limitata."
+    },
+    "0-upgradeMaxer": {
+      "label": "Massimizzatore di miglioramenti",
+      "description": "Porta al massimo ogni miglioramento della scheda Tenuta."
     },
     "0-speedrunner": {
       "label": "Velocista",
@@ -294,28 +310,12 @@
       "description": "Completa il percorso ricompense sostenitore."
     },
     "0-winCruel": {
-      "label": "Vittoria Crudele",
-      "description": "Vinci una partita in Modalità Crudele."
+      "label": "Vittoria crudele",
+      "description": "Vinci una partita in Modalità crudele."
     },
     "0-winNormal": {
-      "label": "Vittoria Normale",
-      "description": "Vinci una partita in Modalità Normale."
-    },
-    "0-caveVeteran": {
-      "label": "Veterano della Caverna",
-      "description": "Vinci 3 partite."
-    },
-    "0-achievementMaxer": {
-      "label": "Massimizzatore di obiettivi",
-      "description": "Completa ogni obiettivo non Epico."
-    },
-    "0-resourceMaxer": {
-      "label": "Massimizzatore di risorse",
-      "description": "Raggiungi la capacità del Grande Caveau con ogni risorsa limitata."
-    },
-    "0-upgradeMaxer": {
-      "label": "Massimizzatore di miglioramenti",
-      "description": "Porta al massimo ogni miglioramento della scheda Tenuta."
+      "label": "Vittoria normale",
+      "description": "Vinci una partita in Modalità normale."
     }
   }
 }

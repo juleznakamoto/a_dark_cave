@@ -1,7 +1,7 @@
 {
   "settings": {
     "title": "Ustawienia",
-    "music": "Atmosfera",
+    "music": "Dźwięki otoczenia",
     "sound": "Dźwięk",
     "emails": "E-maile",
     "gameMode": "Tryb gry",
@@ -66,8 +66,8 @@
     "openFeedback": "Otwórz formularz opinii",
     "pauseGame": "Wstrzymaj grę",
     "resumeGame": "Wznów grę",
-    "muteMusic": "Wycisz atmosferę",
-    "unmuteMusic": "Włącz atmosferę",
+    "muteMusic": "Wycisz dźwięki otoczenia",
+    "unmuteMusic": "Włącz dźwięki otoczenia",
     "muteSfx": "Wycisz efekty dźwiękowe",
     "unmuteSfx": "Włącz efekty dźwiękowe",
     "cruelModeActive": "Tryb okrutny aktywny",

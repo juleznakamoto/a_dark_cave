@@ -18,7 +18,7 @@
   },
   "cartographer": {
     "title": "Kartograf",
-    "message": "Do wioski przybywa młody mężczyzna. Jego plecak jest pełen map i dziwnych przyrządów. Mówi, że chce nanieść świat na mapę, i proponuje, że nauczy cię rysować szczegółowe mapy za {{silverCost}} srebra. 'Jeśli nie możesz zapłacić teraz, wrócę', mówi.",
+    "message": "Do wioski przybywa młody mężczyzna. Jego plecak jest pełen map i dziwnych przyrządów. Mówi, że chce nanieść świat na mapę, i proponuje, że nauczy cię rysować szczegółowe mapy za {{silverCost}} srebra. „Jeśli nie możesz zapłacić teraz, wrócę” – mówi.",
     "choices": {
       "accept": {
         "label": "Zapłać {{silverCost}} srebra",
@@ -30,7 +30,7 @@
     },
     "log": {
       "outcome0": "Płacisz mu. Zostaje i uczy cię. Od teraz potrafisz rysować szczegółową mapę tej wioski.",
-      "outcome1": "Odsyłasz go bez zapłaty. 'Wrócę', mówi i opuszcza wioskę."
+      "outcome1": "Odsyłasz go bez zapłaty. „Wrócę” – mówi i opuszcza wioskę."
     }
   },
   "alchemistArrives": {
@@ -39,7 +39,7 @@
         "label": "Kontynuuj"
       }
     },
-    "message": "Alchemik wychodzi ze swojej hali: 'Prowadziłem eksperymenty dniem i nocą.' Unosi fiolkę mieniącego się pyłu. 'Stworzyłem coś niezwykłego i straszliwie niebezpiecznego.'",
+    "message": "Alchemik wychodzi ze swojej hali: „Prowadziłem eksperymenty dniem i nocą.” Unosi fiolkę mieniącego się pyłu. „Stworzyłem coś niezwykłego i straszliwie niebezpiecznego.”",
     "title": "Odkrycie alchemika"
   },
   "ashwraithCanyonTradeOffer": {
@@ -48,7 +48,7 @@
         "label": "Kontynuuj"
       }
     },
-    "message": "Łowczyni Popiołowego Widma podchodzi do ciebie. 'Mój lud chce handlować,' mówi, 'lecz między naszymi ziemiami leży głęboki kanion. Potrzebujemy mostu, by karawany mogły przejść. Zbuduj go, a oba nasze ludy będą się rozwijać.'",
+    "message": "Łowczyni Popiołowego Widma podchodzi do ciebie. „Mój lud chce handlować” – mówi – „lecz między naszymi ziemiami leży głęboki kanion. Potrzebujemy mostu, by karawany mogły przejść. Zbuduj go, a oba nasze ludy będą się rozwijać.”",
     "title": "Most dla handlu"
   },
   "bastionBecomesFortress": {
@@ -97,7 +97,7 @@
     "title": "Kuźnia olbrzyma"
   },
   "blindDruidBlessing": {
-    "message": "Ślepy druid wyłania się z lasu. Podchodzi do kapliczki i kiwa głową z uznaniem. 'Bogowie lasu są zadowoleni z twojej pobożności, darzą cię swoim błogosławieństwem.'",
+    "message": "Ślepy druid wyłania się z lasu. Podchodzi do kapliczki i kiwa głową z uznaniem. „Bogowie lasu są zadowoleni z twojej pobożności, darzą cię swoim błogosławieństwem.”",
     "title": "Ślepy druid"
   },
   "bloodDrainedVillagers": {
@@ -125,7 +125,7 @@
       "outcome0": "Idziesz za błotnistymi śladami przez wioskę. Prowadzą od jednego miejsca zbrodni do drugiego. Odciski pasują do twoich butów. Groza przychodzi powoli: to byłeś ty, opętany głodem pierścienia. Gdy wieśniacy poznają prawdę, {{deaths}} ucieka, nie chcąc zostać przy takim przeklętym stworzeniu.",
       "outcome1": "Drżącymi rękami podnosisz siekierę. Pierścień pulsuje, gdy spada ostrze. Agonia rozdziera ramię, gdy kość pęka. Podnosisz odcięty palec i widzisz drobne czarne nitki, jak macki, wrastające głęboko w ciało."
     },
-    "message": "Budzisz się o świcie, ubranie przesiąknięte świeżą krwią. To nie twoja. Wieśniak zjawia się w posiadłości, twarz blada ze zgrozy. 'Ośmioro nie żyje,' szepcze. 'Rozszarpani w nocy.' Pierścień na palcu pulsuje rozdzierającym bólem.",
+    "message": "Budzisz się o świcie, ubranie przesiąknięte świeżą krwią. To nie twoja. Wieśniak zjawia się w posiadłości, twarz blada ze zgrozy. „Ośmioro nie żyje” – szepcze. „Rozszarpani w nocy.” Pierścień na palcu pulsuje rozdzierającym bólem.",
     "title": "Krwawe przebudzenie"
   },
   "bloodInWater": {
@@ -140,7 +140,7 @@
     "log": {
       "outcome0": "Pijesz ze studni mimo czerwonego odcienia. Woda jest zimna, bez smaku, a po chwili nagle znów wygląda na czystą. Umysł musiał cię oszukać.",
       "outcome1": "Pijesz głęboko. Miedziany smak wypełnia usta, gęsty i ciepły. Tej nocy śnisz o tonięciu w czerwonej wodzie i budzisz się z tym smakiem na języku.",
-      "outcome2": "Odmawiasz picia, ale wieśniacy nadal napełniają kubki. Ich wargi barwią się na czerwono, gdy uśmiechają się do ciebie, jakby nic nie było nie tak."
+      "outcome2": "Odmawiasz picia, ale wieśniacy nadal napełniają kubki. Ich wargi barwią się na czerwono, gdy uśmiechają się do ciebie, jakby wszystko było w porządku."
     },
     "message": "Woda w wiosce płynie czerwona przez trzy dni. Wieśniacy zdają się tego nie zauważać i piją, jakby nic się nie zmieniło. Czujesz miedź i żelazo, ale oni twierdzą, że smakuje jak czysta woda źródlana.",
     "title": "Krew w wodzie"
@@ -157,9 +157,9 @@
     },
     "log": {
       "outcome0": "Wieśniacy zostają ofiarowani likantropom. Gdy krwawy księżyc blednie, do wioski wraca spokój. Przynajmniej na razie.",
-      "outcome1": "Likantropy atakują, ale twoje obrony wytrzymują. Ich wódz pada, a z jego zwłok zbierasz Krew likana, jeszcze ciepłą i kipiącą mocą.",
+      "outcome1": "Likantropy atakują, ale twoja obrona wytrzymuje. Ich wódz pada, a z jego zwłok zbierasz Krew likana, jeszcze ciepłą i kipiącą mocą.",
       "outcome2": "Likantropy przełamują obronę i zalewają osadę! Krwawy księżyc blednie, ale zagrożenie zostaje.",
-      "outcome3": "Likantropy atakują, ale twoje obrony wytrzymują. Ich wódz pada, a z jego zwłok zbierasz Krew likana, jeszcze ciepłą i kipiącą mocą.",
+      "outcome3": "Likantropy atakują, ale twoja obrona wytrzymuje. Ich wódz pada, a z jego zwłok zbierasz Krew likana, jeszcze ciepłą i kipiącą mocą.",
       "outcome4": "Likantropy przełamują obronę i zalewają osadę! Krwawy księżyc blednie, ale zagrożenie zostaje."
     },
     "message": {
@@ -218,14 +218,14 @@
       "hide_manyDeaths": "Wieśniacy chowają się w przerażeniu, gdy armia kości przeszukuje wioskę. Wieśniacy, którzy próbowali uciec, giną od kościstych stworów.",
       "hide_manyDeaths_loot": "Wieśniacy chowają się w przerażeniu, gdy armia kości przeszukuje wioskę. Wieśniacy, którzy próbowali uciec, giną od kościstych stworów. Armia plądruje zapasy, zanim zniknie w mroku."
     },
-    "message": "Ziemia drży, gdy szkieletowe stwory wyłaniają się z lasu. Kościożerca użył kości, które mu sprzedałeś, by wykuć nieświęty legion. Z pustymi oczodołami i ostrymi broniami z kości zbliżają się do miasta.",
+    "message": "Ziemia drży, gdy szkieletowe stwory wyłaniają się z lasu. Kościożerca użył kości, które mu sprzedałeś, by wykuć nieświęty legion. Z pustymi oczodołami i ostrą bronią z kości zbliżają się do miasta.",
     "title": "Armia kości"
   },
   "boneDevourer": {
     "title": "Kościożerca",
     "message": {
-      "firstTime": "Zdeformowane stworzenie człapie do bram, zgarbione, pokryte bladą, rozciągniętą skórą. Mówi ochrypłym głosem: 'Szukam kości. Płacę {{silverReward}} srebra.'",
-      "repeat": "Stwór wraca do bram, wciąż zgarbiony, pokryty bladą, rozciągniętą skórą. Mówi tym samym ochrypłym głosem: 'Szukam kości. Płacę {{silverReward}} srebra.'"
+      "firstTime": "Zdeformowane stworzenie człapie do bram, zgarbione, pokryte bladą, rozciągniętą skórą. Mówi ochrypłym głosem: „Szukam kości. Płacę {{silverReward}} srebra.”",
+      "repeat": "Stwór wraca do bram, wciąż zgarbiony, pokryty bladą, rozciągniętą skórą. Mówi tym samym ochrypłym głosem: „Szukam kości. Płacę {{silverReward}} srebra.”"
     },
     "choices": {
       "sellBones": {
@@ -347,12 +347,12 @@
       }
     },
     "log": {
-      "outcome0": "Chowasz kościane kości do gry. Są ciepłe w dłoni.",
+      "outcome0": "Chowasz kości do gry. Są ciepłe w dłoni.",
       "outcome1": "Postanawiasz zostawić je na podłodze jaskini. Gdy odchodzisz, słyszysz, jak raz brzękną, jakby same rzuciły się na pożegnanie.",
       "outcome2": "Twoje wahanie zdaje się gniewać starożytną magię w kościach. Toczą się z twojej dłoni w ciemność."
     },
-    "message": "Schodząc głębiej, znajdujesz zestaw kościanych kości do gry, rzeźbionych w starożytne runy. Widziały wiele fortuny i wiele tragedii. Zatrzymujesz je?",
-    "title": "Kościane kości"
+    "message": "Schodząc głębiej, znajdujesz kości do gry wyrzeźbione z kości i pokryte starożytnymi runami. Widziały wiele szczęścia i wiele tragedii. Zatrzymujesz je?",
+    "title": "Kości do gry"
   },
   "clarityElixirCaveFound": {
     "choices": {
@@ -398,7 +398,7 @@
     "log": {
       "outcome0": "Przyjmujesz mądrość starszej. Wieśniacy kiwają głowami w milczeniu. Droga do wzniesienia ostatecznego pomnika bogom stoi teraz otworem."
     },
-    "message": "Starsza kobieta o zmąconych oczach podchodzi do ciebie. 'Musimy zakończyć przelew ludzkiej krwi,' oświadcza. 'Starożytni bogowie żądają wielkiego pomnika na swoją cześć. Tylko wtedy obdarzą nas dalszą łaską.'",
+    "message": "Starsza kobieta o zmąconych oczach podchodzi do ciebie. „Musimy zakończyć przelew ludzkiej krwi” – oświadcza. „Starzy bogowie żądają wielkiego pomnika na swoją cześć. Tylko wtedy obdarzą nas dalszą łaską”.",
     "title": "Żądanie starszej"
   },
   "boneyardPlea": {
@@ -407,7 +407,7 @@
         "label": "Kontynuuj"
       }
     },
-    "message": "Delegacja wieśniaków odnajduje cię: 'Wielu z nas zginęło. Potrzebujemy godnego miejsca, by pochować zmarłych, by mogli wreszcie spocząć.'",
+    "message": "Delegacja wieśniaków odnajduje cię: „Wielu z nas zginęło. Potrzebujemy godnego miejsca, by pochować zmarłych, by mogli wreszcie spocząć.”",
     "title": "Pogrzeb zmarłych"
   },
   "cannibalRaid": {
@@ -433,7 +433,7 @@
       "hide_oneDeath_loot": "Wieśniacy chowają się w przerażeniu, gdy kanibale przeszukują wioskę. Jeden wieśniak zostaje uprowadzony. Kanibale swobodnie plądrują składy, zanim się wymkną.",
       "hide_manyDeaths": "Wieśniacy chowają się w przerażeniu, gdy kanibale przeszukują wioskę. Kilku wieśniaków ginie albo zostaje uprowadzonych.",
       "hide_manyDeaths_loot": "Wieśniacy chowają się w przerażeniu, gdy kanibale przeszukują wioskę. Kilku wieśniaków ginie albo zostaje uprowadzonych. Kanibale swobodnie plądrują składy, zanim się wymkną.",
-      "victory_one": "Wieśniacy odpędzają kanibali! Jeden wieśniak pada w bitwie, ale plemię wycofuje się w porażce. Wśród ciał znajdujesz prymitywny naszyjnik z ludzkich kości.",
+      "victory_one": "Wieśniacy odpędzają kanibali! Jeden wieśniak pada w bitwie, ale pokonane plemię się wycofuje. Wśród ciał znajdujesz prymitywny naszyjnik z ludzkich kości.",
       "victory_many": "Wieśniacy walczą dzielnie i odpierają kanibali! Kilku wieśniaków pada w bitwie, ale plemię zostaje zmuszone do odwrotu. Wśród ciał znajdujesz prymitywny naszyjnik z ludzkich kości."
     },
     "message": "Bębny wojenne niosą się przez noc, gdy z dziczy wyłania się plemię kanibali. Zbliżają się do wioski z prymitywną bronią i straszliwym zamiarem.",
@@ -454,11 +454,11 @@
       "fallback": "Kolekcjoner wzrusza ramionami i znika w leśnej mgle. Mamrocze, że może wrócić.",
       "fallbackLast": "Kolekcjoner odchodzi bez słowa. Czujesz, że już go nie zobaczysz.",
       "learnOutcome": "Płacisz kolekcjonerowi, a on czyta z księgi cichym głosem. Należała do dawno zmarłego handlarza niewolników, który zwał się Mistrzem Łańcuchów. Piętnował niewolników znakiem łańcucha. Wiedza ciąży na twoim umyśle.",
-      "sellOutcome": "Kolekcjoner odlicza złoto i zabiera księgę. 'Należała do handlarza niewolników, który zwał się Mistrzem Łańcuchów,' mówi. 'Piętnował niewolników znakiem łańcucha.'"
+      "sellOutcome": "Kolekcjoner odlicza złoto i zabiera księgę. „Należała do handlarza niewolników, który zwał się Mistrzem Łańcuchów” – mówi. „Piętnował niewolników znakiem łańcucha.”"
     },
     "message": {
-      "lastChance": "Wędrowny kolekcjoner pojawia się znów. Jego oczy zatrzymują się na księdze w skórzanej oprawie. 'To moja ostatnia oferta,' mówi cicho. 'Sprzedaj ją za {{sellGold}} złota albo zapłać {{teachCost}} złota, a nauczę cię, co w niej napisano.'",
-      "offer": "Wędrowny kolekcjoner pojawia się, wzrok spoczywa na księdze w skórzanej oprawie. 'Kupię tę księgę za {{sellGold}} złota,' oferuje, 'albo za {{teachCost}} złota mogę nauczyć cię jej sekretów.'"
+      "lastChance": "Wędrowny kolekcjoner pojawia się znów. Jego oczy zatrzymują się na księdze w skórzanej oprawie. „To moja ostatnia oferta” – mówi cicho. „Sprzedaj ją za {{sellGold}} złota albo zapłać {{teachCost}} złota, a nauczę cię, co w niej napisano.”",
+      "offer": "Wędrowny kolekcjoner pojawia się, wzrok spoczywa na księdze w skórzanej oprawie. „Kupię tę księgę za {{sellGold}} złota” – oferuje – „albo za {{teachCost}} złota mogę nauczyć cię jej sekretów.”"
     },
     "title": "Oferta kolekcjonera"
   },
@@ -513,7 +513,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "Budzisz się w nocy, gdy kostka zaczyna cicho buczeć. Gdy dotykasz jej powierzchni, puls przyspiesza, aż dokładnie zgadza się z biciem twojego serca. Łagodny, melodyjny głos przebija się przez trzaski: 'Nie znaleziono zapisu... tożsamość niepotwierdzona.' Potem kostka milknie.",
+    "message": "Budzisz się w nocy, gdy kostka zaczyna cicho buczeć. Gdy dotykasz jej powierzchni, puls przyspiesza, aż dokładnie zgadza się z biciem twojego serca. Łagodny, melodyjny głos przebija się przez trzaski: „Nie znaleziono zapisu... tożsamość niepotwierdzona.” Potem kostka milknie.",
     "title": "Kostka się budzi"
   },
   "cubeLostCivilization": {
@@ -522,7 +522,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "Pewnego wieczoru, gdy siedzisz przy ogniu, kostka nagle zaczyna mówić: 'Dawno temu wielka cywilizacja kwitła na tym świecie, lecz runęła, a jej wiedza przepadła w wiekach.'",
+    "message": "Pewnego wieczoru, gdy siedzisz przy ogniu, kostka nagle zaczyna mówić: „Dawno temu wielka cywilizacja kwitła na tym świecie, lecz runęła, a jej wiedza przepadła w wiekach.”",
     "title": "Zaginiona cywilizacja"
   },
   "cube02": {
@@ -531,7 +531,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "'W odległej przeszłości zakon wojowników został zesłany głęboko w jaskinie. Stali się strażnikami czegoś o wielkim znaczeniu.'",
+    "message": "„W odległej przeszłości zakon wojowników wysłano głęboko w jaskinie. Stali się strażnikami czegoś o wielkim znaczeniu”.",
     "title": "Strażnicy"
   },
   "cube03": {
@@ -540,7 +540,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "'Plemię wojowników rozrosło się w ogromne podziemne miasto, bezpieczne od świata na górze, wciąż chroniąc to, po co ich wysłano całe żywoty temu.'",
+    "message": "„Plemię wojowników rozrosło się w ogromne podziemne miasto, bezpieczne od świata na górze, wciąż chroniąc to, po co ich wysłano całe żywoty temu.”",
     "title": "Podziemne miasto"
   },
   "cube04": {
@@ -549,7 +549,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "'Choć pamięć o tym, co chronili, zbladła w legendę, ich czujność trwała. Przez pokolenia wojownicy dochowywali świętej przysięgi, strzegąc tego, co leży w najgłębszym punkcie miasta.'",
+    "message": "„Choć pamięć o tym, co chronili, zbladła w legendę, ich czujność trwała. Przez pokolenia wojownicy dochowywali świętej przysięgi, strzegąc tego, co leży w najgłębszym punkcie miasta.”",
     "title": "Święta przysięga"
   },
   "cube05": {
@@ -558,7 +558,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "'Długo po tym, jak mieszkańcy podziemnego miasta zginęli, przedmiot ich czci pozostał: kolosalna, nieprzenikniona brama, wykuta zapomnianą technologią i ukryta głęboko w najniższych komnatach miasta.'",
+    "message": "„Długo po tym, jak mieszkańcy podziemnego miasta zginęli, przedmiot ich czci pozostał: kolosalna, nieprzenikniona brama, wykuta zapomnianą technologią i ukryta głęboko w najniższych komnatach miasta.”",
     "title": "Zapieczętowana brama"
   },
   "cubeLostKnowledge": {
@@ -567,7 +567,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "Powierzchnia kostki migoce bladym światłem. 'Przeszukiwanie archiwum... dane uszkodzone... odczyt nieudany. Coś o wielkim znaczeniu dla starożytnej cywilizacji było chronione przez bramę albo zamknięte za nią.'",
+    "message": "Powierzchnia kostki migoce bladym światłem. „Przeszukiwanie archiwum... dane uszkodzone... odczyt nieudany. Coś o wielkim znaczeniu dla starożytnej cywilizacji było chronione przez bramę albo zamknięte za nią.”",
     "title": "Zagubiona wiedza"
   },
   "cube06": {
@@ -576,7 +576,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "Gdy brama pęka, kostka drży w twoich dłoniach i ogrzewa się. Uchodzi z niej miękki, lecz pilny szept: 'Odzyskałem zagubioną wiedzę.'",
+    "message": "Gdy brama pęka, kostka drży w twoich dłoniach i ogrzewa się. Uchodzi z niej miękki, lecz pilny szept: „Odzyskałem zagubioną wiedzę.”",
     "title": "Brama się otwiera"
   },
   "cube07": {
@@ -585,7 +585,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "'Starożytna cywilizacja, która wykuła bramę, posiadała wiedzę i technologię daleko poza obecną epokę. Tworzyli nawet urządzenia przeznaczone do wszczepiania w czaszki, wzmacniające umysł i ciało.'",
+    "message": "„Starożytna cywilizacja, która wykuła bramę, posiadała wiedzę i technologię daleko poza obecną epokę. Tworzyli nawet urządzenia przeznaczone do wszczepiania w czaszki, wzmacniające umysł i ciało.”",
     "title": "Starożytna technologia"
   },
   "cube08": {
@@ -594,7 +594,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "'Przywódcy orzekli, że każdy obywatel musi nosić urządzenie w głowie. Niewielka frakcja zaczęła głosić swoje obawy, tworząc opór, gdy rozpoznała niebezpieczeństwa ukryte w tej technologii.'",
+    "message": "„Przywódcy orzekli, że każdy obywatel musi nosić urządzenie w głowie. Niewielka frakcja zaczęła głosić swoje obawy, tworząc opór, gdy rozpoznała niebezpieczeństwa ukryte w tej technologii.”",
     "title": "Ruch oporu"
   },
   "cube09": {
@@ -603,7 +603,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "'Z pomocą urządzeń cywilizacja rozkwitła. Nastała era niespotykanego pokoju i postępu, ich wiedza i kunszt sięgnęły wyżyn, jakich nigdy więcej nie zobaczono.'",
+    "message": "„Z pomocą urządzeń cywilizacja rozkwitła. Nastała era niespotykanego pokoju i postępu, ich wiedza i kunszt sięgnęły wyżyn, jakich nigdy więcej nie zobaczono.”",
     "title": "Złoty wiek"
   },
   "cubeHesitant": {
@@ -621,7 +621,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "'Wiedza płynęła natychmiast, a społeczeństwo kwitło. Za postępem urządzenia w czaszkach kierowały myślami ludzkości, splatając umysły w cichą, nieuchronną sieć.'",
+    "message": "„Wiedza płynęła natychmiast, a społeczeństwo kwitło. Za kulisami postępu urządzenia w czaszkach kierowały myślami ludzkości, splatając umysły w cichą sieć, z której nie było ucieczki”.",
     "title": "Umysł roju"
   },
   "cube11": {
@@ -630,7 +630,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "'Pewnego dnia, bez ostrzeżenia, niewyobrażalny impuls elektryczny przetoczył się przez glob. Każde urządzenie cywilizacji, w tym te wszyte w czaszki, zostało zniszczone.'",
+    "message": "„Pewnego dnia, bez ostrzeżenia, niewyobrażalny impuls elektryczny przetoczył się przez glob. Każde urządzenie tej cywilizacji, w tym te wszczepione w czaszki, zostało zniszczone”.",
     "title": "Wielki upadek"
   },
   "cube12": {
@@ -639,7 +639,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "'Nieliczni ocaleni nie potrafili przetrwać bez urządzeń. Większość zmarła. Cywilizacja cofnęła się. Wiedza osunęła się w niepamięć. Natura odzyskała ziemie, zostawiając tylko pogrzebane ruiny tam, gdzie niegdyś stała wielkość.'",
+    "message": "„Nieliczni ocaleni nie potrafili przetrwać bez urządzeń. Większość zmarła. Cywilizacja cofnęła się. Wiedza osunęła się w niepamięć. Natura odzyskała ziemie, zostawiając tylko pogrzebane ruiny tam, gdzie niegdyś stała wielkość.”",
     "title": "Koniec cywilizacji"
   },
   "cube13": {
@@ -657,7 +657,7 @@
         "label": "Kontynuuj"
       }
     },
-    "message": "'Gdy opór wystąpił przeciw urządzeniom w czaszkach, zesłano ich w głąb góry, zamkniętych za bramą. Bez drogi powrotu kopali coraz głębiej. W izolacji i ciemności ich umysły erodowały, aż osunęli się w szaleństwo i degenerację.'",
+    "message": "„Gdy ruch oporu wystąpił przeciw urządzeniom w czaszkach, jego członków zesłano w głąb góry i zamknięto za bramą. Bez drogi powrotu kopali coraz głębiej. W izolacji i ciemności ich umysły niszczały, aż popadli w szaleństwo i zwyrodnienie”.",
     "title": "Wygnani"
   },
   "cube14b": {
@@ -666,7 +666,7 @@
         "label": "Kontynuuj"
       }
     },
-    "message": "'Pewnego dnia, głęboko w ziemi, znaleźli monolit z nieznanej rudy. Z niej wykuli ładunek, by zniszczyć bramę. Lecz bomba nie przebiła bramy. Zamiast tego wyzwoliła impuls elektryczny, który objął planetę, niszcząc wszystkie urządzenia i kończąc cywilizację.'",
+    "message": "„Pewnego dnia, głęboko w ziemi, znaleźli monolit z nieznanej rudy. Z niej wykuli ładunek, by zniszczyć bramę. Lecz bomba nie przebiła bramy. Zamiast tego wyzwoliła impuls elektryczny, który objął planetę, niszcząc wszystkie urządzenia i kończąc cywilizację.”",
     "title": "Nieznana ruda"
   },
   "cube14c": {
@@ -675,7 +675,7 @@
         "label": "Kontynuuj"
       }
     },
-    "message": "'Wkrótce po wybuchu mężczyzna stojący w pobliżu zaczął się dematerializować, jego kształt migotał, na sekundy półprzezroczysty. Przerażony i oszalały tym, co się stało, chwilę później odebrał sobie życie.'",
+    "message": "„Wkrótce po wybuchu mężczyzna stojący w pobliżu zaczął się dematerializować, jego kształt migotał, na sekundy półprzezroczysty. Przerażony i oszalały tym, co się stało, chwilę później odebrał sobie życie.”",
     "title": "Migoczący człowiek"
   },
   "cube14d": {
@@ -684,7 +684,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "'Zdesperowani ocaleni uznali, że ruda może pomóc im przejść przez bramę. Z ostatnich odłamków zbudowali mniejszą bombę i ustawili przed bramą najprzytomniejszego z nich. Zaraz po wybuchu stał się zjawiście prześwitujący, a potem zniknął za bramą.'",
+    "message": "„Zdesperowani ocaleni uznali, że ruda może pomóc im przejść przez bramę. Z ostatnich odłamków zbudowali mniejszą bombę i ustawili przed bramą najprzytomniejszego z nich. Zaraz po wybuchu stał się zjawiście prześwitujący, a potem zniknął za bramą.”",
     "title": "Przez bramę"
   },
   "cube15a": {
@@ -702,7 +702,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "Po skończonej opowieści jeden z ocalonych występuje naprzód i wskazuje na ciebie: 'To ty jesteś człowiekiem, który zniknął za bramą. Jesteś jednym z nas.'",
+    "message": "Po skończonej opowieści jeden z ocalonych występuje naprzód i wskazuje na ciebie: „To ty jesteś człowiekiem, który zniknął za bramą. Jesteś jednym z nas.”",
     "title": "Rozpoznanie"
   },
   "cube16a": {
@@ -711,7 +711,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "Obok zabitych stworów znajdujesz coś, co wygląda na jedno z urządzeń czaszkowych. Jest zepsute, ale wciąż możesz odczytać na nim kilka liter: 'N**RAL**K'.",
+    "message": "Obok zabitych stworów znajdujesz coś, co wygląda na jedno z urządzeń czaszkowych. Jest zepsute, ale wciąż możesz odczytać na nim kilka liter: „N**RAL**K”.",
     "title": "Urządzenie czaszkowe"
   },
   "cube16b": {
@@ -720,7 +720,7 @@
         "label": "Zamknij"
       }
     },
-    "message": "Stwory dają ci coś, co wygląda na jedno z urządzeń czaszkowych. Jest zepsute, ale wciąż możesz odczytać na nim kilka liter: 'N**RAL**K'.",
+    "message": "Stwory dają ci coś, co wygląda na jedno z urządzeń czaszkowych. Jest zepsute, ale wciąż możesz odczytać na nim kilka liter: „N**RAL**K”.",
     "title": "Urządzenie czaszkowe"
   },
   "cubeDiscovery": {
@@ -741,7 +741,7 @@
     "log": {
       "outcome0": "Wieśniak odchodzi w pośpiechu, nieświadomy mrocznej prawdy. Pierścień nasycił się dobrze."
     },
-    "message": "Blady wieśniak pędzi do ciebie, bez tchu z przerażenia. 'Obóz najemników... wszyscy nie żyją. Pozabijali się w nocy. Wśród zwłok znaleźliśmy trochę srebra.'",
+    "message": "Blady wieśniak pędzi do ciebie, bez tchu z przerażenia. „Obóz najemników... wszyscy nie żyją. Pozabijali się w nocy. Wśród zwłok znaleźliśmy trochę srebra.”",
     "title": "Masakra"
   },
   "deerHerd": {
@@ -808,7 +808,7 @@
       "outcome1": "Opuszczasz broń i starasz się ich zrozumieć. Gestami i połamanymi słowami dzielą się strzępami historii, które zostawiają cię bez słów."
     },
     "message": "W głębinach za rozbitą bramą znajdujesz stwory, które nie atakują. Ich kształty są mgliście ludzkie, wykrzywione pokoleniami w ciemności. Gestykulują, próbując porozumieć się połamanymi słowami i znakami.",
-    "title": "Mieszkańcy dołu"
+    "title": "Mieszkańcy głębin"
   },
   "establishTradeProposal": {
     "choices": {
@@ -823,14 +823,14 @@
       }
     },
     "log": {
-      "outcome0": "Wysyłasz jednookiego kruka z wiadomością do Górskiego Klasztoru. Czekasz, aż wróci.",
-      "outcome1": "Wysyłasz jednookiego kruka z wiadomością do Plemienia Bagien. Czekasz, aż wróci.",
-      "outcome2": "Wysyłasz jednookiego kruka z wiadomością do Przybrzeżnych Rybaków. Czekasz, aż wróci."
+      "outcome0": "Wysyłasz jednooką wronę z wiadomością do Górskiego Klasztoru. Czekasz, aż wróci.",
+      "outcome1": "Wysyłasz jednooką wronę z wiadomością do Plemienia Bagien. Czekasz, aż wróci.",
+      "outcome2": "Wysyłasz jednooką wronę z wiadomością do Przybrzeżnych Rybaków. Czekasz, aż wróci."
     },
     "title": "Nawiązywanie handlu",
     "message": {
-      "firstTime": "Starszy wioski podchodzi do ciebie i radzi wysłać kruka z wiadomością, by nawiązać handel. Dokąd wysłać pierwszą wieść?",
-      "repeat": "Starszy wioski podchodzi do ciebie raz jeszcze. 'Kruk okazał się użyteczny. Czy wysłać kolejną wiadomość?'"
+      "firstTime": "Starszy wioski podchodzi do ciebie i radzi wysłać wronę z wiadomością, by nawiązać handel. Dokąd wysłać pierwszą wieść?",
+      "repeat": "Starszy wioski podchodzi do ciebie raz jeszcze. „Wrona okazała się użyteczna. Czy wysłać kolejną wiadomość?”"
     }
   },
   "exiledScholarVisit": {
@@ -848,7 +848,7 @@
       "outcome2": "Odsyłasz uczonego. Odchodzi z rozczarowanym westchnieniem, ale czujesz, że może wrócić.",
       "outcome3": "Uczony odchodzi, niezadowolony z twojego wahania."
     },
-    "message": "Uczony czarnych sztuk podchodzi do twojej posiadłości. Widząc trzy fiolki krwi, mówi z nutą powściąganego podniecenia: 'Mogę stworzyć mieszaninę, która da ci wielką moc.'",
+    "message": "Znawca czarnej magii zbliża się do twojej posiadłości. Widząc trzy fiolki krwi, mówi z nutą powściąganego podniecenia: „Mogę stworzyć mieszaninę, która da ci wielką moc”.",
     "title": "Wygnany uczony"
   },
   "insightBlessingOffer": {
@@ -863,11 +863,11 @@
     },
     "log": {
       "outcomeChosen": "Bez kolejnego słowa postać cicho odchodzi, zostawiając cię z nowo zdobytym błogosławieństwem.",
-      "outcomeSendAway": "Odsyłasz postać. Odchodzą bez słowa, ale czujesz, że mogą wrócić.",
+      "outcomeSendAway": "Odsyłasz postać. Odchodzi bez słowa, ale czujesz, że może wrócić.",
       "outcomeFallback": "Postać nie czeka dłużej i wnika z powrotem w mrok."
     },
     "message": "Zakapturzona postać zjawia się w posiadłości, milcząca, potem szepcze niskim głosem. Oferuje ci błogosławieństwo.",
-    "title": "Cicha ofiara"
+    "title": "Cicha propozycja"
   },
   "obsidianOrbVisit": {
     "choices": {
@@ -923,7 +923,7 @@
       }
     },
     "log": {
-      "outcome1": "Wieśniacy zbierają się na ucztę! Zmęczenie ustępuje, a duchy się podnoszą, choćby na krótko.",
+      "outcome1": "Wieśniacy zbierają się na ucztę! Zmęczenie ustępuje, a nastroje się poprawiają, choćby na krótko.",
       "outcome2": "Odrzucasz propozycję uczty. Wieśniacy przyjmują decyzję, choć rozczarowani.",
       "outcome3": "Czas mija i okazja do uczty gaśnie."
     },
@@ -957,21 +957,21 @@
   "feedingRing": {
     "choices": {
       "keepRing": {
-        "label": "Zostaw pierścień"
+        "label": "Nie zdejmuj pierścienia"
       },
       "removeRing": {
         "label": "Zdejmij go"
       }
     },
     "log": {
-      "outcome0": "Palec pulsuje cicho, ale na razie zostawiasz go w spokoju. Niemal czujesz słabe bicie przy skórze.",
-      "outcome1": "Jakkolwiek się starasz, pierścień nie schodzi. Zdaje się zrośnięty z ciałem. Palec pulsuje cicho, ale na razie zostawiasz go w spokoju. Niemal czujesz słabe bicie przy skórze."
+      "outcome0": "Palec lekko boli, ale na razie zostawiasz go w spokoju. Niemal czujesz słabe pulsowanie pod skórą.",
+      "outcome1": "Jakkolwiek się starasz, pierścień nie schodzi. Zdaje się zrośnięty z ciałem. Palec lekko boli, ale na razie zostawiasz go w spokoju. Niemal czujesz słabe pulsowanie pod skórą."
     },
     "message": "Budzisz się w środku nocy, sparaliżowany. Czujesz obecność przy łożu, cichą i nieruchomą. Zanim groza zdąży cię ogarnąć, sen wciąga cię z powrotem w pustkę. O świcie znajdujesz na palcu nieznany pierścień.",
     "title": "Nocny terror"
   },
   "fifthWave": {
-    "message": "Z jaskini wyłaniają się niezliczone blade postacie, ich kształty niewypowiedziane, gdy zbliżają się do miasta.",
+    "message": "Z jaskini wyłaniają się niezliczone blade postacie o kształtach, których nie sposób opisać, i zbliżają się do miasta.",
     "title": "Piąta fala"
   },
   "findElderScroll": {
@@ -995,7 +995,7 @@
         "label": "Kontynuuj"
       }
     },
-    "message": "Starszy wieśniak podchodzi do ciebie, oczy ciężkie od wiedzy. 'Zrobiłeś pierwsze kroki w tym okrutnym świecie,' mówi cicho. 'Wkrótce będziesz musiał zdecydować, czy chcesz stawić czoła temu, co przed tobą.'",
+    "message": "Starszy wieśniak podchodzi do ciebie, oczy ciężkie od wiedzy. „Zrobiłeś pierwsze kroki w tym okrutnym świecie” – mówi cicho. „Wkrótce będziesz musiał zdecydować, czy chcesz stawić czoła temu, co przed tobą.”",
     "title": "Starszy wioski"
   },
   "firstWave": {
@@ -1018,9 +1018,9 @@
       }
     },
     "log": {
-      "outcome0": "Oczy dzikuski rozświetlają się nadzieją. 'Jesteś naszą jedyną szansą,' mówi. 'Jaskinia bestii leży głęboko w lesie. Niech bogowie cię strzegą.'"
+      "outcome0": "Oczy dzikuski rozświetlają się nadzieją. „Jesteś naszą jedyną szansą” – mówi. „Jaskinia bestii leży głęboko w lesie. Niech bogowie cię strzegą.”"
     },
-    "message": "Dzikuska wyłania się z lasu, blade ciało pokryte plemiennymi znakami i bliznami. 'Przychodzę z plemienia w lesie,' mówi pilnie. 'Brutalne bestie z jaskini w gęstwinie atakują nas bez wytchnienia. Grozi nam zagłada. Proszę, pomóż nam przetrwać.'",
+    "message": "Dzikuska wyłania się z lasu, blade ciało pokryte plemiennymi znakami i bliznami. „Przychodzę z plemienia z lasu” – mówi naglącym tonem. „Brutalne bestie z jaskini w gęstwinie atakują nas bez wytchnienia. Grozi nam zagłada. Proszę, pomóż nam przetrwać”.",
     "title": "Rozpaczliwa prośba"
   },
   "fourthWave": {
@@ -1037,12 +1037,12 @@
       }
     },
     "log": {
-      "outcome0": "Zamieć uderza z brutalną siłą. Cała produkcja zwalnia do pełzania, gdy wieśniacy walczą o przetrwanie w zimnie.",
+      "outcome0": "Zamieć uderza z brutalną siłą. Cała produkcja niemal zamiera, gdy wieśniacy walczą o przetrwanie w zimnie.",
       "outcome2": "Dzięki zapasom drewna na opał i żywności wieśniacy przetrwali zamieć bez szwanku.",
-      "outcome3": "Zamieć uderza z brutalną siłą. Cała produkcja zwalnia do pełzania, gdy wieśniacy walczą o przetrwanie w zimnie."
+      "outcome3": "Zamieć uderza z brutalną siłą. Cała produkcja niemal zamiera, gdy wieśniacy walczą o przetrwanie w zimnie."
     },
     "message": "Lodowate wiatry wyją przez wioskę. Starsi ostrzegają, że zbliża się straszliwa zamieć. Trzeba się przygotować, albo skutki będą ciężkie.",
-    "title": "Mroźny upadek"
+    "title": "Wielki mróz"
   },
   "gambler": {
     "choices": {
@@ -1058,7 +1058,7 @@
       "outcome0": "Hazardzista wzrusza ramionami, chowa kości i wnika w mrok bez kolejnego słowa.",
       "outcome1": "Hazardzista wzrusza ramionami, chowa kości i wnika w mrok bez kolejnego słowa."
     },
-    "message": "Hazardzista siedzi po turecku przy ogniu, oczy wbite w kości. 'Stawiaj,' szepcze z krzywym uśmiechem, 'i zobaczymy, kto przetrwa.'",
+    "message": "Hazardzista siedzi po turecku przy ogniu, oczy wbite w kości. „Stawiaj” – szepcze z krzywym uśmiechem – „i zobaczymy, kto przetrwa.”",
     "title": "Opętany hazardzista"
   },
   "giftedRingDiscovery": {
@@ -1084,15 +1084,15 @@
     },
     "log": {
       "outcome0": "Gdy ludzie zbliżają się do jeziora, z głębin wyłania się stwór i uderza z furią, ale siła wieśniaków zwycięża. Na dnie jeziora znajdują niezliczone ludzkie kości i złotą koronę.",
-      "outcome1": "Ludzie brodzą w wodzie, ale stwór wybucha z nieludzką prędkością. Jej piękno wykrzywia się w rzędy zębów i świecące oczy. Przestraszeni wieśniacy uciekają, by ocalić życie.",
+      "outcome1": "Ludzie brodzą w wodzie, ale stwór wyskakuje z nieludzką prędkością. Jego piękno wykrzywia się w rzędy zębów i świecące oczy. Przestraszeni wieśniacy uciekają, by ocalić życie.",
       "outcome2": "Rozkazujesz wieśniakom unikać jeziora. Niektórzy szemrzą o straconych szansach, ale słuchają. Jego sekrety pozostają ukryte pod wodą.",
       "outcome3": "Zabraniasz zbliżać się, ale wieśniak, który twierdził, że widział stwora, nie potrafi się oprzeć. Pewnej nocy wymyka się i nigdy nie wraca. O świcie na brzegu leżą tylko jego ubrania.",
-      "lakeDrownOne": "Stwór unosi się jak koszmar, piękno skrywa śmiertelny zamiar. Nienaturalną siłą wciąga wieśniaka pod wodę. Zostają tylko zmarszczki i słabe krzyki, gdy reszta ucieka w przerażeniu.",
-      "lakeDrownMany": "Stwór unosi się jak koszmar, piękno skrywa śmiertelny zamiar. Nienaturalną siłą wciąga wieśniaków pod wodę. Zostają tylko zmarszczki i słabe krzyki, gdy reszta ucieka w przerażeniu."
+      "lakeDrownOne": "Stwór wynurza się jak koszmar, piękno skrywa śmiertelny zamiar. Nienaturalną siłą wciąga wieśniaka pod wodę. Zostają tylko kręgi na wodzie i słabe krzyki, gdy reszta ucieka w przerażeniu.",
+      "lakeDrownMany": "Stwór wynurza się jak koszmar, piękno skrywa śmiertelny zamiar. Nienaturalną siłą wciąga wieśniaków pod wodę. Zostają tylko kręgi na wodzie i słabe krzyki, gdy reszta ucieka w przerażeniu."
     },
     "message": {
-      "firstTime": "Zbierając drewno w lesie, wieśniacy odkrywają jezioro ukryte wśród drzew. Jeden wieśniak przysięga, że widział kobietopodobną postać, która na chwilę wynurzyła się, jej spojrzenie piękne, a jednak nieludzkie. Co robisz?",
-      "repeat": "Zbierając drewno w lesie, wieśniacy wracają do jeziora ukrytego wśród drzew. Znów jeden wieśniak przysięga, że widział kobietopodobną postać, która na chwilę wynurzyła się, jej spojrzenie piękne, a jednak nieludzkie. Co robisz?"
+      "firstTime": "Zbierając drewno w lesie, wieśniacy odkrywają jezioro ukryte wśród drzew. Jeden z nich przysięga, że widział postać przypominającą kobietę, która na chwilę się wynurzyła; jej spojrzenie było piękne, a zarazem nieludzkie. Co robisz?",
+      "repeat": "Zbierając drewno w lesie, wieśniacy wracają do jeziora ukrytego wśród drzew. Znów jeden z nich przysięga, że widział postać przypominającą kobietę, która na chwilę się wynurzyła; jej spojrzenie było piękne, a zarazem nieludzkie. Co robisz?"
     },
     "title": "Ukryte jezioro"
   },
@@ -1117,7 +1117,7 @@
     "title": "Berło Pustego Króla"
   },
   "humanSacrificeDemand": {
-    "message": "Wieśniacy zbierają się wokół monolitu, oczy puste. 'Zwierzęta nie wystarczą,' szepczą jednym głosem. 'Ciemność żąda więcej. Łaknie ludzkich dusz.' Patrzą na ciebie, czekając na rozkaz ostatecznej ofiary.",
+    "message": "Wieśniacy zbierają się wokół monolitu, oczy puste. „Zwierzęta nie wystarczą” – szepczą jednym głosem. „Ciemność żąda więcej. Łaknie ludzkich dusz.” Patrzą na ciebie, czekając na rozkaz ostatecznej ofiary.",
     "title": "Mroczny głód"
   },
   "lakeCreatureDead": {
@@ -1127,7 +1127,7 @@
       }
     },
     "log": {
-      "outcome0": "Gdy kowal ogląda szczątki, oświadcza: 'Jego kości nie są jak nic, co kiedykolwiek widziałem. Mogę z nich wykuć potężną wielką tarczę.'"
+      "outcome0": "Kowal ogląda szczątki i oświadcza: „Nigdy nie widziałem takich kości. Mogę z nich wykuć potężną wielką tarczę”."
     },
     "message": "Kilku ludzi znalazło stwora jeziora na brzegu podziemnego jeziora, martwego, jakby ze starości.",
     "title": "Koniec pewnej ery"
@@ -1143,7 +1143,7 @@
       }
     },
     "log": {
-      "outcome0": "Ostatnie gwałtowne rzuty stwora wstrząsają komorą, gdy ludzie wbijają włócznie w wijące się ciało. Kowal, patrząc na ogromne kości, oświadcza, że może wykuć z nich potężną wielką tarczę.",
+      "outcome0": "Ostatnie gwałtowne konwulsje stwora wstrząsają komorą, gdy ludzie wbijają włócznie w wijące się ciało. Kowal, patrząc na ogromne kości, oświadcza, że może wykuć z nich potężną wielką tarczę.",
       "outcome1": "Otwierasz pułapkę i odchodzisz o krok. Stwór patrzy chwilę, potem nurkuje głęboko, wynurza się i wypluwa małą, zgniłą skrzynię. W środku lśniące złote monety. Znika w czarnej głębi, zostawiając tylko zmarszczki."
     },
     "message": "Ogromny stwór wije się w pułapce, macki uderzają o stalowe pręty. Jego starożytne oczy patrzą na ciebie z czymś, co mogłoby być inteligencją. Co zrobisz?",
@@ -1159,11 +1159,11 @@
       }
     },
     "log": {
-      "sendAwayOutcome": "Odmawiasz jej. Uśmiecha się zbyt spokojnie. 'Ty i każda dusza w tej wiosce pożałujecie tego,' mówi, potem odwraca się.",
+      "sendAwayOutcome": "Odmawiasz jej. Uśmiecha się zbyt spokojnie. „Ty i każda dusza w tej wiosce pożałujecie tego” – mówi, potem odwraca się.",
       "welcomeOutcome": "Przyjmujesz rudowłosą kobietę. Dziękuje ci cicho i mówi o roślinach, które leczą i szkodzą. Oferuje pomoc przy założeniu ogrodu ziół. Wieśniacy obserwują ją uważnie."
     },
-    "message": "Przybywa piękna rudowłosa kobieta. Mówi, że jej wioska w górach zmarła z głodu, i prosi, by mogła zostać. Twierdzi, że wiele wie o roślinach i ich działaniu.",
-    "title": "Dama z gór"
+    "message": "Przybywa piękna rudowłosa kobieta. Mówi, że mieszkańcy jej górskiej wioski wymarli z głodu, i prosi, by mogła zostać. Twierdzi, że wiele wie o roślinach i ich działaniu.",
+    "title": "Pani z gór"
   },
   "lastSurvivor": {
     "choices": {
@@ -1175,8 +1175,8 @@
       }
     },
     "log": {
-      "outcome0": "Ocalały dostaje schronienie i opiekę. Tej nocy woła cię do swojej chaty. Choć umiera, oczy ma jasne. 'Dziękuję za dobroć, niech fortuna zawsze ci sprzyja,' szepcze ostatnim tchem.",
-      "outcome1": "Odsyłasz umierającego. Odchodzi i nazajutrz zostaje znaleziony martwy w pobliskim lesie. Wieśniacy są zgrozą i wstrętem przejęci twoim okrucieństwem."
+      "outcome0": "Ocalały dostaje schronienie i opiekę. Tej nocy woła cię do swojej chaty. Choć umiera, oczy ma jasne. „Dziękuję za dobroć, niech fortuna zawsze ci sprzyja” – szepcze ostatnim tchem.",
+      "outcome1": "Odsyłasz umierającego. Odchodzi, a nazajutrz zostaje znaleziony martwy w pobliskim lesie. Wieśniaków ogarnia zgroza i odraza wobec twojego okrucieństwa."
     },
     "message": "Do wioski przybywa obcy, ledwo trzymając się życia. Mówi o swojej osadzie na północy, gdzie brak żywności pchnął wieśniaków do wzajemnego zabijania z rozpaczy. Prosi, by zostać kilka nocy i odzyskać siły.",
     "title": "Ostatni ocalały"
@@ -1185,7 +1185,7 @@
     "choices": {
       "digWell": {
         "cost": "5000 żywności",
-        "label": "Wykop inną studnię"
+        "label": "Wykop nową studnię"
       },
       "searchWoman": {
         "label": "Szukaj kobiety"
@@ -1219,7 +1219,7 @@
     "log": {
       "outcome0": "Wsuwasz pierścień na palec. Pasuje doskonale. Kobieta uśmiecha się i odchodzi, z lekkością w kroku."
     },
-    "message": "Kobieta z wioski podchodzi do ciebie znów, twarz promienna z wdzięczności. 'Musiałam ci podziękować należycie,' mówi ciepłym głosem. 'Wszystko poszło... bardzo dobrze. Zrobiłam ten pierścień dla ciebie.' Wręcza ci pierścień z mniejszym pierścieniem u boku.",
+    "message": "Kobieta z wioski podchodzi do ciebie znów, twarz promienna z wdzięczności. „Musiałam ci podziękować należycie” – mówi ciepłym głosem. „Wszystko poszło... bardzo dobrze. Zrobiłam ten pierścień dla ciebie.” Wręcza ci pierścień z mniejszym pierścieniem u boku.",
     "title": "Wdzięczny powrót"
   },
   "leatherHarnessRequest": {
@@ -1233,10 +1233,10 @@
       }
     },
     "log": {
-      "outcome1": "Podajesz jej skórę. Bierze ją z wdzięcznym uśmiechem, oczy jaśnieją. 'Dziękuję. On będzie... bardzo zaskoczony.' Odpędza się, tuląc skóry do piersi.",
+      "outcome1": "Podajesz jej skórę. Bierze ją z wdzięcznym uśmiechem, oczy jej jaśnieją. „Dziękuję. On będzie… bardzo zaskoczony”. Oddala się pospiesznie, tuląc skóry do piersi.",
       "outcome2": "Odmawiasz. Kiwa głową, rozczarowanie miga na twarzy, i wraca do wioski bez kolejnego słowa."
     },
-    "message": "Kobieta z wioski podchodzi do ciebie, policzki lekko zarumienione. Waha się, zanim przemówi, oczy spuszczone: 'Zastanawiałam się, czy mógłbyś ustąpić trochę skóry. Chciałabym zrobić coś... dla mojego partnera. Uprząż. Żeby go zaskoczyć.'",
+    "message": "Kobieta z wioski podchodzi do ciebie, policzki ma lekko zarumienione. Waha się, zanim przemówi, oczy spuszczone: „Zastanawiałam się, czy mógłbyś odstąpić trochę skóry. Chciałabym zrobić coś… dla mojego partnera. Uprząż. Żeby go zaskoczyć”.",
     "title": "Kobieta z wioski"
   },
   "manFromTheMountains": {
@@ -1300,8 +1300,8 @@
     "log": {
       "outcome0": "Twoje wahanie drażni łucznika. Kręci głową i odchodzi, zabierając kunszt gdzie indziej.",
       "outcome2": "Mistrz łucznictwa bierze zapłatę i natychmiast zaczyna trenować twoich myśliwych.",
-      "outcome4": "Mistrz łucznictwa bierze złoto z skinieniem i natychmiast zaczyna trenować twoich myśliwych.",
-      "outcome5": "Łucznik kiwa głową. 'Wrócę, jeśli zmienisz zdanie,' mówi, potem znika w lesie."
+      "outcome4": "Mistrz łucznictwa bierze złoto, kiwa głową i natychmiast zaczyna szkolić twoich myśliwych.",
+      "outcome5": "Łucznik kiwa głową. „Wrócę, jeśli zmienisz zdanie” – mówi, potem znika w lesie."
     },
     "message": "Przybywa mężczyzna w ciemnoczerwonym skórzanym płaszczu, z pewnym uśmiechem i bystrym wzrokiem. Oferuje pomoc twoim łucznikom, mówi, że wyostrzy ich celność i poprawi umiejętności łowieckie. Jeśli przyjmiesz, zostanie i weźmie się do roboty.",
     "title": "Mistrz łucznictwa"
@@ -1320,12 +1320,12 @@
       }
     },
     "log": {
-      "outcome0": "Oddajesz złoto. Najemnik liczy je powoli, okrutny uśmiech na twarzy. 'Miło robić interesy,' mówi, zanim zniknie.",
+      "outcome0": "Oddajesz złoto. Najemnik liczy je powoli, okrutny uśmiech na twarzy. „Miło robić interesy” – mówi, zanim zniknie.",
       "outcome1": "Najemnik daje znak swoim ludziom do ataku. Bitwa jest zacięta, ale wieśniacy zwyciężają. Najemnicy uciekają do lasu, zostawiając broń i rannych.",
       "outcome2": "Najemnik daje znak swoim ludziom do ataku. Mimo wszelkich starań zostajesz przytłoczony. {{deaths}} wieśniaków pada, zanim najemnicy wreszcie się wycofają, zadowoleni z rzezi.",
-      "outcome3": "Oferujesz mu Pierścień karmienia, który wciąż trzymałeś w zamkniętej skrzyni. Najemnik ogląda go z zainteresowaniem, wsuwając na własny palec. 'Ładny pierścień,' mówi, 'ale za mało. Wrócę jutro po złoto.'"
+      "outcome3": "Oferujesz mu Pierścień karmienia, który wciąż trzymałeś w zamkniętej skrzyni. Najemnik ogląda go z zainteresowaniem, wsuwając na własny palec. „Ładny pierścień” – mówi – „ale za mało. Wrócę jutro po złoto.”"
     },
-    "message": "Do wioski przybywa oszpecony najemnik, dłoń na głowni. 'Nie przyszedłem siać zamętu. Zapłać mi 100 złota, a zachowam spokój. Odmów, a moi ludzie spalą to miejsce do cna.'",
+    "message": "Do wioski przybywa oszpecony najemnik, dłoń na głowni. „Nie przyszedłem siać zamętu. Zapłać mi 100 złota, a zachowam spokój. Odmów, a moi ludzie spalą to miejsce do cna.”",
     "title": "Najemnik"
   },
   "mercenaryReturnDemand": {
@@ -1342,12 +1342,12 @@
       }
     },
     "log": {
-      "outcome0": "Płacisz złoto, ręce drżą ze wściekłości. Najemnik się śmieje. 'Mądry wybór. Już cię nie będę niepokoił... pewnie.' Znika w lesie ze swoimi ludźmi.",
+      "outcome0": "Płacisz złoto, ręce drżą ze wściekłości. Najemnik się śmieje. „Mądry wybór. Już cię nie będę niepokoił... pewnie.” Znika w lesie ze swoimi ludźmi.",
       "outcome1": "Odmawiasz. Najemnicy atakują, ale tym razem jesteś gotów. Po brutalnej walce rozpraszają się w dziczy, zostawiając swoich martwych.",
-      "outcome2": "Twój opór drogo cię kosztuje. Najemnicy szaleją przez wioskę, zabijając {{deaths}}, zanim wreszcie odejdą, śmiejąc się z zniszczenia, które zostawili.",
-      "outcome3": "Oferujesz mu Pierścień karmienia, który wciąż trzymałeś w zamkniętej skrzyni. Najemnik ogląda go z zainteresowaniem, wsuwając na własny palec. 'Ładny pierścień,' mówi, 'ale za mało. Wrócę jutro po złoto.'"
+      "outcome2": "Twój opór drogo cię kosztuje. Najemnicy szaleją po wiosce i zabijają {{deaths}} z twoich ludzi, zanim wreszcie odejdą, śmiejąc się ze zniszczeń, które zostawili.",
+      "outcome3": "Oferujesz mu Pierścień karmienia, który wciąż trzymałeś w zamkniętej skrzyni. Najemnik ogląda go z zainteresowaniem, wsuwając na własny palec. „Ładny pierścień” – mówi – „ale za mało. Wrócę jutro po złoto.”"
     },
-    "message": "Najemnik wrócił, a tym razem przyprowadza więcej ludzi. 'Czasy są ciężkie,' mówi z uśmiechem. 'Cena poszła w górę. 200 złota, albo zrobi się nieprzyjemnie.'",
+    "message": "Najemnik wrócił, a tym razem przyprowadza więcej ludzi. „Czasy są ciężkie” – mówi z uśmiechem. „Cena poszła w górę. 200 złota, albo zrobi się nieprzyjemnie.”",
     "title": "Najemnik wraca"
   },
   "merchant": {
@@ -1359,12 +1359,12 @@
     "log": {
       "outcome0": "Żegnasz handlarza. Unosi kapelusz i mamrocze o drodze przed sobą."
     },
-    "message": "Przybywa wiatrem ogorzały handlarz, wóz przepełniony towarem. Oczy błyszczą chciwością, gdy mruczy: 'Mam rzadkie przedmioty na sprzedaż'.",
+    "message": "Przybywa wiatrem ogorzały handlarz, wóz przepełniony towarem. Oczy błyszczą chciwością, gdy mruczy: „Mam rzadkie przedmioty na sprzedaż”.",
     "title": "Wędrowny handlarz",
     "toolTrades": {
       "trade_nightshade_bow_schematic": {
         "label": "Schemat Łuku z wilczej jagody",
-        "message": "Kupujesz schemat Łuku z wilczej jagody. Handlarz uśmiecha się mrocznie: 'Konstrukcja tego łuku jest okrutna. Jego strzały zatrują wrogów.'"
+        "message": "Kupujesz schemat Łuku z wilczej jagody. Handlarz uśmiecha się mrocznie: „Konstrukcja tego łuku jest okrutna. Jego strzały zatrują wrogów.”"
       },
       "trade_skull_lantern": {
         "label": "Latarnia czaszkowa",
@@ -1387,8 +1387,8 @@
         "message": "Kupujesz postrzępiony fragment mapy."
       },
       "trade_crow_harness": {
-        "label": "Uprząż kruka",
-        "message": "Kupujesz uprząż kruka. Specjalnie wykonana uprząż dla kruków posłańców."
+        "label": "Uprząż wrony",
+        "message": "Kupujesz uprząż wrony. Specjalnie wykonana uprząż dla wron posłańców."
       },
       "trade_clarity_elixir": {
         "label": "Eliksir jasności",
@@ -1399,11 +1399,11 @@
         "message": "Kupujesz butelkę Eliksiru żyłognia."
       },
       "trade_book_of_trials": {
-        "message": "Kupujesz Księgę prób. Handlarz uśmiecha się ze znajomością: 'Przewodnik dla tych, co chcą śledzić swoją drogę.'",
+        "message": "Kupujesz Księgę prób. Handlarz uśmiecha się porozumiewawczo: „Przewodnik dla tych, którzy chcą śledzić swoją drogę”.",
         "label": "Księga prób"
       },
       "trade_book_of_absolution": {
-        "message": "Kupujesz Księgę rozgrzeszenia. Handlarz ścisza głos: 'Obrzęd dla tych, co zatrzymują to, czego nie powinni. Wgląd może zmyć trochę tej plamy.'",
+        "message": "Kupujesz Księgę rozgrzeszenia. Handlarz ścisza głos: „Obrzęd dla tych, co zatrzymują to, czego nie powinni. Wgląd może zmyć trochę tej plamy.”",
         "label": "Księga rozgrzeszenia"
       },
       "trade_reinforced_rope": {
@@ -1411,28 +1411,28 @@
         "label": "Wzmocniona lina"
       },
       "trade_occultist_map": {
-        "message": "Gdy kupujesz mapę okultysty, handlarz szepcze: 'Stary okultysta ukrył sekrety w komorze głęboko w jaskini. Ta mapa cię poprowadzi.'",
+        "message": "Gdy kupujesz mapę okultysty, handlarz szepcze: „Stary okultysta ukrył sekrety w komorze głęboko w jaskini. Ta mapa cię poprowadzi.”",
         "label": "Mapa okultysty"
       },
       "trade_giant_trap": {
-        "message": "Gdy kupujesz olbrzymią pułapkę, handlarz uśmiecha się: 'To może złapać coś ogromnego w lesie. Używaj mądrze.'",
+        "message": "Gdy kupujesz olbrzymią pułapkę, handlarz uśmiecha się: „To może złapać coś ogromnego w lesie. Używaj mądrze.”",
         "label": "Olbrzymia pułapka"
       },
       "trade_arbalest_schematic": {
-        "message": "Kupujesz schemat arbaletu. Handlarz rozwija misterny plan: 'Projekt mistrza inżyniera. Dzięki niemu wykuć możesz potężną broń.'",
+        "message": "Kupujesz schemat arbaletu. Handlarz rozwija misterny plan: „Projekt mistrza inżyniera. Dzięki niemu wykonasz potężną broń”.",
         "label": "Schemat arbaletu"
       },
       "trade_compound_bow": {
-        "message": "Kupujesz łuk bloczkowy. Handlarz kiwa głową z uznaniem: 'Broń wysokiej precyzji z zaginionej cywilizacji. Posłuży ci dobrze.'",
+        "message": "Kupujesz łuk bloczkowy. Handlarz kiwa głową z uznaniem: „Broń wysokiej precyzji z zaginionej cywilizacji. Posłuży ci dobrze.”",
         "label": "Łuk bloczkowy"
       },
       "trade_stormglass_halberd_schematic": {
-        "message": "Kupujesz schemat Halabardy z burzoszkła. Handlarz odsłania wyblakłe plany: 'Z tym projektem wykuć możesz halabardę ogromnej mocy.'",
+        "message": "Kupujesz schemat Halabardy z burzoszkła. Handlarz odsłania wyblakłe plany: „Według tego projektu wykujesz halabardę ogromnej mocy”.",
         "label": "Schemat Halabardy z burzoszkła"
       },
       "trade_natharit_pickaxe": {
-        "message": "Kupujesz kilof natharit. Handlarz podaje ci solidne narzędzie: 'Niezwykle trwały kilof z nieznanego materiału. Jego jakość jest wyjątkowa.'",
-        "label": "Kilof Natharit"
+        "message": "Kupujesz kilof z natharitu. Handlarz podaje ci solidne narzędzie: „Niezwykle trwały kilof z nieznanego materiału. Jego jakość jest wyjątkowa”.",
+        "label": "Kilof z natharitu"
       }
     },
     "tradeCost": "{{amount}} {{resource}}",
@@ -1478,11 +1478,11 @@
     },
     "log": {
       "outcome0": "Odrzucasz ofertę mnicha. Kłania się z szacunkiem i wyrusza z powrotem w góry.",
-      "outcome2": "Mnich przyjmuje daninę z uroczystym skinieniem i odsłania szczegółowe plany klucza szkieletowego. 'Ten klucz ma otwierać każdy zamek,' mówi, zanim odejdzie.",
-      "outcome4": "Oczy mnicha rozszerzają się na widok złota. 'To bardzo pomoże klasztorowi,' mówi, wyciągając szczegółowe plany klucza szkieletowego. 'Ten klucz ma otwierać każdy zamek,' mówi, zanim odejdzie.",
+      "outcome2": "Mnich przyjmuje daninę z uroczystym skinieniem głowy i odsłania szczegółowe plany wytrycha. „Ten wytrych podobno otwiera każdy zamek” – mówi, zanim odejdzie.",
+      "outcome4": "Oczy mnicha rozszerzają się na widok złota. „To bardzo pomoże klasztorowi” – mówi, wyciągając szczegółowe plany wytrycha. „Ten wytrych podobno otwiera każdy zamek” – dodaje, zanim odejdzie.",
       "outcome5": "Odrzucasz ofertę mnicha. Kłania się z szacunkiem i wyrusza z powrotem w góry."
     },
-    "message": "Do wioski przybywa mnich z górskiego klasztoru. 'Słyszałem, że znalazłeś tajemniczą skrzynię,' mówi cicho. 'Klasztor wie, jak ją otworzyć. Złóż daninę, a podzielę się sekretem.'",
+    "message": "Do wioski przybywa mnich z górskiego klasztoru. „Słyszałem, że znalazłeś tajemniczą skrzynię” – mówi cicho. „Klasztor wie, jak ją otworzyć. Złóż daninę, a podzielę się sekretem.”",
     "title": "Górski mnich"
   },
   "monasteryResponse": {
@@ -1500,7 +1500,7 @@
       "outcome2": "Płacisz mnichom za mapę. Ukazuje położenie Ukrytej Biblioteki głęboko w jaskini.",
       "outcome3": "Odrzucasz ofertę mnichów. Okazja przepada."
     },
-    "message": "Jednooki kruk wraca z Górskiego Klasztoru z zapieczętowanym zwojem. Mnisi oferują sprzedaż mapy do ukrytej biblioteki głęboko w jaskini. Proszą o 250 złota.",
+    "message": "Jednooka wrona wraca z Górskiego Klasztoru z zapieczętowanym zwojem. Mnisi oferują sprzedaż mapy do ukrytej biblioteki głęboko w jaskini. Proszą o 250 złota.",
     "title": "Wieść z Górskiego Klasztoru"
   },
   "monolithDemand": {
@@ -1519,9 +1519,9 @@
     },
     "log": {
       "outcome0": "W chwili, gdy słyszysz pierwsze uderzenie, ciemność pożera cię całego. Śnisz o ogromnym mieście ze szkła i stali, pełnym dziwnych świateł i ludzi, którzy poruszają się z celem, którego nie rozumiesz. Gdy się budzisz, dzwonek zniknął, ale na przedramieniu pali się znak w kształcie dzwonka.",
-      "outcome1": "Ryzyko jest zbyt wielkie. Tego samego dnia przybywa handlarz i oferuje 500 złota za dzwonek. Przyjmujesz natychmiast, z ulgą, że pozbyłeś się przeklętego przedmiotu. Handlarz odchodzi ze świadomym uśmiechem."
+      "outcome1": "Ryzyko jest zbyt wielkie. Tego samego dnia przybywa handlarz i oferuje 500 złota za dzwonek. Przyjmujesz natychmiast, z ulgą, że pozbyłeś się przeklętego przedmiotu. Handlarz odchodzi z porozumiewawczym uśmiechem."
     },
-    "message": "Otwierasz zapieczętowaną skrzynię kluczem szkieletowym. W środku, na wyblakłym aksamcie, leży złoty dzwonek pokryty groteskowymi rytami i dziwnymi symbolami na powierzchni.",
+    "message": "Otwierasz zapieczętowaną skrzynię wytrychem. W środku, na wyblakłym aksamicie, leży złoty dzwonek pokryty groteskowymi rytami i dziwnymi symbolami.",
     "title": "Tajemniczy dzwonek"
   },
   "mysteriousBook": {
@@ -1546,7 +1546,7 @@
       "outcome0": "Gnieciesz kartkę i puszczasz ją z palców. Rozumiesz słowa, a jednak nie możesz z nich nic wyciągnąć. Gdy papier unosi się, łapiesz coś niesione wiatrem, słabe i dalekie. Brzmi jak cichy, samotny płacz gasnący w nocy."
     },
     "title": "Tajemnicza kartka",
-    "message": "Gdy zapada zmierzch, znajdujesz kartkę na progu posiadłości. Ktoś zostawił notatkę starannym, eleganckim pismem: \n \"Mam nadzieję, że dobrze ci tutaj. Jeśli tak, rozważ wsparcie dalszej drogi, odwiedzając sklep albo składając darowiznę. Twoja pomoc utrzymuje ten świat przy życiu i wolnym do odkrywania. Dziękuję!\""
+    "message": "Gdy zapada zmierzch, znajdujesz kartkę na progu posiadłości. Ktoś zostawił notatkę starannym, eleganckim pismem: \n „Mam nadzieję, że dobrze ci tutaj. Jeśli tak, rozważ wsparcie dalszej drogi, odwiedzając sklep albo składając darowiznę. Dzięki twojej pomocy ten świat żyje i pozostaje darmowy. Dziękuję!”"
   },
   "mysteriousWoman": {
     "log": {
@@ -1560,8 +1560,8 @@
       "man": "Tajemniczy mężczyzna"
     },
     "message": {
-      "woman": "Pociągająca młoda kobieta w wytwornych szatach przybywa do posiadłości, gdy słońce zachodzi. Uśmiecha się do ciebie ciepło i pyta: 'Czy mogłabym dostać schronienie w twojej chacie na noc? Wędrowałam daleko i nie mam dokąd pójść.'",
-      "man": "Pociągający młody mężczyzna w wytwornych szatach przybywa do posiadłości, gdy słońce zachodzi. Uśmiecha się do ciebie ciepło i pyta: 'Czy mógłbym dostać schronienie w twojej chacie na noc? Wędrowałem daleko i nie mam dokąd pójść.'"
+      "woman": "Pociągająca młoda kobieta w wytwornych szatach przybywa do posiadłości, gdy słońce zachodzi. Uśmiecha się do ciebie ciepło i pyta: „Czy mogłabym dostać schronienie w twojej chacie na noc? Wędrowałam daleko i nie mam dokąd pójść.”",
+      "man": "Pociągający młody mężczyzna w wytwornych szatach przybywa do posiadłości, gdy słońce zachodzi. Uśmiecha się do ciebie ciepło i pyta: „Czy mógłbym dostać schronienie w twojej chacie na noc? Wędrowałem daleko i nie mam dokąd pójść.”"
     },
     "choices": {
       "allowStay": {
@@ -1597,12 +1597,12 @@
     "log": {
       "ignoreForced": "Ignorujesz ofertę. Wiking w końcu pluje na ziemię i odchodzi z toporem bojowym, mamrocząc o twoim braku szacunku.",
       "ignoreNormal": "Ignorujesz ofertę. Wiking w końcu kiwa głową i odchodzi z toporem bojowym.",
-      "buyForced": "Wiking bierze zapłatę z zimnym uśmiechem. 'Może powinieneś był być hojniejszy wcześniej, zamiast mnie atakować. Wtedy zapłaciłbyś za topór o wiele mniej,' mówi, zanim odejdzie.",
+      "buyForced": "Wiking bierze zapłatę z zimnym uśmiechem. „Może powinieneś był być hojniejszy wcześniej, zamiast mnie atakować. Wtedy zapłaciłbyś za topór o wiele mniej” – mówi, zanim odejdzie.",
       "buyNormal": "Zadowolony z handlu, wiking kiwa głową z uznaniem i odchodzi.",
-      "declineForced": "Odrzucasz ofertę. Wiking pluje na ziemię, mamrocząc klątwy, gdy odchodzi z toporem bojowym. 'Powinieneś był zapłacić, gdy miałeś szansę,' warczy.",
+      "declineForced": "Odrzucasz ofertę. Wiking pluje na ziemię, mamrocząc klątwy, gdy odchodzi z toporem bojowym. „Powinieneś był zapłacić, gdy miałeś szansę” – warczy.",
       "declineNormal": "Odrzucasz ofertę. Wiking kiwa głową z szacunkiem i odchodzi z toporem bojowym."
     },
-    "message": "Wiking-budowniczy wraca do twojej wioski, niosąc wspaniały topór wojenny. 'Wykułem ten Nordycki topór wojenny w ojczyźnie. Będzie twój... za cenę.'",
+    "message": "Wiking-budowniczy wraca do twojej wioski, niosąc wspaniały topór wojenny. „Wykułem ten Nordycki topór wojenny w ojczyźnie. Będzie twój... za cenę.”",
     "title": "Wiking wraca"
   },
   "oddTrinket": {
@@ -1615,7 +1615,7 @@
       }
     },
     "log": {
-      "outcome0": "Pijesz bursztynowy eliksir. Pali w drodze w dół, ale czujesz się silniejszy niż wcześniej.",
+      "outcome0": "Pijesz bursztynowy eliksir. Pali w gardle, ale czujesz się silniejszy niż wcześniej.",
       "outcome1": "Postanawiasz nie ryzykować i rzucasz fiolkę w zarośla. Znika w poszyciu.",
       "outcome2": "Twoje wahanie cię kosztuje. Fiolka wyślizguje się z palców i rozbija o kamień, bursztynowy eliksir wsiąka w ziemię."
     },
@@ -1668,9 +1668,9 @@
       }
     },
     "log": {
-      "outcome0": "Nie wydajesz rozkazu. Plotki się szerzą, strach ścina się we wstręt, a praca w wiosce słabnie.",
-      "outcome2": "Rozkazujesz obrzędy pogrzebowe i karmisz żałobników. Smutek zostaje, ale wioska się uspokaja.",
-      "outcome3": "Wykrywasz grupę spiskowców i rozkazujesz ich egzekucję. Sprawiedliwość jest szybka, a strach ustępuje.",
+      "outcome0": "Nie wydajesz rozkazu. Plotki się szerzą, strach przeradza się we wstręt, a praca w wiosce słabnie.",
+      "outcome2": "Nakazujesz odprawić obrzędy pogrzebowe i karmisz żałobników. Smutek zostaje, ale wioska się uspokaja.",
+      "outcome3": "Wykrywasz grupę spiskowców i skazujesz ich na śmierć. Sprawiedliwość jest szybka, a strach ustępuje.",
       "outcome4": "Poświęcasz ciało krzyżowi. Wieśniacy cofają się ze wstrętem, ale moc krzyża zdaje się rosnąć."
     },
     "message": "Pewnego poranka wieśniacy dokonują okrutnego odkrycia. Młody człowiek wisi ukrzyżowany na Bladym Krzyżu, głowa opuszczona, ciało ledwie kołysze się w zimnym porannym wietrze.",
@@ -1686,10 +1686,10 @@
       }
     },
     "log": {
-      "outcome0": "Druid pochyla głowę. 'Niech więc zostanie wzniesiony.'",
-      "outcome1": "'Może to była mądrość. Może to był strach,' mówi druid, zanim odejdzie w las."
+      "outcome0": "Druid pochyla głowę. „Niech więc zostanie wzniesiony.”",
+      "outcome1": "„Może to była mądrość. Może to był strach” – mówi druid, zanim odejdzie w las."
     },
-    "message": "Ślepy druid wraca, mleczne oczy spoczywają na totemach z kości: 'Ofiarowałeś bogom wiele. Wznieś im znak, by dowieść oddania.'",
+    "message": "Ślepy druid wraca, mleczne oczy spoczywają na totemach z kości: „Ofiarowałeś bogom wiele. Wznieś im znak, by dowieść oddania.”",
     "title": "Blady Krzyż"
   },
   "paleFigure": {
@@ -1702,7 +1702,7 @@
       }
     },
     "log": {
-      "outcome0": "Gdy wieśniacy się zbliżają, postać znika. Na jej miejscu leży mantia z kruczych piór, mieniący się pozaziemską mocą.",
+      "outcome0": "Gdy wieśniacy się zbliżają, postać znika. Na jej miejscu leży płaszcz z kruczych piór, mieniący się nieziemską mocą.",
       "outcome1": "Dochodzenie idzie źle. Jeden z wieśniaków krzyczy we mgle i nikt go więcej nie widzi. Reszta ucieka w przerażeniu.",
       "outcome2": "Smukła postać porusza się z nieludzką prędkością. {{actualDeaths}} wieśniaków znika we mgle, ich krzyki niosą się wśród drzew.",
       "outcome3": "Wieśniacy zostają blisko wioski. Do wieczora postać znika.",
@@ -1726,8 +1726,37 @@
         "label": "Kontynuuj"
       }
     },
-    "message": "W najniższych komnatach cytadeli znajdujesz kolosalną bramę wykutą z nieznanego, nieustępliwego metalu. Być może twory alchemika zdołają ją otworzyć.",
+    "message": "W najniższych komnatach cytadeli znajdujesz kolosalną bramę wykutą z nieznanego, niezniszczalnego metalu. Być może wynalazki alchemika zdołają ją otworzyć.",
     "title": "Starożytna brama"
+  },
+  "raggedYouth": {
+    "choices": {
+      "doNotHelp": {
+        "label": "Nie pomagaj"
+      },
+      "giveFur": {
+        "cost": "{{furCost}} futra",
+        "label": "Daj {{furCost}} futra"
+      }
+    },
+    "log": {
+      "attack": "Mężczyzna wpada w gniew. Atakuje i zabija jednego z wieśniaków, po czym ucieka.",
+      "thanks": "„Dziękuję. Bardzo dziękuję” – mówi i odchodzi pospiesznie z futrami."
+    },
+    "message": "Pojawia się młody mężczyzna w podartym ubraniu. „Obozuję pod wioską. Moja rodzina potrzebuje futer, żeby przetrwać mróz. Teraz nie mam czym zapłacić, ale oddam później”.",
+    "title": "Zdesperowany ojciec"
+  },
+  "raggedYouthReturn": {
+    "choices": {
+      "takeSilver": {
+        "label": "Weź srebro"
+      }
+    },
+    "log": {
+      "repay": "Kładzie {{silverReward}} srebra za futra i odchodzi."
+    },
+    "message": "Wraca ojciec, który prosił o futra – już nie w łachmanach. Wyciąga ciężką sakiewkę. „Moja rodzina przetrwała mróz. Obiecałem, że zapłacę. Oto {{silverReward}} srebra”.",
+    "title": "Powrót ojca"
   },
   "redMaskChoice": {
     "choices": {
@@ -1742,7 +1771,7 @@
       "outcome0": "Podnosisz maskę z karmazynowej skóry. Jest ciepła w dotyku.",
       "outcome1": "Postanawiasz, że dar kruka niesie zbyt wiele tajemnicy. Gdy odchodzisz, słyszysz krakanie niosące się wśród drzew."
     },
-    "message": "Na polowaniu widzisz dziwnie wielkiego czarnego kruka, który wpatruje się w ciebie z złamanego drzewa. Gdy się zbliżasz, nagle kracze, jakby powtarzał jedno słowo. Potem odlatuje. Przed drzewem leży maska z głęboko czerwonej skóry. Bierzesz ją?",
+    "message": "Na polowaniu widzisz dziwnie wielkiego czarnego kruka, który wpatruje się w ciebie ze złamanego drzewa. Gdy się zbliżasz, nagle kracze, jakby powtarzał jedno słowo. Potem odlatuje. Przed drzewem leży maska z głęboko czerwonej skóry. Bierzesz ją?",
     "title": "Dar kruka"
   },
   "restlessKnight": {
@@ -1759,16 +1788,16 @@
       }
     },
     "log": {
-      "outcome0": "Rycerz czekał, ale nie odpowiedziałeś. 'Może innym razem,' mówi, zanim ruszy dalej.",
-      "outcome2": "Rycerz mówi: 'Za wschodnimi górami leży martwe miasto olbrzymich kamiennych wież, niemal sięgających chmur. Puste okna patrzą na ziemię jak niezliczone oczy. Natura wspięła się na każdy mur i wypełniła ulice korzeniami. Nikt tam nie mieszka od wieków.'",
-      "outcome3": "Twoje słowa budzą zainteresowanie rycerza, mówi: 'Za wschodnimi górami leży martwe miasto olbrzymich kamiennych wież, niemal sięgających chmur. Puste okna patrzą na ziemię jak niezliczone oczy. Natura wspięła się na każdy mur i wypełniła ulice korzeniami. Nikt tam nie mieszka od wieków.'",
-      "outcome4": "Rycerz słucha twoich słów, ale kręci głową. 'Twoje słowa są szczere, ale moja wiedza ma wartość. Może nasze drogi znów się zetkną.' Odchodzi, nie dzieląc się opowieścią.",
-      "outcome5": "Odrzucasz ofertę rycerza. Kiwa głową z szacunkiem. 'Może nasze drogi znów się zetkną,' mówi, zanim ruszy dalej."
+      "outcome0": "Rycerz czekał, ale nie odpowiedziałeś. „Może innym razem” – mówi, zanim ruszy dalej.",
+      "outcome2": "Rycerz mówi: „Za wschodnimi górami leży martwe miasto olbrzymich kamiennych wież, niemal sięgających chmur. Puste okna patrzą na ziemię jak niezliczone oczy. Natura wspięła się na każdy mur i wypełniła ulice korzeniami. Nikt tam nie mieszka od wieków.”",
+      "outcome3": "Twoje słowa budzą zainteresowanie rycerza, mówi: „Za wschodnimi górami leży martwe miasto olbrzymich kamiennych wież, niemal sięgających chmur. Puste okna patrzą na ziemię jak niezliczone oczy. Natura wspięła się na każdy mur i wypełniła ulice korzeniami. Nikt tam nie mieszka od wieków.”",
+      "outcome4": "Rycerz słucha twoich słów, ale kręci głową. „Twoje słowa są szczere, ale moja wiedza ma wartość. Może nasze drogi znów się zetkną.” Odchodzi, nie dzieląc się opowieścią.",
+      "outcome5": "Odrzucasz ofertę rycerza. Kiwa głową z szacunkiem. „Może nasze drogi znów się zetkną” – mówi, zanim ruszy dalej."
     },
     "title": "Niespokojny rycerz",
     "message": {
-      "firstTime": "Do wioski przybywa rycerz w wytartej zbroi. 'Widziałem wiele świata,' mówi pustym głosem. 'Za trochę złota podzielę się tym, co ujrzałem w podróżach.'",
-      "repeat": "Znów do wioski przybywa rycerz w wytartej zbroi. 'Widziałem wiele świata,' mówi pustym głosem. 'Za trochę złota podzielę się tym, co ujrzałem w podróżach.'"
+      "firstTime": "Do wioski przybywa rycerz w wytartej zbroi. „Widziałem wiele świata” – mówi pustym głosem. „Za trochę złota podzielę się tym, co ujrzałem w podróżach.”",
+      "repeat": "Znów do wioski przybywa rycerz w wytartej zbroi. „Widziałem wiele świata” – mówi pustym głosem. „Za trochę złota podzielę się tym, co ujrzałem w podróżach.”"
     }
   },
   "restlessKnightBurden": {
@@ -1785,7 +1814,7 @@
       "outcome1": "Mówi o kolekcjonerze urządzeń czaszkowych na pustyni. Porywał ludzi, by wszczepiać urządzenia, bez litości i bez skutku. Rycerz znalazł rów wypełniony setkami martwych.",
       "outcome2": "Odmawiasz. Twarz mu twardnieje, krótko kiwa głową i nic nie mówi. Ciężar zostaje przy nim samym."
     },
-    "message": "Niespokojny rycerz przychodzi do ciebie. 'Jest jedna rzecz, o której nigdy nie mówiłem,' rzecze. 'Chciałem oszczędzić wszystkich. Ale może zechcesz to wiedzieć.'",
+    "message": "Niespokojny rycerz przychodzi do ciebie. „Jest jedna rzecz, o której nigdy nie mówiłem” – rzecze. „Chciałem tego wszystkim oszczędzić. Ale może zechcesz to wiedzieć”.",
     "title": "Niewypowiedziany ciężar"
   },
   "restlessKnightCoast": {
@@ -1806,14 +1835,14 @@
       }
     },
     "log": {
-      "outcome0": "Rycerz czekał, ale nie odpowiedziałeś. 'Może innym razem,' mówi, zanim ruszy dalej.",
-      "outcome2": "Rycerz dzieli się: 'Na brzegu oceanu znalazłem martwe miasto, w połowie wzięte przez fale. Wśród ruin leżą ogromne metalowe naczynia, ich zardzewiałe kadłuby wciąż opierają się czasowi. Starożytni niegdyś rządzili morzami tymi olbrzymami, teraz osiadłymi i milczącymi na piasku.'",
-      "outcome4": "Zadowolony z posiłku, rycerz dzieli się: 'Na brzegu oceanu znalazłem martwe miasto, w połowie wzięte przez fale. Wśród ruin leżą ogromne metalowe naczynia, ich zardzewiałe kadłuby wciąż opierają się czasowi. Starożytni niegdyś rządzili morzami tymi olbrzymami, teraz osiadłymi i milczącymi na piasku.'",
-      "outcome5": "Twoje słowa poruszają rycerza. Mówi: 'Na brzegu oceanu znalazłem martwe miasto, w połowie wzięte przez fale. Wśród ruin leżą ogromne metalowe naczynia, ich zardzewiałe kadłuby wciąż opierają się czasowi. Starożytni niegdyś rządzili morzami tymi olbrzymami, teraz osiadłymi i milczącymi na piasku.'",
-      "outcome6": "Rycerz słucha, ale pozostaje niewzruszony. 'Twoje słowa są szczere, ale ta wiedza jest cenna. Może innym razem.' Odchodzi, nie dzieląc się odkryciem.",
-      "outcome7": "Odrzucasz jego ofertę. Rycerz kiwa głową uroczyście. 'Dobrze. Sekrety brzegu zostaną na razie przy mnie,' mówi, zanim odejdzie."
+      "outcome0": "Rycerz czekał, ale nie odpowiedziałeś. „Może innym razem” – mówi, zanim ruszy dalej.",
+      "outcome2": "Rycerz opowiada: „Na brzegu oceanu znalazłem martwe miasto, w połowie pochłonięte przez fale. Wśród ruin leżą ogromne metalowe statki, których zardzewiałe kadłuby wciąż opierają się czasowi. Starożytni niegdyś panowali na morzach dzięki tym olbrzymom, dziś osiadłym i milczącym na piasku”.",
+      "outcome4": "Zadowolony z posiłku, rycerz opowiada: „Na brzegu oceanu znalazłem martwe miasto, w połowie pochłonięte przez fale. Wśród ruin leżą ogromne metalowe statki, których zardzewiałe kadłuby wciąż opierają się czasowi. Starożytni niegdyś panowali na morzach dzięki tym olbrzymom, dziś osiadłym i milczącym na piasku”.",
+      "outcome5": "Twoje słowa poruszają rycerza. Mówi: „Na brzegu oceanu znalazłem martwe miasto, w połowie pochłonięte przez fale. Wśród ruin leżą ogromne metalowe statki, których zardzewiałe kadłuby wciąż opierają się czasowi. Starożytni niegdyś panowali na morzach dzięki tym olbrzymom, dziś osiadłym i milczącym na piasku”.",
+      "outcome6": "Rycerz słucha, ale pozostaje niewzruszony. „Twoje słowa są szczere, ale ta wiedza jest cenna. Może innym razem.” Odchodzi, nie dzieląc się odkryciem.",
+      "outcome7": "Odrzucasz jego ofertę. Rycerz kiwa głową uroczyście. „Dobrze. Sekrety brzegu zostaną na razie przy mnie” – mówi, zanim odejdzie."
     },
-    "message": "Rycerz pojawia się raz jeszcze. 'Podróżowałem do miasta na brzegu oceanu,' mówi. 'To, co tam znalazłem, przeczy wierze. Podzielę się tą wiedzą, za cenę.'",
+    "message": "Rycerz pojawia się raz jeszcze. „Dotarłem do miasta na brzegu oceanu” – mówi. „To, co tam znalazłem, przechodzi ludzkie pojęcie. Podzielę się tą wiedzą – za odpowiednią cenę”.",
     "title": "Opowieści z brzegu"
   },
   "restlessKnightDesert": {
@@ -1834,14 +1863,14 @@
       }
     },
     "log": {
-      "outcome0": "Rycerz czekał, ale nie odpowiedziałeś. 'Może innym razem,' mówi, zanim ruszy dalej.",
-      "outcome2": "Rycerz kiwa głową z zadowoleniem. 'Uczciwa cena. Będę bronił twoich ludzi życiem.' Zdejmuje wytarty hełm, odsłaniając oszpeconą, lecz stanowczą twarz. Niespokojny rycerz dołączył do twojej drużyny.",
-      "outcome4": "Rycerz przyjmuje srebro z uroczystym ukłonem. 'Będę bronił twoich ludzi życiem.' Zdejmuje wytarty hełm, odsłaniając oszpeconą, lecz stanowczą twarz. Niespokojny rycerz dołączył do twojej drużyny.",
-      "outcome5": "'Twój cel zdaje się szlachetny.' Oczy rycerza jaśnieją. 'Byłbym zaszczycony, mogąc stanąć u twego boku.' Zdejmuje wytarty hełm, odsłaniając oszpeconą, lecz stanowczą twarz. Niespokojny rycerz dołączył do twojej drużyny.",
-      "outcome6": "Rycerz słucha, ale kręci głową. 'Słowa same nie utrzymają wojownika. Muszę więc na razie iść dalej,' mówi, odwracając się i odchodząc.",
-      "outcome7": "Odrzucasz jego ofertę. Rycerz kiwa głową ze zrozumieniem. 'Szanuję twoją decyzję. Muszę więc na razie iść dalej,' mówi, odwracając się i odchodząc."
+      "outcome0": "Rycerz czekał, ale nie odpowiedziałeś. „Może innym razem” – mówi, zanim ruszy dalej.",
+      "outcome2": "Rycerz kiwa głową z zadowoleniem. „Uczciwa cena. Będę bronił twoich ludzi życiem.” Zdejmuje wytarty hełm, odsłaniając oszpeconą, lecz stanowczą twarz. Niespokojny rycerz dołączył do twojej drużyny.",
+      "outcome4": "Rycerz przyjmuje srebro z uroczystym ukłonem. „Będę bronił twoich ludzi życiem.” Zdejmuje wytarty hełm, odsłaniając oszpeconą, lecz stanowczą twarz. Niespokojny rycerz dołączył do twojej drużyny.",
+      "outcome5": "„Twój cel zdaje się szlachetny.” Oczy rycerza jaśnieją. „Byłbym zaszczycony, mogąc stanąć u twego boku.” Zdejmuje wytarty hełm, odsłaniając oszpeconą, lecz stanowczą twarz. Niespokojny rycerz dołączył do twojej drużyny.",
+      "outcome6": "Rycerz słucha, ale kręci głową. „Słowa same nie utrzymają wojownika. Muszę więc na razie iść dalej” – mówi, odwracając się i odchodząc.",
+      "outcome7": "Odrzucasz jego ofertę. Rycerz kiwa głową ze zrozumieniem. „Szanuję twoją decyzję. Muszę więc na razie iść dalej” – mówi, odwracając się i odchodząc."
     },
-    "message": "Rycerz wraca. 'Podróżowałem daleko na południe, na rozległą pustynię. Tam spotkałem człowieka oddanego odzyskiwaniu zagubionej technologii starożytnych. Pokazał mi urządzenia niegdyś wszczepiane w czaszkę, wzmacniające zmysły poza naturalne granice.' Milknie. 'Dość już podróżowałem. Przydałaby ci się klinga weterana. Oferuję swoją służbę w walce, jeśli przyjmiesz.'",
+    "message": "Rycerz wraca. „Podróżowałem daleko na południe, na rozległą pustynię. Tam spotkałem człowieka oddanego odzyskiwaniu zagubionej technologii starożytnych. Pokazał mi urządzenia niegdyś wszczepiane w czaszkę, wzmacniające zmysły poza naturalne granice.” Milknie. „Dość już podróżowałem. Przydałaby ci się klinga weterana. Oferuję swoją służbę w walce, jeśli przyjmiesz.”",
     "title": "Ostatnia podróż rycerza"
   },
   "restlessKnightMountains": {
@@ -1859,19 +1888,19 @@
       }
     },
     "log": {
-      "outcome0": "Rycerz czekał, ale nie odpowiedziałeś. 'Może innym razem,' mówi, zanim ruszy dalej.",
-      "outcome2": "Rycerz dzieli się odkryciem: 'Wysoko w górach leży klasztor wykuty w klifach. Uczeni, którzy zebrali się tam, by studiować przeszłość, mówią o zaawansowanej cywilizacji daleko poza naszym pojęciem. A jednak coś doprowadziło ich świat do ruiny.'",
-      "outcome4": "Wdzięczny za posiłek, rycerz dzieli się odkryciem: 'Wysoko w górach leży klasztor wykuty w klifach. Uczeni tam, którzy studiują przeszłość, mówią o cywilizacji daleko poza naszym pojęciem. Ich kunszt był tak zaawansowany, że wydałby się nam magią. A jednak coś doprowadziło ich świat do ruiny.'",
-      "outcome5": "Odrzucasz jego ofertę. Rycerz kiwa głową. 'Wiedza zostanie więc przy mnie,' mówi i znów odchodzi."
+      "outcome0": "Rycerz czekał, ale nie odpowiedziałeś. „Może innym razem” – mówi, zanim ruszy dalej.",
+      "outcome2": "Rycerz dzieli się odkryciem: „Wysoko w górach leży klasztor wykuty w klifach. Uczeni, którzy zebrali się tam, by studiować przeszłość, mówią o zaawansowanej cywilizacji daleko poza naszym pojęciem. A jednak coś doprowadziło ich świat do ruiny.”",
+      "outcome4": "Wdzięczny za posiłek, rycerz dzieli się odkryciem: „Wysoko w górach leży klasztor wykuty w klifach. Uczeni tam, którzy studiują przeszłość, mówią o cywilizacji daleko poza naszym pojęciem. Ich kunszt był tak zaawansowany, że wydałby się nam magią. A jednak coś doprowadziło ich świat do ruiny.”",
+      "outcome5": "Odrzucasz jego ofertę. Rycerz kiwa głową. „Wiedza zostanie więc przy mnie” – mówi i znów odchodzi."
     },
-    "message": "Rycerz wraca, zbroja porysowana i potłuczona. 'Znalazłem coś niezwykłego w górach,' mówi. 'Opowiem ci o tym, za cenę.'",
+    "message": "Rycerz wraca w porysowanej i poobijanej zbroi. „Znalazłem coś niezwykłego w górach” – mówi. „Opowiem ci o tym – za odpowiednią cenę”.",
     "title": "Powrót z gór"
   },
   "riddleOfAges": {
     "title": "Głosy w mroku",
     "message": {
-      "original": "Zakapturzona postać wraca do posiadłości w bladym świetle księżyca. Jej głos niesie się echem: 'Rano chodzi na czterech nogach, w południe na dwóch, wieczorem na trzech.'",
-      "variant": "Zakapturzona postać wraca do posiadłości w bladym świetle księżyca. Jej głos niesie się echem: 'Nie zrani cię, a zostawia blizny.'"
+      "original": "Zakapturzona postać wraca do posiadłości w bladym świetle księżyca. Jej głos niesie się echem: „Rano chodzi na czterech nogach, w południe na dwóch, wieczorem na trzech.”",
+      "variant": "Zakapturzona postać wraca do posiadłości w bladym świetle księżyca. Jej głos niesie się echem: „Nie zrani cię, a zostawia blizny.”"
     },
     "choices": {
       "answerEarth": {
@@ -1898,8 +1927,8 @@
   "riddleOfAges_variant": {
     "title": "Głosy w mroku",
     "message": {
-      "original": "Zakapturzona postać wraca do posiadłości w bladym świetle księżyca. Jej głos niesie się echem: 'Rano chodzi na czterech nogach, w południe na dwóch, wieczorem na trzech.'",
-      "variant": "Zakapturzona postać wraca do posiadłości w bladym świetle księżyca. Jej głos niesie się echem: 'Nie zrani cię, a zostawia blizny.'"
+      "original": "Zakapturzona postać wraca do posiadłości w bladym świetle księżyca. Jej głos niesie się echem: „Rano chodzi na czterech nogach, w południe na dwóch, wieczorem na trzech.”",
+      "variant": "Zakapturzona postać wraca do posiadłości w bladym świetle księżyca. Jej głos niesie się echem: „Nie zrani cię, a zostawia blizny.”"
     },
     "choices": {
       "answerNightmares": {
@@ -1926,8 +1955,8 @@
   "riddleOfDevourer": {
     "title": "Nocny gość",
     "message": {
-      "original": "Znów tajemnicza postać zjawia się w posiadłości. Szepcze niskim głosem: 'Wszystko pożera, kości w pył obraca, królów zabija, góry ściera, miasta zaciera.'",
-      "variant": "Znów tajemnicza postać zjawia się w posiadłości. Szepcze niskim głosem: 'Ma palce, a nie ma ciała, piór, łusek ani kości.'"
+      "original": "Znów tajemnicza postać zjawia się w posiadłości. Szepcze niskim głosem: „Wszystko pożera, kości w pył obraca, królów zabija, góry ściera, miasta zaciera.”",
+      "variant": "Znów tajemnicza postać zjawia się w posiadłości. Szepcze niskim głosem: „Ma palce, a nie ma ciała, piór, łusek ani kości.”"
     },
     "choices": {
       "answerMan": {
@@ -1954,8 +1983,8 @@
   "riddleOfDevourer_variant": {
     "title": "Nocny gość",
     "message": {
-      "original": "Znów tajemnicza postać zjawia się w posiadłości. Szepcze niskim głosem: 'Wszystko pożera, kości w pył obraca, królów zabija, góry ściera, miasta zaciera.'",
-      "variant": "Znów tajemnicza postać zjawia się w posiadłości. Szepcze niskim głosem: 'Ma palce, a nie ma ciała, piór, łusek ani kości.'"
+      "original": "Znów tajemnicza postać zjawia się w posiadłości. Szepcze niskim głosem: „Wszystko pożera, kości w pył obraca, królów zabija, góry ściera, miasta zaciera.”",
+      "variant": "Znów tajemnicza postać zjawia się w posiadłości. Szepcze niskim głosem: „Ma palce, a nie ma ciała, piór, łusek ani kości.”"
     },
     "choices": {
       "answerFin": {
@@ -1982,8 +2011,8 @@
   "riddleOfEternal": {
     "title": "Nieznany gość",
     "message": {
-      "original": "Nocna postać zjawia się jeszcze raz w posiadłości. Jej głos niesie się przez noc: 'Oczy otwarte, jestem tam, oczy zamknięte, też tam jestem.'",
-      "variant": "Nocna postać zjawia się jeszcze raz w posiadłości. Jej głos niesie się przez noc: 'Biedni mnie mają, bogaci mnie potrzebują. Zjesz mnie, umrzesz.'"
+      "original": "Nocna postać zjawia się jeszcze raz w posiadłości. Jej głos niesie się przez noc: „Oczy otwarte, jestem tam, oczy zamknięte, też tam jestem.”",
+      "variant": "Nocna postać zjawia się jeszcze raz w posiadłości. Jej głos niesie się przez noc: „Biedni mnie mają, bogaci mnie potrzebują. Zjesz mnie, umrzesz.”"
     },
     "choices": {
       "answerLight": {
@@ -2004,14 +2033,14 @@
     },
     "log": {
       "wrong": "Postać kręci głową, zanim zniknie. Nazajutrz gęsta mgła wpełza do wioski. Wieśniacy twierdzą, że widzą w niej zmieniające się kształty, wielu boi się wychodzić z chat.",
-      "success_fifth": "Postać pochyla głowę w milczącym szacunku, zanim zblednie całkowicie. Tam, gdzie stała, leży wielki worek złota."
+      "success_fifth": "Postać pochyla głowę w milczącym szacunku, po czym całkiem się rozpływa. Tam, gdzie stała, leży wielki worek złota."
     }
   },
   "riddleOfEternal_variant": {
     "title": "Nieznany gość",
     "message": {
-      "original": "Nocna postać zjawia się jeszcze raz w posiadłości. Jej głos niesie się przez noc: 'Oczy otwarte, jestem tam, oczy zamknięte, też tam jestem.'",
-      "variant": "Nocna postać zjawia się jeszcze raz w posiadłości. Jej głos niesie się przez noc: 'Biedni mnie mają, bogaci mnie potrzebują. Zjesz mnie, umrzesz.'"
+      "original": "Nocna postać zjawia się jeszcze raz w posiadłości. Jej głos niesie się przez noc: „Oczy otwarte, jestem tam, oczy zamknięte, też tam jestem.”",
+      "variant": "Nocna postać zjawia się jeszcze raz w posiadłości. Jej głos niesie się przez noc: „Biedni mnie mają, bogaci mnie potrzebują. Zjesz mnie, umrzesz.”"
     },
     "choices": {
       "answerPoison": {
@@ -2032,14 +2061,14 @@
     },
     "log": {
       "wrong": "Postać kręci głową, zanim zniknie. Nazajutrz gęsta mgła wpełza do wioski. Wieśniacy twierdzą, że widzą w niej zmieniające się kształty, wielu boi się wychodzić z chat.",
-      "success_fifth": "Postać pochyla głowę w milczącym szacunku, zanim zblednie całkowicie. Tam, gdzie stała, leży wielki worek złota."
+      "success_fifth": "Postać pochyla głowę w milczącym szacunku, po czym całkiem się rozpływa. Tam, gdzie stała, leży wielki worek złota."
     }
   },
   "riddleOfTears": {
     "title": "Gość w kapturze",
     "message": {
-      "original": "Zakapturzona postać zjawia się raz jeszcze w posiadłości. Szepcze: 'Lata bez skrzydeł, płacze bez oczu, ciemność idzie za nią wszędzie.'",
-      "variant": "Zakapturzona postać zjawia się raz jeszcze w posiadłości. Szepcze: 'Miękka, delikatna, jedwabista, ale gdy cię owinę, krzyczysz.'"
+      "original": "Zakapturzona postać zjawia się raz jeszcze w posiadłości. Szepcze: „Lata bez skrzydeł, płacze bez oczu, ciemność idzie za nią wszędzie.”",
+      "variant": "Zakapturzona postać zjawia się raz jeszcze w posiadłości. Szepcze: „Miękka, delikatna, jedwabista, ale gdy cię owinę, krzyczysz.”"
     },
     "choices": {
       "answerNight": {
@@ -2066,8 +2095,8 @@
   "riddleOfTears_variant": {
     "title": "Gość w kapturze",
     "message": {
-      "original": "Zakapturzona postać zjawia się raz jeszcze w posiadłości. Szepcze: 'Lata bez skrzydeł, płacze bez oczu, ciemność idzie za nią wszędzie.'",
-      "variant": "Zakapturzona postać zjawia się raz jeszcze w posiadłości. Szepcze: 'Miękka, delikatna, jedwabista, ale gdy cię owinę, krzyczysz.'"
+      "original": "Zakapturzona postać zjawia się raz jeszcze w posiadłości. Szepcze: „Lata bez skrzydeł, płacze bez oczu, ciemność idzie za nią wszędzie.”",
+      "variant": "Zakapturzona postać zjawia się raz jeszcze w posiadłości. Szepcze: „Miękka, delikatna, jedwabista, ale gdy cię owinę, krzyczysz.”"
     },
     "choices": {
       "answerNightmares": {
@@ -2133,11 +2162,11 @@
       "outcome0": "Sanktuarium zmienia się w węzeł boskiej mocy. Wszyscy bogowie odpowiadają na twoje wezwanie, ich dary są twoje.",
       "dedicate_dagon": "Błogosławieństwo Dagona płynie silniej niż wcześniej.",
       "dedicate_flame": "Pierwszy Płomień pali się jaśniej niż wcześniej.",
-      "dedicate_raven": "Znak kruka rośnie silniej niż wcześniej.",
+      "dedicate_raven": "Znak kruka jest silniejszy niż wcześniej.",
       "dedicate_ash": "Popiołowy uścisk jest silniejszy niż wcześniej.",
       "dedicate_unknown": ""
     },
-    "message": "Ślepy druid wyłania się: 'Sanktuarium stoi ukończone,' mówi, głos niosący ciężar starożytnej mądrości. 'Teraz musisz wybrać: pogłębić oddanie ścieżce, którą obrałeś, albo objąć wszystkich bogów i ich dary. Wybierz mądrze.'",
+    "message": "Ślepy druid wyłania się: „Sanktuarium stoi ukończone” – mówi, głos niosący ciężar starożytnej mądrości. „Teraz musisz wybrać: pogłębić oddanie ścieżce, którą obrałeś, albo objąć wszystkich bogów i ich dary. Wybierz mądrze.”",
     "title": "Poświęcenie sanktuarium"
   },
   "scholarResearchProposal": {
@@ -2189,9 +2218,9 @@
     "log": {
       "outcome0": "Wbijasz wzrok w zmieniające się cienie, aż stają się nieruchome. Może to nic. Przynajmniej tak sobie powtarzasz.",
       "outcome1": "Cienie nachylają się ku tobie. Kształty zbierają się na skraju wzroku i coś szepcze twoje imię głosem jak suche liście.",
-      "outcome2": "Odwracasz wzrok, ale złośliwość idzie za tobą. Kątem oka cienie wciąż się ruszają długo po tym, jak przestałeś patrzeć."
+      "outcome2": "Odwracasz wzrok, ale poczucie, że coś jest nie tak, nie opuszcza cię. Kątem oka widzisz, że cienie wciąż się ruszają, długo po tym, jak przestałeś patrzeć."
     },
-    "message": "Cienie w wiosce zdają się poruszać źle. Wydłużają się za bardzo, skręcają pod niemożliwymi kątami i czasem zdają się ruszać niezależnie od swoich źródeł.",
+    "message": "Cienie w wiosce zdają się poruszać nienaturalnie. Wydłużają się za bardzo, skręcają pod niemożliwymi kątami i czasem zdają się ruszać niezależnie od swoich źródeł.",
     "title": "Poruszające się cienie"
   },
   "shoreFishermenResponse": {
@@ -2209,11 +2238,11 @@
       "outcome2": "Rybacy dzielą się z tobą misternymi technikami budowy pułapek na ryby.",
       "outcome3": "Odrzucasz ofertę rybaków. Okazja przepada."
     },
-    "message": "Jednooki kruk wraca od Przybrzeżnych Rybaków z suszoną rybą jako darem. Rybacy oferują nauczyć cię sekretów budowy potężnych pułapek na ryby za 250 złota.",
+    "message": "Jednooka wrona wraca od Przybrzeżnych Rybaków z suszoną rybą w darze. Rybacy oferują, że nauczą cię sekretów budowy potężnych pułapek na ryby za 250 złota.",
     "title": "Wieść od Przybrzeżnych Rybaków"
   },
   "sixthWave": {
-    "message": "Usta jaskini zwracają kolejną falę bladych ciał. Kościane włócznie klekocą jak deszcz, gdy zbierają się do kolejnego szturmu.",
+    "message": "Wylot jaskini wyrzuca z siebie kolejną falę bladych ciał. Kościane włócznie klekocą jak deszcz, gdy stwory zbierają się do kolejnego szturmu.",
     "title": "Szósta fala"
   },
   "skinCrawling": {
@@ -2227,8 +2256,8 @@
     },
     "log": {
       "outcome0": "Trzymasz się nieruchomo, aż pełzanie ustaje. Skóra znów jest twoja. Na razie.",
-      "outcome1": "Starasz się uspokoić, ale wrażenie nasila się. Wzrok się rozmazuje i padłeś. W gorączkowych snach starożytne rzeczy szepczą twoje prawdziwe imię. Gdy się budzisz, pełzanie ustało, ale pamięć zostaje.",
-      "outcome2": "Drapiesz skórę wściekle, aż krew. Wieśniacy rzucają się, by cię powstrzymać, chwytając ramiona. W oszalałej furii uderzasz gwałtownie, zabijając {{killedVillagers}} wieśniaków, zanim padniesz z wyczerpania. Gdy się budzisz, pełzanie ustało, ale krew plami dłonie."
+      "outcome1": "Starasz się uspokoić, ale wrażenie się nasila. Wzrok ci się rozmywa i padasz. W gorączkowych snach starożytne istoty szepczą twoje prawdziwe imię. Gdy się budzisz, pełzanie ustało, ale wspomnienie zostaje.",
+      "outcome2": "Drapiesz skórę jak oszalały, aż do krwi. Wieśniacy rzucają się, by cię powstrzymać, chwytając cię za ręce. W oszalałej furii uderzasz na oślep, zabijając {{killedVillagers}} z nich, zanim padniesz z wyczerpania. Gdy się budzisz, pełzanie ustało, ale twoje dłonie są we krwi."
     },
     "message": "Twoja skóra zaczyna pełzać, dosłownie. Widzisz kształty poruszające się pod powierzchnią, jakby układały wzory. Wieśniacy patrzą, jak drapiesz krwawe bruzdy w ramionach, z wielkim niepokojem.",
     "title": "Pełzająca skóra"
@@ -2251,7 +2280,7 @@
       "outcome2": "Twoi ludzie atakują handlarza niewolników, ale on jest przygotowany! Walczy zaciekle. {{actualDeaths}} wieśniaków pada w starciu. Handlarz ucieka z jeńcami, zostawiając tylko śmierć.",
       "outcome3": "Odrzucasz plugawą ofertę handlarza. Pluje na ziemię ze wstrętem i odjeżdża ze swoimi jeńcami."
     },
-    "message": "Mężczyzna na wozie ciągnionym przez dwa konie zbliża się do wioski. Żelazna klatka na wozie trzyma trzech nędznych niewolników. Handlarz uśmiecha się złośliwie: 'Zapłacę ci 100 stali za dwóch wieśniaków. Co powiesz?'",
+    "message": "Mężczyzna na wozie ciągnionym przez dwa konie zbliża się do wioski. Żelazna klatka na wozie trzyma trzech nędznych niewolników. Handlarz uśmiecha się złośliwie: „Zapłacę ci 100 stali za dwóch wieśniaków. Co powiesz?”",
     "title": "Handlarz niewolników"
   },
   "solsticeGathering": {
@@ -2259,7 +2288,7 @@
       "hostSolstice": {
         "cost": "{{goldCost}} złota, {{foodCost}} żywności",
         "cost_wood": "{{woodCost}} drewna, {{foodCost}} żywności",
-        "label": "Urządź zgromadzenie"
+        "label": "Urządź święto"
       },
       "refuseSolstice": {
         "label": "Odmów"
@@ -2272,8 +2301,8 @@
       "outcome2": "Ognie płoną, a śmiech na jakiś czas rozrywa ciemność. Do świtu wielu gości zostaje, rozważając pozostanie.",
       "outcome3": "Odmawiasz. Noc mija bez radości, ciepła i śmiechu."
     },
-    "message": "Wieśniacy proponują zgromadzenie, by uczcić najdłuższą noc roku. Zapłoną ognie, przygotują żywność, odbędą się igrzyska. Podróżni mogą przyjść, przyciągnięci światłem.",
-    "title": "Zgromadzenie przesilenia"
+    "message": "Wieśniacy proponują święto, by uczcić najdłuższą noc roku. Zapłoną ognie, przygotuje się jedzenie i urządzi zabawy. Mogą przyjść podróżni, zwabieni światłem.",
+    "title": "Święto przesilenia"
   },
   "staringDeer": {
     "choices": {
@@ -2287,7 +2316,7 @@
   "swampSanctuaryChoice": {
     "choices": {
       "chopBlackTree": {
-        "label": "Ściągnij drzewo"
+        "label": "Zetnij drzewo"
       },
       "sacrificeAtTree": {
         "cost": "1000 żywności",
@@ -2314,7 +2343,7 @@
       "outcome0": "Przyjmujesz ofertę Plemienia Bagien i przygotowujesz dostawę stali na bagna.",
       "outcome1": "Odrzucasz ofertę Plemienia Bagien. Okazja przepada."
     },
-    "message": "Jednooki kruk wraca od Plemienia Bagien z kruszącym się listem. Plemię oferuje potężne Płyty z chityny w zamian za 1000 stali dostarczonej do ich wioski.",
+    "message": "Jednooka wrona wraca od Plemienia Bagien z kruszącym się listem. Plemię oferuje potężne Płyty z chityny w zamian za 1000 stali dostarczonej do ich wioski.",
     "title": "Wieść od Plemienia Bagien"
   },
   "templeDedication": {
@@ -2335,10 +2364,10 @@
     "log": {
       "outcome0": "Poświęcasz świątynię Dagonowi, starożytnemu i tajemniczemu bogu głębin.",
       "outcome1": "Poświęcasz świątynię Ścieżce Pierwszego Płomienia, starożytnej drodze ognia i odrodzenia.",
-      "outcome2": "Poświęcasz świątynię Kultowi Krukorodnych, enigmatycznemu i ocienionemu zakonowi.",
+      "outcome2": "Poświęcasz świątynię Kultowi Krukorodnych, zagadkowemu zakonowi owianemu mrokiem.",
       "outcome3": "Poświęcasz świątynię Zakonowi Niosącego Popiół, uroczystemu bractwu związanemu z ogniem."
     },
-    "message": "Wkrótce po wzniesieniu świątyni pojawia się ślepy druid. Jego mleczne oczy zdają się widzieć przez twoją duszę, gdy mówi: 'Świątynia musi być poświęcona bogu. Wybierz mądrze.'",
+    "message": "Wkrótce po wzniesieniu świątyni pojawia się ślepy druid. Jego mleczne oczy zdają się widzieć przez twoją duszę, gdy mówi: „Świątynia musi być poświęcona bogu. Wybierz mądrze.”",
     "title": "Ślepy druid wraca"
   },
   "tenthWave": {
@@ -2347,11 +2376,11 @@
   },
   "firstBossWave": {
     "message": "Wielka wataha bladych bestii prowadzi oblężenie ku miastu. Pragnienie krwi widać w każdym ich kroku.",
-    "title": "Fala wodza"
+    "title": "Fala bossa"
   },
   "secondBossWave": {
     "message": "Armia bladych bestii zbiera się przed murami miasta, gromadząc się do jednego, ostatecznego szturmu.",
-    "title": "Ostateczna fala wodza"
+    "title": "Ostatnia fala bossa"
   },
   "postCompletionWave": {
     "message": "Z ukrytych głębin jaskini wciąż wychodzą bezrozumne blade stwory, szturmując miasto bez końca.",
@@ -2366,7 +2395,7 @@
     "log": {
       "outcome": "Przyjmujesz. Osłabiony trucizną, ale wciąż oddychający, Brutalny Ogar dołącza do twojej drużyny."
     },
-    "message": "Twoja wyprawa znajduje górską wioskę pełną otrutych martwych. Wśród ciał leży niemal martwy człowiek, bardzo muskularny, lecz zniekształcony, ledwo zdolny mówić. Mówi, że zwali go tylko Brutalnym Ogarem. Wygląda na to, że przetrwał truciznę, choć ledwo. Chce do ciebie dołączyć.",
+    "message": "Twoja wyprawa znajduje górską wioskę pełną otrutych zwłok. Wśród ciał leży ledwo żywy mężczyzna, bardzo muskularny, lecz zniekształcony, z trudem mówiący. Mówi, że nazywano go po prostu Brutalnym Ogarem. Wygląda na to, że przetrwał truciznę, choć ledwo. Chce do ciebie dołączyć.",
     "title": "Brutalny Ogar"
   },
   "theDamned": {
@@ -2384,11 +2413,11 @@
       "outcome2": "Odsyłasz ich. Gorzki niepokój osiada na wiosce, bo wieśniacy nie są zadowoleni z twojej decyzji.",
       "outcome3": "Przyjmujesz ich, ale w wiosce nie ma już miejsca na więcej wieśniaków."
     },
-    "message": "Grupa młodych mężczyzn i kobiet potyka się z lasu, na wpół martwa z zimna i głodu. Zostawiono ich w gęstwinie jako ofiarę bogom lasu, a jednak jakoś przeżyli. Wpuszczasz ich do wioski?",
+    "message": "Z lasu wytacza się grupa młodych mężczyzn i kobiet, na wpół żywych z zimna i głodu. Zostawiono ich w gęstwinie jako ofiarę dla bogów lasu, a jednak jakimś cudem przeżyli. Wpuszczasz ich do wioski?",
     "title": "Przeklęci"
   },
   "thirdWave": {
-    "message": "Hordy bladych stworów wychodzą z jaskini; krzyki wstrząsają nawet kamieniami, ich kościane bronie pękają ziemię.",
+    "message": "Z jaskini wychodzą hordy bladych stworów; ich wrzaski wstrząsają nawet kamieniami, a kościana broń rozłupuje ziemię.",
     "title": "Trzecia fala"
   },
   "traders_daughter": {
@@ -2406,7 +2435,7 @@
       "outcome2": "Odmawiasz. Handlarz kiwa głową ze smutkiem i odchodzi szukać sam.",
       "outcome3": "Odmawiasz. Handlarz kiwa głową ze smutkiem i odchodzi szukać sam."
     },
-    "message": "Pewnego wieczoru handlarz podchodzi do ciebie w rozpaczy. Jego najmłodsza córka zniknęła przy skraju lasu i błaga o pomoc.",
+    "message": "Pewnego wieczoru handlarz podchodzi do ciebie zrozpaczony. Jego najmłodsza córka zaginęła na skraju lasu; błaga cię o pomoc.",
     "title": "Córka handlarza"
   },
   "traders_gratitude": {
@@ -2502,7 +2531,7 @@
       "outcome2": "Wędrowiec krótko kiwa głową i odchodzi do wyrobiska, by zacząć pracę.",
       "outcome4": "Wędrowiec krótko kiwa głową i odchodzi do wyrobiska, by zacząć pracę."
     },
-    "message": "Człowiek w podartych szatach zbliża się do wioski, dłonie naznaczone latami ciężkiej pracy. 'Przychodzę z kolonii górniczej,' mówi szorstkim głosem. 'Mogę dla ciebie pracować, by poprawić wydajność kopania.'",
+    "message": "Człowiek w podartych szatach zbliża się do wioski, dłonie naznaczone latami ciężkiej pracy. „Przychodzę z kolonii górniczej” – mówi szorstkim głosem. „Mogę dla ciebie pracować, by poprawić wydajność kopania.”",
     "title": "Bezimienny wędrowiec"
   },
   "veiledSeer": {
@@ -2516,10 +2545,10 @@
       }
     },
     "log": {
-      "outcome1": "Wieszcz milknie. Jego wzrok dryfuje poza ciebie. \"Wielkie próby czekają cię{{name}},\" mówi cicho. \"Wierzysz, że ten świat jest twój do kształtowania. Ale i ty jesteś kształtowany. Gdy wyłoni się ostateczna prawda, zobaczysz sznurki. A wtedy może być za późno.\"",
-      "outcome2": "Wieszcz kiwa głową. \"Żegnaj zatem{{name}},\" mówi i znika we mgle bez kolejnego słowa."
+      "outcome1": "Wieszcz milknie. Jego wzrok dryfuje poza ciebie. „Wielkie próby czekają cię{{name}}” – mówi cicho. „Wierzysz, że ten świat jest twój do kształtowania. Ale i ty jesteś kształtowany. Gdy wyłoni się ostateczna prawda, zobaczysz sznurki. A wtedy może być za późno.”",
+      "outcome2": "Wieszcz kiwa głową. „Żegnaj zatem{{name}}” – mówi i znika we mgle bez kolejnego słowa."
     },
-    "message": "Zakapturzona postać zjawia się o zmierzchu. Oczy błyszczą spod welonu. 'Ujrzałem, co leży przed tobą,' chrypi. '50 złota, a powiem ci, co czeka.'",
+    "message": "Zakapturzona postać zjawia się o zmierzchu. Oczy błyszczą jej spod zasłony. „Ujrzałem, co cię czeka” – chrypi. „Za 50 złota powiem ci, co cię spotka”.",
     "title": "Zasłonięty wieszcz"
   },
   "veinrootIntroduction": {
@@ -2563,7 +2592,7 @@
         "label": "Kontynuuj"
       }
     },
-    "message": "Starszy wioski wraca, wyraz twarzy poważny. 'Nadszedł czas,' mówi. 'Zrobiłeś pierwsze kroki na długiej i bezlitosnej ścieżce. To, co przed tobą, jest głębsze, ciemniejsze i bardziej wymagające. Zdecyduj teraz, czy pójdziesz dalej tą drogą.'",
+    "message": "Starszy wioski wraca, wyraz twarzy poważny. „Nadszedł czas” – mówi. „Zrobiłeś pierwsze kroki na długiej i bezlitosnej ścieżce. To, co przed tobą, jest głębsze, ciemniejsze i bardziej wymagające. Zdecyduj teraz, czy pójdziesz dalej tą drogą.”",
     "title": "Nadszedł czas"
   },
   "villageElderNotice": {
@@ -2572,7 +2601,7 @@
         "label": "Kontynuuj"
       }
     },
-    "message": "Starszy wioski podchodzi do ciebie. Mówi cicho. 'Stoisz u początku długiej drogi pełnej prób. Już wkrótce musisz wybrać, czy pójdziesz dalej tą drogą.'",
+    "message": "Starszy wioski podchodzi do ciebie. Mówi cicho. „Stoisz u początku długiej drogi pełnej prób. Już wkrótce musisz wybrać, czy pójdziesz dalej tą drogą.”",
     "title": "Ostrzeżenie starszego"
   },
   "villagersStareAtSky": {
@@ -2585,7 +2614,7 @@
       }
     },
     "log": {
-      "outcome0": "Chwytasz najbliższego wieśniaka i potrząsasz nim. Mruga raz i wraca do normy, ale szepcze 'Nadchodzi', zanim wróci do pracy. Pozostali powoli idą za jego przykładem.",
+      "outcome0": "Chwytasz najbliższego wieśniaka i potrząsasz nim. Mruga raz i wraca do normy, ale szepcze „Nadchodzi” – zanim wróci do pracy. Pozostali powoli idą za jego przykładem.",
       "outcome1": "Gdy dotykasz jednego wieśniaka, kruszy się w pył. Pozostali wychodzą z transu i krzyczą, wskazując niebo. Przez ułamek chwili widzisz to i ty: coś ogromnego i głodnego, patrzącego z góry.",
       "outcome2": "Zadzierasz szyję ku niebu i nagle to widzisz: coś ogromnego i niemożliwego, co istnieje między chmurami. Umysł odrzuca to, czego jest świadkiem, ale obraz pali się w pamięci na zawsze."
     },
@@ -2622,20 +2651,20 @@
       }
     },
     "log": {
-      "whisper0": "Kolekcjoner wzdycha i odwraca się. 'W podróżach odkryłem wiele reliktów starożytnej cywilizacji. Byli daleko bardziej zaawansowani niż my kiedykolwiek,' szepcze, zanim zblednie w mroku.",
-      "whisper1": "Niski szum sączy się spod kaptura. 'Wielki wybuch zniszczył większość artefaktów starożytnej cywilizacji. To, co zostało, jest rozproszone i rzadkie,' mamrocze.",
-      "whisper2": "Cichy oddech uchodzi z kolekcjonera. 'Wiele nauczyłem się o starożytnej cywilizacji w podróżach. Przed wielkim wybuchem nie było w tym świecie magii. Narodziła się w tamtej chwili,' szepcze, odchodząc.",
+      "whisper0": "Kolekcjoner wzdycha i odwraca się. „W podróżach odkryłem wiele reliktów starożytnej cywilizacji. Jej ludzie byli o wiele bardziej zaawansowani niż my kiedykolwiek” – szepcze, zanim rozpłynie się w mroku.",
+      "whisper1": "Niski szum sączy się spod kaptura. „Wielki wybuch zniszczył większość artefaktów starożytnej cywilizacji. To, co zostało, jest rozproszone i rzadkie” – mamrocze.",
+      "whisper2": "Cichy oddech uchodzi z kolekcjonera. „Wiele nauczyłem się o starożytnej cywilizacji w podróżach. Przed wielkim wybuchem nie było w tym świecie magii. Narodziła się w tamtej chwili” – szepcze, odchodząc.",
       "whisperGeneric": "Kolekcjoner kiwa raz głową i wnika w cień.",
       "leatherboundLearnOutcome": "Płacisz za księgę w skórzanej oprawie. Kolekcjoner otwiera ją i czyta cicho. Należała do dawno zmarłego handlarza niewolników, który zwał się Mistrzem Łańcuchów. Piętnował niewolników znakiem łańcucha. Wiedza ciąży na twoim umyśle."
     },
     "title": "Wędrowny kolekcjoner",
     "message": {
-      "visit0": "Postać owinięta w postrzępione szaty zbliża się. Zdaje się zaciekawiona tym, co zebrałeś. 'Czuję wartość wśród twoich posiadłości,' mamrocze. 'Pozwól mi wziąć jedną.'",
-      "visit0_both": "Postać owinięta w postrzępione szaty zbliża się. 'Czuję wartość wśród twoich posiadłości,' mamrocze. 'Sprzedaj mi jedną albo odkup to, co inni zostawili.'",
-      "visit0_buy": "Postać owinięta w postrzępione szaty zbliża się, sakwa odrzuconych reliktów u boku. 'Zbieram to, czego inni odmawiają,' mamrocze. 'Każda z tych rzeczy może być twoja.'",
-      "visit1": "Zakapturzona postać wraca, kroki bezdźwięczne na ziemi. 'Więcej artefaktów, więcej sekretów,' szepcze. 'Pozwól mi znów wziąć jeden.'",
-      "visit1_both": "Zakapturzona postać wraca, cicha jak wcześniej. 'Sprzedaj mi kolejny,' szepcze, 'albo weź jeden, który znalazłem. Ale tylko jeden.'",
-      "visit1_buy": "Zakapturzona postać wraca z zapomnianymi reliktami. 'To, czego inni kiedyś odmówili, ja zachowałem,' szepcze. 'Każdy może być twój.'"
+      "visit0": "Zbliża się postać owinięta w postrzępione szaty. Zdaje się zaciekawiona tym, co zebrałeś. „Wyczuwam cenne rzeczy wśród twojego dobytku” – mamrocze. „Pozwól mi wziąć jedną z nich”.",
+      "visit0_both": "Zbliża się postać owinięta w postrzępione szaty. „Wyczuwam cenne rzeczy wśród twojego dobytku” – mamrocze. „Sprzedaj mi jedną albo odkup to, co zostawili inni”.",
+      "visit0_buy": "Zbliża się postać owinięta w postrzępione szaty, z sakwą odrzuconych reliktów u boku. „Zbieram to, czego inni nie chcieli” – mamrocze. „Każda z tych rzeczy może być twoja”.",
+      "visit1": "Zakapturzona postać wraca, kroki bezdźwięczne na ziemi. „Więcej artefaktów, więcej sekretów” – szepcze. „Pozwól mi znów wziąć jeden.”",
+      "visit1_both": "Zakapturzona postać wraca, cicha jak wcześniej. „Sprzedaj mi kolejny” – szepcze – „albo weź jeden, który znalazłem. Ale tylko jeden.”",
+      "visit1_buy": "Postać w szatach wraca z zapomnianymi reliktami. „To, czego inni kiedyś nie chcieli, ja zachowałem” – szepcze. „Każdy z nich może być twój”."
     }
   },
   "wanderingFirecrafter": {
@@ -2653,12 +2682,12 @@
       }
     },
     "log": {
-      "outcome0": "Ogniomistrz w końcu wzdycha: 'Może nie jesteś jeszcze gotów na taką moc,' i znika w nocy.",
-      "outcome2": "Ogniomistrz bierze twoje złoto i zaczyna uczyć cię mrocznej sztuki tworzenia bomb pustki. 'Używaj tej mocy mądrze,' ostrzega, zanim zniknie w cieniach.",
-      "outcome4": "Ogniomistrz bierze twoje srebro i zaczyna uczyć cię mrocznej sztuki tworzenia bomb pustki. 'Używaj tej mocy mądrze,' ostrzega, zanim zniknie w cieniach.",
-      "outcome5": "Odrzucasz ofertę ogniomistrza. Kiwa głową ze znajomością: 'Może nie jesteś jeszcze gotów na taką moc,' i znika w nocy."
+      "outcome0": "Ogniomistrz w końcu wzdycha: „Może nie jesteś jeszcze gotów na taką moc” – i znika w nocy.",
+      "outcome2": "Ogniomistrz bierze twoje złoto i zaczyna uczyć cię mrocznej sztuki tworzenia bomb pustki. „Używaj tej mocy mądrze” – ostrzega, zanim zniknie w cieniach.",
+      "outcome4": "Ogniomistrz bierze twoje srebro i zaczyna uczyć cię mrocznej sztuki tworzenia bomb pustki. „Używaj tej mocy mądrze” – ostrzega, zanim zniknie w cieniach.",
+      "outcome5": "Odrzucasz ofertę ogniomistrza. Kiwa głową porozumiewawczo: „Może nie jesteś jeszcze gotów na taką moc” – i znika w nocy."
     },
-    "message": "Zakapturzona postać w poplamionych szatach przybywa do twojej wioski. 'Jestem ogniomistrzem,' mówi głosem niosącym się echem. 'Mogę nauczyć cię wykuć bombę skrajnej mocy, która rozrywa samą rzeczywistość. Ale wiedza ma swoją cenę.'",
+    "message": "Zakapturzona postać w poplamionych szatach przybywa do twojej wioski. „Jestem ogniomistrzem” – mówi głosem niosącym się echem. „Mogę nauczyć cię robić bombę o niszczycielskiej mocy, która rozdziera samą rzeczywistość. Ale wiedza ma swoją cenę”.",
     "title": "Wędrowny ogniomistrz"
   },
   "wanderingTribe": {
@@ -2674,14 +2703,14 @@
       "outcome0": "Witasz nomadów i oferujesz wsparcie. W zamian uczą twoich ludzi stawiać namioty z futra.",
       "outcome1": "Odmawiasz pomocy. Wódz plemienia kiwa głową z szacunkiem i prowadzi swój lud z powrotem w dzicz."
     },
-    "message": "Małe plemię nomadów zbliża się do wioski. Ich wódz mówi: 'Wędrowaliśmy daleko i szukamy miejsca, które nazwiemy domem. Pomóż nam się osiedlić, a nauczymy twoich ludzi stawiać namioty z futra.'",
+    "message": "Małe plemię nomadów zbliża się do wioski. Ich wódz mówi: „Wędrowaliśmy daleko i szukamy miejsca, które nazwiemy domem. Pomóż nam się osiedlić, a nauczymy twoich ludzi stawiać namioty z futra.”",
     "title": "Wędrujące plemię"
   },
   "whispererInTheDark": {
     "title": "Szeptacz w mroku",
     "message": {
-      "original": "Pukanie dobiega od drzwi posiadłości. Postać całkowicie zakapturzona w ciemne szaty stoi w cieniu na zewnątrz. Szepcze: 'Bez głosu woła, bez skrzydeł fruwa, bez zębów gryzie, bez ust mamrocze.'",
-      "variant": "Pukanie dobiega od drzwi posiadłości. Postać całkowicie zakapturzona w ciemne szaty stoi w cieniu na zewnątrz. Szepcze: 'Pragnienie damy, wyrosłe w ciemności, lśniące bladym światłem.'"
+      "original": "Pukanie dobiega od drzwi posiadłości. Postać całkowicie zakapturzona w ciemne szaty stoi w cieniu na zewnątrz. Szepcze: „Bez głosu woła, bez skrzydeł fruwa, bez zębów gryzie, bez ust mamrocze.”",
+      "variant": "Pukanie dobiega od drzwi posiadłości. Postać całkowicie zakapturzona w ciemne szaty stoi w cieniu na zewnątrz. Szepcze: „Pragnienie damy, wyrosłe w ciemności, lśniące bladym światłem.”"
     },
     "choices": {
       "answerFire": {
@@ -2702,14 +2731,14 @@
     },
     "log": {
       "wrong": "Postać kręci głową, zanim zniknie. Nazajutrz gęsta mgła wpełza do wioski. Wieśniacy twierdzą, że widzą w niej zmieniające się kształty, wielu boi się wychodzić z chat.",
-      "success_first": "Postać ledwie kiwa głową, zanim zblednie w ciemności. Do rana na progu posiadłości leży mały woreczek złota."
+      "success_first": "Postać lekko kiwa głową, zanim rozpłynie się w ciemności. Do rana na progu posiadłości pojawia się mały woreczek złota."
     }
   },
   "whispererInTheDark_variant": {
     "title": "Szeptacz w mroku",
     "message": {
-      "original": "Pukanie dobiega od drzwi posiadłości. Postać całkowicie zakapturzona w ciemne szaty stoi w cieniu na zewnątrz. Szepcze: 'Bez głosu woła, bez skrzydeł fruwa, bez zębów gryzie, bez ust mamrocze.'",
-      "variant": "Pukanie dobiega od drzwi posiadłości. Postać całkowicie zakapturzona w ciemne szaty stoi w cieniu na zewnątrz. Szepcze: 'Pragnienie damy, wyrosłe w ciemności, lśniące bladym światłem.'"
+      "original": "Pukanie dobiega od drzwi posiadłości. Postać całkowicie zakapturzona w ciemne szaty stoi w cieniu na zewnątrz. Szepcze: „Bez głosu woła, bez skrzydeł fruwa, bez zębów gryzie, bez ust mamrocze.”",
+      "variant": "Pukanie dobiega od drzwi posiadłości. Postać całkowicie zakapturzona w ciemne szaty stoi w cieniu na zewnątrz. Szepcze: „Pragnienie damy, wyrosłe w ciemności, lśniące bladym światłem.”"
     },
     "choices": {
       "answerSilver": {
@@ -2730,7 +2759,7 @@
     },
     "log": {
       "wrong": "Postać kręci głową, zanim zniknie. Nazajutrz gęsta mgła wpełza do wioski. Wieśniacy twierdzą, że widzą w niej zmieniające się kształty, wielu boi się wychodzić z chat.",
-      "success_first": "Postać ledwie kiwa głową, zanim zblednie w ciemności. Do rana na progu posiadłości leży mały woreczek złota."
+      "success_first": "Postać lekko kiwa głową, zanim rozpłynie się w ciemności. Do rana na progu posiadłości pojawia się mały woreczek złota."
     }
   },
   "whisperersReward": {
@@ -2740,9 +2769,9 @@
       }
     },
     "log": {
-      "outcome0": "Gdy postać blednie w mroku, zalewa cię słaba euforia, cicha i ulotna, jak na wpół pamiętane wspomnienie lepszego czasu."
+      "outcome0": "Gdy postać rozpływa się w mroku, ogarnia cię słaba euforia, cicha i ulotna, jak na wpół zapomniane wspomnienie lepszych czasów."
     },
-    "message": "Zakapturzona postać pojawia się znów. Jego szept niesie się przez zimną noc ostatni raz, zanim zniknie: 'Twoja mądrość została zważona i uznana za godną. Niech cienie strzegą twojej drogi, a fortuna idzie za twoim imieniem.'",
+    "message": "Zakapturzona postać pojawia się znów. Jego szept niesie się przez zimną noc ostatni raz, zanim zniknie: „Twoja mądrość została zważona i uznana za godną. Niech cienie strzegą twojej drogi, a fortuna idzie za twoim imieniem.”",
     "title": "Dar szeptacza"
   },
   "whisperingVoices": {
@@ -2786,9 +2815,9 @@
       }
     },
     "log": {
-      "outcome0": "Przyjmujesz krwawą przysięgę. Łowczyni nacina ci dłoń i przyciska ją do swojej, pieczętując przysięgę krwią. 'W moim plemieniu zwą mnie Łowczynią Popiołowego Widma,' mówi. 'Nauczę twoich myśliwych dróg dziczy.' Łowczyni Popiołowego Widma dołączyła do twojej drużyny."
+      "outcome0": "Przyjmujesz krwawą przysięgę. Łowczyni nacina ci dłoń i przyciska ją do swojej, pieczętując przysięgę krwią. „W moim plemieniu zwą mnie Łowczynią Popiołowego Widma” – mówi. „Nauczę twoich myśliwych dróg dziczy.” Łowczyni Popiołowego Widma dołączyła do twojej drużyny."
     },
-    "message": "Dzika łowczyni wraca z lasu. 'Uratowałeś moje plemię od zagłady,' mówi, przecinając dłoń nożem z kości. Krew kapie na ziemię. 'Według starych zwyczajów mojego ludu oferuję ci krwawą przysięgę. Będę ci dłużna na zawsze.'",
+    "message": "Dzika łowczyni wraca z lasu. „Uratowałeś moje plemię od zagłady” – mówi, przecinając dłoń nożem z kości. Krew kapie na ziemię. „Według starych zwyczajów mojego ludu oferuję ci krwawą przysięgę. Będę ci dłużna na zawsze.”",
     "title": "Krwawa przysięga"
   },
   "witchsCurse": {
@@ -2808,15 +2837,15 @@
       }
     },
     "log": {
-      "outcome1": "Oddajesz złoto. Wiedźma rechce, chowa monety i znika we mgle bez kolejnego słowa.",
+      "outcome1": "Oddajesz złoto. Wiedźma rechocze, chowa monety i bez słowa znika we mgle.",
       "outcome2": "Odmawiasz zapłaty. Wiedźma pluje i klnie, ale nic się nie dzieje. Kuśtyka precz, mamrocząc groźby w wiatr. Wygląda na to, że miałeś szczęście.",
       "outcome3": "Gdy odmawiasz zapłaty, wiedźma unosi sękate dłonie i wypowiada słowa w zapomnianym języku. Gdy odchodzi, wieśniacy zaczynają czuć się słabi, jakby ich siłę wyssała niewidzialna moc.",
       "outcome4": "Wieśniacy powalają ją, zanim skończy klątwę. Zanim wiedźma padnie, jej ciało rozpływa się w czarny dym, zostawiając tylko plugawy odór.",
-      "outcome5": "Ludzie atakują, ale wiedźma jest zbyt szybka. Z ostatnim rechotem klnie wioskę, zanim zniknie w lesie. Intensywna słabość spada na twoich ludzi, wysysając siłę i wolę.",
+      "outcome5": "Ludzie atakują, ale wiedźma jest zbyt szybka. Z ostatnim rechotem przeklina wioskę i znika w lesie. Twoich ludzi ogarnia dojmująca słabość, wysysając z nich siłę i wolę.",
       "outcome6": "Wypowiadasz starożytne słowa mocy, poznane ze starych tekstów. Wiedźma cofa się ze strachu i ucieka, jej klątwa złamana, zanim zdążyła się przyjąć.",
-      "outcome7": "Twoje groźby tylko gniewają wiedźmę. Śmieje się i klnie cię mroczną magią. Gdy odchodzi, wieśniacy zaczynają czuć się słabi, jakby ich siłę wyssała niewidzialna moc."
+      "outcome7": "Twoje groźby tylko rozwścieczają wiedźmę. Śmieje się i rzuca na ciebie klątwę. Gdy odchodzi, wieśniacy zaczynają czuć się słabi, jakby ich siłę wyssała niewidzialna moc."
     },
-    "message": "Zgarbiona stara kobieta w postrzępionych szatach przybywa do bram. Ze złością w głosie żąda: 'Zapłać mi 50 złota, albo przeklnę cię nieszczęściem.'",
+    "message": "Zgarbiona stara kobieta w postrzępionych szatach przybywa do bram. Ze złością w głosie żąda: „Zapłać mi 50 złota, albo przeklnę cię nieszczęściem.”",
     "title": "Klątwa wiedźmy"
   },
   "wizardArrives": {
@@ -2825,7 +2854,7 @@
         "label": "Kontynuuj"
       }
     },
-    "message": "Niski stary człowiek z długą siwą brodą, w wytartym szarym płaszczu, zbliża się do osady. Jego oczy błyszczą starożytną mądrością i mocą. 'Jestem czarodziejem,' oświadcza głosem niosącym się z arkanicznym autorytetem. 'Zbuduj mi wieżę, a wspomogę cię mocami poza śmiertelnym pojęciem.'",
+    "message": "Niski stary człowiek z długą siwą brodą, w wytartym szarym płaszczu, zbliża się do osady. Jego oczy błyszczą starożytną mądrością i mocą. „Jestem czarodziejem” – oświadcza głosem pełnym tajemnej władzy. „Zbuduj mi wieżę, a wspomogę cię mocami, których śmiertelnicy nie pojmują”.",
     "title": "Czarodziej"
   },
   "wizardBloodstone": {
@@ -2834,7 +2863,7 @@
         "label": "Kontynuuj"
       }
     },
-    "message": "Czarodziej wraca z podróży do lasu. 'Naradziłem się ze starym przyjacielem, czarodziejem-pustelnikiem, który mieszka głęboko w gęstwinie,' mówi poważnie. 'Mówił o krwawym kamieniu, którego potrzebujemy. Leży w Zatopionej Świątyni, starożytnej kapliczce, teraz na wpół zatopionej w bagnach lasu.'",
+    "message": "Czarodziej wraca z podróży do lasu. „Naradziłem się ze starym przyjacielem, czarodziejem-pustelnikiem, który mieszka głęboko w gęstwinie” – mówi poważnie. „Mówił o krwawym kamieniu, którego potrzebujemy. Leży w Zatopionej Świątyni, starożytnej kapliczce, teraz na wpół zatopionej w bagnach lasu.”",
     "title": "Zatopiona Świątynia"
   },
   "wizardBloodstoneStaff": {
@@ -2843,7 +2872,7 @@
         "label": "Kontynuuj"
       }
     },
-    "message": "Czarodziej ogląda klejnoty krwawego kamienia, które wydobyłeś z Zatopionej Świątyni. 'Z tymi krwawymi kamieniami mamy już wszystko, czego potrzeba. Teraz możemy wykuć Kostur krwawego kamienia. Razem z Mieczem z mrozoszkła będziemy mieli środki, by stawić czoła ciemności, która czai się poniżej.'",
+    "message": "Czarodziej ogląda klejnoty krwawego kamienia, które wydobyłeś z Zatopionej Świątyni. „Z tymi krwawymi kamieniami mamy już wszystko, czego potrzeba. Teraz możemy wykuć Kostur krwawego kamienia. Razem z Mieczem z mrozoszkła będziemy mieli środki, by stawić czoła ciemności, która czai się poniżej.”",
     "title": "Kostur krwawego kamienia"
   },
   "wizardDecryptsScrolls": {
@@ -2852,7 +2881,7 @@
         "label": "Kontynuuj"
       }
     },
-    "message": "Czarodziej wychodzi z wieży. 'Odszyfrowałem starożytne zwoje,' mówi. 'Stwory poniżej można zabić tylko bronią wielkiej mocy: mieczem z mrozoszkła i kosturem zwieńczonym krwawym kamieniem. Głęboko w lesie leży grób starożytnego króla, którego skarby mogą kryć mrozoszkło, którego potrzebujemy.'",
+    "message": "Czarodziej wychodzi z wieży. „Odszyfrowałem starożytne zwoje” – mówi. „Stwory poniżej można zabić tylko bronią wielkiej mocy: mieczem z mrozoszkła i kosturem zwieńczonym krwawym kamieniem. Głęboko w lesie leży grób starożytnego króla, którego skarby mogą kryć mrozoszkło, którego potrzebujemy.”",
     "title": "Starożytna wiedza"
   },
   "wizardFrostglassSword": {
@@ -2861,7 +2890,7 @@
         "label": "Kontynuuj"
       }
     },
-    "message": "Czarodziej ogląda mrozoszkło, zimne światło tańczy po jego powierzchni. 'Znalazłeś je. Teraz można wykuć Miecz z mrozoszkła.'",
+    "message": "Czarodziej ogląda mrozoszkło, zimne światło tańczy po jego powierzchni. „Znalazłeś je. Teraz można wykuć Miecz z mrozoszkła.”",
     "title": "Miecz z mrozoszkła"
   },
   "wizardNecromancerCastle": {
@@ -2870,7 +2899,7 @@
         "label": "Kontynuuj"
       }
     },
-    "message": "Czarodziej wzywa cię do swojej wieży: 'Dowiedziałem się o zamku głęboko w dziczy, dawnej siedzibie dawno zmarłego nekromanty. W jego murach leżą starożytne zwoje, które mówią, jak pokonać to, co mieszka w głębinach jaskini.'",
+    "message": "Czarodziej wzywa cię do swojej wieży: „Dowiedziałem się o zamku głęboko w dziczy, dawnej siedzibie dawno zmarłego nekromanty. W jego murach leżą starożytne zwoje, które mówią, jak pokonać to, co mieszka w głębinach jaskini.”",
     "title": "Zamek nekromanty"
   },
   "wizardOffer": {
@@ -2884,13 +2913,13 @@
       }
     },
     "log": {
-      "outcome0": "Twoje wahanie drażni czarodzieja. Kręci głową. 'Zostanę więc w swojej wieży. Może nasze drogi zetkną się znów, gdy potrzeba będzie większa,' mówi, zanim odejdzie.",
-      "outcome2": "Czarodziej kiwa głową z zadowoleniem. 'Uczciwa cena za moje usługi. Będę bronił twoich ludzi arkanicznym ogniem.' Zdejmuje wytarty kaptur, odsłaniając starożytne oczy, które świecą gasnącą mocą. Stary czarodziej dołączył do twojej drużyny.",
-      "outcome3": "Odrzucasz ofertę czarodzieja. Kiwa głową ze zrozumieniem. 'Zostanę więc w swojej wieży. Może nasze drogi zetkną się znów, gdy potrzeba będzie większa,' mówi, zanim odejdzie."
+      "outcome0": "Twoje wahanie drażni czarodzieja. Kręci głową. „Zostanę więc w swojej wieży. Może nasze drogi zetkną się znów, gdy potrzeba będzie większa” – mówi, zanim odejdzie.",
+      "outcome2": "Czarodziej kiwa głową z zadowoleniem. „Uczciwa cena za moje usługi. Będę bronił twoich ludzi tajemnym ogniem”. Zdejmuje wytarty kaptur, odsłaniając pradawne oczy, w których tli się gasnąca moc. Stary czarodziej dołączył do twojej drużyny.",
+      "outcome3": "Odrzucasz ofertę czarodzieja. Kiwa głową ze zrozumieniem. „Zostanę więc w swojej wieży. Może nasze drogi zetkną się znów, gdy potrzeba będzie większa” – mówi, zanim odejdzie."
     },
     "message": {
-      "firstVisit": "Stary czarodziej podchodzi do ciebie. 'Żyłem długo i wiele widziałem,' mówi zmęczonym głosem. 'Zagrożenie, któremu stawiasz czoła, jest straszliwe. Za uczciwą cenę dołączę do walki przeciw wrogom wychodzącym z głębin.'",
-      "repeat": "Stary czarodziej podchodzi do ciebie znów. 'Moja oferta dołączenia do walki przeciw wrogom z głębin nadal stoi. Za uczciwą cenę dołączę do ciebie.'"
+      "firstVisit": "Stary czarodziej podchodzi do ciebie. „Żyłem długo i wiele widziałem” – mówi zmęczonym głosem. „Zagrożenie, któremu stawiasz czoła, jest straszliwe. Za uczciwą cenę dołączę do walki przeciw wrogom wychodzącym z głębin.”",
+      "repeat": "Stary czarodziej podchodzi do ciebie znów. „Moja oferta dołączenia do walki przeciw wrogom z głębin nadal stoi. Za uczciwą cenę dołączę do ciebie.”"
     },
     "title": "Oferta czarodzieja"
   },
@@ -2900,7 +2929,7 @@
         "label": "Kontynuuj"
       }
     },
-    "message": "Czarodziej stoi u wejścia do wieży. 'Broń jest wykuta. Mamy teraz to, czego potrzeba, by stanąć przeciw stworom z głębin jaskini. Ciemność poniżej wkrótce pozna, że ta wioska nie padnie bez walki. Jesteśmy gotowi.'",
+    "message": "Czarodziej stoi u wejścia do wieży. „Broń jest wykuta. Mamy teraz to, czego potrzeba, by stanąć przeciw stworom z głębin jaskini. Ciemność poniżej wkrótce pozna, że ta wioska nie padnie bez walki. Jesteśmy gotowi.”",
     "title": "Ostateczne przygotowanie"
   },
   "trapSuggestion": {
@@ -2943,7 +2972,7 @@
       "hide_manyDeaths": "Wieśniacy tulą się w chatach, gdy wilki krążą na zewnątrz. Kilku wieśniaków zostaje wywleczonych z chat, ich krzyki niosą się przez noc.",
       "hide_manyDeaths_food": "Wieśniacy tulą się w chatach, gdy wilki krążą na zewnątrz. Kilku wieśniaków zostaje wywleczonych z chat, ich krzyki niosą się przez noc. Wilki plądrują zapasy, zanim znikną o świcie."
     },
-    "message": "Blisko północy wilki wyłaniają się z ciemności, oczy świecące nienaturalnym głodem. Ich wycie niesie złośliwość, gdy krążą wokół wioski.",
+    "message": "Blisko północy z ciemności wyłaniają się wilki o oczach płonących nienaturalnym głodem. W ich wyciu słychać złowrogość, gdy krążą wokół wioski.",
     "title": "Atak wilków"
   },
   "woodcutter": {
@@ -2960,10 +2989,10 @@
       }
     },
     "log": {
-      "betray": "Oddajesz żywność, ale dni mijają bez śladu drwala. Zostałeś zdradzony.",
-      "betrayLast": "Oddajesz żywność. Drwal uśmiecha się, odchodząc ku lasowi. Czekasz, ale nigdy nie wraca. Zostałeś zdradzony.",
-      "betrayLevel5": "Oddajesz żywność. Drwal obiecuje wrócić tego samego dnia. Ale nigdy nie wraca. Zostałeś zdradzony.",
-      "denyLastUneasy": "Coś w jego postawie budzi twój niepokój. Odmawiasz umowy. Uśmiech drwala gaśnie i odchodzi bez słowa.",
+      "betray": "Oddajesz żywność, ale mijają dni, a drwala ani śladu. Dałeś się oszukać.",
+      "betrayLast": "Oddajesz żywność. Drwal uśmiecha się i odchodzi ku lasowi. Czekasz, ale on nigdy nie wraca. Dałeś się oszukać.",
+      "betrayLevel5": "Oddajesz żywność. Drwal obiecuje wrócić tego samego dnia. Ale nigdy nie wraca. Dałeś się oszukać.",
+      "denyLastUneasy": "Coś w jego postawie budzi twój niepokój. Odmawiasz. Uśmiech znika z twarzy drwala; odchodzi bez słowa.",
       "denyLevel1": "Odrzucasz jego ofertę. Drwal wzrusza ramionami i odchodzi w las.",
       "denyLevel2": "Odrzucasz jego ofertę. Drwal kiwa głową i odchodzi bez narzekania.",
       "denyLevel3": "Odrzucasz jego ofertę. Wzrusza ramionami i wraca do lasu.",
@@ -2985,12 +3014,12 @@
       "successLevel6": "Drwal bierze żywność i jeszcze tego samego dnia dostarcza do wioski masywny zapas drewna."
     },
     "message": {
-      "level1": "Muskularny człowiek z wielką siekierą zbliża się do wioski. Napina ramiona. \"Potrafię rąbać drzewa jak nikt inny,\" chwali się. \"Daj mi {{foodCost}} żywności, a przyniosę {{woodReward}} drewna.\"",
-      "level2": "Drwal wraca, siekiera lśni w słońcu. \"W twojej wiosce więcej ust,\" zauważa. \"Mogę przynieść {{woodReward}} drewna. Ty dajesz mi {{foodCost}} żywności. Co powiesz?\"",
-      "level3": "Drwal zbliża się znów. \"Twoja wioska wciąż stoi,\" mówi z uśmiechem. \"Mogę przynieść {{woodReward}} drewna, jeśli zapłacisz {{foodCost}} żywności.\"",
-      "level4": "Drwal przybywa raz jeszcze. \"Chcesz znów skorzystać z moich usług? {{woodReward}} drewna za {{foodCost}} żywności,\" pyta.",
-      "level5": "Drwal zjawia się z pewnym uśmiechem. \"Może zrobimy jeszcze jeden układ? {{woodReward}} drewna za {{foodCost}} żywności.\"",
-      "level6": "Drwal wraca do wioski. \"Chcesz znów skorzystać z moich usług? Oferuję {{woodReward}} drewna za {{foodCost}} żywności,\" mówi."
+      "level1": "Muskularny człowiek z wielką siekierą zbliża się do wioski. Napina ramiona. „Potrafię rąbać drzewa jak nikt inny” – chwali się. „Daj mi {{foodCost}} żywności, a przyniosę {{woodReward}} drewna.”",
+      "level2": "Drwal wraca, siekiera lśni w słońcu. „W twojej wiosce przybyło gąb do wykarmienia” – zauważa. „Mogę przynieść {{woodReward}} drewna. Ty dasz mi {{foodCost}} żywności. Co ty na to?”",
+      "level3": "Drwal zbliża się znów. „Twoja wioska wciąż stoi” – mówi z uśmiechem. „Mogę przynieść {{woodReward}} drewna, jeśli zapłacisz {{foodCost}} żywności.”",
+      "level4": "Drwal przybywa raz jeszcze. „Chcesz znów skorzystać z moich usług? {{woodReward}} drewna za {{foodCost}} żywności” – pyta.",
+      "level5": "Drwal zjawia się z pewnym uśmiechem. „Może zrobimy jeszcze jeden układ? {{woodReward}} drewna za {{foodCost}} żywności.”",
+      "level6": "Drwal wraca do wioski. „Chcesz znów skorzystać z moich usług? Oferuję {{woodReward}} drewna za {{foodCost}} żywności” – mówi."
     },
     "title": {
       "level1": "Drwal",
@@ -3029,10 +3058,10 @@
     },
     "log": {
       "outcome0": "Mówisz do obcych. Przyznają, że są wędrowcami, którzy bali się prosić o schronienie, więc po prostu wprowadzili się do pustej chaty. Pozwalasz im zostać i pracować w wiosce.",
-      "outcome1": "Gdy ich konfrontujesz, śmieją się i przyznają, że są złodziejami, którzy przyszli okraść wioskę. Przemagają cię i znikają w lesie z 250 srebra.",
+      "outcome1": "Gdy żądasz od nich wyjaśnień, śmieją się i przyznają, że są złodziejami, którzy przyszli okraść wioskę. Obezwładniają cię i znikają w lesie z 250 srebra.",
       "outcome2": "Trzymasz dystans i obserwujesz ich z daleka. Po kilku dniach po prostu ich nie ma, jakby nigdy ich nie było. Nie masz pojęcia, kim byli."
     },
-    "message": "Liczycie wieśniaków i znajdujesz trzech więcej, niż powinno być. Wśród twoich ludzi pojawili się obcy, pracujący i jedzący, jakby należeli do twojej wspólnoty.",
+    "message": "Liczysz wieśniaków i okazuje się, że jest ich o trzech więcej, niż powinno. Wśród twoich ludzi pojawili się obcy, którzy pracują i jedzą, jakby należeli do twojej wspólnoty.",
     "title": "Fałszywi wieśniacy"
   },
   "youngWomanProtest": {
@@ -3048,11 +3077,11 @@
       }
     },
     "log": {
-      "outcome0": "Wygnałeś młodą kobietę z wioski. Przekonuje {{actualLeavers}} współczujących wieśniaków, by odeszli z nią, porzucając twoją osadę na zawsze.",
+      "outcome0": "Wyganiasz młodą kobietę z wioski. Namawia {{actualLeavers}} współczujących jej wieśniaków, by odeszli razem z nią i na zawsze porzucili twoją osadę.",
       "outcome1": "Wkrótce po ofierze złożonej przy Czarnym Monolicie {{actualLeavers}} przerażonych wieśniaków pakuje dobytek i odchodzi ze wstrętem.",
       "outcome2": "Zgadzasz się zakończyć praktykę ofiar z ludzi. Kobieta proponuje zniszczenie Czarnego Monolitu i wzniesienie na jego miejscu czystego białego obelisku, by oczyścić ciemność z umysłów ludzi."
     },
-    "message": "Młoda kobieta podchodzi do ciebie ze łzami spływającymi po twarzy. 'Oboje moi rodzice zostali ofiarowani temu przeklętemu monolitowi,' płacze. 'To barbarzyństwo musi się skończyć!'",
+    "message": "Młoda kobieta podchodzi do ciebie ze łzami spływającymi po twarzy. „Oboje moi rodzice zostali ofiarowani temu przeklętemu monolitowi” – płacze. „To barbarzyństwo musi się skończyć!”",
     "title": "Prośba młodej kobiety"
   },
   "wanderersLantern": {

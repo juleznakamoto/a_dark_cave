@@ -9,7 +9,7 @@
       "other": "{{count}} aldeões sucumbem à loucura e tiram as próprias vidas."
     },
     "madnessLevel": {
-      "increased": "Você afunda mais fundo na loucura.",
+      "increased": "Você mergulha ainda mais na loucura.",
       "decreased": "Sua loucura se acalma."
     },
     "starvationDeath": {
@@ -39,18 +39,18 @@
     "building": {
       "darkEstate": "A Propriedade Sombria se ergue numa pequena colina perto do vilarejo, oferecendo solidão e refúgio.",
       "blacksmith": "A forja do ferreiro ganha vida. O coração da indústria agora pulsa no vilarejo.",
-      "firstWoodenHut": "A primeira cabana de madeira está completa; esta pode ser o início de algo grandioso.",
+      "firstWoodenHut": "A primeira cabana de madeira está pronta. Este pode ser o início de algo grandioso.",
       "villageGrowthSuggestion": "O vilarejo cresce depressa. Talvez casas de pedra possam abrigar mais aldeões.",
       "cityGrowthMilestone": "A cidade se tornou uma metrópole movimentada, repleta de comércio, indústria e a promessa de dias melhores.",
-      "moonstoneDiscovered": "No fundo do poço, os trabalhadores descobrem veios de pedra-da-lua, um mineral luminescente repleto de energia.",
+      "moonstoneDiscovered": "No fundo da cava, os trabalhadores descobrem veios de pedra-da-lua, um mineral luminescente repleto de energia.",
       "foundry": "A fundição ruge ao ganhar vida enquanto o fogo e o calor fundem matérias-primas.",
-      "masterworkFoundry": "A Fundição-Mestra está completa, um monumento ao supremo domínio da metalurgia. Em seu fogo, o aço negro pode ser forjado - quase indestrutível, mas dificílimo de produzir.",
-      "altar": "Um altar se ergue à beira da floresta, erguido para apaziguar o que habita lá dentro.",
+      "masterworkFoundry": "A Fundição-Mestra está completa, um monumento ao supremo domínio da metalurgia. Em seu fogo, o aço negro pode ser forjado — quase indestrutível, mas dificílimo de produzir.",
+      "altar": "Um altar surge à beira da floresta, erguido para apaziguar o que habita lá dentro.",
       "grandHunterLodge": "O Grande Alojamento dos Caçadores está completo, uma estrutura magnífica onde mestres caçadores se reúnem.",
       "clerksHut": "A Cabana do Escriturário fica pronta. Estudiosos se reúnem nela para estudar o mundo e afiar seu conhecimento.",
       "scriptorium": "O Scriptorium está concluído. Um centro de sabedoria onde estudiosos aprofundam seu conhecimento.",
       "inkwardenAcademy": "A Academia dos Guardiões de Tomos se ergue, um grande salão onde estudiosos mestres destilam o conhecimento mais profundo.",
-      "tannery": "O Curtume está completo. O cheiro de couro em cura preenche o ar enquanto os artesãos começam seu trabalho.",
+      "tannery": "O Curtume está completo. O cheiro de couro sendo curtido preenche o ar enquanto os artesãos começam seu trabalho.",
       "highTannery": "O Alto Curtume é construído, uma grandiosa oficina onde artesãos experientes transformam peles no mais fino couro.",
       "longhouse": "A primeira casa comprida se ergue, um imenso salão de madeira com vigas robustas e muito espaço.",
       "furTents": "As primeiras tendas de pele são erguidas na borda do vilarejo, dando a mais pessoas um abrigo quente.",
@@ -82,7 +82,7 @@
       "emberBombFirst": "O conhecimento do alquimista se mostra inestimável. Você fabrica uma poderosa bomba de brasa, com seu núcleo brilhando em calor intenso e potencial destrutivo.",
       "ashfireBombFirst": "Usando o místico pó de cinzafogo, você fabrica uma bomba extraordinária que pulsa com fogo de outro mundo. Suas chamas ardem em cores que não são deste reino.",
       "voidBombFirst": "Combinando pó de cinzafogo com obsidiana e pólvora negra, você cria uma arma de poder aterrorizante. A bomba do vazio parece distorcer o espaço ao seu redor, e a própria realidade recua diante de sua presença.",
-      "veinfireElixirFirst": "O alquimista destila uma essência luminosa das fibras de raiz venosa. Você agora carrega um Elixir de Fogo Venoso - uma poção que, dizem, fortalece o bastião quando tudo parece perdido.",
+      "veinfireElixirFirst": "O alquimista destila uma essência luminosa das fibras de raiz venosa. Você agora carrega um Elixir de Fogo Venoso — uma poção que, dizem, fortalece o bastião quando tudo parece perdido.",
       "frostglassSword": "A forja do ferreiro arde com chamas azuis etéreas enquanto o vidro-de-gelo é moldado em uma magnífica espada. A lâmina reluz com uma luz fria de outro mundo, irradiando imenso poder.",
       "arbalest": "Seguindo o esquema, você fabrica uma balestra meticulosamente decorada. Sua engenharia é impecável, projetada por um artesão mestre.",
       "nightshadeBow": "Você fabrica um arco de madeira escura. Suas flechas levarão veneno aos seus inimigos.",
@@ -93,7 +93,7 @@
     "sacrifice": {
       "ringOfClarity": "Entre as oferendas de sacrifício, você descobre um anel cristalino.",
       "moonBracelet": "Entre as oferendas de sacrifício, você descobre um bracelete de pedra branca.",
-      "animalsMaxed": "O druida cego da floresta aparece: 'O Monólito Negro tomou todo o sangue que aceitará. O sacrifício de animais não pode ir além.'"
+      "animalsMaxed": "O druida cego da floresta aparece: “O Monólito Negro tomou todo o sangue que aceitará. O sacrifício de animais não pode ir além.”"
     },
     "gambler": {
       "win": "Você ganhou {{amount}} de ouro do apostador obcecado.",

@@ -20,10 +20,10 @@
     "villagersStarving": "Die Dorfbewohner hungern.",
     "boostApplied": "Verstärkung angewendet.",
     "investmentComplete": {
-      "success": "{{amount}} Gold-Investition abgeschlossen: Erfolg. Du hast {{payout}} Gold erhalten.",
-      "successLucky": "{{amount}} Gold-Investition abgeschlossen: Glückstreffer! Du hast {{payout}} Gold erhalten.",
-      "wipeout": "{{amount}} Gold-Investition abgeschlossen: Totalverlust. Du hast deine gesamte Investition von {{amount}} Gold verloren.",
-      "failure": "{{amount}} Gold-Investition abgeschlossen: Fehlschlag. Du hast {{loss}} Gold verloren."
+      "success": "Investition von {{amount}} Gold abgeschlossen: Erfolg. Du hast {{payout}} Gold erhalten.",
+      "successLucky": "Investition von {{amount}} Gold abgeschlossen: Glückstreffer! Du hast {{payout}} Gold erhalten.",
+      "wipeout": "Investition von {{amount}} Gold abgeschlossen: Totalverlust. Du hast deine gesamte Investition von {{amount}} Gold verloren.",
+      "failure": "Investition von {{amount}} Gold abgeschlossen: Fehlschlag. Du hast {{loss}} Gold verloren."
     },
     "stranger": {
       "variant0": "Ein Fremder nähert sich und tritt dem Dorf bei.",
@@ -46,7 +46,7 @@
       "foundry": "Die Gießerei erwacht zum Leben, um mithilfe von Feuer und Hitze Erze zu verschmelzen.",
       "masterworkFoundry": "Die Meistergießerei ist fertiggestellt, ein Denkmal höchster metallurgischer Kunst. In ihren Flammen kann Schwarzstahl geschmiedet werden, nahezu unzerstörbar, aber sehr schwer herzustellen.",
       "altar": "Am Waldrand erhebt sich ein Altar, errichtet, um zu besänftigen, was darin wohnt.",
-      "grandHunterLodge": "Die Große Jägerhütte ist fertiggestellt, ein prächtiges Bauwerk, in dem sich Meisterjäger versammeln.",
+      "grandHunterLodge": "Die Meisterjägerhütte ist fertiggestellt, ein prächtiges Bauwerk, in dem sich Meisterjäger versammeln.",
       "clerksHut": "Die Schreiberhütte steht fertig. Gelehrte versammeln sich darin, um die Welt zu studieren und ihr Wissen zu schärfen.",
       "scriptorium": "Das Skriptorium ist fertiggestellt. Ein Zentrum der Weisheit, in dem Gelehrte ihr Wissen vertiefen.",
       "inkwardenAcademy": "Die Schriftenwächterakademie erhebt sich, eine große Halle, in der Meistergelehrte das tiefste Wissen destillieren.",
@@ -57,12 +57,12 @@
       "shrine": "Neben dem Altar erhebt sich ein heiliger Schrein, dessen Präsenz gequälten Seelen Ruhe und Fokus schenkt.",
       "temple": "Ein prächtiger Tempel ist fertiggestellt, seine heiligen Hallen erfüllt von leisen Gebeten, die gequälte Seelen beruhigen.",
       "sanctum": "Das Heiligtum erhebt sich als Leuchtfeuer göttlichen Schutzes, dessen gesegnete Aura die dunkelsten Gedanken und Ängste vertreibt.",
-      "alchemistHall": "Die Hallen des Alchemisten ragen empor, ihre Kammern gefüllt mit brodelnden Tiegeln und funkelnden Instrumenten vergessener Handwerkskunst.",
+      "alchemistHall": "Die Alchemistenhalle ragt empor, ihre Kammern gefüllt mit brodelnden Tiegeln und funkelnden Instrumenten vergessener Handwerkskunst.",
       "tradePost": "Nahe dem Wald entsteht ein Handelsposten, der Händler anzieht, die ihre Waren gegen Gold verkaufen wollen.",
       "grandBazaar": "Der Große Basar erhebt sich, ein weitläufiger Marktplatz, an dem Händler aus fernen Ländern ihre Waren tauschen.",
-      "merchantsGuild": "Die Kaufmannsgilde ist fertiggestellt, eine mächtige Organisation, die alle Handelsrouten kontrolliert und beispiellosen Reichtum in die Siedlung bringt.",
+      "merchantsGuild": "Die Händlergilde ist fertiggestellt, eine mächtige Organisation, die alle Handelsrouten kontrolliert und beispiellosen Reichtum in deine Siedlung bringt.",
       "bastion": "Die Bastion erhebt sich wie ein Berg aus Stein, ihre Mauern dick und unnachgiebig. Ein Versprechen des Schutzes gegen alles, was in den Tiefen unten lauert.",
-      "wizardTower": "Der Zauberturm windet sich in den Himmel, knisternd vor arkaner Energie. Der Zauberer zieht mit seiner Sammlung uralter Folianten und mysteriöser Artefakte ein.",
+      "wizardTower": "Der Zaubererturm windet sich in den Himmel, knisternd vor arkaner Energie. Der Zauberer zieht mit seiner Sammlung uralter Folianten und mysteriöser Artefakte ein.",
       "fortifiedMoat": "Ein tiefer Graben umgibt nun die Siedlung, sein Wasser dunkel und tückisch. Kein Feind wird ihn leicht überschreiten.",
       "traps": "Um das Dorf herum wurden Fallen gelegt. Versteckte Gruben, Schlingen und spitze Pfähle warten auf jeden, der es wagt anzugreifen.",
       "improvedTraps": "Der Dorfrand ist mit verdeckten Gruben, Federschlingen und Stahlmechanismen verstärkt. Angreifer erwartet eine weitaus tödlichere Begrüßung.",
@@ -70,7 +70,7 @@
       "blackEstate": "Das Schwarze Anwesen erhebt sich vom Hügel, umhüllt von einem Schleier aus Nebel.",
       "chitinPlating": "Die Befestigungen sind nun mit Chitinpanzerung verstärkt. Die Verteidigung des Dorfs ist deutlich gestiegen.",
       "pillarOfClarity": "Die Säule der Klarheit erhebt sich, ein schimmernder Obelisk, der mit uralter Macht zu vibrieren scheint. Ihre Präsenz spendet denen in der Nähe Ruhe und Fokus.",
-      "boneTemple": "Der Knochentempel erhebt sich aus sorgfältig angeordneten Knochen, ein Monument der alten Götter. Seine Präsenz strahlt dunkle Macht aus, und die Dorfbewohner nähern sich ihm mit Ehrfurcht und Furcht.",
+      "boneTemple": "Der Knochentempel erhebt sich aus Tausenden sorgfältig angeordneter Knochen, ein Monument für die alten Götter. Seine Präsenz strahlt dunkle Macht aus, und die Dorfbewohner nähern sich ihm mit Ehrfurcht und Furcht.",
       "heartfire": "Das Herzfeuer wird entzündet. Seine Wärme und sein Licht bringen dem Dorf einen neuen Sinn."
     },
     "gameplay": {
@@ -81,24 +81,24 @@
     "crafting": {
       "emberBombFirst": "Das Wissen des Alchemisten erweist sich als unschätzbar. Du stellst eine mächtige Glutbombe her, deren Kern vor intensiver Hitze und zerstörerischem Potenzial glüht.",
       "ashfireBombFirst": "Mit dem mystischen Aschfeuerstaub stellst du eine außergewöhnliche Bombe her, die von anderweltlichem Feuer pulsiert. Ihre Flammen brennen in Farben, die nicht von dieser Welt stammen.",
-      "voidBombFirst": "Indem du Aschfeuerstaub mit Obsidian und Schwarzpulver kombinierst, erschaffst du eine Waffe von erschreckender Macht. Die Leerebombe scheint den Raum um sich herum zu verzerren, die Realität selbst weicht ihrer Präsenz aus.",
-      "veinfireElixirFirst": "Der Alchemist destilliert leuchtende Essenz aus Aderwurzfasern. Du hältst nun ein Aderfeuer-Elixier - ein Trank, von dem man munkelt, er stärke die Bastion, wenn alles verloren scheint.",
+      "voidBombFirst": "Indem du Aschfeuerstaub mit Obsidian und Schwarzpulver kombinierst, erschaffst du eine Waffe von erschreckender Macht. Die Leerenbombe scheint den Raum um sich herum zu verzerren, die Realität selbst weicht ihrer Präsenz aus.",
+      "veinfireElixirFirst": "Der Alchemist destilliert leuchtende Essenz aus Aderwurzelfasern. Du hältst nun ein Aderfeuer-Elixier in Händen, einen Trank, von dem man munkelt, er stärke die Bastion, wenn alles verloren scheint.",
       "frostglassSword": "Die Schmiede brennt mit ätherischen blauen Flammen, während das Frostglas zu einem prächtigen Schwert geformt wird. Die Klinge leuchtet mit anderweltlichem kaltem Licht und strahlt immense Macht aus.",
       "arbalest": "Dem Schema folgend stellst du eine sorgfältig verzierte Arbalest her. Ihre Mechanik ist makellos, entworfen von einem Meisterhandwerker.",
       "nightshadeBow": "Du fertigst einen Bogen aus dunklem Holz. Seine Pfeile werden Gift in deine Feinde tragen.",
       "bloodstoneStaff": "Der Zauberer kanalisiert seine arkane Kraft in die Blutsteine, verschmilzt sie mit uraltem Holz. Der Blutsteinstab pulsiert mit blutroter Energie und strahlt Stärke und verbotenes Wissen aus.",
-      "stormglassHalberd": "Du schmiedest die Sturmglass-Halberde, deren Klinge mit ätherischem Licht glänzt. Du fühlst dich deutlich stärker, wenn du diese legendäre Waffe führst.",
-      "ashenGreatshield": "Der Schmied schmiedet die massiven Knochen der See-Kreatur zu einem undurchdringlichen Schild. Der Aschen-Großschild ist ein uneinnehmbares Bollwerk, das deine Streitkräfte selbst vor den tödlichsten Bedrohungen schützen kann."
+      "stormglassHalberd": "Du schmiedest die Sturmglas-Hellebarde, deren Klinge mit ätherischem Licht glänzt. Du fühlst dich deutlich stärker, wenn du diese legendäre Waffe führst.",
+      "ashenGreatshield": "Der Schmied verarbeitet die massiven Knochen der Seekreatur zu einem undurchdringlichen Schild. Der Aschene Großschild ist ein Bollwerk von unerreichter Stärke, das deine Streitkräfte selbst vor den tödlichsten Bedrohungen schützen kann."
     },
     "sacrifice": {
       "ringOfClarity": "Unter den Opfergaben entdeckst du einen kristallklaren Ring.",
       "moonBracelet": "Unter den Opfergaben entdeckst du ein weißes Steinarmband.",
-      "animalsMaxed": "Der blinde Druide aus dem Wald erscheint: 'Der Schwarze Monolith hat alles Blut genommen, das er annehmen wird. Tieropfer können nicht weitergehen.'"
+      "animalsMaxed": "Der blinde Druide aus dem Wald erscheint: „Der Schwarze Monolith hat alles Blut genommen, das er annehmen wird. Weitere Tieropfer sind zwecklos.“"
     },
     "gambler": {
-      "win": "Du hast {{amount}} Gold vom besessenen Spieler gewonnen.",
-      "lose": "Du hast {{amount}} Gold an den besessenen Spieler verloren.",
-      "forfeit": "Der besessene Spieler wertete dein Schweigen als Aufgabe."
+      "win": "Du hast {{amount}} Gold vom besessenen Glücksspieler gewonnen.",
+      "lose": "Du hast {{amount}} Gold an den besessenen Glücksspieler verloren.",
+      "forfeit": "Der besessene Glücksspieler wertete dein Schweigen als Aufgabe."
     },
     "buttonUpgrade": {
       "deepens": "Deine Meisterschaft in {{skill}} vertieft sich.",

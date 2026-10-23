@@ -1,12 +1,12 @@
 {
   "event": {
     "fallbackTitle": "Evento",
-    "knowledgeTimeBonus": "+{{seconds}}s de tiempo de decisión por Conocimiento{{maxSuffix}}",
+    "knowledgeTimeBonus": "+{{seconds}} s de tiempo de decisión por Conocimiento{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (máx.)",
-    "successChance": "Probabilidad de éxito: {{percent}}%",
-    "successChanceBase": "Base: {{percent}}%",
-    "successChanceStatLine": "{{statValue}} {{statName}} * {{percentPerPoint}}% = {{contribution}}%",
-    "successChanceCruel": "Modo cruel: {{percent}}%",
+    "successChance": "Probabilidad de éxito: {{percent}} %",
+    "successChanceBase": "Base: {{percent}} %",
+    "successChanceStatLine": "{{statValue}} {{statName}} * {{percentPerPoint}} % = {{contribution}} %",
+    "successChanceCruel": "Modo cruel: {{percent}} %",
     "influencedBy": "Influido por:"
   },
   "reward": {
@@ -72,12 +72,12 @@
   "invite": {
     "button": "Invitar",
     "copyInviteCode": "Copiar código de invitación",
-    "goldBonus": "+{{amount}} oro",
+    "goldBonus": "+{{amount}} de oro",
     "linkCopied": "¡Enlace de invitación copiado!",
     "linkCopiedDesc": "Compártelo con amigos para ganar {{amount}} de oro cada uno.",
     "copyFailed": "No se pudo copiar el enlace de invitación",
     "copyFailedNotSignedIn": "Inicia sesión para copiar tu enlace de invitación",
-    "tooltip": "<bold>Invita a tus amigos</bold> - ambos recibiréis {{amount}} de oro. Puedes invitar hasta {{cap}} amigos. ({{count}}/{{cap}} invitados)."
+    "tooltip": "<bold>Invita a tus amigos</bold> y ambos recibiréis {{amount}} de oro. Puedes invitar a un máximo de {{cap}} amigos ({{count}}/{{cap}} invitados)."
   },
   "invest": {
     "title": "Invertir",
@@ -106,46 +106,46 @@
     }
   },
   "gambler": {
-    "title": "El jugador obsesionado",
-    "srDescription": "Juego de dados contra el jugador obsesionado",
+    "title": "El tahúr obsesionado",
+    "srDescription": "Juego de dados contra el tahúr obsesionado",
     "rulesAriaLabel": "Reglas del juego de dados",
-    "rulesTurns": "Tú y el jugador tiráis el dado por turnos.",
+    "rulesTurns": "Tú y el tahúr tiráis el dado por turnos.",
     "rulesTotals": "Las tiradas de cada jugador se suman.",
     "rulesGoal": "El objetivo está fijado en 15.",
     "rulesWinLose": "Si un jugador alcanza exactamente el objetivo, gana. Si lo supera, pierde.",
     "rulesStand": "Si el jugador activo tiene más puntos que el oponente, puede elegir no tirar.",
-    "tutorialIntro": "Para enseñarte el juego, el jugador ofrece jugar {{count}} veces sin apuesta.",
-    "boneDiceIntro": "Haz tu apuesta. Tener Dados de hueso te permite jugar dos veces contra el jugador.",
+    "tutorialIntro": "Para que aprendas el juego, el tahúr se ofrece a jugar {{count}} partidas sin apuesta.",
+    "boneDiceIntro": "Haz tu apuesta. Tener los Dados de hueso te permite jugar dos veces contra el tahúr.",
     "placeBet": "Haz tu apuesta.",
     "gamesRemaining": "Quedan {{remaining}} de {{total}} partidas.",
-    "requiresLuck": "Requiere {{luck}} Suerte para desbloquear",
+    "requiresLuck": "Requiere {{luck}} de Suerte para desbloquearse",
     "bet": "Apuesta:",
-    "practiceBet": "Práctica (0 oro)",
+    "practiceBet": "Práctica (0 de oro)",
     "goal": "Objetivo:",
     "you": "Tú",
-    "gambler": "Jugador",
+    "gambler": "Tahúr",
     "roll": "Tirar",
     "noRoll": "No tirar",
     "youWin": "Ganas",
     "youLose": "Pierdes",
     "practiceOutcome": "Ronda de práctica. No se gana ni pierde oro.",
-    "goldWon": "+{{amount}} oro",
-    "goldLost": "-{{amount}} oro",
+    "goldWon": "+{{amount}} de oro",
+    "goldLost": "-{{amount}} de oro",
     "practiceWinRemaining": "Ganaste la ronda de práctica (sin oro en juego). Quedan {{remaining}} de {{total}} partidas de práctica.",
     "practiceLoseRemaining": "Perdiste la ronda de práctica (sin oro en juego). Quedan {{remaining}} de {{total}} partidas de práctica.",
-    "practiceWinComplete": "Ganaste la ronda de práctica (sin oro en juego). Práctica completa - puedes apostar oro.",
-    "practiceLoseComplete": "Perdiste la ronda de práctica (sin oro en juego). Práctica completa - puedes apostar oro."
+    "practiceWinComplete": "Ganaste la ronda de práctica (sin oro en juego). Práctica completada. Ya puedes apostar oro.",
+    "practiceLoseComplete": "Perdiste la ronda de práctica (sin oro en juego). Práctica completada. Ya puedes apostar oro."
   },
   "leaderboard": {
     "title": "Clasificación",
-    "dev": "Des.",
+    "dev": "Dev",
     "prod": "Prod.",
     "rank": "#",
     "player": "Jugador",
     "completionTime": "Tiempo de finalización",
     "noEntries": "Aún no hay entradas",
     "lastUpdated": "Última actualización: {{time}}",
-    "recentCompletionsNote": "Solo se muestran completaciones de los últimos 6 meses.",
+    "recentCompletionsNote": "Solo se muestran las partidas completadas en los últimos 6 meses.",
     "username": "Nombre de usuario:",
     "notSet": "Sin definir",
     "currentPlaytime": "Tiempo de juego actual:",
@@ -159,7 +159,7 @@
     "mustSignIn": "Debes iniciar sesión para establecer un nombre de usuario",
     "usernameNotAllowed": "Nombre de usuario no permitido",
     "usernameInappropriate": "Este nombre de usuario contiene lenguaje inapropiado. Elige otro.",
-    "usernameTaken": "Nombre de usuario ocupado",
+    "usernameTaken": "Nombre de usuario no disponible",
     "usernameTakenDesc": "Este nombre de usuario ya está en uso. Elige otro.",
     "usernameSaved": "Nombre de usuario guardado",
     "usernameSavedDesc": "Tu nombre de usuario se ha actualizado",
@@ -167,9 +167,9 @@
   },
   "investmentResult": {
     "title": "Resultado de la inversión",
-    "success": "Tu inversión de {{amount}} oro fue exitosa.",
-    "luckyChance": "¡Golpe de suerte! Las ganancias de tu inversión de {{amount}} oro se multiplican por {{multiplier}}.",
-    "partialLoss": "Tu inversión de {{amount}} oro falló."
+    "success": "Tu inversión de {{amount}} de oro fue exitosa.",
+    "luckyChance": "¡Golpe de suerte! Las ganancias de tu inversión de {{amount}} de oro se multiplican por {{multiplier}}.",
+    "partialLoss": "Tu inversión de {{amount}} de oro falló."
   },
   "cube": {
     "fallbackTitle": "El cubo susurrante",
@@ -182,14 +182,14 @@
   "timedEvent": {
     "buy": "Comprar",
     "sell": "Vender",
-    "buyFor": "Comprar por {{amount}} oro",
-    "sellFor": "Vender por {{amount}} oro",
+    "buyFor": "Comprar por {{amount}} de oro",
+    "sellFor": "Vender por {{amount}} de oro",
     "sayGoodbye": "Despedirse",
     "discount": "{{percent}} % de descuento",
     "discountFromKnowledge": "{{percent}} % por Conocimiento{{max}}",
     "knowledgeMax": " (máx.)",
-    "discountFromRing": "5 % por Anillo de Obediencia",
-    "prolongForInsight": "Extender el tiempo {{minutes}} min por {{cost}} {{resource}}"
+    "discountFromRing": "5 % por el Anillo de obediencia",
+    "prolongForInsight": "Ampliar el tiempo {{minutes}} min por {{cost}} de {{resource}}"
   },
   "share": {
     "title": "Mira tu progreso",
@@ -214,7 +214,7 @@
   "feedback": {
     "title": "Comentarios",
     "message": "¿Has encontrado errores o problemas de traducción, o tienes sugerencias? Me encantaría saber de ti.",
-    "openForm": "Dar feedback",
+    "openForm": "Enviar comentarios",
     "contactVia": "También puedes contactarme en:",
     "reddit": "Reddit",
     "instagram": "Instagram",
@@ -223,11 +223,11 @@
   "galaxy": {
     "title": "La demo termina aquí",
     "description": "Añade el juego completo a tu lista de deseados de Steam para continuar el viaje cuando se publique.",
-    "wishlistButton": "Añadir a la lista de deseados en Steam",
+    "storeHeaderLink": "Añadir a deseados",
+    "wishlistButton": "Añadir a tu lista de deseados",
     "feedbackButton": "Comentarios",
     "startNewGameButton": "Empezar partida nueva",
     "continuePlayingButton": "Seguir jugando",
-    "seeWhatsNextButton": "Ver qué viene",
-    "storeHeaderLink": "Lista de deseados"
+    "seeWhatsNextButton": "Ver qué viene"
   }
 }

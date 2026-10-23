@@ -1,7 +1,24 @@
 {
+  "abandonedCart": {
+    "choices": {
+      "leaveCart": {
+        "label": "Karren lassen"
+      },
+      "takeFood": {
+        "label": "Nahrung nehmen"
+      }
+    },
+    "log": {
+      "outcome0": "Die Dorfbewohner schleppen die Säcke heim. Die Nahrung ist noch gut.",
+      "outcome1": "Die Nahrung war vergiftet. Zwei Dorfbewohner stürzen nach den ersten Bissen zusammen.",
+      "outcome2": "Du lässt den Karren stehen. Nichts geschieht."
+    },
+    "message": "Am Waldrand finden Dorfbewohner einen verlassenen Karren mit Nahrung. Was sollen sie tun?",
+    "title": "Der verlassene Karren"
+  },
   "cartographer": {
     "title": "Der Kartograph",
-    "message": "Ein junger Mann kommt ins Dorf. Sein Rucksack ist voller Karten und seltsamer Instrumente. Er sagt, er wolle die Welt kartieren, und bietet an, dir für {{silverCost}} Silber das Zeichnen detaillierter Karten beizubringen. 'Wenn du jetzt nicht zahlen kannst, komme ich wieder', sagt er.",
+    "message": "Ein junger Mann kommt ins Dorf. Sein Rucksack ist voller Karten und seltsamer Instrumente. Er sagt, er wolle die Welt kartieren, und bietet an, dir für {{silverCost}} Silber das Zeichnen detaillierter Karten beizubringen. „Wenn du jetzt nicht zahlen kannst, komme ich wieder“, sagt er.",
     "choices": {
       "accept": {
         "label": "{{silverCost}} Silber zahlen",
@@ -13,7 +30,7 @@
     },
     "log": {
       "outcome0": "Du bezahlst ihn. Er bleibt und bringt es dir bei. Von nun an kannst du das Dorf selbst kartieren.",
-      "outcome1": "Du schickst ihn fort, ohne zu zahlen. 'Ich komme wieder', sagt er und verlässt das Dorf."
+      "outcome1": "Du schickst ihn fort, ohne zu zahlen. „Ich komme wieder“, sagt er und verlässt das Dorf."
     }
   },
   "alchemistArrives": {
@@ -22,7 +39,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Der Alchemist tritt aus seiner Halle: 'Ich habe Tag und Nacht Experimente durchgeführt', sagt er und hält eine Phiole mit schimmerndem Staub hoch. 'Ich habe etwas Außergewöhnliches und furchtbar Gefährliches erschaffen.'",
+    "message": "Der Alchemist tritt aus seiner Halle: „Ich habe Tag und Nacht Experimente durchgeführt“, sagt er und hält eine Phiole mit schimmerndem Staub hoch. „Ich habe etwas Außergewöhnliches und furchtbar Gefährliches erschaffen.“",
     "title": "Die Entdeckung des Alchemisten"
   },
   "ashwraithCanyonTradeOffer": {
@@ -31,7 +48,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Die Aschengeist-Jägerin tritt an dich heran. 'Mein Volk möchte handeln', sagt sie, 'doch zwischen unseren Ländern liegt eine tiefe Schlucht. Wir brauchen eine Brücke, damit Karawanen sie überqueren können. Baue sie, und beide Völker werden gedeihen.'",
+    "message": "Die Aschengeist-Jägerin tritt an dich heran. „Mein Volk möchte handeln“, sagt sie, „doch zwischen unseren Ländern liegt eine tiefe Schlucht. Wir brauchen eine Brücke, damit Karawanen sie überqueren können. Baue sie, und beide Völker werden gedeihen.“",
     "title": "Eine Brücke für den Handel"
   },
   "bastionBecomesFortress": {
@@ -80,7 +97,7 @@
     "title": "Die Schmiede des Riesen"
   },
   "blindDruidBlessing": {
-    "message": "Ein blinder Druide tritt aus dem Wald. Er nähert sich dem Schrein und nickt anerkennend. 'Die Götter des Waldes sind mit deiner Hingabe zufrieden, sie gewähren dir ihren Segen.'",
+    "message": "Ein blinder Druide tritt aus dem Wald. Er nähert sich dem Schrein und nickt anerkennend. „Die Götter des Waldes sind mit deiner Hingabe zufrieden, sie gewähren dir ihren Segen.“",
     "title": "Der blinde Druide"
   },
   "bloodDrainedVillagers": {
@@ -93,7 +110,7 @@
       "firstTime": "Eines Morgens werden 6 Dorfbewohner tot in ihren Betten gefunden, blass und vollständig ausgeblutet. Kleine Einstiche bedecken ihre Haut. Manche vermuten einen Zusammenhang mit dem eingestürzten Turm im Wald, wo Jäger seltsame Geräusche hörten.",
       "repeat": "Wieder werden bei Tagesanbruch 8 weitere Dorfbewohner tot aufgefunden, ihre Körper ausgeblutet, bedeckt mit denselben mysteriösen Zeichen. Die Rufe, sich um den eingestürzten Turm zu kümmern, werden lauter."
     },
-    "title": "Ausgezehrte Körper"
+    "title": "Blutleere Leichen"
   },
   "bloodiedAwakening": {
     "choices": {
@@ -105,10 +122,10 @@
       }
     },
     "log": {
-      "outcome0": "Als du den schlammigen Fußspuren durch das Dorf folgst, führen sie dich zu einem Mordort nach dem anderen. Die Abdrücke passen zu deinen eigenen Stiefeln. Das Grauen dämmert langsam - du warst es, besessen vom Hunger des Rings. Als die Dorfbewohner die Wahrheit erfahren, fliehen {{deaths}} von ihnen, unfähig, in der Nähe eines so verfluchten Wesens zu bleiben.",
-      "outcome1": "Mit zitternden Händen hebst du deine Axt. Der Ring pulsiert, als die Klinge fällt. Qual reißt durch deinen Arm, als Knochen splittert. Als du den abgetrennten Finger hochhebst, siehst du kleine schwarze Fäden wie Tentakel, tief in sein Fleisch gebohrt."
+      "outcome0": "Als du den schlammigen Fußspuren durch das Dorf folgst, führen sie dich zu einem Tatort nach dem anderen. Die Abdrücke passen zu deinen eigenen Stiefeln. Langsam dämmert dir das Grauen – du warst es, besessen vom Hunger des Rings. Als die Dorfbewohner die Wahrheit erfahren, fliehen {{deaths}} von ihnen, nicht bereit, in der Nähe eines so verfluchten Wesens zu bleiben.",
+      "outcome1": "Mit zitternden Händen hebst du deine Axt. Der Ring pulsiert, als die Klinge niederfährt. Schmerz reißt durch deinen Arm, als der Knochen splittert. Als du den abgetrennten Finger hochhebst, siehst du kleine schwarze Fäden wie Tentakel, tief in sein Fleisch gebohrt."
     },
-    "message": "Du erwachst im ersten Licht des Morgens, deine Kleidung von frischem Blut durchnässt. Es ist nicht deins. Ein Dorfbewohner kommt zum Anwesen, das Gesicht bleich vor Entsetzen. 'Acht sind tot', flüstert er. 'In der Nacht zerfetzt.' Der Ring an deinem Finger pocht vor quälendem Schmerz.",
+    "message": "Du erwachst im ersten Licht des Morgens, deine Kleidung von frischem Blut durchnässt. Es ist nicht deins. Ein Dorfbewohner kommt zum Anwesen, das Gesicht bleich vor Entsetzen. „Acht sind tot“, flüstert er. „In der Nacht zerfetzt.“ Der Ring an deinem Finger pocht vor quälendem Schmerz.",
     "title": "Blutiges Erwachen"
   },
   "bloodInWater": {
@@ -122,7 +139,7 @@
     },
     "log": {
       "outcome0": "Du trinkst aus dem Brunnen trotz des roten Schimmers. Das Wasser ist kalt und geschmacklos, und nach wenigen Augenblicken wirkt es plötzlich wieder klar. Dein Verstand scheint dich getäuscht zu haben.",
-      "outcome1": "Du trinkst das Wasser. Der Kupfergeschmack überflutet deinen Mund, dick und warm. In dieser Nacht träumst du davon, in rotem Wasser zu ertrinken, und wachst mit dem Geschmack noch auf der Zunge auf.",
+      "outcome1": "Du trinkst in tiefen Zügen. Der Kupfergeschmack überflutet deinen Mund, dick und warm. In dieser Nacht träumst du davon, in rotem Wasser zu ertrinken, und wachst mit dem Geschmack noch auf der Zunge auf.",
       "outcome2": "Du weigerst dich zu trinken, doch die Dorfbewohner füllen weiter ihre Becher. Ihre Lippen färben sich rot, während sie dich anlächeln, als wäre nichts geschehen."
     },
     "message": "Drei Tage lang läuft das Wasser des Dorfes rot. Die Dorfbewohner scheinen es nicht zu bemerken und trinken, als hätte sich nichts verändert. Du riechst Kupfer und Eisen, doch sie behaupten, es schmecke wie reines Quellwasser.",
@@ -201,14 +218,14 @@
       "hide_manyDeaths": "Die Dorfbewohner verstecken sich voller Angst, während die Knochenarmee das Dorf durchsucht. Die Dorfbewohner, die zu fliehen versuchten, werden von den Knochenkreaturen getötet.",
       "hide_manyDeaths_loot": "Die Dorfbewohner verstecken sich voller Angst, während die Knochenarmee das Dorf durchsucht. Die Dorfbewohner, die zu fliehen versuchten, werden von den Knochenkreaturen getötet. Die Armee plündert deine Vorräte, bevor sie in der Dunkelheit verschwindet."
     },
-    "message": "Die Erde bebt, als skelettierte Kreaturen aus dem Wald treten. Der Knochenverschlinger hat die Knochen, die du ihm gehandelt hast, zu einer unheiligen Legion geformt. Mit hohlen Augen und geschärften Knochenwaffen nähern sie sich der Stadt.",
+    "message": "Die Erde bebt, als skelettierte Kreaturen aus dem Wald treten. Der Knochenverschlinger hat aus den Knochen, die du ihm verkauft hast, eine unheilige Legion geformt. Mit hohlen Augen und geschärften Knochenwaffen nähern sie sich der Stadt.",
     "title": "Die Knochenarmee"
   },
   "boneDevourer": {
     "title": "Der Knochenverschlinger",
     "message": {
-      "firstTime": "Eine deformierte Kreatur schlurft zum Tor, ihre gebeugte Gestalt von blasser, gespannter Haut bedeckt. In kratziger Stimme spricht sie: ‚Ich suche Knochen. Ich zahle {{silverReward}} Silber.‘",
-      "repeat": "Die Kreatur kehrt zum Tor zurück, ihre gebeugte Gestalt noch immer von blasser, gespannter Haut bedeckt. In vertraut kratziger Stimme spricht sie: ‚Ich suche Knochen. Ich zahle {{silverReward}} Silber.‘"
+      "firstTime": "Eine deformierte Kreatur schlurft zum Tor, ihre gebeugte Gestalt von blasser, gespannter Haut bedeckt. Mit kratziger Stimme spricht sie: „Ich suche Knochen. Ich zahle {{silverReward}} Silber.“",
+      "repeat": "Die Kreatur kehrt zum Tor zurück, ihre gebeugte Gestalt noch immer von blasser, gespannter Haut bedeckt. Mit ihrer vertrauten kratzigen Stimme spricht sie: „Ich suche Knochen. Ich zahle {{silverReward}} Silber.“"
     },
     "choices": {
       "sellBones": {
@@ -266,6 +283,57 @@
       "outcome1": "Die Jäger markieren den Ort. Eine größere Gruppe kann aufbrechen, sobald du bereit bist."
     }
   },
+  "brimstoneFlux1": {
+    "title": "Der Schwefelfluss",
+    "message": "Ein kleiner, bärtiger Mann mit gewaltigen Armen kommt ins Dorf. Er sagt, er kenne die Gießerei und könne die Stahlproduktion eine Zeit lang steigern. Er braucht Schwefel und ein wenig Gold.",
+    "choices": {
+      "accept": {
+        "label": "Hilfe annehmen",
+        "cost": "{{sulfurCost}} Schwefel, {{goldCost}} Gold"
+      },
+      "sendAway": {
+        "label": "Wegschicken"
+      }
+    },
+    "log": {
+      "accept": "Er beginnt seine Arbeit. Kurz darauf brennt der Ofen heißer als je zuvor.",
+      "sendAway": "Der Schmied zuckt mit den Schultern und geht. Er sagt, er komme vielleicht wieder."
+    }
+  },
+  "brimstoneFlux2": {
+    "title": "Noch ein Schwefelfluss",
+    "message": "Der kleine Schmied kehrt zurück, der Bart an den Rändern versengt. Er sagt, er könne die Öfen wieder wecken, aber diesmal werde es mehr kosten.",
+    "choices": {
+      "accept": {
+        "label": "Seine Hilfe annehmen",
+        "cost": "{{sulfurCost}} Schwefel, {{goldCost}} Gold"
+      },
+      "sendAway": {
+        "label": "Wegschicken"
+      }
+    },
+    "log": {
+      "accept": "Er speist den Ofen erneut. Die Stahlproduktion steigt sofort.",
+      "sendAway": "Er geht ohne Widerrede. Er sagt, er komme vielleicht wieder."
+    }
+  },
+  "brimstoneFlux3": {
+    "title": "Die Schwefelinfusion",
+    "message": "Der Schmied kehrt zurück. Er bietet an, die Gießerei dauerhaft zu verbessern. Aber es wird dich etwas kosten.",
+    "choices": {
+      "accept": {
+        "label": "Seine Methode lernen",
+        "cost": "{{sulfurCost}} Schwefel, {{goldCost}} Gold"
+      },
+      "sendAway": {
+        "label": "Wegschicken"
+      }
+    },
+    "log": {
+      "accept": "Er verbessert den Ofen und geht vor der Morgendämmerung. Stahlschmiede erzeugen von nun an mehr.",
+      "sendAway": "Er sieht dich enttäuscht an, dann geht er. Er sagt, er komme vielleicht wieder."
+    }
+  },
   "boneDiceChoice": {
     "choices": {
       "doNothing": {
@@ -283,7 +351,7 @@
       "outcome1": "Du beschließt, sie auf dem Höhlenboden liegen zu lassen. Als du fortgehst, hörst du sie einmal klappern, als würfelten sie sich selbst zum Abschied.",
       "outcome2": "Dein Zögern scheint die alte Magie in den Würfeln zu erzürnen. Sie rollen aus deiner Hand in die Dunkelheit."
     },
-    "message": "Als du tiefer hinabsteigst, findest du ein Set Knochenwürfel, in das alte Runen geschnitzt sind. Diese Würfel haben viel Glück und viel Tragödie gesehen. Behältst du sie?",
+    "message": "Als du tiefer hinabsteigst, findest du ein Set Knochenwürfel, in das alte Runen geschnitzt sind. Diese Würfel haben viel Glück und viel Unglück gesehen. Behältst du sie?",
     "title": "Die Knochenwürfel"
   },
   "clarityElixirCaveFound": {
@@ -324,13 +392,13 @@
   "boneTempleProposal": {
     "choices": {
       "acceptBoneTemple": {
-        "label": "Antrag annehmen"
+        "label": "Vorschlag annehmen"
       }
     },
     "log": {
       "outcome0": "Du nimmst die Weisheit der Alten an. Die Dorfbewohner nicken in stummer Zustimmung. Der Weg zum ultimativen Monument für die Götter liegt nun offen."
     },
-    "message": "Eine alte Frau mit trüben Augen tritt an dich heran. 'Wir müssen dem Vergießen von Menschenblut ein Ende setzen', erklärt sie. 'Die alten Götter verlangen ein großes Monument zu ihren Ehren. Erst dann werden sie uns weiterhin ihre Gunst gewähren.'",
+    "message": "Eine alte Frau mit trüben Augen tritt an dich heran. „Wir müssen dem Vergießen von Menschenblut ein Ende setzen“, erklärt sie. „Die alten Götter verlangen ein großes Monument zu ihren Ehren. Erst dann werden sie uns weiterhin ihre Gunst gewähren.“",
     "title": "Die Forderung der Alten"
   },
   "boneyardPlea": {
@@ -339,7 +407,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Eine Abordnung von Dorfbewohnern sucht dich auf: 'Viele von uns sind gestorben. Wir brauchen einen würdigen Ort, um unsere Toten zu begraben, damit sie endlich ruhen können.'",
+    "message": "Eine Abordnung von Dorfbewohnern sucht dich auf: „Viele von uns sind gestorben. Wir brauchen einen würdigen Ort, um unsere Toten zu begraben, damit sie endlich ruhen können.“",
     "title": "Die Toten begraben"
   },
   "cannibalRaid": {
@@ -386,7 +454,7 @@
       "fallback": "Der Sammler zuckt mit den Schultern und verschwindet im Waldnebel. Er murmelt, dass er vielleicht zurückkehre.",
       "fallbackLast": "Der Sammler geht, ohne ein Wort zu sagen. Du spürst, dass du ihn nicht wiedersehen wirst.",
       "learnOutcome": "Du bezahlst den Sammler, und er liest leise aus dem Buch. Es gehörte einem längst toten Sklavenhändler, der sich den Kettenmeister nannte. Er brandmarkte seine Sklaven mit einem Kettenzeichen. Das Wissen lastet schwer auf deinem Geist.",
-      "sellOutcome": "Der Sammler zählt das Gold ab und nimmt das Buch. „Es gehörte einem Sklavenhändler, der sich den Kettenmeister nannte“, sagt er. „Er brandmarkte seine Sklaven mit einem Kettenzeichen. Das Mal verblasst nie wirklich.“"
+      "sellOutcome": "Der Sammler zählt das Gold ab und nimmt das Buch. „Es gehörte einem Sklavenhändler, der sich den Kettenmeister nannte“, sagt er. „Er brandmarkte seine Sklaven mit einem Kettenzeichen.“"
     },
     "message": {
       "lastChance": "Der wandernde Sammler erscheint erneut. Seine Blicke fixieren das ledergebundene Buch. „Das ist mein letztes Angebot“, sagt er leise. „Verkaufe es für {{sellGold}} Gold, oder zahle {{teachCost}} Gold, und ich lehre dich, was darin steht.“",
@@ -472,7 +540,7 @@
         "label": "Schließen"
       }
     },
-    "message": "„Der Kriegerstamm wuchs zu einer weiten unterirdischen Stadt heran, sicher vor der Welt darüber, und beschützte noch immer, wofür sie einst ausersehen worden waren.“",
+    "message": "„Der Kriegerstamm wuchs zu einer weiten unterirdischen Stadt heran, sicher vor der Welt darüber, und beschützte noch immer, was zu beschützen er vor Generationen entsandt worden war.“",
     "title": "Die unterirdische Stadt"
   },
   "cube04": {
@@ -481,7 +549,7 @@
         "label": "Schließen"
       }
     },
-    "message": "„Obwohl die Erinnerung an das Bewachte in Legenden verblas, hielt ihre Wachsamkeit an. Generationen lang hielten die Krieger ihren heiligen Eid und wachten über das, was am tiefsten Punkt der Stadt lag.“",
+    "message": "„Obwohl die Erinnerung an das Bewachte zur Legende verblasste, hielt ihre Wachsamkeit an. Generationen lang hielten die Krieger ihren heiligen Eid und wachten über das, was am tiefsten Punkt der Stadt lag.“",
     "title": "Der heilige Eid"
   },
   "cube05": {
@@ -490,7 +558,7 @@
         "label": "Schließen"
       }
     },
-    "message": "„Lange nachdem die Bewohner der unterirdischen Stadt starben, blieb der Gegenstand ihrer Hingabe: ein kolossales, undurchdringliches Tor, geschmiedet mit vergessener Technologie, verborgen in den tiefsten Kammern der Stadt.“",
+    "message": "„Lange nachdem die Bewohner der unterirdischen Stadt gestorben waren, blieb der Gegenstand ihrer Hingabe: ein kolossales, undurchdringliches Tor, geschmiedet mit längst vergessener Technologie, verborgen in den tiefsten Kammern der Stadt.“",
     "title": "Das versiegelte Tor"
   },
   "cubeLostKnowledge": {
@@ -554,7 +622,7 @@
       }
     },
     "message": "„Wissen floss augenblicklich, und die Gesellschaft gedieh. Hinter dem Fortschritt lenkten die Schädelgeräte die Gedanken der Menschheit und verbanden Geister in einem stillen, unentrinnbaren Netz.“",
-    "title": "Der große Zusammenbruch"
+    "title": "Der Schwarmgeist"
   },
   "cube11": {
     "choices": {
@@ -563,7 +631,7 @@
       }
     },
     "message": "„Eines Tages, ohne Vorwarnung, fegte ein unvorstellbarer elektrischer Impuls über den Globus. Jedes Gerät der Zivilisation, auch die in den Schädeln, wurde vernichtet.“",
-    "title": "Der Schwarmgeist"
+    "title": "Der große Zusammenbruch"
   },
   "cube12": {
     "choices": {
@@ -607,8 +675,8 @@
         "label": "Weiter"
       }
     },
-    "message": "„Kurz nach der Explosion begann ein Mann in der Nähe zu dematerialisieren; seine Gestalt flackerte, halb durchsichtig für Sekunden. Vor Entsetzen und wahnsinnig vor dem Geschehen nahm er sich Momente später das Leben.“",
-    "title": "Das unbekannte Erz"
+    "message": "„Kurz nach der Explosion begann sich ein Mann in der Nähe zu dematerialisieren; seine Gestalt flackerte sekundenlang halb durchsichtig. Voller Entsetzen und vom Geschehenen in den Wahnsinn getrieben, nahm er sich wenige Augenblicke später das Leben.“",
+    "title": "Der flackernde Mann"
   },
   "cube14d": {
     "choices": {
@@ -616,7 +684,7 @@
         "label": "Schließen"
       }
     },
-    "message": "„In ihrer Verzweiflung vermuteten die Überlebenden, das Erz könnte ihnen helfen, durch das Tor zu gelangen. Mit den letzten Fragmenten bauten sie eine kleinere Bombe und stellten ihren gesündesten Mann damit vor das Tor. Gleich nach der Detonation wurde er gespenstisch, durchscheinend und verschwand durch das Tor.“",
+    "message": "„In ihrer Verzweiflung vermuteten die Überlebenden, das Erz könnte ihnen helfen, durch das Tor zu gelangen. Aus den letzten Bruchstücken bauten sie eine kleinere Bombe und stellten den Mann mit dem klarsten Verstand damit vor das Tor. Gleich nach der Detonation wurde er gespenstisch, durchscheinend und verschwand durch das Tor.“",
     "title": "Durch das Tor"
   },
   "cube15a": {
@@ -625,7 +693,7 @@
         "label": "Schließen"
       }
     },
-    "message": "Da erkennst du, dass die Kreaturen nicht angriffen, weil sie dich als einen der ihren erkannten. Du bist der Mann, der durch das Tor verschwand.",
+    "message": "Erst jetzt begreifst du, warum die Kreaturen dich nicht angriffen: Sie erkannten dich als einen der ihren. Du bist der Mann, der durch das Tor verschwand.",
     "title": "Erkenntnis"
   },
   "cube15b": {
@@ -643,7 +711,7 @@
         "label": "Schließen"
       }
     },
-    "message": "Neben den erschlagenen Kreaturen findest du etwas, das wie eines der Schädelgeräte aussieht. Es ist zerbrochen, doch du kannst noch einige Buchstaben darauf lesen: ‚N**RAL**K‘.",
+    "message": "Neben den erschlagenen Kreaturen findest du etwas, das wie eines der Schädelgeräte aussieht. Es ist zerbrochen, doch du kannst noch einige Buchstaben darauf lesen: „N**RAL**K“.",
     "title": "Das Schädelgerät"
   },
   "cube16b": {
@@ -652,7 +720,7 @@
         "label": "Schließen"
       }
     },
-    "message": "Die Kreaturen geben dir etwas, das wie eines der Schädelgeräte aussieht. Es ist zerbrochen, doch du kannst noch einige Buchstaben darauf lesen: ‚N**RAL**K‘.",
+    "message": "Die Kreaturen geben dir etwas, das wie eines der Schädelgeräte aussieht. Es ist zerbrochen, doch du kannst noch einige Buchstaben darauf lesen: „N**RAL**K“.",
     "title": "Das Schädelgerät"
   },
   "cubeDiscovery": {
@@ -673,7 +741,7 @@
     "log": {
       "outcome0": "Der Dorfbewohner eilt davon, ohne die dunkle Wahrheit zu kennen. Der Ring hat gut gespeist."
     },
-    "message": "Ein bleicher Dorfbewohner rennt atemlos vor Entsetzen zu dir. 'Das Söldnerlager... alle sind tot. Sie haben sich in der Nacht gegenseitig umgebracht. Wir haben Silber zwischen den Leichen gefunden.'",
+    "message": "Ein bleicher Dorfbewohner rennt atemlos vor Entsetzen zu dir. „Das Söldnerlager... alle sind tot. Sie haben sich in der Nacht gegenseitig umgebracht. Wir haben Silber zwischen den Leichen gefunden.“",
     "title": "Das Massaker"
   },
   "deerHerd": {
@@ -700,7 +768,7 @@
       }
     },
     "log": {
-      "outcome0": "Mit zitternden Händen hebst du deine Axt. Der Ring pulsiert, als die Klinge fällt. Qual reißt durch deinen Arm, als Knochen splittert. Als du den abgetrennten Finger hochhebst, siehst du kleine schwarze Fäden wie Tentakel, tief in sein Fleisch gebohrt."
+      "outcome0": "Mit zitternden Händen hebst du deine Axt. Der Ring pulsiert, als die Klinge niederfährt. Schmerz reißt durch deinen Arm, als der Knochen splittert. Als du den abgetrennten Finger hochhebst, siehst du kleine schwarze Fäden wie Tentakel, tief in sein Fleisch gebohrt."
     },
     "message": "Nach den entsetzlichen Ereignissen versuchst du erneut, den verfluchten Ring abzulegen. Doch der Ring gibt nicht nach, als wäre er Teil von dir geworden. Es gibt nur noch einen Weg, frei von ihm zu sein.",
     "title": "Kein Entkommen"
@@ -712,10 +780,10 @@
       }
     },
     "log": {
-      "outcome0": "Er nimmt dein Angebot wortlos an und setzt seine Mühsal fort. In seinen Augen liegt die stille Qual eines Mannes, der seinen Glauben zerbrechen sah. Einst predigte er von Tugend, bis zu dem Tag, an dem er eine große Sünde beging. Gefallener Prior hat sich deinen Gefährten angeschlossen."
+      "outcome0": "Er nimmt dein Angebot wortlos an und setzt seine Mühsal fort. In seinen Augen liegt die stille Qual eines Mannes, der seinen Glauben zerbrechen sah. Einst predigte er von Tugend, bis zu dem Tag, an dem er eine große Sünde beging. Der Gefallene Prior hat sich deinen Gefährten angeschlossen."
     },
     "message": "Die Dorfbewohner berichten von einem ausgezehrten Mann in zerlumpten Roben, der still die Mauern der Steinhütten ausbessert. Er arbeitet ohne ein Wort, ohne Rast und verlangt nichts. Wenn man ihn anspricht, sagt er nur, dass er viel wiedergutzumachen habe.",
-    "title": "Ein stiller Reparateur"
+    "title": "Ein stiller Handwerker"
   },
   "doNothing": {
     "log": {
@@ -736,10 +804,10 @@
       }
     },
     "log": {
-      "outcome0": "Du streckst sie ohne Gnade nieder. Ihre Schreie hallen durch die Kavernen, während sie fallen.",
+      "outcome0": "Du streckst sie ohne Gnade nieder. Ihre Schreie hallen durch die Höhlenhallen, während sie fallen.",
       "outcome1": "Du senkst die Waffen und versuchst, sie zu verstehen. Mit Gesten und gebrochenen Worten teilen sie Bruchstücke ihrer Geschichte, die dich sprachlos zurücklassen."
     },
-    "message": "In den Tiefen hinter dem zerbrochenen Tor findest du einige Kreaturen, die nicht angreifen. Ihre Gestalten sind vage menschlich, durch Generationen in der Dunkelheit verdreht. Sie gestikulieren und versuchen, mit gebrochenen Worten und Zeichen zu kommunizieren.",
+    "message": "In den Tiefen hinter dem zerbrochenen Tor findest du einige Kreaturen, die nicht angreifen. Ihre Gestalten sind vage menschlich, durch Generationen in der Dunkelheit entstellt. Sie gestikulieren und versuchen, sich mit gebrochenen Worten und Zeichen zu verständigen.",
     "title": "Die Bewohner der Tiefe"
   },
   "establishTradeProposal": {
@@ -762,7 +830,7 @@
     "title": "Handel aufbauen",
     "message": {
       "firstTime": "Ein Dorfältester spricht dich an und empfiehlt, die Krähe mit einer Botschaft auszusenden, um Handel anzuknüpfen. Wohin soll die erste Botschaft gehen?",
-      "repeat": "Der Dorfälteste kommt erneut. \"Die Krähe hat sich als nützlich erwiesen. Sollen wir eine weitere Botschaft senden?\""
+      "repeat": "Der Dorfälteste kommt erneut. „Die Krähe hat sich als nützlich erwiesen. Sollen wir eine weitere Botschaft senden?“"
     }
   },
   "exiledScholarVisit": {
@@ -780,7 +848,7 @@
       "outcome2": "Du schickst den Gelehrten fort. Er geht mit einem enttäuschten Seufzen, doch du spürst, dass er zurückkehren könnte.",
       "outcome3": "Der Gelehrte geht, unzufrieden mit deinem Zögern."
     },
-    "message": "Ein Gelehrter der dunklen Künste nähert sich deinem Anwesen. Beim Anblick der drei Blutphiolen sagt er mit kaum verhaltener Erregung: 'Ich kann eine Mixtur erschaffen, die dir große Macht verleiht.'",
+    "message": "Ein Gelehrter der dunklen Künste nähert sich deinem Anwesen. Beim Anblick der drei Blutphiolen sagt er mit kaum verhaltener Erregung: „Ich kann eine Mixtur erschaffen, die dir große Macht verleiht.“",
     "title": "Der verbannte Gelehrte"
   },
   "insightBlessingOffer": {
@@ -809,7 +877,7 @@
       },
       "payVillagers": {
         "cost": "20 Dorfbewohner",
-        "label": "20 Dorfbewohner"
+        "label": "20 Dorfbewohner anbieten"
       },
       "sendAway": {
         "label": "Sie wegschicken"
@@ -835,10 +903,10 @@
     },
     "log": {
       "outcome0": "Bei genauerem Hinsehen scheint es nur eine optische Täuschung gewesen zu sein. Du atmest erleichtert auf.",
-      "outcome1": "Du beugst dich nahe an eines der Gesichter. Seine Augen reißen auf, und es flüstert deinen Namen. Du erkennst das Gesicht als das eines Menschen, der vor langer Zeit gestorben ist.",
+      "outcome1": "Du beugst dich nahe an eines der Gesichter. Schlagartig öffnen sich seine Augen, und es flüstert deinen Namen. Du erkennst das Gesicht als das eines Menschen, der vor langer Zeit gestorben ist.",
       "outcome2": "Du versuchst, die Gesichter zu ignorieren, doch sie vermehren sich. Bald trägt jede Holzfläche im Dorf das Mal gequälter Seelen. Eines Morgens sind sie alle verschwunden, als wären sie nie dort gewesen."
     },
-    "message": "Auf den Holzwänden deiner Hütten erscheinen Gesichter - verzerrte, gequälte Mienen, die von der anderen Seite hindurchzudrücken scheinen. Sie formen stumme Schreie und Bitten. Die Dorfbewohner gehen um sie herum, als seien sie schon immer dort gewesen.",
+    "message": "Auf den Holzwänden deiner Hütten erscheinen Gesichter – verzerrte, gequälte Mienen, die von der anderen Seite hindurchzudrücken scheinen. Sie formen stumme Schreie und Bitten. Die Dorfbewohner gehen um sie herum, als seien sie schon immer dort gewesen.",
     "title": "Gesichter in den Wänden"
   },
   "feast": {
@@ -857,7 +925,7 @@
     "log": {
       "outcome1": "Die Dorfbewohner versammeln sich zum Fest! Müdigkeit weicht und die Stimmung hebt sich, wenn auch nur kurz.",
       "outcome2": "Du lehnst den Festvorschlag ab. Die Dorfbewohner akzeptieren deine Entscheidung, wenn auch enttäuscht.",
-      "outcome3": "Die Zeit vergeht und die Gelegenheit für ein Fest verblasst."
+      "outcome3": "Die Zeit vergeht, und die Gelegenheit für ein Fest verstreicht."
     },
     "message": "Die Dorfbewohner schlagen ein Fest vor. Ein kurzer Trost, um ihre Müdigkeit zu lindern und ihre Gedanken zu beruhigen.",
     "title": "Dorffest"
@@ -927,12 +995,21 @@
         "label": "Weiter"
       }
     },
-    "message": "Ein älterer Dorfbewohner tritt an dich heran, seine Augen schwer von Wissen. 'Du hast deine ersten Schritte in dieser grausamen Welt getan', sagt er leise. 'Bald wirst du entscheiden müssen, ob du bereit bist, dem zu begegnen, was vor dir liegt.'",
+    "message": "Ein älterer Dorfbewohner tritt an dich heran, seine Augen schwer von Wissen. „Du hast deine ersten Schritte in dieser grausamen Welt getan“, sagt er leise. „Bald wirst du entscheiden müssen, ob du bereit bist, dem zu begegnen, was vor dir liegt.“",
     "title": "Der Dorfälteste"
   },
   "firstWave": {
     "message": "Bleiche Gestalten tauchen aus der Höhle auf, endlich befreit; ihre glühenden Augen schneiden durch die Dunkelheit, während sie auf die Stadt zumarschieren.",
     "title": "Die erste Welle"
+  },
+  "forestFear": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "message": "Etwas im Wald hat einen Dorfbewohner getötet. Es war groß und schnell. Niemand konnte es klar erkennen. Jäger und Sammler haben zu viel Angst, in den Wald zu gehen.",
+    "title": "Etwas im Wald"
   },
   "forestTribeHelpRequest": {
     "choices": {
@@ -941,9 +1018,9 @@
       }
     },
     "log": {
-      "outcome0": "Die Augen der Wilden leuchten vor Hoffnung. 'Du bist unsere einzige Chance', sagt sie. 'Die Höhle der Bestien liegt tief im Wald. Mögen die Götter dich schützen.'"
+      "outcome0": "Die Augen der Wilden leuchten vor Hoffnung. „Du bist unsere einzige Chance“, sagt sie. „Die Höhle der Bestien liegt tief im Wald. Mögen die Götter dich schützen.“"
     },
-    "message": "Eine Wilde tritt aus dem Wald, ihr bleicher Körper bedeckt mit Stammeszeichen und Narben. 'Ich komme von einem Stamm aus den Wäldern', sagt sie eindringlich. 'Brutale Bestien, die in einer Höhle im Wald leben, greifen uns unerbittlich an. Wir stehen vor der Auslöschung. Bitte hilf uns zu überleben.'",
+    "message": "Eine Wilde tritt aus dem Wald, ihr bleicher Körper bedeckt mit Stammeszeichen und Narben. „Ich komme von einem Stamm aus den Wäldern“, sagt sie eindringlich. „Brutale Bestien, die in einer Höhle im Wald leben, greifen uns unerbittlich an. Wir stehen vor der Auslöschung. Bitte hilf uns zu überleben.“",
     "title": "Eine verzweifelte Bitte"
   },
   "fourthWave": {
@@ -960,12 +1037,12 @@
       }
     },
     "log": {
-      "outcome0": "Der Schneesturm trifft mit brutaler Wucht. Alle Produktion verlangsamt sich auf ein Kriechen, während die Dorfbewohner ums Überleben in der Kälte kämpfen.",
+      "outcome0": "Der Schneesturm schlägt mit brutaler Wucht zu. Die gesamte Produktion kommt fast zum Erliegen, während die Dorfbewohner ums Überleben in der Kälte kämpfen.",
       "outcome2": "Dank der Vorräte an Brennholz und Nahrung überstehen die Dorfbewohner den Schneesturm unversehrt.",
-      "outcome3": "Der Schneesturm trifft mit brutaler Wucht. Alle Produktion verlangsamt sich auf ein Kriechen, während die Dorfbewohner ums Überleben in der Kälte kämpfen."
+      "outcome3": "Der Schneesturm schlägt mit brutaler Wucht zu. Die gesamte Produktion kommt fast zum Erliegen, während die Dorfbewohner ums Überleben in der Kälte kämpfen."
     },
-    "message": "Eisige Winde heulen durch das Dorf. Die Ältesten warnen vor einem furchtbaren Schneesturm. Vorbereitungen müssen getroffen werden, sonst werden die Folgen düster sein.",
-    "title": "Froststurz"
+    "message": "Eisige Winde heulen durch das Dorf. Die Ältesten warnen vor einem furchtbaren Schneesturm. Vorbereitungen müssen getroffen werden, sonst drohen schlimme Folgen.",
+    "title": "Frosteinbruch"
   },
   "gambler": {
     "choices": {
@@ -976,13 +1053,13 @@
         "label": "Ablehnen"
       }
     },
-    "leaveAfterGames": "Der Spieler steckt seine Würfel ein, schenkt dir ein letztes schiefes Lächeln und verschwindet in der Dunkelheit des Waldes.",
+    "leaveAfterGames": "Der Glücksspieler steckt seine Würfel ein, schenkt dir ein letztes schiefes Lächeln und verschwindet in der Dunkelheit des Waldes.",
     "log": {
-      "outcome0": "Der Spieler zuckt mit den Schultern, steckt seine Würfel ein und gleitet ohne ein weiteres Wort in die Dunkelheit.",
-      "outcome1": "Der Spieler zuckt mit den Schultern, steckt seine Würfel ein und gleitet ohne ein weiteres Wort in die Dunkelheit."
+      "outcome0": "Der Glücksspieler zuckt mit den Schultern, steckt seine Würfel ein und gleitet ohne ein weiteres Wort in die Dunkelheit.",
+      "outcome1": "Der Glücksspieler zuckt mit den Schultern, steckt seine Würfel ein und gleitet ohne ein weiteres Wort in die Dunkelheit."
     },
-    "message": "Der Spieler sitzt mit gekreuzten Beinen am Feuer, die Augen fest auf die Würfel gerichtet. 'Setz deinen Einsatz', haucht er mit schiefem Grinsen, 'und wir finden heraus, wer durchhält.'",
-    "title": "Der besessene Spieler"
+    "message": "Der Glücksspieler sitzt mit gekreuzten Beinen am Feuer, die Augen fest auf die Würfel gerichtet. „Setz deinen Einsatz“, haucht er mit schiefem Grinsen, „und wir finden heraus, wer durchhält.“",
+    "title": "Der besessene Glücksspieler"
   },
   "giftedRingDiscovery": {
     "choices": {
@@ -1006,7 +1083,7 @@
       }
     },
     "log": {
-      "outcome0": "Als die Männer sich dem See nähern, steigt eine Kreatur aus der Tiefe und schlägt mit Wut zu, doch die Stärke der Dorfbewohner siegt. Am Grund des Sees finden sie zahllose Menschenknochen und eine goldene Krone.",
+      "outcome0": "Als die Männer sich dem See nähern, steigt eine Kreatur aus der Tiefe und schlägt wütend zu, doch die Stärke der Dorfbewohner siegt. Am Grund des Sees finden sie zahllose Menschenknochen und eine goldene Krone.",
       "outcome1": "Die Männer waten ins Wasser, doch die Kreatur bricht mit unmenschlicher Geschwindigkeit hervor. Ihre Schönheit verzerrt sich zu Reihen von Zähnen und glühenden Augen. Entsetzt fliehen die Dorfbewohner, um ihr Leben zu retten.",
       "outcome2": "Du befiehlst den Dorfbewohnern, den See zu meiden. Einige murren über verlorene Möglichkeiten, doch sie gehorchen. Seine Geheimnisse bleiben unter dem Wasser verborgen.",
       "outcome3": "Du verbietest jede Annäherung, doch der Dorfbewohner, der behauptete, die Kreatur gesehen zu haben, kann nicht widerstehen. Eines Nachts schleicht er davon und kehrt nie zurück. Im Morgengrauen liegt nur seine Kleidung am Wasserrand.",
@@ -1040,7 +1117,7 @@
     "title": "Das Zepter des Hohlen Königs"
   },
   "humanSacrificeDemand": {
-    "message": "Die Dorfbewohner versammeln sich um den Monolithen, ihre Augen hohl. 'Die Tiere genügen nicht', flüstern sie wie aus einem Mund. 'Die Dunkelheit verlangt mehr. Sie hungert nach menschlichen Seelen.' Sie sehen dich an und warten auf deinen Befehl zum ultimativen Opfer.",
+    "message": "Die Dorfbewohner versammeln sich um den Monolithen, ihre Augen hohl. „Die Tiere genügen nicht“, flüstern sie wie aus einem Mund. „Die Dunkelheit verlangt mehr. Sie hungert nach menschlichen Seelen.“ Sie sehen dich an und warten auf deinen Befehl zum ultimativen Opfer.",
     "title": "Dunkler Hunger"
   },
   "lakeCreatureDead": {
@@ -1050,7 +1127,7 @@
       }
     },
     "log": {
-      "outcome0": "Als der Schmied die Überreste betrachtet, erklärt er: 'Ihre Knochen sind wie nichts, das ich je gesehen habe. Daraus kann ich einen mächtigen Großschild schmieden.'"
+      "outcome0": "Als der Schmied die Überreste betrachtet, erklärt er: „Solche Knochen habe ich noch nie gesehen. Daraus kann ich einen mächtigen Großschild schmieden.“"
     },
     "message": "Einige Männer finden die Seekreatur am Ufer des unterirdischen Sees, tot, offenbar an Altersschwäche.",
     "title": "Ende eines Zeitalters"
@@ -1066,10 +1143,10 @@
       }
     },
     "log": {
-      "outcome0": "Die letzten gewaltsamen Zuckungen der Kreatur erschüttern die Kaverne, während die Männer ihre Speere in ihren sich windenden Leib treiben. Als der Schmied die massiven Knochen der Kreatur betrachtet, erklärt er, dass er daraus einen mächtigen Großschild schmieden kann.",
+      "outcome0": "Die letzten heftigen Zuckungen der Kreatur erschüttern die Höhlenhalle, während die Männer ihre Speere in ihren sich windenden Leib treiben. Als der Schmied die massiven Knochen der Kreatur betrachtet, erklärt er, dass er daraus einen mächtigen Großschild schmieden kann.",
       "outcome1": "Du öffnest die Falle und trittst zurück. Die Kreatur beobachtet dich einen Moment, taucht dann tief hinab und erscheint wieder, um eine kleine verrottete Truhe auszuspucken. Darin liegen glänzende Goldmünzen. Sie verschwindet in den schwarzen Tiefen und lässt nur Wellen zurück."
     },
-    "message": "Die massive Kreatur windet sich in der Falle, ihre Tentakel schlagen gegen die Stahlstäbe. Ihre alten Augen mustern dich mit etwas, das Intelligenz sein könnte. Was wirst du tun?",
+    "message": "Die massige Kreatur windet sich in der Falle, ihre Tentakel schlagen gegen die Stahlstäbe. Ihre uralten Augen mustern dich mit etwas, das Intelligenz sein könnte. Was wirst du tun?",
     "title": "Das Schicksal der Kreatur"
   },
   "ladyFromTheMountains": {
@@ -1082,7 +1159,7 @@
       }
     },
     "log": {
-      "sendAwayOutcome": "Du weist sie ab. Sie lächelt zu ruhig. 'Du und jede Seele in diesem Dorf werdet das bereuen', sagt sie, dann wendet sie sich ab.",
+      "sendAwayOutcome": "Du weist sie ab. Sie lächelt zu ruhig. „Du und jede Seele in diesem Dorf werdet das bereuen“, sagt sie, dann wendet sie sich ab.",
       "welcomeOutcome": "Du heißt die rothaarige Frau willkommen. Sie dankt dir leise und spricht von Pflanzen, die heilen und schaden. Sie bietet an, beim Bau eines Kräutergartens zu helfen. Die Dorfbewohner beobachten sie aufmerksam."
     },
     "message": "Eine schöne rothaarige Frau trifft ein. Sie sagt, ihr Dorf in den Bergen sei verhungert, und bittet, bleiben zu dürfen. Sie behauptet, viel über Pflanzen und ihre Wirkungen zu wissen.",
@@ -1098,7 +1175,7 @@
       }
     },
     "log": {
-      "outcome0": "Der Überlebende erhält Unterkunft und Pflege. In dieser Nacht ruft er dich in seine Hütte. Obwohl er im Sterben liegt, sind seine Augen klar. 'Danke für deine Güte, möge das Glück dir immer hold sein', flüstert er mit seinem letzten Atemzug.",
+      "outcome0": "Der Überlebende erhält Unterkunft und Pflege. In dieser Nacht ruft er dich in seine Hütte. Obwohl er im Sterben liegt, sind seine Augen klar. „Danke für deine Güte, möge das Glück dir immer hold sein“, flüstert er mit seinem letzten Atemzug.",
       "outcome1": "Du weist den sterbenden Mann ab. Am nächsten Tag wird er tot im nahen Wald gefunden. Die Dorfbewohner sind entsetzt und angewidert von deiner Grausamkeit."
     },
     "message": "Ein Fremder erreicht das Dorf und klammert sich kaum noch ans Leben. Er spricht von seiner Siedlung im Norden, wo Nahrungsknappheit die Dorfbewohner in Verzweiflung dazu trieb, einander zu töten. Er bittet darum, ein paar Nächte bleiben zu dürfen, um sich zu erholen.",
@@ -1130,7 +1207,7 @@
         "label": "Buch behalten"
       }
     },
-    "message": "In einer Ruine im Wald findet eure Expedition ein altes in Leder gebundenes Buch, auf dessen Deckel ein Kettenzeichen eingebrannt ist. Die Seiten sind voller Schrift, die ihr nicht lesen könnt.",
+    "message": "In einer Ruine im Wald findet deine Expedition ein altes, in Leder gebundenes Buch, auf dessen Deckel ein Kettenzeichen eingebrannt ist. Die Seiten sind voller Schrift, die du nicht lesen kannst.",
     "title": "Ledergebundenes Buch"
   },
   "leatherHarnessGratefulReturn": {
@@ -1140,9 +1217,9 @@
       }
     },
     "log": {
-      "outcome0": "Du streifst den Ring über deinen Finger. Er passt perfekt. Die Frau lächelt und verabschiedet sich, mit Leichtigkeit in ihrem Schritt."
+      "outcome0": "Du streifst den Ring über deinen Finger. Er passt perfekt. Die Frau lächelt und verabschiedet sich mit beschwingtem Schritt."
     },
-    "message": "Die Frau aus dem Dorf tritt erneut an dich heran, ihr Gesicht strahlt vor Dankbarkeit. 'Ich musste dir richtig danken', sagt sie mit warmer Stimme. 'Es ist... sehr gut gelaufen. Ich habe dir diesen Ring gemacht.' Sie reicht dir einen Ring, an dem ein kleinerer Ring befestigt ist.",
+    "message": "Die Frau aus dem Dorf tritt erneut an dich heran, ihr Gesicht strahlt vor Dankbarkeit. „Ich wollte mich noch richtig bei dir bedanken“, sagt sie mit warmer Stimme. „Es ist … sehr gut gelaufen. Ich habe diesen Ring für dich gemacht.“ Sie reicht dir einen Ring, an dem ein kleinerer Ring befestigt ist.",
     "title": "Eine dankbare Rückkehr"
   },
   "leatherHarnessRequest": {
@@ -1156,10 +1233,10 @@
       }
     },
     "log": {
-      "outcome1": "Du gibst ihr das Leder. Sie nimmt es mit dankbarem Lächeln, ihre Augen hellen sich auf. 'Danke. Er wird... sehr überrascht sein.' Sie eilt davon und presst die Häute an ihre Brust.",
+      "outcome1": "Du gibst ihr das Leder. Sie nimmt es mit dankbarem Lächeln, ihre Augen hellen sich auf. „Danke. Er wird... sehr überrascht sein.“ Sie eilt davon und presst die Häute an ihre Brust.",
       "outcome2": "Du lehnst ab. Sie nickt, Enttäuschung flackert über ihr Gesicht, und sie kehrt ohne ein weiteres Wort ins Dorf zurück."
     },
-    "message": "Eine Frau aus dem Dorf tritt an dich heran, ihre Wangen leicht gerötet. Sie zögert, bevor sie spricht, den Blick gesenkt: 'Ich wollte fragen, ob du etwas Leder entbehren könntest. Ich möchte etwas... für meinen Partner anfertigen. Ein Geschirr. Um ihn zu überraschen.'",
+    "message": "Eine Frau aus dem Dorf tritt an dich heran, ihre Wangen leicht gerötet. Sie zögert, bevor sie spricht, den Blick gesenkt: „Ich wollte fragen, ob du etwas Leder entbehren könntest. Ich möchte etwas... für meinen Partner anfertigen. Ein Geschirr. Um ihn zu überraschen.“",
     "title": "Eine Dorffrau"
   },
   "manFromTheMountains": {
@@ -1181,7 +1258,7 @@
   "madBeduine": {
     "choices": {
       "allowStay": {
-        "label": "Erlauben"
+        "label": "Bleiben lassen"
       },
       "turnAway": {
         "label": "Wegschicken"
@@ -1224,15 +1301,15 @@
       "outcome0": "Deine Unentschlossenheit frustriert den Bogenschützen. Er schüttelt den Kopf und geht, seine Erfahrung nimmt er mit.",
       "outcome2": "Der Meisterschütze nimmt die Bezahlung und beginnt sofort, deine Jäger auszubilden.",
       "outcome4": "Der Meisterschütze nimmt das Gold mit einem Nicken und beginnt sofort, deine Jäger auszubilden.",
-      "outcome5": "Der Bogenschütze nickt. 'Ich komme zurück, falls du deine Meinung änderst', sagt er, dann ist er im Wald verschwunden."
+      "outcome5": "Der Bogenschütze nickt. „Ich komme zurück, falls du deine Meinung änderst“, sagt er, dann ist er im Wald verschwunden."
     },
-    "message": "Ein Mann in einem dunkelroten Ledermantel trifft ein, mit selbstsicherem Grinsen und scharfen Augen. Er bietet an, deinen Bogenschützen zu helfen, und sagt, er könne ihr Ziel schärfen und ihre Jagdfähigkeiten verbessern. Wenn du annimmst, bleibt er und macht sich an die Arbeit.",
+    "message": "Ein Mann in einem dunkelroten Ledermantel trifft ein, mit selbstsicherem Grinsen und scharfen Augen. Er bietet an, deinen Bogenschützen zu helfen, und sagt, er könne ihre Treffsicherheit und ihr Jagdgeschick verbessern. Wenn du annimmst, bleibt er und macht sich an die Arbeit.",
     "title": "Der Meisterschütze"
   },
   "mercenaryDemand": {
     "choices": {
       "giveRing": {
-        "label": "Fütterungsring geben"
+        "label": "Fütternden Ring geben"
       },
       "payGold": {
         "cost": "100 Gold",
@@ -1243,18 +1320,18 @@
       }
     },
     "log": {
-      "outcome0": "Du übergibst das Gold. Der Söldner zählt es langsam, ein grausames Lächeln im Gesicht. 'Eine Freude, Geschäfte mit dir zu machen', sagt er, bevor er verschwindet.",
+      "outcome0": "Du übergibst das Gold. Der Söldner zählt es langsam, ein grausames Lächeln im Gesicht. „Eine Freude, Geschäfte mit dir zu machen“, sagt er, bevor er verschwindet.",
       "outcome1": "Der Söldner gibt seinen Männern das Zeichen zum Angriff. Der Kampf ist heftig, doch die Dorfbewohner siegen. Die Söldner fliehen in den Wald und lassen Waffen und Verwundete zurück.",
-      "outcome2": "Der Söldner gibt seinen Männern das Zeichen zum Angriff. Trotz all deiner Mühen werdet ihr überwältigt. {{deaths}} Dorfbewohner fallen, bevor die Söldner schließlich abziehen, zufrieden mit dem Blutbad.",
-      "outcome3": "Du bietest ihm den Fütternden Ring an, den du noch immer in einer verschlossenen Truhe aufbewahrt hast. Der Söldner betrachtet ihn interessiert und streift ihn über seinen eigenen Finger. 'Ein hübscher Ring', sagt er, 'aber nicht genug. Ich komme morgen wieder, um das Gold zu holen.'"
+      "outcome2": "Der Söldner gibt seinen Männern das Zeichen zum Angriff. Trotz all deiner Mühen wird das Dorf überwältigt. {{deaths}} Dorfbewohner fallen, bevor die Söldner schließlich abziehen, zufrieden mit dem Blutbad.",
+      "outcome3": "Du bietest ihm den Fütternden Ring an, den du noch immer in einer verschlossenen Truhe aufbewahrt hast. Der Söldner betrachtet ihn interessiert und streift ihn über seinen eigenen Finger. „Ein hübscher Ring“, sagt er, „aber nicht genug. Ich komme morgen wieder, um das Gold zu holen.“"
     },
-    "message": "Ein vernarbter Söldner erreicht das Dorf, die Hand auf dem Griff seiner Klinge. 'Ich bin nicht hier, um Ärger zu machen. Zahl mir 100 Gold, und ich halte die Dinge friedlich. Weigerst du dich, brennen meine Männer diesen Ort nieder.'",
+    "message": "Ein vernarbter Söldner erreicht das Dorf, die Hand auf dem Griff seiner Klinge. „Ich bin nicht hier, um Ärger zu machen. Zahl mir 100 Gold, und ich sorge dafür, dass alles friedlich bleibt. Weigerst du dich, brennen meine Männer diesen Ort nieder.“",
     "title": "Der Söldner"
   },
   "mercenaryReturnDemand": {
     "choices": {
       "giveRing": {
-        "label": "Fütterungsring geben"
+        "label": "Fütternden Ring geben"
       },
       "payGold": {
         "cost": "200 Gold",
@@ -1265,12 +1342,12 @@
       }
     },
     "log": {
-      "outcome0": "Du zahlst das Gold, deine Hände zittern vor Wut. Der Söldner lacht. 'Kluge Wahl. Ich werde dich nicht wieder belästigen... vermutlich.' Er verschwindet mit seinen Männern im Wald.",
+      "outcome0": "Du zahlst das Gold, deine Hände zittern vor Wut. Der Söldner lacht. „Kluge Wahl. Ich werde dich nicht wieder belästigen... vermutlich.“ Er verschwindet mit seinen Männern im Wald.",
       "outcome1": "Du weigerst dich. Die Söldner greifen an, doch diesmal bist du bereit. Nach einem brutalen Kampf verstreuen sie sich in die Wildnis und lassen ihre Toten zurück.",
       "outcome2": "Dein Trotz kostet dich teuer. Die Söldner wüten durch das Dorf und töten {{deaths}}, bevor sie schließlich abziehen, lachend über die Zerstörung, die sie angerichtet haben.",
-      "outcome3": "Du bietest ihm den Fütternden Ring an, den du noch immer in einer verschlossenen Truhe aufbewahrt hast. Der Söldner betrachtet ihn interessiert und streift ihn über seinen eigenen Finger. 'Ein hübscher Ring', sagt er, 'aber nicht genug. Ich komme morgen wieder, um das Gold zu holen.'"
+      "outcome3": "Du bietest ihm den Fütternden Ring an, den du noch immer in einer verschlossenen Truhe aufbewahrt hast. Der Söldner betrachtet ihn interessiert und streift ihn über seinen eigenen Finger. „Ein hübscher Ring“, sagt er, „aber nicht genug. Ich komme morgen wieder, um das Gold zu holen.“"
     },
-    "message": "Der Söldner ist zurück, und diesmal bringt er mehr Männer mit. 'Harte Zeiten', sagt er grinsend. 'Der Preis ist gestiegen. 200 Gold, oder es wird hässlich.'",
+    "message": "Der Söldner ist zurück, und diesmal bringt er mehr Männer mit. „Harte Zeiten“, sagt er grinsend. „Der Preis ist gestiegen. 200 Gold, oder es wird hässlich.“",
     "title": "Der Söldner kehrt zurück"
   },
   "merchant": {
@@ -1282,12 +1359,12 @@
     "log": {
       "outcome0": "Du verabschiedest den Händler. Er tippt an seinen Hut und murmelt etwas über den Weg, der vor ihm liegt."
     },
-    "message": "Ein wettergegerbter Händler trifft ein, sein Karren übervoll mit Waren. Seine Augen glitzern vor Habgier, als er murmelt: 'Ich habe seltene Dinge zu verkaufen.'",
+    "message": "Ein wettergegerbter Händler trifft ein, sein Karren übervoll mit Waren. Seine Augen glitzern vor Habgier, als er murmelt: „Ich habe seltene Dinge zu verkaufen.“",
     "title": "Wandernder Händler",
     "toolTrades": {
       "trade_nightshade_bow_schematic": {
-        "label": "Nachtschatten-Bogen-Bauplan",
-        "message": "Du kaufst den Nachtschatten-Bogen-Bauplan. Der Händler grinst finster: „Das Design dieses Bogens ist grausam. Seine Pfeile werden deine Feinde vergiften.“"
+        "label": "Nachtschattenbogen-Bauplan",
+        "message": "Du kaufst den Nachtschattenbogen-Bauplan. Der Händler grinst finster: „Das Design dieses Bogens ist grausam. Seine Pfeile werden deine Feinde vergiften.“"
       },
       "trade_skull_lantern": {
         "label": "Schädellaterne",
@@ -1339,7 +1416,7 @@
       },
       "trade_giant_trap": {
         "message": "Als du die Riesenfalle kaufst, grinst der Händler: „Damit kann man im Wald etwas Gigantisches fangen. Setze sie weise ein.“",
-        "label": "Riesige Falle"
+        "label": "Riesenfalle"
       },
       "trade_arbalest_schematic": {
         "message": "Du kaufst den Arbalest-Bauplan. Der Händler entfaltet einen filigranen Entwurf: „Ein Design eines Meisteringenieurs. Damit kannst du eine mächtige Waffe herstellen.“",
@@ -1350,8 +1427,8 @@
         "label": "Compoundbogen"
       },
       "trade_stormglass_halberd_schematic": {
-        "message": "Du kaufst den Sturmglas-Hellebarde-Bauplan. Der Händler enthüllt die verblassten Pläne: „Mit diesem Entwurf kannst du eine Hellebarde von gewaltiger Kraft schmieden.“",
-        "label": "Sturmglas-Hellebarde-Bauplan"
+        "message": "Du kaufst den Sturmglas-Hellebarden-Bauplan. Der Händler enthüllt die verblassten Pläne: „Mit diesem Entwurf kannst du eine Hellebarde von gewaltiger Kraft schmieden.“",
+        "label": "Sturmglas-Hellebarden-Bauplan"
       },
       "trade_natharit_pickaxe": {
         "message": "Du kaufst die Natharit-Spitzhacke. Der Händler reicht dir das robuste Werkzeug: „Extrem haltbare Spitzhacke aus unbekanntem Material. Ihre Qualität ist außergewöhnlich.“",
@@ -1368,7 +1445,7 @@
       }
     },
     "log": {
-      "outcome": "In der Nacht greifen der Mann und die rothaarige Frau gemeinsam an. {{deaths}} Dorfbewohner sterben, bevor die übrigen sie überwältigen. Bevor du eingreifen kannst, hängen die Dorfbewohner beide. Sie waren die ganze Zeit Verbündete. Am Körper des Mannes findest du eine Karte zu einem Bergdorf."
+      "outcome": "In der Nacht greifen der Mann und die rothaarige Frau gemeinsam an. {{deaths}} Dorfbewohner sterben, bevor die übrigen sie überwältigen. Bevor du eingreifen kannst, hängen die Dorfbewohner beide auf. Sie waren die ganze Zeit Komplizen. Am Körper des Mannes findest du eine Karte zu einem Bergdorf."
     },
     "message": "In der Nacht greifen der Mann und die rothaarige Frau gemeinsam das Dorf an. {{deaths}} Dorfbewohner fallen, bevor die übrigen das Paar überwältigen. Bevor du etwas tun kannst, hängen die Dorfbewohner sie. Am Körper des Mannes findest du eine Karte zu einem Bergdorf.",
     "title": "Nachtangriff"
@@ -1380,9 +1457,9 @@
       }
     },
     "log": {
-      "outcome": "Der Mann führt euch tief in den Wald. Die Dorfbewohner stolpern in Fallen. Plötzlich erscheint die rothaarige Frau, und gemeinsam fallen sie über eure Männer her. {{deaths}} Dorfbewohner sterben, bevor die Überlebenden beide Angreifer töten. Am Körper des Mannes finden sie eine Karte zu einem Bergdorf."
+      "outcome": "Der Mann führt dich tief in den Wald. Die Dorfbewohner stolpern in Fallen. Plötzlich erscheint die rothaarige Frau, und gemeinsam fallen sie über deine Männer her. {{deaths}} Dorfbewohner sterben, bevor die Überlebenden beide Angreifer töten. Am Körper des Mannes finden sie eine Karte zu einem Bergdorf."
     },
-    "message": "Der Mann führt euch tief in den Wald. Die Dorfbewohner stolpern in Fallen. Plötzlich erscheint die rothaarige Frau, und gemeinsam fallen sie über eure Männer her. {{deaths}} Dorfbewohner sterben, bevor die Überlebenden beide Angreifer töten. Am Körper des Mannes finden sie eine Karte zu einem Bergdorf.",
+    "message": "Der Mann führt dich tief in den Wald. Die Dorfbewohner stolpern in Fallen. Plötzlich erscheint die rothaarige Frau, und gemeinsam fallen sie über deine Männer her. {{deaths}} Dorfbewohner sterben, bevor die Überlebenden beide Angreifer töten. Am Körper des Mannes finden sie eine Karte zu einem Bergdorf.",
     "title": "Der Hinterhalt"
   },
   "monasteryMonk": {
@@ -1401,11 +1478,11 @@
     },
     "log": {
       "outcome0": "Du lehnst das Angebot des Mönchs ab. Er verbeugt sich respektvoll und tritt seine Reise zurück in die Berge an.",
-      "outcome2": "Der Mönch nimmt deine Gabe mit feierlichem Nicken an und offenbart detaillierte Pläne für einen Skelettschlüssel. “Dieser Schlüssel soll jedes Schloss öffnen,” sagt er, bevor er aufbricht.",
-      "outcome4": "Die Augen des Mönchs weiten sich beim Anblick des Goldes. 'Das wird dem Kloster sehr helfen', sagt er und zeichnet detaillierte Pläne für einen Skelettschlüssel. “Dieser Schlüssel soll jedes Schloss öffnen,” sagt er, bevor er aufbricht.",
+      "outcome2": "Der Mönch nimmt deinen Tribut mit feierlichem Nicken an und offenbart detaillierte Pläne für einen Skelettschlüssel. „Dieser Schlüssel soll jedes Schloss öffnen“, sagt er, bevor er aufbricht.",
+      "outcome4": "Die Augen des Mönchs weiten sich beim Anblick des Goldes. „Das wird dem Kloster sehr helfen“, sagt er und zeichnet detaillierte Pläne für einen Skelettschlüssel. „Dieser Schlüssel soll jedes Schloss öffnen“, sagt er, bevor er aufbricht.",
       "outcome5": "Du lehnst das Angebot des Mönchs ab. Er verbeugt sich respektvoll und tritt seine Reise zurück in die Berge an."
     },
-    "message": "Ein Mönch aus einem Bergkloster kommt ins Dorf. 'Ich hörte, du hast eine rätselhafte Truhe gefunden', sagt er leise. 'Das Kloster weiß, wie man sie öffnet. Bring eine Gabe dar, und ich teile das Geheimnis.'",
+    "message": "Ein Mönch aus einem Bergkloster kommt ins Dorf. „Ich hörte, du hast eine rätselhafte Truhe gefunden“, sagt er leise. „Das Kloster weiß, wie man sie öffnet. Entrichte einen Tribut, und ich teile das Geheimnis mit dir.“",
     "title": "Der Bergmönch"
   },
   "monasteryResponse": {
@@ -1456,7 +1533,7 @@
     "log": {
       "outcome0": "Darin liegt ein Buch, dessen Alter du nicht ermessen kannst. Sein Einband ist längst verschwunden, die Seiten sind zerrissen, doch die perfekt geschriebenen Buchstaben bleiben scharf. Während du vorsichtig blätterst, begreifst du, dass es die langsame Formung des Selbst durch Wiederholung lehrt."
     },
-    "message": "An einem späten Abend hörst du ein sanftes Klopfen an der Tür des Anwesens. Als du öffnest, ist niemand dort, nur etwas in dunkelbraunes Leder gebundenes liegt auf der Schwelle.",
+    "message": "An einem späten Abend hörst du ein sanftes Klopfen an der Tür des Anwesens. Als du öffnest, ist niemand dort, nur etwas in dunkelbraunes Leder Gebundenes liegt auf der Schwelle.",
     "title": "Ein leises Klopfen"
   },
   "mysteriousNote": {
@@ -1469,12 +1546,12 @@
       "outcome0": "Du zerknüllst die Notiz und lässt sie aus deinen Fingern fallen. Du verstehst die Worte, und doch ergeben sie keinen Sinn. Als das Papier davontreibt, hörst du etwas im Wind, schwach und fern. Es klingt wie leises, einsames Weinen, das in der Nacht verklingt."
     },
     "title": "Eine rätselhafte Notiz",
-    "message": "In der Dämmerung findest du ein Blatt Papier auf der Schwelle deines Anwesens. Jemand hat eine Notiz in sorgfältiger, eleganter Handschrift hinterlassen:\n \"Ich hoffe, du genießt deine Zeit hier. Wenn dem so ist, erwäge bitte, die Reise voraus zu unterstützen - im Shop oder durch eine Spende. Deine Hilfe hält diese Welt lebendig und frei genießbar. Danke!\""
+    "message": "In der Dämmerung findest du ein Blatt Papier auf der Schwelle deines Anwesens. Jemand hat eine Notiz in sorgfältiger, eleganter Handschrift hinterlassen:\n „Ich hoffe, du genießt deine Zeit hier. Wenn ja, unterstütze bitte die weitere Reise – mit einem Besuch im Shop oder einer Spende. Deine Hilfe hält diese Welt lebendig und kostenlos spielbar. Danke!“"
   },
   "mysteriousWoman": {
     "log": {
-      "outcome0_woman": "Du gewährst ihr Unterkunft für die Nacht. Am Morgen ist sie spurlos verschwunden, dein Bett noch warm und {{silverStolen}} Silber fehlen.",
-      "outcome0_man": "Du gewährst ihm Unterkunft für die Nacht. Am Morgen ist er spurlos verschwunden, dein Bett noch warm und {{silverStolen}} Silber fehlen.",
+      "outcome0_woman": "Du gewährst ihr Unterkunft für die Nacht. Am Morgen ist sie spurlos verschwunden. Dein Bett ist noch warm, und {{silverStolen}} Silber fehlen.",
+      "outcome0_man": "Du gewährst ihm Unterkunft für die Nacht. Am Morgen ist er spurlos verschwunden. Dein Bett ist noch warm, und {{silverStolen}} Silber fehlen.",
       "outcome1_woman": "Du lehnst ihre Bitte höflich ab. Sie sieht enttäuscht aus, nickt aber verständnisvoll und verschwindet wortlos im Abendnebel.",
       "outcome1_man": "Du lehnst seine Bitte höflich ab. Er sieht enttäuscht aus, nickt aber verständnisvoll und verschwindet wortlos im Abendnebel."
     },
@@ -1483,8 +1560,8 @@
       "man": "Der geheimnisvolle Mann"
     },
     "message": {
-      "woman": "Eine attraktive junge Frau in feiner Kleidung trifft bei Sonnenuntergang am Anwesen ein. Sie lächelt dich warm an und fragt: \"Darf ich für die Nacht Unterschlupf in deiner Hütte finden? Ich bin weit gereist und habe sonst nirgends hin.\"",
-      "man": "Ein attraktiver junger Mann in feiner Kleidung trifft bei Sonnenuntergang am Anwesen ein. Er lächelt dich warm an und fragt: \"Darf ich für die Nacht Unterschlupf in deiner Hütte finden? Ich bin weit gereist und habe sonst nirgends hin.\""
+      "woman": "Eine attraktive junge Frau in feiner Kleidung trifft bei Sonnenuntergang am Anwesen ein. Sie lächelt dich warm an und fragt: „Darf ich die Nacht über in deiner Hütte Unterschlupf finden? Ich bin weit gereist und weiß sonst nicht, wohin.“",
+      "man": "Ein attraktiver junger Mann in feiner Kleidung trifft bei Sonnenuntergang am Anwesen ein. Er lächelt dich warm an und fragt: „Darf ich die Nacht über in deiner Hütte Unterschlupf finden? Ich bin weit gereist und weiß sonst nicht, wohin.“"
     },
     "choices": {
       "allowStay": {
@@ -1518,14 +1595,14 @@
       }
     },
     "log": {
-      "ignoreForced": "Du ignorierst das Angebot. Der Wikinger spuckt schließlich auf den Boden und geht mit seiner Kriegsaxt, murmelnd über deinen Mangel an Respekt.",
+      "ignoreForced": "Du ignorierst das Angebot. Der Wikinger spuckt schließlich auf den Boden und geht mit seiner Kriegsaxt, wobei er etwas über deinen mangelnden Respekt murmelt.",
       "ignoreNormal": "Du ignorierst das Angebot. Der Wikinger nickt schließlich und geht mit seiner Kriegsaxt.",
       "buyForced": "Der Wikinger nimmt die Zahlung mit kaltem Lächeln entgegen. „Vielleicht hättest du früher großzügiger sein sollen, statt mich anzugreifen. Die Axt hätte dich damals viel weniger gekostet“, sagt er, bevor er geht.",
       "buyNormal": "Zufrieden mit dem Handel nickt der Wikinger anerkennend und zieht weiter.",
       "declineForced": "Du lehnst das Angebot ab. Der Wikinger spuckt auf den Boden und flucht, während er mit seiner Kriegsaxt geht. „Du hättest zahlen sollen, als du die Chance hattest“, knurrt er.",
       "declineNormal": "Du lehnst das Angebot ab. Der Wikinger nickt respektvoll und geht mit seiner Kriegsaxt."
     },
-    "message": "Der Wikinger-Baumeister kehrt in dein Dorf zurück und trägt eine prachtvolle Kriegsaxt. 'Diese nordische Kriegsaxt habe ich in meiner Heimat geschmiedet. Sie soll dir gehören... für einen Preis.'",
+    "message": "Der Wikinger-Baumeister kehrt in dein Dorf zurück und trägt eine prachtvolle Kriegsaxt. „Diese Nordische Kriegsaxt habe ich in meiner Heimat geschmiedet. Sie soll dir gehören … gegen einen Preis.“",
     "title": "Der Wikinger kehrt zurück"
   },
   "oddTrinket": {
@@ -1538,12 +1615,12 @@
       }
     },
     "log": {
-      "outcome0": "Du trinkst das bernsteinfarbene Elixir. Es brennt beim Schlucken, doch du fühlst dich stärker als zuvor.",
+      "outcome0": "Du trinkst das bernsteinfarbene Elixier. Es brennt beim Schlucken, doch du fühlst dich stärker als zuvor.",
       "outcome1": "Du beschließt, es nicht zu riskieren, und wirfst das Fläschchen in den Wald. Es verschwindet im Unterholz.",
-      "outcome2": "Dein Zögern kostet dich. Das Fläschchen gleitet dir aus den Fingern und zerschellt an einem Felsen, das bernsteinfarbene Elixir sickert in die Erde."
+      "outcome2": "Dein Zögern kostet dich. Das Fläschchen gleitet dir aus den Fingern und zerschellt an einem Felsen, das bernsteinfarbene Elixier sickert in die Erde."
     },
-    "message": "Beim Holzhacken findest du ein Fläschchen mit glühendem bernsteinfarbenem Elixir. Die Flüssigkeit wirbelt hypnotisch. Trinkst du es?",
-    "title": "Das seltsame Elixir"
+    "message": "Beim Holzhacken findest du ein Fläschchen mit glühendem, bernsteinfarbenem Elixier. Die Flüssigkeit wirbelt hypnotisch. Trinkst du es?",
+    "title": "Das seltsame Elixier"
   },
   "offerToTheForestGods": {
     "choices": {
@@ -1569,7 +1646,7 @@
       "outcome4_one": "Du verweigerst das Opfer. In der Nacht wandert {{actualDisappearances}} Dorfbewohner schlafwandelnd in den Wald, angezogen von einer Stimme, die nur er hören konnte. Er wird nie wieder gesehen.",
       "outcome4_other": "Du verweigerst das Opfer. In der Nacht wandern {{actualDisappearances}} Dorfbewohner schlafwandelnd in den Wald, angezogen von einer Stimme, die nur sie hören konnten. Sie werden nie wieder gesehen."
     },
-    "message": "Während der Jagd berichten Dorfbewohner von beunruhigenden Gestalten im Wald. Sie sind verängstigt. Die Dorfältesten sagen, die Waldgötter verlangen vier Dorfbewohner als Opfer.",
+    "message": "Während der Jagd berichten Dorfbewohner von beunruhigenden Gestalten im Wald. Sie sind verängstigt. Die Dorfältesten sagen, die Waldgötter verlangten vier Dorfbewohner als Opfer.",
     "title": "Opfer an die Waldgötter"
   },
   "paleCrossCrucifixion": {
@@ -1600,17 +1677,17 @@
   "paleCrossProposal": {
     "choices": {
       "acceptPaleCross": {
-        "label": "Antrag annehmen"
+        "label": "Vorschlag annehmen"
       },
       "refusePaleCross": {
-        "label": "Antrag ablehnen"
+        "label": "Vorschlag ablehnen"
       }
     },
     "log": {
-      "outcome0": "Der Druide senkt den Kopf. 'Dann soll es errichtet werden.'",
-      "outcome1": "'Vielleicht war dies Weisheit. Vielleicht war es Furcht', sagt der Druide, bevor er in den Wald geht."
+      "outcome0": "Der Druide senkt den Kopf. „Dann soll es errichtet werden.“",
+      "outcome1": "„Vielleicht war dies Weisheit. Vielleicht war es Furcht“, sagt der Druide, bevor er in den Wald geht."
     },
-    "message": "Der blinde Druide kehrt zurück, seine milchigen Augen ruhen auf den Knochentotems: 'Du hast den Göttern viel dargebracht. Errichte ihnen ein Zeichen, um deine Hingabe zu beweisen.'",
+    "message": "Der blinde Druide kehrt zurück, seine milchigen Augen ruhen auf den Knochentotems: „Du hast den Göttern viel dargebracht. Errichte ihnen ein Zeichen, um deine Hingabe zu beweisen.“",
     "title": "Das Bleiche Kreuz"
   },
   "paleFigure": {
@@ -1638,7 +1715,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Die Glutbomben detonieren in einem hellen Feuerblitz. Das alte Tor bricht und bröckelt. Was auch immer darin eingeschlossen war, ist jetzt frei.",
+    "message": "Die Glutbomben detonieren in einem grellen Blitz aus Feuer und Licht. Das uralte Tor bekommt Risse und zerfällt. Was auch immer darin versiegelt war, ist jetzt frei.",
     "title": "Das Tor fällt"
   },
   "portalDiscovered": {
@@ -1649,6 +1726,35 @@
     },
     "message": "In den tiefsten Kammern der Zitadelle findest du ein kolossales Tor, geschmiedet aus einem unbekannten, unnachgiebigen Metall. Vielleicht können die Schöpfungen des Alchemisten es öffnen.",
     "title": "Das uralte Tor"
+  },
+  "raggedYouth": {
+    "choices": {
+      "doNotHelp": {
+        "label": "Nicht helfen"
+      },
+      "giveFur": {
+        "cost": "{{furCost}} Fell",
+        "label": "{{furCost}} Fell geben"
+      }
+    },
+    "log": {
+      "attack": "Der Mann wird wütend. Er greift an, tötet einen Dorfbewohner und flieht.",
+      "thanks": "„Danke. Vielen, vielen Dank“, sagt er und eilt mit den Fellen davon."
+    },
+    "message": "Ein junger Mann in zerlumpter Kleidung taucht auf. „Ich kampiere vor dem Dorf. Meine Familie braucht Felle, um die Kälte zu überleben. Ich kann jetzt nicht zahlen, aber später werde ich es tun.“",
+    "title": "Ein verzweifelter Vater"
+  },
+  "raggedYouthReturn": {
+    "choices": {
+      "takeSilver": {
+        "label": "Silber nehmen"
+      }
+    },
+    "log": {
+      "repay": "Er legt {{silverReward}} Silber für die Felle hin und geht."
+    },
+    "message": "Der Vater, der um Felle gebeten hatte, kehrt zurück, nicht mehr in zerlumpter Kleidung. Er hält dir einen schweren Beutel hin. „Meine Familie hat die Kälte überlebt. Ich habe versprochen, dich zu bezahlen. Hier sind {{silverReward}} Silber.“",
+    "title": "Der Vater kehrt zurück"
   },
   "redMaskChoice": {
     "choices": {
@@ -1663,7 +1769,7 @@
       "outcome0": "Du hebst die karmesinrote Ledermaske auf. Sie fühlt sich warm an.",
       "outcome1": "Du beschließt, dass das Geschenk des Raben zu rätselhaft ist. Als du fortgehst, hörst du den Ruf des Raben durch die Bäume hallen."
     },
-    "message": "Während der Jagd siehst du einen ungewöhnlich großen schwarzen Raben, der dich von einem gebrochenen Baum aus anstarrt. Als du dich ihm näherst, krächzt er plötzlich, als würde er immer wieder ein Wort sagen. Dann fliegt er davon. Vor dem Baum liegt eine Maske aus tiefrotem Leder. Nimmst du sie?",
+    "message": "Während der Jagd siehst du einen ungewöhnlich großen schwarzen Raben, der dich von einem abgebrochenen Baum aus anstarrt. Als du dich ihm näherst, krächzt er plötzlich, als würde er immer wieder ein Wort sagen. Dann fliegt er davon. Vor dem Baum liegt eine Maske aus tiefrotem Leder. Nimmst du sie?",
     "title": "Das Geschenk des Raben"
   },
   "restlessKnight": {
@@ -1680,16 +1786,16 @@
       }
     },
     "log": {
-      "outcome0": "Der Ritter wartete, doch du hast nicht geantwortet. 'Vielleicht ein andermal', sagt er, bevor er seine Reise fortsetzt.",
-      "outcome2": "Der Ritter spricht: 'Jenseits der östlichen Berge liegt eine tote Stadt aus riesigen Steintürmen, die fast die Wolken berühren. Leere Fenster starren wie zahllose Augen über das Land. Die Natur ist jede Mauer hinaufgeklettert und hat die Straßen mit Wurzeln gefüllt. Seit Zeitaltern hat dort niemand gelebt.'",
-      "outcome3": "Deine Worte wecken das Interesse des Ritters. Er spricht: 'Jenseits der östlichen Berge liegt eine tote Stadt aus riesigen Steintürmen, die fast die Wolken berühren. Leere Fenster starren wie zahllose Augen über das Land. Die Natur ist jede Mauer hinaufgeklettert und hat die Straßen mit Wurzeln gefüllt. Seit Zeitaltern hat dort niemand gelebt.'",
-      "outcome4": "Der Ritter hört deine Worte, schüttelt jedoch den Kopf. 'Deine Worte sind aufrichtig, doch mein Wissen hat Wert. Vielleicht kreuzen sich unsere Wege erneut.' Er geht, ohne seine Geschichte zu teilen.",
-      "outcome5": "Du lehnst das Angebot des Ritters ab. Er nickt respektvoll. 'Vielleicht kreuzen sich unsere Wege erneut', sagt er, bevor er seine Reise fortsetzt."
+      "outcome0": "Der Ritter wartete, doch du hast nicht geantwortet. „Vielleicht ein andermal“, sagt er, bevor er seine Reise fortsetzt.",
+      "outcome2": "Der Ritter spricht: „Jenseits der östlichen Berge liegt eine tote Stadt aus riesigen Steintürmen, die fast die Wolken berühren. Leere Fenster starren wie zahllose Augen über das Land. Die Natur ist jede Mauer hinaufgeklettert und hat die Straßen mit Wurzeln gefüllt. Seit Zeitaltern hat dort niemand gelebt.“",
+      "outcome3": "Deine Worte wecken das Interesse des Ritters. Er spricht: „Jenseits der östlichen Berge liegt eine tote Stadt aus riesigen Steintürmen, die fast die Wolken berühren. Leere Fenster starren wie zahllose Augen über das Land. Die Natur ist jede Mauer hinaufgeklettert und hat die Straßen mit Wurzeln gefüllt. Seit Zeitaltern hat dort niemand gelebt.“",
+      "outcome4": "Der Ritter hört deine Worte, schüttelt jedoch den Kopf. „Deine Worte sind aufrichtig, doch mein Wissen hat Wert. Vielleicht kreuzen sich unsere Wege erneut.“ Er geht, ohne seine Geschichte zu teilen.",
+      "outcome5": "Du lehnst das Angebot des Ritters ab. Er nickt respektvoll. „Vielleicht kreuzen sich unsere Wege erneut“, sagt er, bevor er seine Reise fortsetzt."
     },
     "title": "Der rastlose Ritter",
     "message": {
-      "firstTime": "Ein Ritter in abgetragener Rüstung erreicht das Dorf. ‚Ich habe viel von der Welt gesehen,‘ sagt er mit hohler Stimme. ‚Für etwas Gold teile ich, was ich auf meinen Reisen gesehen habe.‘",
-      "repeat": "Erneut erreicht der Ritter in abgetragener Rüstung das Dorf. ‚Ich habe viel von der Welt gesehen,‘ sagt er mit hohler Stimme. ‚Für etwas Gold teile ich, was ich auf meinen Reisen gesehen habe.‘"
+      "firstTime": "Ein Ritter in abgetragener Rüstung erreicht das Dorf. „Ich habe viel von der Welt gesehen“, sagt er mit hohler Stimme. „Für etwas Gold teile ich, was ich auf meinen Reisen gesehen habe.“",
+      "repeat": "Erneut erreicht der Ritter in abgetragener Rüstung das Dorf. „Ich habe viel von der Welt gesehen“, sagt er mit hohler Stimme. „Für etwas Gold teile ich, was ich auf meinen Reisen gesehen habe.“"
     }
   },
   "restlessKnightBurden": {
@@ -1703,10 +1809,10 @@
     },
     "log": {
       "outcome0": "Du lehnst ab. Sein Gesicht spannt sich, er nickt knapp und sagt nichts. Die Last bleibt allein auf ihm.",
-      "outcome1": "Er spricht vom Sammler der Schädelgeräte in der Wüste. Er fing Menschen ein, um ihnen die Geräte einzupflanzen, ohne Gnade und ohne Erfolg. Der Ritter fand einen Graben voller Hunderter Toter.",
+      "outcome1": "Er spricht vom Sammler der Schädelgeräte in der Wüste. Er fing Menschen ein, um ihnen die Geräte einzupflanzen, ohne Gnade und ohne Erfolg. Der Ritter fand einen Graben mit Hunderten von Toten.",
       "outcome2": "Du lehnst ab. Sein Gesicht spannt sich, er nickt knapp und sagt nichts. Die Last bleibt allein auf ihm."
     },
-    "message": "Der rastlose Ritter kommt zu dir. 'Es gibt eine Sache, von der ich nie sprach', sagt er. 'Ich wollte alle damit verschonen. Aber du möchtest sie vielleicht wissen.'",
+    "message": "Der rastlose Ritter kommt zu dir. „Es gibt eine Sache, von der ich nie sprach“, sagt er. „Ich wollte alle damit verschonen. Aber du möchtest sie vielleicht wissen.“",
     "title": "Die unaussprechliche Bürde"
   },
   "restlessKnightCoast": {
@@ -1727,14 +1833,14 @@
       }
     },
     "log": {
-      "outcome0": "Der Ritter wartete, doch du hast nicht geantwortet. 'Vielleicht ein andermal', sagt er, bevor er seine Reise fortsetzt.",
-      "outcome2": "Der Ritter erzählt: 'An der Küste des Ozeans fand ich eine tote Stadt, halb von den Wellen verschlungen. Zwischen ihren Ruinen liegen gewaltige Metallgefäße, ihre rostigen Rümpfe trotzen noch immer der Zeit. Die Alten beherrschten einst die Meere mit diesen Riesen, nun liegen sie gestrandet und stumm im Sand.'",
-      "outcome4": "Zufrieden mit der Mahlzeit erzählt der Ritter: 'An der Küste des Ozeans fand ich eine tote Stadt, halb von den Wellen verschlungen. Zwischen ihren Ruinen liegen gewaltige Metallgefäße, ihre rostigen Rümpfe trotzen noch immer der Zeit. Die Alten beherrschten einst die Meere mit diesen Riesen, nun liegen sie gestrandet und stumm im Sand.'",
-      "outcome5": "Deine Worte bewegen den Ritter. Er spricht: 'An der Küste des Ozeans fand ich eine tote Stadt, halb von den Wellen verschlungen. Zwischen ihren Ruinen liegen gewaltige Metallgefäße, ihre rostigen Rümpfe trotzen noch immer der Zeit. Die Alten beherrschten einst die Meere mit diesen Riesen, nun liegen sie gestrandet und stumm im Sand.'",
-      "outcome6": "Der Ritter hört zu, bleibt aber ungerührt. 'Deine Worte sind ehrlich, doch dieses Wissen ist kostbar. Vielleicht ein andermal.' Er geht, ohne seine Entdeckung zu teilen.",
-      "outcome7": "Du lehnst sein Angebot ab. Der Ritter nickt feierlich. 'Sehr wohl. Die Geheimnisse der Küste bleiben vorerst bei mir', sagt er, bevor er fortgeht."
+      "outcome0": "Der Ritter wartete, doch du hast nicht geantwortet. „Vielleicht ein andermal“, sagt er, bevor er seine Reise fortsetzt.",
+      "outcome2": "Der Ritter erzählt: „An der Küste des Ozeans fand ich eine tote Stadt, halb von den Wellen verschlungen. Zwischen ihren Ruinen liegen gewaltige Schiffe aus Metall, ihre rostigen Rümpfe trotzen noch immer der Zeit. Die Alten beherrschten einst mit diesen Riesen die Meere, nun liegen sie gestrandet und stumm im Sand.“",
+      "outcome4": "Zufrieden mit der Mahlzeit erzählt der Ritter: „An der Küste des Ozeans fand ich eine tote Stadt, halb von den Wellen verschlungen. Zwischen ihren Ruinen liegen gewaltige Schiffe aus Metall, ihre rostigen Rümpfe trotzen noch immer der Zeit. Die Alten beherrschten einst mit diesen Riesen die Meere, nun liegen sie gestrandet und stumm im Sand.“",
+      "outcome5": "Deine Worte bewegen den Ritter. Er spricht: „An der Küste des Ozeans fand ich eine tote Stadt, halb von den Wellen verschlungen. Zwischen ihren Ruinen liegen gewaltige Schiffe aus Metall, ihre rostigen Rümpfe trotzen noch immer der Zeit. Die Alten beherrschten einst mit diesen Riesen die Meere, nun liegen sie gestrandet und stumm im Sand.“",
+      "outcome6": "Der Ritter hört zu, bleibt aber ungerührt. „Deine Worte sind ehrlich, doch dieses Wissen ist kostbar. Vielleicht ein andermal.“ Er geht, ohne seine Entdeckung zu teilen.",
+      "outcome7": "Du lehnst sein Angebot ab. Der Ritter nickt feierlich. „Sehr wohl. Die Geheimnisse der Küste bleiben vorerst bei mir“, sagt er, bevor er fortgeht."
     },
-    "message": "Der Ritter erscheint erneut. 'Ich bin zu einer Stadt an der Küste eines Ozeans gereist', sagt er. 'Was ich dort fand, widerspricht jedem Glauben. Ich werde dieses Wissen teilen, für einen Preis.'",
+    "message": "Der Ritter erscheint erneut. „Ich bin zu einer Stadt an der Küste eines Ozeans gereist“, sagt er. „Was ich dort fand, ist kaum zu glauben. Ich werde dieses Wissen teilen, gegen einen Preis.“",
     "title": "Erzählungen von der Küste"
   },
   "restlessKnightDesert": {
@@ -1755,14 +1861,14 @@
       }
     },
     "log": {
-      "outcome0": "Der Ritter wartete, doch du hast nicht geantwortet. 'Vielleicht ein andermal', sagt er, bevor er seine Reise fortsetzt.",
-      "outcome2": "Der Ritter nickt zufrieden. 'Ein fairer Preis. Ich werde dein Volk mit meinem Leben verteidigen.' Er nimmt seinen verwitterten Helm ab und zeigt ein vernarbtes, doch entschlossenes Gesicht. Der rastlose Ritter hat sich deinen Gefährten angeschlossen.",
-      "outcome4": "Der Ritter nimmt das Silber mit feierlicher Verbeugung an. 'Ich werde dein Volk mit meinem Leben verteidigen.' Er nimmt seinen verwitterten Helm ab und zeigt ein vernarbtes, doch entschlossenes Gesicht. Der rastlose Ritter hat sich deinen Gefährten angeschlossen.",
-      "outcome5": "'Dein Ziel wirkt edel', die Augen des Ritters hellen sich auf. 'Es wäre mir eine Ehre, an deiner Seite zu stehen.' Er nimmt seinen verwitterten Helm ab und zeigt ein vernarbtes, doch entschlossenes Gesicht. Der rastlose Ritter hat sich deinen Gefährten angeschlossen.",
-      "outcome6": "Der Ritter hört zu, schüttelt aber den Kopf. 'Worte allein können keinen Krieger nähren. Dann muss ich meine Reise vorerst fortsetzen', sagt er, wendet sich ab und geht.",
-      "outcome7": "Du lehnst sein Angebot ab. Der Ritter nickt verständnisvoll. 'Ich respektiere deine Entscheidung. Dann muss ich meine Reise vorerst fortsetzen', sagt er, wendet sich ab und geht."
+      "outcome0": "Der Ritter wartete, doch du hast nicht geantwortet. „Vielleicht ein andermal“, sagt er, bevor er seine Reise fortsetzt.",
+      "outcome2": "Der Ritter nickt zufrieden. „Ein fairer Preis. Ich werde dein Volk mit meinem Leben verteidigen.“ Er nimmt seinen verwitterten Helm ab und zeigt ein vernarbtes, doch entschlossenes Gesicht. Der Rastlose Ritter hat sich deinen Gefährten angeschlossen.",
+      "outcome4": "Der Ritter nimmt das Silber mit feierlicher Verbeugung an. „Ich werde dein Volk mit meinem Leben verteidigen.“ Er nimmt seinen verwitterten Helm ab und zeigt ein vernarbtes, doch entschlossenes Gesicht. Der Rastlose Ritter hat sich deinen Gefährten angeschlossen.",
+      "outcome5": "„Dein Ziel scheint edel.“ Die Augen des Ritters leuchten auf. „Es wäre mir eine Ehre, an deiner Seite zu stehen.“ Er nimmt seinen verwitterten Helm ab und zeigt ein vernarbtes, doch entschlossenes Gesicht. Der Rastlose Ritter hat sich deinen Gefährten angeschlossen.",
+      "outcome6": "Der Ritter hört zu, schüttelt aber den Kopf. „Worte allein können keinen Krieger nähren. Dann muss ich meine Reise vorerst fortsetzen“, sagt er, wendet sich ab und geht.",
+      "outcome7": "Du lehnst sein Angebot ab. Der Ritter nickt verständnisvoll. „Ich respektiere deine Entscheidung. Dann muss ich meine Reise vorerst fortsetzen“, sagt er, wendet sich ab und geht."
     },
-    "message": "Der Ritter kehrt zurück. 'Ich reiste weit nach Süden in eine gewaltige Wüste. Dort traf ich einen Mann, der sich der Bergung verlorener Technologie der Alten verschrieben hatte. Er zeigte mir Geräte, die einst in Schädel eingesetzt wurden und die Sinne über natürliche Grenzen hinaus schärften.' Er hält inne. 'Ich bin genug gereist. Du könntest eine erfahrene Klinge gebrauchen. Ich biete dir meinen Dienst im Kampf an, wenn du annimmst.'",
+    "message": "Der Ritter kehrt zurück. „Ich reiste weit nach Süden in eine gewaltige Wüste. Dort traf ich einen Mann, der sich der Bergung verlorener Technologie der Alten verschrieben hatte. Er zeigte mir Geräte, die einst in Schädel eingesetzt wurden und die Sinne über natürliche Grenzen hinaus schärften.“ Er hält inne. „Ich bin genug gereist. Du könntest eine erfahrene Klinge gebrauchen. Ich biete dir meinen Dienst im Kampf an, wenn du annimmst.“",
     "title": "Die letzte Reise des Ritters"
   },
   "restlessKnightMountains": {
@@ -1780,19 +1886,19 @@
       }
     },
     "log": {
-      "outcome0": "Der Ritter wartete, doch du hast nicht geantwortet. 'Vielleicht ein andermal', sagt er, bevor er seine Reise fortsetzt.",
-      "outcome2": "Der Ritter teilt seine Entdeckung: 'Hoch in den Bergen liegt ein Kloster, in die Klippen gehauen. Gelehrte, die sich dort versammelten, um die Vergangenheit zu erforschen, erzählen von einer fortgeschrittenen Zivilisation jenseits unseres Verständnisses. Doch etwas brachte ihre Welt zu Fall.'",
-      "outcome4": "Dankbar für die Mahlzeit teilt der Ritter seine Entdeckung: 'Hoch in den Bergen liegt ein Kloster, in die Klippen gehauen. Die Gelehrten dort, die die Vergangenheit erforschen, sprechen von einer Zivilisation jenseits unseres Verständnisses. Ihre Kunst war so fortgeschritten, dass sie uns wie Magie erscheinen würde. Doch etwas brachte ihre Welt zu Fall.'",
-      "outcome5": "Du lehnst sein Angebot ab. Der Ritter nickt. 'Dann bleibt das Wissen bei mir', sagt er und zieht wieder weiter."
+      "outcome0": "Der Ritter wartete, doch du hast nicht geantwortet. „Vielleicht ein andermal“, sagt er, bevor er seine Reise fortsetzt.",
+      "outcome2": "Der Ritter teilt seine Entdeckung: „Hoch in den Bergen liegt ein Kloster, in die Klippen gehauen. Gelehrte, die sich dort versammelten, um die Vergangenheit zu erforschen, erzählen von einer fortgeschrittenen Zivilisation jenseits unseres Verständnisses. Doch etwas brachte ihre Welt zu Fall.“",
+      "outcome4": "Dankbar für die Mahlzeit teilt der Ritter seine Entdeckung: „Hoch in den Bergen liegt ein Kloster, in die Klippen gehauen. Die Gelehrten dort, die die Vergangenheit erforschen, sprechen von einer Zivilisation jenseits unseres Verständnisses. Ihre Kunst war so fortgeschritten, dass sie uns wie Magie erscheinen würde. Doch etwas brachte ihre Welt zu Fall.“",
+      "outcome5": "Du lehnst sein Angebot ab. Der Ritter nickt. „Dann bleibt das Wissen bei mir“, sagt er und zieht wieder weiter."
     },
-    "message": "Der Ritter kehrt zurück, seine Rüstung zerkratzt und zerschunden. 'Ich fand etwas Außergewöhnliches in den Bergen', sagt er. 'Ich werde dir davon erzählen, für einen Preis.'",
+    "message": "Der Ritter kehrt zurück, seine Rüstung zerkratzt und verbeult. „Ich fand etwas Außergewöhnliches in den Bergen“, sagt er. „Ich werde dir davon erzählen, gegen einen Preis.“",
     "title": "Rückkehr aus den Bergen"
   },
   "riddleOfAges": {
     "title": "Stimmen in der Dunkelheit",
     "message": {
-      "original": "Die verhüllte Gestalt kehrt im blassen Mondlicht zum Anwesen zurück. Ihre Stimme hallt wider: 'Am Morgen geht es auf vier Füßen, am Mittag auf zwei, am Abend auf drei.'",
-      "variant": "Die verhüllte Gestalt kehrt im blassen Mondlicht zum Anwesen zurück. Ihre Stimme hallt wider: 'Kann dir nichts tun, hinterlässt aber Narben.'"
+      "original": "Die verhüllte Gestalt kehrt im blassen Mondlicht zum Anwesen zurück. Ihre Stimme hallt wider: „Am Morgen geht es auf vier Füßen, am Mittag auf zwei, am Abend auf drei.“",
+      "variant": "Die verhüllte Gestalt kehrt im blassen Mondlicht zum Anwesen zurück. Ihre Stimme hallt wider: „Kann dir nichts tun, hinterlässt aber Narben.“"
     },
     "choices": {
       "answerEarth": {
@@ -1819,8 +1925,8 @@
   "riddleOfAges_variant": {
     "title": "Stimmen in der Dunkelheit",
     "message": {
-      "original": "Die verhüllte Gestalt kehrt im blassen Mondlicht zum Anwesen zurück. Ihre Stimme hallt wider: 'Am Morgen geht es auf vier Füßen, am Mittag auf zwei, am Abend auf drei.'",
-      "variant": "Die verhüllte Gestalt kehrt im blassen Mondlicht zum Anwesen zurück. Ihre Stimme hallt wider: 'Kann dir nichts tun, hinterlässt aber Narben.'"
+      "original": "Die verhüllte Gestalt kehrt im blassen Mondlicht zum Anwesen zurück. Ihre Stimme hallt wider: „Am Morgen geht es auf vier Füßen, am Mittag auf zwei, am Abend auf drei.“",
+      "variant": "Die verhüllte Gestalt kehrt im blassen Mondlicht zum Anwesen zurück. Ihre Stimme hallt wider: „Kann dir nichts tun, hinterlässt aber Narben.“"
     },
     "choices": {
       "answerNightmares": {
@@ -1847,8 +1953,8 @@
   "riddleOfDevourer": {
     "title": "Ein nächtlicher Besucher",
     "message": {
-      "original": "Erneut erscheint die geheimnisvolle Gestalt am Anwesen. Sie flüstert mit tiefer Stimme: 'Es verschlingt alles, macht Knochen zu Staub, tötet Könige, zermürbt Berge, tilgt Städte aus.'",
-      "variant": "Erneut erscheint die geheimnisvolle Gestalt am Anwesen. Sie flüstert mit tiefer Stimme: 'Hat Finger, aber kein Fleisch, keine Federn, keine Schuppen, keinen Knochen.'"
+      "original": "Erneut erscheint die geheimnisvolle Gestalt am Anwesen. Sie flüstert mit tiefer Stimme: „Es verschlingt alles, macht Knochen zu Staub, tötet Könige, zermürbt Berge, tilgt Städte aus.“",
+      "variant": "Erneut erscheint die geheimnisvolle Gestalt am Anwesen. Sie flüstert mit tiefer Stimme: „Hat Finger, aber kein Fleisch, keine Federn, keine Schuppen, keinen Knochen.“"
     },
     "choices": {
       "answerMan": {
@@ -1875,8 +1981,8 @@
   "riddleOfDevourer_variant": {
     "title": "Ein nächtlicher Besucher",
     "message": {
-      "original": "Erneut erscheint die geheimnisvolle Gestalt am Anwesen. Sie flüstert mit tiefer Stimme: 'Es verschlingt alles, macht Knochen zu Staub, tötet Könige, zermürbt Berge, tilgt Städte aus.'",
-      "variant": "Erneut erscheint die geheimnisvolle Gestalt am Anwesen. Sie flüstert mit tiefer Stimme: 'Hat Finger, aber kein Fleisch, keine Federn, keine Schuppen, keinen Knochen.'"
+      "original": "Erneut erscheint die geheimnisvolle Gestalt am Anwesen. Sie flüstert mit tiefer Stimme: „Es verschlingt alles, macht Knochen zu Staub, tötet Könige, zermürbt Berge, tilgt Städte aus.“",
+      "variant": "Erneut erscheint die geheimnisvolle Gestalt am Anwesen. Sie flüstert mit tiefer Stimme: „Hat Finger, aber kein Fleisch, keine Federn, keine Schuppen, keinen Knochen.“"
     },
     "choices": {
       "answerFin": {
@@ -1903,8 +2009,8 @@
   "riddleOfEternal": {
     "title": "Der unbekannte Gast",
     "message": {
-      "original": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme trägt durch die Nacht: 'Deine Augen sind offen, ich bin da; deine Augen sind geschlossen, ich bin auch da.'",
-      "variant": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme trägt durch die Nacht: 'Arme haben mich, Reiche brauchen mich. Isst du mich, stirbst du.'"
+      "original": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme trägt durch die Nacht: „Deine Augen sind offen, ich bin da; deine Augen sind geschlossen, ich bin auch da.“",
+      "variant": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme trägt durch die Nacht: „Arme haben mich, Reiche brauchen mich. Isst du mich, stirbst du.“"
     },
     "choices": {
       "answerLight": {
@@ -1931,8 +2037,8 @@
   "riddleOfEternal_variant": {
     "title": "Der unbekannte Gast",
     "message": {
-      "original": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme trägt durch die Nacht: 'Deine Augen sind offen, ich bin da; deine Augen sind geschlossen, ich bin auch da.'",
-      "variant": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme trägt durch die Nacht: 'Arme haben mich, Reiche brauchen mich. Isst du mich, stirbst du.'"
+      "original": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme trägt durch die Nacht: „Deine Augen sind offen, ich bin da; deine Augen sind geschlossen, ich bin auch da.“",
+      "variant": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme trägt durch die Nacht: „Arme haben mich, Reiche brauchen mich. Isst du mich, stirbst du.“"
     },
     "choices": {
       "answerPoison": {
@@ -1959,8 +2065,8 @@
   "riddleOfTears": {
     "title": "Ein vermummter Gast",
     "message": {
-      "original": "Die gehüllte Gestalt erscheint erneut am Anwesen. Sie flüstert: 'Fliegt ohne Flügel, weint ohne Augen, Finsternis folgt ihm, wohin es geht.'",
-      "variant": "Die gehüllte Gestalt erscheint erneut am Anwesen. Sie flüstert: 'Weich, zart, seidig, aber wenn du in mich gehüllt bist, schreist du.'"
+      "original": "Die verhüllte Gestalt erscheint erneut am Anwesen. Sie flüstert: „Fliegt ohne Flügel, weint ohne Augen, Finsternis folgt ihm, wohin es geht.“",
+      "variant": "Die verhüllte Gestalt erscheint erneut am Anwesen. Sie flüstert: „Weich, zart, seidig, aber wenn du in mich gehüllt bist, schreist du.“"
     },
     "choices": {
       "answerNight": {
@@ -1987,8 +2093,8 @@
   "riddleOfTears_variant": {
     "title": "Ein vermummter Gast",
     "message": {
-      "original": "Die gehüllte Gestalt erscheint erneut am Anwesen. Sie flüstert: 'Fliegt ohne Flügel, weint ohne Augen, Finsternis folgt ihm, wohin es geht.'",
-      "variant": "Die gehüllte Gestalt erscheint erneut am Anwesen. Sie flüstert: 'Weich, zart, seidig, aber wenn du in mich gehüllt bist, schreist du.'"
+      "original": "Die verhüllte Gestalt erscheint erneut am Anwesen. Sie flüstert: „Fliegt ohne Flügel, weint ohne Augen, Finsternis folgt ihm, wohin es geht.“",
+      "variant": "Die verhüllte Gestalt erscheint erneut am Anwesen. Sie flüstert: „Weich, zart, seidig, aber wenn du in mich gehüllt bist, schreist du.“"
     },
     "choices": {
       "answerNightmares": {
@@ -2054,11 +2160,11 @@
       "outcome0": "Das Heiligtum verwandelt sich in einen Knoten göttlicher Macht. Alle Götter antworten auf deinen Ruf, ihre Gaben gehören dir.",
       "dedicate_dagon": "Dagons Segen fließt stärker als zuvor.",
       "dedicate_flame": "Die Erste Flamme brennt heller als zuvor.",
-      "dedicate_raven": "Das Zeichen der Krähe wird stärker als zuvor.",
+      "dedicate_raven": "Das Mal des Raben wird stärker als zuvor.",
       "dedicate_ash": "Die Aschene Umarmung ist stärker als zuvor.",
       "dedicate_unknown": ""
     },
-    "message": "Der blinde Druide tritt hervor: 'Das Heiligtum ist vollendet', sagt er, seine Stimme trägt das Gewicht alter Weisheit. 'Nun musst du wählen: Vertiefe deine Hingabe an den Pfad, den du gewählt hast, oder umarme alle Götter und ihre Gaben. Wähle weise.'",
+    "message": "Der blinde Druide tritt hervor: „Das Heiligtum ist vollendet“, sagt er, seine Stimme trägt das Gewicht alter Weisheit. „Nun musst du wählen: Vertiefe deine Hingabe an den Pfad, den du gewählt hast, oder umarme alle Götter und ihre Gaben. Wähle weise.“",
     "title": "Die Weihe des Heiligtums"
   },
   "scholarResearchProposal": {
@@ -2067,7 +2173,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Eine junge Gelehrte sucht dich auf, Feldnotizen und eine handgezeichnete Karte unter dem Arm. Sie spricht von vergessenen Tempeln und Heiligtümern tief im Wald. Mit genügend Gold könnte sie Expeditionen ins Wildnis führen und Wissen zurückbringen, das längst verloren schien.",
+    "message": "Eine junge Gelehrte sucht dich auf, Feldnotizen und eine handgezeichnete Karte unter dem Arm. Sie spricht von vergessenen Tempeln und Heiligtümern tief im Wald. Mit genügend Gold könnte sie Expeditionen in die Wildnis führen und Wissen zurückbringen, das längst verloren schien.",
     "title": "Der Vorschlag der Gelehrten"
   },
   "secondWave": {
@@ -2093,9 +2199,9 @@
     "log": {
       "outcome0": "Du behältst die Knochenflöte. Ihre Melodien sind schön, doch eine feine Dissonanz nagt leise an deinem Geist.",
       "outcome1": "Du legst die Flöte vorsichtig zurück. Die Schatten kehren zu ihrer natürlichen Regungslosigkeit zurück, und die bedrückende Atmosphäre hebt sich.",
-      "outcome2": "Dein Zögern wird teuer. Die Schatten werden hungrig und gewalttätig, winden sich vor unnatürlichem Leben. Sie stürzen vor und verschlingen {{actualDevoured}} deiner Gefährten. Ihre Schreie hallen kurz, bevor sie von Stille verschluckt werden."
+      "outcome2": "Dein Zögern wird teuer. Die Schatten werden hungrig und gewalttätig, winden sich vor unnatürlichem Leben. Sie stürzen vor und verschlingen {{actualDevoured}} deiner Gefährten. Ihre Schreie hallen kurz wider, bevor die Stille sie verschluckt."
     },
-    "message": "Tief in der Höhle entdeckst du eine Knochenflöte von verstörender Machart. Als du sie spielst, beginnen die Schatten um dich herum, sich unnatürlich zu bewegen, als tanzten sie zu einer Melodie. Behältst du sie?",
+    "message": "Tief in der Höhle entdeckst du eine Knochenflöte von verstörender Machart. Als du darauf spielst, beginnen die Schatten um dich herum, sich unnatürlich zu bewegen, als tanzten sie zu einer Melodie. Behältst du sie?",
     "title": "Die Schattenflöte"
   },
   "shadowsMove": {
@@ -2109,11 +2215,11 @@
     },
     "log": {
       "outcome0": "Du richtest deinen Blick auf die sich verschiebenden Schatten, bis sie still werden. Vielleicht war es nichts. So sagst du dir zumindest.",
-      "outcome1": "Die Schatten neigen sich dir zu. Formen verdichten sich am Rand deines Blicks, und etwas flüstert deinen Namen in einer Stimme wie trockene Blätter.",
-      "outcome2": "Du wendest den Blick ab, doch das Unheil folgt dir. Aus dem Augenwinkel bewegen sich die Schatten noch lange, nachdem du aufgehört hast hinzusehen."
+      "outcome1": "Die Schatten neigen sich dir zu. Formen verdichten sich am Rand deines Blicks, und etwas flüstert deinen Namen mit einer Stimme wie trockenes Laub.",
+      "outcome2": "Du wendest den Blick ab, doch das Gefühl, dass etwas nicht stimmt, folgt dir. Aus dem Augenwinkel bewegen sich die Schatten noch lange, nachdem du aufgehört hast hinzusehen."
     },
     "message": "Die Schatten im Dorf scheinen sich falsch zu bewegen. Sie strecken sich zu lang, verdrehen sich in unmöglichen Winkeln und scheinen sich manchmal unabhängig von ihren Quellen zu regen.",
-    "title": "Bewegende Schatten"
+    "title": "Wandernde Schatten"
   },
   "shoreFishermenResponse": {
     "choices": {
@@ -2140,10 +2246,10 @@
   "skinCrawling": {
     "choices": {
       "calm_down": {
-        "label": "Beruhigen versuchen"
+        "label": "Ruhig bleiben"
       },
       "keep_scratching": {
-        "label": "Weiter kratzen"
+        "label": "Weiterkratzen"
       }
     },
     "log": {
@@ -2151,7 +2257,7 @@
       "outcome1": "Du versuchst, dich zu beruhigen, doch das Gefühl wird stärker. Deine Sicht verschwimmt, und du brichst zusammen. In deinen fiebrigen Träumen flüstern alte Dinge deinen wahren Namen. Als du erwachst, hat das Kriechen aufgehört, doch die Erinnerung bleibt.",
       "outcome2": "Du kratzt rasend an deiner Haut und ziehst Blut. Die Dorfbewohner stürzen herbei, um dich aufzuhalten, und packen deine Arme. In deinem wahnsinnigen Zorn schlägst du wild um dich und tötest {{killedVillagers}} Dorfbewohner, bevor du vor Erschöpfung zusammenbrichst. Als du erwachst, hat das Kriechen aufgehört, doch Blut befleckt deine Hände."
     },
-    "message": "Unter deiner Haut beginnt es zu kriechen - buchstäblich. Du kannst Formen unter der Oberfläche sehen, die scheinbar Muster bilden. Die Dorfbewohner sehen zu, wie du blutige Furchen in deine Arme kratzt, ihre Gesichter voller Sorge.",
+    "message": "Unter deiner Haut beginnt es zu kriechen – buchstäblich. Du kannst Formen unter der Oberfläche sehen, die scheinbar Muster bilden. Die Dorfbewohner sehen zu, wie du blutige Furchen in deine Arme kratzt, ihre Gesichter voller Sorge.",
     "title": "Kriechen unter der Haut"
   },
   "slaveTrader": {
@@ -2168,11 +2274,11 @@
     },
     "log": {
       "outcome0": "Du übergibst zwei der Dorfbewohner. Der Händler wirft dir einen Sack Stahl zu und reitet mit seinen neuen Gefangenen davon. Als die übrigen Dorfbewohner sehen, was du getan hast, verlassen sie angewidert das Dorf.",
-      "outcome1": "Deine Männer greifen den Sklavenhändler an! Der Kampf ist brutal, aber siegreich. Du befreist die Gefangenen und beanspruchst den Stahl des Händlers. Die befreiten Sklaven schließen sich deinem Dorf an.",
+      "outcome1": "Deine Männer greifen den Sklavenhändler an! Der Kampf ist brutal, aber siegreich. Du befreist die Gefangenen und nimmst den Stahl des Händlers an dich. Die befreiten Sklaven schließen sich deinem Dorf an.",
       "outcome2": "Deine Männer greifen den Sklavenhändler an, doch er ist vorbereitet! Er wehrt sich erbittert. {{actualDeaths}} Dorfbewohner fallen im Kampf. Der Händler entkommt mit seinen Gefangenen und hinterlässt nur den Tod.",
       "outcome3": "Du lehnst das widerwärtige Angebot des Sklavenhändlers ab. Er spuckt angewidert auf den Boden und reitet mit seinen Gefangenen davon."
     },
-    "message": "Ein Mann auf einem von zwei Pferden gezogenen Karren nähert sich dem Dorf. Auf dem Karren steht ein Eisenkäfig mit drei elenden Sklaven. Der Händler grinst böse: 'Ich zahle dir 100 Stahl für zwei der Dorfbewohner. Was sagst du?'",
+    "message": "Ein Mann auf einem von zwei Pferden gezogenen Karren nähert sich dem Dorf. Auf dem Karren steht ein Eisenkäfig mit drei elenden Sklaven. Der Händler grinst böse: „Ich zahle dir 100 Stahl für zwei der Dorfbewohner. Was sagst du?“",
     "title": "Der Sklavenhändler"
   },
   "solsticeGathering": {
@@ -2190,11 +2296,20 @@
       }
     },
     "log": {
-      "outcome2": "Die Feuer brennen und Lachen durchbricht eine Zeit lang die Dunkelheit. Bei Tagesanbruch verweilen viele Besucher und erwägen zu bleiben.",
+      "outcome2": "Die Feuer brennen, und Lachen durchbricht eine Zeit lang die Dunkelheit. Bei Tagesanbruch verweilen viele Besucher und erwägen zu bleiben.",
       "outcome3": "Du lehnst ab. Die Nacht vergeht ohne Freude, Wärme oder Lachen."
     },
     "message": "Die Dorfbewohner schlagen ein Fest vor, um die längste Nacht des Jahres zu begehen. Feuer werden entzündet, Speisen zubereitet und Spiele veranstaltet. Reisende könnten vom Licht angezogen kommen.",
-    "title": "Sonnenwend-Fest"
+    "title": "Sonnenwendfest"
+  },
+  "staringDeer": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "message": "Die Hirsche verhalten sich seltsam. Sie fliehen nicht. Sie scheinen die Jäger direkt anzustarren. Die Jagd ist jetzt leicht, aber die Jäger kehren verstört zurück.",
+    "title": "Starrende Hirsche"
   },
   "swampSanctuaryChoice": {
     "choices": {
@@ -2207,7 +2322,7 @@
       }
     },
     "log": {
-      "outcome0": "Das schwarze Holz widersetzt sich, doch die Dorfbewohner bringt den Baum zu Fall. Du beanspruchst das schwarze, verfluchte Holz.",
+      "outcome0": "Das schwarze Holz widersetzt sich, doch die Dorfbewohner bringen den Baum zu Fall. Du nimmst das schwarze, verfluchte Holz an dich.",
       "outcome2": "Blut und Rauch steigen aus der Opfergabe auf. Eine kalte Gnade legt sich über das Dorf."
     },
     "message": "Deine Expedition erreicht das vergessene Sumpfheiligtum. Zerfallene Ruinen umgeben einen massiven Baum aus dunklem schwarzem Holz. Was tust du?",
@@ -2226,7 +2341,7 @@
       "outcome0": "Du nimmst das Angebot des Sumpfstammes an und bereitest dich darauf vor, die Stahllieferung in den Sumpf zu schicken.",
       "outcome1": "Du lehnst das Angebot des Sumpfstammes ab. Die Gelegenheit ist verloren."
     },
-    "message": "Die einäugige Krähe kehrt vom Sumpfstamm mit einem zerfallenden Brief zurück. Der Stamm bietet mächtige Chitinplatten im Austausch für 1000 Stahl an, die in ihr Dorf geliefert werden sollen.",
+    "message": "Die einäugige Krähe kehrt vom Sumpfstamm mit einem zerfallenden Brief zurück. Der Stamm bietet mächtige Chitinplatten im Austausch gegen 1000 Stahl, die in sein Dorf geliefert werden sollen.",
     "title": "Nachricht vom Sumpfstamm"
   },
   "templeDedication": {
@@ -2238,7 +2353,7 @@
         "label": "Kult der Rabengeborenen"
       },
       "order_of_ashbringer": {
-        "label": "Orden der Aschenbringer"
+        "label": "Orden des Aschenbringers"
       },
       "way_of_first_flame": {
         "label": "Weg der Ersten Flamme"
@@ -2250,23 +2365,23 @@
       "outcome2": "Du weihst den Tempel dem Kult der Rabengeborenen, einem rätselhaften und schattenhaften Orden.",
       "outcome3": "Du weihst den Tempel dem Orden des Aschenbringers, einer feierlichen, feuergebundenen Bruderschaft."
     },
-    "message": "Kurz nachdem der Tempel gebaut wurde, erscheint der blinde Druide. Seine milchigen Augen scheinen durch deine Seele zu blicken, als er spricht: 'Der Tempel muss einem Gott geweiht werden. Wähle weise.'",
+    "message": "Kurz nachdem der Tempel gebaut wurde, erscheint der blinde Druide. Seine milchigen Augen scheinen durch deine Seele zu blicken, als er spricht: „Der Tempel muss einem Gott geweiht werden. Wähle weise.“",
     "title": "Der blinde Druide kehrt zurück"
   },
   "tenthWave": {
-    "message": "Aus den tiefsten Tiefen der Höhle bricht eine unvorstellbare Masse bleicher Kreaturen hervor. Sie fluten das Land wie eine lebende Flut, während die Stadt sich auf die Vernichtung vorbereitet.",
+    "message": "Aus den tiefsten Tiefen der Höhle bricht eine unvorstellbare Masse bleicher Kreaturen hervor. Sie überschwemmen das Land wie eine lebende Flut, während sich die Stadt für den nächsten Angriff wappnet.",
     "title": "Die zehnte Welle"
   },
   "firstBossWave": {
-    "message": "Eine große Horde bleicher Bestien führt die Belagerung auf die Stadt zu. Ihr Blutdurst ist in jedem ihrer Schritte zu erkennen.",
+    "message": "Eine große Meute bleicher Bestien führt den Sturm auf die Stadt an. Ihr Blutdurst ist in jedem ihrer Schritte zu erkennen.",
     "title": "Die Bosswelle"
   },
   "secondBossWave": {
-    "message": "Eine Armee bleicher Bestien versammelt sich vor den Stadtmauern und sammelt sich für einen letzten Sturmangriff auf die Stadt.",
+    "message": "Eine Armee bleicher Bestien zieht sich vor den Stadtmauern zusammen, bereit zum letzten Sturmangriff auf die Stadt.",
     "title": "Die letzte Bosswelle"
   },
   "postCompletionWave": {
-    "message": "Aus den verborgenen Tiefen der Höhle tauchen immer wieder gedankenlose bleiche Kreaturen auf und stürmen sich ohne Ende auf die Stadt.",
+    "message": "Aus den verborgenen Tiefen der Höhle tauchen immer wieder geistlose bleiche Kreaturen auf und stürmen ohne Ende gegen die Stadt an.",
     "title": "Welle {{waveNumber}}"
   },
   "theHoundFound": {
@@ -2276,9 +2391,9 @@
       }
     },
     "log": {
-      "outcome": "Du nimmst an. Vom Gift geschwächt, doch noch atmend, schließt sich der Brutale Hund deiner Gefolgschaft an."
+      "outcome": "Du nimmst an. Vom Gift geschwächt, doch noch atmend, schließt sich der Brutale Hund deinen Gefährten an."
     },
-    "message": "Eure Expedition findet ein Bergdorf voll vergifteter Toter. Unter den Leichen liegt ein fast toter Mann, sehr muskulös, doch entstellt, kaum fähig zu sprechen. Er sagt, sie nannten ihn nur den Brutalen Hund. Offenbar hat er dem Gift widerstanden, wenn auch kaum. Er will sich euch anschließen.",
+    "message": "Deine Expedition findet ein Bergdorf voller vergifteter Toter. Unter den Leichen liegt ein fast toter Mann, sehr muskulös, doch entstellt, kaum fähig zu sprechen. Er sagt, man habe ihn nur den Brutalen Hund genannt. Offenbar hat er dem Gift widerstanden, wenn auch knapp. Er will sich dir anschließen.",
     "title": "Brutaler Hund"
   },
   "theDamned": {
@@ -2291,7 +2406,7 @@
       }
     },
     "log": {
-      "outcome0": "{{added}} Überlebende schließen sich deinem Dorf an - dankbar, doch gezeichnet von dem, was sie im Wald erduldet haben.",
+      "outcome0": "{{added}} Überlebende schließen sich deinem Dorf an – dankbar, doch gezeichnet von dem, was sie im Wald erduldet haben.",
       "outcome1": "Du weist sie ab. Eine bittere Unruhe legt sich über das Dorf, denn die Dorfbewohner sind mit deiner Entscheidung nicht einverstanden.",
       "outcome2": "Du weist sie ab. Eine bittere Unruhe legt sich über das Dorf, denn die Dorfbewohner sind mit deiner Entscheidung nicht einverstanden.",
       "outcome3": "Du nimmst sie auf, aber im Dorf ist kein Platz für weitere Bewohner."
@@ -2346,7 +2461,7 @@
         "label": "Ablehnen"
       }
     },
-    "message": "Der Sohn des Dorfhändlers tritt an dich heran. Er trug den kostbaren Dolch seines Vaters, um eine Frau zu beeindrucken, doch ein naher Bandit überfiel ihn. Er bittet dich, ihn zurückzuholen.",
+    "message": "Der Sohn des Dorfhändlers tritt an dich heran. Er trug den kostbaren Dolch seines Vaters, um eine Frau zu beeindrucken, doch ein Bandit aus der Gegend überfiel ihn. Er bittet dich, den Dolch zurückzuholen.",
     "title": "Der Sohn des Händlers"
   },
   "traders_son_gratitude": {
@@ -2363,7 +2478,7 @@
       "outcome1": "Du lehnst das Angebot ab. Der junge Händler nickt, vielleicht erleichtert, dass keine Schuld mehr bleibt."
     },
     "message": "Der Sohn des Händlers kehrt mit dem Dolch seines Vaters zurück. Er ist voller Dankbarkeit und bietet dir einen großen Rabatt auf deinen nächsten Kauf der Waren seines Vaters an.",
-    "title": "Die Dankbarkeit des Händler-Sohns"
+    "title": "Die Dankbarkeit des Händlersohns"
   },
   "traderSettles": {
     "choices": {
@@ -2380,7 +2495,7 @@
         "label": "Vorbereiten"
       }
     },
-    "message": "Beim Erkunden des unterirdischen Sees erhaschst du einen gewaltigen Schatten unter dem schwarzen Wasser, etwas Riesiges und Ungesehenes. Vielleicht könnte eine Falle es aus dem Wasser locken.",
+    "message": "Beim Erkunden des unterirdischen Sees erhaschst du einen Blick auf einen gewaltigen Schatten unter dem schwarzen Wasser, etwas Riesiges und Verborgenes. Vielleicht könnte eine Falle es aus dem Wasser locken.",
     "title": "Etwas darunter"
   },
   "undergroundLakeDiscovery": {
@@ -2414,7 +2529,7 @@
       "outcome2": "Der Wanderer nickt knapp und geht zur Bergbaugrube, um seine Arbeit aufzunehmen.",
       "outcome4": "Der Wanderer nickt knapp und geht zur Bergbaugrube, um seine Arbeit aufzunehmen."
     },
-    "message": "Ein Mann in zerrissener Kleidung nähert sich dem Dorf, seine Hände gezeichnet von Jahren harter Arbeit. 'Ich komme aus einer Bergbaukolonie', sagt er mit rauer Stimme. 'Ich kann für dich arbeiten und deinen Bergbauertrag verbessern.'",
+    "message": "Ein Mann in zerrissener Kleidung nähert sich dem Dorf, seine Hände gezeichnet von Jahren harter Arbeit. „Ich komme aus einer Bergbaukolonie“, sagt er mit rauer Stimme. „Ich kann für dich arbeiten und deinen Bergbauertrag verbessern.“",
     "title": "Der namenlose Wanderer"
   },
   "veiledSeer": {
@@ -2428,10 +2543,10 @@
       }
     },
     "log": {
-      "outcome1": "Der Seher verstummt. Sein Blick driftet an dir vorbei. \"Große Prüfungen erwarten dich{{name}}\", sagt er leise. \"Du glaubst, diese Welt sei deine zu formen. Doch auch du wirst geformt. Wenn die letzte Wahrheit an die Oberfläche kommt, wirst du die Fäden sehen. Und dann könnte es zu spät sein.\"",
-      "outcome2": "Der Seher nickt. \"Dann leb wohl{{name}},\" sagt er und verschwindet wortlos im Nebel."
+      "outcome1": "Der Seher verstummt. Sein Blick schweift an dir vorbei. „Große Prüfungen erwarten dich{{name}}“, sagt er leise. „Du glaubst, du könntest diese Welt nach deinem Willen formen. Doch auch du wirst geformt. Wenn die letzte Wahrheit ans Licht kommt, wirst du die Fäden sehen. Und dann könnte es zu spät sein.“",
+      "outcome2": "Der Seher nickt. „Dann leb wohl{{name}}“, sagt er und verschwindet wortlos im Nebel."
     },
-    "message": "Eine verhüllte Gestalt erscheint in der Dämmerung. Seine Augen glimmen unter dem Schleier. 'Ich habe erblickt, was vor dir liegt', krächzt er. '50 Gold, und ich sage dir, was dich erwartet.'",
+    "message": "Eine verhüllte Gestalt erscheint in der Dämmerung. Seine Augen glimmen unter dem Schleier. „Ich habe erblickt, was vor dir liegt“, krächzt er. „50 Gold, und ich sage dir, was dich erwartet.“",
     "title": "Der verschleierte Seher"
   },
   "veinrootIntroduction": {
@@ -2463,7 +2578,7 @@
       "outcome4": "Der Baumeister erweist sich als stärker als erwartet! Er wehrt sich heftig und tötet {{actualCasualties}} Männer, bevor er in die Wildnis entkommt.",
       "outcome5": "Du lehnst das Angebot des Baumeisters ab und schickst ihn fort. Er zuckt mit den Schultern und verschwindet in der Wildnis, sein Wissen nimmt er mit."
     },
-    "message": "Eines Tages steht ein kräftiger Mann in dicken Fellen an den Toren. Er sagt, er komme aus dem fernen Norden und sei ein geschickter Baumeister. Für ein wenig Gold wird er dich lehren, große Häuser zu bauen, die viele Dorfbewohner fassen können.",
+    "message": "Eines Tages steht ein kräftiger Mann in dicken Fellen an den Toren. Er sagt, er komme aus dem fernen Norden und sei ein geschickter Baumeister. Für ein wenig Gold werde er dich lehren, große Häuser zu bauen, die viele Dorfbewohner fassen können.",
     "title": "Der Wikinger-Baumeister"
   },
   "villageBecomesCity": {
@@ -2475,7 +2590,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Der Dorfälteste kehrt zurück, sein Ausdruck ernst. 'Die Zeit ist gekommen', sagt er. 'Du hast deine ersten Schritte auf einem langen und gnadenlosen Pfad getan. Was vor dir liegt, ist tiefer, dunkler und fordernder. Entscheide jetzt, ob du diese Reise fortsetzen willst.'",
+    "message": "Der Dorfälteste kehrt zurück, sein Ausdruck ernst. „Die Zeit ist gekommen“, sagt er. „Du hast deine ersten Schritte auf einem langen und gnadenlosen Pfad getan. Was vor dir liegt, ist tiefer, dunkler und fordernder. Entscheide jetzt, ob du diese Reise fortsetzen willst.“",
     "title": "Die Zeit ist gekommen"
   },
   "villageElderNotice": {
@@ -2484,7 +2599,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Ein Dorfältester tritt an dich heran. Er spricht leise. 'Du stehst am Beginn eines langen Pfades voller Prüfungen. Sehr bald musst du wählen, ob du diese Reise fortsetzen willst.'",
+    "message": "Ein Dorfältester tritt an dich heran. Er spricht leise. „Du stehst am Beginn eines langen Pfades voller Prüfungen. Sehr bald musst du wählen, ob du diese Reise fortsetzen willst.“",
     "title": "Die Warnung des Ältesten"
   },
   "villagersStareAtSky": {
@@ -2497,9 +2612,9 @@
       }
     },
     "log": {
-      "outcome0": "Du packst den nächsten Dorfbewohner und schüttelst ihn. Er blinzelt einmal und wird wieder normal, flüstert jedoch 'Es kommt', bevor er seine Arbeit fortsetzt. Die anderen folgen langsam.",
+      "outcome0": "Du packst den nächsten Dorfbewohner und schüttelst ihn. Er blinzelt einmal und wird wieder normal, flüstert jedoch „Es kommt“, bevor er seine Arbeit fortsetzt. Die anderen folgen langsam.",
       "outcome1": "Als du einen Dorfbewohner berührst, zerfällt er zu Staub. Die anderen erwachen aus ihrer Trance und schreien, während sie zum Himmel zeigen. Für einen Augenblick siehst auch du es: etwas Gewaltiges und Hungriges, das von oben herab beobachtet.",
-      "outcome2": "Du reckst den Hals zum Himmel und siehst es plötzlich: etwas Unermessliches und Unmögliches, das zwischen den Wolken existiert. Dein Geist weist zurück, was er bezeugt, doch das Bild brennt sich für immer in dein Gedächtnis."
+      "outcome2": "Du reckst den Hals zum Himmel und siehst es plötzlich: etwas Unermessliches und Unmögliches, das zwischen den Wolken existiert. Dein Verstand weigert sich zu begreifen, was du siehst, doch das Bild brennt sich für immer in dein Gedächtnis."
     },
     "message": "Alle Dorfbewohner haben ihre Arbeit eingestellt und stehen reglos da, den leeren Himmel anstarrend. Stundenlang bleiben sie so, ohne zu blinzeln, während Tränen aus schwarzer Flüssigkeit über ihre Gesichter laufen. Wenn du ihrem Blick folgst, siehst du nur gewöhnliche Wolken, doch etwas fühlt sich furchtbar falsch an.",
     "title": "Blick zum Himmel"
@@ -2538,16 +2653,16 @@
       "whisper1": "Ein leises Summen dringt unter der Kapuze hervor. „Die große Explosion zerstörte die meisten Artefakte der alten Zivilisation. Was übrig blieb, ist verstreut und selten“, murmelt er.",
       "whisper2": "Ein schwacher Atem entweicht dem Sammler. „Ich habe auf meinen Reisen viel über die alte Zivilisation gelernt. Vor der großen Explosion gab es keine Magie in dieser Welt. Sie wurde in jenem Moment geboren“, flüstert er, während er geht.",
       "whisperGeneric": "Der Sammler nickt einmal und entschwindet.",
-      "leatherboundLearnOutcome": "Du zahlst für das ledergebundene Buch. Der Sammler öffnet es und liest mit leiser Stimme. Es gehörte einem längst toten Sklavenhalter, der sich Kettenmeister nannte. Er brandmarkte seine Sklaven mit einem Kettenzeichen. Das Wissen lastet schwer auf deinem Geist."
+      "leatherboundLearnOutcome": "Du zahlst für das ledergebundene Buch. Der Sammler öffnet es und liest mit leiser Stimme. Es gehörte einem längst toten Sklavenhändler, der sich den Kettenmeister nannte. Er brandmarkte seine Sklaven mit einem Kettenzeichen. Das Wissen lastet schwer auf deinem Geist."
     },
     "title": "Der wandernde Sammler",
     "message": {
-      "visit0": "Eine Gestalt in zerrissenen Roben nähert sich. Sie scheint fasziniert von dem, was du gesammelt hast. \"Ich spüre Wert unter deinen Besitztümern\", murmelt sie. \"Erlaube mir, eines mitzunehmen.\"",
-      "visit0_both": "Eine Gestalt in zerrissenen Roben nähert sich. \"Ich spüre Wert unter deinen Besitztümern\", murmelt sie. \"Verkauf mir eines, oder kaufe zurück, was andere zurückließen.\"",
-      "visit0_buy": "Eine Gestalt in zerrissenen Roben nähert sich, eine Tasche verworfener Relikte an der Seite. \"Ich sammle, was andere ablehnen\", murmelt sie. \"Jedes davon kann dir gehören.\"",
-      "visit1": "Die verhüllte Gestalt kehrt zurück, ihre Schritte lautlos auf dem Boden. \"Mehr Artefakte, mehr Geheimnisse\", flüstert sie. \"Lass mich wieder eines nehmen.\"",
-      "visit1_both": "Die verhüllte Gestalt kehrt zurück, still wie zuvor. \"Verkauf mir ein weiteres\", flüstert sie, \"oder nimm eines, das ich gefunden habe. Aber nur eines.\"",
-      "visit1_buy": "Die verhüllte Gestalt kehrt mit vergessenen Relikten zurück. \"Was andere einst ablehnten, habe ich behalten\", flüstert sie. \"Jedes kann dir gehören.\""
+      "visit0": "Eine Gestalt in zerrissenen Roben nähert sich. Sie scheint fasziniert von dem, was du gesammelt hast. „Ich spüre Wert unter deinen Besitztümern“, murmelt sie. „Erlaube mir, eines mitzunehmen.“",
+      "visit0_both": "Eine Gestalt in zerrissenen Roben nähert sich. „Ich spüre Wert unter deinen Besitztümern“, murmelt sie. „Verkauf mir eines, oder kauf zurück, was andere zurückließen.“",
+      "visit0_buy": "Eine Gestalt in zerrissenen Roben nähert sich, eine Tasche verworfener Relikte an der Seite. „Ich sammle, was andere ablehnen“, murmelt sie. „Jedes davon kann dir gehören.“",
+      "visit1": "Die verhüllte Gestalt kehrt zurück, ihre Schritte lautlos auf dem Boden. „Mehr Artefakte, mehr Geheimnisse“, flüstert sie. „Lass mich wieder eines nehmen.“",
+      "visit1_both": "Die verhüllte Gestalt kehrt zurück, still wie zuvor. „Verkauf mir ein weiteres“, flüstert sie, „oder nimm eines, das ich gefunden habe. Aber nur eines.“",
+      "visit1_buy": "Die verhüllte Gestalt kehrt mit vergessenen Relikten zurück. „Was andere einst ablehnten, habe ich behalten“, flüstert sie. „Jedes kann dir gehören.“"
     }
   },
   "wanderingFirecrafter": {
@@ -2565,12 +2680,12 @@
       }
     },
     "log": {
-      "outcome0": "Der Feuerschaffer seufzt schließlich: 'Vielleicht bist du für solche Macht noch nicht bereit', und verschwindet in der Nacht.",
-      "outcome2": "Der Feuerschaffer nimmt dein Gold und beginnt, dich die dunkle Kunst der Leerenbombenherstellung zu lehren. 'Nutze diese Macht weise', warnt er, bevor er in den Schatten verschwindet.",
-      "outcome4": "Der Feuerschaffer nimmt dein Silber und beginnt, dich die dunkle Kunst der Leerenbombenherstellung zu lehren. 'Nutze diese Macht weise', warnt er, bevor er in den Schatten verschwindet.",
-      "outcome5": "Du lehnst das Angebot des Feuerschaffers ab. Er nickt wissend. 'Vielleicht bist du für solche Macht noch nicht bereit', sagt er und verschwindet in der Nacht."
+      "outcome0": "Der Feuerschaffer seufzt schließlich: „Vielleicht bist du für solche Macht noch nicht bereit“, und verschwindet in der Nacht.",
+      "outcome2": "Der Feuerschaffer nimmt dein Gold und beginnt, dich die dunkle Kunst der Leerenbombenherstellung zu lehren. „Nutze diese Macht weise“, warnt er, bevor er in den Schatten verschwindet.",
+      "outcome4": "Der Feuerschaffer nimmt dein Silber und beginnt, dich die dunkle Kunst der Leerenbombenherstellung zu lehren. „Nutze diese Macht weise“, warnt er, bevor er in den Schatten verschwindet.",
+      "outcome5": "Du lehnst das Angebot des Feuerschaffers ab. Er nickt wissend. „Vielleicht bist du für solche Macht noch nicht bereit“, sagt er und verschwindet in der Nacht."
     },
-    "message": "Eine verhüllte Gestalt in fleckigen Roben kommt in dein Dorf. 'Ich bin ein Feuerschaffer', sagt er mit hallender Stimme. 'Ich kann dich lehren, eine Bombe von extremer Macht herzustellen, die die Wirklichkeit selbst zerreißt. Doch Wissen hat seinen Preis.'",
+    "message": "Eine verhüllte Gestalt in fleckigen Roben kommt in dein Dorf. „Ich bin ein Feuerschaffer“, sagt er mit hallender Stimme. „Ich kann dich lehren, eine Bombe von extremer Macht herzustellen, die die Wirklichkeit selbst zerreißt. Doch Wissen hat seinen Preis.“",
     "title": "Der wandernde Feuerschaffer"
   },
   "wanderingTribe": {
@@ -2586,14 +2701,14 @@
       "outcome0": "Du heißt die Nomaden willkommen und bietest Unterstützung an. Im Gegenzug lehren sie dein Volk, Fellzelte zu errichten.",
       "outcome1": "Du lehnst es ab zu helfen. Der Stammesführer nickt respektvoll und führt sein Volk zurück in die Wildnis."
     },
-    "message": "Ein kleiner Nomadenstamm nähert sich dem Dorf. Ihr Anführer spricht: 'Wir sind weit gereist und suchen einen Ort, den wir Heimat nennen können. Hilf uns, sesshaft zu werden, und wir lehren dein Volk, Fellzelte aufzurichten.'",
+    "message": "Ein kleiner Nomadenstamm nähert sich dem Dorf. Ihr Anführer spricht: „Wir sind weit gereist und suchen einen Ort, den wir Heimat nennen können. Hilf uns, sesshaft zu werden, und wir lehren dein Volk, Fellzelte aufzurichten.“",
     "title": "Der wandernde Stamm"
   },
   "whispererInTheDark": {
     "title": "Flüsterer im Dunkeln",
     "message": {
-      "original": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Stimmlos schreit es, flügellos flattert es, zahnlos beißt es, mundlos murmelt es.'",
-      "variant": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Der Wunsch einer Dame, gewachsen in der Finsternis, leuchtend mit blassem Licht.'"
+      "original": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: „Stimmlos schreit es, flügellos flattert es, zahnlos beißt es, mundlos murmelt es.“",
+      "variant": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: „Der Wunsch einer Dame, gewachsen in der Finsternis, leuchtend mit blassem Licht.“"
     },
     "choices": {
       "answerFire": {
@@ -2620,8 +2735,8 @@
   "whispererInTheDark_variant": {
     "title": "Flüsterer im Dunkeln",
     "message": {
-      "original": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Stimmlos schreit es, flügellos flattert es, zahnlos beißt es, mundlos murmelt es.'",
-      "variant": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: 'Der Wunsch einer Dame, gewachsen in der Finsternis, leuchtend mit blassem Licht.'"
+      "original": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: „Stimmlos schreit es, flügellos flattert es, zahnlos beißt es, mundlos murmelt es.“",
+      "variant": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: „Der Wunsch einer Dame, gewachsen in der Finsternis, leuchtend mit blassem Licht.“"
     },
     "choices": {
       "answerSilver": {
@@ -2654,7 +2769,7 @@
     "log": {
       "outcome0": "Als die Gestalt in der Dunkelheit verblasst, durchströmt dich eine schwache Euphorie, still und flüchtig, wie die halb vergessene Erinnerung an eine bessere Zeit."
     },
-    "message": "Die verhüllte Gestalt erscheint erneut. Seine Flüstern treiben ein letztes Mal durch die kalte Nacht, bevor er verschwindet: 'Deine Weisheit wurde gewogen und für würdig befunden. Mögen Schatten deinen Weg bewachen und Glück deinem Namen folgen.'",
+    "message": "Die verhüllte Gestalt erscheint erneut. Ein letztes Mal treibt ihr Flüstern durch die kalte Nacht, bevor sie verschwindet: „Deine Weisheit wurde gewogen und für würdig befunden. Mögen Schatten deinen Weg bewachen und Glück deinem Namen folgen.“",
     "title": "Die Gabe des Flüsterers"
   },
   "whisperingVoices": {
@@ -2670,7 +2785,7 @@
     },
     "log": {
       "outcome0": "Du spitzt die Ohren. Die Stimmen werden klarer, bis sie am Abend plötzlich verstummen.",
-      "outcome1": "Du versuchst, sie auszublenden, doch das Flüstern bleibt. Erst nach Einbruch der Nacht verblassen sie, bleiben aber in deiner Erinnerung."
+      "outcome1": "Du versuchst, sie auszublenden, doch das Flüstern bleibt. Erst nach Einbruch der Nacht verklingt es, bleibt aber in deiner Erinnerung."
     },
     "message": "Du hörst leises Flüstern im Wind, Worte in keiner Sprache, die du kennst, und doch verstehst du sie. Sie sprechen von alten Dingen, die unter der Erde begraben liegen.",
     "title": "Flüsternde Stimmen"
@@ -2698,9 +2813,9 @@
       }
     },
     "log": {
-      "outcome0": "Du nimmst den Blutschwur an. Die Jägerin schneidet sich in die Handfläche und presst sie gegen deine, den Schwur mit Blut besiegelnd. 'In meinem Stamm nennt man mich Aschengeist-Jägerin', sagt sie. 'Ich werde deine Jäger die Wege der Wildnis lehren.' Die Aschengeist-Jägerin hat sich deinen Gefährten angeschlossen."
+      "outcome0": "Du nimmst den Blutschwur an. Die Jägerin schneidet dir in die Handfläche und presst sie gegen ihre, um den Schwur mit Blut zu besiegeln. „In meinem Stamm nennt man mich Aschengeist-Jägerin“, sagt sie. „Ich werde deine Jäger die Wege der Wildnis lehren.“ Die Aschengeist-Jägerin hat sich deinen Gefährten angeschlossen."
     },
-    "message": "Die wilde Jägerin kehrt aus dem Wald zurück. 'Du hast meinen Stamm vor der Auslöschung bewahrt', sagt sie und zieht ein Knochenmesser über ihre Handfläche. Blut tropft auf die Erde. 'Nach den alten Bräuchen meines Volkes biete ich dir einen Blutschwur an. Ich werde für immer in deiner Schuld stehen.'",
+    "message": "Die wilde Jägerin kehrt aus dem Wald zurück. „Du hast meinen Stamm vor der Auslöschung bewahrt“, sagt sie und zieht ein Knochenmesser über ihre Handfläche. Blut tropft auf die Erde. „Nach den alten Bräuchen meines Volkes biete ich dir einen Blutschwur an. Ich werde für immer in deiner Schuld stehen.“",
     "title": "Der Blutschwur"
   },
   "witchsCurse": {
@@ -2728,7 +2843,7 @@
       "outcome6": "Du sprichst alte Worte der Macht, gelernt aus alten Texten. Die Hexe schreckt voller Angst zurück und flieht, ihr Fluch gebrochen, bevor er greifen kann.",
       "outcome7": "Deine Drohungen erzürnen die Hexe nur. Sie lacht und verflucht dich mit dunkler Magie. Als sie geht, beginnen die Dorfbewohner, sich schwach zu fühlen, als hätte eine unsichtbare Kraft ihnen die Stärke ausgesaugt."
     },
-    "message": "Eine gebeugte alte Frau in zerlumpten Roben kommt an die Tore. Mit Bosheit in der Stimme fordert sie: 'Zahl mir 50 Gold, oder ich werde dich mit Unglück verfluchen.'",
+    "message": "Eine gebeugte alte Frau in zerlumpten Roben kommt an die Tore. Mit Bosheit in der Stimme fordert sie: „Zahl mir 50 Gold, oder ich werde dich mit Unglück verfluchen.“",
     "title": "Der Fluch der Hexe"
   },
   "wizardArrives": {
@@ -2737,7 +2852,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Ein kleiner alter Mann mit langem grauem Bart und verwittertem grauem Mantel nähert sich der Siedlung. Seine Augen glänzen vor alter Weisheit und Macht. 'Ich bin ein Zauberer', erklärt er mit einer Stimme, die vor arkaner Autorität hallt. 'Baue mir einen Turm, und ich werde dir mit Kräften jenseits sterblicher Vorstellung helfen.'",
+    "message": "Ein kleiner alter Mann mit langem grauem Bart und verwittertem grauem Mantel nähert sich der Siedlung. Seine Augen glänzen vor alter Weisheit und Macht. „Ich bin ein Zauberer“, erklärt er mit einer Stimme, die vor arkaner Autorität hallt. „Baue mir einen Turm, und ich werde dir mit Kräften jenseits sterblicher Vorstellung helfen.“",
     "title": "Der Zauberer"
   },
   "wizardBloodstone": {
@@ -2746,7 +2861,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Der Zauberer kehrt von einer Reise in den Wald zurück. 'Ich habe mich mit einem alten Freund beraten, einem Einsiedlerzauberer, der tief in den Wäldern lebt', sagt er ernst. 'Er sprach von dem Blutstein, den wir brauchen. Er liegt im Versunkenen Tempel, einem alten Schrein, der nun halb in den Sümpfen des Waldes ertrunken ist.'",
+    "message": "Der Zauberer kehrt von einer Reise in den Wald zurück. „Ich habe mich mit einem alten Freund beraten, einem Einsiedlerzauberer, der tief in den Wäldern lebt“, sagt er ernst. „Er sprach von dem Blutstein, den wir brauchen. Er liegt im Versunkenen Tempel, einem alten Schrein, der nun halb in den Sümpfen des Waldes ertrunken ist.“",
     "title": "Der Versunkene Tempel"
   },
   "wizardBloodstoneStaff": {
@@ -2755,7 +2870,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Der Zauberer untersucht die Blutsteine, die du aus dem Versunkenen Tempel geborgen hast. 'Mit diesen Blutsteinen haben wir nun alles, was wir brauchen. Jetzt können wir den Blutsteinstab herstellen. Zusammen mit dem Frostglasschwert werden wir die Mittel haben, der Dunkelheit entgegenzutreten, die unten lauert.'",
+    "message": "Der Zauberer untersucht die Blutsteine, die du aus dem Versunkenen Tempel geborgen hast. „Mit diesen Blutsteinen haben wir nun alles, was wir brauchen. Jetzt können wir den Blutsteinstab herstellen. Zusammen mit dem Frostglasschwert werden wir die Mittel haben, der Dunkelheit entgegenzutreten, die unten lauert.“",
     "title": "Der Blutsteinstab"
   },
   "wizardDecryptsScrolls": {
@@ -2764,7 +2879,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Der Zauberer tritt aus seinem Turm. 'Ich habe die alten Schriftrollen entschlüsselt', sagt er. 'Die Kreaturen dort unten können nur mit Waffen großer Macht erschlagen werden: einem Schwert aus Frostglas und einem Stab, gekrönt mit Blutstein. Tief im Wald liegt das Grab eines alten Königs, dessen Schätze das Frostglas bergen könnten, das wir brauchen.'",
+    "message": "Der Zauberer tritt aus seinem Turm. „Ich habe die alten Schriftrollen entschlüsselt“, sagt er. „Die Kreaturen dort unten können nur mit Waffen großer Macht erschlagen werden: einem Schwert aus Frostglas und einem Stab, gekrönt mit Blutstein. Tief im Wald liegt das Grab eines alten Königs, dessen Schätze das Frostglas bergen könnten, das wir brauchen.“",
     "title": "Altes Wissen"
   },
   "wizardFrostglassSword": {
@@ -2773,7 +2888,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Der Zauberer untersucht das Frostglas, kaltes Licht tanzt über seine Oberfläche. 'Du hast es gefunden. Nun kann das Frostglasschwert geschmiedet werden.'",
+    "message": "Der Zauberer untersucht das Frostglas, kaltes Licht tanzt über seine Oberfläche. „Du hast es gefunden. Nun kann das Frostglasschwert geschmiedet werden.“",
     "title": "Das Frostglasschwert"
   },
   "wizardNecromancerCastle": {
@@ -2782,7 +2897,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Der Zauberer ruft dich in seinen Turm: 'Ich habe von einer Burg tief in der Wildnis erfahren, dem einstigen Reich eines lange toten Nekromanten. In ihren Mauern liegen alte Schriftrollen, die davon sprechen, wie wir besiegen können, was in den Tiefen der Höhle haust.'",
+    "message": "Der Zauberer ruft dich in seinen Turm: „Ich habe von einer Burg tief in der Wildnis erfahren, dem einstigen Reich eines lange toten Nekromanten. In ihren Mauern liegen alte Schriftrollen, die davon sprechen, wie wir besiegen können, was in den Tiefen der Höhle haust.“",
     "title": "Die Burg des Nekromanten"
   },
   "wizardOffer": {
@@ -2796,13 +2911,13 @@
       }
     },
     "log": {
-      "outcome0": "Deine Unentschlossenheit frustriert den Zauberer. Er schüttelt den Kopf. 'Dann werde ich in meinem Turm bleiben. Vielleicht kreuzen sich unsere Wege wieder, wenn die Not größer ist', sagt er, bevor er geht.",
-      "outcome2": "Der Zauberer nickt zufrieden. 'Ein fairer Preis für meine Dienste. Ich werde dein Volk mit arkanem Feuer verteidigen.' Er nimmt seine verwitterte Kapuze ab und zeigt alte Augen, die vor schwindender Macht glühen. Der alte Zauberer hat sich deinen Gefährten angeschlossen.",
-      "outcome3": "Du lehnst das Angebot des Zauberers ab. Er nickt verständnisvoll. 'Dann werde ich in meinem Turm bleiben. Vielleicht kreuzen sich unsere Wege wieder, wenn die Not größer ist', sagt er, bevor er geht."
+      "outcome0": "Deine Unentschlossenheit frustriert den Zauberer. Er schüttelt den Kopf. „Dann werde ich in meinem Turm bleiben. Vielleicht kreuzen sich unsere Wege wieder, wenn die Not größer ist“, sagt er, bevor er geht.",
+      "outcome2": "Der Zauberer nickt zufrieden. „Ein fairer Preis für meine Dienste. Ich werde dein Volk mit arkanem Feuer verteidigen.“ Er nimmt seine verwitterte Kapuze ab und zeigt uralte Augen, die vor schwindender Macht glühen. Der Alte Zauberer hat sich deinen Gefährten angeschlossen.",
+      "outcome3": "Du lehnst das Angebot des Zauberers ab. Er nickt verständnisvoll. „Dann werde ich in meinem Turm bleiben. Vielleicht kreuzen sich unsere Wege wieder, wenn die Not größer ist“, sagt er, bevor er geht."
     },
     "message": {
-      "firstVisit": "Der alte Magier tritt an dich heran: „Ich habe lange gelebt und vieles gesehen“, sagt er mit müder Stimme. „Die Bedrohung, der du gegenüberstehst, ist ernst. Für einen fairen Preis schließe ich mich dir im Kampf gegen die Feinde an, die aus den Tiefen kommen.“",
-      "repeat": "Der alte Magier tritt erneut an dich heran: „Mein Angebot, mich dir im Kampf gegen die Feinde aus den Tiefen anzuschließen, gilt noch. Für einen fairen Preis schließe ich mich dir an.“"
+      "firstVisit": "Der alte Zauberer tritt an dich heran: „Ich habe lange gelebt und vieles gesehen“, sagt er mit müder Stimme. „Die Bedrohung, der du gegenüberstehst, ist ernst. Für einen fairen Preis schließe ich mich dir im Kampf gegen die Feinde an, die aus den Tiefen kommen.“",
+      "repeat": "Der alte Zauberer tritt erneut an dich heran: „Mein Angebot, mich dir im Kampf gegen die Feinde aus den Tiefen anzuschließen, gilt noch. Für einen fairen Preis schließe ich mich dir an.“"
     },
     "title": "Das Angebot des Zauberers"
   },
@@ -2812,7 +2927,7 @@
         "label": "Weiter"
       }
     },
-    "message": "Der Zauberer steht am Eingang seines Turms. 'Die Waffen sind geschmiedet. Wir besitzen nun, was wir brauchen, um uns den Kreaturen aus den Tiefen der Höhle entgegenzustellen. Die Dunkelheit dort unten wird bald lernen, dass dieses Dorf nicht kampflos fällt. Wir sind bereit.'",
+    "message": "Der Zauberer steht am Eingang seines Turms. „Die Waffen sind geschmiedet. Wir besitzen nun, was wir brauchen, um uns den Kreaturen aus den Tiefen der Höhle entgegenzustellen. Die Dunkelheit dort unten wird bald lernen, dass dieses Dorf nicht kampflos fällt. Wir sind bereit.“",
     "title": "Die letzte Vorbereitung"
   },
   "trapSuggestion": {
@@ -2834,7 +2949,7 @@
       }
     },
     "log": {
-      "outcome0": "Die Dorfbewohner besiegen das Wolfsrudel! Du erschlägst den Alphawolf und beanspruchst sein Fell als Trophäe. Es strahlt urtümliche Macht aus. Neben dem erschlagenen Alphawolf liegt ein Wolfsjunges. Du nimmst es mit, um es zu zähmen.",
+      "outcome0": "Die Dorfbewohner besiegen das Wolfsrudel! Du erschlägst den Alphawolf und nimmst sein Fell als Trophäe. Es strahlt urtümliche Macht aus. Neben dem erschlagenen Alphawolf liegt ein Wolfsjunges. Du nimmst es mit, um es zu zähmen.",
       "outcome1": "Die Dorfbewohner kauern in ihren Hütten, während die Wölfe draußen umherstreifen. Bei Tagesanbruch sind die Wölfe abgezogen, ohne jemanden gefunden zu haben, und lassen nur Kratzspuren und Schrecken zurück.",
       "defend_noDeaths": "Die Dorfbewohner kämpfen verzweifelt gegen die Wölfe. Die Dorfbewohner überstehen den Angriff.",
       "defend_noDeaths_hut": "Die Dorfbewohner kämpfen verzweifelt gegen die Wölfe. Die Dorfbewohner überstehen den Angriff. In ihrer Raserei zerstören die Wölfe eine der Hütten und hinterlassen nur Splitterholz.",
@@ -2855,7 +2970,7 @@
       "hide_manyDeaths": "Die Dorfbewohner kauern in ihren Hütten, während die Wölfe draußen umherstreifen. Mehrere Dorfbewohner werden aus ihren Hütten gezerrt, ihre Schreie hallen durch die Nacht.",
       "hide_manyDeaths_food": "Die Dorfbewohner kauern in ihren Hütten, während die Wölfe draußen umherstreifen. Mehrere Dorfbewohner werden aus ihren Hütten gezerrt, ihre Schreie hallen durch die Nacht. Die Wölfe plündern deine Vorräte, bevor sie im Morgengrauen verschwinden."
     },
-    "message": "Kurz vor Mitternacht treten Wölfe aus der Dunkelheit, ihre Augen glühen vor unnatürlichem Hunger. Ihre von Bosheit erfüllten Heuler hallen, während sie das Dorf umkreisen.",
+    "message": "Kurz vor Mitternacht treten Wölfe aus der Dunkelheit, ihre Augen glühen vor unnatürlichem Hunger. Ihr Heulen ist voller Bosheit, während sie das Dorf umkreisen.",
     "title": "Wolfsangriff"
   },
   "woodcutter": {
@@ -2898,11 +3013,11 @@
     },
     "message": {
       "level1": "Ein muskulöser Mann mit einer großen Axt nähert sich dem Dorf. Er spannt die Arme an. „Keiner fällt Bäume wie ich“, prahlt er. „Gib mir {{foodCost}} Nahrung, und ich bringe {{woodReward}} Holz.“",
-      "level2": "Der Holzfäller kehrt zurück, seine Axt glänzt in der Sonne. „Euer Dorf hat mehr Mäuler“, bemerkt er. „Ich kann euch {{woodReward}} Holz bringen. Ihr gebt mir {{foodCost}} Nahrung. Was sagt ihr?“",
-      "level3": "Der Holzfäller kommt erneut. „Euer Dorf steht noch“, sagt er mit einem Grinsen. „Ich bringe euch {{woodReward}} Holz, wenn ihr {{foodCost}} Nahrung dafür bezahlt.“",
-      "level4": "Der Holzfäller erscheint wieder. „Wollt ihr meine Dienste noch einmal nutzen? {{woodReward}} Holz für {{foodCost}} Nahrung“, fragt er.",
+      "level2": "Der Holzfäller kehrt zurück, seine Axt glänzt in der Sonne. „Dein Dorf hat mehr Mäuler zu stopfen“, bemerkt er. „Ich kann dir {{woodReward}} Holz bringen. Du gibst mir {{foodCost}} Nahrung. Was sagst du?“",
+      "level3": "Der Holzfäller kommt erneut. „Dein Dorf steht noch“, sagt er mit einem Grinsen. „Ich bringe dir {{woodReward}} Holz, wenn du {{foodCost}} Nahrung dafür bezahlst.“",
+      "level4": "Der Holzfäller erscheint wieder. „Willst du meine Dienste noch einmal nutzen? {{woodReward}} Holz für {{foodCost}} Nahrung“, fragt er.",
       "level5": "Der Holzfäller erscheint mit selbstbewusstem Lächeln. „Wie wäre es mit einem weiteren Handel? {{woodReward}} Holz für {{foodCost}} Nahrung.“",
-      "level6": "Der Holzfäller kehrt ins Dorf zurück. „Wollt ihr meine Dienste noch einmal nutzen? Ich biete {{woodReward}} Holz für {{foodCost}} Nahrung“, sagt er."
+      "level6": "Der Holzfäller kehrt ins Dorf zurück. „Willst du meine Dienste noch einmal nutzen? Ich biete {{woodReward}} Holz für {{foodCost}} Nahrung“, sagt er."
     },
     "title": {
       "level1": "Der Holzfäller",
@@ -2919,11 +3034,11 @@
         "label": "Mit Brettern abdecken"
       },
       "investigate": {
-        "label": "Tiefer in Brunnen schauen"
+        "label": "Tiefer in den Brunnen schauen"
       }
     },
     "log": {
-      "outcome0": "Bei der Untersuchung siehst du nichts Ungewöhnliches im Brunnen. Es muss ein Trick des Lichts oder deiner Einbildung gewesen sein. Das Unbehagen bleibt, doch du fühlst dich etwas besser.",
+      "outcome0": "Bei genauerem Hinsehen entdeckst du nichts Ungewöhnliches im Brunnen. Es muss eine Täuschung des Lichts oder deine Einbildung gewesen sein. Das Unbehagen bleibt, doch du fühlst dich etwas besser.",
       "outcome1": "Du beugst dich über den Brunnenrand. Dein Spiegelbild grinst mit zu vielen Zähnen zurück und flüstert Geheimnisse darüber, was einst dort stand, wo nun das Dorf liegt. Du weichst zurück, doch das Wissen bleibt und brennt in deinem Geist.",
       "outcome2": "Du vernagelst den Brunnen mit Holzbrettern und verbietest jeden Zugang zu dem unheiligen Wasser. Der Bau eines neuen Brunnens dauert zu lange, und {{thirstDeaths}} der Dorfbewohner sterben vor Durst."
     },
@@ -2940,11 +3055,11 @@
       }
     },
     "log": {
-      "outcome0": "Du sprichst mit den Fremden. Sie gestehen, Wanderer zu sein, die zu sehr Angst hatten, um um Unterkunft zu bitten, und deshalb einfach in eine leere Hütte gezogen sind. Du erlaubst ihnen, im Dorf zu bleiben und zu arbeiten.",
+      "outcome0": "Du sprichst mit den Fremden. Sie gestehen, Wanderer zu sein, die sich nicht getraut hatten, um Unterkunft zu bitten, und deshalb einfach in eine leere Hütte gezogen sind. Du erlaubst ihnen, im Dorf zu bleiben und zu arbeiten.",
       "outcome1": "Als du sie zur Rede stellst, lachen sie und gestehen, Diebe zu sein, die das Dorf ausrauben wollten. Sie überwältigen dich und machen sich mit 250 Silber in den Wald davon.",
       "outcome2": "Du hältst Abstand und beobachtest sie aus der Ferne. Nach einigen Tagen sind sie einfach verschwunden, als wären sie nie dagewesen. Du hast keine Ahnung, wer sie waren."
     },
-    "message": "Du zählst die Dorfbewohner und stellst fest, dass drei mehr da sind als sein sollten. Fremde sind unter deinem Volk aufgetaucht, arbeiten und essen, als gehörten sie zu deiner Gemeinschaft.",
+    "message": "Du zählst die Dorfbewohner und stellst fest, dass es drei mehr sind, als es sein sollten. Fremde sind unter deinem Volk aufgetaucht, arbeiten und essen, als gehörten sie zu deiner Gemeinschaft.",
     "title": "Falsche Dorfbewohner"
   },
   "youngWomanProtest": {
@@ -2962,96 +3077,10 @@
     "log": {
       "outcome0": "Du verbannst die junge Frau aus dem Dorf. Sie überzeugt {{actualLeavers}} mitfühlende Dorfbewohner, mit ihr zu gehen und deine Siedlung für immer zu verlassen.",
       "outcome1": "Kurz nachdem das Opfer am Schwarzen Monolithen vollzogen wurde, packen {{actualLeavers}} entsetzte Dorfbewohner ihre Habseligkeiten und gehen angewidert fort.",
-      "outcome2": "Du stimmst zu, die Menschenopfer zu beenden. Die Frau schlägt vor, den Schwarzen Monolithen zu zerstören und an seiner Stelle einen reinweißen Obelisken zu errichten, der die Dunkelheit aus den Gedanken reinigt."
+      "outcome2": "Du stimmst zu, die Menschenopfer zu beenden. Die Frau schlägt vor, den Schwarzen Monolithen zu zerstören und an seiner Stelle einen reinweißen Obelisken zu errichten, der die Dunkelheit aus den Köpfen der Menschen tilgt."
     },
-    "message": "Eine junge Frau tritt an dich heran, Tränen strömen über ihr Gesicht. 'Meine beiden Eltern wurden diesem verfluchten Monolithen geopfert', ruft sie. 'Dieses barbarische Verhalten muss aufhören!'",
+    "message": "Eine junge Frau tritt an dich heran, Tränen strömen über ihr Gesicht. „Meine beiden Eltern wurden diesem verfluchten Monolithen geopfert“, ruft sie. „Dieses barbarische Verhalten muss aufhören!“",
     "title": "Die Bitte der jungen Frau"
-  },
-  "abandonedCart": {
-    "choices": {
-      "leaveCart": {
-        "label": "Karren lassen"
-      },
-      "takeFood": {
-        "label": "Nahrung nehmen"
-      }
-    },
-    "log": {
-      "outcome0": "Die Dorfbewohner schleppen die Säcke heim. Die Nahrung ist noch gut.",
-      "outcome1": "Die Nahrung war vergiftet. Zwei Dorfbewohner stürzen nach den ersten Bissen zusammen.",
-      "outcome2": "Du lässt den Karren stehen. Nichts geschieht."
-    },
-    "message": "Am Waldrand finden Dorfbewohner einen verlassenen Karren mit Nahrung. Was sollen sie tun?",
-    "title": "Der verlassene Karren"
-  },
-  "forestFear": {
-    "choices": {
-      "continue": {
-        "label": "Weiter"
-      }
-    },
-    "message": "Etwas im Wald hat einen Dorfbewohner getötet. Es war groß und schnell. Niemand konnte es klar erkennen. Jäger und Sammler haben zu viel Angst, in den Wald zu gehen.",
-    "title": "Etwas im Wald"
-  },
-  "staringDeer": {
-    "choices": {
-      "continue": {
-        "label": "Weiter"
-      }
-    },
-    "message": "Die Hirsche verhalten sich seltsam. Sie fliehen nicht. Sie scheinen die Jäger direkt anzustarren. Die Jagd ist jetzt leicht, aber die Jäger kehren verstört zurück.",
-    "title": "Starrende Hirsche"
-  },
-  "brimstoneFlux1": {
-    "title": "Der Schwefelfluss",
-    "message": "Ein kleiner, bärtiger Mann mit gewaltigen Armen kommt ins Dorf. Er sagt, er kenne die Gießerei und könne die Stahlproduktion eine Zeit lang steigern. Er braucht Schwefel und ein wenig Gold.",
-    "choices": {
-      "accept": {
-        "label": "Hilfe annehmen",
-        "cost": "{{sulfurCost}} Schwefel, {{goldCost}} Gold"
-      },
-      "sendAway": {
-        "label": "Wegschicken"
-      }
-    },
-    "log": {
-      "accept": "Er beginnt seine Arbeit. Kurz darauf brennt der Ofen heißer als je zuvor.",
-      "sendAway": "Der Schmied zuckt mit den Schultern und geht. Er sagt, er komme vielleicht wieder."
-    }
-  },
-  "brimstoneFlux2": {
-    "title": "Noch ein Schwefelfluss",
-    "message": "Der kleine Schmied kehrt zurück, der Bart an den Rändern versengt. Er sagt, er könne die Öfen wieder wecken, aber diesmal werde es mehr kosten.",
-    "choices": {
-      "accept": {
-        "label": "Seine Hilfe annehmen",
-        "cost": "{{sulfurCost}} Schwefel, {{goldCost}} Gold"
-      },
-      "sendAway": {
-        "label": "Wegschicken"
-      }
-    },
-    "log": {
-      "accept": "Er speist den Ofen erneut. Die Stahlproduktion steigt sofort.",
-      "sendAway": "Er geht ohne Widerrede. Er sagt, er komme vielleicht wieder."
-    }
-  },
-  "brimstoneFlux3": {
-    "title": "Die Schwefelinfusion",
-    "message": "Der Schmied kehrt zurück. Er bietet an, die Gießerei dauerhaft zu verbessern. Aber es wird dich etwas kosten.",
-    "choices": {
-      "accept": {
-        "label": "Seine Methode lernen",
-        "cost": "{{sulfurCost}} Schwefel, {{goldCost}} Gold"
-      },
-      "sendAway": {
-        "label": "Wegschicken"
-      }
-    },
-    "log": {
-      "accept": "Er verbessert den Ofen und geht vor der Morgendämmerung. Stahlschmiede erzeugen von nun an mehr.",
-      "sendAway": "Er sieht dich enttäuscht an, dann geht er. Er sagt, er komme vielleicht wieder."
-    }
   },
   "wanderersLantern": {
     "choices": {
@@ -3059,7 +3088,7 @@
         "label": "Mitnehmen"
       }
     },
-    "message": "Nahe dem Höhleneingang findest du eine rostige Laterne, geformt, um an der Kleidung zu hängen. Sie muss einem Wanderer gehört haben.",
+    "message": "Nahe dem Höhleneingang findest du eine rostige Laterne, gemacht, um sie an die Kleidung zu hängen. Sie muss einem Wanderer gehört haben.",
     "title": "Eine rostige Laterne"
   }
 }

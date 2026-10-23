@@ -1,8 +1,8 @@
 {
   "additional_preset_slots": {
-    "activationMessage": "Sono stati aggiunti due slot preimpostazione lavori dei villici aggiuntivi.",
-    "description": "Altri due slot preimpostazione lavori dei villici",
-    "name": "2 slot preimpostazione aggiuntivi"
+    "activationMessage": "Sono stati aggiunti due slot preset di lavori per gli abitanti.",
+    "description": "Altri due slot preset di lavori per gli abitanti",
+    "name": "2 slot preset aggiuntivi"
   },
   "additional_construction_queue_slot": {
     "activationMessage": "Sono stati aggiunti due slot coda di costruzione aggiuntivi.",
@@ -11,93 +11,93 @@
   },
   "advanced_bundle": {
     "activationMessage": "I componenti del pacchetto sono stati aggiunti ai tuoi acquisti!",
-    "name": "Pacchetto del Re Pallido"
+    "name": "Pacchetto del re pallido"
   },
   "artifact_bundle": {
     "activationMessage": "I componenti del pacchetto sono stati aggiunti ai tuoi acquisti!",
-    "name": "Pacchetto Artefatti Oscuri"
+    "name": "Pacchetto artefatti oscuri"
   },
   "ashen_throne_bundle": {
     "activationMessage": "I componenti del pacchetto sono stati aggiunti ai tuoi acquisti!",
-    "name": "Pacchetto Trono di Cenere"
+    "name": "Pacchetto trono di cenere"
   },
   "basic_survival_bundle": {
     "activationMessage": "I componenti del pacchetto sono stati aggiunti ai tuoi acquisti!",
-    "name": "Pacchetto del Viandante Sbiadito"
+    "name": "Pacchetto del viandante sbiadito"
   },
   "crow_harness": {
-    "activationMessage": "L'Imbragatura del Corvo è stata aggiunta ai tuoi strumenti! Ora devi trovare un corvo da legare all'imbragatura.",
-    "description": "Imbragatura appositamente creata per i corvi messaggeri. Sblocca la trama del Corvo. Aggiunge un Membro della Compagnia.",
-    "name": "Imbragatura del Corvo"
+    "activationMessage": "L'Imbragatura del corvo è stata aggiunta ai tuoi strumenti! Ora devi trovare un corvo da legare all'imbragatura.",
+    "description": "Imbragatura appositamente creata per i corvi messaggeri. Sblocca la trama del corvo. Aggiunge un membro della compagnia.",
+    "name": "Imbragatura del corvo"
   },
   "cruel_mode": {
-    "activationMessage": "Modalità Crudele attivata! Inizia una nuova partita per vivere la sfida definitiva.",
+    "activationMessage": "Modalità crudele attivata! Inizia una nuova partita per vivere la sfida definitiva.",
     "description": "Gioca di nuovo in un mondo più crudele, con storia ampliata, più oggetti, nemici più letali e molto altro.",
-    "name": "Modalità Crudele"
+    "name": "Modalità crudele"
   },
   "full_game": {
-    "activationMessage": "Gioco Completo sbloccato e attivato! Il viaggio continua senza restrizioni.",
+    "activationMessage": "Gioco completo sbloccato e attivato! Il viaggio continua senza restrizioni.",
     "description": "Sblocca il gioco completo e continua il tuo viaggio.",
-    "name": "Gioco Completo"
+    "name": "Gioco completo"
   },
   "gold_1000": {
-    "activationMessage": "1'000 Oro sono stati aggiunti al tuo inventario.",
-    "description": "Una discreta quantità di Oro",
-    "name": "1'000 Oro"
+    "activationMessage": "1.000 oro sono stati aggiunti al tuo inventario.",
+    "description": "Una discreta quantità di oro",
+    "name": "1.000 oro"
   },
   "gold_100_free": {
-    "activationMessage": "100 Oro sono stati aggiunti al tuo inventario in regalo!",
+    "activationMessage": "100 oro sono stati aggiunti al tuo inventario in regalo!",
     "description": "Una grazia quotidiana in un mondo freddo",
-    "name": "Regalo di 100 Oro"
+    "name": "Regalo di 100 oro"
   },
   "gold_15000": {
-    "activationMessage": "15'000 Oro sono stati aggiunti al tuo inventario.",
-    "description": "Quantità empie di Oro",
-    "name": "15'000 Oro"
+    "activationMessage": "15.000 oro sono stati aggiunti al tuo inventario.",
+    "description": "Quantità empie di oro",
+    "name": "15.000 oro"
   },
   "gold_20000": {
-    "activationMessage": "20'000 Oro sono stati aggiunti al tuo inventario.",
-    "description": "Quantità empie di Oro",
-    "name": "20'000 Oro"
+    "activationMessage": "20.000 oro sono stati aggiunti al tuo inventario.",
+    "description": "Quantità empie di oro",
+    "name": "20.000 oro"
   },
   "gold_30000": {
-    "activationMessage": "30'000 Oro sono stati aggiunti al tuo inventario.",
-    "description": "Quantità blasfeme di Oro",
-    "name": "30'000 Oro"
+    "activationMessage": "30.000 oro sono stati aggiunti al tuo inventario.",
+    "description": "Quantità blasfeme di oro",
+    "name": "30.000 oro"
   },
   "gold_250": {
-    "activationMessage": "1'000 Oro sono stati aggiunti al tuo inventario.",
-    "description": "Una discreta quantità di Oro",
-    "name": "1'000 Oro"
+    "activationMessage": "1.000 oro sono stati aggiunti al tuo inventario.",
+    "description": "Una discreta quantità di oro",
+    "name": "1.000 oro"
   },
   "gold_2500": {
-    "activationMessage": "2'500 Oro sono stati aggiunti al tuo inventario.",
+    "activationMessage": "2.500 oro sono stati aggiunti al tuo inventario.",
     "description": "Un tesoro considerevole",
-    "name": "2'500 Oro"
+    "name": "2.500 oro"
   },
   "gold_5000": {
-    "activationMessage": "5'000 Oro sono stati aggiunti al tuo inventario.",
-    "description": "Una fortuna in Oro",
-    "name": "5'000 Oro"
+    "activationMessage": "5.000 oro sono stati aggiunti al tuo inventario.",
+    "description": "Una fortuna in oro",
+    "name": "5.000 oro"
   },
   "great_feast_1": {
-    "activationMessage": "È iniziato un Grande Banchetto!",
-    "description": "Per 30 minuti:\n• Produzione del villaggio 5x\n• +25 % probabilità di nuovo abitante",
-    "name": "1 Grande Banchetto"
+    "activationMessage": "È iniziato un grande banchetto!",
+    "description": "Per 30 minuti:\n• Produzione del villaggio 5x\n• +25% probabilità di nuovo abitante",
+    "name": "1 grande banchetto"
   },
   "great_feast_3": {
-    "activationMessage": "È iniziato un Grande Banchetto!",
-    "description": "Per 30 minuti:\n• Produzione del villaggio 5x\n• +25 % probabilità di nuovo abitante",
-    "name": "3 Grandi Banchetti"
+    "activationMessage": "È iniziato un grande banchetto!",
+    "description": "Per 30 minuti:\n• Produzione del villaggio 5x\n• +25% probabilità di nuovo abitante",
+    "name": "3 grandi banchetti"
   },
   "skull_lantern": {
-    "activationMessage": "La Lanterna di Teschio è stata aggiunta ai tuoi strumenti! La sua luce inquietante ti guiderà attraverso le profondità.",
-    "description": "Forgiata da ossa maledette, illumina le profondità più oscure. Sblocca la trama della Lanterna di Teschio.",
-    "name": "Lanterna di Teschio"
+    "activationMessage": "La Lanterna di teschio è stata aggiunta ai tuoi strumenti! La sua luce inquietante ti guiderà attraverso le profondità.",
+    "description": "Forgiata da ossa maledette, illumina le profondità più oscure. Sblocca la trama della lanterna di teschio.",
+    "name": "Lanterna di teschio"
   },
   "tarnished_compass": {
-    "activationMessage": "La Bussola Annerita è stata aggiunta al tuo inventario! La sua antica magia potrebbe concedere fortuna alle tue imprese.",
-    "description": "Artefatto della civiltà scomparsa, il suo ago indica luoghi nascosti. Sblocca la trama della Bussola.",
-    "name": "Bussola Annerita"
+    "activationMessage": "La Bussola annerita è stata aggiunta al tuo inventario! La sua antica magia potrebbe portare fortuna alle tue imprese.",
+    "description": "Artefatto della civiltà scomparsa, il suo ago indica luoghi nascosti. Sblocca la trama della bussola.",
+    "name": "Bussola annerita"
   }
 }

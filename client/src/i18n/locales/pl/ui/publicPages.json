@@ -12,12 +12,12 @@
         "a": "Tak. Możesz grać za darmo w przeglądarce na <site>a-dark-cave.com</site>. Zakupy są w pełni opcjonalne."
       },
       "idle": {
-        "q": "Czy to gra bezczynna albo kliker?",
+        "q": "Czy to gra typu idle albo clicker?",
         "a": "Nie. To gra przyrostowa: częściowo toczy się sama, częściowo wymaga twoich decyzji. Zarządzasz osadą. To nie jest kliker na drugi ekran."
       },
       "sleepMode": {
         "q": "Czym jest tryb snu?",
-        "a": "Tryb snu sprawia, że wieśniacy produkują surowce, gdy nie grasz, podobnie jak tryb idle. Długość snu określa, jak długo możesz zostać w trybie snu, a intensywność snu, jaką część zwykłej produkcji dostajesz (bez bonusów)."
+        "a": "Tryb snu sprawia, że wieśniacy produkują surowce, gdy nie grasz, podobnie jak tryb idle. Długość snu określa, jak długo możesz zostać w trybie snu, a intensywność snu – jaką część zwykłej produkcji dostajesz (bez premii)."
       },
       "like": {
         "q": "Do jakich gier jest podobna?",
@@ -66,16 +66,16 @@
       "intro3": "W przeglądarce jest za darmo: <site>a-dark-cave.com</site>. Żeby wesprzeć grę, są w pełni opcjonalne zakupy. Jest też <demo>demo na Steam</demo>, jeśli wolisz grać tak. Pełna wersja na Steam jest planowana na 27 października 2026.",
       "howHeading": "Jak się gra",
       "how1": "Zaczynasz od niczego. Stopniowo odblokowujesz przedmioty, budynki, umiejętności, zajęcia, towarzyszy i wiele więcej. Rozwija się historia, bogata w tło świata, o przeszłości cywilizacji, która żyła wcześniej. Im głębiej schodzisz do jaskini, tym więcej się dowiadujesz. Ale niebezpieczeństwo też rośnie.",
-      "how2": "Rozgrywka jest aktywna. Podejmujesz decyzje, które wpływają na grę. Jest też tryb bezczynny, żeby gra mogła iść naprzód, gdy cię nie ma. Gra ma zakończenie, a może więcej niż jedno.",
+      "how2": "Rozgrywka jest aktywna. Podejmujesz decyzje, które wpływają na grę. Jest też tryb idle, dzięki któremu gra toczy się dalej, gdy cię nie ma. Gra ma zakończenie, a może więcej niż jedno.",
       "likedHeading": "Jeśli lubisz starsze gry przyrostowe",
       "liked1": "Ludzie zwykle trafiają tu od A Dark Room, Kittens Game, Universal Paperclips, Candy Box i podobnych gier. Część mechanik z tych gier znajdziesz też w A Dark Cave. A Dark Cave jest minimalistyczne w grafice, ale animacje robiłem ręcznie, dodałem dużo dźwięków i sprawiłem, że działa na komputerze i telefonie, żeby pasowało do tego, jak gramy dziś.",
       "whoHeading": "Dla kogo to jest",
       "who1": "Dla osób, które lubią gry zaczynające się prosto i celowo robiące się trudniejsze. Nie dlatego, że samouczek w pierwszej minucie zrzuca dwadzieścia systemów, tylko dlatego, że kolejne trzeba sobie wypracować.",
-      "who2": "Jeśli chcesz krzykliwej grafiki, to zła gra. Większość to tekst, z kilkoma (mam nadzieję) satysfakcjonującymi animacjami po drodze. Poświęciłem dużo czasu na ciekawą historię, głęboko związaną z naszą historią i przyszłością.",
+      "who2": "Jeśli szukasz efektownej grafiki, to nie ta gra. Większość to tekst, z kilkoma (mam nadzieję) satysfakcjonującymi animacjami po drodze. Poświęciłem dużo czasu na ciekawą historię, głęboko związaną z naszą historią i przyszłością.",
       "platformsHeading": "Platformy",
       "platforms1": "Graj w przeglądarce na komputerze albo telefonie. Nie ma aplikacji w App Store ani Google Play. Postęp zapisuje się na twoim urządzeniu. Możesz założyć konto, jeśli chcesz zapis w chmurze.",
       "platforms2": "<steam>Steam</steam> (Windows) to gra płatna z <demo>darmowym demo</demo>. Gra przeglądarkowa zostaje za darmo.",
-      "platforms3": "Gra jest po angielsku, niemiecku, francusku, hiszpańsku, włosku, portugalsku (Brazylia), chińsku uproszczonym, japońsku, polsku i rosyjsku.",
+      "platforms3": "Gra jest dostępna w językach: angielskim, niemieckim, francuskim, hiszpańskim, włoskim, portugalskim (Brazylia), chińskim uproszczonym, japońskim, polskim i rosyjskim.",
       "meHeading": "Kim jestem",
       "me1": "Jestem Julian Bauer. A Dark Cave zrobiłem sam. Jeśli coś nie działa albo po prostu chcesz napisać, pisz na <email>support@a-dark-cave.com</email>.",
       "play": "Graj",

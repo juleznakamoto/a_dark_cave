@@ -41,9 +41,9 @@
     "name": "Juego completo"
   },
   "gold_1000": {
-    "activationMessage": "Se han añadido 1'000 de oro a tu inventario.",
+    "activationMessage": "Se han añadido 1000 de oro a tu inventario.",
     "description": "Una cantidad decente de oro",
-    "name": "1'000 de oro"
+    "name": "1000 de oro"
   },
   "gold_100_free": {
     "activationMessage": "¡Se han añadido 100 de oro a tu inventario como regalo!",
@@ -51,44 +51,44 @@
     "name": "Regalo de 100 de oro"
   },
   "gold_15000": {
-    "activationMessage": "Se han añadido 15'000 de oro a tu inventario.",
+    "activationMessage": "Se han añadido 15 000 de oro a tu inventario.",
     "description": "Una cantidad impía de oro",
-    "name": "15'000 de oro"
+    "name": "15 000 de oro"
   },
   "gold_20000": {
-    "activationMessage": "Se han añadido 20'000 de oro a tu inventario.",
+    "activationMessage": "Se han añadido 20 000 de oro a tu inventario.",
     "description": "Una cantidad impía de oro",
-    "name": "20'000 de oro"
+    "name": "20 000 de oro"
   },
   "gold_30000": {
-    "activationMessage": "Se han añadido 30'000 de oro a tu inventario.",
+    "activationMessage": "Se han añadido 30 000 de oro a tu inventario.",
     "description": "Una cantidad blasfema de oro",
-    "name": "30'000 de oro"
+    "name": "30 000 de oro"
   },
   "gold_250": {
-    "activationMessage": "Se han añadido 1'000 de oro a tu inventario.",
+    "activationMessage": "Se han añadido 1000 de oro a tu inventario.",
     "description": "Una cantidad decente de oro",
-    "name": "1'000 de oro"
+    "name": "1000 de oro"
   },
   "gold_2500": {
-    "activationMessage": "Se han añadido 2'500 de oro a tu inventario.",
+    "activationMessage": "Se han añadido 2500 de oro a tu inventario.",
     "description": "Un tesoro considerable",
-    "name": "2'500 de oro"
+    "name": "2500 de oro"
   },
   "gold_5000": {
-    "activationMessage": "Se han añadido 5'000 de oro a tu inventario.",
+    "activationMessage": "Se han añadido 5000 de oro a tu inventario.",
     "description": "Una fortuna en oro",
-    "name": "5'000 de oro"
+    "name": "5000 de oro"
   },
   "great_feast_1": {
-    "activationMessage": "¡Ha comenzado un gran festín!",
+    "activationMessage": "¡Ha comenzado un gran banquete!",
     "description": "Durante 30 minutos:\n• Producción de la aldea ×5\n• +25 % de probabilidad de nuevo aldeano",
-    "name": "1 gran festín"
+    "name": "1 gran banquete"
   },
   "great_feast_3": {
-    "activationMessage": "¡Ha comenzado un gran festín!",
+    "activationMessage": "¡Ha comenzado un gran banquete!",
     "description": "Durante 30 minutos:\n• Producción de la aldea ×5\n• +25 % de probabilidad de nuevo aldeano",
-    "name": "3 grandes festines"
+    "name": "3 grandes banquetes"
   },
   "skull_lantern": {
     "activationMessage": "¡El farol de cráneo se ha añadido a tus herramientas! Su luz inquietante te guiará por las profundidades.",

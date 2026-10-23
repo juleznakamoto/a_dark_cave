@@ -9,11 +9,11 @@
     "deactivate": "Désactiver"
   },
   "status": {
-    "loading": "Chargement...",
-    "processing": "Traitement...",
+    "loading": "Chargement…",
+    "processing": "Traitement…",
     "free": "Gratuit",
     "error": "Erreur",
-    "success": "Succès !",
+    "success": "Réussi !",
     "active": "Actif",
     "activated": "Activé"
   },

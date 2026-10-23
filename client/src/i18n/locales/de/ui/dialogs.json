@@ -11,7 +11,7 @@
   },
   "reward": {
     "actionReward": "Belohnung",
-    "claimRewards": "Belohnungen nehmen"
+    "claimRewards": "Belohnungen abholen"
   },
   "madness": {
     "title": "Wahnsinnsereignis",
@@ -38,7 +38,7 @@
     "playlightTitle": "1 Spiel ausprobieren",
     "discoverGames": "Ausprobieren",
     "inviteTitle": "1 Freund einladen",
-    "inviteDesc": "Du kannst bis zu {{cap}} Freunde einladen. Jedes Mal erhalten ihr beide {{amount}} Gold ({{count}}/{{cap}} eingeladen).",
+    "inviteDesc": "Du kannst bis zu {{cap}} Freunde einladen. Jedes Mal erhaltet ihr beide {{amount}} Gold ({{count}}/{{cap}} eingeladen).",
     "copyInviteLink": "Link kopieren",
     "progressComplete": "Du hast alle Aufgaben abgeschlossen. Du erhältst bald deine Belohnung.",
     "tasksRemaining_one": "1 Aufgabe übrig",
@@ -74,7 +74,7 @@
     "copyInviteCode": "Einladungscode kopieren",
     "goldBonus": "+{{amount}} Gold",
     "linkCopied": "Einladungslink kopiert!",
-    "linkCopiedDesc": "Teile ihn mit Freunden, um beide {{amount}} Gold zu verdienen.",
+    "linkCopiedDesc": "Teile ihn mit Freunden, damit ihr beide jeweils {{amount}} Gold erhaltet.",
     "copyFailed": "Einladungslink konnte nicht kopiert werden",
     "copyFailedNotSignedIn": "Melde dich an, um deinen Einladungslink zu kopieren",
     "tooltip": "<bold>Lade deine Freunde ein</bold>, und ihr beide erhaltet {{amount}} Gold. Du kannst bis zu {{cap}} Freunde einladen. ({{count}}/{{cap}} eingeladen)."
@@ -106,16 +106,16 @@
     }
   },
   "gambler": {
-    "title": "Der besessene Spieler",
-    "srDescription": "Würfelspiel gegen den besessenen Spieler",
+    "title": "Der besessene Glücksspieler",
+    "srDescription": "Würfelspiel gegen den besessenen Glücksspieler",
     "rulesAriaLabel": "Würfelspielregeln",
-    "rulesTurns": "Du und der Spieler würfeln abwechselnd.",
+    "rulesTurns": "Du würfelst abwechselnd mit dem Glücksspieler.",
     "rulesTotals": "Die Würfe jedes Spielers werden addiert.",
     "rulesGoal": "Das Ziel ist auf 15 gesetzt.",
     "rulesWinLose": "Erreicht ein Spieler das Ziel genau, gewinnt er. Überschreitet er es, verliert er.",
     "rulesStand": "Hat der Spieler am Zug mehr Punkte als der Gegner, kann er wählen, nicht zu würfeln.",
-    "tutorialIntro": "Um dir das Spiel beizubringen, bietet der Spieler an, {{count}} Mal ohne Einsatz zu spielen.",
-    "boneDiceIntro": "Setze deinen Einsatz. Mit Knochenwürfeln kannst du zweimal gegen den Spieler antreten.",
+    "tutorialIntro": "Um dir das Spiel beizubringen, bietet der Glücksspieler an, {{count}} Mal ohne Einsatz zu spielen.",
+    "boneDiceIntro": "Setze deinen Einsatz. Mit Knochenwürfeln kannst du zweimal gegen den Glücksspieler antreten.",
     "placeBet": "Setze deinen Einsatz.",
     "gamesRemaining": "Noch {{remaining}} von {{total}} Spielen übrig.",
     "requiresLuck": "Erfordert {{luck}} Glück zum Freischalten",
@@ -123,7 +123,7 @@
     "practiceBet": "Übung (0 Gold)",
     "goal": "Ziel:",
     "you": "Du",
-    "gambler": "Spieler",
+    "gambler": "Glücksspieler",
     "roll": "Würfeln",
     "noRoll": "Nicht würfeln",
     "youWin": "Du gewinnst",
@@ -133,8 +133,8 @@
     "goldLost": "-{{amount}} Gold",
     "practiceWinRemaining": "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Noch {{remaining}} von {{total}} Übungsspielen übrig.",
     "practiceLoseRemaining": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Noch {{remaining}} von {{total}} Übungsspielen übrig.",
-    "practiceWinComplete": "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Übung abgeschlossen - du kannst Gold setzen.",
-    "practiceLoseComplete": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Übung abgeschlossen - du kannst Gold setzen."
+    "practiceWinComplete": "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Übung abgeschlossen. Du kannst jetzt Gold setzen.",
+    "practiceLoseComplete": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Übung abgeschlossen. Du kannst jetzt Gold setzen."
   },
   "leaderboard": {
     "title": "Bestenliste",
@@ -167,9 +167,9 @@
   },
   "investmentResult": {
     "title": "Investitionsergebnis",
-    "success": "Deine {{amount}} Gold-Investition war erfolgreich.",
-    "luckyChance": "Glückstreffer. Der Gewinn deiner {{amount}} Gold-Investition wird mit {{multiplier}} multipliziert.",
-    "partialLoss": "Deine {{amount}} Gold-Investition ist fehlgeschlagen."
+    "success": "Deine Investition von {{amount}} Gold war erfolgreich.",
+    "luckyChance": "Glückstreffer! Der Gewinn deiner Investition von {{amount}} Gold wird mit {{multiplier}} multipliziert.",
+    "partialLoss": "Deine Investition von {{amount}} Gold ist fehlgeschlagen."
   },
   "cube": {
     "fallbackTitle": "Der flüsternde Würfel",
@@ -182,8 +182,8 @@
   "timedEvent": {
     "buy": "Kaufen",
     "sell": "Verkaufen",
-    "buyFor": "Kaufen für {{amount}} Gold",
-    "sellFor": "Verkaufen für {{amount}} Gold",
+    "buyFor": "Für {{amount}} Gold kaufen",
+    "sellFor": "Für {{amount}} Gold verkaufen",
     "sayGoodbye": "Verabschieden",
     "discount": "{{percent}} % Rabatt",
     "discountFromKnowledge": "{{percent}} % durch Wissen{{max}}",
@@ -222,12 +222,12 @@
   },
   "galaxy": {
     "title": "Die Demo endet hier",
-    "description": "Setze das vollständige Spiel auf deine Steam-Wunschliste, um die Reise nach der Veröffentlichung fortzusetzen.",
+    "description": "Setze die Vollversion auf deine Steam-Wunschliste, um deine Reise nach der Veröffentlichung fortzusetzen.",
+    "storeHeaderLink": "Zur Wunschliste",
     "wishlistButton": "Zur Wunschliste hinzufügen",
     "feedbackButton": "Feedback",
     "startNewGameButton": "Neues Spiel starten",
     "continuePlayingButton": "Weiterspielen",
-    "seeWhatsNextButton": "Was kommt",
-    "storeHeaderLink": "Zur Wunschliste"
+    "seeWhatsNextButton": "Was noch kommt"
   }
 }

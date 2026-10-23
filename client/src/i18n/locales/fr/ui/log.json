@@ -20,10 +20,10 @@
     "villagersStarving": "Les villageois sont affamés.",
     "boostApplied": "Boost appliqué.",
     "investmentComplete": {
-      "success": "Investissement de {{amount}} d'or terminé : Succès. Vous avez gagné {{payout}} d'or.",
-      "successLucky": "Investissement de {{amount}} d'or terminé : Coup de chance ! Vous avez gagné {{payout}} d'or.",
-      "wipeout": "Investissement de {{amount}} d'or terminé : Ruine totale. Vous avez perdu l'intégralité de votre investissement de {{amount}} d'or.",
-      "failure": "Investissement de {{amount}} d'or terminé : Échec. Vous avez perdu {{loss}} d'or."
+      "success": "Investissement de {{amount}} or terminé : succès. Vous avez gagné {{payout}} or.",
+      "successLucky": "Investissement de {{amount}} or terminé : coup de chance ! Vous avez gagné {{payout}} or.",
+      "wipeout": "Investissement de {{amount}} or terminé : ruine totale. Vous avez perdu l'intégralité de votre investissement de {{amount}} or.",
+      "failure": "Investissement de {{amount}} or terminé : échec. Vous avez perdu {{loss}} or."
     },
     "stranger": {
       "variant0": "Un étranger s'approche et rejoint le village.",
@@ -39,7 +39,7 @@
     "building": {
       "darkEstate": "Le Domaine sombre se dresse sur une petite colline près du village, offrant solitude et refuge.",
       "blacksmith": "La forge du forgeron s'anime. Le cœur de l'industrie bat désormais dans le village.",
-      "firstWoodenHut": "La première hutte de bois est achevée ; cela pourrait être le début de quelque chose de grand.",
+      "firstWoodenHut": "La première hutte de bois est achevée ; cela pourrait être le début de quelque chose de grand.",
       "villageGrowthSuggestion": "Le village grandit rapidement. Peut-être des maisons de pierre pourraient-elles abriter davantage de villageois.",
       "cityGrowthMilestone": "La ville est devenue une métropole animée, pleine de commerce, d'industrie et de promesses de jours meilleurs.",
       "moonstoneDiscovered": "Au fond de la fosse, les ouvriers découvrent des veines de pierre de lune, un minéral luminescent débordant d'énergie.",
@@ -54,7 +54,7 @@
       "highTannery": "La haute tannerie est bâtie, un grand atelier où des artisans experts transforment les peaux en cuir d'une qualité exceptionnelle.",
       "longhouse": "La première maison longue s'élève, une vaste halle de bois aux poutres épaisses et à l'espace généreux.",
       "furTents": "Les premières tentes de fourrure sont dressées à la lisière du village, offrant un abri chaud à davantage de personnes.",
-      "shrine": "Un sanctuaire sacré s'élève près de l'autel ; sa présence apporte paix et concentration aux esprits troublés.",
+      "shrine": "Un sanctuaire sacré s'élève près de l'autel ; sa présence apporte paix et concentration aux esprits troublés.",
       "temple": "Un grand temple est achevé, ses salles sacrées résonnant de prières murmurées qui apaisent les âmes tourmentées.",
       "sanctum": "Le sanctuaire s'élève comme un phare de protection divine, son aura bénie chassant les pensées et les peurs les plus sombres.",
       "alchemistHall": "Les salles de l'alchimiste se dressent fièrement, leurs chambres remplies de creusets bouillonnants et d'instruments étincelants d'un art oublié.",
@@ -63,15 +63,15 @@
       "merchantsGuild": "La Guilde des marchands est achevée, une organisation puissante qui contrôle toutes les routes commerciales et apporte une richesse sans précédent à votre colonie.",
       "bastion": "Le bastion s'élève comme une montagne de pierre, ses murs épais et inflexibles. Une promesse de protection contre tout ce qui remue dans les profondeurs en dessous.",
       "wizardTower": "La tour du mage s'élance en spirale vers le ciel, crépitante d'énergie arcanique. Le mage s'y installe avec sa collection de tomes anciens et d'artefacts mystérieux.",
-      "fortifiedMoat": "Un profond fossé entoure désormais la colonie, ses eaux sombres et traîtresses. Aucun ennemi ne le franchira facilement.",
+      "fortifiedMoat": "De profondes douves entourent désormais la colonie, leurs eaux sombres et traîtresses. Aucun ennemi ne les franchira facilement.",
       "traps": "Des pièges ont été posés autour du périmètre du village. Fosses cachées, collets et pieux aiguisés attendent quiconque osera attaquer.",
       "improvedTraps": "Le périmètre du village est renforcé par des fosses couvertes, des collets à ressort et des mécanismes d'acier. Les assaillants recevront un accueil bien plus mortel.",
       "blackMonolith": "Le Monolithe noir s'élève au centre du village, monument imposant d'adamant sombre. Sa surface semble boire la lumière, et les villageois se rassemblent autour de lui avec révérence et crainte.",
-      "blackEstate": "Le Domaine noir s'élève depuis la colline, encerclé d'un voile de brume.",
+      "blackEstate": "Le Domaine noir se dresse sur la colline, enveloppé d'un voile de brume.",
       "chitinPlating": "Les fortifications sont désormais renforcées par un placage de chitine. La défense du village augmente nettement.",
       "pillarOfClarity": "Le Pilier de clarté s'élève, obélisque chatoyant qui semble vibrer d'une puissance ancienne. Sa présence apporte un sentiment de calme et de concentration à ceux qui se trouvent près de lui.",
-      "boneTemple": "Le Temple d'os s'élève à partir de milliers d'os soigneusement disposés, monument aux anciens dieux. Sa présence émane une puissance sombre, et les villageois s'en approchent avec révérence et peur.",
-      "heartfire": "Le feu du foyer est allumé. Sa chaleur et sa lumière donnent au village une nouvelle raison d'être."
+      "boneTemple": "Le Temple d'os s'élève, fait de milliers d'os soigneusement disposés, monument aux anciens dieux. Une puissance sombre en émane, et les villageois s'en approchent avec révérence et crainte.",
+      "heartfire": "Le Feu du cœur est allumé. Sa chaleur et sa lumière donnent au village une nouvelle raison d'être."
     },
     "gameplay": {
       "forestUnlocked": "Le village est encerclé par une forêt dense et sombre. Le danger flotte dans l'air, même si c'est aussi un bon endroit pour couper du bois et chasser.",
@@ -82,28 +82,28 @@
       "emberBombFirst": "Les connaissances de l'alchimiste s'avèrent inestimables. Vous fabriquez une puissante bombe de braise, dont le cœur brille d'une chaleur intense et d'un potentiel destructeur.",
       "ashfireBombFirst": "À l'aide de la poussière feu-cendre mystique, vous fabriquez une bombe extraordinaire qui pulse d'un feu d'un autre monde. Ses flammes brûlent de couleurs qui n'appartiennent pas à ce royaume.",
       "voidBombFirst": "En combinant la poussière feu-cendre avec de l'obsidienne et de la poudre noire, vous créez une arme d'une puissance terrifiante. La bombe du néant semble déformer l'espace autour d'elle, la réalité elle-même reculant devant sa présence.",
-      "veinfireElixirFirst": "L'alchimiste distille une essence lumineuse des fibres de racine-veine. Vous tenez désormais un élixir feu-veine - une potion dont on dit qu'elle renforce le bastion quand tout semble perdu.",
-      "frostglassSword": "La forge du forgeron brûle de flammes bleues éthérées tandis que le verre de givre est façonné en une magnifique épée. La lame brille d'une lumière froide d'un autre monde, irradiant une puissance immense.",
+      "veinfireElixirFirst": "L'alchimiste distille une essence lumineuse des fibres de racine-veine. Vous tenez désormais un élixir feu-veine – une potion dont on dit qu'elle renforce le bastion quand tout semble perdu.",
+      "frostglassSword": "La forge du forgeron brûle de flammes bleues éthérées tandis que le verre-givre est façonné en une magnifique épée. La lame brille d'une lumière froide d'un autre monde, irradiant une puissance immense.",
       "arbalest": "En suivant le schéma, vous fabriquez une arbalète méticuleusement décorée. Son ingénierie est impeccable, conçue par un maître artisan.",
       "nightshadeBow": "Vous fabriquez un arc en bois sombre. Ses flèches porteront le poison jusqu'à vos ennemis.",
-      "bloodstoneStaff": "Le sorcier canalise son pouvoir arcanique dans les gemmes de pierre de sang, les fusionnant avec du bois ancien. Le bâton de pierre de sang pulse d'énergie cramoisie, irradiant force et savoir interdit.",
-      "stormglassHalberd": "Vous forgez la hallebarde de verre d'orage, dont la lame brille d'une lumière éthérée. Vous vous sentez nettement plus fort en maniant cette arme légendaire.",
-      "ashenGreatshield": "Le forgeron forge les os massifs de la créature du lac en un bouclier impénétrable. Le grand bouclier de cendre est un rempart d'une force inégalée, capable de protéger vos forces des menaces les plus mortelles."
+      "bloodstoneStaff": "Le mage canalise son pouvoir arcanique dans les gemmes de pierre de sang, les fusionnant avec du bois ancien. Le bâton de pierre de sang pulse d'énergie cramoisie, irradiant force et savoir interdit.",
+      "stormglassHalberd": "Vous forgez la hallebarde de verre-tempête, dont la lame brille d'une lumière éthérée. Vous vous sentez nettement plus fort en maniant cette arme légendaire.",
+      "ashenGreatshield": "Le forgeron façonne les os massifs de la créature du lac en un bouclier impénétrable. Le grand bouclier cendreux est un rempart d'une force inégalée, capable de protéger vos forces des menaces les plus mortelles."
     },
     "sacrifice": {
       "ringOfClarity": "Parmi les offrandes du sacrifice, vous découvrez un anneau d'une clarté cristalline.",
       "moonBracelet": "Parmi les offrandes du sacrifice, vous découvrez un bracelet de pierre blanche.",
-      "animalsMaxed": "Le druide aveugle des bois apparaît : 'Le Monolithe noir a pris tout le sang qu'il acceptera. Le sacrifice d'animaux ne peut aller plus loin.'"
+      "animalsMaxed": "Le druide aveugle des bois apparaît : « Le Monolithe noir a pris tout le sang qu'il acceptera. Le sacrifice d'animaux ne peut aller plus loin. »"
     },
     "gambler": {
-      "win": "Vous avez gagné {{amount}} or face au joueur obsédé.",
-      "lose": "Vous avez perdu {{amount}} or face au joueur obsédé.",
-      "forfeit": "Le joueur obsédé a interprété votre silence comme une reddition."
+      "win": "Vous avez gagné {{amount}} or face au parieur obsédé.",
+      "lose": "Vous avez perdu {{amount}} or face au parieur obsédé.",
+      "forfeit": "Le parieur obsédé a pris votre silence pour un abandon."
     },
     "buttonUpgrade": {
       "deepens": "Votre maîtrise de {{skill}} s'approfondit.",
       "skills": {
-        "caveExplore": "l'exploration des cavernes",
+        "caveExplore": "l'exploration de la grotte",
         "mineStone": "l'extraction de pierre",
         "mineIron": "l'extraction de fer",
         "mineCoal": "l'extraction de charbon",

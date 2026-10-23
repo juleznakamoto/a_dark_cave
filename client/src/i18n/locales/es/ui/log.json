@@ -1,8 +1,8 @@
 {
   "log": {
     "freezingDeath": {
-      "one": "Un aldeano muere congelado en el frío.",
-      "other": "{{count}} aldeanos mueren congelados en el frío."
+      "one": "Un aldeano muere congelado.",
+      "other": "{{count}} aldeanos mueren congelados."
     },
     "madnessDeath": {
       "one": "Un aldeano sucumbe a la locura y se quita la vida.",
@@ -47,7 +47,7 @@
       "masterworkFoundry": "La Fundición magistral está terminada, un monumento al dominio supremo de la metalurgia. En sus fuegos puede forjarse acero negro, casi irrompible, pero muy difícil de producir.",
       "altar": "Un altar se alza en el lindero del bosque, erigido para apaciguar a lo que habita dentro.",
       "grandHunterLodge": "El Gran pabellón de caza está terminado, una estructura magnífica donde se reúnen cazadores maestros.",
-      "clerksHut": "La Choza de escribientes queda terminada. Eruditos se reúnen en su interior para estudiar el mundo y afilar su conocimiento.",
+      "clerksHut": "La Choza de escribientes queda terminada. Los eruditos se reúnen en su interior para estudiar el mundo y pulir sus conocimientos.",
       "scriptorium": "El Scriptorium está terminado. Un centro de sabiduría donde los eruditos profundizan su conocimiento.",
       "inkwardenAcademy": "La Academia de los guardianes del tomo se alza, una gran sala donde maestros eruditos destilan el conocimiento más profundo.",
       "tannery": "La curtiduría está terminada. El olor del cuero en curado llena el aire mientras los artesanos empiezan su labor.",
@@ -58,7 +58,7 @@
       "temple": "Un gran templo está terminado; sus salones sagrados resuenan con plegarias susurradas que calman el alma atormentada.",
       "sanctum": "El santuario se alza como un faro de protección divina; su aura bendita aleja los pensamientos y temores más oscuros.",
       "alchemistHall": "Los salones del alquimista se alzan imponentes, con cámaras llenas de crisoles burbujeantes e instrumentos relucientes de un oficio olvidado.",
-      "tradePost": "Se construye un puesto comercial cerca del bosque, atrayendo mercaderes que buscan vender sus bienes por oro.",
+      "tradePost": "Se construye un puesto comercial cerca del bosque. Llegan comerciantes a vender sus mercancías por oro.",
       "grandBazaar": "El Gran bazar se alza, un mercado extenso donde mercaderes de tierras lejanas se reúnen para comerciar.",
       "merchantsGuild": "El Gremio de mercaderes está terminado, una organización poderosa que controla todas las rutas comerciales y trae una riqueza sin precedentes a tu asentamiento.",
       "bastion": "El bastión se alza como una montaña de piedra, con muros gruesos e inflexibles. Una promesa de protección contra lo que se agita en las profundidades.",
@@ -79,26 +79,26 @@
       "villageBegins": "Una pequeña aldea empieza a tomar forma. Los aldeanos necesitan comida y madera para sobrevivir."
     },
     "crafting": {
-      "emberBombFirst": "El conocimiento del alquimista resulta invaluable. Fabricas una poderosa bomba de brasa, cuyo núcleo brilla con calor intenso y potencial destructivo.",
-      "ashfireBombFirst": "Usando el polvo místico de fuego de ceniza, fabricas una bomba extraordinaria que pulsa con fuego de otro mundo. Sus llamas arden con colores que no pertenecen a este reino.",
-      "voidBombFirst": "Combinando polvo de fuego de ceniza con obsidiana y pólvora negra, creas un arma de aterradora potencia. La bomba del vacío parece distorsionar el espacio a su alrededor; la realidad misma retrocede ante su presencia.",
-      "veinfireElixirFirst": "El alquimista destila esencia luminosa de fibras de raíz vena. Ahora tienes un elixir de fuego venoso - una poción de la que se rumorea que refuerza el bastión cuando todo parece perdido.",
-      "frostglassSword": "La forja del herrero arde con llamas azules etéreas mientras el vidrio de escarcha se moldea en una magnífica espada. La hoja brilla con una luz fría de otro mundo, irradiando un inmenso poder.",
+      "emberBombFirst": "El conocimiento del alquimista resulta inestimable. Fabricas una poderosa bomba de brasas, cuyo núcleo brilla con un calor intenso y un potencial destructivo.",
+      "ashfireBombFirst": "Usando el místico polvo de fuego ceniciento, fabricas una bomba extraordinaria que palpita con un fuego de otro mundo. Sus llamas arden con colores que no pertenecen a este reino.",
+      "voidBombFirst": "Combinando polvo de fuego ceniciento con obsidiana y pólvora negra, creas un arma de un poder aterrador. La bomba del vacío parece distorsionar el espacio a su alrededor; la realidad misma retrocede ante su presencia.",
+      "veinfireElixirFirst": "El alquimista destila una esencia luminosa de las fibras de raíz de vena. Ahora tienes un elixir de fuego venoso, una poción que, según se dice, refuerza el bastión cuando todo parece perdido.",
+      "frostglassSword": "La forja del herrero arde con etéreas llamas azules mientras el cristal de escarcha se moldea en una magnífica espada. La hoja brilla con una luz fría de otro mundo e irradia un poder inmenso.",
       "arbalest": "Siguiendo el esquema, fabricas una arbalesta meticulosamente decorada. Su ingeniería es impecable, diseñada por un maestro artesano.",
       "nightshadeBow": "Fabricas un arco de madera oscura. Sus flechas llevarán veneno a tus enemigos.",
       "bloodstoneStaff": "El mago canaliza su poder arcano hacia las gemas de piedra de sangre, fusionándolas con madera antigua. El bastón de piedra de sangre pulsa con energía carmesí, irradiando fuerza y conocimiento prohibido.",
-      "stormglassHalberd": "Forjas la alabarda de vidrio de tormenta, cuya hoja brilla con una luz etérea. Te sientes significativamente más fuerte empuñando esta arma legendaria.",
+      "stormglassHalberd": "Forjas la alabarda de cristal de tormenta, cuya hoja brilla con una luz etérea. Te sientes mucho más fuerte empuñando esta arma legendaria.",
       "ashenGreatshield": "El herrero forja los huesos masivos de la criatura del lago en un escudo impenetrable. El gran escudo ceniciento es un baluarte de fuerza inigualable, capaz de proteger a tus fuerzas de las amenazas más mortales."
     },
     "sacrifice": {
       "ringOfClarity": "Entre las ofrendas del sacrificio, descubres un anillo cristalino.",
       "moonBracelet": "Entre las ofrendas del sacrificio, descubres una pulsera de piedra blanca.",
-      "animalsMaxed": "El druida ciego del bosque aparece: 'El Monolito negro ha tomado toda la sangre que aceptará. El sacrificio de animales no puede ir más lejos.'"
+      "animalsMaxed": "El druida ciego del bosque aparece: «El Monolito negro ha tomado toda la sangre que aceptará. El sacrificio de animales no puede ir más lejos»."
     },
     "gambler": {
-      "win": "Ganaste {{amount}} oro del jugador obsesionado.",
-      "lose": "Perdiste {{amount}} oro ante el jugador obsesionado.",
-      "forfeit": "El jugador obsesionado interpretó tu silencio como rendición."
+      "win": "Le ganaste {{amount}} de oro al tahúr obsesionado.",
+      "lose": "Perdiste {{amount}} de oro contra el tahúr obsesionado.",
+      "forfeit": "El tahúr obsesionado tomó tu silencio como una rendición."
     },
     "buttonUpgrade": {
       "deepens": "Tu dominio de {{skill}} se profundiza.",
@@ -110,7 +110,7 @@
         "mineSulfur": "extracción de azufre",
         "mineObsidian": "extracción de obsidiana",
         "mineAdamant": "extracción de adamantita",
-        "mineMoonstone": "extracción de Piedra lunar",
+        "mineMoonstone": "extracción de piedra lunar",
         "hunt": "caza",
         "chopWood": "tala de madera",
         "craftTorches": "fabricación de antorchas",

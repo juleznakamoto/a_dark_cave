@@ -83,12 +83,12 @@
       "ashfireBombFirst": "Z mistycznego pyłu popiołognia tworzysz niezwykłą bombę, pulsującą pozaziemskim ogniem. Jej płomienie palą się barwami nie z tego świata.",
       "voidBombFirst": "Łącząc pył popiołognia z obsydianem i czarnym prochem, tworzysz broń przerażającej mocy. Bomba pustki zdaje się wypaczać przestrzeń wokół siebie, a sama rzeczywistość się od niej cofa.",
       "veinfireElixirFirst": "Alchemik destyluje świecącą esencję z włókien żyłokorzenia. Trzymasz teraz Eliksir żyłognia, miksturę, która ma wzmacniać bastion, gdy wszystko wydaje się stracone.",
-      "frostglassSword": "Kuźnia kowala pali się eterycznym błękitnym płomieniem, gdy mrozoszkło formuje się w wspaniały miecz. Ostrze lśni pozaziemskim zimnym światłem i promieniuje ogromną mocą.",
+      "frostglassSword": "Kuźnia kowala płonie eterycznym błękitnym ogniem, gdy mrozoszkło przybiera kształt wspaniałego miecza. Ostrze lśni nieziemskim zimnym światłem i promieniuje ogromną mocą.",
       "arbalest": "Według schematu tworzysz misternie zdobiony arbalet. Mechanika jest bez zarzutu, zaprojektowana przez mistrza rzemiosła.",
       "nightshadeBow": "Wytwarzasz łuk z wilczej jagody. Jego strzały poniosą truciznę w twoich wrogów.",
-      "bloodstoneStaff": "Czarodziej kieruje magiczną moc w kamienie krwi i spaja je ze starym drewnem. Kostur z kamienia krwi pulsuje szkarłatną energią, promieniując siłą i zakazaną wiedzą.",
+      "bloodstoneStaff": "Czarodziej kieruje magiczną moc w krwawe kamienie i spaja je ze starym drewnem. Kostur krwawego kamienia pulsuje szkarłatną energią, promieniując siłą i zakazaną wiedzą.",
       "stormglassHalberd": "Kujesz Halabardę z burzoszkła, jej ostrze lśni eterycznym światłem. Czujesz się wyraźnie silniejszy, dzierżąc tę legendarną broń.",
-      "ashenGreatshield": "Kowal wykuwa z potężnych kości stworzenia z jeziora nieprzebytą tarczę. Popiołowa wielka tarcza to bastion niezrównanej siły, zdolny chronić twoje siły nawet przed najgroźniejszymi zagrożeniami."
+      "ashenGreatshield": "Kowal wykuwa z potężnych kości stworzenia z jeziora nieprzebijalną tarczę. Popiołowa wielka tarcza to bastion niezrównanej siły, zdolny chronić twoje oddziały nawet przed najgroźniejszymi zagrożeniami."
     },
     "sacrifice": {
       "ringOfClarity": "Wśród ofiar odkrywasz krystalicznie czysty pierścień.",
@@ -101,7 +101,7 @@
       "forfeit": "Opętany hazardzista wziął twoje milczenie za rezygnację."
     },
     "buttonUpgrade": {
-      "deepens": "Twoje mistrzostwo w {{skill}} się pogłębia.",
+      "deepens": "Pogłębiasz mistrzostwo: {{skill}}.",
       "skills": {
         "caveExplore": "Eksploracja jaskini",
         "mineStone": "Wydobycie kamienia",

@@ -2,14 +2,14 @@
   "books": {
     "book_of_ascension": {
       "description": "Libro sobre la elevación del yo. Otorga la capacidad de mejorar en las tareas mediante la práctica.",
-      "name": "Libro de ascensión"
+      "name": "Libro de la ascensión"
     },
     "book_of_absolution": {
       "description": "Libro de ritos para calmar objetos malditos. Permite debilitar sus efectos negativos.",
       "name": "Libro de la absolución"
     },
     "book_of_chainmaster": {
-      "description": "Libro del Maestro de las cadenas muerto hace mucho, con métodos crueles para llevar a los trabajadores más allá de sus límites.",
+      "description": "Libro del difunto Maestro de las cadenas, con métodos crueles para llevar a los trabajadores más allá de sus límites.",
       "name": "Libro del Maestro de las cadenas"
     },
     "book_of_trials": {
@@ -59,7 +59,7 @@
       "name": "Armadura de acero negro"
     },
     "blood_baptized": {
-      "description": "Recibido tras bañarse en la sangre de criaturas poderosas",
+      "description": "Obtenido tras bañarte en la sangre de criaturas poderosas",
       "name": "Bautismo de sangre"
     },
     "bloodstained_belt": {
@@ -75,7 +75,7 @@
       "name": "Sangre de devorador"
     },
     "bone_dice": {
-      "description": "Dados tallados en hueso, pulidos hasta una suavidad inquietante. Otorgan una partida adicional con el jugador.",
+      "description": "Dados tallados en hueso, pulidos hasta una suavidad inquietante. Otorgan una partida adicional con el tahúr.",
       "name": "Dados de hueso"
     },
     "bone_necklace": {
@@ -111,7 +111,7 @@
       "name": "Corona del devorador"
     },
     "ebon_grace": {
-      "description": "Bendición oscura recibida del árbol negro.",
+      "description": "Bendición oscura recibida del árbol negro",
       "name": "Gracia de ébano"
     },
     "ebony_ring": {
@@ -126,25 +126,33 @@
       "description": "Mochila de cuero bien hecha que aligera el peso sobre los hombros",
       "name": "Mochila de explorador"
     },
+    "fang_charm": {
+      "description": "Cordón de colmillos negros de una criatura enorme",
+      "name": "Amuleto de colmillos"
+    },
     "feeding_ring": {
       "description": "Anillo que apareció una mañana, aparentemente fusionado con tu dedo",
       "name": "Anillo hambriento"
     },
     "fishers_hand": {
-      "description": "Técnicas antiguas de los pescadores de la costa para construir trampas de peces",
+      "description": "Técnicas antiguas de los pescadores de la costa para construir trampas para peces",
       "name": "Mano del pescador"
     },
     "flames_touch": {
-      "description": "Los costos de artesanía se reducen",
+      "description": "Los costes de fabricación se reducen",
       "name": "Toque de la llama"
     },
     "flames_touch_enhanced": {
-      "description": "Los costos de artesanía se reducen enormemente",
+      "description": "Los costes de fabricación se reducen enormemente",
       "name": "Toque intenso de la llama"
     },
     "forests_grace": {
       "description": "Los ciervos del bosque parecen notarte menos",
       "name": "Gracia del bosque"
+    },
+    "brimstone_infusion": {
+      "description": "Los forjadores de acero producen +1 de acero",
+      "name": "Infusión de azufre"
     },
     "fresh_blood": {
       "description": "Los desconocidos se acercan a la aldea con más frecuencia",
@@ -155,7 +163,7 @@
       "name": "Cristal de escarcha"
     },
     "keen_builder": {
-      "description": "Los costos de construcción se reducen",
+      "description": "Los costes de construcción se reducen",
       "name": "Constructor hábil"
     },
     "gifted_ring": {
@@ -163,7 +171,7 @@
       "name": "Anillo de la fortuna"
     },
     "flask_harness": {
-      "description": "Arnés de cuero con ranuras acolchadas para elixires de fuego venal adicionales",
+      "description": "Arnés de cuero con ranuras acolchadas para elixires de fuego venoso adicionales",
       "name": "Arnés de frascos"
     },
     "grenadier_bag": {
@@ -175,7 +183,7 @@
       "name": "Túnica de sumo sacerdote"
     },
     "hollow_king_scepter": {
-      "description": "Cetro del rey perdido, irradiando poder y locura. Las acciones de minería tienen un 5% de probabilidad de duplicar las recompensas.",
+      "description": "Cetro del rey perdido, que irradia poder y locura. Las acciones de minería tienen un 5 % de probabilidad de duplicar las recompensas.",
       "name": "Cetro del Rey Hueco"
     },
     "fur_cloak": {
@@ -187,7 +195,7 @@
       "name": "Capa de cazador"
     },
     "knights_burden": {
-      "description": "Conocimiento que el caballero compartió contigo, pesado en tu mente",
+      "description": "Conocimiento que el caballero compartió contigo y que pesa sobre tu mente",
       "name": "Carga del caballero"
     },
     "leatherbound_book": {
@@ -299,7 +307,7 @@
       "name": "Puntería afilada"
     },
     "skilled_hands": {
-      "description": "Los costos de artesanía se reducen",
+      "description": "Los costes de fabricación se reducen",
       "name": "Manos hábiles"
     },
     "skeleton_key_schematic": {
@@ -349,20 +357,12 @@
     "wooden_figure": {
       "description": "Figura de madera tallada con forma de criatura inquietante con tentáculos",
       "name": "Figura de madera"
-    },
-    "fang_charm": {
-      "description": "Cordón de colmillos negros de una criatura enorme",
-      "name": "Amuleto de colmillos"
-    },
-    "brimstone_infusion": {
-      "description": "Los forjadores de acero producen +1 Acero",
-      "name": "Infusión de azufre"
     }
   },
   "fellowship": {
     "ashwraith_huntress": {
       "description": "Cazadora salvaje de una tribu del bosque, ligada por juramento de sangre.",
-      "name": "Cazadora espectroceniza"
+      "name": "Cazadora Espectroceniza"
     },
     "disgraced_prior": {
       "description": "Antiguo prior expulsado de su orden. Se redime mediante un trabajo interminable.",
@@ -395,7 +395,7 @@
       "name": "Hacha de adamantita"
     },
     "adamant_lantern": {
-      "description": "Fuente de luz definitiva, ilumina todo camino",
+      "description": "Fuente de luz definitiva, que ilumina cada camino",
       "name": "Farol de adamantita"
     },
     "adamant_pickaxe": {
@@ -471,7 +471,7 @@
       "name": "Mapa del ocultista"
     },
     "mountain_village_map": {
-      "description": "Mapa tosco que marca un camino hacia los altos pasos, hacia una aldea de montaña.",
+      "description": "Mapa tosco que marca un camino por los pasos altos, rumbo a una aldea de montaña.",
       "name": "Mapa de aldea de montaña"
     },
     "reinforced_rope": {
@@ -507,8 +507,8 @@
       "name": "Pico de piedra"
     },
     "wanderers_lantern": {
-      "description": "Concede a quien la lleva un poco de suerte y la posibilidad de ver lo que la oscuridad ocultaría.",
-      "name": "Linterna del vagabundo"
+      "description": "Concede a quien lo lleva un poco de suerte y la posibilidad de ver lo que la oscuridad ocultaría.",
+      "name": "Farol del vagabundo"
     }
   },
   "weapons": {
@@ -602,7 +602,7 @@
     },
     "veinfire_elixir": {
       "description": "Elixir alquímico curativo destilado de rara raíz de vena",
-      "name": "Elixir de fuego venal"
+      "name": "Elixir de fuego venoso"
     },
     "void_bomb": {
       "description": "Bomba aterradora que parece distorsionar el espacio a su alrededor",

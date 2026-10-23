@@ -30,8 +30,8 @@
     "ariaLabel": "Выбрать язык"
   },
   "startScreen": {
-    "titleNormal": "Темная пещера.",
-    "titleCruel": "Очень темная пещера.",
+    "titleNormal": "Тёмная пещера.",
+    "titleCruel": "Очень тёмная пещера.",
     "airNormal": "Воздух холодный и сырой.",
     "airCruel": "Воздух ледяной и сырой.",
     "seeNormal": "Вы едва различаете очертания вокруг.",
@@ -58,7 +58,7 @@
     "supportGame": "Поддержать игру",
     "privacy": "Конфиденциальность",
     "faq": "FAQ",
-    "about": "О игре",
+    "about": "Об игре",
     "pressKit": "Пресса",
     "imprint": "Правовая информация",
     "contact": "Контакты",
@@ -73,7 +73,7 @@
     "cruelModeActive": "Жестокий режим активен",
     "wishlistOnSteam": "Добавить в список желаемого Steam",
     "demoProgress": "Прогресс демо",
-    "demoProgressHint": "В демо можно построить до {{count}} деревянных хижин.",
+    "demoProgressHint": "В демо можно построить деревянные хижины — не более {{count}}.",
     "demoEnded": "Демо завершено",
     "progress": "Прогресс",
     "social": "Соцсети",

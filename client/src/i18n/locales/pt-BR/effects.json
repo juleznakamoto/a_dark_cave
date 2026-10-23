@@ -35,7 +35,7 @@
       "name": "Abraço das Cinzas"
     },
     "ashen_embrace_enhanced": {
-      "description": "Sua capacidade de minerar é muito mais aprimorada",
+      "description": "Sua capacidade de minerar é muito aprimorada",
       "name": "Abraço Profundo das Cinzas"
     },
     "bell_blessing": {
@@ -43,8 +43,8 @@
       "name": "Bênção do Sino"
     },
     "black_bear_fur": {
-      "description": "Pelo negro amaldiçoado de um urso gigante de outro mundo",
-      "name": "Pelo de Urso Negro"
+      "description": "Pele negra amaldiçoada de um urso gigante de outro mundo",
+      "name": "Pele de Urso Negro"
     },
     "black_wood": {
       "description": "Uma laje de madeira densa que bebe a luz, vinda da árvore do santuário.",
@@ -75,7 +75,7 @@
       "name": "Sangue do Devorador"
     },
     "bone_dice": {
-      "description": "Dados esculpidos em ossos, polidos até uma lisura suave e perturbadora. Concede um jogo extra com o Apostador.",
+      "description": "Dados esculpidos em ossos, polidos até uma lisura suave e perturbadora. Concedem uma partida extra com o Apostador.",
       "name": "Dados de Osso"
     },
     "bone_necklace": {
@@ -98,8 +98,12 @@
       "description": "Sua capacidade de caçar é aprimorada",
       "name": "Dádiva de Dagon"
     },
+    "depths_gift": {
+      "description": "A exploração da caverna rende mais",
+      "name": "Dádiva das Profundezas"
+    },
     "dagons_gift_enhanced": {
-      "description": "Sua capacidade de caçar é mais aprimorada",
+      "description": "Sua capacidade de caçar é muito aprimorada",
       "name": "Grande Dádiva de Dagon"
     },
     "devourer_crown": {
@@ -108,7 +112,7 @@
     },
     "ebon_grace": {
       "description": "Bênção sombria recebida da árvore negra",
-      "name": "Graça Ébano"
+      "name": "Graça de Ébano"
     },
     "ebony_ring": {
       "description": "Anel escuro deixado como dádiva pelos deuses da floresta",
@@ -122,9 +126,13 @@
       "description": "Mochila de couro bem fabricada que alivia o peso sobre os ombros",
       "name": "Mochila do Explorador"
     },
+    "fang_charm": {
+      "description": "Cordão de presas pretas de uma criatura enorme",
+      "name": "Amuleto de Presas"
+    },
     "feeding_ring": {
       "description": "Anel que surgiu certa manhã, aparentemente fundido ao seu dedo",
-      "name": "Anel Faminto"
+      "name": "Anel Voraz"
     },
     "fishers_hand": {
       "description": "Técnicas antigas dos pescadores da costa para construir armadilhas de peixe",
@@ -135,16 +143,28 @@
       "name": "Toque da Chama"
     },
     "flames_touch_enhanced": {
-      "description": "Os custos de fabricação são reduzidos ainda mais",
+      "description": "Os custos de fabricação são muito reduzidos",
       "name": "Forte Toque da Chama"
     },
     "forests_grace": {
       "description": "Os cervos da floresta parecem notá-lo menos",
       "name": "Graça da Floresta"
     },
+    "brimstone_infusion": {
+      "description": "Forjadores de aço produzem +1 de aço",
+      "name": "Infusão de Enxofre"
+    },
+    "fresh_blood": {
+      "description": "Estranhos se aproximam do vilarejo com mais frequência",
+      "name": "Sangue Fresco"
+    },
     "frostglass": {
       "description": "Material cristalino que irradia frio",
       "name": "Vidro-de-Gelo"
+    },
+    "keen_builder": {
+      "description": "Os custos de construção são reduzidos",
+      "name": "Construtor Hábil"
     },
     "gifted_ring": {
       "description": "Anel simples que alguém deixou para você encontrar",
@@ -168,7 +188,7 @@
     },
     "fur_cloak": {
       "description": "Capa grossa de pele que abafa cada passo",
-      "name": "Capa de pele"
+      "name": "Capa de Pele"
     },
     "hunter_cloak": {
       "description": "Capa de couro flexível que silencia cada movimento",
@@ -180,14 +200,14 @@
     },
     "leatherbound_book": {
       "description": "Livro antigo encadernado em couro, com um sinal de corrente gravado na capa",
-      "name": "Livro encadernado em couro"
+      "name": "Livro Encadernado em Couro"
     },
     "loggers_gloves": {
       "description": "Luvas de couro resistentes que ajudam na coleta de madeira",
       "name": "Luvas do Lenhador"
     },
     "lycan_blood": {
-      "description": "Um frasco de sangue espesso de um alfa Licantropo. Seus efeitos são desconhecidos.",
+      "description": "Um frasco de sangue espesso de um alfa licantropo. Seus efeitos são desconhecidos.",
       "name": "Sangue de Licantropo"
     },
     "map_fragment": {
@@ -208,7 +228,7 @@
     },
     "nightshade_bow_schematic": {
       "description": "Esquema para fabricar um arco venenoso",
-      "name": "Arco Beladona"
+      "name": "Arco de Beladona"
     },
     "obsidian_orb": {
       "description": "Poderosa orbe de vidro vulcânico que concede força mental",
@@ -230,17 +250,21 @@
       "description": "Manto místico tecido com penas reluzentes de corvo",
       "name": "Manto de Pena de Corvo"
     },
-    "rootseeker_charm": {
-      "description": "Amuleto entalhado que atrai raiz venosa para quem coleta na natureza.",
-      "name": "Amuleto Buscador de Raízes"
-    },
     "ravens_mark": {
       "description": "Estranhos se aproximam do vilarejo com mais frequência",
       "name": "Marca do Corvo"
     },
+    "rich_veins": {
+      "description": "Sua capacidade de minerar é aprimorada",
+      "name": "Veios Ricos"
+    },
     "ravens_mark_enhanced": {
       "description": "Estranhos se aproximam do vilarejo com muito mais frequência",
       "name": "Grande Marca do Corvo"
+    },
+    "rootseeker_charm": {
+      "description": "Amuleto entalhado que atrai raiz venosa para quem coleta na natureza.",
+      "name": "Amuleto Buscador de Raízes"
     },
     "ravens_orb": {
       "description": "Orbe escura abençoada pelos corvos com conhecimento ancestral",
@@ -271,7 +295,7 @@
       "name": "Baú Selado"
     },
     "shadow_boots": {
-      "description": "Mova-se por todo terreno tão rápido quanto uma sombra",
+      "description": "Mova-se por qualquer terreno tão rápido quanto uma sombra",
       "name": "Botas da Sombra"
     },
     "shadow_flute": {
@@ -281,6 +305,10 @@
     "sharp_aim": {
       "description": "A mira dos seus caçadores é aprimorada",
       "name": "Mira Apurada"
+    },
+    "skilled_hands": {
+      "description": "Os custos de fabricação são reduzidos",
+      "name": "Mãos Hábeis"
     },
     "skeleton_key_schematic": {
       "description": "Esquema para fabricar uma chave-mestra",
@@ -310,6 +338,10 @@
       "description": "Relíquia antiga para aqueles que buscam orientação.",
       "name": "Bússola Manchada"
     },
+    "trail_sense": {
+      "description": "Seus caçadores trazem mais comida",
+      "name": "Faro da Trilha"
+    },
     "unnamed_book": {
       "description": "Livro encadernado em pele humana, repleto de conhecimento proibido",
       "name": "Livro Sem Nome"
@@ -325,38 +357,6 @@
     "wooden_figure": {
       "description": "Figura de madeira entalhada de uma criatura perturbadora com tentáculos",
       "name": "Figura de Madeira"
-    },
-    "depths_gift": {
-      "description": "A exploração da caverna rende mais",
-      "name": "Dádiva das Profundezas"
-    },
-    "fresh_blood": {
-      "description": "Estranhos se aproximam do vilarejo com mais frequência",
-      "name": "Sangue Fresco"
-    },
-    "keen_builder": {
-      "description": "Os custos de construção são reduzidos",
-      "name": "Construtor hábil"
-    },
-    "rich_veins": {
-      "description": "Sua capacidade de minerar é aprimorada",
-      "name": "Veios Ricos"
-    },
-    "skilled_hands": {
-      "description": "Os custos de fabricação são reduzidos",
-      "name": "Mãos Hábeis"
-    },
-    "trail_sense": {
-      "description": "Seus caçadores trazem mais comida",
-      "name": "Faro da Trilha"
-    },
-    "fang_charm": {
-      "description": "Cordão de presas pretas de uma criatura enorme",
-      "name": "Amuleto de Presas"
-    },
-    "brimstone_infusion": {
-      "description": "Forjadores de aço produzem +1 Aço",
-      "name": "Infusão de Enxofre"
     }
   },
   "fellowship": {
@@ -431,7 +431,7 @@
       "name": "Armadilha Gigante"
     },
     "hidden_library_map": {
-      "description": "Mapa do monastério que revela a localização de uma biblioteca oculta nas profundezas da caverna",
+      "description": "Mapa do mosteiro que revela a localização de uma biblioteca oculta nas profundezas da caverna",
       "name": "Mapa da Biblioteca Oculta"
     },
     "iron_axe": {
@@ -470,6 +470,10 @@
       "description": "Mapa desgastado pelo tempo que revela a câmara de um ocultista na caverna",
       "name": "Mapa do Ocultista"
     },
+    "mountain_village_map": {
+      "description": "Mapa tosco com um caminho marcado rumo às passagens altas, até um vilarejo na montanha.",
+      "name": "Mapa do Vilarejo da Montanha"
+    },
     "reinforced_rope": {
       "description": "Corda forte que permite acesso a câmaras mais profundas da caverna",
       "name": "Corda Reforçada"
@@ -479,7 +483,7 @@
       "name": "Chave-Mestra"
     },
     "skull_lantern": {
-      "description": "Forjada de osso amaldiçoado, iluminando as profundezas mais fundas",
+      "description": "Forjada de osso amaldiçoado, ilumina as profundezas mais remotas",
       "name": "Lanterna de Caveira"
     },
     "steel_axe": {
@@ -502,13 +506,9 @@
       "description": "Picareta rudimentar para mineração",
       "name": "Picareta de Pedra"
     },
-    "mountain_village_map": {
-      "description": "Mapa rude marcado com um caminho para os altos passos, rumo a um vilarejo na montanha.",
-      "name": "Mapa do vilarejo da montanha"
-    },
     "wanderers_lantern": {
       "description": "Dá a quem a usa um pouco de sorte e a chance de notar o que a escuridão esconderia.",
-      "name": "Lanterna do andarilho"
+      "name": "Lanterna do Andarilho"
     }
   },
   "weapons": {
@@ -582,7 +582,7 @@
     },
     "nightshade_bow": {
       "description": "Arco feito de madeira escura, cujas flechas carregam veneno",
-      "name": "Arco Beladona"
+      "name": "Arco de Beladona"
     },
     "nordic_war_axe": {
       "description": "Machado de guerra lendário forjado por um mestre ferreiro viking",

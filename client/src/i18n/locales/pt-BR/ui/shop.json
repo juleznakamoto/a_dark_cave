@@ -20,6 +20,15 @@
     "continueCheckout": "Continuar",
     "feastAvailable": "{{name}} ({{remaining}}/{{total}} disponíveis)",
     "cruelModeActivateHint": "Ative e inicie um novo jogo",
+    "firstPurchaseInsightBannerBefore": "Ganhe",
+    "firstPurchaseInsightBannerBeforePlaylight": "Como usuário do Playlight você recebe",
+    "firstPurchaseInsightBannerBeforeItch": "Como usuário do itch.io você recebe",
+    "firstPurchaseInsightBannerBeforeBored": "Como usuário do Bored.com você recebe",
+    "firstPurchaseInsightBannerBeforeIncrementalDb": "Como usuário do Incremental DB você recebe",
+    "firstPurchaseInsightBannerInsight": "Perspicácia",
+    "firstPurchaseInsightBannerAfter": "de graça com a sua primeira compra",
+    "firstPurchaseInsightCheckoutFree": "de graça",
+    "firstPurchaseInsightGranted": "Presente da primeira compra: +{{amount}} {{glyph}} de Perspicácia",
     "loadingPayment": "Carregando o sistema de pagamento...",
     "paymentSrDescription": "Conclua o pagamento de {{name}}",
     "originalPrice": "Preço original",
@@ -41,8 +50,8 @@
     "purchaseSuccess": "Compra concluída",
     "purchaseAddedSingle": "{{name}} foi adicionado às suas compras. Acesse a aba Compras para ativá-lo.",
     "purchaseAddedBundle": "Os componentes de {{name}} foram adicionados às suas compras. Acesse a aba Compras para ativá-los.",
-    "freeGoldAdded": "{{amount}} Ouro foi adicionado aos seus recursos!",
-    "freeGoldClaimedLog": "Você resgatou {{amount}} Ouro. Volte amanhã se sobreviver à noite.",
+    "freeGoldAdded": "{{amount}} de Ouro foi adicionado aos seus recursos!",
+    "freeGoldClaimedLog": "Você resgatou {{amount}} de Ouro. Volte amanhã se sobreviver à noite.",
     "freeGoldCooldownLog_one": "Você poderá resgatar ouro grátis novamente em {{hours}} hora.",
     "freeGoldCooldownLog_other": "Você poderá resgatar ouro grátis novamente em {{hours}} horas.",
     "freeItemAdded": "{{name}} foi adicionado às suas compras. Acesse a aba Compras para ativá-lo.",
@@ -50,18 +59,18 @@
     "tradersSonDiscount": "{{percent}}% de desconto adicional do evento do Filho do Mercador.",
     "journeyCompleteDiscount": "Desconto especial por concluir o jogo",
     "artifactSkullLantern": {
+      "unlocksStoryline": "Desbloqueia a trama da Lanterna de Caveira",
       "caveExplore": "Explorar Caverna: +150% de Bônus, -3s de Recarga",
-      "mining": "Mineração: +150% de Bônus, -3s de Recarga",
-      "unlocksStoryline": "Desbloqueia a trama da Lanterna de Caveira"
+      "mining": "Mineração: +150% de Bônus, -3s de Recarga"
     },
     "artifactTarnishedCompass": {
+      "unlocksStoryline": "Desbloqueia a trama da Bússola",
       "doubleGain": "5% de chance de dobrar os ganhos das ações",
-      "luck": "+4 de Sorte",
-      "unlocksStoryline": "Desbloqueia a trama da Bússola"
+      "luck": "+4 de Sorte"
     },
     "artifactCrowHarness": {
-      "doubleGain": "até 10% de chance de dobrar os ganhos das ações",
       "unlocksStoryline": "Desbloqueia a trama do Corvo",
+      "doubleGain": "até 10% de chance de dobrar os ganhos das ações",
       "addsFellowshipMember": "Adiciona um membro da irmandade"
     },
     "cruelMode": {
@@ -69,7 +78,7 @@
       "moreItems": "Mais Itens",
       "strongerEnemies": "Inimigos Mais Fortes",
       "harderChallenges": "Desafios Mais Difíceis",
-      "reusePurchases": "Reutilizar Compras existentes"
+      "reusePurchases": "Reutilizar Compras Existentes"
     },
     "greatFeast": {
       "forMinutes": "Por {{minutes}} minutos:",
@@ -84,15 +93,6 @@
     "securePurchaseTitle": "Proteja sua compra",
     "securePurchaseBody": "Sua compra fica salva apenas neste navegador. Crie uma conta para manter compras e progresso se trocar de dispositivo ou limpar os dados do navegador.",
     "securePurchaseSignUp": "Cadastrar-se",
-    "securePurchaseLater": "Talvez depois",
-    "firstPurchaseInsightBannerBefore": "Ganhe",
-    "firstPurchaseInsightBannerBeforePlaylight": "Como usuário do Playlight você recebe",
-    "firstPurchaseInsightBannerBeforeItch": "Como usuário do itch.io você recebe",
-    "firstPurchaseInsightBannerBeforeBored": "Como usuário do Bored.com você recebe",
-    "firstPurchaseInsightBannerBeforeIncrementalDb": "Como usuário do Incremental DB você recebe",
-    "firstPurchaseInsightBannerInsight": "Perspicácia",
-    "firstPurchaseInsightBannerAfter": "de graça com a sua primeira compra",
-    "firstPurchaseInsightGranted": "Presente da primeira compra: +{{amount}} {{glyph}} Perspicácia",
-    "firstPurchaseInsightCheckoutFree": "de graça"
+    "securePurchaseLater": "Talvez depois"
   }
 }

@@ -47,9 +47,9 @@
     "obsidian": "Обсидиан",
     "adamant": "Адамант",
     "steel": "Сталь",
-    "blacksteel": "Черная сталь",
+    "blacksteel": "Чёрная сталь",
     "moonstone": "Лунный камень",
-    "black_powder": "Черный порох",
+    "black_powder": "Чёрный порох",
     "ember_bomb": "Бомба жара",
     "ashfire_dust": "Пепельная пыль",
     "ashfire_bomb": "Пепельная бомба",
@@ -72,9 +72,9 @@
   },
   "population": {
     "villager_one": "{{count}} житель",
+    "villager_other": "{{count}} жителей",
     "villager_few": "{{count}} жителя",
-    "villager_many": "{{count}} жителей",
-    "villager_other": "{{count}} жителей"
+    "villager_many": "{{count}} жителей"
   },
   "currency": {
     "goldAmount": "{{amount}} золота"

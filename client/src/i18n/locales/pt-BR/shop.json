@@ -2,12 +2,12 @@
   "additional_preset_slots": {
     "activationMessage": "Dois espaços de predefinição de trabalho de aldeões adicionais foram adicionados.",
     "description": "Mais dois espaços de predefinição de trabalho de aldeões",
-    "name": "2 espaços de predefinição adicionais"
+    "name": "2 Espaços de Predefinição Adicionais"
   },
   "additional_construction_queue_slot": {
     "activationMessage": "Dois espaços adicionais na fila de construção foram adicionados.",
     "description": "Mais dois espaços de construção paralela",
-    "name": "2 espaços adicionais na fila de construção"
+    "name": "2 Espaços Adicionais na Fila de Construção"
   },
   "advanced_bundle": {
     "activationMessage": "Os componentes do pacote foram adicionados às suas compras!",
@@ -41,44 +41,44 @@
     "name": "Jogo Completo"
   },
   "gold_1000": {
-    "activationMessage": "1'000 Ouro foram adicionados ao seu inventário.",
+    "activationMessage": "1.000 de ouro foram adicionados ao seu inventário.",
     "description": "Uma quantia razoável de Ouro",
-    "name": "1'000 Ouro"
+    "name": "1.000 de ouro"
   },
   "gold_100_free": {
-    "activationMessage": "100 Ouro foram adicionados ao seu inventário como presente!",
+    "activationMessage": "100 de ouro foram adicionados ao seu inventário como presente!",
     "description": "Uma clemência diária num mundo gélido",
-    "name": "Presente de 100 Ouro"
+    "name": "100 de ouro de presente"
   },
   "gold_15000": {
-    "activationMessage": "15'000 Ouro foram adicionados ao seu inventário.",
+    "activationMessage": "15.000 de ouro foram adicionados ao seu inventário.",
     "description": "Quantias profanas de Ouro",
-    "name": "15'000 Ouro"
+    "name": "15.000 de ouro"
   },
   "gold_20000": {
-    "activationMessage": "20'000 Ouro foram adicionados ao seu inventário.",
+    "activationMessage": "20.000 de ouro foram adicionados ao seu inventário.",
     "description": "Quantias profanas de Ouro",
-    "name": "20'000 Ouro"
+    "name": "20.000 de ouro"
   },
   "gold_30000": {
-    "activationMessage": "30'000 Ouro foram adicionados ao seu inventário.",
+    "activationMessage": "30.000 de ouro foram adicionados ao seu inventário.",
     "description": "Quantias blasfemas de Ouro",
-    "name": "30'000 Ouro"
+    "name": "30.000 de ouro"
   },
   "gold_250": {
-    "activationMessage": "1'000 Ouro foram adicionados ao seu inventário.",
+    "activationMessage": "1.000 de ouro foram adicionados ao seu inventário.",
     "description": "Uma quantia razoável de Ouro",
-    "name": "1'000 Ouro"
+    "name": "1.000 de ouro"
   },
   "gold_2500": {
-    "activationMessage": "2'500 Ouro foram adicionados ao seu inventário.",
+    "activationMessage": "2.500 de ouro foram adicionados ao seu inventário.",
     "description": "Um tesouro substancial",
-    "name": "2'500 Ouro"
+    "name": "2.500 de ouro"
   },
   "gold_5000": {
-    "activationMessage": "5'000 Ouro foram adicionados ao seu inventário.",
+    "activationMessage": "5.000 de ouro foram adicionados ao seu inventário.",
     "description": "Uma fortuna em Ouro",
-    "name": "5'000 Ouro"
+    "name": "5.000 de ouro"
   },
   "great_feast_1": {
     "activationMessage": "Um Grande Banquete começou!",

@@ -71,7 +71,7 @@
     "muteSfx": "Soundeffekte ausschalten",
     "unmuteSfx": "Soundeffekte einschalten",
     "cruelModeActive": "Grausamer Modus aktiv",
-    "wishlistOnSteam": "Auf Steam wünschen",
+    "wishlistOnSteam": "Zur Steam-Wunschliste hinzufügen",
     "demoProgress": "Demo-Fortschritt",
     "demoProgressHint": "In der Demo kannst du bis zu {{count}} Holzhütten bauen.",
     "demoEnded": "Demo beendet",
@@ -92,7 +92,7 @@
     "autoSaveSignedIn": "Spiel wird jede Minute automatisch gespeichert",
     "autoSaveGuest": "Spiel wird alle 15 Sekunden automatisch gespeichert",
     "signUpCloudSave": "Registriere dich, um in der Cloud zu speichern",
-    "lastSave": "Letztes Speichern: {{time}}",
+    "lastSave": "Zuletzt gespeichert: {{time}}",
     "signedOut": "Erfolgreich abgemeldet",
     "signOutError": "Fehler beim Abmelden",
     "gameSaved": "Spiel erfolgreich gespeichert",
@@ -103,8 +103,8 @@
     "deleteAccountFailed": "Konto konnte nicht gelöscht werden",
     "tryAgainLater": "Versuche es später erneut.",
     "notSignedIn": "Nicht angemeldet",
-    "subscribed": "Du bist abonniert",
-    "unsubscribed": "Du hast abbestellt",
+    "subscribed": "E-Mails abonniert",
+    "unsubscribed": "E-Mails abbestellt",
     "subscribedDesc": "Wir senden dir gelegentlich Updates und Angebote per E-Mail.",
     "unsubscribedDesc": "Du erhältst keine Marketing-E-Mails von uns.",
     "preferenceUpdateFailed": "Einstellung konnte nicht aktualisiert werden",
@@ -113,7 +113,7 @@
   },
   "pauseHotkey": {
     "hintPrefix": "Nutze ",
-    "hintSelect": " um Tab zu wählen oder ",
+    "hintSelect": ", um einen Tab auszuwählen, oder ",
     "hintSuffix": " zum Wechseln zwischen Tabs"
   },
   "villageHotkeyTutorial": {

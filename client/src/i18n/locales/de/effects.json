@@ -1,7 +1,7 @@
 {
   "books": {
     "book_of_ascension": {
-      "description": "Buch über die Erhebung des Selbst. Ermöglicht, durch Übung besser in Aufgaben zu werden.",
+      "description": "Buch über die Erhebung des Selbst. Ermöglicht es, dich durch Übung in Aufgaben zu verbessern.",
       "name": "Buch des Aufstiegs"
     },
     "book_of_absolution": {
@@ -75,7 +75,7 @@
       "name": "Verschlingerblut"
     },
     "bone_dice": {
-      "description": "Aus Knochen geschnitzte Würfel, weich und beunruhigend glatt poliert. Gewährt ein zusätzliches Spiel beim Spieler.",
+      "description": "Aus Knochen geschnitzte Würfel, weich und beunruhigend glatt poliert. Gewährt ein zusätzliches Spiel beim Glücksspieler.",
       "name": "Knochenwürfel"
     },
     "bone_necklace": {
@@ -91,7 +91,7 @@
       "name": "Geborstene Krone"
     },
     "creatures_bones": {
-      "description": "Gewaltige Knochen der unterirdischen Seekreatur. Der Schmied kann daraus einen Großen Schild schmieden.",
+      "description": "Gewaltige Knochen der Kreatur aus dem unterirdischen See. Der Schmied kann daraus einen Großschild schmieden.",
       "name": "Knochen der Kreatur"
     },
     "dagons_gift": {
@@ -126,6 +126,10 @@
       "description": "Gut gefertigter Lederrucksack, der die Last auf den Schultern erleichtert",
       "name": "Entdeckerrucksack"
     },
+    "fang_charm": {
+      "description": "Band aus schwarzen Reißzähnen einer gewaltigen Kreatur",
+      "name": "Reißzahn-Talisman"
+    },
     "feeding_ring": {
       "description": "Ring, der eines Morgens erschien und scheinbar mit deinem Finger verwachsen ist",
       "name": "Fütternder Ring"
@@ -145,6 +149,10 @@
     "forests_grace": {
       "description": "Die Hirsche des Waldes scheinen dich weniger zu bemerken",
       "name": "Gnade des Waldes"
+    },
+    "brimstone_infusion": {
+      "description": "Stahlschmiede erzeugen +1 Stahl",
+      "name": "Schwefelinfusion"
     },
     "fresh_blood": {
       "description": "Fremde nähern sich dem Dorf häufiger",
@@ -191,7 +199,7 @@
       "name": "Bürde des Ritters"
     },
     "leatherbound_book": {
-      "description": "Alter in Leder gebundener Foliant, auf dem Deckel mit einer Ketten-Brandmarke gezeichnet",
+      "description": "Alter, in Leder gebundener Foliant, auf dem Deckel mit einer Ketten-Brandmarke gezeichnet",
       "name": "Ledergebundenes Buch"
     },
     "loggers_gloves": {
@@ -235,8 +243,8 @@
       "name": "Okkultistengrimoire"
     },
     "odd_trinket": {
-      "description": "Glühendes bernsteinfarbenes Elixir, beim Holzhacken gefunden",
-      "name": "Seltsames Elixir"
+      "description": "Glühendes bernsteinfarbenes Elixier, beim Holzhacken gefunden",
+      "name": "Seltsames Elixier"
     },
     "ravenfeather_mantle": {
       "description": "Mystischer Mantel, aus schimmernden Rabenfedern gewoben",
@@ -316,7 +324,7 @@
     },
     "survivors_last_words": {
       "description": "Der letzte Segen eines sterbenden Fremden",
-      "name": "Worte des Überlebenden"
+      "name": "Letzte Worte des Überlebenden"
     },
     "survivors_notes": {
       "description": "Alte Schriftrolle voller praktischer Ratschläge, hinterlassen von jemandem, der vor langer Zeit hier lebte.",
@@ -349,14 +357,6 @@
     "wooden_figure": {
       "description": "Geschnitzte Holzfigur einer beunruhigenden Kreatur mit Tentakeln",
       "name": "Holzfigur"
-    },
-    "fang_charm": {
-      "description": "Band aus schwarzen Reißzähnen einer gewaltigen Kreatur",
-      "name": "Reißzahn-Talisman"
-    },
-    "brimstone_infusion": {
-      "description": "Stahlschmiede erzeugen +1 Stahl",
-      "name": "Schwefelinfusion"
     }
   },
   "fellowship": {
@@ -448,7 +448,7 @@
     },
     "mastermason_chisel": {
       "description": "Erlesen gefertigtes Werkzeug eines längst vergessenen Baumeisters",
-      "name": "Meistermaurermeißel"
+      "name": "Meißel des Steinmetzmeisters"
     },
     "natharit_pickaxe": {
       "description": "Extrem robuste Spitzhacke aus unbekanntem Material von außergewöhnlicher Qualität",
@@ -573,7 +573,7 @@
       "name": "Langbogen"
     },
     "manhunter_bow": {
-      "description": "Bogen des Menschenjägers, bespannt zum Jagen von Menschen",
+      "description": "Bogen des Menschenjägers, bespannt zum Jagen von Menschen.",
       "name": "Menschenjägerbogen"
     },
     "master_bow": {
@@ -601,7 +601,7 @@
       "name": "Sturmglas-Hellebarde"
     },
     "veinfire_elixir": {
-      "description": "Alchemistisches Heilelixier, destilliert aus seltener Aderwurzel",
+      "description": "Alchemisches Heilelixier, destilliert aus seltener Aderwurzel",
       "name": "Aderfeuer-Elixier"
     },
     "void_bomb": {

@@ -19,7 +19,7 @@
     "alreadyPurchased": "Déjà acheté",
     "continueCheckout": "Continuer",
     "feastAvailable": "{{name}} ({{remaining}}/{{total}} disponibles)",
-    "cruelModeActivateHint": "(activez et démarrez une nouvelle partie pour jouer)",
+    "cruelModeActivateHint": "Activez-le, puis lancez une nouvelle partie",
     "firstPurchaseInsightBannerBefore": "Obtenez",
     "firstPurchaseInsightBannerBeforePlaylight": "En tant qu'utilisateur Playlight, vous recevez",
     "firstPurchaseInsightBannerBeforeItch": "En tant qu'utilisateur itch.io, vous recevez",
@@ -28,8 +28,8 @@
     "firstPurchaseInsightBannerInsight": "Perspicacité",
     "firstPurchaseInsightBannerAfter": "gratuitement avec votre premier achat",
     "firstPurchaseInsightCheckoutFree": "gratuitement",
-    "firstPurchaseInsightGranted": "Cadeau de premier achat : +{{amount}} {{glyph}} Perspicacité",
-    "loadingPayment": "Chargement du système de paiement...",
+    "firstPurchaseInsightGranted": "Cadeau de premier achat : +{{amount}} {{glyph}} perspicacité",
+    "loadingPayment": "Chargement du système de paiement…",
     "paymentSrDescription": "Finalisez votre paiement pour {{name}}",
     "originalPrice": "Prix d'origine",
     "saleDiscount": "Remise promotionnelle",
@@ -40,7 +40,7 @@
     "termsOfService": "Conditions",
     "rightOfWithdrawal": "Rétractation",
     "completePurchaseFor": "Finaliser l'achat pour {{price}}",
-    "paymentFailed": "Paiement échoué",
+    "paymentFailed": "Échec du paiement",
     "tooManyPaymentRequests": "Trop de demandes de paiement. Veuillez réessayer plus tard.",
     "cruelModeDeactivatedLog": "Mode cruel désactivé. Les nouvelles parties utiliseront la difficulté normale.",
     "notAuthenticated": "Vous n'êtes pas connecté",
@@ -48,29 +48,29 @@
     "unexpectedError": "Quelque chose s'est mal passé.",
     "purchaseSuccessful": "Achat terminé.",
     "purchaseSuccess": "Achat réussi",
-    "purchaseAddedSingle": "{{name}} a été ajouté à vos achats. Consultez l'onglet « Achats » pour l'activer.",
-    "purchaseAddedBundle": "Les composants de {{name}} ont été ajoutés à vos achats. Consultez l'onglet « Achats » pour les activer.",
-    "freeGoldAdded": "{{amount}} or a été ajouté à vos ressources !",
+    "purchaseAddedSingle": "{{name}} a été ajouté à vos achats. Consultez l'onglet « Achats » pour l'activer.",
+    "purchaseAddedBundle": "Les composants de {{name}} ont été ajoutés à vos achats. Consultez l'onglet « Achats » pour les activer.",
+    "freeGoldAdded": "{{amount}} or a été ajouté à vos ressources !",
     "freeGoldClaimedLog": "Vous avez réclamé {{amount}} or. Revenez demain si vous survivez à la nuit.",
     "freeGoldCooldownLog_one": "Vous pourrez réclamer de l'or gratuit dans {{hours}} heure.",
     "freeGoldCooldownLog_other": "Vous pourrez réclamer de l'or gratuit dans {{hours}} heures.",
-    "freeItemAdded": "{{name}} a été ajouté à vos achats. Consultez l'onglet « Achats » pour l'activer.",
-    "tradersGratitudeDiscount": "{{percent}} % de remise supplémentaire grâce à l'événement Gratitude du marchand",
-    "tradersSonDiscount": "{{percent}} % de remise supplémentaire grâce à l'événement Fils du marchand.",
+    "freeItemAdded": "{{name}} a été ajouté à vos achats. Consultez l'onglet « Achats » pour l'activer.",
+    "tradersGratitudeDiscount": "{{percent}} % de remise supplémentaire grâce à l'événement Gratitude du marchand",
+    "tradersSonDiscount": "{{percent}} % de remise supplémentaire grâce à l'événement Fils du marchand.",
     "journeyCompleteDiscount": "Réduction spéciale pour avoir terminé le jeu",
     "artifactSkullLantern": {
       "unlocksStoryline": "Débloque l'histoire de la lanterne-crâne",
-      "caveExplore": "Exploration de grotte : +150 % de bonus, -3 s de recharge",
-      "mining": "Extraction : +150 % de bonus, -3 s de recharge"
+      "caveExplore": "Exploration de grotte : +150 % de bonus, -3 s de recharge",
+      "mining": "Extraction : +150 % de bonus, -3 s de recharge"
     },
     "artifactTarnishedCompass": {
       "unlocksStoryline": "Débloque l'histoire de la boussole",
-      "doubleGain": "5 % de chance de doubler les gains d'actions",
+      "doubleGain": "5 % de chance de doubler les gains d'actions",
       "luck": "+4 Chance"
     },
     "artifactCrowHarness": {
       "unlocksStoryline": "Débloque l'histoire du corbeau",
-      "doubleGain": "Jusqu'à 10 % de chance de doubler les gains d'actions",
+      "doubleGain": "Jusqu'à 10 % de chance de doubler les gains d'actions",
       "addsFellowshipMember": "Ajoute un membre de la compagnie"
     },
     "cruelMode": {
@@ -81,13 +81,13 @@
       "reusePurchases": "Réutiliser les achats existants"
     },
     "greatFeast": {
-      "forMinutes": "Pendant {{minutes}} minutes :",
+      "forMinutes": "Pendant {{minutes}} minutes :",
       "villageProduction": "Production du village ×5",
-      "newVillagerChance": "+25 % de chance de nouveau villageois"
+      "newVillagerChance": "+25 % de chance de nouveau villageois"
     },
     "alreadyClaimedItemLog": "Vous avez déjà récupéré {{name}}.",
     "claimFailedLog": "Impossible de récupérer {{name}}. Veuillez réessayer.",
-    "activatedDefaultLog": "{{name}} activé ! Les récompenses ont été ajoutées à votre inventaire.",
+    "activatedDefaultLog": "{{name}} activé ! Les récompenses ont été ajoutées à votre inventaire.",
     "securePaymentVia": "Paiement sécurisé via",
     "securePaymentWith": "avec",
     "securePurchaseTitle": "Sécurisez votre achat",

@@ -2,7 +2,7 @@
   "action": {
     "0-chopWood": {
       "label": "Drwal",
-      "description": "Ulepsz „Zbieraj drewno” do poziomu 10."
+      "description": "Ulepsz „Wyrąb drewna” do poziomu 10."
     },
     "0-craftTorches": {
       "label": "Wytwórca pochodni",
@@ -10,7 +10,7 @@
     },
     "0-exploreCave": {
       "label": "Badacz jaskiń",
-      "description": "Ulepsz „Badaj jaskinię” do poziomu 10."
+      "description": "Ulepsz „Eksplorację jaskini” do poziomu 10."
     },
     "0-gamblerWins": {
       "label": "Doświadczony hazardzista",
@@ -18,35 +18,35 @@
     },
     "0-hunt": {
       "label": "Myśliwy",
-      "description": "Ulepsz „Poluj” do poziomu 10."
+      "description": "Ulepsz „Polowanie” do poziomu 10."
     },
     "1-mineAdamant": {
       "label": "Górnik adamantu",
-      "description": "Ulepsz „Adamant” do poziomu 10."
+      "description": "Ulepsz „Wydobycie adamantu” do poziomu 10."
     },
     "1-mineCoal": {
       "label": "Górnik węgla",
-      "description": "Ulepsz „Węgiel” do poziomu 10."
+      "description": "Ulepsz „Wydobycie węgla” do poziomu 10."
     },
     "1-mineIron": {
       "label": "Górnik żelaza",
-      "description": "Ulepsz „Żelazo” do poziomu 10."
+      "description": "Ulepsz „Wydobycie żelaza” do poziomu 10."
     },
     "1-mineMoonstone": {
       "label": "Górnik kamienia księżycowego",
-      "description": "Ulepsz „Kamień księżycowy” do poziomu 10."
+      "description": "Ulepsz „Wydobycie kamienia księżycowego” do poziomu 10."
     },
     "1-mineObsidian": {
       "label": "Górnik obsydianu",
-      "description": "Ulepsz „Obsydian” do poziomu 10."
+      "description": "Ulepsz „Wydobycie obsydianu” do poziomu 10."
     },
     "1-mineStone": {
       "label": "Górnik kamienia",
-      "description": "Ulepsz „Kamień” do poziomu 10."
+      "description": "Ulepsz „Wydobycie kamienia” do poziomu 10."
     },
     "1-mineSulfur": {
       "label": "Górnik siarki",
-      "description": "Ulepsz „Siarka” do poziomu 10."
+      "description": "Ulepsz „Wydobycie siarki” do poziomu 10."
     },
     "2-animals": {
       "label": "Ofiarnik zwierząt",
@@ -90,11 +90,11 @@
     },
     "4-insightful": {
       "label": "Wnikliwy",
-      "description": "Wydaj łącznie 10'000 wglądu."
+      "description": "Wydaj łącznie 10 000 wglądu."
     },
     "4-investor": {
       "label": "Inwestor",
-      "description": "Zainwestuj łącznie 2'500 złota."
+      "description": "Zainwestuj łącznie 2 500 złota."
     },
     "4-luckyInvestor": {
       "label": "Szczęśliwy inwestor",
@@ -114,7 +114,7 @@
     },
     "4-solsticeGatherings": {
       "label": "Uczestnik przesilenia",
-      "description": "Zorganizuj 10 zgromadzeń przesilenia."
+      "description": "Zorganizuj 10 obchodów przesilenia."
     },
     "4-wellRested": {
       "label": "Twardy śpioch",
@@ -151,7 +151,7 @@
       "description": "Zbierz łącznie 500 drewna."
     },
     "1-builder": {
-      "label": "Wznoszenie budynków",
+      "label": "Wznoś budynki",
       "description": "Posiadaj co najmniej 5 budynków."
     },
     "1-communityBuilder": {
@@ -260,7 +260,7 @@
     },
     "2-schematic_weapons": {
       "label": "Schematy",
-      "description": "Wytwórz trzy bronie ze schematów."
+      "description": "Wytwórz trzy rodzaje broni ze schematów."
     },
     "3-ancient_books": {
       "label": "Starożytna mądrość",
@@ -282,7 +282,7 @@
   "overall": {
     "0-achievementMaxer": {
       "label": "Mistrz osiągnięć",
-      "description": "Ukończ każde nieepickie osiągnięcie."
+      "description": "Ukończ wszystkie osiągnięcia poza epickimi."
     },
     "0-caveVeteran": {
       "label": "Weteran jaskini",

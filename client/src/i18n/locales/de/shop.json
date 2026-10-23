@@ -11,23 +11,23 @@
   },
   "advanced_bundle": {
     "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",
-    "name": "Bleicher König Bundle"
+    "name": "Bleicher-König-Bundle"
   },
   "artifact_bundle": {
     "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",
-    "name": "Dunkle Artefakte Bundle"
+    "name": "Dunkle-Artefakte-Bundle"
   },
   "ashen_throne_bundle": {
     "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",
-    "name": "Aschener Thron Bundle"
+    "name": "Aschener-Thron-Bundle"
   },
   "basic_survival_bundle": {
     "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",
-    "name": "Verblassender Wanderer Bundle"
+    "name": "Verblassender-Wanderer-Bundle"
   },
   "crow_harness": {
     "activationMessage": "Das Krähengeschirr wurde deinen Werkzeugen hinzugefügt! Nun musst du eine Krähe finden, um sie an das Geschirr zu binden.",
-    "description": "Speziell gefertigtes Geschirr für Botenkrähen. Schaltet die Krähenhandlung frei. Fügt einen Gefährten hinzu.",
+    "description": "Speziell gefertigtes Geschirr für Botenkrähen. Schaltet den Krähen-Handlungsstrang frei. Fügt einen Gefährten hinzu.",
     "name": "Krähengeschirr"
   },
   "cruel_mode": {
@@ -48,7 +48,7 @@
   "gold_100_free": {
     "activationMessage": "100 Gold wurden deinem Inventar als Geschenk hinzugefügt!",
     "description": "Tägliche Gnade in einer kalten Welt",
-    "name": "100 Gold Geschenk"
+    "name": "100 Gold als Geschenk"
   },
   "gold_15000": {
     "activationMessage": "15'000 Gold wurden deinem Inventar hinzugefügt.",
@@ -92,12 +92,12 @@
   },
   "skull_lantern": {
     "activationMessage": "Die Schädellaterne wurde deinen Werkzeugen hinzugefügt! Ihr unheimliches Licht wird dich durch die Tiefen führen.",
-    "description": "Aus verfluchtem Knochen geschmiedet, erhellt sie die tiefsten Tiefen. Schaltet die Schädellaternenhandlung frei.",
+    "description": "Aus verfluchtem Knochen geschmiedet, erhellt sie die tiefsten Tiefen. Schaltet den Schädellaternen-Handlungsstrang frei.",
     "name": "Schädellaterne"
   },
   "tarnished_compass": {
     "activationMessage": "Der angelaufene Kompass wurde deinem Inventar hinzugefügt! Seine alte Magie kann deinen Unternehmungen Glück bringen.",
-    "description": "Artefakt der verschwundenen Zivilisation; seine Nadel weist auf verborgene Orte. Schaltet die Kompasshandlung frei.",
+    "description": "Artefakt der verschwundenen Zivilisation; seine Nadel weist auf verborgene Orte. Schaltet den Kompass-Handlungsstrang frei.",
     "name": "Angelaufener Kompass"
   }
 }
