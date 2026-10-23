@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/shared-progress-shader";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import CooldownButton, {
+  gameActionButtonGridClassName,
   gameActionOutlineButtonClassName,
 } from "@/components/CooldownButton";
 import {
@@ -689,7 +690,7 @@ export default function EstatePanel({
     <ScrollArea className="h-full w-full">
       <div className={cn("w-full space-y-2 pr-2 pb-2", GAME_TAB_PANEL_BODY)}>
         {/* Sleep Mode Section */}
-        <div className="space-y-">
+        <div>
           {/* Extra bottom padding keeps Sleep/Focus from jumping when the focus ring appears */}
           <div className="pb-3">
             <div className={GAME_TAB_SECTION_HEADER_ROW}>
@@ -726,96 +727,98 @@ export default function EstatePanel({
               )}
             </div>
           </div>
-          <TooltipWrapper
-            tooltip={
-              <div className="text-xs">
-                {canActivateIdle ? (
-                  <div>{t("estate.sleepTooltipReady")}</div>
-                ) : (
-                  <>
-                    <div>{t("estate.sleepTooltipBlocked")}</div>
-                    <div className="border-t border-border my-1" />
-                    <div className="whitespace-nowrap">
-                      <div>{t("estate.sleepTooltipCurrentProduction")}</div>
-                      <div>
-                        {getResourceName("wood", "Wood")}:{" "}
-                        {formatSignedNumber(Math.round(woodProduction))}
+          <div className={gameActionButtonGridClassName("pb-1")}>
+            <TooltipWrapper
+              tooltip={
+                <div className="text-xs">
+                  {canActivateIdle ? (
+                    <div>{t("estate.sleepTooltipReady")}</div>
+                  ) : (
+                    <>
+                      <div>{t("estate.sleepTooltipBlocked")}</div>
+                      <div className="border-t border-border my-1" />
+                      <div className="whitespace-nowrap">
+                        <div>{t("estate.sleepTooltipCurrentProduction")}</div>
+                        <div>
+                          {getResourceName("wood", "Wood")}:{" "}
+                          {formatSignedNumber(Math.round(woodProduction))}
+                        </div>
+                        <div>
+                          {getResourceName("food", "Food")}:{" "}
+                          {formatSignedNumber(Math.round(foodProduction))}
+                        </div>
                       </div>
+                    </>
+                  )}
+                </div>
+              }
+              tooltipId="sleep-button"
+              disabled={!canActivateIdle}
+            >
+              <div className="inline-block text-xs font-medium text-foreground">
+                <Button
+                  onClick={handleActivateIdleMode}
+                  disabled={!canActivateIdle}
+                  size="xs"
+                  variant="outline"
+                  className={gameActionOutlineButtonClassName(!canActivateIdle)}
+                  button_id="activate-sleep-mode"
+                >
+                  {t("estate.sleep")}
+                </Button>
+              </div>
+            </TooltipWrapper>
+
+            {/* Focus Activation Button */}
+            {showFocusButton && (
+              <div className="relative inline-block text-xs font-medium text-foreground">
+                <CooldownButton
+                  onClick={() => {
+                    if (isDemoPlayFrozen(useGameStore.getState())) return;
+                    const now = Date.now();
+                    const focusPoints = focusState?.points || 0;
+                    const focusDuration = calculateFocusDuration(focusPoints);
+                    updateFocusState({
+                      isActive: true,
+                      endTime: now + focusDuration,
+                      startTime: now,
+                      duration: focusDuration,
+                      points: 0,
+                    });
+                  }}
+                  cooldownMs={0}
+                  size="xs"
+                  variant="outline"
+                  className="focus-glow-hover"
+                  button_id="activate-focus"
+                  disabled={
+                    !focusState?.points ||
+                    focusState.points === 0 ||
+                    focusState?.isActive
+                  }
+                  tooltip={
+                    <div className="text-xs whitespace-nowrap">
+                      <div>{t("estate.focusPointTooltip")}</div>
                       <div>
-                        {getResourceName("food", "Food")}:{" "}
-                        {formatSignedNumber(Math.round(foodProduction))}
+                        {t("estate.focusRewardTooltip", {
+                          count: focusState?.points || 0,
+                        })}
                       </div>
                     </div>
-                  </>
+                  }
+                >
+                  {t("estate.focus")}
+                </CooldownButton>
+                {focusState && focusState.points > 0 && (
+                  <div
+                    className="button-focus-badge game-corner-badge-digit flex items-center justify-center bg-teal-950 rounded-full z-[20] pointer-events-none"
+                  >
+                    {focusState.points}
+                  </div>
                 )}
               </div>
-            }
-            tooltipId="sleep-button"
-            disabled={!canActivateIdle}
-          >
-            <div className="h-5 inline-block pb-1 text-xs font-medium text-foreground">
-              <Button
-                onClick={handleActivateIdleMode}
-                disabled={!canActivateIdle}
-                size="xs"
-                variant="outline"
-                className={gameActionOutlineButtonClassName(!canActivateIdle)}
-                button_id="activate-sleep-mode"
-              >
-                {t("estate.sleep")}
-              </Button>
-            </div>
-          </TooltipWrapper>
-
-          {/* Focus Activation Button */}
-          {showFocusButton && (
-            <div className="relative inline-block pb-1 text-xs font-medium text-foreground ml-2">
-              <CooldownButton
-                onClick={() => {
-                  if (isDemoPlayFrozen(useGameStore.getState())) return;
-                  const now = Date.now();
-                  const focusPoints = focusState?.points || 0;
-                  const focusDuration = calculateFocusDuration(focusPoints);
-                  updateFocusState({
-                    isActive: true,
-                    endTime: now + focusDuration,
-                    startTime: now,
-                    duration: focusDuration,
-                    points: 0,
-                  });
-                }}
-                cooldownMs={0}
-                size="xs"
-                variant="outline"
-                className="focus-glow-hover"
-                button_id="activate-focus"
-                disabled={
-                  !focusState?.points ||
-                  focusState.points === 0 ||
-                  focusState?.isActive
-                }
-                tooltip={
-                  <div className="text-xs whitespace-nowrap">
-                    <div>{t("estate.focusPointTooltip")}</div>
-                    <div>
-                      {t("estate.focusRewardTooltip", {
-                        count: focusState?.points || 0,
-                      })}
-                    </div>
-                  </div>
-                }
-              >
-                {t("estate.focus")}
-              </CooldownButton>
-              {focusState && focusState.points > 0 && (
-                <div
-                  className="button-focus-badge game-corner-badge-digit flex items-center justify-center bg-teal-950 rounded-full z-[20] pointer-events-none"
-                >
-                  {focusState.points}
-                </div>
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {/* Smoke canvas must wrap only the upgrade bars. Wrapping the whole
