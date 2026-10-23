@@ -5,7 +5,7 @@ import {
   useState,
 } from "react";
 import type { AchievementChartConfig } from "@/achievements/achievementTypes";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   Dialog,
   DialogClose,
@@ -40,6 +40,7 @@ import { logger } from "@/lib/logger";
 import { getShareFontEmbedCss } from "@/lib/shareImageFonts";
 import { useToast } from "@/hooks/use-toast";
 import { useSteamDesktopEditionActive } from "@/hooks/useSteamEditionActive";
+import { isSteamDesktopEditionActive } from "@/lib/edition";
 import { gameStateSchema, type GameState } from "@shared/schema";
 import {
   highestAttackWaveNumber,
@@ -78,8 +79,10 @@ const SHARE_RESOURCE_MILESTONE = 50_000;
 
 const RING_CHART_SIZE = ACHIEVEMENT_RING_SHARE_SIZE;
 const RING_GRID_GAP = 40;
-const RING_LABEL_FONT_SIZE = 30;
+const RING_LABEL_FONT_SIZE = 34;
 const RING_LABEL_GAP = 8;
+const TITLE_FONT_SIZE = 88;
+const FOOTER_STATS_FONT_SIZE = 36;
 
 const CATEGORY_HEADER_KEYS: Record<
   AchievementChartConfig["idPrefix"],
@@ -110,7 +113,7 @@ function getShareRingEntries() {
 }
 
 /** Shared size for the "Resources" and "Achievements: X %" headings. */
-const SECTION_HEADING_FONT_SIZE = 36;
+const SECTION_HEADING_FONT_SIZE = 40;
 const SECTION_HEADING_CLASS =
   "font-medium tracking-wide text-gray-300 leading-none";
 const SECTION_PROGRESS_BAR_HEIGHT = 8;
@@ -127,13 +130,13 @@ const SECTION_RING_GRID_GAP = Math.max(
 const SECTION_RING_ROW_GAP = SECTION_RING_GRID_GAP + 20;
 const SECTION_PROGRESS_GAP = 24;
 const SECTION_BLOCK_MARGIN_BOTTOM = 24;
-const CTA_FONT_SIZE = 42;
+const CTA_FONT_SIZE = 46;
 
 /** Vertical space for the resource list after header + section title (px). */
 const RESOURCE_LIST_MAX_HEIGHT =
   SHARE_IMAGE_HEIGHT -
   64 * 2 - // p-16 top + bottom
-  (80 + 48) - // title + mb-12
+  (TITLE_FONT_SIZE + 48) - // title + mb-12
   (SECTION_HEADING_FONT_SIZE +
     SECTION_PROGRESS_GAP +
     SECTION_PROGRESS_BAR_HEIGHT +
@@ -143,13 +146,13 @@ function getResourceListMetrics(
   rowCount: number,
   hasPreciousSpacer: boolean,
 ): { fontSize: number; rowGap: number } {
-  if (rowCount <= 0) return { fontSize: 30, rowGap: 6 };
+  if (rowCount <= 0) return { fontSize: 34, rowGap: 6 };
   const spacer = hasPreciousSpacer ? 12 : 0;
   const targetRowHeight = (RESOURCE_LIST_MAX_HEIGHT - spacer) / rowCount;
   const rowGap = Math.max(2, Math.min(6, Math.round(targetRowHeight * 0.1)));
   const fontSize = Math.max(
-    16,
-    Math.min(32, Math.floor(targetRowHeight - rowGap)),
+    18,
+    Math.min(36, Math.floor(targetRowHeight - rowGap)),
   );
   return { fontSize, rowGap };
 }
@@ -363,7 +366,7 @@ function ShareCard({
           <div className="mb-12">
             <div
               className="font-bold leading-none tracking-tight text-neutral-100"
-              style={{ fontSize: 80 }}
+              style={{ fontSize: TITLE_FONT_SIZE }}
             >
               A Dark Cave
             </div>
@@ -458,7 +461,7 @@ function ShareCard({
         <div
           className="absolute bottom-16 right-16 flex flex-col gap-3 text-right leading-none"
           style={{
-            fontSize: 32,
+            fontSize: FOOTER_STATS_FONT_SIZE,
             width: "max-content",
             maxWidth: "calc(100% - 8rem)",
           }}
@@ -492,9 +495,12 @@ function ShareCard({
 }
 
 export default function ShareDialog() {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const { toast } = useToast();
   const steamDesktopEditionActive = useSteamDesktopEditionActive();
+  const devGameMode = useGameStore((s) => s.devGameMode);
+  /** Steam desktop / demo / playtest (and DEV Steam modes). Web portals keep share. */
+  const progressShareDisabled = isSteamDesktopEditionActive(devGameMode);
   const open = useGameStore((s) => s.shareDialogOpen);
   const setOpen = useGameStore((s) => s.setShareDialogOpen);
   const resources = useGameStore((s) => s.resources) as Record<string, number>;
@@ -539,8 +545,12 @@ export default function ShareDialog() {
     )
     : false;
 
+  useEffect(() => {
+    if (progressShareDisabled && open) setOpen(false);
+  }, [progressShareDisabled, open, setOpen]);
+
   useLayoutEffect(() => {
-    if (!open) return;
+    if (!open || progressShareDisabled) return;
     // Size the layout box before paint so dialog centering does not jump.
     setPreviewScale(computeSharePreviewScale());
     setEntranceKey((key) => key + 1);
@@ -548,10 +558,10 @@ export default function ShareDialog() {
     const update = () => setPreviewScale(computeSharePreviewScale());
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
-  }, [open]);
+  }, [open, progressShareDisabled]);
 
   useEffect(() => {
-    if (!open) {
+    if (!open || progressShareDisabled) {
       setActionsReady(false);
       return;
     }
@@ -559,7 +569,7 @@ export default function ShareDialog() {
       setActionsReady(true);
     }, SHARE_ACTIONS_DELAY_MS);
     return () => window.clearTimeout(timeoutId);
-  }, [open, entranceKey]);
+  }, [open, entranceKey, progressShareDisabled]);
 
   const renderShareBlob = async (): Promise<Blob | null> => {
     const node = cardRef.current;
@@ -788,6 +798,8 @@ export default function ShareDialog() {
       actionLockRef.current = false;
     }
   };
+
+  if (progressShareDisabled) return null;
 
   return (
     <Dialog open={open} onOpenChange={(next) => !next && setOpen(false)}>

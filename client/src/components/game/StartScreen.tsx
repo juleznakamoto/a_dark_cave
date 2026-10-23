@@ -10,7 +10,7 @@ import {
   steamStoreUrl,
 } from "@/lib/gameFooterSocialLinks";
 import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { useLocale } from "@/i18n/useLocale";
 import { OG_LOCALE_TAGS, SUPPORTED_LOCALES } from "@/i18n/locales";
 import { GAME_CHROME_NO_BG_HOVER } from "@/components/game/gameChrome";
@@ -103,7 +103,7 @@ type VaporizeTextCycleComponent =
 
 function StartScreenFullscreenButton() {
   const { isFullscreen, toggleFullscreen, available } = useFullscreen();
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   if (!available) return null;
   const label = isFullscreen
     ? t("profile.exitFullscreen", { defaultValue: "Exit full screen" })
@@ -396,7 +396,7 @@ export default function StartScreen({
   }>(START_INTRO_VAPORIZE_FONT_FALLBACK);
   const introLineRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const introLineClipRefs = useRef<Array<HTMLElement | null>>([]);
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const { locale } = useLocale();
   // Steam Game / Playtest / Demo (build or DEV Game Mode) — no social/store links in footer.
   // Galaxy and Normal/web keep Steam / Reddit / Contact.

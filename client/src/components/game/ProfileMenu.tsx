@@ -20,7 +20,10 @@ import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
 import { logger } from "@/lib/logger";
 import { formatSaveTimestamp } from "@/lib/utils";
-import { isLocalOnlyEdition } from "@/lib/edition";
+import {
+  isLocalOnlyEdition,
+  isSteamDesktopEditionActive,
+} from "@/lib/edition";
 import {
   useCrazyGamesEditionActive,
   useSteamEditionActive,
@@ -52,7 +55,7 @@ import {
   REWARDS_TASKS_SHORTCUT_VISIBLE_AFTER_MS,
 } from "@/game/socialPromoExclusiveReward";
 import { DestroyedChromeScope } from "@/components/game/gameChrome";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { FullscreenButton } from "./FullscreenButton";
 import { CrazyGamesMenuItems } from "./CrazyGamesMenuLinks";
 import { STEAM_STORE_UTM_CONTENT } from "@/lib/gameFooterSocialLinks";
@@ -165,7 +168,7 @@ function useProfileMenuState() {
   const [marketingPrefLoading, setMarketingPrefLoading] = useState(false);
   const [deleteAccountInProgress, setDeleteAccountInProgress] = useState(false);
   const { toast } = useToast();
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
 
   const showRewardsTasksShortcut = isRewardsTasksShortcutVisible({
     social_media_rewards,
@@ -618,6 +621,8 @@ export function GameHeaderControls() {
     setShareDialogOpen,
     setSettingsDialogOpen,
   } = useProfileMenu();
+  const devGameMode = useGameStore((s) => s.devGameMode);
+  const progressShareDisabled = isSteamDesktopEditionActive(devGameMode);
 
   return (
     <div className="flex items-center gap-0.5 shrink-0">
@@ -661,12 +666,12 @@ export function GameHeaderControls() {
           align="end"
           side="bottom"
           sideOffset={8}
-          className="text-sm !max-h-none w-auto [&_[role=menuitem]]:text-sm"
+          className="text-sm !max-h-none w-auto [&_[role=menuitem]]:text-sm [&_[role=menuitem]]:px-2.5 [&_[role=menuitem]]:py-2"
           style={{ zIndex: Z_INDEX.dropdown }}
         >
           {currentUser && (
             <>
-              <div className="flex items-center px-1 py-0.5 text-2xs text-muted-foreground truncate max-w-[200px]">
+              <div className="flex items-center px-2.5 py-1.5 text-2xs text-muted-foreground truncate max-w-[200px]">
                 {currentUser.email}
               </div>
               <DropdownMenuSeparator />
@@ -734,18 +739,22 @@ export function GameHeaderControls() {
               />
             </>
           )}
-          <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => {
-              setAccountDropdownOpen(false);
-              setShareDialogOpen(true);
-            }}
-          >
-            <span className="flex items-center gap-1.5">
-              <GameUiIcon name="share" />
-              {t("footer.progress")}
-            </span>
-          </DropdownMenuItem>
+          {!progressShareDisabled && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  setAccountDropdownOpen(false);
+                  setShareDialogOpen(true);
+                }}
+              >
+                <span className="flex items-center gap-1.5">
+                  <GameUiIcon name="share" />
+                  {t("footer.progress")}
+                </span>
+              </DropdownMenuItem>
+            </>
+          )}
           {(hasWonAnyGame || devMode) && !steamEditionActive && (
             <>
               <DropdownMenuSeparator />

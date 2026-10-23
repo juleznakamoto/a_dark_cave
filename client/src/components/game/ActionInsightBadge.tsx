@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
@@ -29,7 +29,7 @@ type ActionInsightBadgeProps = {
 };
 
 export function ActionInsightBadge({ timeRemainingMs }: ActionInsightBadgeProps) {
-  const { t, i18n } = useTranslation(["ui", "common"]);
+  const { t, i18n } = useUiTranslation();
   const clerksHut = useGameStore((s) => s.buildings.clerksHut ?? 0);
   const insight = useGameStore((s) => s.resources.insight ?? 0);
   const timedTabActive = useGameStore((s) => s.timedEventTab.isActive);
@@ -77,7 +77,7 @@ export function ActionInsightBadge({ timeRemainingMs }: ActionInsightBadgeProps)
   const insightResource = formatTooltipResourceName("insight");
   const costTooltip = useMemo(
     () =>
-      t("ui:timedEvent.prolongForInsight", {
+      t("timedEvent.prolongForInsight", {
         defaultValue:
           "Extend time by {{minutes}} min for {{cost}} {{resource}}",
         minutes: PROLONG_MINUTES,

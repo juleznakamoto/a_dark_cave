@@ -10,7 +10,7 @@ import {
   steamStoreUrl,
 } from "@/lib/gameFooterSocialLinks";
 import { useState, useEffect, useRef, useCallback, cloneElement, type ReactNode } from "react";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import {
@@ -138,7 +138,7 @@ function FooterSteamWishlistCallout({
 }
 
 function SteamDemoProgressBar() {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const woodenHut = useGameStore((s) => s.buildings.woodenHut ?? 0);
   const buildings = { woodenHut };
   const segments = getDemoProgressSegmentCount();
@@ -219,7 +219,7 @@ export default function GameFooter() {
   const idleModeDialogOpen = useGameStore((s) => s.idleModeDialog.isOpen);
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const donateHeartRef = useRef<HTMLSpanElement>(null);
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const steamEditionActive = useSteamEditionActive();
   const steamDemoActive = useSteamDemoActive();
   const crazyGamesEditionActive = useCrazyGamesEditionActive();

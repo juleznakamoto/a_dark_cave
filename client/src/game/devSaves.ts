@@ -54,6 +54,9 @@ function withSeenTabBlinks(
 }
 
 function withVillage(base: GameState): GameState {
+  // Crowded mid-village: many real build/craft/job buttons, still pre-forest /
+  // pre-estate / pre-bastion. Leave iron tools and next-tier buildings unowned
+  // so Cave craft and Village upgrade buttons stay visible.
   return withSeenTabBlinks(
     {
       ...base,
@@ -64,30 +67,67 @@ function withVillage(base: GameState): GameState {
       tools: {
         ...base.tools,
         stone_axe: true,
+        stone_pickaxe: true,
+      },
+      clothing: {
+        ...base.clothing,
+        fang_charm: true,
       },
       buildings: {
         ...base.buildings,
-        woodenHut: 2,
+        woodenHut: 8,
+        cabin: 1,
+        blacksmith: 1,
+        supplyHut: 1,
+        storehouse: 1,
+        tradePost: 1,
+        clerksHut: 1,
+        buildersLodge: 1,
+        heartfire: 1,
+        tannery: 1,
+        traps: 2,
       },
       villagers: {
         ...base.villagers,
-        gatherer: 2,
-        hunter: 1,
-        free: 0,
+        // Cap = woodenHut * 2 = 16
+        gatherer: 5,
+        hunter: 3,
+        scholar: 2,
+        tanner: 2,
+        free: 4,
       },
       resources: {
         ...base.resources,
-        wood: 80,
-        food: 40,
-        stone: 30,
-        fur: 8,
+        wood: 900,
+        food: 450,
+        stone: 600,
+        fur: 90,
+        bones: 70,
+        iron: 220,
+        coal: 80,
+        torch: 25,
+        leather: 50,
+        silver: 40,
+        gold: 55,
+        insight: 350,
       },
       story: {
         ...base.story,
         seen: {
           ...base.story?.seen,
+          hasWood: true,
+          actionCraftTorch: true,
+          caveExplored: true,
           hasStoneAxe: true,
           actionCraftStoneAxe: true,
+          hasStonePickaxe: true,
+          actionCraftStonePickaxe: true,
+          venturedDeeper: true,
+          // Village Produce section stays hidden until the first villager arrives.
+          hasVillagers: true,
+          villageTrapsSuggested: true,
+          longhouseUnlocked: true,
+          furTentsUnlocked: true,
         },
       },
     },
@@ -158,6 +198,8 @@ function withForest(base: GameState): GameState {
 }
 
 function withBastionProgress(base: GameState): GameState {
+  // Late-game chrome on top of village + forest + estate: mining tier, altar,
+  // fortifications, iron tools (steel left false so Cave craft stays busy).
   return withSeenTabBlinks(
     {
       ...base,
@@ -166,18 +208,89 @@ function withBastionProgress(base: GameState): GameState {
         bastionUnlocked: true,
         hasFortress: true,
       },
-      buildings: {
-        ...base.buildings,
-        bastion: 1,
-        watchtower: 1,
+      tools: {
+        ...base.tools,
+        iron_axe: true,
+        iron_pickaxe: true,
+        iron_lantern: true,
       },
       weapons: {
         ...base.weapons,
+        iron_sword: true,
         ashen_dagger: true,
+      },
+      clothing: {
+        ...base.clothing,
+        fur_cloak: true,
+        explorer_pack: true,
       },
       relics: {
         ...base.relics,
         survivors_notes: true,
+        bone_dice: true,
+        odd_trinket: true,
+      },
+      buildings: {
+        ...base.buildings,
+        woodenHut: Math.max(base.buildings.woodenHut ?? 0, 10),
+        stoneHut: Math.max(base.buildings.stoneHut ?? 0, 2),
+        shallowPit: 1,
+        foundry: 1,
+        alchemistHall: 1,
+        altar: 1,
+        bastion: 1,
+        watchtower: 2,
+        palisades: 1,
+        coinhouse: Math.max(base.buildings.coinhouse ?? 0, 1),
+      },
+      villagers: {
+        ...base.villagers,
+        // Cap ≈ 10*2 + 2*4 = 28; keep gatherers/hunters for Sleep production
+        gatherer: 6,
+        hunter: 4,
+        iron_miner: 3,
+        coal_miner: 2,
+        steel_forger: 2,
+        scholar: 2,
+        tanner: 2,
+        powder_maker: 1,
+        free: 6,
+      },
+      resources: {
+        ...base.resources,
+        wood: 2500,
+        food: 2000,
+        stone: 2000,
+        fur: 200,
+        bones: 400,
+        bone_totem: 12,
+        leather: 120,
+        iron: 500,
+        coal: 400,
+        steel: 250,
+        sulfur: 120,
+        black_powder: 60,
+        ember_bomb: 12,
+        ashfire_bomb: 4,
+        torch: 40,
+        silver: 180,
+        gold: 350,
+        insight: 900,
+        obsidian: 80,
+      },
+      story: {
+        ...base.story,
+        seen: {
+          ...base.story?.seen,
+          portalBlasted: true,
+          hasIronAxe: true,
+          hasIronPickaxe: true,
+          hasIronLantern: true,
+          hasIronSword: true,
+          descendedFurther: true,
+          herbGardenUnlocked: true,
+          boneyardUnlocked: true,
+        },
       },
     },
     ["bastion"],
@@ -208,9 +321,34 @@ function finalize(state: GameState, id: DevSaveId): GameState {
   };
 }
 
+function withFreshStartChrome(base: GameState): GameState {
+  // Still cave-only after Make Fire, but show Torches + a stocked side panel.
+  return {
+    ...base,
+    resources: {
+      ...base.resources,
+      wood: 35,
+      stone: 8,
+      food: 12,
+      torch: 2,
+    },
+    story: {
+      ...base.story,
+      seen: {
+        ...base.story?.seen,
+        hasWood: true,
+        firstWoodGathered: true,
+      },
+    },
+  };
+}
+
 const BUILDERS: Record<DevSaveId, () => GameState> = {
   "fresh-start": () =>
-    finalize(withStartedRun(createInitialState(), 2 * 60_000), "fresh-start"),
+    finalize(
+      withFreshStartChrome(withStartedRun(createInitialState(), 2 * 60_000)),
+      "fresh-start",
+    ),
   village: () =>
     finalize(
       withVillage(withStartedRun(createInitialState(), 20 * 60_000)),

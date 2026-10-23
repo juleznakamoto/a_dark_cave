@@ -28,14 +28,15 @@ import type { InvestmentDurationMin } from "@/game/rules/investmentHallTables";
 import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
 import { getBuildingDisplayName } from "@/game/rules/buildingTooltipSections";
 import { formatNumber, cn } from "@/lib/utils";
-import { useTranslation } from "react-i18next";
-import type { TFunction } from "i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
+
+type UiT = ReturnType<typeof useUiTranslation>["t"];
 
 const INVEST_RADIO_INDICATOR_PX = 8;
 
 function termMinutesLabel(
   durationMin: InvestmentDurationMin,
-  t: TFunction<"ui">,
+  t: UiT,
 ): string {
   return t("invest.minutes", { count: durationMin });
 }
@@ -47,7 +48,7 @@ function formatPercentDisplay(p: number): string {
 function formatLuckyChanceTopLine(
   luckyChancePct: number,
   luck: number,
-  t: TFunction<"ui">,
+  t: UiT,
 ): string {
   return t("invest.luckyChanceTop", {
     percent: formatPercentDisplay(luckyChancePct),
@@ -55,10 +56,7 @@ function formatLuckyChanceTopLine(
   });
 }
 
-function formatGoldAmount(
-  amount: number,
-  t: TFunction<["ui", "common"]>,
-): string {
+function formatGoldAmount(amount: number, t: UiT): string {
   return t("common:currency.goldAmount", {
     amount: formatNumber(amount),
   });
@@ -79,7 +77,7 @@ const INVEST_SECTION_INSET = "pl-1 pr-0";
 const INVEST_TABLE_LINE = "border-muted-foreground/25";
 
 export default function InvestDialog({ open, onOpenChange }: Props) {
-  const { t } = useTranslation(["ui", "common"]);
+  const { t } = useUiTranslation();
   const playTime = useGameStore((s) => s.playTime);
   const luck = useGameStore((s) => s.stats.luck);
   const cruelMode = useGameStore((s) => s.cruelMode);
@@ -459,8 +457,9 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
               <Button
                 onClick={handleCommit}
                 variant="outline"
+                size="xs"
                 className={cn(
-                  "h-8 px-4 text-xs font-medium",
+                  "adc-btn-dialog-cta text-xs font-medium",
                   gameActionOutlineButtonClassName(
                     offers.length < 3 ||
                     (resources.gold ?? 0) < Number(amountStr) ||

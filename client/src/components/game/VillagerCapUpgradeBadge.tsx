@@ -56,14 +56,13 @@ function useInsightBadgeTooltipPulse(tooltipId: string) {
 
 type VillagerCapUpgradeBadgeProps = {
   groupId: VillagerCapGroupId;
-  /** Job row id — unique tooltip / test id when several jobs share a group. */
+  /** Job row id — keeps tooltip / test ids stable alongside groupId. */
   jobId: string;
 };
 
 /**
  * Villager-cap upgrade badge (timed-tab Insight size: lg trigger + lg blob).
- * Playing state is shared per group via `insightRevealing` so every job in the
- * group animates and stays locked together.
+ * Playing state is keyed per job track via `insightRevealing`.
  */
 export function VillagerCapUpgradeBadge({
   groupId,

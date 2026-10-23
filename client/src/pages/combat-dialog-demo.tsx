@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import type { GameState } from "@shared/schema";
 import type { CombatResultSummary } from "@/game/types";
+import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
 import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import {
   BLOODFLAME_SPHERE_UPGRADES,
@@ -89,6 +90,7 @@ export default function CombatDialogDemo() {
   useEffect(() => {
     if (!import.meta.env.DEV) return;
     mountNotoSansSymbols2FontFace();
+    void ensureGameplayLocalesLoaded();
     applyDemoConfigToStore(COMBAT_DEMO_DEFAULT_CONFIG);
   }, []);
 
@@ -132,7 +134,7 @@ export default function CombatDialogDemo() {
   const enemy = buildCombatDemoEnemy(enemyPreset);
 
   return (
-    <div className="min-h-[100dvh] w-full bg-black text-foreground">
+    <div className="h-[100dvh] w-full overflow-x-hidden overflow-y-auto bg-black text-foreground">
       <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-8">
         <header className="space-y-2">
           <h1 className="text-lg font-semibold">Combat dialog playground</h1>

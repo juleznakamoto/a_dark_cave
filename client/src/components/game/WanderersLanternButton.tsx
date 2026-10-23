@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { useGameStore } from "@/game/state";
 import { publicUrl } from "@/lib/publicUrl";
 import { useUiNow } from "@/lib/uiClock";
@@ -28,7 +28,7 @@ import {
 const BURST_MS = 700;
 
 export function WanderersLanternButton() {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const owned = useGameStore((s) => ownsWanderersLantern(s));
   const activeUntil = useGameStore((s) => wanderersLanternActiveUntil(s));
   const cooldownUntil = useGameStore((s) => wanderersLanternCooldownUntil(s));

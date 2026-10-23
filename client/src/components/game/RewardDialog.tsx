@@ -7,7 +7,7 @@ import {
   getResourceName,
   getStatName,
 } from "@/i18n/resolveGameText";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { resolveOutcomeLogMessage } from "@/i18n/logDisplay";
 import { outcomeDialogIcon } from "@/game/headerIndicatorIcons";
 import OutcomeDialog from "./OutcomeDialog";
@@ -196,7 +196,7 @@ export default function RewardDialog({
   data,
   onClose,
 }: RewardDialogProps) {
-  const { t } = useTranslation(["ui", "common"]);
+  const { t } = useUiTranslation();
   if (!data) return null;
 
   const { rewards, successLog, title, madnessChange } = data;
@@ -336,7 +336,7 @@ export default function RewardDialog({
       {hasLosses && <div className="space-y-1">{lossItems}</div>}
       {hasMadnessChange && (
         <div className="text-sm text-violet-300">
-          {t("ui:madness.change", {
+          {t("madness.change", {
             sign: madnessChange! > 0 ? "+" : "-",
             amount: formatNumber(Math.abs(madnessChange!)),
           })}
@@ -363,11 +363,11 @@ export default function RewardDialog({
         useSocialPromoIcon ? promoIcon.ringClassName : rewardIcon.ringClassName
       }
       successLog={resolveOutcomeLogMessage(successLog)}
-      title={title?.trim() ? title : t("ui:reward.actionReward")}
+      title={title?.trim() ? title : t("reward.actionReward")}
       variant="success"
       buttonText={
         hasRewardItems && !hasLosses
-          ? t("ui:reward.claimRewards")
+          ? t("reward.claimRewards")
           : t("common:buttons.continue")
       }
       buttonId="reward-dialog-continue"

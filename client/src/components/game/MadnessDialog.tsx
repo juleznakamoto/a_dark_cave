@@ -6,7 +6,7 @@ import {
   getResourceName,
   getStatName,
 } from "@/i18n/resolveGameText";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { resolveOutcomeLogMessage } from "@/i18n/logDisplay";
 import { outcomeDialogIcon } from "@/game/headerIndicatorIcons";
 import OutcomeDialog from "./OutcomeDialog";
@@ -50,7 +50,7 @@ const effectDisplayName = (
 };
 
 export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogProps) {
-  const { t } = useTranslation(["ui", "common"]);
+  const { t } = useUiTranslation();
   if (!data || data.madnessChange === 0) return null;
 
   const { rewards, successLog, madnessChange, title } = data;
@@ -160,7 +160,7 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
     <>
       {hasRewardItems && <div className="space-y-1">{rewardItems}</div>}
       <div className="text-sm text-violet-300">
-        {t("ui:madness.change", {
+        {t("madness.change", {
           sign: madnessChange > 0 ? "+" : "-",
           amount: formatNumber(Math.abs(madnessChange)),
         })}
@@ -184,7 +184,7 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
       }
       iconRingClassName={outcomeDialogIcon("madness").ringClassName}
       successLog={resolveOutcomeLogMessage(successLog)}
-      title={title?.trim() ? title : t("ui:madness.title")}
+      title={title?.trim() ? title : t("madness.title")}
       variant="madness"
       buttonText={t("common:buttons.continue")}
       buttonId="madness-dialog-continue"

@@ -1,5 +1,5 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import type { GameState } from "@shared/schema";
 import { isBastionTabVisible } from "@shared/repairUnlockFlags";
 import {
@@ -348,7 +348,7 @@ export default function StatEffectsTooltip({
 }: {
   statKey: TooltipStatKey;
 }) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const rows = useDerivedGameState(
     (s) => getStatEffectRows(statKey, s, t),
     derivedListEqual,

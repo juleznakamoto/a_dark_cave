@@ -32,7 +32,7 @@ import {
 import { AudioGlyphIcon, GameUiIcon } from "@/components/game/GameUiIcon";
 import { VOLUME_SLIDER } from "@/components/game/volumeSlider";
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { useLocation } from "wouter";
 import LanguageSelector from "./LanguageSelector";
 import TextScaleSelector, {
@@ -192,7 +192,7 @@ function GameModeSelector({
   onChange: (mode: DevGameMode) => void;
   menuPortalContainer: HTMLElement | null;
 }) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const [open, setOpen] = useState(false);
   const dialogPortalReady = menuPortalContainer != null;
 
@@ -342,7 +342,7 @@ export default function SettingsDialog({
   onToggleMarketing,
   onDeleteAccount,
 }: SettingsDialogProps) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const [, setLocation] = useLocation();
   const {
     musicMuted,

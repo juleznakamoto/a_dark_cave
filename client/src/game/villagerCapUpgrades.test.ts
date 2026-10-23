@@ -7,6 +7,7 @@ import {
   canUpgradeVillagerCap,
   getGroupForBuildingKey,
   getGroupForJob,
+  getGroupsForBuildingKey,
   getConstructionQueueSlotUnlockCost,
   getNextCapUpgradeCost,
   getPresetSlotUnlockCost,
@@ -19,9 +20,12 @@ import {
   MAX_VILLAGER_CAP_LEVEL,
   migrateVillagerCapFifteenStepOnLoad,
   migrateVillagerCapFiveStepOnLoad,
+  migrateVillagerCapPerJobSplitOnLoad,
   VILLAGER_CAP_BY_LEVEL,
   VILLAGER_CAP_FIFTEEN_STEP_SEEN_KEY,
   VILLAGER_CAP_FIVE_STEP_SEEN_KEY,
+  VILLAGER_CAP_GROUPS,
+  VILLAGER_CAP_PER_JOB_SPLIT_SEEN_KEY,
 } from "./villagerCapUpgrades";
 import { createInitialState } from "@/game/store/createInitialState";
 import { applyGameStateLoadMigrations } from "@/game/stateHelpers";
@@ -56,12 +60,28 @@ function baseState(
 }
 
 describe("villagerCapUpgrades", () => {
-  it("maps jobs and buildings to upgrade groups", () => {
+  it("maps each capped job to its own upgrade track", () => {
     expect(getGroupForJob("hunter")).toBe("hunter");
+    expect(getGroupForJob("iron_miner")).toBe("iron_miner");
+    expect(getGroupForJob("coal_miner")).toBe("coal_miner");
+    expect(getGroupForJob("steel_forger")).toBe("steel_forger");
+    expect(getGroupForJob("blacksteel_forger")).toBe("blacksteel_forger");
+    expect(getGroupForJob("powder_maker")).toBe("powder_maker");
+    expect(getGroupForJob("ashfire_dust_maker")).toBe("ashfire_dust_maker");
     expect(getGroupForJob("gatherer")).toBeUndefined();
     expect(getGroupForBuildingKey("cabin")).toBe("hunter");
-    expect(getGroupForBuildingKey("bottomlessPit")).toBe("miner");
-    expect(getGroupForBuildingKey("alchemistHall")).toBe("alchemist");
+    expect(getGroupsForBuildingKey("shallowPit")).toEqual([
+      "iron_miner",
+      "coal_miner",
+    ]);
+    expect(getGroupsForBuildingKey("bottomlessPit")).toEqual([
+      "adamant_miner",
+      "moonstone_miner",
+    ]);
+    expect(getGroupsForBuildingKey("alchemistHall")).toEqual([
+      "powder_maker",
+      "ashfire_dust_maker",
+    ]);
     expect(getGroupForBuildingKey("woodenHut")).toBeUndefined();
   });
 
@@ -109,14 +129,15 @@ describe("villagerCapUpgrades", () => {
     expect(getPresetSlotUnlockCost(4)).toBe(10000);
   });
 
-  it("reads and clamps stored upgrade levels", () => {
+  it("reads and clamps stored upgrade levels per job", () => {
     const state = baseState({
-      villagerCapUpgrades: { hunter: 99, miner: -2 },
+      villagerCapUpgrades: { hunter: 99, iron_miner: -2 },
     });
     expect(getVillagerCapLevel(state, "hunter")).toBe(MAX_VILLAGER_CAP_LEVEL);
-    expect(getVillagerCapLevel(state, "miner")).toBe(0);
+    expect(getVillagerCapLevel(state, "iron_miner")).toBe(0);
     expect(getVillagerCapForJob(state, "hunter")).toBe(100);
     expect(getVillagerCapForJob(state, "iron_miner")).toBe(5);
+    expect(getVillagerCapForJob(state, "coal_miner")).toBe(5);
   });
 
   it("getVillagerCapUpgradeGroupForBuilding gates on caps, insight, and max level", () => {
@@ -124,7 +145,7 @@ describe("villagerCapUpgrades", () => {
       "hunter",
     );
     expect(getVillagerCapUpgradeGroupForBuilding(baseState(), "foundry")).toBe(
-      "forger",
+      "steel_forger",
     );
     expect(getVillagerCapUpgradeGroupForBuilding(baseState(), "storage")).toBe(
       null,
@@ -148,15 +169,15 @@ describe("villagerCapUpgrades", () => {
     expect(getVillagerCapUpgradeGroupForBuilding(maxed, "cabin")).toBe(null);
   });
 
-  it("getVillagerCapUpgradeGroupForJob gates on caps, insight, and max level", () => {
+  it("getVillagerCapUpgradeGroupForJob uses a distinct track per miner", () => {
     expect(getVillagerCapUpgradeGroupForJob(baseState(), "hunter")).toBe(
       "hunter",
     );
     expect(getVillagerCapUpgradeGroupForJob(baseState(), "iron_miner")).toBe(
-      "miner",
+      "iron_miner",
     );
     expect(getVillagerCapUpgradeGroupForJob(baseState(), "coal_miner")).toBe(
-      "miner",
+      "coal_miner",
     );
     expect(getVillagerCapUpgradeGroupForJob(baseState(), "gatherer")).toBe(
       null,
@@ -167,10 +188,15 @@ describe("villagerCapUpgrades", () => {
     });
     expect(getVillagerCapUpgradeGroupForJob(gatedOff, "hunter")).toBe(null);
 
-    const maxed = baseState({
-      villagerCapUpgrades: { miner: MAX_VILLAGER_CAP_LEVEL },
+    const maxedIron = baseState({
+      villagerCapUpgrades: { iron_miner: MAX_VILLAGER_CAP_LEVEL },
     });
-    expect(getVillagerCapUpgradeGroupForJob(maxed, "iron_miner")).toBe(null);
+    expect(getVillagerCapUpgradeGroupForJob(maxedIron, "iron_miner")).toBe(
+      null,
+    );
+    expect(getVillagerCapUpgradeGroupForJob(maxedIron, "coal_miner")).toBe(
+      "coal_miner",
+    );
   });
 
   it("canUpgradeVillagerCap requires gate, insight unlock, and affordability", () => {
@@ -206,7 +232,7 @@ describe("villagerCapUpgrades", () => {
     expect(result.stateUpdates.flags?.villagerCapsEnabled).toBe(true);
   });
 
-  it("upgradeVillagerCap spends insight and increments group level", () => {
+  it("upgradeVillagerCap spends insight and increments only that job level", () => {
     useGameStore.getState().initialize(
       baseState({
         villagerCapUpgrades: {},
@@ -214,13 +240,15 @@ describe("villagerCapUpgrades", () => {
       }) as Partial<GameState>,
     );
 
-    const ok = useGameStore.getState().upgradeVillagerCap("hunter");
+    const ok = useGameStore.getState().upgradeVillagerCap("iron_miner");
     expect(ok).toBe(true);
 
     const next = useGameStore.getState();
-    expect(next.villagerCapUpgrades?.hunter).toBe(1);
+    expect(next.villagerCapUpgrades?.iron_miner).toBe(1);
+    expect(next.villagerCapUpgrades?.coal_miner).toBeUndefined();
     expect(next.resources.insight).toBe(75);
-    expect(getVillagerCapForJob(next, "hunter")).toBe(10);
+    expect(getVillagerCapForJob(next, "iron_miner")).toBe(10);
+    expect(getVillagerCapForJob(next, "coal_miner")).toBe(5);
   });
 
   it("shifts pre-15-step levels once so bought caps stay put", () => {
@@ -239,14 +267,13 @@ describe("villagerCapUpgrades", () => {
       villagerCapUpgrades: patch?.villagerCapUpgrades,
       story: patch?.story,
     });
-    expect(withFive?.villagerCapUpgrades).toEqual({
-      hunter: 3,
-      miner: 7,
-      forger: 1,
-      tanner: 1,
-      scholar: 1,
-      alchemist: 1,
-    });
+    const fiveUpgrades = withFive?.villagerCapUpgrades ?? {};
+    expect(fiveUpgrades.hunter).toBe(3);
+    expect(fiveUpgrades.miner).toBe(7);
+    expect(fiveUpgrades.scholar).toBe(1);
+    for (const groupId of Object.keys(VILLAGER_CAP_GROUPS)) {
+      expect(fiveUpgrades[groupId]).toBeGreaterThanOrEqual(1);
+    }
     expect(getVillagerCapForLevel(3)).toBe(20);
     expect(getVillagerCapForLevel(7)).toBe(100);
     expect(getVillagerCapForLevel(1)).toBe(10);
@@ -272,14 +299,10 @@ describe("villagerCapUpgrades", () => {
       },
     });
     const patch = migrateVillagerCapFiveStepOnLoad(legacy);
-    expect(patch?.villagerCapUpgrades).toEqual({
-      hunter: 1,
-      miner: 3,
-      forger: 1,
-      tanner: 1,
-      scholar: 7,
-      alchemist: 1,
-    });
+    const upgrades = patch?.villagerCapUpgrades ?? {};
+    expect(upgrades.hunter).toBe(1);
+    expect(upgrades.miner).toBe(3);
+    expect(upgrades.scholar).toBe(7);
     expect(patch?.story?.seen?.[VILLAGER_CAP_FIVE_STEP_SEEN_KEY]).toBe(true);
     expect(getVillagerCapForLevel(1)).toBe(10);
     expect(getVillagerCapForLevel(3)).toBe(20);
@@ -296,9 +319,53 @@ describe("villagerCapUpgrades", () => {
     expect(migrateVillagerCapFiveStepOnLoad(already)).toBeNull();
   });
 
+  it("splits legacy shared miner/forger/alchemist levels onto each job", () => {
+    const legacy = baseState({
+      villagerCapUpgrades: {
+        hunter: 2,
+        miner: 4,
+        forger: 3,
+        alchemist: 1,
+        iron_miner: 1,
+      },
+      story: {
+        seen: {
+          [VILLAGER_CAP_FIFTEEN_STEP_SEEN_KEY]: true,
+          [VILLAGER_CAP_FIVE_STEP_SEEN_KEY]: true,
+        },
+        merchantPurchases: 0,
+        heavySleeperHours: 0,
+      },
+    });
+    const patch = migrateVillagerCapPerJobSplitOnLoad(legacy);
+    expect(patch?.villagerCapUpgrades).toEqual({
+      hunter: 2,
+      iron_miner: 4,
+      coal_miner: 4,
+      sulfur_miner: 4,
+      obsidian_miner: 4,
+      adamant_miner: 4,
+      moonstone_miner: 4,
+      steel_forger: 3,
+      blacksteel_forger: 3,
+      powder_maker: 1,
+      ashfire_dust_maker: 1,
+    });
+    expect(patch?.story?.seen?.[VILLAGER_CAP_PER_JOB_SPLIT_SEEN_KEY]).toBe(
+      true,
+    );
+    expect(
+      migrateVillagerCapPerJobSplitOnLoad({
+        villagerCapUpgrades: patch?.villagerCapUpgrades,
+        story: patch?.story,
+      }),
+    ).toBeNull();
+  });
+
   it("new games start at cap 5 and are not shifted on load", () => {
     const fresh = createInitialState();
     expect(fresh.story.seen[VILLAGER_CAP_FIVE_STEP_SEEN_KEY]).toBe(true);
+    expect(fresh.story.seen[VILLAGER_CAP_PER_JOB_SPLIT_SEEN_KEY]).toBe(true);
     const started = {
       ...fresh,
       flags: { ...fresh.flags, villagerCapsEnabled: true },
@@ -308,22 +375,26 @@ describe("villagerCapUpgrades", () => {
     expect(getVillagerCapForJob(migrated, "hunter")).toBe(5);
   });
 
-  it("load migration keeps an old starting cap of 10", () => {
+  it("load migration keeps an old starting cap of 10 and splits shared keys", () => {
     const fresh = createInitialState();
     const seen = { ...fresh.story.seen };
     delete seen[VILLAGER_CAP_FIVE_STEP_SEEN_KEY];
+    delete seen[VILLAGER_CAP_PER_JOB_SPLIT_SEEN_KEY];
     const legacy = {
       ...fresh,
       flags: { ...fresh.flags, villagerCapsEnabled: true },
-      villagerCapUpgrades: { hunter: 1 },
+      villagerCapUpgrades: { hunter: 1, miner: 0 },
       story: { ...fresh.story, seen },
     };
     const migrated = applyGameStateLoadMigrations(legacy);
     expect(migrated.villagerCapUpgrades?.hunter).toBe(2);
     expect(getVillagerCapForJob(migrated, "hunter")).toBe(15);
-    expect(migrated.villagerCapUpgrades?.miner).toBe(1);
+    expect(migrated.villagerCapUpgrades?.miner).toBeUndefined();
+    expect(migrated.villagerCapUpgrades?.iron_miner).toBe(1);
     expect(getVillagerCapForJob(migrated, "iron_miner")).toBe(10);
+    expect(getVillagerCapForJob(migrated, "coal_miner")).toBe(10);
     expect(migrated.story.seen[VILLAGER_CAP_FIVE_STEP_SEEN_KEY]).toBe(true);
+    expect(migrated.story.seen[VILLAGER_CAP_PER_JOB_SPLIT_SEEN_KEY]).toBe(true);
   });
 
   it("enables caps when villagerCapsEnabled flag is set", () => {

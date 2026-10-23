@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   consumeSaveQuarantineNotice,
   SAVE_QUARANTINE_NOTICE_KEY,
@@ -11,7 +11,7 @@ import { Z_INDEX } from "@/lib/z-index";
  * Not a modal: the new game keeps running, and this does not pause the sim.
  */
 export default function SaveQuarantineNotice() {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   // Read only. Strict Mode runs initializers twice, so consuming here would hide the notice.
   const [open, setOpen] = useState(() => {
     try {

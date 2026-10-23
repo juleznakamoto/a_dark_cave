@@ -40,7 +40,7 @@ import {
 } from "@/i18n/actionLabels";
 import { getResourceName } from "@/i18n/resolveGameText";
 import { resolveActionTooltipEffects } from "@/i18n/tooltipLabels";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   SuccessChanceTooltipContent,
   hasSuccessChanceTooltip,
@@ -162,7 +162,7 @@ function resolveForestPanelTradeCost(
 }
 
 export default function ForestPanel() {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const catalogActive = useDemoEndCatalogActive();
   const state = useGameStoreWithoutTickClock();
   const { executeAction, setHighlightedResources } = state;

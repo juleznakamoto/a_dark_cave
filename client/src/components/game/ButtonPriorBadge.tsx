@@ -16,7 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { isGameTabHidden, subscribeGameTabHidden } from "@/lib/tabVisibility";
 
 /** Idle / assigned diameter. CSS `.button-prior-badge` scales with `--adc-control-scale`. */
@@ -27,7 +27,7 @@ interface ButtonPriorBadgeProps {
 }
 
 export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const { textScale } = useTextScale();
   const fellowship = useGameStore((s) => s.fellowship);
   const priorAssignedActions = useGameStore((s) => s.priorAssignedActions);

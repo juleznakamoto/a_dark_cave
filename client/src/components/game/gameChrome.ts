@@ -76,7 +76,7 @@ export const GAME_TAB_SECTION_HEADER =
 
 /**
  * Insight unlock blobs + construction/preset slot chrome in panel headers.
- * Sized in CSS so Large text (`--adc-control-scale`) grows them slightly.
+ * Sized in CSS so enlarged text (`--adc-control-scale`) grows them slightly.
  */
 export const GAME_PANEL_HEADER_INSIGHT_BADGE_CLASS =
   "game-panel-header-slot min-h-0 shrink-0";
@@ -87,7 +87,7 @@ export const GAME_PANEL_HEADER_SLOT_ROW_CLASS =
 
 /**
  * Circular progress indicators next to section titles (Focus) and under Produce.
- * Base: 18px. Large text: 20px. Produce row is 22px, 26px in Large text
+ * Base: 18px. Medium: 20px. Large: 22px. Produce row is 22 / 26 / 30px
  * (see `.game-panel-header-indicator` in CSS).
  * Pair with `CircularProgress fill` + `GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS`.
  */
@@ -116,7 +116,7 @@ export const TAB_ICON_MASK_BOTTOM =
  */
 export const TAB_ICON_ALIGN_CLASS = `${TAB_ICON_MASK_BOTTOM} -translate-y-[3px]`;
 
-/** Default size for Cave/City/… tab mask icons (grows +2px with Large text). */
+/** Default size for Cave/City/… tab mask icons (tracks `--adc-text-delta`). */
 export const TAB_ICON_SIZE_CLASS = "game-tab-icon";
 
 /** Side-panel section masks + header Rewards diamond (16px Normal, +2 vs tabs). */
@@ -124,11 +124,11 @@ export const SIDE_PANEL_ICON_SIZE_CLASS = "game-side-panel-icon";
 
 /**
  * Shared 🛈 info glyph (shop size is the SSOT).
- * Glyph: former text-sm (0.875rem) + 20%. Hit target grew with the glyph.
+ * Glyph + hit target track `--adc-text-delta` via `.game-info-*` in CSS.
  */
 export const GAME_INFO_GLYPH_CLASS =
-  "inline-flex shrink-0 items-center justify-center font-noto-symbols-2 text-[1.05rem] font-normal leading-none";
-export const GAME_INFO_HIT_SIZE_CLASS = "w-5 h-5";
+  "game-info-glyph inline-flex shrink-0 items-center justify-center font-noto-symbols-2 font-normal leading-none";
+export const GAME_INFO_HIT_SIZE_CLASS = "game-info-hit";
 export const GAME_INFO_TRIGGER_CLASS = `inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} shrink-0 rounded-full text-muted-foreground hover:text-foreground cursor-pointer`;
 
 /** Mask icons (rewards diamond) — glow via `.lime-accent-mask-icon` in index.css. */

@@ -7,7 +7,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 
 interface EmailConfirmedDialogProps {
   isOpen: boolean;
@@ -18,7 +18,7 @@ export default function EmailConfirmedDialog({
   isOpen,
   onClose,
 }: EmailConfirmedDialogProps) {
-  const { t } = useTranslation(["ui", "common"]);
+  const { t } = useUiTranslation();
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>

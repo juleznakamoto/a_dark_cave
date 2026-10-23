@@ -66,12 +66,12 @@ import {
   resolveActionDescription,
   resolveActionLabel,
 } from "@/i18n/actionLabels";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { WanderersLanternFirstRow } from "@/components/game/WanderersLanternButton";
 import { ownsWanderersLantern } from "@/game/wanderersLantern";
 
 export default function CavePanel() {
-  const { t } = useTranslation(["ui", "common"]);
+  const { t } = useUiTranslation();
   const state = useGameStoreWithoutTickClock();
   const {
     executeAction,

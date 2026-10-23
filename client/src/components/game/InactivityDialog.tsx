@@ -11,11 +11,11 @@ import { useGameStore } from "@/game/state";
 import { resumeFromInactivity } from "@/game/loop";
 import { setResumeGame } from "@/game/startupBootSurface";
 import { logger } from "@/lib/logger";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 
 export default function InactivityDialog() {
   const inactivityReason = useGameStore((s) => s.inactivityReason);
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
 
   const handleContinue = () => {
     logger.log("[INACTIVITY] User clicked continue button");

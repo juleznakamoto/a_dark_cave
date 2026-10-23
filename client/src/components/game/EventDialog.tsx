@@ -26,7 +26,7 @@ import { Progress } from "@/components/ui/progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import CubeDialog from "./CubeDialog";
 import VillageEffectDialog from "./VillageEffectDialog";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   getEventRulesCatalogId,
   getEventI18nVars,
@@ -78,7 +78,7 @@ function EventDialogOpen({
   onClose,
   event,
 }: EventDialogProps & { event: LogEntry }) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const applyEventChoice = useGameStore((s) => s.applyEventChoice);
   const setShopDialogOpen = useGameStore((s) => s.setShopDialogOpen);
   const gameState = useGameStoreWithoutTickClock() as unknown as GameState;

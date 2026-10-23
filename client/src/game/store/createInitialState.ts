@@ -7,6 +7,7 @@ import {
 import {
   VILLAGER_CAP_FIFTEEN_STEP_SEEN_KEY,
   VILLAGER_CAP_FIVE_STEP_SEEN_KEY,
+  VILLAGER_CAP_PER_JOB_SPLIT_SEEN_KEY,
 } from "@/game/villagerCapUpgrades";
 
 const extractDefaultsFromSchema = (schema: any): any => {
@@ -223,6 +224,7 @@ export const createInitialState = (): GameState => ({
       [GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY]: GAMBLER_TUTORIAL_PLAYS,
       [VILLAGER_CAP_FIFTEEN_STEP_SEEN_KEY]: true,
       [VILLAGER_CAP_FIVE_STEP_SEEN_KEY]: true,
+      [VILLAGER_CAP_PER_JOB_SPLIT_SEEN_KEY]: true,
     },
     merchantPurchases: 0,
   },

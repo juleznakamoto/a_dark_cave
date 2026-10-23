@@ -1,6 +1,6 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { resolveOutcomeLogMessage } from "@/i18n/logDisplay";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { getVillageEffectTheme } from "@/game/headerIndicatorIcons";
 import type { VillageEffectDialogData } from "@/game/villageEffectThemes";
 import OutcomeDialog, { type OutcomeDialogEffectTheme } from "./OutcomeDialog";
@@ -18,7 +18,7 @@ export default function VillageEffectDialog({
   data,
   onClose,
 }: VillageEffectDialogProps) {
-  const { t } = useTranslation("common");
+  const { t } = useUiTranslation();
   if (!data) return null;
 
   const theme = getVillageEffectTheme(data.themeId);
@@ -42,7 +42,7 @@ export default function VillageEffectDialog({
       title={data.title}
       variant="success"
       effectTheme={effectTheme}
-      buttonText={t("buttons.continue")}
+      buttonText={t("common:buttons.continue")}
       buttonId="village-effect-dialog-continue"
     />
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import type { EventChoice } from "@/game/rules/events";
 import type { GameState } from "@shared/schema";
 import { cn } from "@/lib/utils";
@@ -95,7 +95,7 @@ export function SuccessChanceTooltipContent({
   relevantStats = [],
   successFormula,
 }: SuccessChanceTooltipContentProps) {
-  const { t } = useTranslation(["ui", "common"]);
+  const { t } = useUiTranslation();
 
   if (!hasSuccessChanceTooltip(successChance, relevantStats)) {
     return null;
@@ -110,16 +110,16 @@ export function SuccessChanceTooltipContent({
   return (
     <div className="text-xs whitespace-nowrap">
       {percent !== null && (
-        <div>{t("ui:event.successChance", { percent })}</div>
+        <div>{t("event.successChance", { percent })}</div>
       )}
       {breakdown && !breakdown.forceZero ? (
         <div className="mt-1 text-muted-foreground">
-          <div>{t("ui:event.successChanceBase", { percent: breakdown.basePercent, defaultValue: "Base: {{percent}}%" })}</div>
+          <div>{t("event.successChanceBase", { percent: breakdown.basePercent, defaultValue: "Base: {{percent}}%" })}</div>
           {breakdown.stats.map((stat) => (
             <div key={stat.type} className="flex items-center gap-1">
               <RelevantStatIcon stat={stat.type} />
               <span>
-                {t("ui:event.successChanceStatLine", {
+                {t("event.successChanceStatLine", {
                   statValue: stat.statValue,
                   statName: t(`common:stats.${stat.type}`),
                   percentPerPoint: stat.percentPerPoint,
@@ -132,7 +132,7 @@ export function SuccessChanceTooltipContent({
           ))}
           {breakdown.cruelPercent !== null && (
             <div>
-              {t("ui:event.successChanceCruel", {
+              {t("event.successChanceCruel", {
                 percent: breakdown.cruelPercent,
                 defaultValue: "Cruel Mode: {{percent}}%",
               })}
@@ -143,7 +143,7 @@ export function SuccessChanceTooltipContent({
         relevantStats.length > 0 &&
         !breakdown && (
           <div className="mt-1 text-muted-foreground">
-            <div>{t("ui:event.influencedBy")}</div>
+            <div>{t("event.influencedBy")}</div>
             {relevantStats.map((stat) => (
               <div key={stat} className="flex items-center gap-1.5">
                 <RelevantStatIcon stat={stat} />

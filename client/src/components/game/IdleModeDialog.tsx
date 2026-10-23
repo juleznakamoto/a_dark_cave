@@ -40,7 +40,7 @@ function sortResourcesLikeSidePanel(keys: string[]): string[] {
   const rest = [...keySet].filter((k) => !ordered.has(k));
   return [...precious, ...others, ...rest];
 }
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { getResourceName } from "@/i18n/resolveGameText";
 import {
   SLEEP_LENGTH_UPGRADES,
@@ -135,7 +135,7 @@ export default function IdleModeDialog() {
 }
 
 function IdleModeDialogOpen() {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const {
     idleModeDialog,
     sleepUpgrades,
@@ -758,8 +758,9 @@ function IdleModeDialogOpen() {
           <Button
             onClick={handleEndIdleMode}
             variant="outline"
+            size="xs"
             className={cn(
-              "text-xs h-8",
+              "text-xs adc-btn-dialog-cta",
               gameActionOutlineButtonClassName(false),
             )}
             button_id="idle-wake"

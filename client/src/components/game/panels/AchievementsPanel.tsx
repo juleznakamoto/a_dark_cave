@@ -43,7 +43,6 @@ import type { AchievementRow } from "@/achievements/achievementHelpers";
 import type { AchievementChartConfig } from "@/achievements";
 import { getAchievementSegmentWeight } from "@/achievements/achievementTypes";
 import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
-import { useTranslation } from "react-i18next";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { NEW_ITEM_PULSE_COLORED_CLASS } from "@/hooks/useNewItemPulseTooltip";
 import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
@@ -211,7 +210,6 @@ function AchievementRowComponent({
   catalogActive?: boolean;
 }) {
   const { t } = useUiTranslation();
-  const { t: tAchievements } = useTranslation("achievements");
   const gameState = useGameStoreWithoutTickClock() as unknown as GameState;
   const insightKey = getAchievementTitleInsightKey(row.achievementId);
   // Key presence (not Date.now): stays redacted until the loop clears the key
@@ -233,8 +231,8 @@ function AchievementRowComponent({
   const progressLabel = `${Math.min(Math.floor(row.currentCount), row.maxCount)}/${row.maxCount}`;
   const mutedSuffix =
     row.maxCount > 1 ? progressLabel : row.detailLabel;
-  const description = tAchievements(
-    `${row.chartPrefix}.${row.segmentId}.description`,
+  const description = t(
+    `achievements:${row.chartPrefix}.${row.segmentId}.description`,
     { defaultValue: row.description },
   );
   const redactedWidthCh = description ? getRedactedWidthCh(description) : 0;

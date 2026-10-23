@@ -1,7 +1,7 @@
 import { Maximize2, Minimize2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useFullscreen } from "@/hooks/useFullscreen";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { GAME_CHROME_NO_BG_HOVER } from "./gameChrome";
 
 const HEADER_ICON_BTN =
@@ -11,7 +11,7 @@ const HEADER_ICON_SYMBOL_HOVER =
 
 export function FullscreenButton() {
   const { isFullscreen, toggleFullscreen, available } = useFullscreen();
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
 
   if (!available) return null;
 

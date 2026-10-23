@@ -1,7 +1,7 @@
 import React from "react";
 import { cn, formatNumber } from "@/lib/utils";
 import { getResourceName } from "@/i18n/resolveGameText";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { outcomeDialogIcon } from "@/game/headerIndicatorIcons";
 import OutcomeDialog from "./OutcomeDialog";
 
@@ -20,7 +20,7 @@ export default function InsightPotionDialog({
   data,
   onClose,
 }: InsightPotionDialogProps) {
-  const { t } = useTranslation(["ui", "common"]);
+  const { t } = useUiTranslation();
   if (!data || data.insightGain <= 0) return null;
 
   const { insightGain } = data;
@@ -40,8 +40,8 @@ export default function InsightPotionDialog({
         </span>
       }
       iconRingClassName={outcomeDialogIcon("insight").ringClassName}
-      successLog={t("ui:insightPotion.message")}
-      title={t("ui:insightPotion.title")}
+      successLog={t("insightPotion.message")}
+      title={t("insightPotion.title")}
       variant="insight"
       buttonText={t("common:buttons.continue")}
       buttonId="insight-potion-dialog-continue"

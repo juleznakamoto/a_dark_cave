@@ -9,13 +9,16 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { useTextScale } from "@/i18n/useTextScale";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import type { TextScale } from "@/lib/textScale";
 import cn from "clsx";
 
-const TEXT_SCALE_LABEL_KEYS: Record<TextScale, "textScale.normal" | "textScale.large"> =
-{
-  normal: "textScale.normal",
+const TEXT_SCALE_LABEL_KEYS: Record<
+  TextScale,
+  "textScale.small" | "textScale.medium" | "textScale.large"
+> = {
+  small: "textScale.small",
+  medium: "textScale.medium",
   large: "textScale.large",
 };
 
@@ -31,7 +34,7 @@ export default function TextScaleSelector({
   menuPortalContainer?: HTMLElement | null;
 } = {}) {
   const { textScale, setTextScale, textScaleOptions } = useTextScale();
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const [open, setOpen] = useState(false);
 
   const dialogPortalReady = !inDialog || menuPortalContainer != null;

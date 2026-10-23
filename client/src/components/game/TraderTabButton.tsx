@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import cn from "clsx";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { TRADER_TAB_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
@@ -36,7 +36,7 @@ export function TraderTabButton({
   isGreenPulse,
   onClick,
 }: TraderTabButtonProps) {
-  const { t } = useTranslation();
+  const { t } = useUiTranslation();
   const iconRef = useRef<HTMLSpanElement>(null);
   const { hoverHandlers, portal, setForcedEmit } = useCoinHoverParticles("gold", {
     particleOriginRef: iconRef,

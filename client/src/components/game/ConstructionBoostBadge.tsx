@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   BuildingActionBadge,
   getInsightBadgeTriggerClassName,
@@ -28,7 +28,7 @@ interface ConstructionBoostBadgeProps {
 }
 
 export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
   const boostConstruction = useGameStore((s) => s.boostConstruction);
   const executionStart = useGameStore((s) =>

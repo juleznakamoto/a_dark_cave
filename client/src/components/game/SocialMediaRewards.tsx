@@ -13,10 +13,10 @@ import {
   getSocialPlatformRewardEntry,
   isSocialRewardClaimed,
 } from "@/game/socialTaskRewards";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 
 export default function SocialMediaRewards() {
-  const { t } = useTranslation(["common", "ui"]);
+  const { t } = useUiTranslation();
   const [currentUser, setCurrentUser] = useState<{
     id: string;
     email: string;
@@ -72,9 +72,11 @@ export default function SocialMediaRewards() {
               <div className="flex items-center gap-2">
                 <span className="font-semibold">
                   &nbsp;
-                  {t("ui:socialPrompt.resourceBonus", {
+                  {t("socialPrompt.resourceBonus", {
                     amount: platform.reward.amount,
-                    resource: t(`resources.${platform.reward.resource}`),
+                    resource: t(
+                      `common:resources.${platform.reward.resource}`,
+                    ),
                   })}
                 </span>
                 {isClaimed && (

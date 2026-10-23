@@ -21,17 +21,53 @@ export const VILLAGER_CAP_FIFTEEN_STEP_SEEN_KEY = "villagerCapFifteenStepApplied
  */
 export const VILLAGER_CAP_FIVE_STEP_SEEN_KEY = "villagerCapFiveStepApplied";
 
+/**
+ * Set on new games and after the one-time load split.
+ * Older saves stored shared miner / forger / alchemist levels for several jobs.
+ */
+export const VILLAGER_CAP_PER_JOB_SPLIT_SEEN_KEY =
+  "villagerCapPerJobSplitApplied";
+
+/** One Insight upgrade track per assignable capped profession (not gatherer). */
 export type VillagerCapGroupId =
   | "hunter"
-  | "miner"
-  | "forger"
+  | "iron_miner"
+  | "coal_miner"
+  | "sulfur_miner"
+  | "obsidian_miner"
+  | "adamant_miner"
+  | "moonstone_miner"
+  | "steel_forger"
+  | "blacksteel_forger"
   | "tanner"
   | "scholar"
-  | "alchemist";
+  | "powder_maker"
+  | "ashfire_dust_maker";
 
 export type VillagerCapGroupConfig = {
+  /** Buildings historically tied to this job (lookup / tooling). */
   chain: string[];
   professions: (keyof GameState["villagers"])[];
+};
+
+/**
+ * Legacy shared group ids → per-job tracks. Kept for load migration only.
+ * Do not write these keys on new upgrades.
+ */
+export const LEGACY_SHARED_VILLAGER_CAP_GROUPS: Record<
+  string,
+  readonly VillagerCapGroupId[]
+> = {
+  miner: [
+    "iron_miner",
+    "coal_miner",
+    "sulfur_miner",
+    "obsidian_miner",
+    "adamant_miner",
+    "moonstone_miner",
+  ],
+  forger: ["steel_forger", "blacksteel_forger"],
+  alchemist: ["powder_maker", "ashfire_dust_maker"],
 };
 
 export const VILLAGER_CAP_GROUPS: Record<
@@ -42,20 +78,37 @@ export const VILLAGER_CAP_GROUPS: Record<
     chain: ["cabin", "greatCabin", "grandHunterLodge"],
     professions: ["hunter"],
   },
-  miner: {
-    chain: ["shallowPit", "deepeningPit", "deepPit", "bottomlessPit"],
-    professions: [
-      "iron_miner",
-      "coal_miner",
-      "sulfur_miner",
-      "obsidian_miner",
-      "adamant_miner",
-      "moonstone_miner",
-    ],
+  iron_miner: {
+    chain: ["shallowPit"],
+    professions: ["iron_miner"],
   },
-  forger: {
-    chain: ["foundry", "primeFoundry", "masterworkFoundry"],
-    professions: ["steel_forger", "blacksteel_forger"],
+  coal_miner: {
+    chain: ["shallowPit"],
+    professions: ["coal_miner"],
+  },
+  sulfur_miner: {
+    chain: ["deepeningPit"],
+    professions: ["sulfur_miner"],
+  },
+  obsidian_miner: {
+    chain: ["deepPit"],
+    professions: ["obsidian_miner"],
+  },
+  adamant_miner: {
+    chain: ["bottomlessPit"],
+    professions: ["adamant_miner"],
+  },
+  moonstone_miner: {
+    chain: ["bottomlessPit"],
+    professions: ["moonstone_miner"],
+  },
+  steel_forger: {
+    chain: ["foundry", "primeFoundry"],
+    professions: ["steel_forger"],
+  },
+  blacksteel_forger: {
+    chain: ["masterworkFoundry"],
+    professions: ["blacksteel_forger"],
   },
   tanner: {
     chain: ["tannery", "masterTannery", "highTannery"],
@@ -65,14 +118,18 @@ export const VILLAGER_CAP_GROUPS: Record<
     chain: ["clerksHut", "scriptorium", "inkwardenAcademy"],
     professions: ["scholar"],
   },
-  alchemist: {
+  powder_maker: {
     chain: ["alchemistHall"],
-    professions: ["powder_maker", "ashfire_dust_maker"],
+    professions: ["powder_maker"],
+  },
+  ashfire_dust_maker: {
+    chain: ["alchemistHall"],
+    professions: ["ashfire_dust_maker"],
   },
 };
 
 const JOB_TO_GROUP = new Map<string, VillagerCapGroupId>();
-const BUILDING_TO_GROUP = new Map<string, VillagerCapGroupId>();
+const BUILDING_TO_GROUPS = new Map<string, VillagerCapGroupId[]>();
 
 for (const [groupId, config] of Object.entries(VILLAGER_CAP_GROUPS) as [
   VillagerCapGroupId,
@@ -82,7 +139,11 @@ for (const [groupId, config] of Object.entries(VILLAGER_CAP_GROUPS) as [
     JOB_TO_GROUP.set(job, groupId);
   }
   for (const buildingKey of config.chain) {
-    BUILDING_TO_GROUP.set(buildingKey, groupId);
+    const existing = BUILDING_TO_GROUPS.get(buildingKey) ?? [];
+    if (!existing.includes(groupId)) {
+      existing.push(groupId);
+      BUILDING_TO_GROUPS.set(buildingKey, existing);
+    }
   }
 }
 
@@ -98,10 +159,17 @@ export function getGroupForJob(
   return JOB_TO_GROUP.get(jobId);
 }
 
+export function getGroupsForBuildingKey(
+  buildingKey: string,
+): readonly VillagerCapGroupId[] {
+  return BUILDING_TO_GROUPS.get(buildingKey) ?? [];
+}
+
+/** First upgrade track tied to this building (buildings may map to several jobs). */
 export function getGroupForBuildingKey(
   buildingKey: string,
 ): VillagerCapGroupId | undefined {
-  return BUILDING_TO_GROUP.get(buildingKey);
+  return getGroupsForBuildingKey(buildingKey)[0];
 }
 
 export function getVillagerCapLevel(
@@ -183,9 +251,10 @@ export function getVillagerCapUpgradeGroupForBuilding(
   state: GameState,
   buildingKey: string,
 ): VillagerCapGroupId | null {
-  const groupId = getGroupForBuildingKey(buildingKey);
-  if (!groupId || !canShowVillagerCapUpgrade(state, groupId)) return null;
-  return groupId;
+  for (const groupId of getGroupsForBuildingKey(buildingKey)) {
+    if (canShowVillagerCapUpgrade(state, groupId)) return groupId;
+  }
+  return null;
 }
 
 /** Job shows villager-cap upgrade UI once Insight is unlocked and caps are not maxed. */
@@ -277,6 +346,50 @@ export function migrateVillagerCapFiveStepOnLoad(
       seen: {
         ...(state.story?.seen ?? {}),
         [VILLAGER_CAP_FIVE_STEP_SEEN_KEY]: true,
+      },
+    },
+  };
+}
+
+/**
+ * Copy legacy shared miner / forger / alchemist levels onto each job track.
+ * Each job keeps `max(own, shared)` then the shared keys are removed.
+ */
+export function migrateVillagerCapPerJobSplitOnLoad(
+  state: Pick<GameState, "villagerCapUpgrades" | "story">,
+): Partial<Pick<GameState, "villagerCapUpgrades" | "story">> | null {
+  if (state.story?.seen?.[VILLAGER_CAP_PER_JOB_SPLIT_SEEN_KEY]) return null;
+
+  const current = state.villagerCapUpgrades ?? {};
+  const nextUpgrades: Record<string, number> = { ...current };
+  let changed = false;
+
+  for (const [legacyId, jobIds] of Object.entries(
+    LEGACY_SHARED_VILLAGER_CAP_GROUPS,
+  )) {
+    const legacyLevel = current[legacyId];
+    if (typeof legacyLevel !== "number") continue;
+    const clamped = Math.min(
+      Math.max(0, legacyLevel),
+      MAX_VILLAGER_CAP_LEVEL,
+    );
+    for (const jobId of jobIds) {
+      const existing = nextUpgrades[jobId];
+      const base =
+        typeof existing === "number" && existing > 0 ? existing : 0;
+      nextUpgrades[jobId] = Math.max(base, clamped);
+    }
+    delete nextUpgrades[legacyId];
+    changed = true;
+  }
+
+  return {
+    ...(changed ? { villagerCapUpgrades: nextUpgrades } : {}),
+    story: {
+      ...state.story,
+      seen: {
+        ...(state.story?.seen ?? {}),
+        [VILLAGER_CAP_PER_JOB_SPLIT_SEEN_KEY]: true,
       },
     },
   };

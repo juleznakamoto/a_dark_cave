@@ -2,7 +2,7 @@ import React from "react";
 import { outcomeDialogIcon } from "@/game/headerIndicatorIcons";
 import OutcomeDialog from "./OutcomeDialog";
 import { cn, formatNumber } from "@/lib/utils";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   getInvestmentResultDialogBodyMeta,
   type InvestmentOutcomeUiKind,
@@ -38,7 +38,7 @@ export default function InvestmentResultDialog({
   data,
   onClose,
 }: InvestmentResultDialogProps) {
-  const { t } = useTranslation(["ui", "common"]);
+  const { t } = useUiTranslation();
   if (!data) return null;
 
   const { kind, goldDelta } = data;
@@ -61,7 +61,7 @@ export default function InvestmentResultDialog({
       icon={<OutcomeIcon kind={kind} />}
       iconRingClassName={outcomeDialogIcon(INVEST_ICON_ID[kind]).ringClassName}
       successLog={bodyText}
-      title={t("ui:investmentResult.title")}
+      title={t("investmentResult.title")}
       variant={isLoss ? "loss" : "success"}
       buttonText={t("common:buttons.continue")}
       buttonId="investment-result-dialog-continue"

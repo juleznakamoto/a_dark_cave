@@ -24,7 +24,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useGameStore } from "@/game/state";
 import { logger } from "@/lib/logger";
 import { getLandingReferralCode, persistLandingReferralCode } from "@/game/referralLanding";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { Eye, EyeOff } from "lucide-react";
 
 interface AuthDialogProps {
@@ -47,7 +48,7 @@ export default function AuthDialog({
   onClose,
   onAuthSuccess,
 }: AuthDialogProps) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const emailInputRef = useRef<HTMLInputElement>(null);
 
   const getReferralCode = () => {

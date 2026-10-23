@@ -22,11 +22,18 @@ function withMap(
   playTime = state.playTime,
   seenResources: string[] = ["silver"],
 ): GameState {
+  // Fixtures may stock silver/gold for UI crowding; zero metals not under test
+  // so hasSeenVillageCoinMetal matches the explicit seenResources list.
   return {
     ...state,
     playTime,
     flags: { ...state.flags, mapUnlocked: true },
     seenResources,
+    resources: {
+      ...state.resources,
+      silver: seenResources.includes("silver") ? state.resources.silver : 0,
+      gold: seenResources.includes("gold") ? state.resources.gold : 0,
+    },
     villageSilverCoins: [],
     villageSilverNextAt: 0,
   };

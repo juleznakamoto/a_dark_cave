@@ -22,7 +22,8 @@
   "textScale": {
     "label": "文字大小",
     "ariaLabel": "选择文字大小",
-    "normal": "标准",
+    "small": "小",
+    "medium": "中",
     "large": "大"
   },
   "languageSelector": {

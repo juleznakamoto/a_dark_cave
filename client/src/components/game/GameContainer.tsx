@@ -125,8 +125,8 @@ import {
   isDemoLimitReachedFromState,
 } from "@/game/demoLimit";
 import DemoTimeUpDialog from "./DemoTimeUpDialog";
-import i18n from "@/i18n";
-import { useTranslation } from "react-i18next";
+import { tWithFallback } from "@/i18n/resolveGameText";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { useIOSChromeViewportShell } from "@/hooks/useIOSChromeViewportShell";
 import { usePanelResize } from "./panelResize";
 import PanelResizeHandle from "./PanelResizeHandle";
@@ -161,7 +161,7 @@ const WebOnlyDialogs = steamBuild
   : lazy(() => import("./WebOnlyDialogs"));
 
 export default function GameContainer() {
-  const { t } = useTranslation();
+  const { t } = useUiTranslation();
   const steamEditionActive = useSteamEditionActive();
   const steamDesktopEditionActive = useSteamDesktopEditionActive();
   const crazyGamesEditionActive = useCrazyGamesEditionActive();
@@ -483,17 +483,19 @@ export default function GameContainer() {
     let reloading = false;
 
     const versionUpdateDescription = (remainingMs: number) =>
-      i18n.t("versionUpdate.description", {
-        ns: "ui",
-        time: formatCompactDuration(remainingMs / 1000),
-      });
+      tWithFallback(
+        "ui",
+        "versionUpdate.description",
+        "A new version of the game is available. The game will refresh in {{time}}, or you can update now. The game is automatically saved before updating.",
+        { time: formatCompactDuration(remainingMs / 1000) },
+      );
 
     const versionUpdateManualDescription = () =>
-      i18n.t("versionUpdate.descriptionManual", {
-        ns: "ui",
-        defaultValue:
-          "A new version of the game is available. Please update now. The game is automatically saved before updating.",
-      });
+      tWithFallback(
+        "ui",
+        "versionUpdate.descriptionManual",
+        "A new version of the game is available. Please update now. The game is automatically saved before updating.",
+      );
 
     const saveAndHardReload = async () => {
       if (reloading) return;
@@ -548,13 +550,21 @@ export default function GameContainer() {
             void saveAndHardReload();
           }, AUTO_RELOAD_MS);
           const updateToast = toast({
-            title: i18n.t("versionUpdate.title", { ns: "ui" }),
+            title: tWithFallback(
+              "ui",
+              "versionUpdate.title",
+              "New Version Available",
+            ),
             description: versionUpdateDescription(AUTO_RELOAD_MS),
             variant: "default",
             duration: Infinity,
             dismissible: false,
             action: {
-              label: i18n.t("versionUpdate.refresh", { ns: "ui" }),
+              label: tWithFallback(
+                "ui",
+                "versionUpdate.refresh",
+                "Update now",
+              ),
               onClick: () => {
                 void saveAndHardReload();
               },
@@ -576,13 +586,21 @@ export default function GameContainer() {
           reloadAtMs = 0;
           updatePending = false;
           toast({
-            title: i18n.t("versionUpdate.title", { ns: "ui" }),
+            title: tWithFallback(
+              "ui",
+              "versionUpdate.title",
+              "New Version Available",
+            ),
             description: versionUpdateManualDescription(),
             variant: "default",
             duration: Infinity,
             dismissible: false,
             action: {
-              label: i18n.t("versionUpdate.refresh", { ns: "ui" }),
+              label: tWithFallback(
+                "ui",
+                "versionUpdate.refresh",
+                "Update now",
+              ),
               onClick: () => {
                 void saveAndHardReload();
               },

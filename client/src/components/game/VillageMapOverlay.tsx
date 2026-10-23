@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { GAME_CHROME_NO_BG_HOVER } from "@/components/game/gameChrome";
 import { Button } from "@/components/ui/button";
@@ -86,8 +85,7 @@ const ignoreMapEdit = () => { };
  * opening it rebuilt every path and wobble filter.
  */
 export default function VillageMapOverlay() {
-  const { t } = useTranslation("common");
-  const { t: tUi } = useUiTranslation();
+  const { t } = useUiTranslation();
   const open = useGameStore((state) => state.activeTab === "map");
   const [playback, setPlayback] = useState<MapPlayback | null>(null);
   const silverCoins = useGameStore((state) => state.villageSilverCoins);
@@ -312,8 +310,12 @@ export default function VillageMapOverlay() {
           silverCoins={replaying ? [] : visibleCoins}
           onSilverCoin={collectSilverCoin}
           onHoverSilverCoin={onHoverCoin}
-          silverCoinLabel={t("resources.silver", { defaultValue: "Silver" })}
-          goldCoinLabel={t("resources.gold", { defaultValue: "Gold" })}
+          silverCoinLabel={t("common:resources.silver", {
+            defaultValue: "Silver",
+          })}
+          goldCoinLabel={t("common:resources.gold", {
+            defaultValue: "Gold",
+          })}
         />
       </div>
       {(playback || evolution.length > 1) && (
@@ -325,8 +327,8 @@ export default function VillageMapOverlay() {
           aria-pressed={replaying}
           aria-label={
             replaying
-              ? tUi("map.stopGrowth", { defaultValue: "Stop village growth" })
-              : tUi("map.playGrowth", { defaultValue: "Play village growth" })
+              ? t("map.stopGrowth", { defaultValue: "Stop village growth" })
+              : t("map.playGrowth", { defaultValue: "Play village growth" })
           }
           className={MAP_PLAY_BUTTON}
           onClick={onPlayClick}

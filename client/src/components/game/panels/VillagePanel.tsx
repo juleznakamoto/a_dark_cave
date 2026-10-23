@@ -238,7 +238,8 @@ const VILLAGER_COUNT_BUTTON_SIZE_CLASS = "villager-count-button";
  * All population rows (summary, available/on Mission, jobs) share one grid so
  * /cap and optional upgrade-badge columns size to the widest row and labels line up.
  */
-const VILLAGER_COUNT_STACK_CLASS = "grid gap-y-1.5";
+/** Row/column gaps scale with text size — see `.villager-count-stack` in CSS. */
+const VILLAGER_COUNT_STACK_CLASS = "villager-count-stack grid";
 const VILLAGER_COUNT_STACK_COLS_CLASS = "grid-cols-[auto_auto_1fr]";
 const VILLAGER_COUNT_STACK_COLS_WITH_BADGE_CLASS =
   "grid-cols-[auto_auto_auto_1fr]";
@@ -246,10 +247,10 @@ const VILLAGER_COUNT_ROW_CLASS =
   "col-span-full grid min-w-0 grid-cols-subgrid items-center";
 /** − / count / + only; /cap + optional Insight badge sit as grid siblings after. */
 const VILLAGER_COUNT_CONTROL_GRID_CLASS =
-  "grid shrink-0 grid-cols-[auto_3.5ch_auto] items-center";
+  "villager-count-control-grid grid shrink-0 grid-cols-[auto_3.5ch_auto] items-center";
 /** Same size as timed-tab ActionInsightBadge (lg trigger + lg blob). */
 const VILLAGER_COUNT_CAP_UPGRADE_SLOT_CLASS = cn(
-  "mx-1 inline-flex shrink-0 items-center justify-center self-center",
+  "inline-flex shrink-0 items-center justify-center self-center",
   INSIGHT_BADGE_LG_SIZE_CLASS,
 );
 const VILLAGER_COUNT_BUTTON_CLASS = cn(
@@ -264,14 +265,14 @@ const villagerCountButtonClassName = (isDisabled: boolean) =>
     "opacity-100 disabled:opacity-100",
   );
 const VILLAGER_COUNT_CAP_CLASS =
-  "notranslate ml-1.5 inline-flex shrink-0 items-center justify-start self-center text-sm leading-tight tabular-nums";
+  "villager-count-cap notranslate inline-flex shrink-0 items-center justify-start self-center text-sm leading-tight tabular-nums";
 const VILLAGER_COUNT_VALUE_CLASS =
   "notranslate inline-flex w-full items-center justify-center self-center text-sm leading-tight tabular-nums";
 const VILLAGER_COUNT_LABEL_CLASS =
-  "ml-1 min-w-0 text-left text-sm leading-tight";
-/** Label margin comes from badge `mx-1` while the upgrade slot is reserved. */
+  "villager-count-label min-w-0 text-left text-sm leading-tight";
+/** Same label class; column-gap on the stack spaces the upgrade slot. */
 const VILLAGER_COUNT_LABEL_WITH_CAP_UPGRADE_CLASS =
-  "min-w-0 text-left text-sm leading-tight";
+  "villager-count-label min-w-0 text-left text-sm leading-tight";
 /** Secondary resource rates/upkeep beside job labels — smaller with room when wrapped. */
 const VILLAGER_RESOURCE_HINT_CLASS =
   "text-xs leading-snug text-muted-foreground";
@@ -1175,7 +1176,7 @@ export default function VillagePanel() {
     return false;
   });
 
-  // Badge on every job in an upgradeable group (shared groupId → same upgrade).
+  // Badge on every upgradeable job (one Insight track per job).
   const capUpgradeGroupByJobId = (() => {
     const byJob = new Map<string, VillagerCapGroupId>();
     for (const job of visiblePopulationJobs) {

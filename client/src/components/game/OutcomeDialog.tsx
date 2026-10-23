@@ -173,7 +173,8 @@ export default function OutcomeDialog({
             <Button
               onClick={onClose}
               variant="outline"
-              className="text-xs h-8"
+              size="xs"
+              className="text-xs adc-btn-dialog-cta"
               button_id={buttonId}
             >
               {buttonText}

@@ -27,7 +27,7 @@ import {
   getEventMessage,
   getEventChoiceLabel,
 } from "@/i18n/resolveGameText";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   cubeHeartbeatBoxShadow,
   heartbeatGlowIntensity,
@@ -75,7 +75,7 @@ export default function CubeDialog({
   onChoice,
   fallbackExecutedRef,
 }: CubeDialogProps) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const chromeOn = useDestroyedChrome();
   const glowRef = useRef<HTMLDivElement>(null);
   const events = useGameStore((s) => s.events);

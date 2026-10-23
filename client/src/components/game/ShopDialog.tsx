@@ -82,7 +82,7 @@ import {
   resolveShopItemDescription,
   resolveShopActivationMessage,
 } from "@/i18n/shopLabels";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { cn, formatNumber } from "@/lib/utils";
 import {
   GAME_INFO_GLYPH_CLASS,
@@ -309,7 +309,7 @@ function ArtifactEffectsList({
 }: {
   artifact: ShopArtifactIdForTooltip;
 }) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
 
   const lines =
     artifact === "skull_lantern"
@@ -348,7 +348,7 @@ function ArtifactEffectsList({
 }
 
 function CruelModeEffectsList() {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const lines = [
     t("shop.cruelMode.moreEvents"),
     t("shop.cruelMode.moreItems"),
@@ -366,7 +366,7 @@ function CruelModeEffectsList() {
 }
 
 function GreatFeastEffectsList() {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const minutes = GREAT_FEAST_DURATION_MS / 60000;
   return (
     <div className="space-y-0.5">
@@ -588,7 +588,7 @@ function ShopCheckoutItemTitle({ item }: { item: ShopItem }) {
 function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
   if (item.category === "bundle" && item.bundleComponents?.length) {
     return (
-      <div className="space-y-1">
+      <div className="space-y-0.5">
         {item.bundleComponents.map((componentId) => {
           const c = SHOP_ITEMS[componentId];
           if (!c) return null;
@@ -713,7 +713,7 @@ function CheckoutForm({
   onCancel,
   displayPriceCents,
 }: CheckoutFormProps) {
-  const { t } = useTranslation(["ui", "common"]);
+  const { t } = useUiTranslation();
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -758,13 +758,13 @@ function CheckoutForm({
       });
 
       if (error) {
-        setErrorMessage(error.message || t("ui:shop.paymentFailed"));
+        setErrorMessage(error.message || t("shop.paymentFailed"));
         setIsProcessing(false);
       } else if (paymentIntent && paymentIntent.status === "succeeded") {
         // Verify payment on backend - server creates all purchases
         const user = await getSessionUser();
         if (!user) {
-          setErrorMessage(t("ui:shop.notAuthenticated"));
+          setErrorMessage(t("shop.notAuthenticated"));
           setIsProcessing(false);
           return;
         }
@@ -793,7 +793,7 @@ function CheckoutForm({
         } else {
           // Payment succeeded on Stripe but server verification failed (e.g. DB error).
           // Do NOT release discount reservation - user was charged; requires manual intervention.
-          setErrorMessage(result.error || t("ui:shop.verificationFailed"));
+          setErrorMessage(result.error || t("shop.verificationFailed"));
           setIsProcessing(false);
         }
       }
@@ -801,7 +801,7 @@ function CheckoutForm({
       logger.error("Payment submission error:", e);
       if (e.message?.indexOf("mounted") === -1) {
         setIsProcessing(false);
-        setErrorMessage(e.message || t("ui:shop.unexpectedError"));
+        setErrorMessage(e.message || t("shop.unexpectedError"));
       }
     }
   };
@@ -814,13 +814,13 @@ function CheckoutForm({
 
       <div className="space-y-2 border-t pt-3 mt-2">
         <p className="text-xxs leading-tight text-muted-foreground">
-          {t("ui:shop.legalConsent")}{" "}
+          {t("shop.legalConsent")}{" "}
           <a
             href="/terms"
             target="_blank"
             className="underline hover:text-foreground"
           >
-            {t("ui:shop.termsOfService")}
+            {t("shop.termsOfService")}
           </a>{" "}
           •{" "}
           <a
@@ -828,7 +828,7 @@ function CheckoutForm({
             target="_blank"
             className="underline hover:text-foreground"
           >
-            {t("ui:shop.rightOfWithdrawal")}
+            {t("shop.rightOfWithdrawal")}
           </a>
         </p>
       </div>
@@ -845,13 +845,13 @@ function CheckoutForm({
           button_id="shop-complete-purchase"
         >
           {isPurchaseSuccess ? (
-            t("ui:shop.purchaseSuccess", {
+            t("shop.purchaseSuccess", {
               defaultValue: "Purchase Success",
             })
           ) : isProcessing ? (
             <TextShimmer>{t("common:status.processing")}</TextShimmer>
           ) : (
-            t("ui:shop.completePurchaseFor", {
+            t("shop.completePurchaseFor", {
               price:
                 displayPriceCents > 0 ? formatPrice(displayPriceCents) : "",
             })
@@ -884,7 +884,7 @@ export function ShopDialog(props: ShopDialogProps) {
 }
 
 function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
-  const { t } = useTranslation(["ui", "common"]);
+  const { t } = useUiTranslation();
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
@@ -1165,7 +1165,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
             const hoursRemaining = Math.ceil(24 - hoursSinceLastClaim);
             gameState.addLogEntry({
               id: `free-gold-cooldown-${Date.now()}`,
-              message: t("ui:shop.freeGoldCooldownLog", {
+              message: t("shop.freeGoldCooldownLog", {
                 hours: hoursRemaining,
                 count: hoursRemaining,
               }),
@@ -1196,7 +1196,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
             0;
           gameState.addLogEntry({
             id: `free-gold-claimed-${Date.now()}`,
-            message: t("ui:shop.freeGoldClaimedLog", {
+            message: t("shop.freeGoldClaimedLog", {
               amount: freeGoldAmount,
             }),
             timestamp: Date.now(),
@@ -1205,7 +1205,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
           toast({
             title: t("common:status.success"),
-            description: t("ui:shop.freeGoldAdded", { amount: freeGoldAmount }),
+            description: t("shop.freeGoldAdded", { amount: freeGoldAmount }),
           });
 
           // Return early - don't save to database
@@ -1221,7 +1221,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
           if (alreadyPurchased) {
             gameState.addLogEntry({
               id: `already-claimed-${Date.now()}`,
-              message: t("ui:shop.alreadyClaimedItemLog", {
+              message: t("shop.alreadyClaimedItemLog", {
                 name: resolveShopItemName(item),
               }),
               timestamp: Date.now(),
@@ -1313,20 +1313,20 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
         const resolvedItemName = resolveShopItemName(item);
         gameState.addLogEntry({
           id: `free-gift-${Date.now()}`,
-          message: t("ui:shop.freeItemAdded", { name: resolvedItemName }),
+          message: t("shop.freeItemAdded", { name: resolvedItemName }),
           timestamp: Date.now(),
           type: "system",
         });
 
         toast({
           title: t("common:status.success"),
-          description: t("ui:shop.freeItemAdded", { name: resolvedItemName }),
+          description: t("shop.freeItemAdded", { name: resolvedItemName }),
         });
       } catch (error) {
         logger.error("Error claiming free item:", error);
         gameState.addLogEntry({
           id: `free-gift-error-${Date.now()}`,
-          message: t("ui:shop.claimFailedLog", {
+          message: t("shop.claimFailedLog", {
             name: resolveShopItemName(item),
           }),
           timestamp: Date.now(),
@@ -1345,7 +1345,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
       ) {
         gameState.addLogEntry({
           id: `already-purchased-${Date.now()}`,
-          message: t("ui:shop.alreadyClaimedItemLog", {
+          message: t("shop.alreadyClaimedItemLog", {
             name: resolveShopItemName(item),
           }),
           timestamp: Date.now(),
@@ -1391,11 +1391,11 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
         error:
           rawBody.trim() ||
           (response.status === 429
-            ? t("ui:shop.tooManyPaymentRequests", {
+            ? t("shop.tooManyPaymentRequests", {
               defaultValue:
                 "Too many payment requests, please try again later.",
             })
-            : t("ui:shop.unexpectedError")),
+            : t("shop.unexpectedError")),
       };
     }
 
@@ -1404,11 +1404,11 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
         body.error ||
         body.message ||
         (response.status === 429
-          ? t("ui:shop.tooManyPaymentRequests", {
+          ? t("shop.tooManyPaymentRequests", {
             defaultValue:
               "Too many payment requests, please try again later.",
           })
-          : t("ui:shop.unexpectedError"));
+          : t("shop.unexpectedError"));
       gameState.addLogEntry({
         id: `payment-blocked-${Date.now()}`,
         message,
@@ -1416,7 +1416,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
         type: "system",
       });
       toast({
-        title: t("ui:shop.paymentFailed"),
+        title: t("shop.paymentFailed"),
         description: message,
         variant: "destructive",
       });
@@ -1593,10 +1593,10 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
         ? (resolveShopActivationMessage(item) ?? item.activationMessage)
         : null) ??
       (item.bundleComponents
-        ? t("ui:shop.purchaseAddedBundle", { name: resolvedPurchaseName })
-        : t("ui:shop.purchaseAddedSingle", { name: resolvedPurchaseName }));
+        ? t("shop.purchaseAddedBundle", { name: resolvedPurchaseName })
+        : t("shop.purchaseAddedSingle", { name: resolvedPurchaseName }));
     const insightBonusMessage = grantedFirstPurchaseInsight
-      ? t("ui:shop.firstPurchaseInsightGranted", {
+      ? t("shop.firstPurchaseInsightGranted", {
         amount: formatNumber(firstPurchaseInsightAmount),
         glyph: INSIGHT_GLYPH,
         defaultValue: "First purchase gift: +{{amount}} {{glyph}} Insight",
@@ -1615,7 +1615,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
 
     // Show success message
     toast({
-      title: t("ui:shop.purchaseSuccessful"),
+      title: t("shop.purchaseSuccessful"),
       description: successDescription,
     });
 
@@ -1673,7 +1673,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
       gameState.addLogEntry({
         id: `toggle-cruel-mode-${Date.now()}`,
         message: isCurrentlyActivated
-          ? t("ui:shop.cruelModeDeactivatedLog", {
+          ? t("shop.cruelModeDeactivatedLog", {
             defaultValue:
               "Cruel Mode deactivated. New games will use normal difficulty.",
           })
@@ -1765,7 +1765,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
       id: `activate-${Date.now()}`,
       message:
         resolveShopActivationMessage(item) ||
-        t("ui:shop.activatedDefaultLog", {
+        t("shop.activatedDefaultLog", {
           name: resolveShopItemName(item),
         }),
       timestamp: Date.now(),
@@ -1899,14 +1899,14 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                 )}
               </DialogTitle>
               <DialogDescription className="sr-only">
-                {t("ui:shop.loadingPayment", {
+                {t("shop.loadingPayment", {
                   defaultValue: "Loading payment system...",
                 })}
               </DialogDescription>
             </DialogHeader>
             <div className="flex justify-center py-8">
               <div className="text-muted-foreground">
-                {t("ui:shop.loadingPayment", {
+                {t("shop.loadingPayment", {
                   defaultValue: "Loading payment system...",
                 })}
               </div>
@@ -1938,9 +1938,9 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
             onInteractOutside={(e) => e.preventDefault()}
           >
             <DialogHeader className="h-6 shrink-0 -mb-3">
-              <DialogTitle className="sr-only">{t("ui:shop.title")}</DialogTitle>
+              <DialogTitle className="sr-only">{t("shop.title")}</DialogTitle>
               <DialogDescription className="sr-only">
-                {t("ui:shop.srDescription")}
+                {t("shop.srDescription")}
               </DialogDescription>
             </DialogHeader>
 
@@ -1956,10 +1956,10 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
               <div className="flex flex-col gap-4">
                 <div className="rounded-lg border border-amber-600/50 bg-amber-600/10 p-4 space-y-3">
                   <h3 className="text-lg font-semibold">
-                    {t("ui:shop.securePurchaseTitle")}
+                    {t("shop.securePurchaseTitle")}
                   </h3>
                   <p className="text-sm text-muted-foreground">
-                    {t("ui:shop.securePurchaseBody")}
+                    {t("shop.securePurchaseBody")}
                   </p>
                 </div>
                 <div className="flex flex-col gap-2">
@@ -1971,7 +1971,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       openSignInFromShop();
                     }}
                   >
-                    {t("ui:shop.securePurchaseSignUp")}
+                    {t("shop.securePurchaseSignUp")}
                   </Button>
                   <Button
                     variant="outline"
@@ -1982,7 +1982,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       setActiveTab("purchases");
                     }}
                   >
-                    {t("ui:shop.securePurchaseLater")}
+                    {t("shop.securePurchaseLater")}
                   </Button>
                 </div>
               </div>
@@ -2008,14 +2008,14 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       value="shop"
                       className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 text-base data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
                     >
-                      {t("ui:shop.forSale")}
+                      {t("shop.forSale")}
                     </TabsTrigger>
                     <TabsTrigger
                       value="purchases"
                       disabled={!sessionUser}
                       className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 text-base data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
                     >
-                      {t("ui:shop.purchases")}
+                      {t("shop.purchases")}
                     </TabsTrigger>
                   </TabsList>
                 </div>
@@ -2056,10 +2056,10 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           >
                             {INSIGHT_GLYPH}
                           </span>{" "}
-                          {t("ui:shop.firstPurchaseInsightBannerInsight", {
+                          {t("shop.firstPurchaseInsightBannerInsight", {
                             defaultValue: "Insight",
                           })}{" "}
-                          {t("ui:shop.firstPurchaseInsightBannerAfter", {
+                          {t("shop.firstPurchaseInsightBannerAfter", {
                             defaultValue: "free with your first purchase",
                           })}
                         </div>
@@ -2077,7 +2077,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           : "h-6 border border-red-500/50 text-xs"
                       }
                     >
-                      {t("ui:shop.highlights")}
+                      {t("shop.highlights")}
                     </Button>
                     <Button
                       variant={
@@ -2092,7 +2092,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           : "h-6 border border-red-500/50 text-xs"
                       }
                     >
-                      {t("ui:shop.gold")}
+                      {t("shop.gold")}
                     </Button>
                     <Button
                       variant={
@@ -2107,7 +2107,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           : "h-6 border border-red-500/50 text-xs"
                       }
                     >
-                      {t("ui:shop.boosts")}
+                      {t("shop.boosts")}
                     </Button>
                     <Button
                       variant={
@@ -2122,7 +2122,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                           : "h-6 border border-red-500/50 text-xs"
                       }
                     >
-                      {t("ui:shop.bundles")}
+                      {t("shop.bundles")}
                     </Button>
                   </div>
                   <ScrollAreaWithIndicator
@@ -2382,8 +2382,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                 <TooltipWrapper
                                                   tooltip={
                                                     <div className="text-xs">
-                                                      {t(
-                                                        "ui:shop.tradersGratitudeDiscount",
+                                                      {t("shop.tradersGratitudeDiscount",
                                                         {
                                                           percent:
                                                             TRADERS_GRATITUDE_DISCOUNT_PERCENT,
@@ -2408,8 +2407,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                 <TooltipWrapper
                                                   tooltip={
                                                     <div className="text-xs">
-                                                      {t(
-                                                        "ui:shop.tradersSonDiscount",
+                                                      {t("shop.tradersSonDiscount",
                                                         {
                                                           percent:
                                                             TRADERS_SON_DISCOUNT_PERCENT,
@@ -2434,8 +2432,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                 <TooltipWrapper
                                                   tooltip={
                                                     <div className="text-xs">
-                                                      {t(
-                                                        "ui:shop.journeyCompleteDiscount",
+                                                      {t("shop.journeyCompleteDiscount",
                                                       )}
                                                     </div>
                                                   }
@@ -2459,7 +2456,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                           <span
                                             className={PROMO_TAG_CLASS}
                                           >
-                                            {t("ui:shop.mostPopular")}
+                                            {t("shop.mostPopular")}
                                           </span>
                                         )}
                                         {(item.id === "gold_15000" ||
@@ -2470,19 +2467,19 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                               {item.id === "gold_30000"
                                                 ? "3x"
                                                 : "2.5x"}{" "}
-                                              {t("ui:shop.threeXValue")}
+                                              {t("shop.threeXValue")}
                                             </span>
                                           )}
                                       </CardDescription>
                                     </CardHeader>
-                                    <CardContent className="min-h-0 pl-4 pr-4 pb-2 flex-1">
+                                    <CardContent className="min-h-0 flex-1 overflow-hidden pl-4 pr-4 pb-2">
                                       <div className="leading-tight text-sm opacity-80">
                                         <ShopItemDescriptionParagraph
                                           item={item}
                                         />
                                       </div>
                                     </CardContent>
-                                    <CardFooter className="mt-auto pl-4 pr-4 pb-4 flex-col gap-2">
+                                    <CardFooter className="relative z-10 mt-auto shrink-0 flex-col gap-2 bg-card pl-4 pr-4 pb-4">
                                       <div className="relative z-0 w-full overflow-visible pt-1">
                                         <Button
                                           onClick={() =>
@@ -2494,7 +2491,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                         >
                                           {item.price === 0 &&
                                             !gameState.isUserSignedIn
-                                            ? t("ui:shop.signInToClaim")
+                                            ? t("shop.signInToClaim")
                                             : item.id === "gold_100_free"
                                               ? (Date.now() -
                                                 (gameState.lastFreeGoldClaim ||
@@ -2511,11 +2508,9 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                       (1000 * 60 * 60),
                                                     );
                                                   return hoursRemaining === 1
-                                                    ? t(
-                                                      "ui:shop.availableInOneHour",
+                                                    ? t("shop.availableInOneHour",
                                                     )
-                                                    : t(
-                                                      "ui:shop.availableInHours",
+                                                    : t("shop.availableInHours",
                                                       {
                                                         hours: hoursRemaining,
                                                       },
@@ -2529,11 +2524,11 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                     item.id,
                                                 )
                                                 ? item.price === 0
-                                                  ? t("ui:shop.alreadyClaimed")
-                                                  : t("ui:shop.alreadyPurchased")
+                                                  ? t("shop.alreadyClaimed")
+                                                  : t("shop.alreadyPurchased")
                                                 : item.price === 0
                                                   ? t("common:buttons.claim")
-                                                  : t("ui:shop.continueCheckout")}
+                                                  : t("shop.continueCheckout")}
                                         </Button>
                                       </div>
                                     </CardFooter>
@@ -2604,7 +2599,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                               >
                                 <div className="flex flex-col">
                                   <span className="text-sm font-medium">
-                                    {t("ui:shop.feastAvailable", {
+                                    {t("shop.feastAvailable", {
                                       name: resolveShopItemName(item),
                                       remaining: activationsRemaining,
                                       total: item.rewards.feastActivations!,
@@ -2682,7 +2677,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                     {resolveShopItemName(item)}
                                     {isCruelModeItem && (
                                       <span className="text-md ml-2 font-medium">
-                                        {t("ui:shop.cruelModeActivateHint")}
+                                        {t("shop.cruelModeActivateHint")}
                                       </span>
                                     )}
                                   </span>
@@ -2727,7 +2722,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       </span>
                     </span>
                     <span className="min-w-0 flex-1 leading-none">
-                      {t("ui:shop.forSalePlaythroughNote")}
+                      {t("shop.forSalePlaythroughNote")}
                     </span>
                   </div>
                 )}
@@ -2774,10 +2769,10 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                         {INSIGHT_GLYPH}
                       </span>
                       <span>
-                        {t("ui:shop.firstPurchaseInsightBannerInsight", {
+                        {t("shop.firstPurchaseInsightBannerInsight", {
                           defaultValue: "Insight",
                         })}{" "}
-                        {t("ui:shop.firstPurchaseInsightCheckoutFree", {
+                        {t("shop.firstPurchaseInsightCheckoutFree", {
                           defaultValue: "for free",
                         })}
                       </span>
@@ -2785,7 +2780,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   )}
               </DialogTitle>
               <DialogDescription className="sr-only">
-                {t("ui:shop.paymentSrDescription", {
+                {t("shop.paymentSrDescription", {
                   name: SHOP_ITEMS[selectedItem]
                     ? resolveShopItemName(SHOP_ITEMS[selectedItem])
                     : "",
@@ -2798,7 +2793,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   checkoutPriceBreakdown.catalogSaleListCents != null && (
                     <>
                       <div className="flex justify-between gap-4 text-muted-foreground">
-                        <span>{t("ui:shop.originalPrice")}</span>
+                        <span>{t("shop.originalPrice")}</span>
                         <span className="shrink-0 text-right line-through tabular-nums">
                           {formatPrice(
                             checkoutPriceBreakdown.catalogSaleListCents,
@@ -2808,8 +2803,8 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       <div className="flex justify-between gap-4 text-emerald-600 dark:text-emerald-500">
                         <span>
                           {checkoutPriceBreakdown.isBundleDiscount
-                            ? t("ui:shop.bundleDiscount")
-                            : t("ui:shop.saleDiscount")}
+                            ? t("shop.bundleDiscount")
+                            : t("shop.saleDiscount")}
                         </span>
                         <span className="shrink-0 text-right tabular-nums">
                           −
@@ -2824,14 +2819,14 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                   <>
                     {!checkoutPriceBreakdown.hasCatalogSale && (
                       <div className="flex justify-between gap-4 text-muted-foreground">
-                        <span>{t("ui:shop.originalPrice")}</span>
+                        <span>{t("shop.originalPrice")}</span>
                         <span className="shrink-0 text-right line-through tabular-nums">
                           {formatPrice(checkoutPriceBreakdown.catalogCents)}
                         </span>
                       </div>
                     )}
                     <div className="flex justify-between gap-4 text-emerald-600 dark:text-emerald-500">
-                      <span>{t("ui:shop.eventDiscount")}</span>
+                      <span>{t("shop.eventDiscount")}</span>
                       <span className="shrink-0 text-right tabular-nums">
                         −
                         {formatPrice(
@@ -2848,7 +2843,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                     : ""
                     }`}
                 >
-                  <span>{t("ui:shop.total")}</span>
+                  <span>{t("shop.total")}</span>
                   <span className="shrink-0 tabular-nums">
                     {formatPrice(checkoutPriceBreakdown.finalCents)}
                   </span>

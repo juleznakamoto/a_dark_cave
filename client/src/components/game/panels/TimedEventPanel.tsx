@@ -51,7 +51,7 @@ import {
   GAMBLER_TUTORIAL_PLAYS,
   GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY,
 } from "@/game/gamblerSession";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   getEventI18nVars,
   getEventRulesCatalogId,
@@ -78,7 +78,7 @@ import {
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 
 export default function TimedEventPanel() {
-  const { t } = useTranslation(["ui", "common"]);
+  const { t } = useUiTranslation();
   const {
     timedEventTab,
     applyEventChoice,
@@ -707,7 +707,7 @@ export default function TimedEventPanel() {
         <TooltipWrapper
           tooltip={
             <div className="text-xs whitespace-nowrap">
-              {t("ui:timedEvent.discount", {
+              {t("timedEvent.discount", {
                 percent: Math.round(totalDiscount * 100),
               })}
               {(knowledgeDiscount > 0 || hasRingOfObedience) && (
@@ -715,10 +715,10 @@ export default function TimedEventPanel() {
                   <br />
                   {knowledgeDiscount > 0 && (
                     <span className="text-gray-400/70">
-                      {t("ui:timedEvent.discountFromKnowledge", {
+                      {t("timedEvent.discountFromKnowledge", {
                         percent: Math.round(knowledgeDiscount * 100),
                         max: isKnowledgeBonusMaxed(knowledge)
-                          ? t("ui:timedEvent.knowledgeMax")
+                          ? t("timedEvent.knowledgeMax")
                           : "",
                       })}
                     </span>
@@ -726,7 +726,7 @@ export default function TimedEventPanel() {
                   {knowledgeDiscount > 0 && hasRingOfObedience && <br />}
                   {hasRingOfObedience && (
                     <span className="text-gray-400/70">
-                      {t("ui:timedEvent.discountFromRing")}
+                      {t("timedEvent.discountFromRing")}
                     </span>
                   )}
                 </>
@@ -759,18 +759,18 @@ export default function TimedEventPanel() {
   const collectorSellGold = eventI18nVars?.reward;
   const collectorBuyTitle =
     typeof collectorBuyGold === "number"
-      ? t("ui:timedEvent.buyFor", {
+      ? t("timedEvent.buyFor", {
         amount: collectorBuyGold,
         defaultValue: "Buy for {{amount}} Gold",
       })
-      : t("ui:timedEvent.buy");
+      : t("timedEvent.buy");
   const collectorSellTitle =
     typeof collectorSellGold === "number"
-      ? t("ui:timedEvent.sellFor", {
+      ? t("timedEvent.sellFor", {
         amount: collectorSellGold,
         defaultValue: "Sell for {{amount}} Gold",
       })
-      : t("ui:timedEvent.sell");
+      : t("timedEvent.sell");
 
   const renderChoiceSection = (
     title: string,
@@ -849,7 +849,7 @@ export default function TimedEventPanel() {
                   )}
                   button_id="timedevent-say_goodbye"
                 >
-                  {t("ui:timedEvent.sayGoodbye")}
+                  {t("timedEvent.sayGoodbye")}
                 </Button>
               </div>
             )}
@@ -859,7 +859,7 @@ export default function TimedEventPanel() {
             {isMerchantEvent && (
               <div className={GAME_TAB_SECTION_HEADER_ROW}>
                 <h3 className={GAME_TAB_SECTION_HEADER}>
-                  <span className="leading-none">{t("ui:timedEvent.buy")}</span>
+                  <span className="leading-none">{t("timedEvent.buy")}</span>
                   {merchantDiscountBadge}
                 </h3>
               </div>
@@ -884,7 +884,7 @@ export default function TimedEventPanel() {
                     )}
                     button_id="timedevent-say_goodbye"
                   >
-                    {t("ui:timedEvent.sayGoodbye")}
+                    {t("timedEvent.sayGoodbye")}
                   </Button>
                 </div>
               )}

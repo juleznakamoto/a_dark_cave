@@ -88,12 +88,24 @@ export default {
         sans: ["var(--font-sans)"],
         mono: ["var(--font-mono)"],
       },
-      /** Rem-based aliases for legacy px sizes (16px root). Symbols keep arbitrary px. */
+      /**
+       * Rem-based aliases for legacy px sizes (16px root). Symbols keep arbitrary px.
+       * Default sm/xs/… are size-only strings so Tailwind does not emit a fixed rem
+       * line-height that would beat the scaled `:where(.text-*)` rules in index.css.
+       * Explicit `leading-*` (higher specificity than `:where`) still wins.
+       */
       fontSize: {
-        "3xs": ["0.5625rem", { lineHeight: "1" }],
-        "2xs": ["0.625rem", { lineHeight: "1" }],
-        xxs: ["0.6875rem", { lineHeight: "1" }],
-        "xs-plus": ["0.8125rem", { lineHeight: "1" }],
+        "3xs": "0.5625rem",
+        "2xs": "0.625rem",
+        xxs: "0.6875rem",
+        "xs-plus": "0.8125rem",
+        xs: "0.8125rem",
+        sm: "0.875rem",
+        base: "1rem",
+        lg: "1.125rem",
+        xl: "1.25rem",
+        "2xl": "1.5rem",
+        "3xl": "1.875rem",
       },
       keyframes: {
         "accordion-down": {

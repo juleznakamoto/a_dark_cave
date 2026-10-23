@@ -17,12 +17,12 @@ import {
   setInviteFriendsFloatingRendered,
   useInviteFriendsFloatingDismissed,
 } from "@/components/game/inviteFriendsFloatingUi";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { GAME_FOOTER_INSET } from "./gameChrome";
 import { Z_INDEX } from "@/lib/z-index";
 
 export default function InviteFriendsFloatingButton() {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const { toast } = useToast();
   const referralCount = useGameStore((s) => s.referralCount ?? 0);
   const referrals = useGameStore((s) => s.referrals ?? []);

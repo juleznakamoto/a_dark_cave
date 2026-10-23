@@ -10,7 +10,7 @@ import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { ChevronDown, Globe } from "lucide-react";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { useLocale } from "@/i18n/useLocale";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import type { SupportedLocale } from "@/i18n/locales";
 import cn from "clsx";
 
@@ -53,7 +53,7 @@ export default function LanguageSelector({
   menuTextClassName?: string;
 } = {}) {
   const { locale, setLocale, locales, localeLabels } = useLocale();
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const [open, setOpen] = useState(false);
 
   const inlineLabel =

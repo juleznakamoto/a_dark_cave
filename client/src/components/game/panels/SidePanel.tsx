@@ -28,7 +28,7 @@ import {
   getStatName,
 } from "@/i18n/resolveGameText";
 import React, { useState, useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { type FortificationBuildingKey } from "@/game/bastionStats";
 import { bookEffects, fellowshipEffects } from "@/game/rules/effects";
 import {
@@ -125,7 +125,7 @@ function bonusTooltip(row: SidePanelBonusRow) {
 }
 
 export default function SidePanel() {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const model = useDerivedGameState(getSidePanelModel, sidePanelModelEqual);
   const activeTab = useGameStore((s) => s.activeTab);
   const catalogActive = useDemoEndCatalogActive();

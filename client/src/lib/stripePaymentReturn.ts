@@ -11,7 +11,7 @@ import { SHOP_ITEMS } from "../../../shared/shopItems";
 import { INSIGHT_GLYPH } from "@/game/villagerCapUpgrades";
 import { formatNumber } from "@/lib/utils";
 import { logger } from "@/lib/logger";
-import i18n from "@/i18n";
+import { tWithFallback } from "@/i18n/resolveGameText";
 import { stripStripeReturnParamsFromUrl } from "@/game/startupUrlCleanup";
 
 /**
@@ -104,11 +104,15 @@ export async function processStripePaymentReturn(): Promise<void> {
         ? `${item.name} is now available.`
         : "Thank you for your purchase.";
       const insightBonusMessage = grantedFirstPurchaseInsight
-        ? i18n.t("ui:shop.firstPurchaseInsightGranted", {
-          amount: formatNumber(firstPurchaseInsightAmount),
-          glyph: INSIGHT_GLYPH,
-          defaultValue: "First purchase gift: +{{amount}} {{glyph}} Insight",
-        })
+        ? tWithFallback(
+            "ui",
+            "shop.firstPurchaseInsightGranted",
+            "First purchase gift: +{{amount}} {{glyph}} Insight",
+            {
+              amount: formatNumber(firstPurchaseInsightAmount),
+              glyph: INSIGHT_GLYPH,
+            },
+          )
         : null;
       toast({
         title: "Purchase complete",

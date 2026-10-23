@@ -22,7 +22,7 @@ import {
 } from "@/components/game/gameChrome";
 import { RedactedLockedHint } from "@/components/game/RedactedHint";
 import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { getEffectName } from "@/i18n/resolveGameText";
 import {
   getPalisadesTierLabel,
@@ -34,7 +34,7 @@ export default function BastionPanel({
 }: {
   active?: boolean;
 }) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const catalogActive = useDemoEndCatalogActive();
   const store = useGameStoreWithoutTickClock();
   const { buildings, setHighlightedResources, executeAction } = store;

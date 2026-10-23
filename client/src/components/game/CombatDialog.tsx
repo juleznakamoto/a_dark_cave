@@ -45,14 +45,18 @@ import { extractCombatResultSummary } from "@/game/stateHelpers";
 import { ProceduralGroundBackground } from "@/components/ui/procedural-ground-background";
 import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
 import { cn, formatNumber } from "@/lib/utils";
-import { getResourceName, getStatName } from "@/i18n/resolveGameText";
+import {
+  getResourceName,
+  getStatName,
+  tWithFallback,
+} from "@/i18n/resolveGameText";
 import {
   getCombatEnemyDisplayName,
   getDamagedBuildingDisplayName,
   getFellowshipDisplayName,
 } from "@/i18n/combatLabels";
 import { englishCountFallback, getUiTooltip } from "@/i18n/tooltipLabels";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   WIN_LOSE_BOARD_HOLD_MS,
   WinLoseResultScreen,
@@ -142,7 +146,7 @@ export default function CombatDialog({
   onVictory,
   onDefeat,
 }: CombatDialogProps) {
-  const { t } = useTranslation(["ui", "common"]);
+  const { t } = useUiTranslation();
   const gameState = useGameStore.getState();
   const crushingStrikeLevel = useGameStore(
     (state) => state.combatSkills.crushingStrikeLevel,
@@ -1007,24 +1011,24 @@ export default function CombatDialog({
           key: "casualties",
           text:
             (combatSummary.casualties ?? 0) === 0
-              ? t("ui:combat.noCasualties")
+              ? t("combat.noCasualties")
               : combatSummary.casualties === 1
-                ? t("ui:combat.oneCasualty")
-                : t("ui:combat.manyCasualties", {
+                ? t("combat.oneCasualty")
+                : t("combat.manyCasualties", {
                   count: formatNumber(combatSummary.casualties!),
                 }),
           className: "text-gray-400 text-sm",
         },
         ...(combatSummary.woundedFellows ?? []).map((f) => ({
           key: `fellow-${f}`,
-          text: t("ui:combat.fellowInjured", {
+          text: t("combat.fellowInjured", {
             name: getFellowshipDisplayName(f),
           }),
           className: "text-gray-400 text-sm",
         })),
         ...(combatSummary.damagedBuildings ?? []).map((b) => ({
           key: `building-${b}`,
-          text: t("ui:combat.buildingDamaged", {
+          text: t("combat.buildingDamaged", {
             name: getDamagedBuildingDisplayName(b),
           }),
           className: "text-gray-400 text-sm",
@@ -1034,7 +1038,7 @@ export default function CombatDialog({
           ? [
             {
               key: "madness",
-              text: t("ui:madness.change", {
+              text: t("madness.change", {
                 sign: "+",
                 amount: formatNumber(combatSummary.madnessGain),
               }),
@@ -1052,7 +1056,7 @@ export default function CombatDialog({
           ? [
             {
               key: "silver",
-              text: t("ui:combat.silverClaimed", {
+              text: t("combat.silverClaimed", {
                 amount: formatNumber(combatSummary.silverReward),
               }),
               className: "text-slate-300 text-sm",
@@ -1064,7 +1068,7 @@ export default function CombatDialog({
           ? [
             {
               key: "gold",
-              text: t("ui:combat.goldClaimed", {
+              text: t("combat.goldClaimed", {
                 amount: formatNumber(combatSummary.goldReward),
               }),
               className: "text-slate-300 text-sm",
@@ -1076,7 +1080,7 @@ export default function CombatDialog({
           ? [
             {
               key: "madness",
-              text: t("ui:madness.change", {
+              text: t("madness.change", {
                 sign: combatSummary.madnessGain > 0 ? "+" : "-",
                 amount: formatNumber(Math.abs(combatSummary.madnessGain)),
               }),
@@ -1102,30 +1106,30 @@ export default function CombatDialog({
         {totalCrit > 0 && (
           <div className="space-y-1">
             <div>
-              {t("ui:combat.critDamage", {
+              {t("combat.critDamage", {
                 percent: critDamagePercent,
               })}
             </div>
             <div>
-              {t("ui:combat.critChance", {
+              {t("combat.critChance", {
                 percent: totalCrit,
               })}
             </div>
             {luckCrit > 0 && (
               <div className="text-gray-400/70">
-                {t("ui:combat.critFromLuck", {
+                {t("combat.critFromLuck", {
                   percent: luckCrit,
                   stat: getStatName("luck", "Luck"),
                   maxSuffix:
                     getTotalLuck(gameState) >= 50
-                      ? t("ui:combat.critFromLuckMaxSuffix")
+                      ? t("combat.critFromLuckMaxSuffix")
                       : "",
                 })}
               </div>
             )}
             {itemCrit > 0 && (
               <div className="text-gray-400/70">
-                {t("ui:combat.critFromItems", {
+                {t("combat.critFromItems", {
                   percent: itemCrit,
                 })}
               </div>
@@ -1139,7 +1143,7 @@ export default function CombatDialog({
             }
           >
             <div className="text-gray-300">
-              {t("ui:combat.missChance", {
+              {t("combat.missChance", {
                 percent: failPct,
                 stat: getStatName("madness", "Madness"),
               })}
@@ -1185,7 +1189,7 @@ export default function CombatDialog({
                   variant="outline"
                   button_id="combat-start-fight"
                 >
-                  {t("ui:combat.startFight")}
+                  {t("combat.startFight")}
                 </Button>
               </div>
             </>
@@ -1194,8 +1198,8 @@ export default function CombatDialog({
               kind={combatResult}
               title={
                 combatResult === "defeat"
-                  ? t("ui:combat.youLost")
-                  : t("ui:combat.youWin")
+                  ? t("combat.youLost")
+                  : t("combat.youWin")
               }
               lines={
                 combatResult === "defeat"
@@ -1203,7 +1207,11 @@ export default function CombatDialog({
                   : victoryResultLines
               }
               onContinue={handleEndFight}
-              continueLabel={t("common:buttons.continue")}
+              continueLabel={tWithFallback(
+                "common",
+                "buttons.continue",
+                "Continue",
+              )}
             />
           ) : (
             // Combat interface
@@ -1212,8 +1220,8 @@ export default function CombatDialog({
                 <DialogHeader>
                   <DialogTitle className="pr-0 text-lg font-semibold">
                     {currentEnemy?.isBoss
-                      ? t("ui:combat.bossRoundTitle", { round })
-                      : t("ui:combat.roundTitle", { round })}
+                      ? t("combat.bossRoundTitle", { round })
+                      : t("combat.roundTitle", { round })}
                   </DialogTitle>
                 </DialogHeader>
 
@@ -1232,7 +1240,7 @@ export default function CombatDialog({
                             tooltip={
                               <div className="text-xs whitespace-pre-line">
                                 {[
-                                  t("ui:combat.poisonArrows"),
+                                  t("combat.poisonArrows"),
                                   getUiTooltip("damage", "Damage: {{value}}", {
                                     value: enemyPoisonDamage,
                                   }),
@@ -1265,8 +1273,8 @@ export default function CombatDialog({
                             tooltip={
                               <div className="text-xs whitespace-pre-line">
                                 {[
-                                  t("ui:combat.crushingStrike"),
-                                  t("ui:combat.stunned"),
+                                  t("combat.crushingStrike"),
+                                  t("combat.stunned"),
                                   formatCombatStatusRoundsRemaining(
                                     enemyStunnedRounds,
                                   ),
@@ -1299,7 +1307,7 @@ export default function CombatDialog({
                             tooltip={
                               <div className="text-xs whitespace-pre-line">
                                 {[
-                                  t("ui:combat.feralHowl"),
+                                  t("combat.feralHowl"),
                                   getUiTooltip(
                                     "enemyDamageReductionActive",
                                     "Enemy damage: -{{percent}}%",
@@ -1333,7 +1341,7 @@ export default function CombatDialog({
                             tooltip={
                               <div className="text-xs whitespace-pre-line">
                                 {[
-                                  t("ui:combat.bloodflameSphere"),
+                                  t("combat.bloodflameSphere"),
                                   getUiTooltip("damage", "Damage: {{value}}", {
                                     value: enemyBurnDamage,
                                   }),
@@ -1368,7 +1376,7 @@ export default function CombatDialog({
                       <CombatLabeledStat
                         icon="✚"
                         iconClassName="text-green-400/60"
-                        label={t("ui:combat.integrity")}
+                        label={t("combat.integrity")}
                         value={
                           <>
                             {formatNumber(currentEnemy?.currentHealth ?? 0)}/
@@ -1399,24 +1407,24 @@ export default function CombatDialog({
                               <>
                                 -{formatNumber(enemyDamageIndicator.amount)} (
                                 {playerStrikeFailed
-                                  ? t("ui:combat.attackFailed")
+                                  ? t("combat.attackFailed")
                                   : crushingStrikeFailed
-                                    ? t("ui:combat.crushingStrikeFailed")
-                                    : t("ui:combat.feralHowlFailed")}
+                                    ? t("combat.crushingStrikeFailed")
+                                    : t("combat.feralHowlFailed")}
                                 )
                               </>
                             ) : playerStrikeFailed ? (
-                              t("ui:combat.attackFailed")
+                              t("combat.attackFailed")
                             ) : crushingStrikeFailed ? (
-                              t("ui:combat.crushingStrikeFailed")
+                              t("combat.crushingStrikeFailed")
                             ) : (
-                              t("ui:combat.feralHowlFailed")
+                              t("combat.feralHowlFailed")
                             )
                           ) : (
                             <>
                               -{formatNumber(enemyDamageIndicator.amount)}
                               {wasCriticalStrike &&
-                                ` (${t("ui:combat.critical")})`}
+                                ` (${t("combat.critical")})`}
                             </>
                           )}
                         </div>
@@ -1431,7 +1439,7 @@ export default function CombatDialog({
                       <CombatLabeledStat
                         icon="⟐"
                         iconClassName="text-red-400/60"
-                        label={t("ui:combat.attack")}
+                        label={t("combat.attack")}
                         value={formatNumber(currentEnemy?.attack ?? 0)}
                         muted
                       />
@@ -1440,7 +1448,7 @@ export default function CombatDialog({
                           icon="🟂"
                           // 🟂 sits high in Noto; nudge past the shared 0.12em optical offset.
                           iconClassName="text-green-400 translate-y-[0.22em]"
-                          label={t("ui:combat.healChance")}
+                          label={t("combat.healChance")}
                           value={`${currentEnemy?.healChancePercent}%`}
                           muted
                         />
@@ -1449,7 +1457,7 @@ export default function CombatDialog({
                         <CombatLabeledStat
                           icon="🟄"
                           iconClassName="text-yellow-400"
-                          label={t("ui:combat.stunChance")}
+                          label={t("combat.stunChance")}
                           value={`${currentEnemy?.stunChancePercent}%`}
                           muted
                         />
@@ -1464,13 +1472,13 @@ export default function CombatDialog({
                       <div className="flex justify-between text-sm">
                         <span className="font-medium">
                           {hasFortress
-                            ? t("ui:combat.fortress")
-                            : t("ui:combat.bastion")}
+                            ? t("combat.fortress")
+                            : t("combat.bastion")}
                         </span>
                         <CombatLabeledStat
                           icon="✚"
                           iconClassName="text-green-400/60"
-                          label={t("ui:combat.integrity")}
+                          label={t("combat.integrity")}
                           value={
                             <>
                               {formatNumber(currentIntegrity)}/
@@ -1498,10 +1506,10 @@ export default function CombatDialog({
                               integrityDamageIndicator.amount > 0 ? (
                               <>
                                 -{formatNumber(integrityDamageIndicator.amount)}{" "}
-                                ({t("ui:combat.stunned")})
+                                ({t("combat.stunned")})
                               </>
                             ) : (
-                              t("ui:combat.stunned")
+                              t("combat.stunned")
                             )}
                           </div>
                         ) : (
@@ -1510,7 +1518,7 @@ export default function CombatDialog({
                               <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-900 font-bold text-sm pointer-events-none">
                                 -{formatNumber(integrityDamageIndicator.amount)}
                                 {wasEnemyCriticalStrike &&
-                                  ` (${t("ui:combat.critical")})`}
+                                  ` (${t("combat.critical")})`}
                               </div>
                             )}
                             {integrityHealIndicator.visible && (
@@ -1527,14 +1535,14 @@ export default function CombatDialog({
                       <CombatLabeledStat
                         icon="⟐"
                         iconClassName="text-red-400/60"
-                        label={t("ui:combat.attack")}
+                        label={t("combat.attack")}
                         value={formatNumber(bastionStats.attack)}
                         muted
                       />
                       <CombatLabeledStat
                         icon="⧈"
                         iconClassName="text-blue-400/60"
-                        label={t("ui:combat.defense")}
+                        label={t("combat.defense")}
                         value={formatNumber(bastionStats.defense)}
                         muted
                       />
@@ -1552,7 +1560,7 @@ export default function CombatDialog({
                   ) && (
                       <div className="pt-3">
                         <div className="text-sm font-medium mb-2">
-                          {t("ui:combat.items")}
+                          {t("combat.items")}
                         </div>
                         <div className="grid grid-cols-2 gap-2">
                           {combatItems
@@ -1570,7 +1578,7 @@ export default function CombatDialog({
                                 ? tooltipConfig.getContent(gameState)
                                 : "";
                               const formatAvailable = (current: number, max: number) =>
-                                t("ui:combat.available", { current, max });
+                                t("combat.available", { current, max });
                               const availabilityText =
                                 item.id === "poison_arrows"
                                   ? formatAvailable(
@@ -1663,7 +1671,7 @@ export default function CombatDialog({
                   {(HAS_RESTLESS_KNIGHT || HAS_ELDER_WIZARD || HAS_BRUTE_HOUND) && (
                     <div className="pt-3">
                       <div className="text-sm font-medium mb-2">
-                        {t("ui:combat.skillsTitle")}
+                        {t("combat.skillsTitle")}
                       </div>
                       <div className="grid grid-cols-2 gap-2">
                         {HAS_RESTLESS_KNIGHT && (
@@ -1671,8 +1679,8 @@ export default function CombatDialog({
                             tooltip={
                               <div className="text-xs whitespace-pre-line">
                                 {gameState.story?.seen?.restlessKnightWounded
-                                  ? t("ui:combat.restlessKnightWounded")
-                                  : `${combatItemTooltips.crushing_strike.getContent(gameState)}\n${t("ui:combat.available", {
+                                  ? t("combat.restlessKnightWounded")
+                                  : `${combatItemTooltips.crushing_strike.getContent(gameState)}\n${t("combat.available", {
                                     current: usedCrushingStrike ? 0 : 1,
                                     max: 1,
                                   })}`}
@@ -1717,7 +1725,7 @@ export default function CombatDialog({
                                 >
                                   {COMBAT_SKILL_BUTTON_ICONS.crushing_strike.glyph}
                                 </span>
-                                {t("ui:combat.crushingStrike")}
+                                {t("combat.crushingStrike")}
                               </Button>
                             </div>
                           </TooltipWrapper>
@@ -1727,8 +1735,8 @@ export default function CombatDialog({
                             tooltip={
                               <div className="text-xs whitespace-pre-line">
                                 {gameState.story?.seen?.elderWizardWounded
-                                  ? t("ui:combat.elderWizardWounded")
-                                  : `${combatItemTooltips.bloodflame_sphere.getContent(gameState)}\n${t("ui:combat.available", {
+                                  ? t("combat.elderWizardWounded")
+                                  : `${combatItemTooltips.bloodflame_sphere.getContent(gameState)}\n${t("combat.available", {
                                     current: usedBloodflameSphere ? 0 : 1,
                                     max: 1,
                                   })}`}
@@ -1788,7 +1796,7 @@ export default function CombatDialog({
                                       .glyph
                                   }
                                 </span>
-                                {t("ui:combat.bloodflameSphere")}
+                                {t("combat.bloodflameSphere")}
                               </Button>
                             </div>
                           </TooltipWrapper>
@@ -1797,7 +1805,7 @@ export default function CombatDialog({
                           <TooltipWrapper
                             tooltip={
                               <div className="text-xs whitespace-pre-line">
-                                {`${combatItemTooltips.feral_howl.getContent(gameState)}\n${t("ui:combat.available", {
+                                {`${combatItemTooltips.feral_howl.getContent(gameState)}\n${t("combat.available", {
                                   current: usedFeralHowl ? 0 : 1,
                                   max: 1,
                                 })}`}
@@ -1832,7 +1840,7 @@ export default function CombatDialog({
                                 >
                                   {COMBAT_SKILL_BUTTON_ICONS.feral_howl.glyph}
                                 </span>
-                                {t("ui:combat.feralHowl")}
+                                {t("combat.feralHowl")}
                               </Button>
                             </div>
                           </TooltipWrapper>
@@ -1870,8 +1878,8 @@ export default function CombatDialog({
                       button_id="combat-fight"
                     >
                       {isProcessingRound
-                        ? t("ui:combat.fighting")
-                        : t("ui:combat.fight")}
+                        ? t("combat.fighting")
+                        : t("combat.fight")}
                     </Button>
                   </TooltipWrapper>
                 </div>

@@ -7,7 +7,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 
 interface DeleteAccountDialogProps {
   isOpen: boolean;
@@ -22,7 +22,7 @@ export function DeleteAccountDialog({
   onConfirm,
   isDeleting = false,
 }: DeleteAccountDialogProps) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
 
   return (
     <Dialog

@@ -10,7 +10,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { CircularProgress } from "@/components/ui/circular-progress";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { isGameTabHidden, subscribeGameTabHidden } from "@/lib/tabVisibility";
 
 interface ButtonLevelBadgeProps {
@@ -20,7 +20,7 @@ interface ButtonLevelBadgeProps {
 const CRAFT_UPGRADE_KEYS: UpgradeKey[] = ["craftTorches", "craftBoneTotems", "craftLeatherTotems"];
 
 export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const buttonUpgrade = useGameStore(
     (state) => state.buttonUpgrades[upgradeKey],
   );

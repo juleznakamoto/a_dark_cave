@@ -22,7 +22,8 @@
   "textScale": {
     "label": "Text size",
     "ariaLabel": "Select text size",
-    "normal": "Normal",
+    "small": "Small",
+    "medium": "Medium",
     "large": "Large"
   },
   "languageSelector": {

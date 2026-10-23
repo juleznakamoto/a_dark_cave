@@ -79,7 +79,7 @@ import {
 } from "@/game/socialTaskRewards";
 import { clothingEffects } from "@/game/rules/effects";
 import { getEffectName } from "@/i18n/resolveGameText";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 
 /** Exclusive promo track reward (see `eventsSocialPromoExclusive`). */
 const EXCLUSIVE_PROMO_REWARD_ITEM_ID = "gifted_ring";
@@ -211,7 +211,7 @@ function TaskRowStatusIcon({
 }
 
 function TaskGoldBadge({ amount }: { amount: number }) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   return (
     <span className={SOCIAL_TASK_REWARD_CHIP_CLASS}>
       {t("invite.goldBonus", { amount })}
@@ -220,13 +220,12 @@ function TaskGoldBadge({ amount }: { amount: number }) {
 }
 
 function TaskResourceBadge({ reward }: { reward: SocialTaskResourceReward }) {
-  const { t } = useTranslation("ui");
-  const { t: tCommon } = useTranslation("common");
+  const { t } = useUiTranslation();
   return (
     <span className={SOCIAL_TASK_REWARD_CHIP_CLASS}>
       {t("socialPrompt.resourceBonus", {
         amount: reward.amount,
-        resource: tCommon(`resources.${reward.resource}`),
+        resource: t(`common:resources.${reward.resource}`),
       })}
     </span>
   );
@@ -266,7 +265,7 @@ function TaskClaimButton({
   onClick: () => void;
   button_id: string;
 }) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   return (
     <Button
       size="xs"
@@ -283,7 +282,7 @@ function TaskClaimButton({
 export default function SocialPromptDialog({
   isOpen,
 }: SocialPromptDialogProps) {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const { toast } = useToast();
   const setSocialPromptDialogOpen = useGameStore(
     (s) => s.setSocialPromptDialogOpen,

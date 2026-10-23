@@ -47,15 +47,26 @@ describe("dev save catalog", () => {
     expect(isForestTabVisible(state)).toBe(false);
     expect(isBastionTabVisible(state)).toBe(false);
     expect(state.buildings.darkEstate).toBe(0);
+    expect(state.story.seen.hasWood).toBe(true);
+    expect(state.resources.wood).toBeGreaterThan(0);
     expect(isDevSaveFixtureGameId(state.gameId)).toBe(true);
   });
 
-  it("village unlocks the Village tab with working jobs", () => {
+  it("village unlocks the Village tab with crowded mid-game chrome", () => {
     const state = buildDevSave("village");
     expect(isVillageTabVisible(state)).toBe(true);
-    expect(state.buildings.woodenHut).toBeGreaterThan(0);
-    expect(canActivateSleep(state)).toBe(true);
+    expect(isForestTabVisible(state)).toBe(false);
+    expect(state.buildings.woodenHut).toBeGreaterThanOrEqual(8);
+    expect(state.buildings.cabin).toBe(1);
+    expect(state.buildings.blacksmith).toBe(1);
+    expect(state.buildings.tradePost).toBe(1);
+    expect(state.buildings.tannery).toBe(1);
+    expect(state.tools.stone_pickaxe).toBe(true);
+    expect(state.tools.iron_axe).toBe(false);
+    expect(state.weapons.crude_bow).toBe(false);
     expect(state.buildings.darkEstate).toBe(0);
+    expect(state.story.seen.hasVillagers).toBe(true);
+    expect(canActivateSleep(state)).toBe(true);
   });
 
   it("invest has Coinhouse, gold, and ready offers", () => {
@@ -106,5 +117,11 @@ describe("dev save catalog", () => {
     expect(state.buildings.darkEstate).toBeGreaterThan(0);
     expect(isBastionTabVisible(state)).toBe(true);
     expect(isAchievementsGameTabUnlocked(state)).toBe(true);
+    expect(state.story.seen.portalBlasted).toBe(true);
+    expect(state.buildings.foundry).toBe(1);
+    expect(state.buildings.palisades).toBeGreaterThan(0);
+    expect(state.tools.iron_lantern).toBe(true);
+    expect(state.tools.steel_axe).toBe(false);
+    expect(state.resources.ember_bomb).toBeGreaterThan(0);
   });
 });

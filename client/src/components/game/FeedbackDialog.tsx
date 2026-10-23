@@ -15,7 +15,7 @@ import {
   OFFICIAL_REDDIT_URL,
 } from "@/lib/gameFooterSocialLinks";
 import { openGameFeedbackFormFromDialog } from "@/lib/gameFeedbackForm";
-import { useTranslation } from "react-i18next";
+import { useUiTranslation } from "@/i18n/useUiTranslation";
 
 type FeedbackContactId = "reddit" | "instagram" | "contact";
 
@@ -29,7 +29,7 @@ const FEEDBACK_CONTACTS: readonly {
   ];
 
 export default function FeedbackDialog() {
-  const { t } = useTranslation("ui");
+  const { t } = useUiTranslation();
   const open = useGameStore((s) => s.feedbackDialogOpen);
 
   const contactLabel = (id: FeedbackContactId) => {

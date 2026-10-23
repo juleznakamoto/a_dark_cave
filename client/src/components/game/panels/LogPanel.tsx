@@ -404,25 +404,38 @@ function LogPanel() {
                   className="group flex items-start gap-2 text-foreground leading-relaxed py-[calc(0.125rem*0.5)] md:py-0.5"
                 >
                   {showNewIndicator ? (
-                    <ThinkingOrb
-                      state="breathing"
-                      size={UNREAD_ORB_DRAW}
-                      theme="dark"
-                      frame={unreadOrbFrame}
-                      color={
-                        isNewVillager ? NEW_VILLAGER_ORB_COLOR : UNREAD_ORB_COLOR
-                      }
-                      className="mt-1 shrink-0"
-                      style={{ width: UNREAD_ORB_PX, height: UNREAD_ORB_PX }}
-                      dotSize={2.5}
-                      dots={0.4}
-                      speed={1.2}
+                    // 1lh slot keeps the fixed-px orb centered on the first
+                    // text line at every text size (mt-1 only fit Normal).
+                    <span
+                      className="inline-flex shrink-0 items-center justify-center self-start"
+                      style={{ width: UNREAD_ORB_PX, height: "1lh" }}
                       aria-hidden={true}
-                    />
+                    >
+                      <ThinkingOrb
+                        state="breathing"
+                        size={UNREAD_ORB_DRAW}
+                        theme="dark"
+                        frame={unreadOrbFrame}
+                        color={
+                          isNewVillager
+                            ? NEW_VILLAGER_ORB_COLOR
+                            : UNREAD_ORB_COLOR
+                        }
+                        className="shrink-0"
+                        style={{
+                          width: UNREAD_ORB_PX,
+                          height: UNREAD_ORB_PX,
+                        }}
+                        dotSize={2.5}
+                        dots={0.4}
+                        speed={1.2}
+                        aria-hidden={true}
+                      />
+                    </span>
                   ) : (
                     <span
-                      className="shrink-0"
-                      style={{ width: UNREAD_ORB_PX }}
+                      className="shrink-0 self-start"
+                      style={{ width: UNREAD_ORB_PX, height: "1lh" }}
                       aria-hidden={true}
                     />
                   )}

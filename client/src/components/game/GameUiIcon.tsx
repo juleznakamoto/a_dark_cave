@@ -67,7 +67,10 @@ export function MapTabIcon({ className }: { className?: string }) {
       src={publicUrl("/icons/map_tab.svg")}
       alt=""
       draggable={false}
-      className={cn("inline-block h-3 w-auto shrink-0 self-end -translate-y-[3px]", className)}
+      className={cn(
+        "game-map-tab-icon inline-block shrink-0 self-end -translate-y-[3px]",
+        className,
+      )}
     />
   );
 }

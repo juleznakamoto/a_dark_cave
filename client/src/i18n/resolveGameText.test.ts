@@ -43,7 +43,7 @@ describe("tWithFallback", () => {
       { name: "Holzfäller", rewards: "+250 Silber" },
     );
 
-    expect(result).toBe("Erfolg abgeschlossen: Holzfäller: +250 Silber");
+    expect(result).toBe("Erfolg „Holzfäller“ abgeschlossen: +250 Silber");
   });
 
   it("resolves plural catalog keys when exists() is false", async () => {

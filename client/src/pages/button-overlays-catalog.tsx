@@ -235,7 +235,7 @@ export function ButtonOverlaysCatalog() {
         </h2>
         <p className="text-xs text-muted-foreground">
           Same CSS hosts and discs as Cave / Village / Forest / Estate. Sizes
-          are Normal text (`--adc-control-scale: 1`).
+          are Small text (`--adc-control-scale: 1`).
         </p>
         <div className="flex flex-wrap items-end gap-x-8 gap-y-8">
           <OverlayCell entry={overlayById("level")}>

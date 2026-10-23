@@ -22,6 +22,7 @@ import {
   getVillagerCapForJob,
   migrateVillagerCapFifteenStepOnLoad,
   migrateVillagerCapFiveStepOnLoad,
+  migrateVillagerCapPerJobSplitOnLoad,
 } from "./villagerCapUpgrades";
 import { getExecutionTime } from "./rules/executionTime";
 import { GAME_CONSTANTS } from "./constants";
@@ -1170,6 +1171,10 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   const capFiveStep = migrateVillagerCapFiveStepOnLoad(migrated);
   if (capFiveStep) {
     migrated = { ...migrated, ...capFiveStep };
+  }
+  const capPerJobSplit = migrateVillagerCapPerJobSplitOnLoad(migrated);
+  if (capPerJobSplit) {
+    migrated = { ...migrated, ...capPerJobSplit };
   }
   if (
     !migrated.boostApplied &&
