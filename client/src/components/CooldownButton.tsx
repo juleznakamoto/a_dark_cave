@@ -597,7 +597,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
                 className={cn(
                   // Stay fully opaque. The action button label fades while the
                   // action runs; this disc sits on that button and must not.
-                  "flex h-4 w-4 cursor-pointer items-center justify-center rounded-full border border-red-800 bg-red-950 text-white opacity-100 shadow-sm transition-colors hover:bg-red-900",
+                  // Size comes from .button-corner-badge-16 (--adc-control-scale).
+                  "flex h-full w-full cursor-pointer items-center justify-center rounded-full border border-red-800 bg-red-950 text-white opacity-100 shadow-sm transition-colors hover:bg-red-900",
                 )}
                 data-testid={testId ? `${testId}-abort` : undefined}
                 aria-label={abortTooltip}
@@ -608,7 +609,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
                   abortActionExecution(actionIdFromProps);
                 }}
               >
-                <X className="h-3 w-3 stroke-[3]" />
+                <X className="stroke-[3]" aria-hidden="true" />
               </button>
             </TooltipWrapper>
           </div>

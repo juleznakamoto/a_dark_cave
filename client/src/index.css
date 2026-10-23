@@ -1237,26 +1237,26 @@ html[data-adc-chrome-stage="0"] {
 }
 
 .building-action-badge--sm {
-  width: 26px;
-  height: 26px;
+  width: calc(26px * var(--adc-control-scale, 1));
+  height: calc(26px * var(--adc-control-scale, 1));
 }
 
 .building-action-badge--lg {
-  width: 30px;
-  height: 30px;
+  width: calc(30px * var(--adc-control-scale, 1));
+  height: calc(30px * var(--adc-control-scale, 1));
 }
 
-/* Locked digit on corner chips (level number, Focus points). Does not grow in Large. */
+/* Digit on corner chips (level number, Focus points). Tracks button control scale. */
 .game-corner-badge-digit {
-  font-size: 12px;
+  font-size: calc(12px * var(--adc-control-scale, 1));
   font-weight: 500;
   line-height: 1;
 }
 
 /* Compass 2x chip (centered on the action button). */
 .button-compass-2x {
-  width: 18px;
-  height: 18px;
+  width: calc(18px * var(--adc-control-scale, 1));
+  height: calc(18px * var(--adc-control-scale, 1));
 }
 
 /* Action-button corner badges. Offset is always half the disc so the
@@ -1294,15 +1294,16 @@ html[data-adc-chrome-stage="0"] {
   height: calc(var(--adc-prior-badge-size) * var(--adc-control-scale, 1));
 }
 
-/* Abort: fixed 16px host so tooltip wrappers cannot shift the disc.
-   Opacity stays 1. The action button underneath fades its label while
-   running; this disc must not pick up that fade. */
+/* Abort: host sized so tooltip wrappers cannot shift the disc. Tracks
+   --adc-control-scale like buttons. Opacity stays 1. The action button
+   underneath fades its label while running; this disc must not. */
 .button-corner-badge-16 {
+  --adc-corner-badge-16-size: 16px;
   position: absolute;
-  bottom: -8px;
-  right: -8px;
-  width: 16px;
-  height: 16px;
+  bottom: calc(var(--adc-corner-badge-16-size) / -2 * var(--adc-control-scale, 1));
+  right: calc(var(--adc-corner-badge-16-size) / -2 * var(--adc-control-scale, 1));
+  width: calc(var(--adc-corner-badge-16-size) * var(--adc-control-scale, 1));
+  height: calc(var(--adc-corner-badge-16-size) * var(--adc-control-scale, 1));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1312,6 +1313,11 @@ html[data-adc-chrome-stage="0"] {
   opacity: 1;
 }
 
+.button-corner-badge-16 svg {
+  width: calc(12px * var(--adc-control-scale, 1));
+  height: calc(12px * var(--adc-control-scale, 1));
+}
+
 .action-button-corner-badge {
   position: absolute;
   z-index: 30;
@@ -1319,39 +1325,39 @@ html[data-adc-chrome-stage="0"] {
 }
 
 .action-button-corner-badge--insight {
-  width: 22px;
-  height: 22px;
-  bottom: -11px;
-  right: -11px;
+  width: calc(22px * var(--adc-control-scale, 1));
+  height: calc(22px * var(--adc-control-scale, 1));
+  bottom: calc(-11px * var(--adc-control-scale, 1));
+  right: calc(-11px * var(--adc-control-scale, 1));
 }
 
 .action-button-corner-badge--boost {
-  width: 24px;
-  height: 24px;
-  top: -12px;
-  right: -12px;
+  width: calc(24px * var(--adc-control-scale, 1));
+  height: calc(24px * var(--adc-control-scale, 1));
+  top: calc(-12px * var(--adc-control-scale, 1));
+  right: calc(-12px * var(--adc-control-scale, 1));
 }
 
-/* Village hotkey tutorial dismiss. 20px, center on the box corner. */
+/* Village hotkey tutorial dismiss. Center on the box corner. */
 .button-hotkey-dismiss {
+  width: calc(20px * var(--adc-control-scale, 1));
+  height: calc(20px * var(--adc-control-scale, 1));
   position: absolute;
-  top: -10px;
-  right: -10px;
-  width: 20px;
-  height: 20px;
+  top: calc(-10px * var(--adc-control-scale, 1));
+  right: calc(-10px * var(--adc-control-scale, 1));
 }
 
-/* Side-panel insight hit target. Locked; text size does not grow it. */
+/* Side-panel insight hit target. Tracks button control scale. */
 .insight-action-badge-trigger--side-panel {
-  width: 16px;
-  height: 16px;
-  font-size: 16px;
+  width: calc(16px * var(--adc-control-scale, 1));
+  height: calc(16px * var(--adc-control-scale, 1));
+  font-size: calc(16px * var(--adc-control-scale, 1));
 }
 
-/* Village jobs / timed-tab / achievement insight buttons. Locked. */
+/* Village jobs / timed-tab / achievement insight buttons. */
 .insight-action-badge-trigger--lg {
-  width: 22px;
-  height: 22px;
+  width: calc(22px * var(--adc-control-scale, 1));
+  height: calc(22px * var(--adc-control-scale, 1));
 }
 
 /* Village header slots (construction queue, job presets, insight unlocks). */
@@ -1616,11 +1622,11 @@ html.adc-text-xlarge .game-panel-produce-effects {
 }
 
 .building-action-badge--sm .building-action-badge__glyph {
-  font-size: 16px;
+  font-size: calc(16px * var(--adc-control-scale, 1));
 }
 
 .building-action-badge--lg .building-action-badge__glyph {
-  font-size: 19px;
+  font-size: calc(19px * var(--adc-control-scale, 1));
 }
 
 .building-action-badge__svg {
