@@ -241,7 +241,7 @@ export default function CubeDialog({
     <Dialog open={isOpen} onOpenChange={() => { }}>
       <DialogContent
         openClickLockKey={event.id}
-        className="cube-dialog-content [&>.adc-dialog-close]:hidden border-2 border-gray-400 shadow-2xl p-6 h-[21rem] max-h-[21rem] flex flex-col overflow-visible z-[100]"
+        className="cube-dialog-content [&>.adc-dialog-close]:hidden border-2 border-gray-400 shadow-2xl p-6 min-h-[21rem] max-h-[90dvh] flex flex-col overflow-visible z-[100]"
         style={{
           ...chromeRuleColorStyle("#9ca3af"),
           // Room on both sides for the chevrons, including when only one is shown.
