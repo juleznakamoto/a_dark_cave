@@ -251,6 +251,7 @@ export const createInitialState = (): GameState => ({
     isOpen: false,
     data: null,
   },
+  insightIntroDialogOpen: false,
   villageEffectDialog: {
     isOpen: false,
     data: null,

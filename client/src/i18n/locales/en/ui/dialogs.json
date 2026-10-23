@@ -21,6 +21,10 @@
     "title": "Insight Elixir",
     "message": "You drink the Insight Elixir. Understanding blooms in your mind."
   },
+  "insightIntro": {
+    "title": "Insight",
+    "message": "A scholar approaches you. 'We study the world to gain Insight,' she says. 'Insight reveals the world's secrets, and in time, it lets us bend the world to our will.'"
+  },
   "blessingOffer": {
     "title": "Choose a Blessing",
     "chooseBlessing": "Choose"

@@ -21,6 +21,10 @@
     "title": "Elisir di intuizione",
     "message": "Bevi l'Elisir di intuizione. La comprensione fiorisce nella tua mente."
   },
+  "insightIntro": {
+    "title": "Intuizione",
+    "message": "Una studiosa ti si avvicina. «Studiamo il mondo per acquisire intuizione», dice. «L'intuizione svela i segreti del mondo e, col tempo, ci permette di piegarlo al nostro volere.»"
+  },
   "blessingOffer": {
     "title": "Scegli una benedizione",
     "chooseBlessing": "Scegli"

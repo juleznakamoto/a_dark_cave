@@ -211,6 +211,7 @@ import {
   isModalDialogOpen,
   scheduleMadnessDialogWhenClear,
   scheduleInsightPotionDialogWhenClear,
+  scheduleInsightIntroDialogWhenClear,
   scheduleVillageEffectDialogWhenClear,
   scheduleMadnessDialogAfterCombat,
   beginDialogHandoff,
@@ -457,6 +458,21 @@ export const createDialogsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
         isOpen,
         data: data || null,
       },
+      ...(isOpen ? { dialogHandoffPending: false } : {}),
+    }));
+  },
+  setInsightIntroDialogOpen: (isOpen) => {
+    if (isOpen) {
+      const store = get();
+      if (isVisibleModalDialogOpen(store)) {
+        scheduleInsightIntroDialogWhenClear(get, 0);
+        return;
+      }
+      audioManager.playSound("event", SOUND_VOLUME.eventUi);
+    }
+
+    set(() => ({
+      insightIntroDialogOpen: isOpen,
       ...(isOpen ? { dialogHandoffPending: false } : {}),
     }));
   },

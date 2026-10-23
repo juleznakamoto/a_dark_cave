@@ -222,6 +222,7 @@ import { getTimedEventTabCleanupPatch } from "../timedEventTab";
 import { StateManager } from "../StateManager";
 import { playActionStartSfx, playPurchaseSfx } from "../actionSfx";
 import { collectVillageSilverPatch } from "@/game/villageMapSilver";
+import { maybeScheduleInsightIntroDialog } from "@/game/insightIntro";
 
 export const createUiSlice: GameStoreCreator<Partial<GameStore>> = (set, get) => ({
   unlockAchievement: (achievementId) =>
@@ -344,6 +345,10 @@ export const createUiSlice: GameStoreCreator<Partial<GameStore>> = (set, get) =>
     // If updating free villagers, update population counts immediately
     if (resource === ("free" as any)) {
       setTimeout(() => get().updatePopulation(), 0);
+    }
+
+    if (resource === "insight" && amount > 0) {
+      maybeScheduleInsightIntroDialog(get, set);
     }
   },
 

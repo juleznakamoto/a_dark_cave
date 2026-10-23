@@ -63,6 +63,7 @@ import RewardDialog from "./RewardDialog";
 import InvestmentResultDialog from "./InvestmentResultDialog";
 import MadnessDialog from "./MadnessDialog";
 import InsightPotionDialog from "./InsightPotionDialog";
+import InsightIntroDialog from "./InsightIntroDialog";
 import VillageEffectDialog from "./VillageEffectDialog";
 import BlessingOfferDialog from "./BlessingOfferDialog";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
@@ -290,6 +291,12 @@ export default function GameContainer() {
   );
   const setInsightPotionDialog = useGameStore(
     (state) => state.setInsightPotionDialog,
+  );
+  const insightIntroDialogOpen = useGameStore(
+    (state) => state.insightIntroDialogOpen,
+  );
+  const setInsightIntroDialogOpen = useGameStore(
+    (state) => state.setInsightIntroDialogOpen,
   );
   const villageEffectDialog = useGameStore(
     (state) => state.villageEffectDialog,
@@ -1769,6 +1776,10 @@ export default function GameContainer() {
             isOpen={insightPotionDialog.isOpen}
             data={insightPotionDialog.data}
             onClose={() => setInsightPotionDialog(false)}
+          />
+          <InsightIntroDialog
+            isOpen={insightIntroDialogOpen}
+            onClose={() => setInsightIntroDialogOpen(false)}
           />
           <VillageEffectDialog
             isOpen={villageEffectDialog.isOpen}

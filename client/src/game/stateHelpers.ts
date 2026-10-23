@@ -28,6 +28,7 @@ import { getExecutionTime } from "./rules/executionTime";
 import { GAME_CONSTANTS } from "./constants";
 import { getGameActions } from "./rules/actionsRegistry";
 import { migrateVillagerPresetsPurchasedOnLoad } from "./villagerJobPresets";
+import { migrateInsightIntroSeenOnLoad } from "./insightIntro";
 import { isSteamBuild } from "@/lib/edition";
 import {
   buildPersistedGameState,
@@ -1213,6 +1214,10 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
     (migrated.lifetimeStorageMaxHits?.length ?? 0)
   ) {
     migrated = { ...migrated, lifetimeStorageMaxHits: lifetimeHits };
+  }
+  const insightIntro = migrateInsightIntroSeenOnLoad(migrated);
+  if (insightIntro) {
+    migrated = { ...migrated, ...insightIntro };
   }
   return migrated;
 }

@@ -211,6 +211,13 @@ export const GAME_DIALOG_REGISTRY: readonly DialogRegistryEntry[] = [
     resetOnLoad: CLOSED_DATA_DIALOG,
   },
   {
+    id: "insightIntro",
+    storeKey: "insightIntroDialogOpen",
+    kind: "boolean",
+    blocking: true,
+    resetOnLoad: false,
+  },
+  {
     id: "villageEffect",
     storeKey: "villageEffectDialog",
     kind: "objectIsOpen",

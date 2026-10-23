@@ -22,6 +22,7 @@ export {
   shouldFreezeTimedEventTabCountdown,
   scheduleMadnessDialogWhenClear,
   scheduleInsightPotionDialogWhenClear,
+  scheduleInsightIntroDialogWhenClear,
   scheduleVillageEffectDialogWhenClear,
   scheduleMadnessDialogAfterCombat,
   beginDialogHandoff,

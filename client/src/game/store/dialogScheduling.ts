@@ -217,6 +217,18 @@ export function scheduleInsightPotionDialogWhenClear(
   );
 }
 
+export function scheduleInsightIntroDialogWhenClear(
+  get: () => GameStore,
+  initialDelayMs: number,
+): void {
+  scheduleWhenDialogClear(
+    get,
+    isVisibleModalDialogOpen,
+    () => get().setInsightIntroDialogOpen(true),
+    initialDelayMs,
+  );
+}
+
 export function scheduleVillageEffectDialogWhenClear(
   get: () => GameStore,
   data: NonNullable<GameStore["villageEffectDialog"]["data"]>,

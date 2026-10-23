@@ -21,6 +21,10 @@
     "title": "Elixir de Perspicácia",
     "message": "Você bebe o Elixir de Perspicácia. O entendimento floresce em sua mente."
   },
+  "insightIntro": {
+    "title": "Perspicácia",
+    "message": "Uma estudiosa se aproxima de você. “Estudamos o mundo para obter Perspicácia”, diz ela. “A Perspicácia revela os segredos do mundo e, com o tempo, nos permite dobrá-lo à nossa vontade.”"
+  },
   "blessingOffer": {
     "title": "Escolha uma Bênção",
     "chooseBlessing": "Escolher"

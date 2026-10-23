@@ -161,6 +161,7 @@ type DemoEndDialogFlags = {
   madnessDialog?: { isOpen?: boolean };
   villageEffectDialog?: { isOpen?: boolean };
   insightPotionDialog?: { isOpen?: boolean };
+  insightIntroDialogOpen?: boolean;
 };
 
 function isOpenDialog(dialog?: { isOpen?: boolean }): boolean {
@@ -184,7 +185,8 @@ export function isDemoEndBlockedByOngoingEvent(
     isOpenDialog(state.rewardDialog) ||
     isOpenDialog(state.madnessDialog) ||
     isOpenDialog(state.villageEffectDialog) ||
-    isOpenDialog(state.insightPotionDialog)
+    isOpenDialog(state.insightPotionDialog) ||
+    Boolean(state.insightIntroDialogOpen)
   );
 }
 

@@ -21,6 +21,10 @@
     "title": "Eliksir wglądu",
     "message": "Pijesz eliksir wglądu. W umyśle rozkwita zrozumienie."
   },
+  "insightIntro": {
+    "title": "Wgląd",
+    "message": "Podchodzi do ciebie uczona. „Badamy świat, by zdobyć Wgląd” – mówi. „Wgląd odsłania tajemnice świata, a z czasem pozwala nam nagiąć go do naszej woli”."
+  },
   "blessingOffer": {
     "title": "Wybierz błogosławieństwo",
     "chooseBlessing": "Wybierz"

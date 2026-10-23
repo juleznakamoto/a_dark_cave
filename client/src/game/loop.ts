@@ -23,6 +23,7 @@ import {
   buildGameState,
   applyResourceDeltas,
 } from "@/game/stateHelpers";
+import { maybeScheduleInsightIntroDialog } from "@/game/insightIntro";
 import {
   audioManager,
   EVENT_AMBIENCE_FADE_SECONDS,
@@ -1043,6 +1044,12 @@ function commitResourceDeltas(deltas: Record<string, number>): void {
   useGameStore.setState((s) =>
     applyResourceDeltas(s, deltas as Partial<Record<keyof typeof s.resources, number>>),
   );
+  if ((deltas.insight ?? 0) > 0) {
+    maybeScheduleInsightIntroDialog(
+      () => useGameStore.getState(),
+      useGameStore.setState,
+    );
+  }
 }
 
 /** Add a production/consumption entry to both the running ledger and the commit batch. */

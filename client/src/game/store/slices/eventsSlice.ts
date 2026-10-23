@@ -224,6 +224,7 @@ import {
 } from "../dialogScheduling";
 import { getTimedEventTabCleanupPatch } from "../timedEventTab";
 import { StateManager } from "../StateManager";
+import { maybeScheduleInsightIntroDialog } from "@/game/insightIntro";
 import { playPurchaseSfx, shouldPlayPurchaseSfx } from "../actionSfx";
 
 export const createEventsSlice: GameStoreCreator<Partial<GameStore>> = (set, get) => ({
@@ -736,6 +737,7 @@ export const createEventsSlice: GameStoreCreator<Partial<GameStore>> = (set, get
 
       StateManager.schedulePopulationUpdate(get);
       StateManager.scheduleEffectsUpdate(get);
+      maybeScheduleInsightIntroDialog(get, set);
     }
 
     // Show reward/outcome dialog before madness-only popup so narrative + gains are visible.

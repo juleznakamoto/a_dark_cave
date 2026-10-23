@@ -21,6 +21,10 @@
     "title": "Élixir de perspicacité",
     "message": "Vous buvez l'élixir de perspicacité. La compréhension éclot dans votre esprit."
   },
+  "insightIntro": {
+    "title": "Perspicacité",
+    "message": "Une érudite s'approche de vous. « Nous étudions le monde pour gagner en perspicacité », dit-elle. « La perspicacité révèle les secrets du monde et, avec le temps, nous permet de le plier à notre volonté. »"
+  },
   "blessingOffer": {
     "title": "Choisissez une bénédiction",
     "chooseBlessing": "Choisir"

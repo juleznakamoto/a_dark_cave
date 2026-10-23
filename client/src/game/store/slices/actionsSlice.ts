@@ -227,6 +227,7 @@ import {
 } from "../timedEventTabSync";
 import { StateManager } from "../StateManager";
 import { playActionStartSfx } from "../actionSfx";
+import { maybeScheduleInsightIntroDialog } from "@/game/insightIntro";
 
 export const createActionsSlice: GameStoreCreator<Partial<GameStore>> = (set, get) => ({
   executeAction: (actionId: string, meta?: { executionSource?: "player" | "prior" }) => {
@@ -453,6 +454,8 @@ export const createActionsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
 
     const actionSilver = wanderersLanternSilverPatch(get());
     if (actionSilver) set(actionSilver);
+
+    maybeScheduleInsightIntroDialog(get, set);
 
     // Action SFX only for manual clicks  -  Prior automation stays silent.
     const playActionSfx = meta?.executionSource !== "prior";

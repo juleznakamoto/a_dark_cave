@@ -21,6 +21,10 @@
     "title": "洞见灵药",
     "message": "你饮下洞见灵药，领悟在心中绽放。"
   },
+  "insightIntro": {
+    "title": "洞见",
+    "message": "一位学者向你走来。“我们研究世界，是为了获得洞见，”她说，“洞见能揭示世界的秘密，假以时日，还能让世界屈从于我们的意志。”"
+  },
   "blessingOffer": {
     "title": "选择一项祝福",
     "chooseBlessing": "选择"

@@ -1,5 +1,6 @@
 import { useGameStore } from "@/game/state";
 import { updateResource } from "@/game/stateHelpers";
+import { maybeScheduleInsightIntroDialog } from "@/game/insightIntro";
 import { getFirstPurchaseInsightBonus } from "@shared/firstPurchaseInsightBonus";
 import { clearedPartnerInsightSeenFlags } from "@shared/partnerInsightReferral";
 import {
@@ -63,6 +64,13 @@ export function completePaidShopPurchaseInStore(): PaidShopPurchaseResult {
       },
     };
   });
+
+  if (grantedFirstPurchaseInsight) {
+    maybeScheduleInsightIntroDialog(
+      () => useGameStore.getState(),
+      useGameStore.setState,
+    );
+  }
 
   return { grantedFirstPurchaseInsight, firstPurchaseInsightAmount };
 }

@@ -308,6 +308,8 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
     isOpen: boolean;
     data: any;
   };
+  /** First-time scholar explanation when Insight is gained. */
+  insightIntroDialogOpen: boolean;
   villageEffectDialog: {
     isOpen: boolean;
     data: VillageEffectDialogData | null;
@@ -475,6 +477,7 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
   setRewardDialog: (isOpen: boolean, data?: any) => void;
   setMadnessDialog: (isOpen: boolean, data?: any) => void;
   setInsightPotionDialog: (isOpen: boolean, data?: any) => void;
+  setInsightIntroDialogOpen: (isOpen: boolean) => void;
   setVillageEffectDialog: (
     isOpen: boolean,
     data?: VillageEffectDialogData | null,

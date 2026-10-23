@@ -21,6 +21,10 @@
     "title": "Einsicht-Elixier",
     "message": "Du trinkst das Einsicht-Elixier. Verständnis erblüht in deinem Geist."
   },
+  "insightIntro": {
+    "title": "Einsicht",
+    "message": "Eine Gelehrte kommt auf dich zu. „Wir erforschen die Welt, um Einsicht zu gewinnen“, sagt sie. „Einsicht enthüllt die Geheimnisse der Welt, und mit der Zeit erlaubt sie uns, die Welt unserem Willen zu beugen.“"
+  },
   "blessingOffer": {
     "title": "Wähle einen Segen",
     "chooseBlessing": "Wählen"
