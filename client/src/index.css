@@ -33,6 +33,11 @@ body {
   --adc-text-delta: 0px;
   /* Button chrome only; milder than the +2px text bump (see textScale.ts). */
   --adc-control-scale: 1;
+  /* Side-panel resource name column. Tracks .text-xs (0.8125rem + delta)
+     so longer names keep the same fit when text size grows. */
+  --adc-resource-name-col: calc(
+    5.5rem + (5.5 / 0.8125) * var(--adc-text-delta, 0px)
+  );
 }
 
 /* Apply Fira Sans as soon as it's loaded */
