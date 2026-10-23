@@ -3,6 +3,7 @@
     "label": "Tiere"
   },
   "banditLair": {
+    "description": "Jage den Banditen, der den Dolch des Händlers gestohlen hat.",
     "label": "Banditenlager",
     "log": {
       "success": "Eure Gruppe verfolgt den Banditen zu einem wackeligen Unterschlupf. Ihr überwältigt ihn, bergt den Dolch des Händlers und findet 250 Silber unter seiner Beute.",
@@ -10,12 +11,14 @@
     }
   },
   "blackreachCanyon": {
+    "description": "Steige auf der Suche nach einer Krähe in den Blackreach-Canyon hinab.",
     "label": "Schwarzklamm",
     "log": {
       "success": "Du wagst dich tief in die Schwarzklamm vor. Dort, auf einer Steinsäule sitzend, thront eine prächtige einäugige Krähe. Mit dem Geschirr näherst du dich vorsichtig und schließt eine Bindung mit dem Wesen. Die Einäugige Krähe ist deiner Gemeinschaft beigetreten."
     }
   },
   "blastPortal": {
+    "description": "Zertrümmere das uralte Tor und befreie, was darin versiegelt war.",
     "label": "Tor sprengen",
     "log": {
       "complete": "Die Glutbomben detonieren in einem hellen Feuerblitz. Das alte Tor bricht und bröckelt. Was auch immer darin eingeschlossen war, ist jetzt frei."
@@ -289,15 +292,18 @@
     "label": "Holzhütte"
   },
   "exploreMountainVillage": {
+    "description": "Wage den langen Aufstieg zum Dorf hoch in den Bergen.",
     "label": "Bergdorf erkunden"
   },
   "canyonBridge": {
+    "description": "Baue eine Brücke über den Canyon, um eine Verbindung zum Waldstamm herzustellen.",
     "label": "Canyonbrücke",
     "log": {
       "complete": "Die Canyonbrücke ist errichtet. Ashwraith-Händler können deine Siedlung nun erreichen, und du kannst ihnen Waren zu vereinbarten Preisen verkaufen."
     }
   },
   "castleRuins": {
+    "description": "Plündere die Burg des längst toten Nekromanten tief im Wald.",
     "label": "Burgruinen",
     "log": {
       "success": "Die Expedition zu den Burgruinen des toten Nekromanten ist erfolgreich! Tief im Inneren findet ihr die in dunkle Seide gewickelten alten Schriftrollen, die kryptisches Wissen darüber offenbaren, wie man besiegen kann, was tief in der Höhle eingesperrt wurde.",
@@ -306,7 +312,9 @@
     }
   },
   "chopWood": {
+    "description": "Sammle herabgefallene Äste am Höhleneingang.",
     "label": "Holz sammeln",
+    "descriptionForest": "Fälle Bäume am Waldrand für Bauholz.",
     "labelForest": "Holz hacken",
     "log": {
       "firstVisit": "Vor dem Höhleneingang liegt verstreut etwas Holz. Es könnte nützlich sein."
@@ -316,6 +324,7 @@
     "label": "Händler rufen"
   },
   "collapsedTower": {
+    "description": "Untersuche den eingestürzten Turm und beende das dunkle Werk, das dort getrieben wird.",
     "label": "Eingestürzter Turm",
     "log": {
       "success": "Im Turm findet ihr einen Nekromanten und seine Anhänger, umgeben von Fläschchen mit Flüssigkeiten und groben Spritzen. Er sammelte das Blut der Dorfbewohner für finstere Experimente. Eure Männer setzen seinem abscheulichen Werk ein Ende und nehmen eine Phiole seines Blutes. Unter seinen Werkzeugen findet ihr seine mächtige Knochensäge.",
@@ -479,15 +488,18 @@
     "label": "Kriegsbogen"
   },
   "descendFurther": {
+    "description": "Steige die abgetretenen Stufen hinab in die unteren Ebenen der Höhle.",
     "label": "Tiefer hinabsteigen",
     "log": {
       "firstVisit": "Die Laterne wirft ein gleichmäßiges Licht, während du noch tiefer hinabsteigst. Plötzlich berühren deine Füße von Menschenhand gemeißelte Steinstufen, vom Alter abgenutzt."
     }
   },
   "encounterBeyondPortal": {
+    "description": "Tritt durch das zerbrochene Tor in das, was dahinter liegt.",
     "label": "Hinter das Tor wagen"
   },
   "exploreCave": {
+    "description": "Durchsuche die Höhle bei Fackellicht und nimm mit, was du findest.",
     "label": "Höhle erkunden",
     "log": {
       "debrisScroll": "Unter den Trümmern findest du eine verwitterte Schriftrolle mit Wissen, um in dieser unbarmherzigen Welt zu überleben.",
@@ -496,24 +508,28 @@
     }
   },
   "exploreCitadel": {
+    "description": "Durchsuche die Zitadelle im Herzen der unterirdischen Stadt.",
     "label": "Zitadelle erkunden",
     "log": {
       "firstVisit": "Im tiefsten Teil der Stadt erhebt sich vor dir eine gewaltige Zitadelle. Ihre Größe deutet darauf hin, dass darin etwas von großer Macht oder großer Gefahr wohnt."
     }
   },
   "exploreRuins": {
+    "description": "Durchsuche die verlorene Stadt, die in der weiten Höhlenhalle darunter schläft.",
     "label": "Ruinen erkunden",
     "log": {
       "firstVisit": "Am Ende der Stufen öffnet sich eine weite Höhle. Im Dunkeln liegen die Ruinen einer verlorenen Stadt, Überreste einer längst vergangenen Zivilisation."
     }
   },
   "exploreTemple": {
+    "description": "Betrete den unterirdischen Tempel, der noch immer zwischen den vergessenen Ruinen steht.",
     "label": "Tempel erkunden",
     "log": {
       "firstVisit": "Während du tiefer in die Ruinen der unterirdischen Stadt vordringst, erhebt sich aus dem Höhlenboden ein großer Tempel, größtenteils intakt, dessen Schatten sich über die vergessenen Überreste der Stadt erstreckt."
     }
   },
   "exploreUndergroundLake": {
+    "description": "Überquere das schwarze Wasser des unterirdischen Sees zu einer kleinen Insel in seiner Mitte.",
     "label": "Unterirdischer See",
     "log": {
       "complete": "Im grimmigen Schein der Schädellaterne steigst du zum unterirdischen See hinab und baust ein kleines Boot. Auf einer winzigen Insel mitten im dunklen See liegen vergessene Schätze im Schatten, seit Ewigkeiten unberührt."
@@ -530,6 +546,7 @@
     }
   },
   "forestCave": {
+    "description": "Befreie die Höhle von den Bestien, um den Stamm der Jägerin zu retten.",
     "label": "Waldhöhle",
     "log": {
       "success": "Als die Dorfbewohner in die Höhle hinabsteigen, brechen wilde Hunde in unerbittlichen Rudeln aus der Dunkelheit hervor. Schreie hallen wider, während Krallen reißen und Zähne schnappen. Als die letzte Bestie fällt, lebt jeder Dorfbewohner, und der Stamm der Jägerin ist gerettet.",
@@ -543,12 +560,14 @@
     "label": "Rastlosen Ritter heilen"
   },
   "hiddenLibrary": {
+    "description": "Suche die verborgene Bibliothek in den Tiefen der Höhle.",
     "label": "Verborgene Bibliothek",
     "log": {
       "complete": "Die Karte des Klosters führt dich tief in die Höhle zur verborgenen Bibliothek, wo du einen Kodex findest."
     }
   },
   "hillGrave": {
+    "description": "Betrete das Hügelgrab und durchsuche die Grabkammer nach Frostglas.",
     "label": "Hügelgrab",
     "log": {
       "success": "Eure Expedition navigiert geschickt durch die tückischen Fallen des Hügelgrabs. Die Dorfbewohner entschärfen die alten Mechanismen und erreichen die Grabkammer. Unter den Schätzen des Königs entdeckt ihr reines Frostglas, kalt wie die Leere selbst.",
@@ -559,12 +578,14 @@
     "label": "Menschen"
   },
   "hunt": {
+    "description": "Spüre Tiere im dunklen Wald auf.",
     "label": "Jagen",
     "log": {
       "mapFragmentHunt": "Beim Jagen fällt dir im Schlamm etwas auf. Ein wasserbeflecktes Stück Papier, vielleicht Teil einer Karte."
     }
   },
   "woodenCabin": {
+    "description": "Untersuche die seltsame Holzhütte im Wald.",
     "label": "Blockhaus",
     "log": {
       "success": "Das Blockhaus gehört dem Jäger, der euch Fleisch verkauft hat. Im Schlachthaus hängen Haken, und an keinem hing ein Reh. Er hat Menschen gejagt, und die Nahrung, die er tauschte, war ihr Fleisch. Im Haus findet ihr den Bogen des Händlers.",
@@ -582,6 +603,7 @@
     }
   },
   "layTrap": {
+    "description": "Stelle eine riesige Schlinge auf, um eine große Bestie zu fangen.",
     "label": "Falle legen",
     "log": {
       "trapSuccessNoDeaths": "Die Riesenfalle funktioniert perfekt! Ein massiver Schwarzbär mit glühend roten Augen ist gefangen. Die Dorfbewohner erschlagen das übernatürliche Biest und beanspruchen sein verfluchtes schwarzes Fell als Trophäe.",
@@ -601,13 +623,15 @@
     }
   },
   "lowChamber": {
+    "description": "Seile dich in eine tiefe Kammer hinab, die seit Ewigkeiten unberührt ist.",
     "label": "Niedrige Kammer",
     "log": {
       "complete": "Mit dem verstärkten Seil steigst du in die niedrige Kammer hinab. Unter den Schätzen findest du einen Meistersteinmetz-Meißel, ein Werkzeug legendärer Handwerkskunst."
     }
   },
   "lureLakeCreature": {
-    "label": "Falle platzieren",
+    "description": "Beködere eine Falle am Ufer des unterirdischen Sees und warte, bis etwas anbeißt.",
+    "label": "Falle beködern",
     "log": {
       "complete": "Du stellst am Rand des unterirdischen Sees eine gewaltige Falle auf, mit Bergen von Fleisch als Köder. Stunden vergehen, bis die schwarzen Wasser explodieren und ein titanisches tentakelbehaartes Ungeheuer aus den Tiefen steigt und in die Falle kriecht."
     }
@@ -658,6 +682,7 @@
     "label": "Bergbau"
   },
   "occultistChamber": {
+    "description": "Folge der Karte des Okkultisten zur Kammer, in der seine Geheimnisse ruhen.",
     "label": "Okkultistenkammer",
     "log": {
       "complete": "Der Karte des Okkultisten folgend, findest du die Kammer mit seinen Schätzen. Darunter befindet sich sein Grimoire, gefüllt mit verbotenem Wissen und arkanen Geheimnissen."
@@ -676,6 +701,7 @@
     "label": "Wachturm reparieren"
   },
   "risingSmoke": {
+    "description": "Folge dem aufsteigenden Rauch zu einem Gesetzlosenlager.",
     "label": "Aufsteigender Rauch",
     "log": {
       "success": "Eure Expedition findet ein Gesetzlosenlager. Der Kampf ist brutal, aber ihr siegt. In einer Truhe findet ihr 500 Gold.",
@@ -695,15 +721,18 @@
     "label": "Stahl verkaufen"
   },
   "searchMountainLady": {
+    "description": "Schicke eine Expedition aus, um die Bergdame zu finden.",
     "label": "Bergdame suchen"
   },
   "steelDelivery": {
+    "description": "Liefere Stahl an den Sumpfstamm.",
     "label": "Stahllieferung",
     "log": {
       "success": "Eure Karawane liefert den Stahl wie versprochen an den Sumpfstamm. Im Gegenzug überreicht euch der Stamm Chitinplatten, die von Sumpfkreaturen gewonnen wurden. Diese können für mächtige Befestigungen genutzt werden."
     }
   },
   "sunkenTemple": {
+    "description": "Wate durch den Sumpf zu einem uralten, halb versunkenen Tempel.",
     "label": "Versunkener Tempel",
     "log": {
       "success": "Eure Expedition watet durch die Sumpfgewässer zum uralten halb versunkenen Tempel. Trotz der Gefahren in den dunklen Wassern navigieren die Dorfbewohner vorsichtig durch die überfluteten Hallen und finden die Blutsteine im inneren Heiligtum des Tempels.",
@@ -711,6 +740,7 @@
     }
   },
   "swampSanctuary": {
+    "description": "Finde das verlorene Heiligtum, das auf der zusammengesetzten Sumpfkarte markiert ist.",
     "label": "Sumpfheiligtum"
   },
   "tradeGoldForAdamant": {
@@ -762,6 +792,7 @@
     "label": "Gold kaufen"
   },
   "ventureDeeper": {
+    "description": "Folge dem Pfad tiefer in die Höhle, in die Höhlenhallen dahinter.",
     "label": "Tiefer vordringen",
     "log": {
       "tarnishedAmulet": "In den Schatten der Höhle glitzert etwas. Du findest ein Angelaufenes Amulett.",

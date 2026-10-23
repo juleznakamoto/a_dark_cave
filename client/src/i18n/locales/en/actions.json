@@ -3,6 +3,7 @@
     "label": "Animals"
   },
   "banditLair": {
+    "description": "Hunt down the bandit who stole the trader's dagger.",
     "label": "Bandit Lair",
     "log": {
       "success": "Your party tracks the bandit to a ramshackle lair. You overwhelm him, recover the trader's dagger, and find 250 silver stashed among his plunder.",
@@ -10,12 +11,14 @@
     }
   },
   "blackreachCanyon": {
+    "description": "Descend Blackreach Canyon in search of a crow.",
     "label": "Blackreach Canyon",
     "log": {
       "success": "You venture deep into Blackreach Canyon. There, perched on a stone pillar, sits a magnificent one-eyed crow. Using the harness, you carefully approach and bond with the creature. The One-eyed Crow has joined your fellowship."
     }
   },
   "blastPortal": {
+    "description": "Shatter the ancient gate and free whatever was sealed inside.",
     "label": "Blast Gate",
     "log": {
       "complete": "The ember bombs detonate in a bright flash of fire and light. The ancient gate cracks and crumbles. Whatever was sealed inside is now free."
@@ -289,15 +292,18 @@
     "label": "Wooden Hut"
   },
   "exploreMountainVillage": {
+    "description": "Make the long climb to the village high in the mountains.",
     "label": "Explore Mountain Village"
   },
   "canyonBridge": {
+    "description": "Build a bridge across the canyon to connect with the forest tribe.",
     "label": "Canyon Bridge",
     "log": {
       "complete": "The canyon bridge stands complete. Ashwraith traders can now reach your settlement, and you can sell goods to them at agreed rates."
     }
   },
   "castleRuins": {
+    "description": "Raid the long-dead necromancer's castle deep in the forest.",
     "label": "Castle Ruins",
     "log": {
       "success": "The expedition to the dead necromancer's castle ruins proves successful! Deep within them you find the ancient scrolls wrapped in dark silk, revealing cryptic knowledge about how to defeat what was locked deep in the cave.",
@@ -306,7 +312,9 @@
     }
   },
   "chopWood": {
+    "description": "Collect fallen branches near the cave entrance.",
     "label": "Gather Wood",
+    "descriptionForest": "Fell trees at the forest edge for timber.",
     "labelForest": "Chop Wood",
     "log": {
       "firstVisit": "Some wood lies scattered near the cave's entrance. It might prove useful."
@@ -316,6 +324,7 @@
     "label": "Call Merchant"
   },
   "collapsedTower": {
+    "description": "Investigate the fallen tower and end whatever dark work is being done there.",
     "label": "Collapsed Tower",
     "log": {
       "success": "Inside the tower you find a necromancer and his followers, surrounded by vials of liquids and crude syringes. He was harvesting the villagers' blood for dark experiments. Your men put an end to his vile work and take a vial of his blood. Among his tools, you find his powerful bone saw.",
@@ -479,15 +488,18 @@
     "label": "War Bow"
   },
   "descendFurther": {
+    "description": "Climb down the worn steps leading into the lower levels of the cave.",
     "label": "Descend Further",
     "log": {
       "firstVisit": "With the lantern casting a steady glow, you descend even deeper. Suddenly your feet touch man-made stone steps, worn by time."
     }
   },
   "encounterBeyondPortal": {
+    "description": "Step through the broken gate into what lies beyond.",
     "label": "Venture Beyond Gate"
   },
   "exploreCave": {
+    "description": "Search the cave by torchlight and gather whatever you can find.",
     "label": "Explore Cave",
     "log": {
       "debrisScroll": "Among the debris you uncover a timeworn scroll containing wisdom for enduring this unforgiving world.",
@@ -496,24 +508,28 @@
     }
   },
   "exploreCitadel": {
+    "description": "Search the citadel at the heart of the underground city.",
     "label": "Explore Citadel",
     "log": {
       "firstVisit": "At the deepest part of the city, a massive citadel rises before you. Its size suggests it houses something of great power, or something of great danger."
     }
   },
   "exploreRuins": {
+    "description": "Search the lost city that sleeps in the vast cavern below.",
     "label": "Explore Ruins",
     "log": {
       "firstVisit": "At the end of the stairs, a vast cavern opens before you. In the dark lie the ruins of a lost city, the remains of a civilization long gone."
     }
   },
   "exploreTemple": {
+    "description": "Enter the underground temple still standing among the forgotten ruins.",
     "label": "Explore Temple",
     "log": {
       "firstVisit": "As you delve deeper into the ruins of the underground city, a grand temple emerges from the cavern floor, mostly intact, its shadow stretching over the forgotten remnants of the city."
     }
   },
   "exploreUndergroundLake": {
+    "description": "Cross the black water of the underground lake to a small island at its center.",
     "label": "Underground Lake",
     "log": {
       "complete": "Using the skull lantern's grim glow, you descend to the underground lake and build a small boat. On a tiny island in the middle of the dark lake, forgotten treasures lie in shadow, untouched for ages."
@@ -530,6 +546,7 @@
     }
   },
   "forestCave": {
+    "description": "Clear the cave of beasts to save the huntress's tribe.",
     "label": "Forest Cave",
     "log": {
       "success": "As the villagers descend the cave, savage hounds erupt from darkness in relentless packs. Screams echo as claws tear and teeth snap. When the last beast falls, every villager lives, and the huntress's tribe is saved.",
@@ -543,12 +560,14 @@
     "label": "Heal Restless Knight"
   },
   "hiddenLibrary": {
+    "description": "Seek the hidden library in the depths of the cave.",
     "label": "Hidden Library",
     "log": {
       "complete": "The monastery's map leads you deep into the cave to the hidden library where you find a codex."
     }
   },
   "hillGrave": {
+    "description": "Enter the hill grave and search the burial chamber for frostglass.",
     "label": "Hill Grave",
     "log": {
       "success": "Your expedition carefully navigates the treacherous traps of the hill grave. The villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover pure frostglass, cold as the void itself.",
@@ -559,12 +578,14 @@
     "label": "Humans"
   },
   "hunt": {
+    "description": "Track animals through the dark forest.",
     "label": "Hunt",
     "log": {
       "mapFragmentHunt": "While hunting, something catches your eye in the mud. A water-stained scrap, perhaps part of a map."
     }
   },
   "woodenCabin": {
+    "description": "Investigate the strange wooden cabin in the forest.",
     "label": "Wooden Cabin",
     "log": {
       "success": "The cabin belongs to the hunter who sold you meat. The slaughterhouse is hung with hooks, and none of them held deer. He was hunting people, and the food he traded was their flesh. In the cabin you find the trader's bow.",
@@ -582,6 +603,7 @@
     }
   },
   "layTrap": {
+    "description": "Set a giant snare to capture a large beast.",
     "label": "Lay Trap",
     "log": {
       "trapSuccessNoDeaths": "The giant trap works perfectly! A massive black bear with glowing red eyes is caught. The villagers slay the supernatural beast and claim its cursed black fur as a trophy.",
@@ -601,13 +623,15 @@
     }
   },
   "lowChamber": {
+    "description": "Rope down into a deep chamber left untouched for ages.",
     "label": "Low Chamber",
     "log": {
       "complete": "Using the reinforced rope, you descend into the low chamber. Amongst the treasures you find a mastermason's chisel, a tool of legendary craftsmanship."
     }
   },
   "lureLakeCreature": {
-    "label": "Place Trap",
+    "description": "Bait a trap at the shore of the underground lake and wait for something to take it.",
+    "label": "Bait Trap",
     "log": {
       "complete": "You set a massive trap at the edge of the underground lake, baited with piles of meat. Hours pass before the black waters erupt, and a titanic, tentacled horror rises from the depths and crawls into the trap."
     }
@@ -658,6 +682,7 @@
     "label": "Mining"
   },
   "occultistChamber": {
+    "description": "Follow the occultist's map to the chamber where his secrets remain.",
     "label": "Occultist Chamber",
     "log": {
       "complete": "Following the occultist's map, you find the chamber containing his treasures. Amongst them is his grimoire, filled with forbidden knowledge and arcane secrets."
@@ -676,6 +701,7 @@
     "label": "Repair Watchtower"
   },
   "risingSmoke": {
+    "description": "Follow the rising smoke to an outlaw camp.",
     "label": "Rising Smoke",
     "log": {
       "success": "Your expedition finds an outlaw camp. The fight is brutal, but you win. In a chest you find 500 Gold.",
@@ -695,15 +721,18 @@
     "label": "Sell Steel"
   },
   "searchMountainLady": {
+    "description": "Send an expedition to find the Mountain Lady.",
     "label": "Seek Mountain Lady"
   },
   "steelDelivery": {
+    "description": "Deliver steel to the swamp tribe.",
     "label": "Steel Delivery",
     "log": {
       "success": "Your caravan delivers the steel to the Swamp Tribe as promised. In return, the tribe presents you with Chitin Plates harvested from swamp creatures. These can be used to construct powerful fortifications."
     }
   },
   "sunkenTemple": {
+    "description": "Wade through the swamp to an ancient, half-drowned temple.",
     "label": "Sunken Temple",
     "log": {
       "success": "Your expedition wades through the swamp waters to reach the ancient half-sunken temple. Despite the dangers lurking in the dark waters, the villagers navigate carefully through the submerged halls and find the bloodstone gems in the temple's inner sanctum.",
@@ -711,6 +740,7 @@
     }
   },
   "swampSanctuary": {
+    "description": "Find the lost sanctuary marked on the pieced-together swamp map.",
     "label": "Swamp Sanctuary"
   },
   "tradeGoldForAdamant": {
@@ -762,6 +792,7 @@
     "label": "Buy Gold"
   },
   "ventureDeeper": {
+    "description": "Follow the path deeper into the cave, into the caverns beyond.",
     "label": "Venture Deeper",
     "log": {
       "tarnishedAmulet": "In the cave's shadows, something glints. You find a Tarnished Amulet.",

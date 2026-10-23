@@ -281,7 +281,15 @@ export function resolveInheritedActionLogMessage(
 export function getActionDescription(
   actionId: string,
   fallback: string | undefined,
+  options?: ActionLabelOptions,
 ): string | undefined {
+  if (actionId === "chopWood" && options?.forestUnlocked) {
+    return tWithFallback(
+      "actions",
+      "chopWood.descriptionForest",
+      "Fell trees at the forest edge for timber.",
+    );
+  }
   if (!fallback) return undefined;
   return tWithFallback("actions", `${actionId}.description`, fallback);
 }

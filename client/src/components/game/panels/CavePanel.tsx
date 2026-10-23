@@ -62,7 +62,10 @@ import { useActionUnlockOrder } from "@/game/useActionUnlockOrder";
 import { orderCraftOnceRow } from "@/game/actionUnlockOrder";
 import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
 import { getFocusTooltipHeaderTrailing } from "@/game/rules/focusTooltipIndicator";
-import { resolveActionLabel } from "@/i18n/actionLabels";
+import {
+  resolveActionDescription,
+  resolveActionLabel,
+} from "@/i18n/actionLabels";
 import { useTranslation } from "react-i18next";
 import { WanderersLanternFirstRow } from "@/components/game/WanderersLanternButton";
 import { ownsWanderersLantern } from "@/game/wanderersLantern";
@@ -121,7 +124,7 @@ export default function CavePanel() {
             { id: "blastPortal", label: "Blast Gate" },
             { id: "encounterBeyondPortal", label: "Venture Beyond Gate" },
             { id: "exploreUndergroundLake", label: "Underground Lake" },
-            { id: "lureLakeCreature", label: "Lure Lake Creature" },
+            { id: "lureLakeCreature", label: "Bait Trap" },
           ],
         },
       ],
@@ -351,6 +354,10 @@ export default function CavePanel() {
           isCraftDescriptionVisible(state, actionId)
           ? getCraftItemDescription(actionId)
           : undefined;
+      const actionDescription = !isCraftAction
+        ? resolveActionDescription(actionId, action.description)
+        : undefined;
+      const description = craftDescription ?? actionDescription;
       const revealedEffects = getRevealedEffectsForActionTooltip(
         actionId,
         state,
@@ -358,10 +365,10 @@ export default function CavePanel() {
       const tooltipContent = composeActionTooltip({
         header: tooltipHeader,
         headerTrailing: resourceGainTooltip ? undefined : tooltipHeaderTrailing,
-        description: craftDescription,
+        description,
         effects: revealedEffects,
         style:
-          craftDescription || revealedEffects ? { width: "12rem" } : undefined,
+          description || revealedEffects ? { width: "12rem" } : undefined,
       });
 
       const button = (

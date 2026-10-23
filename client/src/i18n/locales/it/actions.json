@@ -6,6 +6,7 @@
     "label": "Animali"
   },
   "banditLair": {
+    "description": "Dai la caccia al bandito che ha rubato il pugnale del mercante.",
     "label": "Covo del Bandito",
     "log": {
       "success": "Il tuo gruppo segue le tracce del bandito fino a un covo malridotto. Lo sopraffai, recuperi il pugnale del mercante e trovi 250 argento nascosti tra il suo bottino.",
@@ -13,12 +14,14 @@
     }
   },
   "blackreachCanyon": {
+    "description": "Scendi nel Canyon Blackreach in cerca di un corvo.",
     "label": "Canyon di Nereforo",
     "log": {
       "success": "Ti avventuri nelle profondità del Canyon di Nereforo. Lì, appollaiato su un pilastro di pietra, siede un magnifico corvo guercio. Usando l'imbragatura, ti avvicini con cautela e crei un legame con la creatura. Il Corvo Guercio si è unito alla tua compagnia."
     }
   },
   "blastPortal": {
+    "description": "Frantuma l'antico portale e libera ciò che vi era sigillato.",
     "label": "Fai Saltare il Cancello",
     "log": {
       "complete": "Le bombe di brace detonano in un lampo brillante di fuoco e luce. L'antico cancello si incrina e crolla. Qualunque cosa fosse sigillata all'interno ora è libera."
@@ -276,12 +279,14 @@
     "label": "Capanna di Legno"
   },
   "canyonBridge": {
+    "description": "Costruisci un ponte sul canyon per collegarti alla tribù della foresta.",
     "label": "Ponte del Canyon",
     "log": {
       "complete": "Il ponte del canyon è completo. I mercanti Spettro di Cenere possono ora raggiungere il tuo insediamento, e tu puoi vendere loro merci a tariffe concordate."
     }
   },
   "castleRuins": {
+    "description": "Assalta il castello del necromante morto da tempo, nel cuore della foresta.",
     "label": "Rovine del Castello",
     "log": {
       "success": "La spedizione alle rovine del castello del negromante morto si rivela un successo! Nelle loro profondità trovi le antiche pergamene avvolte in seta scura, che rivelano conoscenze criptiche su come sconfiggere ciò che era rinchiuso nelle profondità della caverna.",
@@ -290,8 +295,10 @@
     }
   },
   "chopWood": {
-    "label": "Raccogli Legno",
-    "labelForest": "Taglia Legna",
+    "description": "Raccogli i rami caduti vicino all'ingresso della caverna.",
+    "label": "Raccogli legna",
+    "descriptionForest": "Abbatti alberi al limitare della foresta per il legname.",
+    "labelForest": "Taglia legna",
     "log": {
       "firstVisit": "Della legna giace sparsa vicino all'ingresso della caverna. Potrebbe rivelarsi utile."
     }
@@ -300,6 +307,7 @@
     "label": "Chiama Mercante"
   },
   "collapsedTower": {
+    "description": "Ispeziona la torre crollata e poni fine a qualunque opera oscura vi si compia.",
     "label": "Torre Crollata",
     "log": {
       "success": "Dentro la torre trovi un negromante e i suoi seguaci, circondati da fiale di liquidi e siringhe rozze. Stava raccogliendo il sangue degli abitanti per oscuri esperimenti. I tuoi uomini pongono fine alla sua vile opera e prelevano una fiala del suo sangue. Tra i suoi strumenti, trovi la sua potente sega d'ossa.",
@@ -463,15 +471,18 @@
     "label": "Arco da Guerra"
   },
   "descendFurther": {
+    "description": "Scendi gli scalini consumati che portano ai livelli inferiori della caverna.",
     "label": "Scendi Ancora",
     "log": {
       "firstVisit": "Con la lanterna che proietta un bagliore costante, scendi ancora più in profondità. All'improvviso i tuoi piedi toccano gradini di pietra fatti dall'uomo, consumati dal tempo."
     }
   },
   "encounterBeyondPortal": {
+    "description": "Varca il portale spezzato verso ciò che si trova oltre.",
     "label": "Avventurati oltre il Cancello"
   },
   "exploreCave": {
+    "description": "Esplora la caverna alla luce della torcia e raccogli ciò che trovi.",
     "label": "Esplora Caverna",
     "log": {
       "debrisScroll": "Tra i detriti scopri una pergamena logora dal tempo che contiene saggezza per resistere a questo mondo spietato.",
@@ -480,24 +491,28 @@
     }
   },
   "exploreCitadel": {
+    "description": "Esplora la cittadella nel cuore della città sotterranea.",
     "label": "Esplora Cittadella",
     "log": {
       "firstVisit": "Nella parte più profonda della città, una massiccia cittadella si erge davanti a te. La sua dimensione suggerisce che custodisca qualcosa di grande potere, o di grande pericolo."
     }
   },
   "exploreRuins": {
+    "description": "Esplora la città perduta che dorme nella vasta caverna sottostante.",
     "label": "Esplora Rovine",
     "log": {
       "firstVisit": "Alla fine delle scale, una vasta caverna si apre davanti a te. Nell'oscurità giacciono le rovine di una città perduta, i resti di una civiltà scomparsa da tempo."
     }
   },
   "exploreTemple": {
+    "description": "Entra nel tempio sotterraneo ancora in piedi tra le rovine dimenticate.",
     "label": "Esplora Tempio",
     "log": {
       "firstVisit": "Mentre ti addentri nelle rovine della città sotterranea, un grande tempio emerge dal fondo della caverna, per lo più intatto, la sua ombra che si estende sui resti dimenticati della città."
     }
   },
   "exploreUndergroundLake": {
+    "description": "Attraversa le acque nere del lago sotterraneo fino a una piccola isola al centro.",
     "label": "Lago Sotterraneo",
     "log": {
       "complete": "Usando il sinistro bagliore della lanterna di teschio, scendi al lago sotterraneo e costruisci una piccola barca. Su una minuscola isola al centro del lago oscuro, tesori dimenticati giacciono nell'ombra, intatti da ere."
@@ -514,6 +529,7 @@
     }
   },
   "forestCave": {
+    "description": "Ripulisci la caverna dalle bestie per salvare la tribù della cacciatrice.",
     "label": "Caverna della Foresta",
     "log": {
       "success": "Mentre gli abitanti scendono nella caverna, segugi selvaggi erompono dall'oscurità in branchi incessanti. Le urla riecheggiano mentre gli artigli lacerano e i denti azzannano. Quando l'ultima bestia cade, ogni abitante vive, e la tribù della cacciatrice è salvata.",
@@ -527,12 +543,14 @@
     "label": "Cura il Cavaliere Inquieto"
   },
   "hiddenLibrary": {
+    "description": "Cerca la biblioteca nascosta nelle profondità della caverna.",
     "label": "Biblioteca Nascosta",
     "log": {
       "complete": "La mappa del monastero ti conduce nelle profondità della caverna fino alla biblioteca nascosta dove trovi un codice."
     }
   },
   "hillGrave": {
+    "description": "Entra nella tomba del colle e cerca il vetro di gelo nella camera sepolcrale.",
     "label": "Tomba della Collina",
     "log": {
       "success": "La tua spedizione attraversa con attenzione le insidiose trappole della tomba della collina. Gli abitanti disinnescano gli antichi meccanismi e raggiungono la camera sepolcrale. Tra i tesori del re, scopri vetro di gelo puro, freddo come il vuoto stesso.",
@@ -543,12 +561,14 @@
     "label": "Umani"
   },
   "hunt": {
+    "description": "Segui le tracce degli animali nella foresta oscura.",
     "label": "Caccia",
     "log": {
       "mapFragmentHunt": "Mentre cacci, qualcosa attira il tuo sguardo nel fango. Un brandello macchiato d'acqua, forse parte di una mappa."
     }
   },
   "woodenCabin": {
+    "description": "Ispeziona la strana capanna di legno nella foresta.",
     "label": "Capanna di Legno",
     "log": {
       "success": "La capanna appartiene al cacciatore che ti ha venduto la carne. Il macello è pieno di ganci, e nessuno ha retto un cervo. Dava la caccia alle persone, e il cibo che scambiava era la loro carne. Nella capanna trovi l'arco del mercante.",
@@ -566,6 +586,7 @@
     }
   },
   "layTrap": {
+    "description": "Tendi un gigantesco laccio per catturare una grande bestia.",
     "label": "Disponi Trappola",
     "log": {
       "trapSuccessNoDeaths": "La trappola gigante funziona alla perfezione! Un enorme orso nero dagli occhi rossi luminosi viene catturato. Gli abitanti abbattono la bestia soprannaturale e ne reclamano la maledetta pelliccia nera come trofeo.",
@@ -585,13 +606,15 @@
     }
   },
   "lowChamber": {
+    "description": "Calati con la corda in una camera profonda rimasta intatta per secoli.",
     "label": "Camera Bassa",
     "log": {
       "complete": "Usando la corda rinforzata, scendi nella camera bassa. Tra i tesori trovi lo scalpello di un maestro muratore, uno strumento di artigianalità leggendaria."
     }
   },
   "lureLakeCreature": {
-    "label": "Piazza Trappola",
+    "description": "Innesca una trappola sulla riva del lago sotterraneo e attendi che qualcosa abbocchi.",
+    "label": "Innesca trappola",
     "log": {
       "complete": "Disponi una trappola massiccia sul bordo del lago sotterraneo, esca con cumuli di carne. Passano ore prima che le acque nere erompano, e un titanico orrore tentacolare si solleva dalle profondità e striscia nella trappola."
     }
@@ -642,6 +665,7 @@
     "label": "Estrazione"
   },
   "occultistChamber": {
+    "description": "Segui la mappa dell'occultista fino alla camera dove restano i suoi segreti.",
     "label": "Camera dell'Occultista",
     "log": {
       "complete": "Seguendo la mappa dell'occultista, trovi la camera che contiene i suoi tesori. Tra essi c'è il suo grimorio, pieno di conoscenza proibita e segreti arcani."
@@ -660,6 +684,7 @@
     "label": "Ripara Torre di Guardia"
   },
   "risingSmoke": {
+    "description": "Segui il fumo che sale fino a un campo di fuorilegge.",
     "label": "Fumo che si Alza",
     "log": {
       "success": "La tua spedizione trova un accampamento di fuorilegge. Lo scontro è brutale, ma vinci. In un baule trovi 500 Oro.",
@@ -679,12 +704,14 @@
     "label": "Vendi Acciaio"
   },
   "steelDelivery": {
+    "description": "Consegna acciaio alla tribù della palude.",
     "label": "Consegna d'Acciaio",
     "log": {
       "success": "La tua carovana consegna l'acciaio alla Tribù della Palude come promesso. In cambio, la tribù ti offre Placche di Chitina raccolte dalle creature della palude. Possono essere usate per costruire potenti fortificazioni."
     }
   },
   "sunkenTemple": {
+    "description": "Guada la palude fino a un antico tempio mezzo sommerso.",
     "label": "Tempio Sommerso",
     "log": {
       "success": "La tua spedizione guada le acque della palude per raggiungere l'antico tempio semisommerso. Nonostante i pericoli in agguato nelle acque scure, gli abitanti navigano con attenzione tra le sale sommerse e trovano le gemme di pietra di sangue nel sancta sanctorum del tempio.",
@@ -692,6 +719,7 @@
     }
   },
   "swampSanctuary": {
+    "description": "Trova il santuario perduto segnato sulla mappa ricomposta della palude.",
     "label": "Santuario della Palude"
   },
   "tradeGoldForAdamant": {
@@ -740,6 +768,7 @@
     "label": "Compra Oro"
   },
   "ventureDeeper": {
+    "description": "Segui il sentiero più a fondo nella caverna, verso le cavità che si aprono oltre.",
     "label": "Avventurati più a Fondo",
     "log": {
       "tarnishedAmulet": "Nelle ombre della caverna, qualcosa luccica. Trovi un Amuleto Annerito.",
@@ -766,9 +795,11 @@
     "label": "Giardino di erbe"
   },
   "exploreMountainVillage": {
+    "description": "Affronta la lunga salita al villaggio in alto sulle montagne.",
     "label": "Esplora villaggio di montagna"
   },
   "searchMountainLady": {
+    "description": "Invia una spedizione a cercare la Signora della Montagna.",
     "label": "Cerca la dama delle montagne"
   }
 }

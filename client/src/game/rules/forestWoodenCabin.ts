@@ -11,6 +11,7 @@ export const forestWoodenCabinActions: Record<string, Action> = {
   woodenCabin: {
     id: "woodenCabin",
     label: "Wooden Cabin",
+    description: "Investigate the strange wooden cabin in the forest.",
     minVillagers: 8,
     expeditionVillagersRequired: () => 8,
     show_when: {

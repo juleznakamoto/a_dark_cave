@@ -17,6 +17,7 @@ export function resolveActionLabel(
 export function resolveActionDescription(
   actionId: string,
   fallback: string | undefined,
+  options?: ActionLabelOptions,
 ): string | undefined {
-  return getActionDescription(actionId, fallback);
+  return getActionDescription(actionId, fallback, options);
 }

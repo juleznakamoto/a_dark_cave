@@ -34,7 +34,10 @@ import {
   ACTION_TO_UPGRADE_KEY,
   isPriorActionEligible,
 } from "@/game/buttonUpgrades";
-import { resolveActionLabel as resolveActionLabelBase } from "@/i18n/actionLabels";
+import {
+  resolveActionDescription as resolveActionDescriptionBase,
+  resolveActionLabel as resolveActionLabelBase,
+} from "@/i18n/actionLabels";
 import { getResourceName } from "@/i18n/resolveGameText";
 import { resolveActionTooltipEffects } from "@/i18n/tooltipLabels";
 import { useTranslation } from "react-i18next";
@@ -46,11 +49,21 @@ import {
   getChopWoodParticleConfig,
   getHuntParticleConfig,
 } from "@/components/ui/bubbly-button.particles";
+import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
 import type { Action, GameState } from "@shared/schema";
 import { formatNumber } from "@/lib/utils";
 
 function resolveActionLabel(actionId: string, fallback: string): string {
   return resolveActionLabelBase(actionId, fallback, { forestUnlocked: true });
+}
+
+function resolveActionDescription(
+  actionId: string,
+  fallback: string | undefined,
+): string | undefined {
+  return resolveActionDescriptionBase(actionId, fallback, {
+    forestUnlocked: true,
+  });
 }
 
 function isTieredNumericRecord(r: unknown): r is Record<number, unknown> {
@@ -322,10 +335,14 @@ export default function ForestPanel() {
       showSuccessTooltip ||
       hasExpeditionRequirement
     ) {
-      let tooltipContent;
+      const flavorDescription = resolveActionDescription(
+        actionId,
+        action.description,
+      );
+      let tooltipHeader: React.ReactNode;
 
       if (resourceGainTooltip) {
-        tooltipContent = resourceGainTooltip;
+        tooltipHeader = resourceGainTooltip;
       } else if (
         (isAnimalsSacrifice || isHumansSacrifice || isFinanceExpedition) &&
         action.tooltipEffects
@@ -341,8 +358,8 @@ export default function ForestPanel() {
           state,
           costBreakdown.length,
         );
-        tooltipContent = (
-          <div className="text-xs whitespace-nowrap">
+        tooltipHeader = (
+          <div className="whitespace-nowrap">
             <ActionTooltipResourceRows
               actionId={actionId}
               state={state}
@@ -370,8 +387,8 @@ export default function ForestPanel() {
               resolveForestPanelTradeEffects(action, state),
             )
             : null;
-        tooltipContent = (
-          <div className="text-xs whitespace-nowrap">
+        tooltipHeader = (
+          <div className="whitespace-nowrap">
             <ActionTooltipResourceRows
               actionId={actionId}
               state={state}
@@ -401,6 +418,12 @@ export default function ForestPanel() {
           </div>
         );
       }
+
+      const tooltipContent = composeActionTooltip({
+        header: tooltipHeader,
+        description: flavorDescription,
+        style: flavorDescription ? { width: "12rem" } : undefined,
+      });
 
       const button = (
         <CooldownButton

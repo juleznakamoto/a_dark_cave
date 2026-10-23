@@ -517,6 +517,7 @@ export const caveExploreActions: Record<string, Action> = {
   chopWood: {
     id: "chopWood",
     label: "Gather Wood",
+    description: "Collect fallen branches near the cave entrance.",
     minVillagers: 0,
     show_when: {},
     cost: {},
@@ -541,6 +542,7 @@ export const caveExploreActions: Record<string, Action> = {
   exploreCave: {
     id: "exploreCave",
     label: "Explore Cave",
+    description: "Search the cave by torchlight and gather whatever you can find.",
     show_when: {
       "story.seen.actionCraftTorch": true,
       "buildings.blacksmith": 0,
@@ -565,6 +567,7 @@ export const caveExploreActions: Record<string, Action> = {
   ventureDeeper: {
     id: "ventureDeeper",
     label: "Venture Deeper",
+    description: "Follow the path deeper into the cave, into the caverns beyond.",
     show_when: {
       "buildings.blacksmith": 1,
       "tools.iron_lantern": false,
@@ -593,6 +596,7 @@ export const caveExploreActions: Record<string, Action> = {
   descendFurther: {
     id: "descendFurther",
     label: "Descend Further",
+    description: "Climb down the worn steps leading into the lower levels of the cave.",
     expeditionVillagersRequired: () => 2,
     show_when: {
       "tools.iron_lantern": true,
@@ -622,6 +626,7 @@ export const caveExploreActions: Record<string, Action> = {
   exploreRuins: {
     id: "exploreRuins",
     label: "Explore Ruins",
+    description: "Search the lost city that sleeps in the vast cavern below.",
     expeditionVillagersRequired: () => 3,
     show_when: {
       "tools.steel_lantern": true,
@@ -648,6 +653,7 @@ export const caveExploreActions: Record<string, Action> = {
   exploreTemple: {
     id: "exploreTemple",
     label: "Explore Temple",
+    description: "Enter the underground temple still standing among the forgotten ruins.",
     expeditionVillagersRequired: () => 4,
     show_when: {
       "tools.obsidian_lantern": true,
@@ -676,6 +682,7 @@ export const caveExploreActions: Record<string, Action> = {
   exploreCitadel: {
     id: "exploreCitadel",
     label: "Explore Citadel",
+    description: "Search the citadel at the heart of the underground city.",
     expeditionVillagersRequired: () => 5,
     show_when: {
       "tools.adamant_lantern": true,
@@ -703,6 +710,7 @@ export const caveExploreActions: Record<string, Action> = {
   lowChamber: {
     id: "lowChamber",
     label: "Low Chamber",
+    description: "Rope down into a deep chamber left untouched for ages.",
     expeditionVillagersRequired: () => 6,
     show_when: {
       "tools.reinforced_rope": true,
@@ -728,6 +736,7 @@ export const caveExploreActions: Record<string, Action> = {
   occultistChamber: {
     id: "occultistChamber",
     label: "Occultist Chamber",
+    description: "Follow the occultist's map to the chamber where his secrets remain.",
     expeditionVillagersRequired: () => 6,
     show_when: {
       "tools.occultist_map": true,
@@ -753,6 +762,7 @@ export const caveExploreActions: Record<string, Action> = {
   hiddenLibrary: {
     id: "hiddenLibrary",
     label: "Hidden Library",
+    description: "Seek the hidden library in the depths of the cave.",
     expeditionVillagersRequired: () => 6,
     show_when: {
       "tools.hidden_library_map": true,
@@ -775,6 +785,7 @@ export const caveExploreActions: Record<string, Action> = {
   exploreUndergroundLake: {
     id: "exploreUndergroundLake",
     label: "Underground Lake",
+    description: "Cross the black water of the underground lake to a small island at its center.",
     expeditionVillagersRequired: () => 6,
     show_when: {
       "story.seen.undergroundLakeDiscovered": true,
@@ -801,7 +812,8 @@ export const caveExploreActions: Record<string, Action> = {
 
   lureLakeCreature: {
     id: "lureLakeCreature",
-    label: "Place Trap",
+    label: "Bait Trap",
+    description: "Bait a trap at the shore of the underground lake and wait for something to take it.",
     expeditionVillagersRequired: () => 6,
     show_when: {
       "story.seen.undergroundLakeCreatureDiscovered": true,
@@ -822,6 +834,7 @@ export const caveExploreActions: Record<string, Action> = {
   blastPortal: {
     id: "blastPortal",
     label: "Blast Gate",
+    description: "Shatter the ancient gate and free whatever was sealed inside.",
     show_when: {
       "story.seen.portalDiscovered": true,
       "story.seen.portalBlasted": false,
@@ -840,6 +853,7 @@ export const caveExploreActions: Record<string, Action> = {
   encounterBeyondPortal: {
     id: "encounterBeyondPortal",
     label: "Venture Beyond Gate",
+    description: "Step through the broken gate into what lies beyond.",
     expeditionVillagersRequired: () => 6,
     // Use secondBossWaveVictory (not beyondGateVentureUnlocked): the latter only applies on Continue
     // and can be lost if a reload clears the dialog after triggeredEvents was written.

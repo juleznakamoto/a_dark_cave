@@ -3,6 +3,7 @@
     "label": "Animaux"
   },
   "banditLair": {
+    "description": "Traquez le bandit qui a volé la dague du marchand.",
     "label": "Repaire de bandits",
     "log": {
       "success": "Votre groupe traque le bandit jusqu'à un repaire délabré. Vous l'accablez, récupérez la dague du marchand et trouvez 250 argent cachés dans son butin.",
@@ -10,12 +11,14 @@
     }
   },
   "blackreachCanyon": {
+    "description": "Descendez dans le canyon de Blackreach à la recherche d'un corbeau.",
     "label": "Canyon de Blackreach",
     "log": {
       "success": "Vous vous aventurez au fond du Canyon de Blackreach. Là, perché sur un pilier de pierre, se tient un magnifique corbeau borgne. À l'aide du harnais, vous vous approchez prudemment et vous liez à la créature. Le Corbeau borgne a rejoint votre communauté."
     }
   },
   "blastPortal": {
+    "description": "Brisez l'ancienne porte et libérez ce qui y était scellé.",
     "label": "Faire sauter la porte",
     "log": {
       "complete": "Les bombes de braise explosent dans un éclat de feu et de lumière. L'ancienne porte se fissure et s'effondre. Ce qui était scellé à l'intérieur est désormais libre."
@@ -289,15 +292,18 @@
     "label": "Hutte de bois"
   },
   "exploreMountainVillage": {
+    "description": "Entreprenez la longue ascension vers le village perché dans les montagnes.",
     "label": "Explorer le village de montagne"
   },
   "canyonBridge": {
+    "description": "Construisez un pont au-dessus du canyon pour rejoindre la tribu de la forêt.",
     "label": "Pont du canyon",
     "log": {
       "complete": "Le pont du canyon est achevé. Les marchands Ashwraith peuvent désormais atteindre votre colonie - et vous pouvez leur vendre des marchandises à des tarifs convenus."
     }
   },
   "castleRuins": {
+    "description": "Pillez le château du nécromancien mort depuis longtemps, au plus profond de la forêt.",
     "label": "Ruines du château",
     "log": {
       "success": "L'expédition vers les ruines du château du nécromancien défunt est couronnée de succès ! Au plus profond, vous trouvez d'anciens parchemins enveloppés de soie noire, révélant des connaissances antiques sur la façon de vaincre ce qui fut enfermé au fond de la grotte.",
@@ -306,7 +312,9 @@
     }
   },
   "chopWood": {
+    "description": "Ramassez les branches tombées près de l'entrée de la grotte.",
     "label": "Ramasser du bois",
+    "descriptionForest": "Abattez des arbres en lisière de forêt pour le bois.",
     "labelForest": "Couper du bois",
     "log": {
       "firstVisit": "Du bois gît éparpillé près de l'entrée de la grotte. Il pourrait s'avérer utile."
@@ -316,6 +324,7 @@
     "label": "Appeler le marchand"
   },
   "collapsedTower": {
+    "description": "Enquêtez sur la tour effondrée et mettez fin aux sombres travaux qui s'y trament.",
     "label": "Tour effondrée",
     "log": {
       "success": "Dans la tour, vous trouvez un nécromancien et ses disciples, entourés de fioles de liquides et de seringues grossières. Il collectait le sang des villageois pour de sombres expériences. Vos hommes mettent fin à son œuvre infâme et prennent une fiole de son sang. Parmi ses outils, vous trouvez sa puissante scie à os.",
@@ -479,15 +488,18 @@
     "label": "Arc de guerre"
   },
   "descendFurther": {
+    "description": "Descendez les marches usées menant aux niveaux inférieurs de la grotte.",
     "label": "Descendre davantage",
     "log": {
       "firstVisit": "La lanterne projette une lueur stable tandis que vous descendez encore plus bas. Soudain, vos pieds touchent des marches de pierre taillées par la main de l'homme, usées par le temps."
     }
   },
   "encounterBeyondPortal": {
+    "description": "Franchissez la porte brisée vers ce qui se trouve au-delà.",
     "label": "S'aventurer au-delà de la porte"
   },
   "exploreCave": {
+    "description": "Fouillez la grotte à la lueur d'une torche et ramassez ce que vous trouvez.",
     "label": "Explorer la grotte",
     "log": {
       "debrisScroll": "Parmi les débris, vous découvrez un parchemin ancien contenant la sagesse pour survivre dans ce monde impitoyable.",
@@ -496,24 +508,28 @@
     }
   },
   "exploreCitadel": {
+    "description": "Fouillez la citadelle au cœur de la cité souterraine.",
     "label": "Explorer la citadelle",
     "log": {
       "firstVisit": "Dans la partie la plus profonde de la ville, une citadelle massive s'élève devant vous. Sa taille suggère qu'elle abrite quelque chose de grande puissance, ou de grand danger."
     }
   },
   "exploreRuins": {
+    "description": "Explorez la cité perdue qui dort dans la vaste caverne en contrebas.",
     "label": "Explorer les ruines",
     "log": {
       "firstVisit": "Au bas des escaliers, une vaste caverne s'ouvre devant vous. Dans l'obscurité gisent les ruines d'une cité perdue, les vestiges d'une civilisation depuis longtemps disparue."
     }
   },
   "exploreTemple": {
+    "description": "Entrez dans le temple souterrain encore debout parmi les ruines oubliées.",
     "label": "Explorer le temple",
     "log": {
       "firstVisit": "En vous enfonçant plus profondément dans les ruines de la cité souterraine, un grand temple émerge du sol de la caverne, pour l'essentiel intact, son ombre s'étendant sur les vestiges oubliés de la ville."
     }
   },
   "exploreUndergroundLake": {
+    "description": "Traversez les eaux noires du lac souterrain jusqu'à une petite île en son centre.",
     "label": "Lac souterrain",
     "log": {
       "complete": "À la lueur sinistre de la lanterne crânienne, vous descendez vers le lac souterrain et construisez une petite barque. Sur une minuscule île au milieu du lac sombre, des trésors oubliés gisent dans l'ombre, intacts depuis des âges."
@@ -530,6 +546,7 @@
     }
   },
   "forestCave": {
+    "description": "Débarrassez la grotte des bêtes pour sauver la tribu de la chasseresse.",
     "label": "Grotte forestière",
     "log": {
       "success": "Alors que les villageois descendent dans la grotte, des chiens sauvages jaillissent des ténèbres en meutes implacables. Les cris résonnent tandis que griffes déchirent et dents claquent. Quand la dernière bête tombe, chaque villageois vit, et la tribu de la chasseresse est sauvée.",
@@ -543,12 +560,14 @@
     "label": "Soigner le chevalier sans repos"
   },
   "hiddenLibrary": {
+    "description": "Cherchez la bibliothèque cachée dans les profondeurs de la grotte.",
     "label": "Bibliothèque cachée",
     "log": {
       "complete": "La carte du monastère vous mène au fond de la grotte, jusqu'à la bibliothèque cachée où vous trouvez un codex."
     }
   },
   "hillGrave": {
+    "description": "Entrez dans la tombe de la colline et cherchez du verre de givre dans la chambre funéraire.",
     "label": "Tombe de la colline",
     "log": {
       "success": "Votre expédition traverse habilement les pièges traîtres de la tombe de la colline. Les villageois désactivent les anciens mécanismes et atteignent la chambre funéraire. Parmi les trésors du roi, vous découvrez du frostglass pur, froid comme le vide lui-même.",
@@ -559,12 +578,14 @@
     "label": "Humains"
   },
   "hunt": {
+    "description": "Pistez des animaux à travers la forêt sombre.",
     "label": "Chasser",
     "log": {
       "mapFragmentHunt": "En chassant, quelque chose attire votre regard dans la boue. Un morceau taché d'eau, peut-être une partie d'une carte."
     }
   },
   "woodenCabin": {
+    "description": "Enquêtez sur l'étrange cabane en bois dans la forêt.",
     "label": "Cabane de bois",
     "log": {
       "success": "La cabane appartient au chasseur qui vous a vendu de la viande. L'abattoir est garni de crochets, et aucun n'a porté de cerf. Il chassait des gens, et la nourriture qu'il échangeait était leur chair. Dans la cabane, vous trouvez l'arc du marchand.",
@@ -582,6 +603,7 @@
     }
   },
   "layTrap": {
+    "description": "Posez un collet géant pour capturer une grande bête.",
     "label": "Poser un piège",
     "log": {
       "trapSuccessNoDeaths": "Le piège géant fonctionne à la perfection ! Un énorme ours noir aux yeux rouges brillants est pris. Les villageois abattent la bête surnaturelle et revendiquent sa fourrure noire maudite comme trophée.",
@@ -601,13 +623,15 @@
     }
   },
   "lowChamber": {
+    "description": "Descendez en rappel dans une chambre profonde restée intacte depuis des siècles.",
     "label": "Chambre basse",
     "log": {
       "complete": "À l'aide de la corde renforcée, vous descendez dans la chambre basse. Parmi les trésors, vous trouvez un ciseau de maître maçon, un outil d'un artisanat légendaire."
     }
   },
   "lureLakeCreature": {
-    "label": "Placer le piège",
+    "description": "Appâtez un piège sur la rive du lac souterrain et attendez que quelque chose s'y prenne.",
+    "label": "Appâter le piège",
     "log": {
       "complete": "Vous installez un piège immense au bord du lac souterrain, appâté avec des montagnes de viande. Des heures passent avant que les eaux noires n'explosent et qu'un titansque horreur tentaculaire ne surgisse des profondeurs pour y tomber."
     }
@@ -658,6 +682,7 @@
     "label": "Minage"
   },
   "occultistChamber": {
+    "description": "Suivez la carte de l'occultiste jusqu'à la chambre où reposent ses secrets.",
     "label": "Chambre de l'occultiste",
     "log": {
       "complete": "En suivant la carte de l'occultiste, vous trouvez la chambre qui contient ses trésors. Parmi eux se trouve son grimoire, rempli de savoir interdit et de secrets arcanes."
@@ -676,6 +701,7 @@
     "label": "Réparer la tour de guet"
   },
   "risingSmoke": {
+    "description": "Suivez la fumée montante jusqu'à un camp de hors-la-loi.",
     "label": "Fumée montante",
     "log": {
       "success": "Votre expédition trouve un camp de hors-la-loi. Le combat est brutal, mais vous l'emportez. Dans un coffre, vous trouvez 500 or.",
@@ -695,15 +721,18 @@
     "label": "Vendre l'acier"
   },
   "searchMountainLady": {
+    "description": "Envoyez une expédition pour trouver la Dame de la Montagne.",
     "label": "Chercher la dame des montagnes"
   },
   "steelDelivery": {
+    "description": "Livrez de l'acier à la tribu du marais.",
     "label": "Livraison d'acier",
     "log": {
       "success": "Votre caravane livre l'acier à la Tribu des Marais comme promis. En retour, la tribu vous offre des Plaques de Chitine récoltées sur les créatures des marais. Elles peuvent servir à construire de puissantes fortifications."
     }
   },
   "sunkenTemple": {
+    "description": "Traversez le marais jusqu'à un temple ancien à demi englouti.",
     "label": "Temple englouti",
     "log": {
       "success": "Votre expédition traverse les eaux marécageuses pour atteindre l'ancien temple à moitié englouti. Malgré les dangers qui rôdent dans les eaux sombres, les villageois naviguent prudemment dans les salles submergées et trouvent les gemmes de bloodstone dans le sanctuaire intérieur du temple.",
@@ -711,6 +740,7 @@
     }
   },
   "swampSanctuary": {
+    "description": "Trouvez le sanctuaire perdu marqué sur la carte du marais reconstituée.",
     "label": "Sanctuaire du marais"
   },
   "tradeGoldForAdamant": {
@@ -762,6 +792,7 @@
     "label": "Acheter de l'or"
   },
   "ventureDeeper": {
+    "description": "Suivez le sentier plus profondément dans la grotte, vers les cavernes au-delà.",
     "label": "S'aventurer plus profond",
     "log": {
       "tarnishedAmulet": "Dans l'ombre de la grotte, quelque chose scintille. Vous trouvez un amulette ternie.",

@@ -77,6 +77,7 @@ export const forestScoutActions: Record<string, Action> = {
   hunt: {
     id: "hunt",
     label: "Hunt",
+    description: "Track animals through the dark forest.",
     minVillagers: 0,
     show_when: {
       "flags.forestUnlocked": true,
@@ -153,6 +154,7 @@ export const forestScoutActions: Record<string, Action> = {
   layTrap: {
     id: "layTrap",
     label: "Lay Trap",
+    description: "Set a giant snare to capture a large beast.",
     minVillagers: 0,
     show_when: {
       "tools.giant_trap": true,
@@ -175,6 +177,7 @@ export const forestScoutActions: Record<string, Action> = {
   castleRuins: {
     id: "castleRuins",
     label: "Castle Ruins",
+    description: "Raid the long-dead necromancer's castle deep in the forest.",
     minVillagers: 6,
     expeditionVillagersRequired: (state: GameState) =>
       CRUEL_MODE.forestExpedition.castleRuins.base +
@@ -201,6 +204,7 @@ export const forestScoutActions: Record<string, Action> = {
   hillGrave: {
     id: "hillGrave",
     label: "Hill Grave",
+    description: "Enter the hill grave and search the burial chamber for frostglass.",
     minVillagers: 6,
     expeditionVillagersRequired: (state: GameState) =>
       CRUEL_MODE.forestExpedition.hillGrave.base +
@@ -227,6 +231,7 @@ export const forestScoutActions: Record<string, Action> = {
   sunkenTemple: {
     id: "sunkenTemple",
     label: "Sunken Temple",
+    description: "Wade through the swamp to an ancient, half-drowned temple.",
     minVillagers: 6,
     expeditionVillagersRequired: (state: GameState) =>
       CRUEL_MODE.forestExpedition.sunkenTemple.base +
@@ -256,6 +261,7 @@ export const forestScoutActions: Record<string, Action> = {
   swampSanctuary: {
     id: "swampSanctuary",
     label: "Swamp Sanctuary",
+    description: "Find the lost sanctuary marked on the pieced-together swamp map.",
     minVillagers: 20,
     expeditionVillagersRequired: (state: GameState) =>
       CRUEL_MODE.forestExpedition.swampSanctuary.base +
@@ -277,6 +283,7 @@ export const forestScoutActions: Record<string, Action> = {
   collapsedTower: {
     id: "collapsedTower",
     label: "Collapsed Tower",
+    description: "Investigate the fallen tower and end whatever dark work is being done there.",
     minVillagers: 6,
     expeditionVillagersRequired: (state: GameState) =>
       CRUEL_MODE.forestExpedition.collapsedTower.base +
@@ -304,6 +311,7 @@ export const forestScoutActions: Record<string, Action> = {
   forestCave: {
     id: "forestCave",
     label: "Forest Cave",
+    description: "Clear the cave of beasts to save the huntress's tribe.",
     minVillagers: 4,
     expeditionVillagersRequired: (state: GameState) =>
       CRUEL_MODE.forestExpedition.forestCave.base +
@@ -330,6 +338,7 @@ export const forestScoutActions: Record<string, Action> = {
   blackreachCanyon: {
     id: "blackreachCanyon",
     label: "Blackreach Canyon",
+    description: "Descend Blackreach Canyon in search of a crow.",
     minVillagers: 10,
     expeditionVillagersRequired: () => 10,
     show_when: {
@@ -348,6 +357,7 @@ export const forestScoutActions: Record<string, Action> = {
   steelDelivery: {
     id: "steelDelivery",
     label: "Steel Delivery",
+    description: "Deliver steel to the swamp tribe.",
     minVillagers: 6,
     expeditionVillagersRequired: () => 6,
     show_when: {
@@ -366,6 +376,7 @@ export const forestScoutActions: Record<string, Action> = {
   risingSmoke: {
     id: "risingSmoke",
     label: "Rising Smoke",
+    description: "Follow the rising smoke to an outlaw camp.",
     minVillagers: 16,
     expeditionVillagersRequired: (state: GameState) =>
       CRUEL_MODE.forestExpedition.risingSmoke.base +
@@ -392,6 +403,7 @@ export const forestScoutActions: Record<string, Action> = {
   banditLair: {
     id: "banditLair",
     label: "Bandit Lair",
+    description: "Hunt down the bandit who stole the trader's dagger.",
     minVillagers: 5,
     expeditionVillagersRequired: () => 5,
     show_when: {
@@ -415,6 +427,7 @@ export const forestScoutActions: Record<string, Action> = {
   canyonBridge: {
     id: "canyonBridge",
     label: "Canyon Bridge",
+    description: "Build a bridge across the canyon to connect with the forest tribe.",
     minVillagers: 0,
     show_when: {
       "story.seen.ashwraithCanyonTradeOfferSeen": true,
@@ -434,6 +447,7 @@ export const forestScoutActions: Record<string, Action> = {
   searchMountainLady: {
     id: "searchMountainLady",
     label: "Seek Mountain Lady",
+    description: "Send an expedition to find the Mountain Lady.",
     minVillagers: 30,
     expeditionVillagersRequired: () => 30,
     show_when: {
@@ -452,6 +466,7 @@ export const forestScoutActions: Record<string, Action> = {
   exploreMountainVillage: {
     id: "exploreMountainVillage",
     label: "Explore Mountain Village",
+    description: "Make the long climb to the village high in the mountains.",
     minVillagers: 24,
     expeditionVillagersRequired: () => 24,
     show_when: {

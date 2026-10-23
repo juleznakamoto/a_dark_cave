@@ -1,0 +1,487 @@
+Action flavor review (all locales) — after review fixes
+
+========================================================================
+Gather Wood  (chopWood)
+
+[LABEL cave / forest]
+en     Gather Wood  |  Chop Wood
+de     Holz sammeln  |  Holz hacken
+es     Reunir madera  |  Cortar madera
+fr     Ramasser du bois  |  Couper du bois
+it     Raccogli legna  |  Taglia legna
+pt-BR  Coletar Madeira  |  Cortar Madeira
+ru     Собрать хворост  |  Нарубить дров
+zh-CN  采集木材  |  砍伐木材
+ja     木材を集める  |  木を伐る
+pl     Zbierz drewno  |  Rąb drewno
+
+[DESCRIPTION cave]
+en     Collect fallen branches near the cave entrance.
+de     Sammle herabgefallene Äste am Höhleneingang.
+es     Recoge ramas caídas junto a la entrada de la cueva.
+fr     Ramassez les branches tombées près de l'entrée de la grotte.
+it     Raccogli i rami caduti vicino all'ingresso della caverna.
+pt-BR  Colete galhos caídos perto da entrada da caverna.
+ru     Соберите упавшие ветки у входа в пещеру.
+zh-CN  在洞穴入口附近拾取落下的枝条。
+ja     洞窟の入口付近に落ちた枝を集める。
+pl     Zbieraj opadłe gałęzie przy wejściu do jaskini.
+
+[DESCRIPTION forest]
+en     Fell trees at the forest edge for timber.
+de     Fälle Bäume am Waldrand für Bauholz.
+es     Tala árboles en el borde del bosque para obtener madera.
+fr     Abattez des arbres en lisière de forêt pour le bois.
+it     Abbatti alberi al limitare della foresta per il legname.
+pt-BR  Derrube árvores na beira da floresta para obter madeira.
+ru     Рубите деревья на опушке леса, чтобы добыть древесину.
+zh-CN  在森林边缘伐木取材。
+ja     森の端で木を切り、材木を得る。
+pl     Ścinaj drzewa na skraju lasu na drewno.
+
+========================================================================
+Explore Cave  (exploreCave)
+
+[DESCRIPTION]
+en     Search the cave by torchlight and gather whatever you can find.
+de     Durchsuche die Höhle bei Fackellicht und nimm mit, was du findest.
+es     Explora la cueva a la luz de la antorcha y recoge lo que puedas.
+fr     Fouillez la grotte à la lueur d'une torche et ramassez ce que vous trouvez.
+it     Esplora la caverna alla luce della torcia e raccogli ciò che trovi.
+pt-BR  Vasculhe a caverna à luz da tocha e junte o que puder encontrar.
+ru     Обыщите пещеру при свете факела и заберите всё, что найдёте.
+zh-CN  借着火把的光搜索洞穴，把能找到的都带上。
+ja     松明の明かりで洞窟を探り、見つけたものを集める。
+pl     Przeszukaj jaskinię w świetle pochodni i zbierz, co znajdziesz.
+
+========================================================================
+Venture Deeper  (ventureDeeper)
+
+[DESCRIPTION]
+en     Follow the path deeper into the cave, into the caverns beyond.
+de     Folge dem Pfad tiefer in die Höhle, in die Höhlenhallen dahinter.
+es     Sigue el camino más adentro de la cueva, hacia las cavernas más allá.
+fr     Suivez le sentier plus profondément dans la grotte, vers les cavernes au-delà.
+it     Segui il sentiero più a fondo nella caverna, verso le cavità che si aprono oltre.
+pt-BR  Siga o caminho mais fundo na caverna, rumo às galerias além.
+ru     Идите дальше по тропе вглубь пещеры, в подземные залы за ней.
+zh-CN  沿着小路深入洞穴，进入更深处的洞窟。
+ja     洞窟の奥へ続く道を辿り、その先の空洞へ進む。
+pl     Podążaj ścieżką głębiej w jaskinię, do komór za nią.
+
+========================================================================
+Descend Further  (descendFurther)
+
+[DESCRIPTION]
+en     Climb down the worn steps leading into the lower levels of the cave.
+de     Steige die abgetretenen Stufen hinab in die unteren Ebenen der Höhle.
+es     Baja por los escalones gastados que llevan a los niveles inferiores de la cueva.
+fr     Descendez les marches usées menant aux niveaux inférieurs de la grotte.
+it     Scendi gli scalini consumati che portano ai livelli inferiori della caverna.
+pt-BR  Desça os degraus gastos que levam aos níveis inferiores da caverna.
+ru     Спуститесь по стёртым ступеням в нижние ярусы пещеры.
+zh-CN  顺着磨损的石阶下到洞穴的下层。
+ja     洞窟の下層へ続くすり減った石段を降りていく。
+pl     Zejdź wytartymi schodami na niższe poziomy jaskini.
+
+========================================================================
+Explore Ruins  (exploreRuins)
+
+[DESCRIPTION]
+en     Search the lost city that sleeps in the vast cavern below.
+de     Durchsuche die verlorene Stadt, die in der weiten Höhlenhalle darunter schläft.
+es     Explora la ciudad perdida que duerme en la vasta caverna de abajo.
+fr     Explorez la cité perdue qui dort dans la vaste caverne en contrebas.
+it     Esplora la città perduta che dorme nella vasta caverna sottostante.
+pt-BR  Explore a cidade perdida que dorme na vasta caverna abaixo.
+ru     Обыщите затерянный город, спящий в огромной пещере внизу.
+zh-CN  搜索沉睡在下方巨大洞窟中的失落之城。
+ja     下の広大な空洞に眠る失われた都を探る。
+pl     Przeszukaj zaginione miasto, które śpi w rozległej komorze poniżej.
+
+========================================================================
+Explore Temple  (exploreTemple)
+
+[DESCRIPTION]
+en     Enter the underground temple still standing among the forgotten ruins.
+de     Betrete den unterirdischen Tempel, der noch immer zwischen den vergessenen Ruinen steht.
+es     Entra en el templo subterráneo que aún se alza entre las ruinas olvidadas.
+fr     Entrez dans le temple souterrain encore debout parmi les ruines oubliées.
+it     Entra nel tempio sotterraneo ancora in piedi tra le rovine dimenticate.
+pt-BR  Entre no templo subterrâneo que ainda se ergue entre as ruínas esquecidas.
+ru     Войдите в подземный храм, всё ещё стоящий среди забытых руин.
+zh-CN  进入仍矗立在被遗忘废墟中的地下神殿。
+ja     忘れられた遺跡の中に今も残る地下神殿へ入る。
+pl     Wejdź do podziemnej świątyni, która wciąż stoi wśród zapomnianych ruin.
+
+========================================================================
+Explore Citadel  (exploreCitadel)
+
+[DESCRIPTION]
+en     Search the citadel at the heart of the underground city.
+de     Durchsuche die Zitadelle im Herzen der unterirdischen Stadt.
+es     Explora la ciudadela en el corazón de la ciudad subterránea.
+fr     Fouillez la citadelle au cœur de la cité souterraine.
+it     Esplora la cittadella nel cuore della città sotterranea.
+pt-BR  Vasculhe a cidadela no coração da cidade subterrânea.
+ru     Обыщите цитадель в сердце подземного города.
+zh-CN  搜索地下之城中心的要塞。
+ja     地下都市の中心にある城塞を探る。
+pl     Przeszukaj cytadelę w sercu podziemnego miasta.
+
+========================================================================
+Low Chamber  (lowChamber)
+
+[DESCRIPTION]
+en     Rope down into a deep chamber left untouched for ages.
+de     Seile dich in eine tiefe Kammer hinab, die seit Ewigkeiten unberührt ist.
+es     Desciende con cuerda a una cámara profunda intacta durante siglos.
+fr     Descendez en rappel dans une chambre profonde restée intacte depuis des siècles.
+it     Calati con la corda in una camera profonda rimasta intatta per secoli.
+pt-BR  Desça de corda até uma câmara profunda, intocada há eras.
+ru     Спуститесь на верёвке в глубокую камеру, нетронутую веками.
+zh-CN  用绳索下到一间尘封已久、无人踏足的深室。
+ja     長いあいだ手つかずの深い石室へ、ロープで降りていく。
+pl     Zejdź na linie do głębokiej komnaty nietkniętej od wieków.
+
+========================================================================
+Occultist Chamber  (occultistChamber)
+
+[DESCRIPTION]
+en     Follow the occultist's map to the chamber where his secrets remain.
+de     Folge der Karte des Okkultisten zur Kammer, in der seine Geheimnisse ruhen.
+es     Sigue el mapa del ocultista hasta la cámara donde permanecen sus secretos.
+fr     Suivez la carte de l'occultiste jusqu'à la chambre où reposent ses secrets.
+it     Segui la mappa dell'occultista fino alla camera dove restano i suoi segreti.
+pt-BR  Siga o mapa do ocultista até a câmara onde seus segredos permanecem.
+ru     Следуйте по карте оккультиста к камере, где хранятся его тайны.
+zh-CN  按秘术师的地图找到仍藏着他秘密的密室。
+ja     オカルティストの地図を辿り、彼の秘密が眠る石室へ向かう。
+pl     Idź według mapy okultysty do komnaty, w której wciąż kryją się jego tajemnice.
+
+========================================================================
+Hidden Library  (hiddenLibrary)
+
+[DESCRIPTION]
+en     Seek the hidden library in the depths of the cave.
+de     Suche die verborgene Bibliothek in den Tiefen der Höhle.
+es     Busca la biblioteca oculta en las profundidades de la cueva.
+fr     Cherchez la bibliothèque cachée dans les profondeurs de la grotte.
+it     Cerca la biblioteca nascosta nelle profondità della caverna.
+pt-BR  Procure a biblioteca oculta nas profundezas da caverna.
+ru     Найдите скрытую библиотеку в глубине пещеры.
+zh-CN  在洞穴深处寻找隐秘的图书馆。
+ja     洞窟の深部に隠された書庫を探す。
+pl     Odszukaj ukrytą bibliotekę w głębi jaskini.
+
+========================================================================
+Underground Lake  (exploreUndergroundLake)
+
+[DESCRIPTION]
+en     Cross the black water of the underground lake to a small island at its center.
+de     Überquere das schwarze Wasser des unterirdischen Sees zu einer kleinen Insel in seiner Mitte.
+es     Cruza las aguas negras del lago subterráneo hasta una pequeña isla en su centro.
+fr     Traversez les eaux noires du lac souterrain jusqu'à une petite île en son centre.
+it     Attraversa le acque nere del lago sotterraneo fino a una piccola isola al centro.
+pt-BR  Atravesse as águas negras do lago subterrâneo até uma ilhota no centro.
+ru     Пересеките чёрные воды подземного озера к небольшому острову в центре.
+zh-CN  渡过地下湖的黑水，抵达湖心的小岛。
+ja     地下湖の黒い水面を渡り、中央の小島へ向かう。
+pl     Przepłyń czarne wody podziemnego jeziora na małą wyspę w jego środku.
+
+========================================================================
+Bait Trap  (lureLakeCreature)
+
+[LABEL]
+en     Bait Trap
+de     Falle beködern
+es     Cebar trampa
+fr     Appâter le piège
+it     Innesca trappola
+pt-BR  Iscar Armadilha
+ru     Положить приманку
+zh-CN  布置诱饵
+ja     罠に餌を仕掛ける
+pl     Załóż przynętę
+
+[DESCRIPTION]
+en     Bait a trap at the shore of the underground lake and wait for something to take it.
+de     Beködere eine Falle am Ufer des unterirdischen Sees und warte, bis etwas anbeißt.
+es     Ceba una trampa en la orilla del lago subterráneo y espera a que algo pique.
+fr     Appâtez un piège sur la rive du lac souterrain et attendez que quelque chose s'y prenne.
+it     Innesca una trappola sulla riva del lago sotterraneo e attendi che qualcosa abbocchi.
+pt-BR  Isque uma armadilha na margem do lago subterrâneo e espere algo cair nela.
+ru     Положите приманку в ловушку на берегу подземного озера и ждите, пока кто-нибудь клюнет.
+zh-CN  在地下湖岸设下诱饵陷阱，等待有东西上钩。
+ja     地下湖の岸で罠に餌を仕掛け、何かがかかるのを待つ。
+pl     Załóż przynętę w pułapce na brzegu podziemnego jeziora i czekaj, aż coś się złapie.
+
+========================================================================
+Blast Gate  (blastPortal)
+
+[DESCRIPTION]
+en     Shatter the ancient gate and free whatever was sealed inside.
+de     Zertrümmere das uralte Tor und befreie, was darin versiegelt war.
+es     Destroza la antigua puerta y libera lo que quedó sellado dentro.
+fr     Brisez l'ancienne porte et libérez ce qui y était scellé.
+it     Frantuma l'antico portale e libera ciò che vi era sigillato.
+pt-BR  Estilhace o portão antigo e liberte o que estiver selado lá dentro.
+ru     Разбейте древние врата и освободите то, что было запечатано внутри.
+zh-CN  炸碎古老的大门，释放被封在里面的东西。
+ja     古の門を打ち破り、封じられていたものを解き放つ。
+pl     Rozbij starożytną bramę i uwolnij to, co zostało w niej zapieczętowane.
+
+========================================================================
+Venture Beyond Gate  (encounterBeyondPortal)
+
+[DESCRIPTION]
+en     Step through the broken gate into what lies beyond.
+de     Tritt durch das zerbrochene Tor in das, was dahinter liegt.
+es     Atraviesa la puerta rota hacia lo que hay más allá.
+fr     Franchissez la porte brisée vers ce qui se trouve au-delà.
+it     Varca il portale spezzato verso ciò che si trova oltre.
+pt-BR  Passe pelo portão quebrado rumo ao que há além.
+ru     Шагните сквозь разбитые врата в то, что лежит за ними.
+zh-CN  踏过破碎的大门，进入门后的未知。
+ja     壊れた門をくぐり、その先へ踏み出す。
+pl     Przejdź przez rozbitą bramę ku temu, co leży poza nią.
+
+========================================================================
+Hunt  (hunt)
+
+[DESCRIPTION]
+en     Track animals through the dark forest.
+de     Spüre Tiere im dunklen Wald auf.
+es     Rastrea animales por el bosque oscuro.
+fr     Pistez des animaux à travers la forêt sombre.
+it     Segui le tracce degli animali nella foresta oscura.
+pt-BR  Rastreie animais pela floresta escura.
+ru     Выслеживайте зверей в тёмном лесу.
+zh-CN  在幽暗的森林中追踪野兽。
+ja     暗い森で獣の跡を追う。
+pl     Trop zwierzęta w ciemnym lesie.
+
+========================================================================
+Lay Trap  (layTrap)
+
+[DESCRIPTION]
+en     Set a giant snare to capture a large beast.
+de     Stelle eine riesige Schlinge auf, um eine große Bestie zu fangen.
+es     Coloca un lazo gigante para atrapar a una gran bestia.
+fr     Posez un collet géant pour capturer une grande bête.
+it     Tendi un gigantesco laccio per catturare una grande bestia.
+pt-BR  Arme um laço gigante para capturar uma grande fera.
+ru     Установите гигантскую петлю, чтобы поймать крупного зверя.
+zh-CN  设下巨型陷阱，捕捉一头巨兽。
+ja     巨大な罠を仕掛け、大きな獣を捕らえる。
+pl     Zastaw gigantyczną pętlę, by schwytać wielką bestię.
+
+========================================================================
+Castle Ruins  (castleRuins)
+
+[DESCRIPTION]
+en     Raid the long-dead necromancer's castle deep in the forest.
+de     Plündere die Burg des längst toten Nekromanten tief im Wald.
+es     Asalta el castillo del nigromante muerto hace tiempo, en lo profundo del bosque.
+fr     Pillez le château du nécromancien mort depuis longtemps, au plus profond de la forêt.
+it     Assalta il castello del necromante morto da tempo, nel cuore della foresta.
+pt-BR  Invada o castelo do necromante morto há muito, no fundo da floresta.
+ru     Нападите на замок давно мёртвого некроманта в глубине леса.
+zh-CN  突袭森林深处那位早已死去的死灵法师的城堡。
+ja     森の奥、とうに死した死霊術師の城を襲う。
+pl     Najedź zamek dawno zmarłego nekromanty głęboko w lesie.
+
+========================================================================
+Hill Grave  (hillGrave)
+
+[DESCRIPTION]
+en     Enter the hill grave and search the burial chamber for frostglass.
+de     Betrete das Hügelgrab und durchsuche die Grabkammer nach Frostglas.
+es     Entra en la tumba del cerro y busca cristal de escarcha en la cámara funeraria.
+fr     Entrez dans la tombe de la colline et cherchez du verre de givre dans la chambre funéraire.
+it     Entra nella tomba del colle e cerca il vetro di gelo nella camera sepolcrale.
+pt-BR  Entre na sepultura do outeiro e procure vidro-gelo na câmara funerária.
+ru     Войдите в могильный холм и ищите морозное стекло в погребальной камере.
+zh-CN  进入山丘古墓，在葬室中寻找霜晶。
+ja     丘の墳墓に入り、葬室でフロストグラスを探す。
+pl     Wejdź do grobu na wzgórzu i szukaj mroźnego szkła w komorze grobowej.
+
+========================================================================
+Sunken Temple  (sunkenTemple)
+
+[DESCRIPTION]
+en     Wade through the swamp to an ancient, half-drowned temple.
+de     Wate durch den Sumpf zu einem uralten, halb versunkenen Tempel.
+es     Atraviesa el pantano hasta un antiguo templo medio sumergido.
+fr     Traversez le marais jusqu'à un temple ancien à demi englouti.
+it     Guada la palude fino a un antico tempio mezzo sommerso.
+pt-BR  Atravesse o pântano até um templo antigo, meio submerso.
+ru     Перейдите болото к древнему, наполовину затонувшему храму.
+zh-CN  涉过沼泽，前往一座半没于水的古神殿。
+ja     沼を渡り、半ば水に沈んだ古の神殿へ向かう。
+pl     Brnij przez bagno do starożytnej, wpół zatopionej świątyni.
+
+========================================================================
+Swamp Sanctuary  (swampSanctuary)
+
+[DESCRIPTION]
+en     Find the lost sanctuary marked on the pieced-together swamp map.
+de     Finde das verlorene Heiligtum, das auf der zusammengesetzten Sumpfkarte markiert ist.
+es     Encuentra el santuario perdido marcado en el mapa recompuesto del pantano.
+fr     Trouvez le sanctuaire perdu marqué sur la carte du marais reconstituée.
+it     Trova il santuario perduto segnato sulla mappa ricomposta della palude.
+pt-BR  Encontre o santuário perdido marcado no mapa reconstituído do pântano.
+ru     Найдите утраченное святилище, отмеченное на собранной болотной карте.
+zh-CN  按拼好的沼泽地图，找到失落的圣地。
+ja     つなぎ合わせた沼の地図に記された、失われた聖域を探す。
+pl     Odszukaj zaginione sanktuarium zaznaczone na złożonej mapie bagien.
+
+========================================================================
+Collapsed Tower  (collapsedTower)
+
+[DESCRIPTION]
+en     Investigate the fallen tower and end whatever dark work is being done there.
+de     Untersuche den eingestürzten Turm und beende das dunkle Werk, das dort getrieben wird.
+es     Investiga la torre derrumbada y acaba con la obra oscura que allí se trama.
+fr     Enquêtez sur la tour effondrée et mettez fin aux sombres travaux qui s'y trament.
+it     Ispeziona la torre crollata e poni fine a qualunque opera oscura vi si compia.
+pt-BR  Investigue a torre caída e acabe com o trabalho sombrio que ali se faz.
+ru     Исследуйте обрушившуюся башню и положите конец тёмным делам, что там творятся.
+zh-CN  调查倒塌的高塔，终结那里正在进行的黑暗行径。
+ja     崩れた塔を調べ、そこで行われている暗い所業を断つ。
+pl     Zbadaj zawaloną wieżę i połóż kres mrocznym praktykom, które się tam odbywają.
+
+========================================================================
+Forest Cave  (forestCave)
+
+[DESCRIPTION]
+en     Clear the cave of beasts to save the huntress's tribe.
+de     Befreie die Höhle von den Bestien, um den Stamm der Jägerin zu retten.
+es     Limpia la cueva de bestias para salvar a la tribu de la cazadora.
+fr     Débarrassez la grotte des bêtes pour sauver la tribu de la chasseresse.
+it     Ripulisci la caverna dalle bestie per salvare la tribù della cacciatrice.
+pt-BR  Limpe a caverna das feras para salvar a tribo da caçadora.
+ru     Очистите пещеру от зверей, чтобы спасти племя охотницы.
+zh-CN  清除洞中的野兽，以拯救女猎手的部族。
+ja     獣を洞窟から追い払い、女狩人の部族を救う。
+pl     Oczyść jaskinię z bestii, by uratować plemię łowczyni.
+
+========================================================================
+Blackreach Canyon  (blackreachCanyon)
+
+[DESCRIPTION]
+en     Descend Blackreach Canyon in search of a crow.
+de     Steige auf der Suche nach einer Krähe in den Blackreach-Canyon hinab.
+es     Desciende al Cañón Blackreach en busca de un cuervo.
+fr     Descendez dans le canyon de Blackreach à la recherche d'un corbeau.
+it     Scendi nel Canyon Blackreach in cerca di un corvo.
+pt-BR  Desça o Cânion Blackreach em busca de um corvo.
+ru     Спуститесь в каньон Блэкрич в поисках вороны.
+zh-CN  深入黑境峡谷，寻找一只乌鸦。
+ja     ブラックリーチ峡谷を下り、鴉を探す。
+pl     Zejdź do Kanionu Blackreach w poszukiwaniu wrony.
+
+========================================================================
+Steel Delivery  (steelDelivery)
+
+[DESCRIPTION]
+en     Deliver steel to the swamp tribe.
+de     Liefere Stahl an den Sumpfstamm.
+es     Entrega acero a la tribu del pantano.
+fr     Livrez de l'acier à la tribu du marais.
+it     Consegna acciaio alla tribù della palude.
+pt-BR  Entregue aço à tribo do pântano.
+ru     Доставьте сталь болотному племени.
+zh-CN  把钢铁送给沼泽部族。
+ja     沼の部族へ鋼を届ける。
+pl     Dostarcz stal plemieniu bagien.
+
+========================================================================
+Rising Smoke  (risingSmoke)
+
+[DESCRIPTION]
+en     Follow the rising smoke to an outlaw camp.
+de     Folge dem aufsteigenden Rauch zu einem Gesetzlosenlager.
+es     Sigue el humo que asciende hasta un campamento de forajidos.
+fr     Suivez la fumée montante jusqu'à un camp de hors-la-loi.
+it     Segui il fumo che sale fino a un campo di fuorilegge.
+pt-BR  Siga a fumaça que sobe até um acampamento de foras da lei.
+ru     Следуйте за поднимающимся дымом к лагерю разбойников.
+zh-CN  顺着升起的烟找到亡命之徒的营地。
+ja     立ち上る煙を辿り、無法者の野営へ向かう。
+pl     Podążaj za wznoszącym się dymem do obozu banitów.
+
+========================================================================
+Bandit Lair  (banditLair)
+
+[DESCRIPTION]
+en     Hunt down the bandit who stole the trader's dagger.
+de     Jage den Banditen, der den Dolch des Händlers gestohlen hat.
+es     Caza al bandido que robó la daga del mercader.
+fr     Traquez le bandit qui a volé la dague du marchand.
+it     Dai la caccia al bandito che ha rubato il pugnale del mercante.
+pt-BR  Cace o bandido que roubou a adaga do comerciante.
+ru     Выследите бандита, укравшего кинжал торговца.
+zh-CN  追捕偷走商人匕首的强盗。
+ja     商人の短剣を盗んだ盗賊を追い詰める。
+pl     Wytrop bandytę, który ukradł sztylet handlarza.
+
+========================================================================
+Canyon Bridge  (canyonBridge)
+
+[DESCRIPTION]
+en     Build a bridge across the canyon to connect with the forest tribe.
+de     Baue eine Brücke über den Canyon, um eine Verbindung zum Waldstamm herzustellen.
+es     Construye un puente sobre el cañón para conectar con la tribu del bosque.
+fr     Construisez un pont au-dessus du canyon pour rejoindre la tribu de la forêt.
+it     Costruisci un ponte sul canyon per collegarti alla tribù della foresta.
+pt-BR  Construa uma ponte sobre o cânion para se ligar à tribo da floresta.
+ru     Постройте мост через каньон, чтобы связаться с лесным племенем.
+zh-CN  在峡谷上建桥，与森林部族相连。
+ja     峡谷に橋を架け、森の部族とつながる。
+pl     Zbuduj most przez kanion, by połączyć się z plemieniem lasu.
+
+========================================================================
+Seek Mountain Lady  (searchMountainLady)
+
+[DESCRIPTION]
+en     Send an expedition to find the Mountain Lady.
+de     Schicke eine Expedition aus, um die Bergdame zu finden.
+es     Envía una expedición a buscar a la Dama de la Montaña.
+fr     Envoyez une expédition pour trouver la Dame de la Montagne.
+it     Invia una spedizione a cercare la Signora della Montagna.
+pt-BR  Envie uma expedição para encontrar a Senhora da Montanha.
+ru     Отправьте экспедицию на поиски Горной Госпожи.
+zh-CN  派出一支远征队去寻找山中女子。
+ja     山の女を探す遠征隊を送り出す。
+pl     Wyślij wyprawę, by odnaleźć Damę Gór.
+
+========================================================================
+Explore Mountain Village  (exploreMountainVillage)
+
+[DESCRIPTION]
+en     Make the long climb to the village high in the mountains.
+de     Wage den langen Aufstieg zum Dorf hoch in den Bergen.
+es     Emprende la larga subida hasta la aldea en lo alto de las montañas.
+fr     Entreprenez la longue ascension vers le village perché dans les montagnes.
+it     Affronta la lunga salita al villaggio in alto sulle montagne.
+pt-BR  Faça a longa subida até a aldeia no alto das montanhas.
+ru     Совершите долгий подъём к деревне высоко в горах.
+zh-CN  踏上漫长的登山之路，前往高山上的村庄。
+ja     長い登りを経て、山の高みにある村へ向かう。
+pl     Podejmij długą wspinaczkę do wioski wysoko w górach.
+
+========================================================================
+Wooden Cabin  (woodenCabin)
+
+[DESCRIPTION]
+en     Investigate the strange wooden cabin in the forest.
+de     Untersuche die seltsame Holzhütte im Wald.
+es     Investiga la extraña cabaña de madera en el bosque.
+fr     Enquêtez sur l'étrange cabane en bois dans la forêt.
+it     Ispeziona la strana capanna di legno nella foresta.
+pt-BR  Investigue a estranha cabana de madeira na floresta.
+ru     Исследуйте странную деревянную хижину в лесу.
+zh-CN  调查森林中那座古怪的木屋。
+ja     森にある奇妙な木の小屋を調べる。
+pl     Zbadaj dziwną drewnianą chatę w lesie.

@@ -6,6 +6,7 @@ import {
 } from "./loadLocaleResources";
 import { getEnUiCatalogString } from "./enUiCatalog";
 import {
+  getActionDescription,
   getActionLabel,
   getTooltipActionLabel,
   getActionLogMessage,
@@ -390,6 +391,23 @@ describe("i18n runtime", () => {
     expect(
       getActionLabel("chopWood", "Gather Wood", { forestUnlocked: true }),
     ).toBe("Holz hacken");
+  });
+
+  it("uses cave vs forest chopWood flavor descriptions", async () => {
+    await i18n.changeLanguage("en");
+    expect(
+      getActionDescription(
+        "chopWood",
+        "Collect fallen branches near the cave entrance.",
+      ),
+    ).toBe("Collect fallen branches near the cave entrance.");
+    expect(
+      getActionDescription(
+        "chopWood",
+        "Collect fallen branches near the cave entrance.",
+        { forestUnlocked: true },
+      ),
+    ).toBe("Fell trees at the forest edge for timber.");
   });
 
   it("resolves first attack wave combat intro text", async () => {

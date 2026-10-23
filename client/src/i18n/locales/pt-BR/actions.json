@@ -6,6 +6,7 @@
     "label": "Animais"
   },
   "banditLair": {
+    "description": "Cace o bandido que roubou a adaga do comerciante.",
     "label": "Covil do Bandido",
     "log": {
       "success": "Seu grupo rastreia o bandido até um covil em ruínas. Você o domina, recupera a adaga do mercador e encontra 250 Prata escondidas em meio à pilhagem.",
@@ -13,12 +14,14 @@
     }
   },
   "blackreachCanyon": {
+    "description": "Desça o Cânion Blackreach em busca de um corvo.",
     "label": "Cânion de Alcance Negro",
     "log": {
       "success": "Você se embrenha fundo no Cânion de Alcance Negro. Lá, pousado sobre um pilar de pedra, está um magnífico corvo caolho. Usando o arreio, você se aproxima com cuidado e cria um vínculo com a criatura. O Corvo Caolho juntou-se à sua irmandade."
     }
   },
   "blastPortal": {
+    "description": "Estilhace o portão antigo e liberte o que estiver selado lá dentro.",
     "label": "Explodir Portão",
     "log": {
       "complete": "As bombas de brasa detonam num clarão brilhante de fogo e luz. O portão antigo racha e desmorona. O que quer que estivesse selado ali dentro agora está livre."
@@ -276,12 +279,14 @@
     "label": "Cabana de Madeira"
   },
   "canyonBridge": {
+    "description": "Construa uma ponte sobre o cânion para se ligar à tribo da floresta.",
     "label": "Ponte do Cânion",
     "log": {
       "complete": "A ponte do cânion está completa. Os mercadores Espectro de Cinzas agora podem chegar ao seu assentamento, e você pode vender seus produtos para eles pelos preços combinados."
     }
   },
   "castleRuins": {
+    "description": "Invada o castelo do necromante morto há muito, no fundo da floresta.",
     "label": "Ruínas do Castelo",
     "log": {
       "success": "A expedição às ruínas do castelo do necromante morto é um sucesso! Bem no fundo, você encontra os pergaminhos antigos envoltos em seda escura, revelando conhecimento críptico sobre como derrotar o que estava trancado no fundo da caverna.",
@@ -290,7 +295,9 @@
     }
   },
   "chopWood": {
+    "description": "Colete galhos caídos perto da entrada da caverna.",
     "label": "Coletar Madeira",
+    "descriptionForest": "Derrube árvores na beira da floresta para obter madeira.",
     "labelForest": "Cortar Madeira",
     "log": {
       "firstVisit": "Um pouco de madeira está espalhada perto da entrada da caverna. Pode ser útil."
@@ -300,6 +307,7 @@
     "label": "Chamar Mercador"
   },
   "collapsedTower": {
+    "description": "Investigue a torre caída e acabe com o trabalho sombrio que ali se faz.",
     "label": "Torre Desmoronada",
     "log": {
       "success": "Dentro da torre, você encontra um necromante e seus seguidores, cercados por frascos de líquidos e seringas rudimentares. Ele estava colhendo o sangue dos aldeões para experimentos sombrios. Seus homens põem fim ao trabalho vil dele e tomam um frasco de seu sangue. Entre suas ferramentas, você encontra sua poderosa serra de osso.",
@@ -463,15 +471,18 @@
     "label": "Arco de Guerra"
   },
   "descendFurther": {
+    "description": "Desça os degraus gastos que levam aos níveis inferiores da caverna.",
     "label": "Descer Mais",
     "log": {
       "firstVisit": "Com a lanterna lançando um brilho constante, você desce ainda mais fundo. De repente, seus pés tocam degraus de pedra feitos pelo homem, desgastados pelo tempo."
     }
   },
   "encounterBeyondPortal": {
+    "description": "Passe pelo portão quebrado rumo ao que há além.",
     "label": "Aventurar-se além do Portão"
   },
   "exploreCave": {
+    "description": "Vasculhe a caverna à luz da tocha e junte o que puder encontrar.",
     "label": "Explorar Caverna",
     "log": {
       "debrisScroll": "Entre os escombros, você descobre um pergaminho desgastado pelo tempo contendo sabedoria para suportar este mundo implacável.",
@@ -480,24 +491,28 @@
     }
   },
   "exploreCitadel": {
+    "description": "Vasculhe a cidadela no coração da cidade subterrânea.",
     "label": "Explorar Cidadela",
     "log": {
       "firstVisit": "Na parte mais profunda da cidade, uma imensa cidadela se ergue diante de você. Seu tamanho sugere que abriga algo de grande poder, ou algo de grande perigo."
     }
   },
   "exploreRuins": {
+    "description": "Explore a cidade perdida que dorme na vasta caverna abaixo.",
     "label": "Explorar Ruínas",
     "log": {
       "firstVisit": "No fim da escadaria, uma vasta caverna se abre diante de você. Na escuridão jazem as ruínas de uma cidade perdida, os restos de uma civilização há muito desaparecida."
     }
   },
   "exploreTemple": {
+    "description": "Entre no templo subterrâneo que ainda se ergue entre as ruínas esquecidas.",
     "label": "Explorar Templo",
     "log": {
       "firstVisit": "Conforme você se aprofunda nas ruínas da cidade subterrânea, um grandioso templo emerge do chão da caverna, quase intacto, com sua sombra estendendo-se sobre os restos esquecidos da cidade."
     }
   },
   "exploreUndergroundLake": {
+    "description": "Atravesse as águas negras do lago subterrâneo até uma ilhota no centro.",
     "label": "Lago Subterrâneo",
     "log": {
       "complete": "Usando o brilho sombrio da lanterna de caveira, você desce até o lago subterrâneo e constrói um pequeno barco. Numa pequena ilha no meio do lago escuro, tesouros esquecidos jazem nas sombras, intocados por eras."
@@ -514,6 +529,7 @@
     }
   },
   "forestCave": {
+    "description": "Limpe a caverna das feras para salvar a tribo da caçadora.",
     "label": "Caverna da Floresta",
     "log": {
       "success": "Conforme os aldeões descem a caverna, cães selvagens irrompem da escuridão em matilhas implacáveis. Gritos ecoam enquanto garras rasgam e dentes estalam. Quando a última fera tomba, cada aldeão vive, e a tribo da caçadora está salva.",
@@ -527,12 +543,14 @@
     "label": "Curar Cavaleiro Inquieto"
   },
   "hiddenLibrary": {
+    "description": "Procure a biblioteca oculta nas profundezas da caverna.",
     "label": "Biblioteca Oculta",
     "log": {
       "complete": "O mapa do monastério o conduz fundo na caverna até a biblioteca oculta, onde você encontra um códice."
     }
   },
   "hillGrave": {
+    "description": "Entre na sepultura do outeiro e procure vidro-gelo na câmara funerária.",
     "label": "Túmulo da Colina",
     "log": {
       "success": "Sua expedição contorna com cuidado as armadilhas traiçoeiras do túmulo da colina. Os aldeões desarmam os antigos mecanismos e alcançam a câmara funerária. Entre os tesouros do rei, você descobre vidro-de-gelo puro, frio como o próprio vazio.",
@@ -543,12 +561,14 @@
     "label": "Humanos"
   },
   "hunt": {
+    "description": "Rastreie animais pela floresta escura.",
     "label": "Caçar",
     "log": {
       "mapFragmentHunt": "Durante a caçada, algo chama sua atenção na lama. Um pedaço manchado de água, talvez parte de um mapa."
     }
   },
   "woodenCabin": {
+    "description": "Investigue a estranha cabana de madeira na floresta.",
     "label": "Cabana de Madeira",
     "log": {
       "success": "A cabana pertence ao caçador que lhe vendeu carne. O matadouro está cheio de ganchos, e nenhum segurou um cervo. Ele caçava pessoas, e a comida que trocava era a carne delas. Na cabana você encontra o arco do mercador.",
@@ -566,6 +586,7 @@
     }
   },
   "layTrap": {
+    "description": "Arme um laço gigante para capturar uma grande fera.",
     "label": "Armar Armadilha",
     "log": {
       "trapSuccessNoDeaths": "A armadilha gigante funciona perfeitamente! Um enorme urso negro de olhos vermelhos brilhantes é capturado. Os aldeões abatem a fera sobrenatural e tomam seu pelo negro amaldiçoado como troféu.",
@@ -585,13 +606,15 @@
     }
   },
   "lowChamber": {
+    "description": "Desça de corda até uma câmara profunda, intocada há eras.",
     "label": "Câmara Inferior",
     "log": {
       "complete": "Usando a corda reforçada, você desce até a câmara inferior. Entre os tesouros, você encontra o cinzel de um mestre pedreiro, uma ferramenta de qualidade lendária."
     }
   },
   "lureLakeCreature": {
-    "label": "Posicionar Armadilha",
+    "description": "Isque uma armadilha na margem do lago subterrâneo e espere algo cair nela.",
+    "label": "Iscar Armadilha",
     "log": {
       "complete": "Você monta uma armadilha imensa à beira do lago subterrâneo, iscada com pilhas de carne. Horas se passam antes que as águas negras explodam, e um horror titânico e tentacular emerge das profundezas e rasteja para dentro da armadilha."
     }
@@ -642,6 +665,7 @@
     "label": "Mineração"
   },
   "occultistChamber": {
+    "description": "Siga o mapa do ocultista até a câmara onde seus segredos permanecem.",
     "label": "Câmara do Ocultista",
     "log": {
       "complete": "Seguindo o mapa do ocultista, você encontra a câmara que guarda seus tesouros. Entre eles está seu grimório, repleto de conhecimento proibido e segredos arcanos."
@@ -660,6 +684,7 @@
     "label": "Reparar Torre de Vigia"
   },
   "risingSmoke": {
+    "description": "Siga a fumaça que sobe até um acampamento de foras da lei.",
     "label": "Fumaça Subindo",
     "log": {
       "success": "Sua expedição encontra um acampamento de foras da lei. A luta é brutal, mas você vence. Num baú, você encontra 500 Ouro.",
@@ -679,12 +704,14 @@
     "label": "Vender Aço"
   },
   "steelDelivery": {
+    "description": "Entregue aço à tribo do pântano.",
     "label": "Entrega de Aço",
     "log": {
       "success": "Sua caravana entrega o aço à Tribo do Pântano conforme prometido. Em troca, a tribo lhe presenteia com Placas de Quitina colhidas de criaturas do pântano. Elas podem ser usadas para construir poderosas fortificações."
     }
   },
   "sunkenTemple": {
+    "description": "Atravesse o pântano até um templo antigo, meio submerso.",
     "label": "Templo Submerso",
     "log": {
       "success": "Sua expedição atravessa as águas do pântano para alcançar o antigo templo meio submerso. Apesar dos perigos à espreita nas águas escuras, os aldeões navegam com cuidado pelos salões submersos e encontram as gemas de pedra-de-sangue no santuário interno do templo.",
@@ -692,6 +719,7 @@
     }
   },
   "swampSanctuary": {
+    "description": "Encontre o santuário perdido marcado no mapa reconstituído do pântano.",
     "label": "Santuário do Pântano"
   },
   "tradeGoldForAdamant": {
@@ -740,6 +768,7 @@
     "label": "Comprar Ouro"
   },
   "ventureDeeper": {
+    "description": "Siga o caminho mais fundo na caverna, rumo às galerias além.",
     "label": "Avançar Mais Fundo",
     "log": {
       "tarnishedAmulet": "Nas sombras da caverna, algo reluz. Você encontra um Amuleto Manchado.",
@@ -766,9 +795,11 @@
     "label": "Jardim de ervas"
   },
   "exploreMountainVillage": {
+    "description": "Faça a longa subida até a aldeia no alto das montanhas.",
     "label": "Explorar o vilarejo da montanha"
   },
   "searchMountainLady": {
+    "description": "Envie uma expedição para encontrar a Senhora da Montanha.",
     "label": "Procurar a dama das montanhas"
   }
 }
