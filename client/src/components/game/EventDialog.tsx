@@ -424,7 +424,7 @@ function EventDialogOpen({
         >
           <DialogContent
             openClickLockKey={event.id}
-            className={`z-[60] gap-4 [--adc-dialog-max-w:28rem] [&>button]:hidden ${isMadnessEvent ? 'border-2 border-violet-600 shadow-2xl p-6  max-h-[19rem] flex flex-col overflow-visible' : ''}`}
+            className={`z-[60] gap-4 [--adc-dialog-max-w:28rem] [&>button]:hidden ${isMadnessEvent ? 'border-2 border-violet-600 shadow-2xl p-6 max-h-[90dvh] flex flex-col overflow-visible' : ''}`}
             style={isMadnessEvent ? chromeRuleColorStyle("#7c3aed") : undefined}
           >
             {isMadnessEvent && (
