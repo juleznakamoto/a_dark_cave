@@ -740,7 +740,7 @@ const STRANGER_APPROACH_BUILDINGS = [
  * - Buildings: Wooden Hut +1% each (max 10, 12 in cruel mode), Stone Hut +0.75% each (max 10, 12 in cruel mode),
  *   Longhouse +0.5% each (max 5), Fur Tent +0.5% each (max 5).
  *   Max from buildings: 22.5%.
- * - Blessings: ravens_mark +10%, ravens_mark_enhanced +15%. Both stack: 25%.
+ * - Blessings: ravens_mark +10%, ravens_mark_enhanced +15%, fresh_blood +5%. All stack: 30%.
  * - Low population: pop ≤ 3 is +40% (+20% cruel); pop ≤ 6 is +20% (+10% cruel);
  *   pop ≤ 8 is +10% (+5% cruel).
  *   See CRUEL_MODE.strangerApproach.lowPopBonusTiers.
@@ -751,7 +751,7 @@ const STRANGER_APPROACH_BUILDINGS = [
  * Total = lowPopulationBonus + fromBuildings + fromBlessings + fromEvents + fromGreatFeast + fromHeartfire.
  * Capped at 100%. Effective probability is 0 when at max population.
  *
- * Absolute maximum: 40 + 22.5 + 25 + 50 + 25 + 10 = 172.5% → 100% (cap).
+ * Absolute maximum: 40 + 22.5 + 30 + 50 + 25 + 10 = 177.5% → 100% (cap).
  */
 const HEARTFIRE_VILLAGER_BONUS: Record<number, number> = {
   1: 0.01,

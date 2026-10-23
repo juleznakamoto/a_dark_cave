@@ -318,7 +318,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   skeleton_key: {
     id: "skeleton_key",
     name: "Skeleton Key",
-    description: "A mysterious key said to open any lock",
+    description: "Mysterious key said to open any lock",
     bonuses: {
       actionBonuses: {},
     },
@@ -328,7 +328,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     id: "crow_harness",
     name: "Crow Harness",
     description:
-      "A specially crafted harness for catching crows. Can be used to catch a crow in Blackreach Canyon.",
+      "Specially crafted harness for catching crows. Can be used to catch a crow in Blackreach Canyon.",
     bonuses: {
       actionBonuses: {},
     },
@@ -954,7 +954,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   odd_trinket: {
     id: "odd_trinket",
     name: "Odd Elixir",
-    description: "A glowing amber elixir found while chopping wood",
+    description: "Glowing amber elixir found while chopping wood",
     bonuses: {
       generalBonuses: {
         luck: 2,
@@ -1072,7 +1072,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "lycan_blood",
     name: "Lycan Blood",
     description:
-      "A vial of thick blood from a Lycanthrope alpha. Its effects are unknown.",
+      "Vial of thick blood from a Lycanthrope alpha. Its effects are unknown.",
     bonuses: {
       generalBonuses: {},
     },
@@ -1082,7 +1082,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "necromancer_blood",
     name: "Necromancer Blood",
     description:
-      "A vial of dark blood harvested from a Necromancer. Its effects are unknown.",
+      "Vial of dark blood harvested from a Necromancer. Its effects are unknown.",
     bonuses: {
       generalBonuses: {},
     },
@@ -1092,7 +1092,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "bone_devourer_blood",
     name: "Devourer Blood",
     description:
-      "A vial of pale blood harvested from the Bone Devourer. Its effects are unknown.",
+      "Vial of pale blood harvested from the Bone Devourer. Its effects are unknown.",
     bonuses: {
       generalBonuses: {},
     },
@@ -1352,7 +1352,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "black_wood",
     name: "Black Timber",
     description:
-      "A slab of dense, light-drinking timber from the sanctuary tree.",
+      "Slab of dense, light-drinking timber from the sanctuary tree.",
     bonuses: {},
   },
 
@@ -1560,7 +1560,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "bell_blessing",
     name: "Bell Blessing",
     description:
-      "A mysterious bell mark on your forearm. Doubles Focus Points gained during Sleep.",
+      "Mysterious bell mark on your forearm. Doubles Focus Points gained during Sleep.",
     bonuses: {
       generalBonuses: {
         luck: 5,

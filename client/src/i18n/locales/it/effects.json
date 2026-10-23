@@ -39,7 +39,7 @@
       "name": "Profondo abbraccio di cenere"
     },
     "bell_blessing": {
-      "description": "Un misterioso marchio a forma di campana sull'avambraccio. Raddoppia i punti concentrazione ottenuti durante il sonno.",
+      "description": "Misterioso marchio a forma di campana sull'avambraccio. Raddoppia i punti concentrazione ottenuti durante il sonno.",
       "name": "Benedizione della campana"
     },
     "black_bear_fur": {
@@ -47,7 +47,7 @@
       "name": "Pelliccia di orso nero"
     },
     "black_wood": {
-      "description": "Una lastra di legno denso che assorbe la luce, ricavata dall'albero del santuario.",
+      "description": "Lastra di legno denso che assorbe la luce, ricavata dall'albero del santuario.",
       "name": "Legno nero"
     },
     "blackened_mirror": {
@@ -71,7 +71,7 @@
       "name": "Pietra di sangue"
     },
     "bone_devourer_blood": {
-      "description": "Una fiala di sangue pallido raccolto dal Divoratore d'ossa. I suoi effetti sono sconosciuti.",
+      "description": "Fiala di sangue pallido raccolto dal Divoratore d'ossa. I suoi effetti sono sconosciuti.",
       "name": "Sangue del divoratore"
     },
     "bone_dice": {
@@ -207,7 +207,7 @@
       "name": "Guanti del taglialegna"
     },
     "lycan_blood": {
-      "description": "Una fiala di sangue denso di un alfa licantropo. I suoi effetti sono sconosciuti.",
+      "description": "Fiala di sangue denso di un alfa licantropo. I suoi effetti sono sconosciuti.",
       "name": "Sangue di licantropo"
     },
     "map_fragment": {
@@ -223,7 +223,7 @@
       "name": "Amuleto borbottante"
     },
     "necromancer_blood": {
-      "description": "Una fiala di sangue oscuro prelevato da un negromante. I suoi effetti sono sconosciuti.",
+      "description": "Fiala di sangue oscuro prelevato da un negromante. I suoi effetti sono sconosciuti.",
       "name": "Sangue di negromante"
     },
     "nightshade_bow_schematic": {
@@ -243,7 +243,7 @@
       "name": "Grimorio dell'occultista"
     },
     "odd_trinket": {
-      "description": "Un elisir d'ambra luminoso trovato mentre tagliavi la legna",
+      "description": "Elisir d'ambra luminoso trovato mentre tagliavi la legna",
       "name": "Elisir bizzarro"
     },
     "ravenfeather_mantle": {
@@ -423,7 +423,7 @@
       "name": "Sega d'ossa"
     },
     "crow_harness": {
-      "description": "Un'imbragatura appositamente creata per catturare i corvi. Può essere usata per catturare un corvo nel Canyon di Nereforo.",
+      "description": "Imbragatura appositamente creata per catturare i corvi. Può essere usata per catturare un corvo nel Canyon di Nereforo.",
       "name": "Imbragatura del corvo"
     },
     "giant_trap": {
@@ -479,7 +479,7 @@
       "name": "Corda rinforzata"
     },
     "skeleton_key": {
-      "description": "Una misteriosa chiave che si dice apra qualsiasi serratura",
+      "description": "Misteriosa chiave che si dice apra qualsiasi serratura",
       "name": "Passe-partout"
     },
     "skull_lantern": {

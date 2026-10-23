@@ -39,7 +39,7 @@
       "name": "Deep Ashen Embrace"
     },
     "bell_blessing": {
-      "description": "A mysterious bell mark on your forearm. Doubles Focus Points gained during Sleep.",
+      "description": "Mysterious bell mark on your forearm. Doubles Focus Points gained during Sleep.",
       "name": "Bell Blessing"
     },
     "black_bear_fur": {
@@ -47,7 +47,7 @@
       "name": "Black Bear Fur"
     },
     "black_wood": {
-      "description": "A slab of dense, light-drinking timber from the sanctuary tree.",
+      "description": "Slab of dense, light-drinking timber from the sanctuary tree.",
       "name": "Black Timber"
     },
     "blackened_mirror": {
@@ -71,7 +71,7 @@
       "name": "Bloodstone"
     },
     "bone_devourer_blood": {
-      "description": "A vial of pale blood harvested from the Bone Devourer. Its effects are unknown.",
+      "description": "Vial of pale blood harvested from the Bone Devourer. Its effects are unknown.",
       "name": "Devourer Blood"
     },
     "bone_dice": {
@@ -207,7 +207,7 @@
       "name": "Logger's Gloves"
     },
     "lycan_blood": {
-      "description": "A vial of thick blood from a Lycanthrope alpha. Its effects are unknown.",
+      "description": "Vial of thick blood from a Lycanthrope alpha. Its effects are unknown.",
       "name": "Lycan Blood"
     },
     "map_fragment": {
@@ -223,7 +223,7 @@
       "name": "Muttering Amulet"
     },
     "necromancer_blood": {
-      "description": "A vial of dark blood harvested from a Necromancer. Its effects are unknown.",
+      "description": "Vial of dark blood harvested from a Necromancer. Its effects are unknown.",
       "name": "Necromancer Blood"
     },
     "nightshade_bow_schematic": {
@@ -243,7 +243,7 @@
       "name": "Occultist Grimoire"
     },
     "odd_trinket": {
-      "description": "A glowing amber elixir found while chopping wood",
+      "description": "Glowing amber elixir found while chopping wood",
       "name": "Odd Elixir"
     },
     "ravenfeather_mantle": {
@@ -423,7 +423,7 @@
       "name": "Bone Saw"
     },
     "crow_harness": {
-      "description": "A specially crafted harness for catching crows. Can be used to catch a crow in Blackreach Canyon.",
+      "description": "Specially crafted harness for catching crows. Can be used to catch a crow in Blackreach Canyon.",
       "name": "Crow Harness"
     },
     "giant_trap": {
@@ -479,7 +479,7 @@
       "name": "Reinforced Rope"
     },
     "skeleton_key": {
-      "description": "A mysterious key said to open any lock",
+      "description": "Mysterious key said to open any lock",
       "name": "Skeleton Key"
     },
     "skull_lantern": {

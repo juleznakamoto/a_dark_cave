@@ -39,7 +39,7 @@
       "name": "Étreinte cendreuse profonde"
     },
     "bell_blessing": {
-      "description": "Une mystérieuse marque de cloche sur votre avant-bras. Double les points de concentration gagnés pendant le sommeil.",
+      "description": "Mystérieuse marque de cloche sur votre avant-bras. Double les points de concentration gagnés pendant le sommeil.",
       "name": "Bénédiction de la cloche"
     },
     "black_bear_fur": {
@@ -47,7 +47,7 @@
       "name": "Fourrure d'ours noir"
     },
     "black_wood": {
-      "description": "Une pièce de bois dense qui boit la lumière, tirée de l'arbre du sanctuaire.",
+      "description": "Pièce de bois dense qui boit la lumière, tirée de l'arbre du sanctuaire.",
       "name": "Bois noir"
     },
     "blackened_mirror": {
@@ -71,7 +71,7 @@
       "name": "Pierre de sang"
     },
     "bone_devourer_blood": {
-      "description": "Une fiole de sang pâle prélevé sur le Dévoreur d'os. Ses effets sont inconnus.",
+      "description": "Fiole de sang pâle prélevé sur le Dévoreur d'os. Ses effets sont inconnus.",
       "name": "Sang du Dévoreur"
     },
     "bone_dice": {
@@ -207,7 +207,7 @@
       "name": "Gants de bûcheron"
     },
     "lycan_blood": {
-      "description": "Une fiole de sang épais provenant d'un lycanthrope alpha. Ses effets sont inconnus.",
+      "description": "Fiole de sang épais provenant d'un lycanthrope alpha. Ses effets sont inconnus.",
       "name": "Sang de lycan"
     },
     "map_fragment": {
@@ -223,7 +223,7 @@
       "name": "Amulette murmurante"
     },
     "necromancer_blood": {
-      "description": "Une fiole de sang sombre prélevé sur un nécromancien. Ses effets sont inconnus.",
+      "description": "Fiole de sang sombre prélevé sur un nécromancien. Ses effets sont inconnus.",
       "name": "Sang de nécromancien"
     },
     "nightshade_bow_schematic": {

@@ -39,7 +39,7 @@
       "name": "Abraço Profundo das Cinzas"
     },
     "bell_blessing": {
-      "description": "Uma misteriosa marca de sino no antebraço. Dobra os Pontos de Foco ganhos durante o Sono.",
+      "description": "Misteriosa marca de sino no antebraço. Dobra os Pontos de Foco ganhos durante o Sono.",
       "name": "Bênção do Sino"
     },
     "black_bear_fur": {
@@ -47,7 +47,7 @@
       "name": "Pele de Urso Negro"
     },
     "black_wood": {
-      "description": "Uma laje de madeira densa que bebe a luz, vinda da árvore do santuário.",
+      "description": "Laje de madeira densa que bebe a luz, vinda da árvore do santuário.",
       "name": "Madeira Negra"
     },
     "blackened_mirror": {
@@ -71,7 +71,7 @@
       "name": "Pedra-de-Sangue"
     },
     "bone_devourer_blood": {
-      "description": "Um frasco de sangue pálido colhido do Devorador de Ossos. Seus efeitos são desconhecidos.",
+      "description": "Frasco de sangue pálido colhido do Devorador de Ossos. Seus efeitos são desconhecidos.",
       "name": "Sangue do Devorador"
     },
     "bone_dice": {
@@ -207,7 +207,7 @@
       "name": "Luvas do Lenhador"
     },
     "lycan_blood": {
-      "description": "Um frasco de sangue espesso de um alfa licantropo. Seus efeitos são desconhecidos.",
+      "description": "Frasco de sangue espesso de um alfa licantropo. Seus efeitos são desconhecidos.",
       "name": "Sangue de Licantropo"
     },
     "map_fragment": {
@@ -223,7 +223,7 @@
       "name": "Amuleto Murmurante"
     },
     "necromancer_blood": {
-      "description": "Um frasco de sangue escuro colhido de um Necromante. Seus efeitos são desconhecidos.",
+      "description": "Frasco de sangue escuro colhido de um Necromante. Seus efeitos são desconhecidos.",
       "name": "Sangue de Necromante"
     },
     "nightshade_bow_schematic": {
@@ -243,7 +243,7 @@
       "name": "Grimório do Ocultista"
     },
     "odd_trinket": {
-      "description": "Um elixir âmbar reluzente encontrado ao cortar madeira",
+      "description": "Elixir âmbar reluzente encontrado ao cortar madeira",
       "name": "Elixir Estranho"
     },
     "ravenfeather_mantle": {
@@ -423,7 +423,7 @@
       "name": "Serra de Osso"
     },
     "crow_harness": {
-      "description": "Um arreio especialmente fabricado para capturar corvos. Pode ser usado para capturar um corvo no Cânion de Alcance Negro.",
+      "description": "Arreio especialmente fabricado para capturar corvos. Pode ser usado para capturar um corvo no Cânion de Alcance Negro.",
       "name": "Arreio de Corvo"
     },
     "giant_trap": {
@@ -479,7 +479,7 @@
       "name": "Corda Reforçada"
     },
     "skeleton_key": {
-      "description": "Uma chave misteriosa que dizem abrir qualquer fechadura",
+      "description": "Chave misteriosa que dizem abrir qualquer fechadura",
       "name": "Chave-Mestra"
     },
     "skull_lantern": {

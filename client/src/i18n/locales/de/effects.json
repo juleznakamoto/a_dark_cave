@@ -39,7 +39,7 @@
       "name": "Tiefe aschene Umarmung"
     },
     "bell_blessing": {
-      "description": "Ein rätselhaftes Glockenzeichen auf deinem Unterarm. Verdoppelt im Schlaf erhaltene Fokuspunkte.",
+      "description": "Rätselhaftes Glockenzeichen auf deinem Unterarm. Verdoppelt im Schlaf erhaltene Fokuspunkte.",
       "name": "Glockensegen"
     },
     "black_bear_fur": {
@@ -47,7 +47,7 @@
       "name": "Schwarzbärenfell"
     },
     "black_wood": {
-      "description": "Eine Platte aus dichtem, lichtschluckendem Holz vom Baum des Heiligtums.",
+      "description": "Platte aus dichtem, lichtschluckendem Holz vom Baum des Heiligtums.",
       "name": "Schwarzes Holz"
     },
     "blackened_mirror": {
@@ -71,7 +71,7 @@
       "name": "Blutstein"
     },
     "bone_devourer_blood": {
-      "description": "Eine Phiole blassen Blutes, gewonnen vom Knochenverschlinger. Seine Wirkung ist unbekannt.",
+      "description": "Phiole blassen Blutes, gewonnen vom Knochenverschlinger. Seine Wirkung ist unbekannt.",
       "name": "Verschlingerblut"
     },
     "bone_dice": {
@@ -207,7 +207,7 @@
       "name": "Holzfällerhandschuhe"
     },
     "lycan_blood": {
-      "description": "Eine Phiole dicken Blutes von einem Lykanthropen-Alpha. Seine Wirkung ist unbekannt.",
+      "description": "Phiole dicken Blutes von einem Lykanthropen-Alpha. Seine Wirkung ist unbekannt.",
       "name": "Lykanerblut"
     },
     "map_fragment": {
@@ -223,7 +223,7 @@
       "name": "Murmelndes Amulett"
     },
     "necromancer_blood": {
-      "description": "Eine Phiole dunklen Blutes, gewonnen von einem Nekromanten. Seine Wirkung ist unbekannt.",
+      "description": "Phiole dunklen Blutes, gewonnen von einem Nekromanten. Seine Wirkung ist unbekannt.",
       "name": "Nekromantenblut"
     },
     "nightshade_bow_schematic": {
@@ -423,7 +423,7 @@
       "name": "Knochensäge"
     },
     "crow_harness": {
-      "description": "Ein eigens gefertigtes Geschirr zum Fangen von Krähen. Kann genutzt werden, um eine Krähe in der Schwarzklamm zu fangen.",
+      "description": "Eigens gefertigtes Geschirr zum Fangen von Krähen. Kann genutzt werden, um eine Krähe in der Schwarzklamm zu fangen.",
       "name": "Krähengeschirr"
     },
     "giant_trap": {
@@ -479,7 +479,7 @@
       "name": "Verstärktes Seil"
     },
     "skeleton_key": {
-      "description": "Ein rätselhafter Schlüssel, von dem es heißt, er öffne jedes Schloss",
+      "description": "Rätselhafter Schlüssel, von dem es heißt, er öffne jedes Schloss",
       "name": "Skelettschlüssel"
     },
     "skull_lantern": {

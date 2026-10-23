@@ -39,7 +39,7 @@
       "name": "Abrazo ceniciento profundo"
     },
     "bell_blessing": {
-      "description": "Una misteriosa marca de campana en tu antebrazo. Duplica los puntos de concentración obtenidos durante el sueño.",
+      "description": "Misteriosa marca de campana en tu antebrazo. Duplica los puntos de concentración obtenidos durante el sueño.",
       "name": "Bendición de la campana"
     },
     "black_bear_fur": {
@@ -47,7 +47,7 @@
       "name": "Piel de oso negro"
     },
     "black_wood": {
-      "description": "Una losa de madera densa que devora la luz, tomada del árbol del santuario.",
+      "description": "Losa de madera densa que devora la luz, tomada del árbol del santuario.",
       "name": "Madera negra"
     },
     "blackened_mirror": {
@@ -71,7 +71,7 @@
       "name": "Piedra de sangre"
     },
     "bone_devourer_blood": {
-      "description": "Un vial de sangre pálida extraída del Devorador de Huesos. Sus efectos son desconocidos.",
+      "description": "Vial de sangre pálida extraída del Devorador de Huesos. Sus efectos son desconocidos.",
       "name": "Sangre de devorador"
     },
     "bone_dice": {
@@ -207,7 +207,7 @@
       "name": "Guantes de leñador"
     },
     "lycan_blood": {
-      "description": "Un vial de sangre espesa de un licántropo alfa. Sus efectos son desconocidos.",
+      "description": "Vial de sangre espesa de un licántropo alfa. Sus efectos son desconocidos.",
       "name": "Sangre de licántropo"
     },
     "map_fragment": {
@@ -223,7 +223,7 @@
       "name": "Amuleto murmurante"
     },
     "necromancer_blood": {
-      "description": "Un vial de sangre oscura extraída de un nigromante. Sus efectos son desconocidos.",
+      "description": "Vial de sangre oscura extraída de un nigromante. Sus efectos son desconocidos.",
       "name": "Sangre de nigromante"
     },
     "nightshade_bow_schematic": {
