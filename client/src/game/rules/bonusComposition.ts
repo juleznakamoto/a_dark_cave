@@ -37,6 +37,7 @@ import {
   getGreyOneHuntBonusPercent,
 } from "./skillUpgrades";
 import { villageBuildActions } from "./villageBuildActions";
+import { listClaimedAchievementBonusContributions } from "@/achievements/achievementBonuses";
 
 /** One contributing source in a side-panel bonus tooltip. */
 export type BonusCompositionLine = {
@@ -247,6 +248,18 @@ function getCraftingCostReductionComposition(
     }
   }
 
+  for (const row of listClaimedAchievementBonusContributions(
+    state.claimedAchievements,
+  )) {
+    const reduction = row.bonuses.craftingCostReduction;
+    if (!reduction) continue;
+    pushLine(lines, {
+      sourceId: row.achievementId,
+      sourceLabel: row.sourceLabel,
+      percent: formatPercentPoints(reduction * 100),
+    });
+  }
+
   return lines;
 }
 
@@ -290,6 +303,18 @@ function getBuildingCostReductionComposition(
         ? getBuildingSourceLabel(buildingKey)
         : tWithFallback("ui", "sidePanel.buildDiscount", "Build Discount"),
       percent: formatPercentPoints(builderReduction * 100),
+    });
+  }
+
+  for (const row of listClaimedAchievementBonusContributions(
+    state.claimedAchievements,
+  )) {
+    const reduction = row.bonuses.buildingCostReduction;
+    if (!reduction) continue;
+    pushLine(lines, {
+      sourceId: row.achievementId,
+      sourceLabel: row.sourceLabel,
+      percent: formatPercentPoints(reduction * 100),
     });
   }
 

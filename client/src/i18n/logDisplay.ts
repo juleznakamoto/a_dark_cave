@@ -18,7 +18,10 @@ import {
   START_NARRATIVE_LOG_KEY,
   tWithFallback,
 } from "@/i18n/resolveGameText";
-import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
+import {
+  formatTooltipResourceName,
+  getUiTooltip,
+} from "@/i18n/tooltipLabels";
 import { formatThousandsInLogText } from "@/lib/utils";
 import { resolveEventMessage } from "@/i18n/eventText";
 import enEvents from "@/i18n/locales/en/events.json";
@@ -58,10 +61,37 @@ function rebuildRewardTextFromLogVars(vars?: LogVars): string {
     }
   }
   const entries = Object.entries(rewards).filter(([, amount]) => amount > 0);
-  if (entries.length === 0) return "";
-  return entries
+  const resourceText = entries
     .map(([key, amount]) => `+${amount} ${formatTooltipResourceName(key)}`)
     .join(", ");
+  const parts = [resourceText].filter(Boolean);
+  const strangerPercent = Number(vars.bonus_strangerApproachPercent);
+  if (strangerPercent > 0) {
+    parts.push(
+      getUiTooltip(
+        "buildings.newVillagerChancePercent",
+        "+{{percent}}% New Villager Chance",
+        { percent: strangerPercent },
+      ),
+    );
+  }
+  const craftPercent = Number(vars.bonus_craftingCostPercent);
+  if (craftPercent > 0) {
+    parts.push(
+      getUiTooltip("buildings.craftDiscount", "{{percent}}% Craft Discount", {
+        percent: craftPercent,
+      }),
+    );
+  }
+  const buildPercent = Number(vars.bonus_buildingCostPercent);
+  if (buildPercent > 0) {
+    parts.push(
+      getUiTooltip("buildings.buildDiscount", "{{percent}}% Build Discount", {
+        percent: buildPercent,
+      }),
+    );
+  }
+  return parts.join(", ");
 }
 
 function expandUiCatalogLogVars(

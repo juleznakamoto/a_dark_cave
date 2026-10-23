@@ -34,6 +34,7 @@ import {
 import {
   INDICATOR_CLASS_INCOMPLETE,
   INDICATOR_CLASS_COMPLETE,
+  INDICATOR_CLASS_CLAIMABLE,
   CLAIM_BUTTON_CLASS,
   CLAIM_BUTTON_CHROME_COLOR,
   COMPLETE_ICON_COLOR,
@@ -194,6 +195,7 @@ function AchievementRowComponent({
   row,
   indicatorClassIncomplete,
   indicatorClassComplete,
+  indicatorClassClaimable,
   claimButtonClass,
   claimChromeColor,
   claimGlowColor,
@@ -203,6 +205,7 @@ function AchievementRowComponent({
   row: AchievementRow;
   indicatorClassIncomplete: string;
   indicatorClassComplete: string;
+  indicatorClassClaimable: string;
   claimButtonClass: string;
   claimChromeColor: string;
   claimGlowColor: string;
@@ -219,7 +222,7 @@ function AchievementRowComponent({
   );
   const isRevealAnimating = typeof insightRevealEnd === "number";
   const canClaim = !forceRedacted && row.isFull && !row.isClaimed;
-  const tooltipText = canClaim ? formatRewardsTooltip(row.rewards) : "";
+  const rewardLineText = formatRewardsTooltip(row.rewards, row.bonuses);
   const isTitleVisible =
     !forceRedacted &&
     isAchievementTitleVisible(
@@ -229,7 +232,7 @@ function AchievementRowComponent({
     ) &&
     !isRevealAnimating;
   const progressLabel = `${Math.min(Math.floor(row.currentCount), row.maxCount)}/${row.maxCount}`;
-  const mutedSuffix =
+  const progressOrDetail =
     row.maxCount > 1 ? progressLabel : row.detailLabel;
   const description = t(
     `achievements:${row.chartPrefix}.${row.segmentId}.description`,
@@ -243,6 +246,7 @@ function AchievementRowComponent({
         fallbackName: row.englishLabel,
         reward: row.reward,
         rewards: row.rewards,
+        bonuses: row.bonuses,
         maxCount: row.maxCount,
       });
     }
@@ -251,52 +255,33 @@ function AchievementRowComponent({
   return (
     <div className="min-w-0 space-y-2 py-2">
       <div className="flex min-h-5 min-w-0 items-start justify-between gap-2">
-        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-          <div className="flex items-center gap-1 min-w-0">
-            {isTitleVisible ? (
-              <span className="text-xs font-medium text-foreground truncate">
-                {row.label}
-                {mutedSuffix && (
-                  <>
-                    {" "}
-                    <span className="text-muted-foreground font-normal">
-                      {mutedSuffix}
-                    </span>
-                  </>
-                )}
+        <div className="flex min-w-0 flex-1 items-center gap-1">
+          {isTitleVisible ? (
+            <span className="text-xs font-medium text-foreground truncate">
+              {row.label}
+            </span>
+          ) : forceRedacted || catalogActive ? (
+            <RedactedLockedHint
+              label={row.label}
+              tooltipId={`achievement-title-redacted-${row.achievementId}`}
+            />
+          ) : (
+            <>
+              <span
+                className="text-xs font-medium text-foreground shrink-0 leading-none"
+                aria-hidden
+              >
+                ❔
               </span>
-            ) : forceRedacted || catalogActive ? (
-              <RedactedLockedHint
-                label={row.label}
-                tooltipId={`achievement-title-redacted-${row.achievementId}`}
+              <AchievementTitleInsightBadge
+                achievementId={row.achievementId}
+                currentCount={row.currentCount}
               />
-            ) : (
-              <>
-                <span
-                  className="text-xs font-medium text-foreground shrink-0 leading-none"
-                  aria-hidden
-                >
-                  ❔
-                </span>
-                <AchievementTitleInsightBadge
-                  achievementId={row.achievementId}
-                  currentCount={row.currentCount}
-                />
-              </>
-            )}
-          </div>
-          {isTitleVisible && description ? (
-            <p className="text-xs leading-snug text-muted-foreground">
-              {description}
-            </p>
-          ) : redactedWidthCh > 0 ? (
-            <p className="flex h-4 min-w-0 max-w-full items-center" aria-hidden>
-              <RedactedBar widthCh={redactedWidthCh} />
-            </p>
-          ) : null}
+            </>
+          )}
         </div>
         {canClaim && (
-          <div className="mr-2.5 h-5 flex items-center shrink-0">
+          <div className="h-5 flex items-center shrink-0 pr-1">
             <GameButton
               variant="outline"
               size="xs"
@@ -308,14 +293,33 @@ function AchievementRowComponent({
               } as CSSProperties}
               onClick={handleClaim}
               button_id={`achievement-claim-${row.achievementId}`}
-              tooltip={tooltipText}
-              tooltipId={`achievement-claim-${row.achievementId}`}
             >
               {t("achievements.claim")}
             </GameButton>
           </div>
         )}
       </div>
+      {isTitleVisible ? (
+        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2">
+          <p className="min-w-0 truncate text-xs leading-snug text-muted-foreground">
+            {description}
+          </p>
+          <span className="shrink-0 text-center text-xs text-muted-foreground">
+            {!forceRedacted && progressOrDetail ? progressOrDetail : ""}
+          </span>
+          <span
+            className={`min-w-0 truncate text-right text-xs pr-1 ${
+              canClaim ? "text-foreground" : "text-muted-foreground"
+            }`}
+          >
+            {!forceRedacted && rewardLineText ? rewardLineText : ""}
+          </span>
+        </div>
+      ) : redactedWidthCh > 0 ? (
+        <p className="flex h-4 min-w-0 max-w-full items-center" aria-hidden>
+          <RedactedBar widthCh={redactedWidthCh} />
+        </p>
+      ) : null}
       <SegmentedProgress
         className="min-w-0 w-full"
         // Clamp: gathering totals (e.g. leather) keep rising past maxCount.
@@ -335,7 +339,11 @@ function AchievementRowComponent({
         animate={false}
         showRim={false}
         filledClassName={
-          row.isFull ? indicatorClassComplete : indicatorClassIncomplete
+          canClaim
+            ? indicatorClassClaimable
+            : row.isFull
+              ? indicatorClassComplete
+              : indicatorClassIncomplete
         }
         emptyClassName={PROGRESS_BAR_BG_CLASS}
         segmentClassName="h-1.5"
@@ -367,6 +375,8 @@ function AchievementTabContent({
   );
   const indicatorClassIncomplete = INDICATOR_CLASS_INCOMPLETE[config.idPrefix] ?? "bg-red-500/60";
   const indicatorClassComplete = INDICATOR_CLASS_COMPLETE[config.idPrefix] ?? "bg-red-800";
+  const indicatorClassClaimable =
+    INDICATOR_CLASS_CLAIMABLE[config.idPrefix] ?? INDICATOR_CLASS_CLAIMABLE.item;
   const claimButtonClass = CLAIM_BUTTON_CLASS[config.idPrefix] ?? CLAIM_BUTTON_CLASS.item;
   const claimChromeColor =
     CLAIM_BUTTON_CHROME_COLOR[config.idPrefix] ?? CLAIM_BUTTON_CHROME_COLOR.item;
@@ -403,6 +413,7 @@ function AchievementTabContent({
               row={row}
               indicatorClassIncomplete={indicatorClassIncomplete}
               indicatorClassComplete={indicatorClassComplete}
+              indicatorClassClaimable={indicatorClassClaimable}
               claimButtonClass={claimButtonClass}
               claimChromeColor={claimChromeColor}
               claimGlowColor={claimGlowColor}

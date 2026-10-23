@@ -168,7 +168,7 @@ export const CSS_EFFECT_DEMOS: CssEffectDemo[] = [
   },
   {
     id: "timer-progress-pulse",
-    label: "Timed event time bar (last 5s)",
+    label: "Timed dialog time bar (last 5s, red + violet)",
     className: "timer-progress-pulse",
     mode: "loop",
     sample: "Time",

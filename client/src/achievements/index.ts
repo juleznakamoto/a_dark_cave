@@ -48,7 +48,11 @@ export {
 };
 
 // Re-export types
-export type { AchievementChartConfig, AchievementSegment } from "./achievementTypes";
+export type {
+  AchievementBonuses,
+  AchievementChartConfig,
+  AchievementSegment,
+} from "./achievementTypes";
 
 export {
   filterWebOnlyAchievements,
@@ -60,6 +64,7 @@ export {
 export {
   INDICATOR_CLASS_INCOMPLETE,
   INDICATOR_CLASS_COMPLETE,
+  INDICATOR_CLASS_CLAIMABLE,
   CLAIM_BUTTON_CLASS,
   CLAIM_BUTTON_CHROME_COLOR,
   INCOMPLETE_COLOR,

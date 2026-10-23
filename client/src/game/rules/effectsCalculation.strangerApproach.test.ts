@@ -29,6 +29,9 @@ function createMockState(overrides?: Partial<GameState>): GameState {
       ...overrides.greatFeastState,
     };
   }
+  if (overrides?.claimedAchievements) {
+    merged.claimedAchievements = [...overrides.claimedAchievements];
+  }
   return merged;
 }
 
@@ -207,7 +210,8 @@ describe("getStrangerApproachProbability", () => {
       result.fromBlessings +
       result.fromEvents +
       result.fromGreatFeast +
-      result.fromHeartfire;
+      result.fromHeartfire +
+      result.fromAchievements;
     expect(result.rawChance).toBe(breakdownSum); // tooltip main number matches breakdown
     expect(result.fromBuildings).toBe(0.01); // 1 wooden hut +1%
   });
@@ -229,8 +233,20 @@ describe("getStrangerApproachProbability", () => {
       result.fromBlessings +
       result.fromEvents +
       result.fromGreatFeast +
-      result.fromHeartfire;
+      result.fromHeartfire +
+      result.fromAchievements;
     expect(result.probability).toBe(Math.min(1, preCap));
+  });
+
+  it("should add fromAchievements when Build Community is claimed", () => {
+    const state = createMockState({
+      villagers: { ...createInitialState().villagers, free: 9 },
+      buildings: { ...createInitialState().buildings, woodenHut: 5 },
+      claimedAchievements: ["basic-1-communityBuilder"],
+    });
+    const result = getStrangerApproachProbability(state);
+    expect(result.fromAchievements).toBe(0.01);
+    expect(result.probability).toBeCloseTo(0.05 + 0.01);
   });
 
   it("should add fromGreatFeast when a Great Feast is active", () => {

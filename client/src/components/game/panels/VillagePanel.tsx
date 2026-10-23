@@ -305,6 +305,7 @@ function VillageProductionCycleIndicator({
           fromEvents,
           fromGreatFeast,
           fromHeartfire,
+          fromAchievements,
         } = getStrangerApproachProbability(state);
         const chancePct = Math.round(rawChance * 100);
         return (
@@ -360,6 +361,14 @@ function VillageProductionCycleIndicator({
               <div className="text-gray-400/70">
                 {t("village.fromHeartfire", {
                   percent: Math.round(fromHeartfire * 100),
+                })}
+              </div>
+            )}
+            {fromAchievements > 0 && (
+              <div className="text-gray-400/70">
+                {t("village.fromAchievements", {
+                  percent: Math.round(fromAchievements * 100),
+                  defaultValue: "{{percent}}% from Achievements",
                 })}
               </div>
             )}

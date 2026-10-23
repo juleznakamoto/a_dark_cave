@@ -22,7 +22,6 @@ import {
   gameActionOutlineButtonClassName,
 } from "@/components/CooldownButton";
 import { cn } from "@/lib/utils";
-import { Progress } from "@/components/ui/progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import CubeDialog from "./CubeDialog";
 import VillageEffectDialog from "./VillageEffectDialog";
@@ -50,8 +49,11 @@ import {
 } from "@/components/game/EventChoiceSuccessTooltip";
 import { shouldDismissEventWithoutApplying } from "@/game/demoLimit";
 import {
+  getTimedDialogTimeBarFillStyle,
   shouldPulseTimedEventTimeBar,
+  TIMED_DIALOG_TIME_BAR_PAUSED_CLASS,
   TIMED_EVENT_TIME_BAR_PULSE_CLASS,
+  TIMED_EVENT_TIME_BAR_PULSE_MS,
 } from "@/game/timedEventTimeBar";
 import { madnessEvents } from "@/game/rules/eventsMadness";
 import { resolveVillageEffectAnnouncementTheme } from "@/game/villageEffectThemes";
@@ -84,10 +86,15 @@ function EventDialogOpen({
   const gameState = useGameStoreWithoutTickClock() as unknown as GameState;
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [totalTime, setTotalTime] = useState<number>(0);
+  const [timeBarWipeStartMs, setTimeBarWipeStartMs] = useState(0);
+  const [timeBarWipeRevision, setTimeBarWipeRevision] = useState(0);
+  const [timeBarPaused, setTimeBarPaused] = useState(false);
   const startTimeRef = useRef<number>(0);
+  const decisionTimeSecRef = useRef<number>(0);
   const fallbackExecutedRef = useRef(false);
   const pauseStartRef = useRef<number>(0);
   const totalPausedMsRef = useRef<number>(0);
+  const wasTimeBarPausedRef = useRef(false);
 
   // Loop under normal + madness EventDialog after the open sting (cube has its own bed).
   useEffect(() => {
@@ -138,11 +145,13 @@ function EventDialogOpen({
     }
   }, [isOpen, event?.id]);
 
-  // Initialize timer for timed choices
+  // Timed choice: CSS wipe for the bar; coarse poll only for pause / urgency / expiry.
   useEffect(() => {
     if (!event || !event.isTimedChoice || !isOpen) {
       setTimeRemaining(null);
       setTotalTime(0);
+      setTimeBarPaused(false);
+      setTimeBarWipeRevision(0);
       fallbackExecutedRef.current = false;
       return;
     }
@@ -155,10 +164,37 @@ function EventDialogOpen({
 
     setTotalTime(decisionTime);
     setTimeRemaining(Math.max(0, decisionTime - alreadyElapsed));
+    setTimeBarWipeStartMs(openedAt);
+    setTimeBarPaused(false);
+    setTimeBarWipeRevision(0);
     startTimeRef.current = openedAt;
+    decisionTimeSecRef.current = decisionTime;
     fallbackExecutedRef.current = false;
     pauseStartRef.current = 0;
     totalPausedMsRef.current = 0;
+    wasTimeBarPausedRef.current = false;
+
+    const activeElapsedMs = () =>
+      Math.max(
+        0,
+        Date.now() - startTimeRef.current - totalPausedMsRef.current,
+      );
+
+    const remountWipeAtActiveElapsed = () => {
+      const elapsedMs = activeElapsedMs();
+      const nextStart = Date.now() - elapsedMs;
+      startTimeRef.current = nextStart;
+      totalPausedMsRef.current = 0;
+      setTimeBarWipeStartMs(nextStart);
+      setTimeBarWipeRevision((n) => n + 1);
+    };
+
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible" && !useGameStore.getState().isPaused) {
+        remountWipeAtActiveElapsed();
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
     const interval = setInterval(() => {
       if (fallbackExecutedRef.current) {
@@ -170,16 +206,39 @@ function EventDialogOpen({
         if (pauseStartRef.current === 0) {
           pauseStartRef.current = Date.now();
         }
+        if (!wasTimeBarPausedRef.current) {
+          wasTimeBarPausedRef.current = true;
+          setTimeBarPaused(true);
+        }
         return;
-      } else if (pauseStartRef.current > 0) {
+      }
+
+      if (pauseStartRef.current > 0) {
         totalPausedMsRef.current += Date.now() - pauseStartRef.current;
         pauseStartRef.current = 0;
       }
+      if (wasTimeBarPausedRef.current) {
+        wasTimeBarPausedRef.current = false;
+        setTimeBarPaused(false);
+        remountWipeAtActiveElapsed();
+      }
 
-      const elapsed = (Date.now() - startTimeRef.current - totalPausedMsRef.current) / 1000;
-      const remaining = Math.max(0, decisionTime - elapsed);
+      const remaining = Math.max(
+        0,
+        decisionTimeSecRef.current - activeElapsedMs() / 1000,
+      );
 
-      setTimeRemaining(remaining);
+      setTimeRemaining((prev) => {
+        if (prev === null) return remaining;
+        const wasUrgent = shouldPulseTimedEventTimeBar(prev * 1000);
+        const isUrgent = shouldPulseTimedEventTimeBar(remaining * 1000);
+        // Avoid 10 Hz re-renders while the CSS wipe runs; only publish when
+        // urgency flips or the timer hits zero.
+        if (wasUrgent === isUrgent && !(prev > 0 && remaining <= 0)) {
+          return prev;
+        }
+        return remaining;
+      });
 
       if (remaining <= 0 && !fallbackExecutedRef.current) {
         fallbackExecutedRef.current = true;
@@ -188,10 +247,8 @@ function EventDialogOpen({
         const eventId = event.id.split("-")[0];
 
         if (event.fallbackChoice) {
-          // Use defined fallback choice
           applyEventChoice(event.fallbackChoice.id, eventId);
         } else if (eventChoices.length > 0) {
-          // No fallback defined, choose randomly from available choices
           const randomChoice =
             eventChoices[Math.floor(Math.random() * eventChoices.length)];
           applyEventChoice(randomChoice.id, eventId);
@@ -199,10 +256,11 @@ function EventDialogOpen({
 
         onClose();
       }
-    }, 100);
+    }, 250);
 
     return () => {
       clearInterval(interval);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       fallbackExecutedRef.current = false;
     };
   }, [event?.id, event?.isTimedChoice, event?.baseDecisionTime, isOpen, eventChoices]); // Added eventChoices dependency
@@ -286,13 +344,26 @@ function EventDialogOpen({
     onClose();
   };
 
-  const progress =
-    event.isTimedChoice && timeRemaining !== null && totalTime > 0
-      ? ((totalTime - timeRemaining) / totalTime) * 100
-      : 0;
   const timeBarUrgent =
     timeRemaining !== null &&
     shouldPulseTimedEventTimeBar(timeRemaining * 1000);
+
+  const timeBarWipe = useMemo(() => {
+    if (!event.isTimedChoice || totalTime <= 0 || timeBarWipeStartMs <= 0) {
+      return null;
+    }
+    return getTimedDialogTimeBarFillStyle({
+      startMs: timeBarWipeStartMs,
+      durationMs: totalTime * 1000,
+    });
+    // timeBarWipeRevision forces a remount seek after pause / tab focus.
+    // Do not depend on ticking timeRemaining — rewriting delay restarts Chromium.
+  }, [
+    event.isTimedChoice,
+    timeBarWipeRevision,
+    timeBarWipeStartMs,
+    totalTime,
+  ]);
 
   const isCubeEvent = event?.id?.startsWith("cube");
   const isMerchantEvent = Boolean(event?.id?.includes("merchant"));
@@ -560,23 +631,33 @@ function EventDialogOpen({
               })}
             </div>
 
-            {/* Timer bar for timed events */}
-            {event.isTimedChoice && timeRemaining !== null && (
+            {/* Timer bar for timed events (CSS wipe; color only differs for madness) */}
+            {event.isTimedChoice && timeRemaining !== null && timeBarWipeStartMs > 0 && timeBarWipe && (
               <div className="mt-1 mb-2 space-y-1">
-                <div className="flex justify-between text-sm text-muted-foreground">
-                </div>
-                <Progress
-                  value={progress}
+                <div
                   className={cn(
-                    "h-2 timer-progress",
+                    "relative h-2 w-full overflow-hidden rounded-full bg-neutral-900 timer-progress",
                     timeBarUrgent && TIMED_EVENT_TIME_BAR_PULSE_CLASS,
                   )}
-                  disableGlow
-                  indicatorClassName={
-                    isMadnessEvent ? "bg-violet-700" : undefined
-                  }
                   data-testid="timed-dialog-time-bar"
-                />
+                >
+                  <div
+                    key={`timed-dialog-wipe-${timeBarWipeRevision}-${timeBarWipeStartMs}`}
+                    className={cn(
+                      timeBarWipe.className,
+                      timeBarPaused && TIMED_DIALOG_TIME_BAR_PAUSED_CLASS,
+                    )}
+                    style={timeBarWipe.style}
+                    aria-hidden
+                  >
+                    <div
+                      className={cn(
+                        "h-full w-full rounded-full",
+                        isMadnessEvent ? "bg-violet-700" : "bg-red-950",
+                      )}
+                    />
+                  </div>
+                </div>
               </div>
             )}
           </DialogContent>

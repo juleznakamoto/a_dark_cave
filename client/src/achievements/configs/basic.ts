@@ -81,7 +81,8 @@ export const basicChartConfig: AchievementChartConfig = {
         segmentId: "1-toolCrafter",
         maxCount: 5,
         label: "Craft Tools",
-        rewards: { stone: 100 },
+        rewards: {},
+        bonuses: { craftingCostReduction: 0.025 },
         getCount: (state: GameState) => {
           const tools = state.tools || {};
           return TOOL_KEYS_FOR_ACHIEVEMENT.filter(
@@ -93,7 +94,8 @@ export const basicChartConfig: AchievementChartConfig = {
         segmentId: "1-builder",
         maxCount: 5,
         label: "Construct Buildings",
-        rewards: { wood: 250 },
+        rewards: {},
+        bonuses: { buildingCostReduction: 0.025 },
         getCount: (state: GameState) =>
           Object.values(state.buildings || {}).reduce(
             (a, b) => a + (b || 0),
@@ -104,7 +106,8 @@ export const basicChartConfig: AchievementChartConfig = {
         segmentId: "1-communityBuilder",
         maxCount: 10,
         label: "Build Community",
-        rewards: { food: 250 },
+        rewards: {},
+        bonuses: { strangerApproachBonus: 0.01 },
         getCount: (state: GameState) =>
           Number(state.story?.seen?.maxPopulationReached) || 0,
       },

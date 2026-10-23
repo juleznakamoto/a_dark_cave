@@ -69,6 +69,15 @@ export const INDICATOR_CLASS_COMPLETE: Record<string, string> = {
   overall: ACHIEVEMENT_COLORS.overall.complete,
 };
 
+/** Full but unclaimed: brighter bar, matches claim button / center icon intensity. */
+export const INDICATOR_CLASS_CLAIMABLE: Record<string, string> = {
+  building: ACHIEVEMENT_COLORS.building.completeIcon,
+  item: ACHIEVEMENT_COLORS.item.completeIcon,
+  action: ACHIEVEMENT_COLORS.action.completeIcon,
+  basic: ACHIEVEMENT_COLORS.basic.completeIcon,
+  overall: ACHIEVEMENT_COLORS.overall.completeIcon,
+};
+
 /** Claim button styling per tab (matches bar color). */
 export const CLAIM_BUTTON_CLASS: Record<string, string> = {
   building:

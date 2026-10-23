@@ -30,6 +30,11 @@ import {
   getBuilderBuildTimeReduction,
   getBuilderLevel,
 } from "@/game/constructionQueueSlots";
+import {
+  getClaimedAchievementBuildingCostReduction,
+  getClaimedAchievementCraftingCostReduction,
+  getClaimedAchievementStrangerApproachBonus,
+} from "@/achievements/achievementBonuses";
 // Tool hierarchy definitions
 export const AXE_HIERARCHY = [
   "stone_axe",
@@ -747,11 +752,12 @@ const STRANGER_APPROACH_BUILDINGS = [
  * - Events: Solstice active +50%.
  * - Great Feast: +25% while active.
  * - Heartfire: Level 1 +1%, 2 +2.5%, 3 +5%, 4 +7.5%, 5 +10%.
+ * - Achievements: Build Community (claimed) +1%.
  *
- * Total = lowPopulationBonus + fromBuildings + fromBlessings + fromEvents + fromGreatFeast + fromHeartfire.
+ * Total = lowPopulationBonus + fromBuildings + fromBlessings + fromEvents + fromGreatFeast + fromHeartfire + fromAchievements.
  * Capped at 100%. Effective probability is 0 when at max population.
  *
- * Absolute maximum: 40 + 22.5 + 30 + 50 + 25 + 10 = 177.5% → 100% (cap).
+ * Absolute maximum: 40 + 22.5 + 30 + 50 + 25 + 10 + 1 = 178.5% → 100% (cap).
  */
 const HEARTFIRE_VILLAGER_BONUS: Record<number, number> = {
   1: 0.01,
@@ -774,6 +780,7 @@ export function getStrangerApproachProbability(state: GameState): {
   fromEvents: number;
   fromGreatFeast: number;
   fromHeartfire: number;
+  fromAchievements: number;
 } {
   const currentPopulation = getCurrentPopulation(state);
   const maxPopulation = getMaxPopulation(state);
@@ -826,6 +833,8 @@ export function getStrangerApproachProbability(state: GameState): {
   const heartfireLevel = state.heartfireState?.level || 0;
   const fromHeartfire = HEARTFIRE_VILLAGER_BONUS[heartfireLevel] ?? 0;
 
+  const fromAchievements = getClaimedAchievementStrangerApproachBonus(state);
+
   const rawChance = Math.min(
     1,
     lowPopulationBonus +
@@ -833,7 +842,8 @@ export function getStrangerApproachProbability(state: GameState): {
     fromBlessings +
     fromEvents +
     fromGreatFeast +
-    fromHeartfire,
+    fromHeartfire +
+    fromAchievements,
   );
   const probability = atCapacity ? 0 : rawChance;
 
@@ -846,6 +856,7 @@ export function getStrangerApproachProbability(state: GameState): {
     fromEvents,
     fromGreatFeast,
     fromHeartfire,
+    fromAchievements,
     atCapacity,
   };
 }
@@ -964,6 +975,8 @@ export const getTotalCraftingCostReduction = (state: GameState): number => {
     }
   }
 
+  reduction += getClaimedAchievementCraftingCostReduction(state);
+
   return reduction;
 };
 
@@ -1001,6 +1014,7 @@ export const getTotalBuildingCostReduction = (state: GameState): number => {
   }
 
   reduction += getBuilderBuildCostReduction(getBuilderLevel(state));
+  reduction += getClaimedAchievementBuildingCostReduction(state);
 
   return reduction;
 };

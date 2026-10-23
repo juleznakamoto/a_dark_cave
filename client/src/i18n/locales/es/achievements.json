@@ -2,320 +2,320 @@
   "action": {
     "0-chopWood": {
       "label": "Leñador",
-      "description": "Mejora Cortar madera al nivel 10."
+      "description": "Mejora Cortar madera al nivel 10"
     },
     "0-craftTorches": {
       "label": "Artesano de antorchas",
-      "description": "Mejora Fabricar antorchas al nivel 10."
+      "description": "Mejora Fabricar antorchas al nivel 10"
     },
     "0-exploreCave": {
       "label": "Explorador de cuevas",
-      "description": "Mejora Explorar la cueva al nivel 10."
+      "description": "Mejora Explorar la cueva al nivel 10"
     },
     "0-gamblerWins": {
       "label": "Tahúr experimentado",
-      "description": "Gana 10 veces contra el tahúr."
+      "description": "Gana 10 veces contra el tahúr"
     },
     "0-hunt": {
       "label": "Cazador",
-      "description": "Mejora Cazar al nivel 10."
+      "description": "Mejora Cazar al nivel 10"
     },
     "1-mineAdamant": {
       "label": "Minero de adamantita",
-      "description": "Mejora Extraer adamantita al nivel 10."
+      "description": "Mejora Extraer adamantita al nivel 10"
     },
     "1-mineCoal": {
       "label": "Minero de carbón",
-      "description": "Mejora Extraer carbón al nivel 10."
+      "description": "Mejora Extraer carbón al nivel 10"
     },
     "1-mineIron": {
       "label": "Minero de hierro",
-      "description": "Mejora Extraer hierro al nivel 10."
+      "description": "Mejora Extraer hierro al nivel 10"
     },
     "1-mineMoonstone": {
       "label": "Minero de piedra lunar",
-      "description": "Mejora Extraer piedra lunar al nivel 10."
+      "description": "Mejora Extraer piedra lunar al nivel 10"
     },
     "1-mineObsidian": {
       "label": "Minero de obsidiana",
-      "description": "Mejora Extraer obsidiana al nivel 10."
+      "description": "Mejora Extraer obsidiana al nivel 10"
     },
     "1-mineStone": {
       "label": "Cantero",
-      "description": "Mejora Extraer piedra al nivel 10."
+      "description": "Mejora Extraer piedra al nivel 10"
     },
     "1-mineSulfur": {
       "label": "Minero de azufre",
-      "description": "Mejora Extraer azufre al nivel 10."
+      "description": "Mejora Extraer azufre al nivel 10"
     },
     "2-animals": {
       "label": "Sacrificador de animales",
-      "description": "Sacrifica animales 10 veces."
+      "description": "Sacrifica animales 10 veces"
     },
     "2-boneTotems": {
       "label": "Sacrificador de huesos",
-      "description": "Sacrifica tótems de hueso 20 veces."
+      "description": "Sacrifica tótems de hueso 20 veces"
     },
     "2-craftBoneTotems": {
       "label": "Artesano de tótems de hueso",
-      "description": "Mejora Fabricar tótems de hueso al nivel 10."
+      "description": "Mejora Fabricar tótems de hueso al nivel 10"
     },
     "2-craftLeatherTotems": {
       "label": "Artesano de tótems de cuero",
-      "description": "Mejora Fabricar tótems de cuero al nivel 10."
+      "description": "Mejora Fabricar tótems de cuero al nivel 10"
     },
     "2-leatherTotems": {
       "label": "Sacrificador de cuero",
-      "description": "Sacrifica tótems de cuero 20 veces."
+      "description": "Sacrifica tótems de cuero 20 veces"
     },
     "3-ashfireBombs": {
       "label": "Artesano de bombas de fuego ceniciento",
-      "description": "Fabrica 20 bombas de fuego ceniciento."
+      "description": "Fabrica 20 bombas de fuego ceniciento"
     },
     "3-burningVeins": {
       "label": "Venas ardientes",
-      "description": "Usa 10 elixires de fuego venoso."
+      "description": "Usa 10 elixires de fuego venoso"
     },
     "3-emberBombs": {
       "label": "Artesano de bombas de brasas",
-      "description": "Fabrica 20 bombas de brasas."
+      "description": "Fabrica 20 bombas de brasas"
     },
     "3-veinfireElixir": {
       "label": "Artesano de elixir de fuego venoso",
-      "description": "Fabrica 10 elixires de fuego venoso."
+      "description": "Fabrica 10 elixires de fuego venoso"
     },
     "4-feedFire": {
       "label": "Alimentador del fuego",
-      "description": "Alimenta el fuego 100 veces."
+      "description": "Alimenta el fuego 100 veces"
     },
     "4-insightful": {
       "label": "Perspicaz",
-      "description": "Gasta 10 000 de perspicacia en total."
+      "description": "Gasta 10 000 de perspicacia en total"
     },
     "4-investor": {
       "label": "Inversor",
-      "description": "Invierte 2500 de oro en total."
+      "description": "Invierte 2500 de oro en total"
     },
     "4-luckyInvestor": {
       "label": "Inversor afortunado",
-      "description": "Ten éxito en 10 inversiones."
+      "description": "Ten éxito en 10 inversiones"
     },
     "4-mentalClarity": {
       "label": "Claridad mental",
-      "description": "Usa 5 elixires de claridad."
+      "description": "Usa 5 elixires de claridad"
     },
     "4-merchantPurchases": {
       "label": "Negociador",
-      "description": "Haz 100 compras al mercader."
+      "description": "Haz 100 compras al mercader"
     },
     "4-pileOfDead": {
       "label": "Pila de muertos",
-      "description": "Pierde 250 aldeanos en total."
+      "description": "Pierde 250 aldeanos en total"
     },
     "4-solsticeGatherings": {
       "label": "Celebrante del solsticio",
-      "description": "Celebra 10 reuniones del solsticio."
+      "description": "Celebra 10 reuniones del solsticio"
     },
     "4-wellRested": {
       "label": "Dormilón",
-      "description": "Descansa 20 horas en total."
+      "description": "Descansa 20 horas en total"
     }
   },
   "basic": {
     "0-coalMiner": {
       "label": "Reunir carbón",
-      "description": "Reúne 500 de carbón en total."
+      "description": "Reúne 500 de carbón en total"
     },
     "0-hunter": {
       "label": "Cazador",
-      "description": "Reúne 500 de comida en total."
+      "description": "Reúne 500 de comida en total"
     },
     "0-ironMiner": {
       "label": "Reunir hierro",
-      "description": "Reúne 500 de hierro en total."
+      "description": "Reúne 500 de hierro en total"
     },
     "0-steelForger": {
       "label": "Forjar acero",
-      "description": "Forja 250 de acero en total."
+      "description": "Forja 250 de acero en total"
     },
     "0-stoneMiner": {
       "label": "Reunir piedra",
-      "description": "Reúne 500 de piedra en total."
+      "description": "Reúne 500 de piedra en total"
     },
     "0-tanner": {
       "label": "Curtidor",
-      "description": "Reúne 250 de cuero en total."
+      "description": "Reúne 250 de cuero en total"
     },
     "0-woodGatherer": {
       "label": "Reunir madera",
-      "description": "Reúne 500 de madera en total."
+      "description": "Reúne 500 de madera en total"
     },
     "1-builder": {
       "label": "Construir edificios",
-      "description": "Posee al menos 5 edificios."
+      "description": "Posee al menos 5 edificios"
     },
     "1-communityBuilder": {
       "label": "Construir comunidad",
-      "description": "Alcanza una población de 10."
+      "description": "Alcanza una población de 10"
     },
     "1-explorer": {
       "label": "Explorar la cueva",
-      "description": "Explora la cueva 20 veces."
+      "description": "Explora la cueva 20 veces"
     },
     "1-toolCrafter": {
       "label": "Fabricar herramientas",
-      "description": "Posee 5 herramientas distintas."
+      "description": "Posee 5 herramientas distintas"
     },
     "1-torchCrafter": {
       "label": "Fabricar antorchas",
-      "description": "Fabrica 50 antorchas en total."
+      "description": "Fabrica 50 antorchas en total"
     }
   },
   "building": {
     "0-0": {
       "label": "Refugio básico",
-      "description": "Construye 10 chozas de madera."
+      "description": "Construye 10 chozas de madera"
     },
     "0-1": {
       "label": "Refugio resistente",
-      "description": "Construye 10 chozas de piedra."
+      "description": "Construye 10 chozas de piedra"
     },
     "0-2": {
       "label": "Refugio nórdico",
-      "description": "Construye 5 casas comunales."
+      "description": "Construye 5 casas comunales"
     },
     "0-3": {
       "label": "Refugio nómada",
-      "description": "Construye 5 tiendas de pieles."
+      "description": "Construye 5 tiendas de pieles"
     },
     "1-0": {
       "label": "Cazadores",
-      "description": "Construye la cabaña de caza y todas las mejoras."
+      "description": "Construye la cabaña de caza y todas las mejoras"
     },
     "1-1": {
       "label": "Forjadores",
-      "description": "Construye la herrería y todas las mejoras."
+      "description": "Construye la herrería y todas las mejoras"
     },
     "1-2": {
       "label": "Fundidores",
-      "description": "Construye la fundición y todas las mejoras."
+      "description": "Construye la fundición y todas las mejoras"
     },
     "1-3": {
       "label": "Curtidores",
-      "description": "Construye la curtiduría y todas las mejoras."
+      "description": "Construye la curtiduría y todas las mejoras"
     },
     "2-0": {
       "label": "Mineros",
-      "description": "Construye el pozo superficial y todas las mejoras."
+      "description": "Construye el pozo superficial y todas las mejoras"
     },
     "3-0": {
       "label": "Comerciantes",
-      "description": "Construye el puesto comercial y todas las mejoras."
+      "description": "Construye el puesto comercial y todas las mejoras"
     },
     "3-1": {
       "label": "Proveedores",
-      "description": "Construye la choza de suministros y todas las mejoras."
+      "description": "Construye la choza de suministros y todas las mejoras"
     },
     "3-2": {
       "label": "Eruditos",
-      "description": "Construye la choza de escribientes y todas las mejoras."
+      "description": "Construye la choza de escribientes y todas las mejoras"
     },
     "3-3": {
       "label": "Sacerdotes",
-      "description": "Construye el altar y todas las mejoras."
+      "description": "Construye el altar y todas las mejoras"
     },
     "4-0": {
       "label": "Murallas del bastión",
-      "description": "Construye las empalizadas y todas las mejoras."
+      "description": "Construye las empalizadas y todas las mejoras"
     },
     "4-1": {
       "label": "Vigía",
-      "description": "Construye la torre de vigilancia y todas las mejoras."
+      "description": "Construye la torre de vigilancia y todas las mejoras"
     }
   },
   "item": {
     "0-axes": {
       "label": "Hachas",
-      "description": "Fabrica todas las hachas, de la de piedra a la de adamantita."
+      "description": "Fabrica todas las hachas, de la de piedra a la de adamantita"
     },
     "0-lanterns": {
       "label": "Faroles",
-      "description": "Fabrica todos los faroles, del de hierro al de adamantita."
+      "description": "Fabrica todos los faroles, del de hierro al de adamantita"
     },
     "0-pickaxes": {
       "label": "Picos",
-      "description": "Fabrica todos los picos, del de piedra al de adamantita."
+      "description": "Fabrica todos los picos, del de piedra al de adamantita"
     },
     "1-bows": {
       "label": "Arcos",
-      "description": "Fabrica todos los arcos, del rudimentario al maestro."
+      "description": "Fabrica todos los arcos, del rudimentario al maestro"
     },
     "1-swords": {
       "label": "Espadas",
-      "description": "Fabrica todas las espadas, de la de hierro a la de adamantita."
+      "description": "Fabrica todas las espadas, de la de hierro a la de adamantita"
     },
     "2-explorer_pack": {
       "label": "Talabartería",
-      "description": "Fabrica los siete artículos de talabartería."
+      "description": "Fabrica los siete artículos de talabartería"
     },
     "2-schematic_weapons": {
       "label": "Esquemas",
-      "description": "Fabrica tres armas a partir de esquemas."
+      "description": "Fabrica tres armas a partir de esquemas"
     },
     "3-ancient_books": {
       "label": "Sabiduría antigua",
-      "description": "Colecciona los cuatro libros antiguos."
+      "description": "Colecciona los cuatro libros antiguos"
     },
     "3-fellowship": {
       "label": "Buena compañía",
-      "description": "Recluta a los siete compañeros."
+      "description": "Recluta a los siete compañeros"
     },
     "4-blacksteel_equipment": {
       "label": "Equipo bélico oscuro",
-      "description": "Fabrica las tres piezas de equipo bélico de acero negro."
+      "description": "Fabrica las tres piezas de equipo bélico de acero negro"
     },
     "4-blacksteel_tools": {
       "label": "Herramientas oscuras",
-      "description": "Fabrica las tres herramientas de acero negro."
+      "description": "Fabrica las tres herramientas de acero negro"
     }
   },
   "overall": {
     "0-achievementMaxer": {
       "label": "Maximizador de logros",
-      "description": "Completa todos los logros no épicos."
+      "description": "Completa todos los logros no épicos"
     },
     "0-caveVeteran": {
       "label": "Veterano de la cueva",
-      "description": "Gana 3 partidas."
+      "description": "Gana 3 partidas"
     },
     "0-endurant": {
       "label": "Resistente",
-      "description": "Juega 30 horas en total, sumando todas las partidas."
+      "description": "Juega 30 horas en total, sumando todas las partidas"
     },
     "0-resourceMaxer": {
       "label": "Maximizador de recursos",
-      "description": "Alcanza la capacidad de la Gran bóveda con cada recurso limitado."
+      "description": "Alcanza la capacidad de la Gran bóveda con cada recurso limitado"
     },
     "0-upgradeMaxer": {
       "label": "Maximizador de mejoras",
-      "description": "Maximiza cada mejora de la pestaña Hacienda."
+      "description": "Maximiza cada mejora de la pestaña Hacienda"
     },
     "0-speedrunner": {
       "label": "Velocista",
       "detail": "<5 horas",
-      "description": "Gana una partida en menos de 5 horas."
+      "description": "Gana una partida en menos de 5 horas"
     },
     "0-supporter": {
       "label": "Mecenas",
-      "description": "Completa la ruta de recompensas de apoyo."
+      "description": "Completa la ruta de recompensas de apoyo"
     },
     "0-winCruel": {
       "label": "Victoria cruel",
-      "description": "Gana una partida en modo cruel."
+      "description": "Gana una partida en modo cruel"
     },
     "0-winNormal": {
       "label": "Victoria normal",
-      "description": "Gana una partida en modo normal."
+      "description": "Gana una partida en modo normal"
     }
   }
 }

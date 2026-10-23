@@ -1,19 +1,31 @@
 import type { GameState } from "@shared/schema";
 
+/** Permanent bonuses granted while the achievement is claimed. */
+export interface AchievementBonuses {
+  /** Additive stranger-approach (new villager) chance, e.g. 0.01 = +1%. */
+  strangerApproachBonus?: number;
+  /** Additive crafting cost reduction, e.g. 0.025 = 2.5%. */
+  craftingCostReduction?: number;
+  /** Additive building cost reduction, e.g. 0.025 = 2.5%. */
+  buildingCostReduction?: number;
+}
+
 /** Legacy: single silver amount. Use rewards for multi-resource support. */
 export interface AchievementSegment {
   segmentId: string;
   maxCount: number;
   label: string;
   /**
-   * Optional muted suffix next to the title (e.g. speedrun time gate).
-   * Shown like progress `current/max` when maxCount is 1.
+   * Optional muted center label over the progress bar (e.g. speedrun time gate).
+   * Used when maxCount is 1 instead of `current/max`.
    */
   detailLabel?: string;
   /** @deprecated Use rewards instead for multi-resource support */
   reward?: number;
   /** Resource keys (e.g. silver, gold) to amounts. Overrides reward when present. */
   rewards?: Record<string, number>;
+  /** Permanent bonuses while claimed (not granted as resources on claim). */
+  bonuses?: AchievementBonuses;
   getCount: (state: GameState) => number;
   /**
    * Visual weight for ring slices and progress-bar tick count

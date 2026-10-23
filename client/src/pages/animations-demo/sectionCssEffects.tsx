@@ -44,12 +44,24 @@ function CssEffectSample({
   ) : className.includes("timer-progress-pulse") ? (
     <span
       key={active ? `${effectId}-on` : `${effectId}-off`}
-      className={cn(
-        "inline-flex h-2 w-40 overflow-hidden rounded-full bg-neutral-900",
-        pulseClass,
-      )}
+      className="inline-flex items-center gap-2"
     >
-      <span className="h-full w-2/3 rounded-full bg-red-950" />
+      <span
+        className={cn(
+          "inline-flex h-2 w-24 overflow-hidden rounded-full bg-neutral-900",
+          pulseClass,
+        )}
+      >
+        <span className="h-full w-2/3 rounded-full bg-red-950" />
+      </span>
+      <span
+        className={cn(
+          "inline-flex h-2 w-24 overflow-hidden rounded-full bg-neutral-900",
+          pulseClass,
+        )}
+      >
+        <span className="h-full w-2/3 rounded-full bg-violet-700" />
+      </span>
     </span>
   ) : (
     <span

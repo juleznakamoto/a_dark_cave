@@ -2,320 +2,320 @@
   "action": {
     "0-chopWood": {
       "label": "Lenhador",
-      "description": "Melhore Coletar Madeira para o nível 10."
+      "description": "Melhore Coletar Madeira para o nível 10"
     },
     "0-craftTorches": {
       "label": "Fabricante de Tochas",
-      "description": "Melhore Tochas para o nível 10."
+      "description": "Melhore Tochas para o nível 10"
     },
     "0-exploreCave": {
       "label": "Explorador de Cavernas",
-      "description": "Melhore Explorar Caverna para o nível 10."
+      "description": "Melhore Explorar Caverna para o nível 10"
     },
     "0-gamblerWins": {
       "label": "Apostador Experiente",
-      "description": "Vença o apostador 10 vezes."
+      "description": "Vença o apostador 10 vezes"
     },
     "0-hunt": {
       "label": "Caçador",
-      "description": "Melhore Caçar para o nível 10."
+      "description": "Melhore Caçar para o nível 10"
     },
     "1-mineAdamant": {
       "label": "Minerador de Adamante",
-      "description": "Melhore Adamante para o nível 10."
+      "description": "Melhore Adamante para o nível 10"
     },
     "1-mineCoal": {
       "label": "Minerador de Carvão",
-      "description": "Melhore Carvão para o nível 10."
+      "description": "Melhore Carvão para o nível 10"
     },
     "1-mineIron": {
       "label": "Minerador de Ferro",
-      "description": "Melhore Ferro para o nível 10."
+      "description": "Melhore Ferro para o nível 10"
     },
     "1-mineMoonstone": {
       "label": "Minerador de Pedra-da-Lua",
-      "description": "Melhore Pedra-da-Lua para o nível 10."
+      "description": "Melhore Pedra-da-Lua para o nível 10"
     },
     "1-mineObsidian": {
       "label": "Minerador de Obsidiana",
-      "description": "Melhore Obsidiana para o nível 10."
+      "description": "Melhore Obsidiana para o nível 10"
     },
     "1-mineStone": {
       "label": "Minerador de Pedra",
-      "description": "Melhore Pedra para o nível 10."
+      "description": "Melhore Pedra para o nível 10"
     },
     "1-mineSulfur": {
       "label": "Minerador de Enxofre",
-      "description": "Melhore Enxofre para o nível 10."
+      "description": "Melhore Enxofre para o nível 10"
     },
     "2-animals": {
       "label": "Sacrificador de Animais",
-      "description": "Sacrifique animais 10 vezes."
+      "description": "Sacrifique animais 10 vezes"
     },
     "2-boneTotems": {
       "label": "Sacrificador de Ossos",
-      "description": "Sacrifique totens de osso 20 vezes."
+      "description": "Sacrifique totens de osso 20 vezes"
     },
     "2-craftBoneTotems": {
       "label": "Fabricante de Totens de Osso",
-      "description": "Melhore Totens de Osso para o nível 10."
+      "description": "Melhore Totens de Osso para o nível 10"
     },
     "2-craftLeatherTotems": {
       "label": "Fabricante de Totens de Couro",
-      "description": "Melhore Totens de Couro para o nível 10."
+      "description": "Melhore Totens de Couro para o nível 10"
     },
     "2-leatherTotems": {
       "label": "Sacrificador de Couro",
-      "description": "Sacrifique totens de couro 20 vezes."
+      "description": "Sacrifique totens de couro 20 vezes"
     },
     "3-ashfireBombs": {
       "label": "Fabricante de Bombas de Cinzafogo",
-      "description": "Crie 20 Bombas de Cinzafogo."
+      "description": "Crie 20 Bombas de Cinzafogo"
     },
     "3-burningVeins": {
       "label": "Veias Ardentes",
-      "description": "Use 10 Elixires de Fogo Venoso."
+      "description": "Use 10 Elixires de Fogo Venoso"
     },
     "3-emberBombs": {
       "label": "Fabricante de Bombas de Brasa",
-      "description": "Crie 20 Bombas de Brasa."
+      "description": "Crie 20 Bombas de Brasa"
     },
     "3-veinfireElixir": {
       "label": "Fabricante de Elixir de Fogo Venoso",
-      "description": "Crie 10 Elixires de Fogo Venoso."
+      "description": "Crie 10 Elixires de Fogo Venoso"
     },
     "4-feedFire": {
       "label": "Alimentador do Fogo",
-      "description": "Alimente o fogo 100 vezes."
+      "description": "Alimente o fogo 100 vezes"
     },
     "4-insightful": {
       "label": "Perspicaz",
-      "description": "Gaste 10.000 de Perspicácia no total."
+      "description": "Gaste 10.000 de Perspicácia no total"
     },
     "4-investor": {
       "label": "Investidor",
-      "description": "Invista 2.500 de ouro no total."
+      "description": "Invista 2.500 de ouro no total"
     },
     "4-luckyInvestor": {
       "label": "Investidor Sortudo",
-      "description": "Tenha sucesso em 10 investimentos."
+      "description": "Tenha sucesso em 10 investimentos"
     },
     "4-mentalClarity": {
       "label": "Clareza Mental",
-      "description": "Use 5 Elixires de Clareza."
+      "description": "Use 5 Elixires de Clareza"
     },
     "4-merchantPurchases": {
       "label": "Negociador",
-      "description": "Faça 100 compras com o mercador."
+      "description": "Faça 100 compras com o mercador"
     },
     "4-pileOfDead": {
       "label": "Pilha de Mortos",
-      "description": "Perca 250 aldeões no total."
+      "description": "Perca 250 aldeões no total"
     },
     "4-solsticeGatherings": {
       "label": "Celebrante do Solstício",
-      "description": "Realize 10 celebrações do solstício."
+      "description": "Realize 10 celebrações do solstício"
     },
     "4-wellRested": {
       "label": "Sono Pesado",
-      "description": "Descanse por 20 horas no total."
+      "description": "Descanse por 20 horas no total"
     }
   },
   "basic": {
     "0-coalMiner": {
       "label": "Coletar Carvão",
-      "description": "Colete 500 de carvão no total."
+      "description": "Colete 500 de carvão no total"
     },
     "0-hunter": {
       "label": "Caçador",
-      "description": "Colete 500 de comida no total."
+      "description": "Colete 500 de comida no total"
     },
     "0-ironMiner": {
       "label": "Coletar Ferro",
-      "description": "Colete 500 de ferro no total."
+      "description": "Colete 500 de ferro no total"
     },
     "0-steelForger": {
       "label": "Forjar Aço",
-      "description": "Forje 250 de aço no total."
+      "description": "Forje 250 de aço no total"
     },
     "0-stoneMiner": {
       "label": "Coletar Pedra",
-      "description": "Colete 500 de pedra no total."
+      "description": "Colete 500 de pedra no total"
     },
     "0-tanner": {
       "label": "Curtidor",
-      "description": "Colete 250 de couro no total."
+      "description": "Colete 250 de couro no total"
     },
     "0-woodGatherer": {
       "label": "Coletar Madeira",
-      "description": "Colete 500 de madeira no total."
+      "description": "Colete 500 de madeira no total"
     },
     "1-builder": {
       "label": "Construir Edifícios",
-      "description": "Possua pelo menos 5 construções."
+      "description": "Possua pelo menos 5 construções"
     },
     "1-communityBuilder": {
       "label": "Construir Comunidade",
-      "description": "Alcance uma população de 10."
+      "description": "Alcance uma população de 10"
     },
     "1-explorer": {
       "label": "Explorar Caverna",
-      "description": "Explore a caverna 20 vezes."
+      "description": "Explore a caverna 20 vezes"
     },
     "1-toolCrafter": {
       "label": "Fabricar Ferramentas",
-      "description": "Possua 5 ferramentas diferentes."
+      "description": "Possua 5 ferramentas diferentes"
     },
     "1-torchCrafter": {
       "label": "Fabricar Tochas",
-      "description": "Crie 50 tochas no total."
+      "description": "Crie 50 tochas no total"
     }
   },
   "building": {
     "0-0": {
       "label": "Abrigo Básico",
-      "description": "Construa 10 Cabanas de Madeira."
+      "description": "Construa 10 Cabanas de Madeira"
     },
     "0-1": {
       "label": "Abrigo Resistente",
-      "description": "Construa 10 Cabanas de Pedra."
+      "description": "Construa 10 Cabanas de Pedra"
     },
     "0-2": {
       "label": "Abrigo Nórdico",
-      "description": "Construa 5 Casas Compridas."
+      "description": "Construa 5 Casas Compridas"
     },
     "0-3": {
       "label": "Abrigo Nômade",
-      "description": "Construa 5 Tendas de Pele."
+      "description": "Construa 5 Tendas de Pele"
     },
     "1-0": {
       "label": "Caçadores",
-      "description": "Construa a Cabana de Caça e todas as melhorias."
+      "description": "Construa a Cabana de Caça e todas as melhorias"
     },
     "1-1": {
       "label": "Forjadores",
-      "description": "Construa o Ferreiro e todas as melhorias."
+      "description": "Construa o Ferreiro e todas as melhorias"
     },
     "1-2": {
       "label": "Fundidores",
-      "description": "Construa a Fundição e todas as melhorias."
+      "description": "Construa a Fundição e todas as melhorias"
     },
     "1-3": {
       "label": "Curtidores",
-      "description": "Construa o Curtume e todas as melhorias."
+      "description": "Construa o Curtume e todas as melhorias"
     },
     "2-0": {
       "label": "Mineradores",
-      "description": "Construa o Poço Raso e todas as melhorias."
+      "description": "Construa o Poço Raso e todas as melhorias"
     },
     "3-0": {
       "label": "Mercadores",
-      "description": "Construa o Posto de Comércio e todas as melhorias."
+      "description": "Construa o Posto de Comércio e todas as melhorias"
     },
     "3-1": {
       "label": "Abastecedores",
-      "description": "Construa a Cabana de Suprimentos e todas as melhorias."
+      "description": "Construa a Cabana de Suprimentos e todas as melhorias"
     },
     "3-2": {
       "label": "Estudiosos",
-      "description": "Construa a Cabana do Escriturário e todas as melhorias."
+      "description": "Construa a Cabana do Escriturário e todas as melhorias"
     },
     "3-3": {
       "label": "Sacerdotes",
-      "description": "Construa o Altar e todas as melhorias."
+      "description": "Construa o Altar e todas as melhorias"
     },
     "4-0": {
       "label": "Muralhas",
-      "description": "Construa as Paliçadas e todas as melhorias."
+      "description": "Construa as Paliçadas e todas as melhorias"
     },
     "4-1": {
       "label": "Vigia",
-      "description": "Construa a Torre de Vigia e todas as melhorias."
+      "description": "Construa a Torre de Vigia e todas as melhorias"
     }
   },
   "item": {
     "0-axes": {
       "label": "Machados",
-      "description": "Crie cada machado da pedra ao adamante."
+      "description": "Crie cada machado da pedra ao adamante"
     },
     "0-lanterns": {
       "label": "Lanternas",
-      "description": "Crie cada lanterna do ferro ao adamante."
+      "description": "Crie cada lanterna do ferro ao adamante"
     },
     "0-pickaxes": {
       "label": "Picaretas",
-      "description": "Crie cada picareta da pedra ao adamante."
+      "description": "Crie cada picareta da pedra ao adamante"
     },
     "1-bows": {
       "label": "Arcos",
-      "description": "Crie cada arco do rudimentar ao mestre."
+      "description": "Crie cada arco do rudimentar ao mestre"
     },
     "1-swords": {
       "label": "Espadas",
-      "description": "Crie cada espada do ferro ao adamante."
+      "description": "Crie cada espada do ferro ao adamante"
     },
     "2-explorer_pack": {
       "label": "Trabalhos em Couro",
-      "description": "Crie todas as sete obras de couro."
+      "description": "Crie todas as sete obras de couro"
     },
     "2-schematic_weapons": {
       "label": "Esquemas",
-      "description": "Crie três armas de esquema."
+      "description": "Crie três armas de esquema"
     },
     "3-ancient_books": {
       "label": "Sabedoria Antiga",
-      "description": "Colete os quatro livros antigos."
+      "description": "Colete os quatro livros antigos"
     },
     "3-fellowship": {
       "label": "Boa Companhia",
-      "description": "Recrute todos os sete companheiros da irmandade."
+      "description": "Recrute todos os sete companheiros da irmandade"
     },
     "4-blacksteel_equipment": {
       "label": "Equipamento de Guerra Sombrio",
-      "description": "Crie todos os três itens de guerra de Aço Negro."
+      "description": "Crie todos os três itens de guerra de Aço Negro"
     },
     "4-blacksteel_tools": {
       "label": "Ferramentas Sombrias",
-      "description": "Crie todas as três ferramentas de Aço Negro."
+      "description": "Crie todas as três ferramentas de Aço Negro"
     }
   },
   "overall": {
     "0-achievementMaxer": {
       "label": "Maximizador de Conquistas",
-      "description": "Complete todas as conquistas não épicas."
+      "description": "Complete todas as conquistas não épicas"
     },
     "0-caveVeteran": {
       "label": "Veterano da Caverna",
-      "description": "Vença 3 partidas."
+      "description": "Vença 3 partidas"
     },
     "0-endurant": {
       "label": "Resistente",
-      "description": "Jogue 30 horas no total, somando todas as partidas."
+      "description": "Jogue 30 horas no total, somando todas as partidas"
     },
     "0-resourceMaxer": {
       "label": "Maximizador de Recursos",
-      "description": "Atinja a capacidade do Grande Cofre com cada recurso limitado."
+      "description": "Atinja a capacidade do Grande Cofre com cada recurso limitado"
     },
     "0-upgradeMaxer": {
       "label": "Maximizador de Melhorias",
-      "description": "Maximize cada melhoria da aba Propriedade."
+      "description": "Maximize cada melhoria da aba Propriedade"
     },
     "0-speedrunner": {
       "label": "Velocista",
       "detail": "<5 horas",
-      "description": "Vença uma partida em menos de 5 horas."
+      "description": "Vença uma partida em menos de 5 horas"
     },
     "0-supporter": {
       "label": "Apoiador",
-      "description": "Complete a trilha de recompensas de apoiador."
+      "description": "Complete a trilha de recompensas de apoiador"
     },
     "0-winCruel": {
       "label": "Vitória Cruel",
-      "description": "Vença uma partida no Modo Cruel."
+      "description": "Vença uma partida no Modo Cruel"
     },
     "0-winNormal": {
       "label": "Vitória Normal",
-      "description": "Vença uma partida no Modo Normal."
+      "description": "Vença uma partida no Modo Normal"
     }
   }
 }

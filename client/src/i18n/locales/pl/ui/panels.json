@@ -59,6 +59,7 @@
     "fromEvents": "{{percent}}% z wydarzeń",
     "fromHeartfire": "{{percent}}% z Ognia serca",
     "fromGreatFeast": "{{percent}}% z Wielkiej uczty",
+    "fromAchievements": "{{percent}}% z osiągnięć",
     "merchantBlocked": "Nie można wezwać handlarza, gdy trwa inne wydarzenie",
     "merchantAvailableIn": "Dostępny za {{time}}",
     "merchantAbortCall": "Anuluj wezwanie",

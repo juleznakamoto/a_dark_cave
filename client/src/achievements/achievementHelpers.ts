@@ -1,7 +1,10 @@
 import { useGameStore } from "@/game/state";
 import type { GameState } from "@shared/schema";
 import type { DevGameMode } from "@/lib/edition";
-import type { AchievementChartConfig } from "./achievementTypes";
+import type {
+  AchievementBonuses,
+  AchievementChartConfig,
+} from "./achievementTypes";
 import { getAchievementConfigForEdition } from "./achievementEdition";
 import {
   getAchievementDescription,
@@ -9,7 +12,10 @@ import {
   getAchievementLabel,
   interpolateFallback,
 } from "@/i18n/resolveGameText";
-import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
+import {
+  formatTooltipResourceName,
+  getUiTooltip,
+} from "@/i18n/tooltipLabels";
 
 export interface AchievementRow {
   segmentId: string;
@@ -29,6 +35,8 @@ export interface AchievementRow {
   reward?: number;
   /** Computed rewards per resource (e.g. { silver: 250, gold: 10 }) */
   rewards: Record<string, number>;
+  /** Permanent bonuses while claimed. */
+  bonuses: AchievementBonuses;
   isFull: boolean;
   isClaimed: boolean;
   /** Ring slice weight and progress bar ticks. Defaults to maxCount. */
@@ -47,27 +55,80 @@ export function computeSilverReward(
 
 /** Computes all achievement rewards. Supports legacy reward (silver) and new rewards map. */
 export function computeAchievementRewards(
-  segment: { reward?: number; rewards?: Record<string, number>; maxCount: number },
+  segment: {
+    reward?: number;
+    rewards?: Record<string, number>;
+    bonuses?: AchievementBonuses;
+    maxCount: number;
+  },
   BTP: number
 ): Record<string, number> {
-  if (segment.rewards && Object.keys(segment.rewards).length > 0) {
+  // Explicit rewards map (including `{}` for bonus-only achievements).
+  if (segment.rewards != null) {
     const result = { ...segment.rewards };
     if ("silver" in result) {
       result.silver = computeSilverReward(result.silver, segment.maxCount, BTP);
     }
     return result;
   }
+  if (segment.bonuses && Object.keys(segment.bonuses).length > 0) {
+    return {};
+  }
   const silver = computeSilverReward(segment.reward, segment.maxCount, BTP);
   return silver > 0 ? { silver } : {};
 }
 
-/** Formats rewards for tooltip display, e.g. "+250 Silber, +10 Gold". */
-export function formatRewardsTooltip(rewards: Record<string, number>): string {
+function formatBonusPercent(value: number): string {
+  return String(Number((value * 100).toFixed(2)));
+}
+
+/** Formats permanent achievement bonuses for display. */
+export function formatAchievementBonusesTooltip(
+  bonuses: AchievementBonuses | undefined,
+): string {
+  if (!bonuses) return "";
+  const parts: string[] = [];
+  if (bonuses.strangerApproachBonus && bonuses.strangerApproachBonus > 0) {
+    parts.push(
+      getUiTooltip(
+        "buildings.newVillagerChancePercent",
+        "+{{percent}}% New Villager Chance",
+        { percent: formatBonusPercent(bonuses.strangerApproachBonus) },
+      ),
+    );
+  }
+  if (bonuses.craftingCostReduction && bonuses.craftingCostReduction > 0) {
+    parts.push(
+      getUiTooltip(
+        "buildings.craftDiscount",
+        "{{percent}}% Craft Discount",
+        { percent: formatBonusPercent(bonuses.craftingCostReduction) },
+      ),
+    );
+  }
+  if (bonuses.buildingCostReduction && bonuses.buildingCostReduction > 0) {
+    parts.push(
+      getUiTooltip(
+        "buildings.buildDiscount",
+        "{{percent}}% Build Discount",
+        { percent: formatBonusPercent(bonuses.buildingCostReduction) },
+      ),
+    );
+  }
+  return parts.join(", ");
+}
+
+/** Formats resource + permanent bonus rewards, e.g. "+250 Food, +1% New Villager Chance". */
+export function formatRewardsTooltip(
+  rewards: Record<string, number>,
+  bonuses?: AchievementBonuses,
+): string {
   const entries = Object.entries(rewards).filter(([, amount]) => amount > 0);
-  if (entries.length === 0) return "";
-  return entries
+  const resourceText = entries
     .map(([key, amount]) => `+${amount} ${formatTooltipResourceName(key)}`)
     .join(", ");
+  const bonusText = formatAchievementBonusesTooltip(bonuses);
+  return [resourceText, bonusText].filter(Boolean).join(", ");
 }
 
 /** Flattens a category config's rings into per-achievement row data. */
@@ -92,6 +153,7 @@ export function getAchievementRows(
         ? claimedAchievements.includes(achievementId)
         : isFull;
       const rewards = claimable ? computeAchievementRewards(seg, BTP) : {};
+      const bonuses = claimable ? (seg.bonuses ?? {}) : {};
       rows.push({
         segmentId: seg.segmentId,
         chartPrefix: editionConfig.idPrefix,
@@ -117,6 +179,7 @@ export function getAchievementRows(
         achievementId,
         reward: claimable ? seg.reward : undefined,
         rewards,
+        bonuses,
         isFull,
         isClaimed,
         segments: seg.segments,
@@ -133,11 +196,13 @@ export function claimAchievement(
     fallbackName: string;
     reward?: number;
     rewards?: Record<string, number>;
+    bonuses?: AchievementBonuses;
     maxCount: number;
   },
 ): void {
   const BTP = useGameStore.getState().BTP || 0;
   const rewards = computeAchievementRewards(segment, BTP);
+  const bonuses = segment.bonuses ?? {};
 
   for (const [resource, amount] of Object.entries(rewards)) {
     if (amount > 0) {
@@ -149,7 +214,7 @@ export function claimAchievement(
     }
   }
 
-  const rewardText = formatRewardsTooltip(rewards);
+  const rewardText = formatRewardsTooltip(rewards, bonuses);
   const logTemplate = "{{name}} Achievement complete: {{rewards}}";
   const logVars: Record<string, string | number> = {
     achievementId,
@@ -160,6 +225,21 @@ export function claimAchievement(
         .map(([resource, amount]) => [`reward_${resource}`, amount]),
     ),
   };
+  if (bonuses.strangerApproachBonus && bonuses.strangerApproachBonus > 0) {
+    logVars.bonus_strangerApproachPercent = Number(
+      (bonuses.strangerApproachBonus * 100).toFixed(2),
+    );
+  }
+  if (bonuses.craftingCostReduction && bonuses.craftingCostReduction > 0) {
+    logVars.bonus_craftingCostPercent = Number(
+      (bonuses.craftingCostReduction * 100).toFixed(2),
+    );
+  }
+  if (bonuses.buildingCostReduction && bonuses.buildingCostReduction > 0) {
+    logVars.bonus_buildingCostPercent = Number(
+      (bonuses.buildingCostReduction * 100).toFixed(2),
+    );
+  }
 
   useGameStore.setState((s) => ({
     log: [

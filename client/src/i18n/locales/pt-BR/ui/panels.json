@@ -51,6 +51,7 @@
     "fromEvents": "{{percent}}% por eventos",
     "fromHeartfire": "{{percent}}% pelo Fogo do Coração",
     "fromGreatFeast": "{{percent}}% pelo Grande Banquete",
+    "fromAchievements": "{{percent}}% por conquistas",
     "merchantBlocked": "O mercador não pode ser chamado enquanto outro evento está ativo",
     "merchantAvailableIn": "Disponível em {{time}}",
     "merchantAbortCall": "Cancelar chamada",

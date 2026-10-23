@@ -51,6 +51,7 @@
     "fromEvents": "{{percent}}% dagli eventi",
     "fromHeartfire": "{{percent}}% dal fuoco del cuore",
     "fromGreatFeast": "{{percent}}% dal grande banchetto",
+    "fromAchievements": "{{percent}}% dagli obiettivi",
     "merchantBlocked": "Il mercante non può essere chiamato mentre è attivo un altro evento",
     "merchantAvailableIn": "Disponibile tra {{time}}",
     "merchantAbortCall": "Annulla chiamata",

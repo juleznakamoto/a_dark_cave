@@ -51,6 +51,7 @@
     "fromEvents": "出来事から{{percent}}%",
     "fromHeartfire": "心火から{{percent}}%",
     "fromGreatFeast": "大宴会から{{percent}}%",
+    "fromAchievements": "実績から{{percent}}%",
     "merchantBlocked": "別の出来事のあいだは商人を呼べません",
     "merchantAvailableIn": "{{time}}後に利用可能",
     "merchantAbortCall": "呼び出しを中止",

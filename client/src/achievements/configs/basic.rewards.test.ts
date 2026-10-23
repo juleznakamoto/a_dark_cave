@@ -38,4 +38,22 @@ describe("basic achievement rewards", () => {
       }
     }
   });
+
+  it("gives Build Community a permanent new villager chance instead of food", () => {
+    const community = basicChartConfig.rings
+      .flat()
+      .find((seg) => seg.segmentId === "1-communityBuilder");
+    expect(community?.rewards).toEqual({});
+    expect(community?.bonuses?.strangerApproachBonus).toBe(0.01);
+  });
+
+  it("gives Craft Tools and Construct Buildings permanent cost discounts", () => {
+    const segments = basicChartConfig.rings.flat();
+    const tools = segments.find((seg) => seg.segmentId === "1-toolCrafter");
+    const builder = segments.find((seg) => seg.segmentId === "1-builder");
+    expect(tools?.rewards).toEqual({});
+    expect(tools?.bonuses?.craftingCostReduction).toBe(0.025);
+    expect(builder?.rewards).toEqual({});
+    expect(builder?.bonuses?.buildingCostReduction).toBe(0.025);
+  });
 });

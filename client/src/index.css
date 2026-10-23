@@ -1913,7 +1913,28 @@ html.adc-text-xlarge .game-panel-produce-effects {
   background-color: #8b0000 !important;
 }
 
-@keyframes timer-progress-pulse-fill {
+/* Continuous fill for EventDialog timed choices (seek via negative delay).
+   Keep the wipe on an outer layer so the urgency pulse can animate fill color
+   on the inner .bg-red-950 without replacing this transform animation. */
+@keyframes timed-dialog-time-bar-fill {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.timed-dialog-time-bar-fill {
+  width: 100%;
+  height: 100%;
+  animation-name: timed-dialog-time-bar-fill;
+  animation-timing-function: linear;
+  animation-fill-mode: both;
+}
+
+@keyframes timer-progress-pulse-fill-red {
 
   0%,
   100% {
@@ -1927,17 +1948,45 @@ html.adc-text-xlarge .game-panel-produce-effects {
   }
 }
 
+@keyframes timer-progress-pulse-fill-violet {
+
+  0%,
+  100% {
+    background-color: #5b21b6;
+    box-shadow: inset 0 0 0 rgba(139, 92, 246, 0);
+  }
+
+  50% {
+    background-color: #8b5cf6;
+    box-shadow: inset 0 0 4px rgba(167, 139, 250, 0.4);
+  }
+}
+
 /* Glow stays on the filled indicator. The track background does not pulse.
-   Madness dialogs keep a violet fill, so they do not pick up this red pulse. */
-.timer-progress-pulse .bg-red-950:not(.bg-violet-700) {
-  animation: timer-progress-pulse-fill 0.8s ease-in-out infinite;
+   Pulse color matches the bar fill (red default, violet for madness). */
+.timer-progress-pulse .bg-red-950 {
+  animation: timer-progress-pulse-fill-red 0.8s ease-in-out infinite;
+}
+
+.timer-progress-pulse .bg-violet-700 {
+  animation: timer-progress-pulse-fill-violet 0.8s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .timer-progress-pulse .bg-red-950:not(.bg-violet-700) {
+  .timer-progress-pulse .bg-red-950 {
     animation: none;
     background-color: #b91c1c;
     box-shadow: none;
+  }
+
+  .timer-progress-pulse .bg-violet-700 {
+    animation: none;
+    background-color: #7c3aed;
+    box-shadow: none;
+  }
+
+  .timed-dialog-time-bar-fill {
+    animation: none;
   }
 }
 
@@ -1978,35 +2027,34 @@ html.adc-text-xlarge .game-panel-produce-effects {
   animation: new-item-pulse-redacted 1s ease-in-out infinite;
 }
 
-/* Same tempo as new-item-pulse. Color comes from --new-item-pulse-color
-   (achievement claim buttons pass their category color). */
+/* Mid intensity between original claim glow and soft new-item-pulse.
+   Color from --new-item-pulse-color (achievement claim category color). */
 @keyframes new-item-pulse-colored {
 
   0%,
   100% {
-    opacity: 0.72;
+    opacity: 0.78;
     text-shadow:
-      0 0 2px color-mix(in srgb, var(--new-item-pulse-glow) 55%, transparent),
-      0 0 4px color-mix(in srgb, var(--new-item-pulse-glow) 35%, transparent);
+      0 0 2px color-mix(in srgb, var(--new-item-pulse-glow) 45%, transparent),
+      0 0 3px color-mix(in srgb, var(--new-item-pulse-glow) 28%, transparent);
     box-shadow:
-      0 0 4px color-mix(in srgb, var(--new-item-pulse-glow) 50%, transparent);
+      0 0 2px color-mix(in srgb, var(--new-item-pulse-glow) 40%, transparent);
   }
 
   50% {
     opacity: 1;
     text-shadow:
-      0 0 3px var(--new-item-pulse-glow),
-      0 0 8px color-mix(in srgb, var(--new-item-pulse-glow) 75%, transparent);
+      0 0 3px color-mix(in srgb, var(--new-item-pulse-glow) 70%, transparent),
+      0 0 6px color-mix(in srgb, var(--new-item-pulse-glow) 55%, transparent);
     box-shadow:
-      0 0 6px 1px color-mix(in srgb, var(--new-item-pulse-glow) 85%, transparent),
-      0 0 12px color-mix(in srgb, var(--new-item-pulse-glow) 50%, transparent);
+      0 0 4px color-mix(in srgb, var(--new-item-pulse-glow) 65%, transparent);
   }
 }
 
 .new-item-pulse-colored {
   --new-item-pulse-glow: var(--new-item-pulse-color, #fff);
   color: var(--new-item-pulse-color, inherit);
-  animation: new-item-pulse-colored 1s ease-in-out infinite;
+  animation: new-item-pulse-colored 1.3s ease-in-out infinite;
 }
 
 @keyframes resource-critical-blink {

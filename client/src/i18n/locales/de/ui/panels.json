@@ -51,6 +51,7 @@
     "fromEvents": "{{percent}} % durch Ereignisse",
     "fromHeartfire": "{{percent}} % durch Herzfeuer",
     "fromGreatFeast": "{{percent}} % durch das große Fest",
+    "fromAchievements": "{{percent}} % durch Erfolge",
     "merchantBlocked": "Der Händler kann nicht gerufen werden, solange ein anderes Ereignis aktiv ist",
     "merchantAvailableIn": "Verfügbar in {{time}}",
     "merchantAbortCall": "Rufen abbrechen",
