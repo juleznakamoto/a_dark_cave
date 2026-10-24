@@ -22,8 +22,12 @@ const isDemoBuild = process.env.ADC_STEAM_DEMO_BUILD === "1";
 
 /**
  * Apply the saved text size before the page paints. Chromium zoom scales the
- * whole window (100% / 110% / 125%). The page repeats this over IPC once it
- * boots, and skips the website's CSS text delta so the two do not stack.
+ * whole window (100% / 110% / 125%). The page repeats this over async IPC once
+ * it boots (and skips the website CSS text delta so the two do not stack).
+ *
+ * Do not use sendSync here: blocking the preload while main calls
+ * setZoomFactor on the same WebContents can deadlock the Steam shell so it
+ * never shows a window.
  */
 function applyStoredTextZoom(): void {
   let stored: string | null = null;
@@ -36,11 +40,12 @@ function applyStoredTextZoom(): void {
   }
   const width = typeof window.innerWidth === "number" ? window.innerWidth : null;
   const scale = textScaleIdFromStorage(stored, legacy, width);
-  try {
-    ipcRenderer.sendSync("window:set-text-zoom-sync", scale);
-  } catch {
-    const factor = textScaleZoomFactor(scale);
-    if (factor != null) webFrame.setZoomFactor(factor);
+  const factor = textScaleZoomFactor(scale);
+  if (factor != null) {
+    webFrame.setZoomFactor(factor);
+    // Tell main the factor so did-finish-load can re-apply after Chromium
+    // clears zoom on navigation. Fire-and-forget; never sendSync.
+    ipcRenderer.send("window:remember-text-zoom", scale);
   }
 }
 

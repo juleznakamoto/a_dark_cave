@@ -254,9 +254,9 @@ async function createWindow(): Promise<void> {
         height: 800,
         minWidth: 800,
         minHeight: 600,
-        // Steam launches borderless fullscreen. 1280x800 is the restored size
-        // after the player leaves fullscreen. Trailer capture stays windowed.
-        fullscreen: true,
+        // Do not set fullscreen:true here with show:false — on Windows that
+        // combo can leave the Steam shell black / unresponsive. Enter
+        // fullscreen after show() instead. 1280x800 is the restored size.
       }),
     backgroundColor: "#000000",
     show: false,
@@ -273,17 +273,20 @@ async function createWindow(): Promise<void> {
     mainWindow.setMenuBarVisibility(false);
   }
 
-  // Set before the page loads so the fullscreen button matches the window
-  // even if enter-full-screen lags behind (Windows + Steam overlay).
+  // Intent matches the post-show fullscreen enter below so the button icon
+  // is correct even if enter-full-screen lags (Windows + Steam overlay).
   if (!trailer) {
     fullscreenIntent = true;
   }
 
   mainWindow.once("ready-to-show", () => {
-    if (!trailer && mainWindow && !mainWindow.isDestroyed()) {
+    if (!mainWindow || mainWindow.isDestroyed()) return;
+    // Show first, then fullscreen. setFullScreen before show() is a known
+    // Windows Electron footgun (black / stuck window).
+    mainWindow.show();
+    if (!trailer) {
       mainWindow.setFullScreen(true);
     }
-    mainWindow?.show();
   });
 
   // Open external links (e.g. Reddit/Instagram) in the Steam overlay browser / OS browser.
@@ -440,9 +443,12 @@ function registerIpc(): void {
     return next;
   });
 
-  ipcMain.on("window:set-text-zoom-sync", (event, scale: unknown) => {
-    applySteamTextZoom(event.sender, scale, false);
-    event.returnValue = true;
+  // Preload remembers the factor without blocking (see applyStoredTextZoom).
+  // Only store here; applying setZoomFactor during preload sync IPC can hang.
+  ipcMain.on("window:remember-text-zoom", (_event, scale: unknown) => {
+    if (typeof scale !== "string") return;
+    const factor = textScaleZoomFactor(scale);
+    if (factor != null) steamTextZoomFactor = factor;
   });
 
   ipcMain.handle("window:set-text-zoom", (event, scale: unknown) => {
