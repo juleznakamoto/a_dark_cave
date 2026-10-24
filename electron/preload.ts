@@ -1,10 +1,4 @@
-import { contextBridge, ipcRenderer, webFrame } from "electron";
-import {
-  LEGACY_TEXT_SCALE_STORAGE_KEY,
-  TEXT_SCALE_STORAGE_KEY,
-  textScaleIdFromStorage,
-  textScaleZoomFactor,
-} from "../shared/textScaleZoom";
+import { contextBridge, ipcRenderer } from "electron";
 
 /**
  * Secure bridge between the sandboxed renderer (the game) and the Electron main
@@ -15,43 +9,14 @@ import {
  * (achievements, Cloud save, quit-save, full-screen, overlay-to-store,
  * overlay-to-review, text zoom).
  *
+ * Text zoom is applied from the page after boot via `setTextZoom` (async IPC).
+ * Do not set zoom or call sendSync here — sync IPC / webFrame zoom during
+ * preload has hung the Steam shell on Windows.
+ *
  * `isDemoBuild` is baked in by `scripts/build-electron.mjs` when packaging the
  * Steam demo (`ADC_STEAM_DEMO=1` → `ADC_STEAM_DEMO_BUILD`).
  */
 const isDemoBuild = process.env.ADC_STEAM_DEMO_BUILD === "1";
-
-/**
- * Apply the saved text size before the page paints. Chromium zoom scales the
- * whole window (100% / 110% / 125%). The page repeats this over async IPC once
- * it boots (and skips the website CSS text delta so the two do not stack).
- *
- * Main must know the factor *before* did-finish-load: Chromium clears
- * webFrame zoom on navigation, and main re-applies from steamTextZoomFactor.
- * Use sendSync that only stores the number — never have main call
- * setZoomFactor while preload is blocked on sendSync (that deadlocks).
- */
-function applyStoredTextZoom(): void {
-  let stored: string | null = null;
-  let legacy: string | null = null;
-  try {
-    stored = localStorage.getItem(TEXT_SCALE_STORAGE_KEY);
-    legacy = localStorage.getItem(LEGACY_TEXT_SCALE_STORAGE_KEY);
-  } catch {
-    /* Storage can be blocked; the page applies the same choice after boot. */
-  }
-  const width = typeof window.innerWidth === "number" ? window.innerWidth : null;
-  const scale = textScaleIdFromStorage(stored, legacy, width);
-  const factor = textScaleZoomFactor(scale);
-  if (factor == null) return;
-  webFrame.setZoomFactor(factor);
-  try {
-    ipcRenderer.sendSync("window:remember-text-zoom-sync", scale);
-  } catch {
-    // Main unavailable; did-finish-load cannot re-apply until the page boots.
-  }
-}
-
-applyStoredTextZoom();
 
 contextBridge.exposeInMainWorld("steamBridge", {
   available: true,

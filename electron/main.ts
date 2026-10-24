@@ -254,9 +254,8 @@ async function createWindow(): Promise<void> {
         height: 800,
         minWidth: 800,
         minHeight: 600,
-        // Do not set fullscreen:true here with show:false — on Windows that
-        // combo can leave the Steam shell black / unresponsive. Enter
-        // fullscreen after show() instead. 1280x800 is the restored size.
+        // Restored size after leaving maximize / exclusive fullscreen.
+        // Never create with fullscreen:true + show:false on Windows.
       }),
     backgroundColor: "#000000",
     show: false,
@@ -273,21 +272,25 @@ async function createWindow(): Promise<void> {
     mainWindow.setMenuBarVisibility(false);
   }
 
-  // Intent matches the post-show fullscreen enter below so the button icon
-  // is correct even if enter-full-screen lags (Windows + Steam overlay).
-  if (!trailer) {
-    fullscreenIntent = true;
-  }
-
-  mainWindow.once("ready-to-show", () => {
-    if (!mainWindow || mainWindow.isDestroyed()) return;
-    // Show first, then fullscreen. setFullScreen before show() is a known
-    // Windows Electron footgun (black / stuck window).
+  // Electron docs: show after ready-to-show. Also fall back on did-finish-load
+  // — ready-to-show has failed to fire on some Windows configs, which looks
+  // like the Steam app "never starts".
+  //
+  // Fill the display with maximize, not exclusive setFullScreen. Exclusive
+  // fullscreen on launch + Steam overlay / in-process-gpu often yields a
+  // black or stuck window on Windows. The in-game button still toggles true
+  // fullscreen after the window is healthy.
+  let windowRevealed = false;
+  const revealMainWindow = (): void => {
+    if (windowRevealed || !mainWindow || mainWindow.isDestroyed()) return;
+    windowRevealed = true;
     mainWindow.show();
-    if (!trailer) {
-      mainWindow.setFullScreen(true);
+    if (!trailer && !mainWindow.isMaximized()) {
+      mainWindow.maximize();
     }
-  });
+  };
+  mainWindow.once("ready-to-show", revealMainWindow);
+  mainWindow.webContents.once("did-finish-load", revealMainWindow);
 
   // Open external links (e.g. Reddit/Instagram) in the Steam overlay browser / OS browser.
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
@@ -297,8 +300,8 @@ async function createWindow(): Promise<void> {
     return { action: "deny" };
   });
 
-  // Preload sets zoom before first paint. Chromium clears it when the
-  // navigation finishes, so put the same factor back once the load completes.
+  // Page sets zoom via async IPC after boot. Chromium can reset zoom on
+  // navigation; re-apply whatever the page last requested.
   mainWindow.webContents.on("did-finish-load", () => {
     if (steamTextZoomFactor == null || !mainWindow || mainWindow.isDestroyed()) return;
     mainWindow.webContents.setZoomFactor(steamTextZoomFactor);
@@ -380,14 +383,7 @@ function beginQuitSave(): void {
 /** Last Chromium zoom requested by the page. Re-applied after load so navigation cannot reset it. */
 let steamTextZoomFactor: number | null = null;
 
-/** Store only — safe to call from preload sendSync (must not touch WebContents). */
-function rememberSteamTextZoom(scale: unknown): void {
-  if (typeof scale !== "string") return;
-  const factor = textScaleZoomFactor(scale);
-  if (factor != null) steamTextZoomFactor = factor;
-}
-
-/** Small / Medium / Large → Chromium zoom 100% / 110% / 125%. */
+/** Small / Medium / Large → Chromium zoom 100% / 110% / 125%. Call only after the page is up (async IPC). */
 function applySteamTextZoom(
   contents: Electron.WebContents,
   scale: unknown,
@@ -448,13 +444,6 @@ function registerIpc(): void {
     mainWindow.webContents.send("window:fullscreen-changed", next);
     mainWindow.webContents.send("window:layout-changed");
     return next;
-  });
-
-  // Preload sendSync: store the factor only. Calling setZoomFactor here while
-  // the renderer is blocked on sendSync can deadlock the Steam shell.
-  ipcMain.on("window:remember-text-zoom-sync", (event, scale: unknown) => {
-    rememberSteamTextZoom(scale);
-    event.returnValue = true;
   });
 
   ipcMain.handle("window:set-text-zoom", (event, scale: unknown) => {
