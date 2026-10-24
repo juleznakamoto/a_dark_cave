@@ -281,8 +281,19 @@ async function createWindow(): Promise<void> {
   // fullscreen on launch + Steam overlay / in-process-gpu often yields a
   // black or stuck window on Windows. The in-game button still toggles true
   // fullscreen after the window is healthy.
+  let revealFallback: ReturnType<typeof setTimeout> | undefined;
+  const clearRevealFallback = (): void => {
+    if (revealFallback === undefined) return;
+    clearTimeout(revealFallback);
+    revealFallback = undefined;
+  };
   const revealMainWindow = (): void => {
-    if (!mainWindow || mainWindow.isDestroyed()) return;
+    if (!mainWindow || mainWindow.isDestroyed()) {
+      clearRevealFallback();
+      return;
+    }
+    // Already-visible windows skip show(), so the "show" event is not a
+    // reliable signal to drop the timer. Clear it from visibility instead.
     if (!mainWindow.isVisible()) mainWindow.show();
     if (
       !trailer &&
@@ -291,12 +302,11 @@ async function createWindow(): Promise<void> {
     ) {
       mainWindow.maximize();
     }
+    if (mainWindow.isVisible()) clearRevealFallback();
   };
   mainWindow.once("ready-to-show", revealMainWindow);
   mainWindow.webContents.once("did-finish-load", revealMainWindow);
-  const revealFallback = setTimeout(revealMainWindow, 2000);
-  const clearRevealFallback = (): void => clearTimeout(revealFallback);
-  mainWindow.once("show", clearRevealFallback);
+  revealFallback = setTimeout(revealMainWindow, 2000);
   mainWindow.once("closed", clearRevealFallback);
 
   // Open external links (e.g. Reddit/Instagram) in the Steam overlay browser / OS browser.
