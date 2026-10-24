@@ -425,8 +425,9 @@ async function createWindow(): Promise<void> {
 function beginQuitSave(): void {
   if (readyToQuit || quitSaveInFlight) return;
   quitSaveInFlight = true;
-  // The button already queued the mode. Do not write again here, and do not
-  // let a fullscreen event during teardown replace that mode.
+  // Record the mode being closed in, after any in-flight toggle write.
+  // Later fullscreen events during teardown must not replace it.
+  if (fullscreenIntent !== null) writeFullscreenPreference(fullscreenIntent);
   acceptFullscreenWrites = false;
 
   let timeout: ReturnType<typeof setTimeout> | undefined;
