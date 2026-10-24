@@ -8,7 +8,7 @@ import {
   getPriorDiscSurfaceColors,
   PRIOR_DISC_OUTER_TRANSITION,
 } from "@/lib/priorDiscStyles";
-import { getControlScaleFactor } from "@/lib/textScale";
+import { getRenderedControlScaleFactor } from "@/lib/textScale";
 import { cn } from "@/lib/utils";
 import {
   Tooltip,
@@ -47,7 +47,7 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
   const badgeFillMetrics = useMemo(
     () =>
       getPriorDiscFillMetrics(
-        PRIOR_BADGE_SIZE_PX * getControlScaleFactor(textScale),
+        PRIOR_BADGE_SIZE_PX * getRenderedControlScaleFactor(textScale),
       ),
     [textScale],
   );

@@ -8,6 +8,7 @@
  */
 import { isSteamBuild } from "@/lib/edition";
 import { logger } from "@/lib/logger";
+import type { TextScaleZoomId } from "@shared/textScaleZoom";
 
 function bridge(): SteamBridge | undefined {
   if (typeof window === "undefined") return undefined;
@@ -186,4 +187,22 @@ export function steamOnLayoutChanged(
   const b = bridge();
   if (!b?.available || !b.onLayoutChanged) return undefined;
   return b.onLayoutChanged(callback);
+}
+
+/** True when the Steam shell can set Chromium page zoom. */
+export function hasChromiumTextZoom(): boolean {
+  const b = bridge();
+  return !!b?.available && typeof b.setTextZoom === "function";
+}
+
+/**
+ * Small / Medium / Large → 100% / 110% / 125% in the Steam window.
+ * No-op on the website.
+ */
+export function steamSetTextZoom(scale: TextScaleZoomId): void {
+  const b = bridge();
+  if (!b?.available || !b.setTextZoom) return;
+  void b.setTextZoom(scale).catch((error) => {
+    logger.warn("[STEAM] Failed to set text zoom", error);
+  });
 }

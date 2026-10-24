@@ -1,9 +1,16 @@
-export const TEXT_SCALE_STORAGE_KEY = "adc-text-scale-v2";
-/** Pre–Small/Medium/Large rename. Migrated once into TEXT_SCALE_STORAGE_KEY. */
-const LEGACY_TEXT_SCALE_STORAGE_KEY = "adc-text-scale";
+import { hasChromiumTextZoom, steamSetTextZoom } from "@/lib/steam";
+import {
+  LEGACY_TEXT_SCALE_STORAGE_KEY,
+  TEXT_SCALE_MOBILE_BREAKPOINT_PX as SHARED_TEXT_SCALE_MOBILE_BREAKPOINT_PX,
+  TEXT_SCALE_STORAGE_KEY,
+  TEXT_SCALE_ZOOM_FACTOR,
+} from "@shared/textScaleZoom";
+
+export { TEXT_SCALE_STORAGE_KEY, TEXT_SCALE_ZOOM_FACTOR };
 
 /** Match `useIsMobile` / tooltip mobile breakpoint. */
-export const TEXT_SCALE_MOBILE_BREAKPOINT_PX = 768;
+export const TEXT_SCALE_MOBILE_BREAKPOINT_PX =
+  SHARED_TEXT_SCALE_MOBILE_BREAKPOINT_PX;
 
 export const TEXT_SCALE_OPTIONS = ["small", "medium", "large"] as const;
 
@@ -126,22 +133,49 @@ export function setStoredTextScale(scale: TextScale): void {
   }
 }
 
+/** Steam shell: Chromium zoom instead of the CSS text/control bumps. */
+export function usesChromiumTextZoom(): boolean {
+  return hasChromiumTextZoom();
+}
+
+/**
+ * Control chrome scale actually painted. Steam leaves this at 1 because
+ * `setZoomFactor` already scales the page.
+ */
+export function getRenderedControlScaleFactor(scale: TextScale): number {
+  return usesChromiumTextZoom() ? 1 : getControlScaleFactor(scale);
+}
+
+function clearManualTextScale(root: HTMLElement): void {
+  root.style.setProperty("--adc-text-delta", "0px");
+  root.style.removeProperty("--adc-text-scale");
+  root.style.setProperty("--adc-control-scale", "1");
+  root.classList.remove("adc-text-large", "adc-text-xlarge");
+}
+
 export function applyTextScaleToDocument(scale: TextScale): void {
   if (typeof document === "undefined") return;
   const root = document.documentElement;
-  root.style.setProperty(
-    "--adc-text-delta",
-    `${getTextScaleDeltaPx(scale)}px`,
-  );
-  root.style.removeProperty("--adc-text-scale");
-  root.style.setProperty(
-    "--adc-control-scale",
-    String(getControlScaleFactor(scale)),
-  );
-  // `adc-text-large` = Medium or Large (shared layout breathing room).
-  // `adc-text-xlarge` = Large only (further indicator / glyph bumps).
-  root.classList.toggle("adc-text-large", isEnlargedTextScale(scale));
-  root.classList.toggle("adc-text-xlarge", scale === "large");
+  if (usesChromiumTextZoom()) {
+    // Page zoom scales type, chrome, and shaders together. The CSS delta
+    // would stack a second enlargement on top of 110% / 125%.
+    clearManualTextScale(root);
+    steamSetTextZoom(scale);
+  } else {
+    root.style.setProperty(
+      "--adc-text-delta",
+      `${getTextScaleDeltaPx(scale)}px`,
+    );
+    root.style.removeProperty("--adc-text-scale");
+    root.style.setProperty(
+      "--adc-control-scale",
+      String(getControlScaleFactor(scale)),
+    );
+    // `adc-text-large` = Medium or Large (shared layout breathing room).
+    // `adc-text-xlarge` = Large only (further indicator / glyph bumps).
+    root.classList.toggle("adc-text-large", isEnlargedTextScale(scale));
+    root.classList.toggle("adc-text-xlarge", scale === "large");
+  }
   window.dispatchEvent(
     new CustomEvent(TEXT_SCALE_CHANGE_EVENT, { detail: { scale } }),
   );

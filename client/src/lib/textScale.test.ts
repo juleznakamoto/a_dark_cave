@@ -11,6 +11,7 @@ import {
   applyTextScaleToDocument,
   getControlScaleFactor,
   getPlatformDefaultTextScale,
+  getRenderedControlScaleFactor,
   getStoredTextScale,
   getTextScaleDeltaPx,
   isEnlargedTextScale,
@@ -44,6 +45,7 @@ describe("textScale", () => {
   afterEach(() => {
     localStorage.clear();
     stubInnerWidth(originalInnerWidth);
+    delete window.steamBridge;
     document.documentElement.classList.remove(
       "adc-text-large",
       "adc-text-xlarge",
@@ -157,5 +159,31 @@ describe("textScale", () => {
     expect(
       document.documentElement.style.getPropertyValue("--adc-control-scale"),
     ).toBe("1");
+  });
+
+  it("uses Chromium zoom in the Steam shell and leaves the CSS bumps off", () => {
+    const setTextZoom = vi.fn(async () => undefined);
+    window.steamBridge = {
+      available: true,
+      setTextZoom,
+    } as Window["steamBridge"];
+
+    applyTextScaleToDocument("large");
+
+    expect(setTextZoom).toHaveBeenCalledWith("large");
+    expect(document.documentElement.classList.contains("adc-text-large")).toBe(
+      false,
+    );
+    expect(
+      document.documentElement.classList.contains("adc-text-xlarge"),
+    ).toBe(false);
+    expect(
+      document.documentElement.style.getPropertyValue("--adc-text-delta"),
+    ).toBe("0px");
+    expect(
+      document.documentElement.style.getPropertyValue("--adc-control-scale"),
+    ).toBe("1");
+    expect(getRenderedControlScaleFactor("large")).toBe(1);
+    expect(getControlScaleFactor("large")).toBe(LARGE_CONTROL_SCALE_FACTOR);
   });
 });

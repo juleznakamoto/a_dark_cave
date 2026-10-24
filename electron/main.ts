@@ -26,6 +26,7 @@ import {
   resolveSteamCloudSavePath,
   resolveSteamDemoCloudSavePath,
 } from "./paths";
+import { textScaleZoomFactor } from "../shared/textScaleZoom";
 
 /**
  * Electron main process for the A Dark Cave Steam build.
@@ -293,6 +294,13 @@ async function createWindow(): Promise<void> {
     return { action: "deny" };
   });
 
+  // Preload sets zoom before first paint. Chromium clears it when the
+  // navigation finishes, so put the same factor back once the load completes.
+  mainWindow.webContents.on("did-finish-load", () => {
+    if (steamTextZoomFactor == null || !mainWindow || mainWindow.isDestroyed()) return;
+    mainWindow.webContents.setZoomFactor(steamTextZoomFactor);
+  });
+
   if (DEV_SERVER_URL) {
     await mainWindow.loadURL(DEV_SERVER_URL);
   } else {
@@ -366,6 +374,23 @@ function beginQuitSave(): void {
   finishQuit();
 }
 
+/** Last Chromium zoom requested by the page. Re-applied after load so navigation cannot reset it. */
+let steamTextZoomFactor: number | null = null;
+
+/** Small / Medium / Large → Chromium zoom 100% / 110% / 125%. */
+function applySteamTextZoom(
+  contents: Electron.WebContents,
+  scale: unknown,
+  notifyLayout: boolean,
+): void {
+  if (typeof scale !== "string" || contents.isDestroyed()) return;
+  const factor = textScaleZoomFactor(scale);
+  if (factor == null) return;
+  steamTextZoomFactor = factor;
+  contents.setZoomFactor(factor);
+  if (notifyLayout) contents.send("window:layout-changed");
+}
+
 function registerIpc(): void {
   ipcMain.handle("steam:is-running", () => isSteamReady());
   ipcMain.handle("steam:player-name", () => getPlayerName());
@@ -413,6 +438,15 @@ function registerIpc(): void {
     mainWindow.webContents.send("window:fullscreen-changed", next);
     mainWindow.webContents.send("window:layout-changed");
     return next;
+  });
+
+  ipcMain.on("window:set-text-zoom-sync", (event, scale: unknown) => {
+    applySteamTextZoom(event.sender, scale, false);
+    event.returnValue = true;
+  });
+
+  ipcMain.handle("window:set-text-zoom", (event, scale: unknown) => {
+    applySteamTextZoom(event.sender, scale, true);
   });
 }
 
