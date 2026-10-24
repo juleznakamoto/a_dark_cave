@@ -2176,6 +2176,15 @@
     "message": "Una joven erudita te busca, con notas de campo y un mapa dibujado a mano bajo el brazo. Habla de templos olvidados y santuarios ocultos en lo profundo del bosque. Con suficiente financiación, podría liderar expediciones hacia la espesura y regresar con un saber que se creía perdido.",
     "title": "La propuesta de la erudita"
   },
+  "scholarResearchTreasureHint": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "La joven erudita vuelve a buscarte, con notas de campo y el mismo mapa dibujado a mano bajo el brazo. «Los templos olvidados pueden guardar algo más que conocimiento», dice. «Tesoros ocultos, tal vez. Cosas que los antiguos constructores dejaron atrás.»",
+    "title": "El regreso de la erudita"
+  },
   "secondWave": {
     "message": "Las criaturas regresan en mayor número, con armas de hueso tosco que brillan con luz impura.",
     "title": "La segunda oleada"

@@ -2176,6 +2176,15 @@
     "message": "Une jeune érudite vient vous trouver, notes de terrain et carte dessinée à la main sous le bras. Elle parle de temples oubliés et de sanctuaires cachés au cœur de la forêt. Avec des fonds suffisants, elle pourrait mener des expéditions en pleine nature et ramener des connaissances que l'on croyait perdues depuis longtemps.",
     "title": "La proposition de l'érudite"
   },
+  "scholarResearchTreasureHint": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "message": "La jeune érudite revient vous trouver, notes de terrain et la même carte dessinée à la main sous le bras. « Les temples oubliés recèlent peut-être plus que du savoir », dit-elle. « Des trésors cachés. Ce que les anciens bâtisseurs ont laissé derrière eux. »",
+    "title": "Le retour de l'érudite"
+  },
   "secondWave": {
     "message": "Les créatures reviennent en plus grand nombre, brandissant des armes d'os grossières qui luisent d'une lumière impure.",
     "title": "La deuxième vague"

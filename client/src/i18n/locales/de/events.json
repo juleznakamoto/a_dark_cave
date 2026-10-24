@@ -2176,6 +2176,15 @@
     "message": "Eine junge Gelehrte sucht dich auf, Feldnotizen und eine handgezeichnete Karte unter dem Arm. Sie spricht von vergessenen Tempeln und Heiligtümern tief im Wald. Mit genügend Gold könnte sie Expeditionen in die Wildnis führen und Wissen zurückbringen, das längst verloren schien.",
     "title": "Der Vorschlag der Gelehrten"
   },
+  "scholarResearchTreasureHint": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "message": "Die junge Gelehrte sucht dich erneut auf, Feldnotizen und dieselbe handgezeichnete Karte unter dem Arm. „Die vergessenen Tempel bergen vielleicht mehr als Wissen“, sagt sie. „Verborgene Schätze. Dinge, die die alten Baumeister zurückließen.“",
+    "title": "Die Rückkehr der Gelehrten"
+  },
   "secondWave": {
     "message": "Die Kreaturen kehren in noch größerer Zahl zurück, mit Waffen aus rohem Knochen, die von üblem Licht erfüllt sind.",
     "title": "Die zweite Welle"

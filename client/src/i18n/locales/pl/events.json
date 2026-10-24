@@ -2178,6 +2178,15 @@
     "message": "Młoda uczona odnajduje cię, notatki z terenu i ręcznie rysowana mapa wsunięte pod ramię. Mówi o zapomnianych świątyniach i sanktuariach ukrytych głęboko w lesie. Przy wystarczających środkach mogłaby prowadzić wyprawy w dzicz i wracać z wiedzą dawno uznaną za straconą.",
     "title": "Propozycja uczonej"
   },
+  "scholarResearchTreasureHint": {
+    "choices": {
+      "continue": {
+        "label": "Kontynuuj"
+      }
+    },
+    "message": "Młoda uczona znów cię odnajduje, notatki z terenu i ta sama ręcznie rysowana mapa wsunięte pod ramię. „Zapomniane świątynie mogą kryć coś więcej niż wiedzę” – mówi. „Ukryte skarby. Rzeczy, które dawni budowniczowie zostawili za sobą.”",
+    "title": "Powrót uczonej"
+  },
   "secondWave": {
     "message": "Stwory wracają w większej liczbie, z bronią z prymitywnej kości, świecącą plugawym światłem.",
     "title": "Druga fala"

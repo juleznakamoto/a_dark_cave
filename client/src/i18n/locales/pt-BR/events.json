@@ -2176,6 +2176,15 @@
     "message": "Uma jovem estudiosa procura você, com anotações de campo e um mapa desenhado à mão debaixo do braço. Ela fala de templos esquecidos e santuários escondidos nas profundezas da floresta. Com financiamento suficiente, ela poderia liderar expedições pela mata e voltar com conhecimentos há muito considerados perdidos.",
     "title": "A Proposta da Estudiosa"
   },
+  "scholarResearchTreasureHint": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "A jovem estudiosa procura você de novo, com anotações de campo e o mesmo mapa desenhado à mão debaixo do braço. “Os templos esquecidos podem guardar mais do que conhecimento”, diz ela. “Tesouros escondidos, talvez. Coisas que os antigos construtores deixaram para trás.”",
+    "title": "O Retorno da Estudiosa"
+  },
   "secondWave": {
     "message": "As criaturas retornam em maior número, com armas de osso tosco, brilhando com luz imunda.",
     "title": "A Segunda Onda"
