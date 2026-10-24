@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain, Menu, shell } from "electron";
 import { readFile, writeFile, mkdir, unlink } from "node:fs/promises";
 import { join, dirname } from "node:path";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import {
   LOOPBACK_PORT_FILE,
   parseStoredLoopbackPort,
@@ -87,16 +87,34 @@ function readFullscreenPreference(): boolean {
   }
 }
 
+/** Serializes fullscreen writes so a newer choice cannot be overwritten by an older one. */
+let fullscreenWriteChain: Promise<void> = Promise.resolve();
+/** Close/quit must not start another write. The in-flight one is flushed before exit. */
+let acceptFullscreenWrites = true;
+
 function writeFullscreenPreference(fullscreen: boolean): void {
-  if (isTrailerCaptureMode()) return;
-  try {
-    const file = windowStatePath();
-    mkdirSync(dirname(file), { recursive: true });
-    writeFileSync(file, serializeWindowFullscreenPreference(fullscreen), "utf-8");
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.warn("[STEAM] window state write failed:", error);
-  }
+  if (!acceptFullscreenWrites || isTrailerCaptureMode()) return;
+  const payload = serializeWindowFullscreenPreference(fullscreen);
+  fullscreenWriteChain = fullscreenWriteChain.then(async () => {
+    try {
+      const file = windowStatePath();
+      await mkdir(dirname(file), { recursive: true });
+      await writeFile(file, payload, "utf-8");
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.warn("[STEAM] window state write failed:", error);
+    }
+  });
+}
+
+/** Wait until every queued fullscreen write has finished, including ones queued mid-flush. */
+function flushFullscreenPreference(): Promise<void> {
+  const wait = async (): Promise<void> => {
+    const pending = fullscreenWriteChain;
+    await pending;
+    if (fullscreenWriteChain !== pending) await wait();
+  };
+  return wait();
 }
 
 function setFullscreenIntent(next: boolean): void {
@@ -393,7 +411,6 @@ async function createWindow(): Promise<void> {
   mainWindow.on("unmaximize", notifyLayoutChange);
 
   mainWindow.on("close", (event) => {
-    if (fullscreenIntent !== null) writeFullscreenPreference(fullscreenIntent);
     if (readyToQuit) return;
     event.preventDefault();
     beginQuitSave();
@@ -408,19 +425,29 @@ async function createWindow(): Promise<void> {
 function beginQuitSave(): void {
   if (readyToQuit || quitSaveInFlight) return;
   quitSaveInFlight = true;
+  // The button already queued the mode. Do not write again here, and do not
+  // let a fullscreen event during teardown replace that mode.
+  acceptFullscreenWrites = false;
 
   let timeout: ReturnType<typeof setTimeout> | undefined;
+  let quitFinishStarted = false;
   const onRendererSaved = (): void => {
     finishQuit();
   };
 
   const finishQuit = (): void => {
-    if (readyToQuit) return;
+    if (readyToQuit || quitFinishStarted) return;
+    quitFinishStarted = true;
     if (timeout !== undefined) clearTimeout(timeout);
     ipcMain.removeListener("app:save-complete", onRendererSaved);
-    readyToQuit = true;
-    quitSaveInFlight = false;
-    app.quit();
+    // The renderer save can finish while the mode file is still writing.
+    // Wait for that write without blocking this turn, then quit.
+    void flushFullscreenPreference().finally(() => {
+      if (readyToQuit) return;
+      readyToQuit = true;
+      quitSaveInFlight = false;
+      app.quit();
+    });
   };
 
   timeout = setTimeout(finishQuit, QUIT_SAVE_TIMEOUT_MS);
