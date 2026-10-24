@@ -272,25 +272,32 @@ async function createWindow(): Promise<void> {
     mainWindow.setMenuBarVisibility(false);
   }
 
-  // Electron docs: show after ready-to-show. Also fall back on did-finish-load
-  // — ready-to-show has failed to fire on some Windows configs, which looks
-  // like the Steam app "never starts".
+  // Show on ready-to-show and again on did-finish-load. Either event can be
+  // missing on Windows, and the earlier one can run before maximize sticks,
+  // so this must stay idempotent (no one-shot flag). A timer covers the case
+  // where neither event fires.
   //
   // Fill the display with maximize, not exclusive setFullScreen. Exclusive
   // fullscreen on launch + Steam overlay / in-process-gpu often yields a
   // black or stuck window on Windows. The in-game button still toggles true
   // fullscreen after the window is healthy.
-  let windowRevealed = false;
   const revealMainWindow = (): void => {
-    if (windowRevealed || !mainWindow || mainWindow.isDestroyed()) return;
-    windowRevealed = true;
-    mainWindow.show();
-    if (!trailer && !mainWindow.isMaximized()) {
+    if (!mainWindow || mainWindow.isDestroyed()) return;
+    if (!mainWindow.isVisible()) mainWindow.show();
+    if (
+      !trailer &&
+      !mainWindow.isMaximized() &&
+      !mainWindow.isFullScreen()
+    ) {
       mainWindow.maximize();
     }
   };
   mainWindow.once("ready-to-show", revealMainWindow);
   mainWindow.webContents.once("did-finish-load", revealMainWindow);
+  const revealFallback = setTimeout(revealMainWindow, 2000);
+  const clearRevealFallback = (): void => clearTimeout(revealFallback);
+  mainWindow.once("show", clearRevealFallback);
+  mainWindow.once("closed", clearRevealFallback);
 
   // Open external links (e.g. Reddit/Instagram) in the Steam overlay browser / OS browser.
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
@@ -300,8 +307,8 @@ async function createWindow(): Promise<void> {
     return { action: "deny" };
   });
 
-  // Page sets zoom via async IPC after boot. Chromium can reset zoom on
-  // navigation; re-apply whatever the page last requested.
+  // Preload stores the factor before this event. Chromium clears webFrame
+  // zoom when navigation finishes, so put the same factor back here.
   mainWindow.webContents.on("did-finish-load", () => {
     if (steamTextZoomFactor == null || !mainWindow || mainWindow.isDestroyed()) return;
     mainWindow.webContents.setZoomFactor(steamTextZoomFactor);
@@ -380,10 +387,17 @@ function beginQuitSave(): void {
   finishQuit();
 }
 
-/** Last Chromium zoom requested by the page. Re-applied after load so navigation cannot reset it. */
+/** Last Chromium zoom requested by preload or the page. Re-applied after load. */
 let steamTextZoomFactor: number | null = null;
 
-/** Small / Medium / Large → Chromium zoom 100% / 110% / 125%. Call only after the page is up (async IPC). */
+/** Store only. Safe from preload sendSync — must not touch WebContents. */
+function rememberSteamTextZoom(scale: unknown): void {
+  if (typeof scale !== "string") return;
+  const factor = textScaleZoomFactor(scale);
+  if (factor != null) steamTextZoomFactor = factor;
+}
+
+/** Small / Medium / Large → Chromium zoom 100% / 110% / 125%. Async IPC only. */
 function applySteamTextZoom(
   contents: Electron.WebContents,
   scale: unknown,
@@ -444,6 +458,12 @@ function registerIpc(): void {
     mainWindow.webContents.send("window:fullscreen-changed", next);
     mainWindow.webContents.send("window:layout-changed");
     return next;
+  });
+
+  // Store only. setZoomFactor here deadlocks the renderer blocked on sendSync.
+  ipcMain.on("window:remember-text-zoom-sync", (event, scale: unknown) => {
+    rememberSteamTextZoom(scale);
+    event.returnValue = true;
   });
 
   ipcMain.handle("window:set-text-zoom", (event, scale: unknown) => {
