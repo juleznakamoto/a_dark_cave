@@ -380,6 +380,13 @@ function beginQuitSave(): void {
 /** Last Chromium zoom requested by the page. Re-applied after load so navigation cannot reset it. */
 let steamTextZoomFactor: number | null = null;
 
+/** Store only — safe to call from preload sendSync (must not touch WebContents). */
+function rememberSteamTextZoom(scale: unknown): void {
+  if (typeof scale !== "string") return;
+  const factor = textScaleZoomFactor(scale);
+  if (factor != null) steamTextZoomFactor = factor;
+}
+
 /** Small / Medium / Large → Chromium zoom 100% / 110% / 125%. */
 function applySteamTextZoom(
   contents: Electron.WebContents,
@@ -443,12 +450,11 @@ function registerIpc(): void {
     return next;
   });
 
-  // Preload remembers the factor without blocking (see applyStoredTextZoom).
-  // Only store here; applying setZoomFactor during preload sync IPC can hang.
-  ipcMain.on("window:remember-text-zoom", (_event, scale: unknown) => {
-    if (typeof scale !== "string") return;
-    const factor = textScaleZoomFactor(scale);
-    if (factor != null) steamTextZoomFactor = factor;
+  // Preload sendSync: store the factor only. Calling setZoomFactor here while
+  // the renderer is blocked on sendSync can deadlock the Steam shell.
+  ipcMain.on("window:remember-text-zoom-sync", (event, scale: unknown) => {
+    rememberSteamTextZoom(scale);
+    event.returnValue = true;
   });
 
   ipcMain.handle("window:set-text-zoom", (event, scale: unknown) => {

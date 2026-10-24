@@ -25,9 +25,10 @@ const isDemoBuild = process.env.ADC_STEAM_DEMO_BUILD === "1";
  * whole window (100% / 110% / 125%). The page repeats this over async IPC once
  * it boots (and skips the website CSS text delta so the two do not stack).
  *
- * Do not use sendSync here: blocking the preload while main calls
- * setZoomFactor on the same WebContents can deadlock the Steam shell so it
- * never shows a window.
+ * Main must know the factor *before* did-finish-load: Chromium clears
+ * webFrame zoom on navigation, and main re-applies from steamTextZoomFactor.
+ * Use sendSync that only stores the number — never have main call
+ * setZoomFactor while preload is blocked on sendSync (that deadlocks).
  */
 function applyStoredTextZoom(): void {
   let stored: string | null = null;
@@ -41,11 +42,12 @@ function applyStoredTextZoom(): void {
   const width = typeof window.innerWidth === "number" ? window.innerWidth : null;
   const scale = textScaleIdFromStorage(stored, legacy, width);
   const factor = textScaleZoomFactor(scale);
-  if (factor != null) {
-    webFrame.setZoomFactor(factor);
-    // Tell main the factor so did-finish-load can re-apply after Chromium
-    // clears zoom on navigation. Fire-and-forget; never sendSync.
-    ipcRenderer.send("window:remember-text-zoom", scale);
+  if (factor == null) return;
+  webFrame.setZoomFactor(factor);
+  try {
+    ipcRenderer.sendSync("window:remember-text-zoom-sync", scale);
+  } catch {
+    // Main unavailable; did-finish-load cannot re-apply until the page boots.
   }
 }
 
