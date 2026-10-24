@@ -754,6 +754,9 @@
   "tradeGoldForBlacksteel": {
     "label": "Kup czarnostal"
   },
+  "tradeGoldForBoneTotems": {
+    "label": "Kup kościane totemy"
+  },
   "tradeGoldForEmberBomb": {
     "label": "Kup bombę żaru"
   },
@@ -765,6 +768,9 @@
   },
   "tradeGoldForLeather": {
     "label": "Kup skórę"
+  },
+  "tradeGoldForLeatherTotems": {
+    "label": "Kup skórzane totemy"
   },
   "tradeGoldForObsidian": {
     "label": "Kup obsydian"

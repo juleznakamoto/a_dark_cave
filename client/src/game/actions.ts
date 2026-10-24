@@ -742,6 +742,8 @@ export function executeGameAction(
     case "tradeGoldForVoidBomb":
     case "tradeGoldForVeinfireElixir":
     case "tradeGoldForInsightPotion":
+    case "tradeGoldForBoneTotems":
+    case "tradeGoldForLeatherTotems":
       return handleTradeAction(actionId, state, result);
     case "sellLeatherBatch":
     case "sellSteelBatch":

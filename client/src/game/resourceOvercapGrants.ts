@@ -15,6 +15,8 @@ export const FOREST_WAREHOUSE_OVERCAP_TRADE_IDS = [
   "tradeGoldForAdamant",
   "tradeGoldForBlacksteel",
   "tradeGoldForTorch",
+  "tradeGoldForBoneTotems",
+  "tradeGoldForLeatherTotems",
 ] as const;
 
 export function actionAllowsResourceOvercap(actionId: string): boolean {

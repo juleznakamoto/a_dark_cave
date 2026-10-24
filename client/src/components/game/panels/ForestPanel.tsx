@@ -53,6 +53,12 @@ import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
 import type { Action, GameState } from "@shared/schema";
 import { formatNumber } from "@/lib/utils";
 
+/** Post-win Buy buttons. Left out of the demo-end teaser. */
+const POST_GAME_FOREST_BUY_IDS = new Set([
+  "tradeGoldForBoneTotems",
+  "tradeGoldForLeatherTotems",
+]);
+
 function resolveActionLabel(actionId: string, fallback: string): string {
   return resolveActionLabelBase(actionId, fallback, { forestUnlocked: true });
 }
@@ -220,6 +226,8 @@ export default function ForestPanel() {
         { id: "tradeGoldForVeinfireElixir", label: "Veinfire Elixir" },
         { id: "tradeGoldForInsightPotion", label: "Insight Elixir" },
         { id: "tradeSilverForGold", label: "Gold" },
+        { id: "tradeGoldForBoneTotems", label: "Bone Totems" },
+        { id: "tradeGoldForLeatherTotems", label: "Leather Totems" },
       ],
     },
     {
@@ -562,7 +570,12 @@ export default function ForestPanel() {
                 : { teasers: [], showEllipsis: false };
             const { teasers: tradeTeasers, showEllipsis: showTradeEllipsis } =
               catalogActive && isTradeGroup
-                ? getDemoEndHiddenActionTeasers(group.actions, visibleIds)
+                ? getDemoEndHiddenActionTeasers(
+                    group.actions.filter(
+                      (action) => !POST_GAME_FOREST_BUY_IDS.has(action.id),
+                    ),
+                    visibleIds,
+                  )
                 : { teasers: [], showEllipsis: false };
             const showSacrificeMore =
               catalogActive &&

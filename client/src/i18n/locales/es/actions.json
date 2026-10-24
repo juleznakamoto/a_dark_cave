@@ -752,6 +752,9 @@
   "tradeGoldForBlacksteel": {
     "label": "Comprar acero negro"
   },
+  "tradeGoldForBoneTotems": {
+    "label": "Comprar tótems de hueso"
+  },
   "tradeGoldForEmberBomb": {
     "label": "Comprar bomba de brasas"
   },
@@ -763,6 +766,9 @@
   },
   "tradeGoldForLeather": {
     "label": "Comprar cuero"
+  },
+  "tradeGoldForLeatherTotems": {
+    "label": "Comprar tótems de cuero"
   },
   "tradeGoldForObsidian": {
     "label": "Comprar obsidiana"

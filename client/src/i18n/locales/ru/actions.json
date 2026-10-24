@@ -754,6 +754,9 @@
   "tradeGoldForBlacksteel": {
     "label": "Купить чёрную сталь"
   },
+  "tradeGoldForBoneTotems": {
+    "label": "Купить костяные тотемы"
+  },
   "tradeGoldForEmberBomb": {
     "label": "Купить бомбу жара"
   },
@@ -765,6 +768,9 @@
   },
   "tradeGoldForLeather": {
     "label": "Купить кожу"
+  },
+  "tradeGoldForLeatherTotems": {
+    "label": "Купить кожаные тотемы"
   },
   "tradeGoldForObsidian": {
     "label": "Купить обсидиан"

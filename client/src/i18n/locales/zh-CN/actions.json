@@ -752,6 +752,9 @@
   "tradeGoldForBlacksteel": {
     "label": "购买黑钢"
   },
+  "tradeGoldForBoneTotems": {
+    "label": "购买骨图腾"
+  },
   "tradeGoldForEmberBomb": {
     "label": "购买余烬炸弹"
   },
@@ -763,6 +766,9 @@
   },
   "tradeGoldForLeather": {
     "label": "购买皮革"
+  },
+  "tradeGoldForLeatherTotems": {
+    "label": "购买皮图腾"
   },
   "tradeGoldForObsidian": {
     "label": "购买黑曜石"

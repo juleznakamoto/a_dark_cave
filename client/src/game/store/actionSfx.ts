@@ -34,6 +34,8 @@ const FOREST_TRADE_SOUND_ACTIONS = new Set([
   "tradeGoldForVoidBomb",
   "tradeGoldForVeinfireElixir",
   "tradeGoldForInsightPotion",
+  "tradeGoldForBoneTotems",
+  "tradeGoldForLeatherTotems",
   "sellLeatherBatch",
   "sellSteelBatch",
   "sellBlacksteelBatch",

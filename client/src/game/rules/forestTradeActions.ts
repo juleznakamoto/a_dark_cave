@@ -29,6 +29,9 @@ function calculateForestBridgeSellGold(
   );
 }
 
+/** Bone and leather totems sold together on the Forest Buy row after the last wave. */
+export const POST_GAME_TOTEM_BATCH = 250;
+
 /** First Insight Elixir costs this much gold. */
 export const INSIGHT_ELIXIR_GOLD_BASE = 250;
 /** Ladder rises by 50 until this price. */
@@ -650,6 +653,36 @@ export const forestTradeActions: Record<string, Action> = {
       1: {
         "resources.veinfire_elixir": 1,
       },
+    },
+  },
+
+  tradeGoldForBoneTotems: {
+    id: "tradeGoldForBoneTotems",
+    label: "Buy Bone Totems",
+    show_when: {
+      "story.seen.secondBossWaveVictory": true,
+    },
+    cost: {
+      "resources.gold":
+        POST_GAME_TOTEM_BATCH * getMerchantGoldPricePerUnit("bone_totem"),
+    },
+    effects: {
+      "resources.bone_totem": POST_GAME_TOTEM_BATCH,
+    },
+  },
+
+  tradeGoldForLeatherTotems: {
+    id: "tradeGoldForLeatherTotems",
+    label: "Buy Leather Totems",
+    show_when: {
+      "story.seen.secondBossWaveVictory": true,
+    },
+    cost: {
+      "resources.gold":
+        POST_GAME_TOTEM_BATCH * getMerchantGoldPricePerUnit("leather_totem"),
+    },
+    effects: {
+      "resources.leather_totem": POST_GAME_TOTEM_BATCH,
     },
   },
 

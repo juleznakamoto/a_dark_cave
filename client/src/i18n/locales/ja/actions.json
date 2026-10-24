@@ -752,6 +752,9 @@
   "tradeGoldForBlacksteel": {
     "label": "黒鋼を買う"
   },
+  "tradeGoldForBoneTotems": {
+    "label": "骨のトーテムを買う"
+  },
   "tradeGoldForEmberBomb": {
     "label": "残火爆弾を買う"
   },
@@ -763,6 +766,9 @@
   },
   "tradeGoldForLeather": {
     "label": "皮革を買う"
+  },
+  "tradeGoldForLeatherTotems": {
+    "label": "皮革のトーテムを買う"
   },
   "tradeGoldForObsidian": {
     "label": "黒曜石を買う"
