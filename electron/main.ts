@@ -1,7 +1,7 @@
 import { app, BrowserWindow, ipcMain, Menu, shell } from "electron";
 import { readFile, writeFile, mkdir, unlink } from "node:fs/promises";
 import { join, dirname } from "node:path";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import {
   LOOPBACK_PORT_FILE,
   parseStoredLoopbackPort,
@@ -27,6 +27,11 @@ import {
   resolveSteamDemoCloudSavePath,
 } from "./paths";
 import { textScaleZoomFactor } from "../shared/textScaleZoom";
+import {
+  WINDOW_STATE_FILE,
+  parseWindowFullscreenPreference,
+  serializeWindowFullscreenPreference,
+} from "./windowState";
 
 /**
  * Electron main process for the A Dark Cave Steam build.
@@ -67,6 +72,37 @@ const QUIT_SAVE_TIMEOUT_MS = 8000;
  * transitions and `isFullScreen()` can lag — never trust a raw read mid-toggle.
  */
 let fullscreenIntent: boolean | null = null;
+
+function windowStatePath(): string {
+  return join(app.getPath("userData"), WINDOW_STATE_FILE);
+}
+
+/** First launch (no file) is fullscreen. A bad file stays on that default. */
+function readFullscreenPreference(): boolean {
+  try {
+    if (!existsSync(windowStatePath())) return true;
+    return parseWindowFullscreenPreference(readFileSync(windowStatePath(), "utf-8"));
+  } catch {
+    return true;
+  }
+}
+
+function writeFullscreenPreference(fullscreen: boolean): void {
+  if (isTrailerCaptureMode()) return;
+  try {
+    const file = windowStatePath();
+    mkdirSync(dirname(file), { recursive: true });
+    writeFileSync(file, serializeWindowFullscreenPreference(fullscreen), "utf-8");
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.warn("[STEAM] window state write failed:", error);
+  }
+}
+
+function setFullscreenIntent(next: boolean): void {
+  fullscreenIntent = next;
+  writeFullscreenPreference(next);
+}
 
 /** Resolve the Steam App ID from steam_appid.txt (defaults to Valve's test id 480). */
 function resolveAppId(): number {
@@ -273,14 +309,12 @@ async function createWindow(): Promise<void> {
   }
 
   // Show on ready-to-show and again on did-finish-load. Either event can be
-  // missing on Windows, and the earlier one can run before maximize sticks,
-  // so this must stay idempotent (no one-shot flag). A timer covers the case
-  // where neither event fires.
-  //
-  // Fill the display with maximize, not exclusive setFullScreen. Exclusive
-  // fullscreen on launch + Steam overlay / in-process-gpu often yields a
-  // black or stuck window on Windows. The in-game button still toggles true
-  // fullscreen after the window is healthy.
+  // missing on Windows, so this stays idempotent. A timer covers neither firing.
+  // Restore the mode from the last close. First launch is fullscreen.
+  // Show first, then enter fullscreen: creating the window already fullscreen
+  // can leave Steam with a black window on Windows.
+  const startFullscreen = !trailer && readFullscreenPreference();
+  if (!trailer) fullscreenIntent = startFullscreen;
   let revealFallback: ReturnType<typeof setTimeout> | undefined;
   const clearRevealFallback = (): void => {
     if (revealFallback === undefined) return;
@@ -292,18 +326,19 @@ async function createWindow(): Promise<void> {
       clearRevealFallback();
       return;
     }
-    // Already-visible windows skip show(), so the "show" event is not a
-    // reliable signal to drop the timer. Clear it from visibility instead.
-    if (!mainWindow.isVisible()) mainWindow.show();
-    if (
-      !trailer &&
-      !mainWindow.isMaximized() &&
-      !mainWindow.isFullScreen()
-    ) {
-      mainWindow.maximize();
+    if (mainWindow.isVisible()) {
+      // show() is not called, so the show event will not fire again.
+      clearRevealFallback();
+    } else {
+      // show() is async. Do not trust isVisible() in this same turn;
+      // the show listener below drops the timer once the window is up.
+      mainWindow.show();
     }
-    if (mainWindow.isVisible()) clearRevealFallback();
+    if (startFullscreen && !mainWindow.isFullScreen()) {
+      mainWindow.setFullScreen(true);
+    }
   };
+  mainWindow.once("show", clearRevealFallback);
   mainWindow.once("ready-to-show", revealMainWindow);
   mainWindow.webContents.once("did-finish-load", revealMainWindow);
   revealFallback = setTimeout(revealMainWindow, 2000);
@@ -344,7 +379,7 @@ async function createWindow(): Promise<void> {
   };
 
   const notifyFullscreenChange = (isFullscreen: boolean): void => {
-    fullscreenIntent = isFullscreen;
+    setFullscreenIntent(isFullscreen);
     mainWindow?.webContents.send("window:fullscreen-changed", isFullscreen);
     notifyLayoutChange();
   };
@@ -358,6 +393,7 @@ async function createWindow(): Promise<void> {
   mainWindow.on("unmaximize", notifyLayoutChange);
 
   mainWindow.on("close", (event) => {
+    if (fullscreenIntent !== null) writeFullscreenPreference(fullscreenIntent);
     if (readyToQuit) return;
     event.preventDefault();
     beginQuitSave();
@@ -459,7 +495,7 @@ function registerIpc(): void {
     const next = !currently;
     // setFullScreen is async; isFullScreen() often still reflects the old
     // state if read immediately, so keep and broadcast the intended value.
-    fullscreenIntent = next;
+    setFullscreenIntent(next);
     mainWindow.setFullScreen(next);
     // Windows may leave the window maximized after leaving fullscreen.
     if (!next && mainWindow.isMaximized()) {
