@@ -27,7 +27,10 @@ import {
   MADNESS_STAGE_TEXT_CLASS,
 } from "@/game/madnessVisualStage";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
+import {
+  NEW_ITEM_PULSE_TEXT_CLASS,
+  useNewItemPulseTooltips,
+} from "@/hooks/useNewItemPulseTooltip";
 import { cn } from "@/lib/utils";
 import {
   getMaxBombLimit,
@@ -1048,7 +1051,7 @@ export default function SidePanelSection({
         (Boolean(item.tooltip) && sectionId !== "resources");
 
     const newItemPulseClass =
-      shouldPulse && !hoveredTooltips[item.id] ? "new-item-pulse" : "";
+      shouldPulse && !hoveredTooltips[item.id] ? NEW_ITEM_PULSE_TEXT_CLASS : "";
 
     // Check if this resource is highlighted (external cost hover or tooltip hover)
     const isHighlighted =

@@ -329,14 +329,13 @@ function LogPanel() {
               const isNewVillager = isNewVillagerLogEntry(
                 typedEntry as LogEntry,
               );
-              // Pulse sets opacity itself, which would hide the tail fade.
               const blinkClass = unreadLineIsFlashing(
                 isUnread,
                 isTailLine,
                 typedEntry.timestamp,
                 flashNow,
               )
-                ? "animate-pulse"
+                ? "log-unread-pulse"
                 : "";
 
               const markReadNow = () => {

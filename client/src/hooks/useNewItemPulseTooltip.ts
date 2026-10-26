@@ -5,8 +5,10 @@ import { cn } from "@/lib/utils";
 
 const HOVER_DISMISS_MS = 500;
 
-/** Text-label glow (side panel, header rings). */
+/** Shadow pulse for glyphs and rings (insight badges, header marks). */
 export const NEW_ITEM_PULSE_CLASS = "new-item-pulse";
+/** Text labels: the element's own color fades to white. No shadow. */
+export const NEW_ITEM_PULSE_TEXT_CLASS = "new-item-pulse-text";
 /** Bar glow for redacted game tabs (no text, so box-shadow instead of text-shadow). */
 export const NEW_ITEM_PULSE_REDACTED_CLASS = "new-item-pulse-redacted";
 /**

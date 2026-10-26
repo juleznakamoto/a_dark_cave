@@ -43,9 +43,16 @@ export const CSS_EFFECT_DEMOS: CssEffectDemo[] = [
   {
     id: "new-item-pulse",
     label: "New item pulse",
-    className: "new-item-pulse text-amber-400",
+    className: "new-item-pulse-text text-gray-400",
     mode: "loop",
     sample: "● New",
+  },
+  {
+    id: "log-unread-pulse",
+    label: "Unread log line",
+    className: "log-unread-pulse text-foreground",
+    mode: "loop",
+    sample: "The fire cracks.",
   },
   {
     id: "new-item-pulse-redacted",

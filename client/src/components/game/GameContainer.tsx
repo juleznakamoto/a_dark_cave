@@ -129,6 +129,10 @@ import DemoTimeUpDialog from "./DemoTimeUpDialog";
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { useIOSChromeViewportShell } from "@/hooks/useIOSChromeViewportShell";
+import {
+  NEW_ITEM_PULSE_CLASS,
+  NEW_ITEM_PULSE_TEXT_CLASS,
+} from "@/hooks/useNewItemPulseTooltip";
 import { usePanelResize } from "./panelResize";
 import PanelResizeHandle from "./PanelResizeHandle";
 import { GameUiIcon, MapTabIcon } from "@/components/game/GameUiIcon";
@@ -1566,7 +1570,10 @@ export default function GameContainer() {
                             className={`${tabButtonClass} ${tabUnlockClassName(
                               "map",
                               activeTab === "map",
-                            )}${mapTabGlow ? " new-item-pulse" : ""}`}
+                            )}${mapTabGlow
+                              ? ` ${compactEndTabs.icons.mapIcon ? NEW_ITEM_PULSE_CLASS : NEW_ITEM_PULSE_TEXT_CLASS}`
+                              : ""
+                            }`}
                             onClick={() => {
                               useGameStore.getState().trackButtonClick("tab-map");
                               clearTabAnimation("map");

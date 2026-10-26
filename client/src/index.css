@@ -2001,6 +2001,7 @@ html.adc-text-xlarge .game-panel-produce-effects {
   }
 }
 
+/* Glyphs and rings (insight badges, header marks). Not used on text labels. */
 @keyframes new-item-pulse {
 
   0%,
@@ -2017,6 +2018,22 @@ html.adc-text-xlarge .game-panel-produce-effects {
 
 .new-item-pulse {
   animation: new-item-pulse 1s ease-in-out infinite;
+}
+
+/* Text labels. 0% and 100% stay the element's own color. */
+@keyframes new-item-pulse-text {
+  50% {
+    color: #fff;
+  }
+}
+
+.new-item-pulse-text {
+  animation: new-item-pulse-text 1s ease-in-out infinite;
+}
+
+/* Unread event-log lines. Same color fade, half the speed (2s vs 1s). */
+.log-unread-pulse {
+  animation: new-item-pulse-text 2s ease-in-out infinite;
 }
 
 /* Same tempo/opacity as new-item-pulse, but box-shadow on the bar (no text). */

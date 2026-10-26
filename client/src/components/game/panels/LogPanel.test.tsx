@@ -55,7 +55,7 @@ describe("LogPanel mark read", () => {
   it("marks a log line read on a short touch tap", async () => {
     render(<LogPanel />);
     const { text, row } = lineRow();
-    expect(text.className).toContain("animate-pulse");
+    expect(text.className).toContain("log-unread-pulse");
 
     await act(async () => {
       touchPointer(row, "pointerDown");
@@ -63,7 +63,7 @@ describe("LogPanel mark read", () => {
       fireEvent.click(row);
     });
 
-    expect(lineRow().text.className).not.toContain("animate-pulse");
+    expect(lineRow().text.className).not.toContain("log-unread-pulse");
   });
 
   it("keeps a log line unread when the touch is cancelled, as in a scroll", async () => {
@@ -76,7 +76,7 @@ describe("LogPanel mark read", () => {
       vi.advanceTimersByTime(300);
     });
 
-    expect(lineRow().text.className).toContain("animate-pulse");
+    expect(lineRow().text.className).toContain("log-unread-pulse");
   });
 
   it("still marks a log line read when a touch is held", async () => {
@@ -88,7 +88,7 @@ describe("LogPanel mark read", () => {
       vi.advanceTimersByTime(300);
     });
 
-    expect(lineRow().text.className).not.toContain("animate-pulse");
+    expect(lineRow().text.className).not.toContain("log-unread-pulse");
   });
 
   it("drops read ids for lines that are no longer in the log", () => {
@@ -113,7 +113,7 @@ describe("LogPanel mark read", () => {
     view.unmount();
     render(<LogPanel />);
 
-    expect(lineRow().text.className).not.toContain("animate-pulse");
+    expect(lineRow().text.className).not.toContain("log-unread-pulse");
   });
 
   it("does not mark a log line read on a mouse click", async () => {
@@ -124,14 +124,14 @@ describe("LogPanel mark read", () => {
       fireEvent.click(row);
     });
 
-    expect(lineRow().text.className).toContain("animate-pulse");
+    expect(lineRow().text.className).toContain("log-unread-pulse");
   });
 
   it("stops flashing an unread line after 15 minutes and keeps the marker", async () => {
     vi.stubGlobal("requestAnimationFrame", () => 0);
     render(<LogPanel />);
     const { text, row } = lineRow();
-    expect(text.className).toContain("animate-pulse");
+    expect(text.className).toContain("log-unread-pulse");
     expect(unreadMarker(row)).not.toBeNull();
 
     await act(async () => {
@@ -139,7 +139,7 @@ describe("LogPanel mark read", () => {
     });
 
     const after = lineRow();
-    expect(after.text.className).not.toContain("animate-pulse");
+    expect(after.text.className).not.toContain("log-unread-pulse");
     expect(unreadMarker(after.row)).not.toBeNull();
   });
 
@@ -156,7 +156,7 @@ describe("LogPanel mark read", () => {
     });
     render(<LogPanel />);
     const { text, row } = lineRow();
-    expect(text.className).not.toContain("animate-pulse");
+    expect(text.className).not.toContain("log-unread-pulse");
     expect(unreadMarker(row)).not.toBeNull();
   });
 });
