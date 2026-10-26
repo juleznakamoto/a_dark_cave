@@ -21,6 +21,7 @@ if not exist "steam\config.local.json" (
 
 echo.
 echo  Building ^(if needed^) and uploading to Steam...
+echo  The packaged game is opened to confirm it starts, then closed.
 echo  You will be prompted for Steam password and Steam Guard.
 echo.
 

@@ -10,12 +10,15 @@
   3. Run:  npm run steam:demo:upload
 
   Uploads directly from release\win-unpacked (no copy to steam\content).
+  Before steamcmd, the packaged exe is launched to confirm a window opens, then closed.
+  -SkipBootCheck skips that launch and prints that it was skipped.
   First upload uses interactive Steam login (+ Steam Guard).
 #>
 param(
   [switch]$SkipBuild,
   [switch]$StageOnly,
-  [switch]$UploadOnly
+  [switch]$UploadOnly,
+  [switch]$SkipBootCheck
 )
 
 $ErrorActionPreference = "Stop"
@@ -134,6 +137,11 @@ Write-Host "  VDF: $appVdfPath" -ForegroundColor DarkGray
 if ($StageOnly) {
   Write-Host "StageOnly - VDF written, skipped Steam upload." -ForegroundColor Yellow
   exit 0
+}
+
+. (Join-Path $Root "scripts\steam-boot-check.ps1")
+if (-not (Invoke-SteamBootCheck -BuildDir $winUnpacked -Label "demo" -Skip:$SkipBootCheck)) {
+  exit 1
 }
 
 Write-Host ""

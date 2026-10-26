@@ -15,11 +15,14 @@
   release\win-unpacked folder can be reused. Staging lives outside the repo so
   IDE/antivirus file locks on app.asar do not break the copy step. Both
   SteamPipe uploads then run in a single steamcmd session (one login / Steam Guard).
+  Before steamcmd, each staged exe is launched to confirm a window opens, then closed.
+  -SkipBootCheck skips those launches and prints that they were skipped.
 #>
 param(
   [switch]$SkipBuild,
   [switch]$StageOnly,
-  [switch]$UploadOnly
+  [switch]$UploadOnly,
+  [switch]$SkipBootCheck
 )
 
 $ErrorActionPreference = "Stop"
@@ -250,6 +253,13 @@ foreach ($edition in $editions) {
 if ($StageOnly) {
   Write-Host "StageOnly - VDFs written, skipped Steam upload." -ForegroundColor Yellow
   exit 0
+}
+
+. (Join-Path $Root "scripts\steam-boot-check.ps1")
+foreach ($edition in $editions) {
+  if (-not (Invoke-SteamBootCheck -BuildDir $edition.StageDir -Label $edition.Name -Skip:$SkipBootCheck)) {
+    exit 1
+  }
 }
 
 $steamUser = $null

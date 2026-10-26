@@ -33,6 +33,7 @@ if not exist "steam_appid_demo.txt" (
 
 echo.
 echo  Building full + demo, then uploading both to Steam.
+echo  Each packaged game is opened to confirm it starts, then closed.
 echo  One Steam login / Steam Guard prompt for both editions.
 echo  This takes a while ^(two Electron packages^).
 echo.

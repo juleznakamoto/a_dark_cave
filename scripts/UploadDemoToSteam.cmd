@@ -30,6 +30,7 @@ if not exist "steam_appid_demo.txt" (
 
 echo.
 echo  Building demo ^(if needed^) and uploading to Steam...
+echo  The packaged game is opened to confirm it starts, then closed.
 echo  You will be prompted for Steam password and Steam Guard.
 echo.
 
