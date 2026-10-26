@@ -101,6 +101,7 @@
     "caveExploreBonus": "Eksploracja jaskini: +{{percent}}% premii",
     "bombCapacityCombat": "+1 pojemności wszystkich bomb (walka)",
     "elixirCapacityCombat": "+1 eliksir żyłognia na walkę",
+    "veinfireHealBonus": "Eliksir żyłognia: +{{amount}} wytrzymałości",
     "maxBombsPerType": "Maks. {{count}} bomb na typ",
     "clarityElixirDescription": "Napój, który osłabia uścisk szaleństwa.",
     "boneDiceGambler": "Dwie rundy z hazardzistą na wizytę",

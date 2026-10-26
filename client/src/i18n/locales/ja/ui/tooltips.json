@@ -101,6 +101,7 @@
     "caveExploreBonus": "洞窟探索：ボーナス+{{percent}}%",
     "bombCapacityCombat": "すべての爆弾の所持上限+1（戦闘）",
     "elixirCapacityCombat": "戦闘ごとに脈火の霊薬+1",
+    "veinfireHealBonus": "脈火の霊薬：耐久+{{amount}}",
     "maxBombsPerType": "爆弾は種類ごとに最大{{count}}",
     "clarityElixirDescription": "狂気の締めつけをゆるめる澄明の霊薬。",
     "boneDiceGambler": "訪問ごとに賭博師と2回戦える",

@@ -101,6 +101,7 @@
     "caveExploreBonus": "Exploración de cueva: +{{percent}} % de bonificación",
     "bombCapacityCombat": "+1 capacidad para todas las bombas (combate)",
     "elixirCapacityCombat": "+1 Elixir de fuego venoso por combate",
+    "veinfireHealBonus": "Elixir de fuego venoso: +{{amount}} de integridad",
     "maxBombsPerType": "Máx. {{count}} bombas por tipo",
     "clarityElixirDescription": "Un brebaje que afloja el dominio de la locura.",
     "boneDiceGambler": "Juega dos rondas contra el tahúr por visita",

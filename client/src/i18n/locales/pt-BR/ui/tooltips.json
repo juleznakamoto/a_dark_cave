@@ -101,6 +101,7 @@
     "caveExploreBonus": "Explorar Caverna: +{{percent}}% de Bônus",
     "bombCapacityCombat": "+1 de Capacidade para todas as bombas (combate)",
     "elixirCapacityCombat": "+1 Elixir de Fogo Venoso por combate",
+    "veinfireHealBonus": "Elixir de Fogo Venoso: +{{amount}} de Integridade",
     "maxBombsPerType": "Máx. {{count}} bombas por tipo",
     "clarityElixirDescription": "Um elixir que alivia o domínio da loucura.",
     "boneDiceGambler": "Jogue duas rodadas contra o apostador por visita",

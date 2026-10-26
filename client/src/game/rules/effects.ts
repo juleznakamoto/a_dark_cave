@@ -1773,6 +1773,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         strength: 5,
         madness: 5,
         criticalChance: 5, // 5% critical hit chance
+        veinfireHealBonus: 25, // 50 base + 25 = 75
       },
     },
   },

@@ -8,6 +8,7 @@ import {
   getTotalLuck,
   getTotalCriticalChance,
   getTotalMadness,
+  getVeinfireElixirHeal,
 } from "@/game/rules/effectsCalculation";
 import { combatItemTooltips } from "@/game/rules/tooltips";
 import {
@@ -670,7 +671,7 @@ export default function CombatDialog({
 
     if (item.id === "veinfire_elixir") {
       const healAmount = Math.min(
-        50,
+        getVeinfireElixirHeal(useGameStore.getState()),
         maxIntegrityForCombat - currentIntegrity,
       );
       // Only consume when healing applies (matches available: must be below max)

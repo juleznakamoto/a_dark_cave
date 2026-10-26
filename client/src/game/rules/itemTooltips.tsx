@@ -1136,6 +1136,18 @@ export function renderItemTooltip(
               )}
             </div>
           )}
+          {effect.bonuses.generalBonuses.veinfireHealBonus != null &&
+            effect.bonuses.generalBonuses.veinfireHealBonus > 0 && (
+              <div>
+                {getUiTooltip(
+                  "veinfireHealBonus",
+                  "Veinfire Elixir: +{{amount}} Integrity",
+                  {
+                    amount: effect.bonuses.generalBonuses.veinfireHealBonus,
+                  },
+                )}
+              </div>
+            )}
           {effect.bonuses.generalBonuses.eventDeathReduction && (
             <div>
               {getUiTooltip(

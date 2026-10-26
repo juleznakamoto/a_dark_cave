@@ -101,6 +101,7 @@
     "caveExploreBonus": "Esplora caverna: +{{percent}}% bonus",
     "bombCapacityCombat": "+1 capacità per tutte le bombe (combattimento)",
     "elixirCapacityCombat": "+1 Elisir di venafuoco per combattimento",
+    "veinfireHealBonus": "Elisir di venafuoco: +{{amount}} integrità",
     "maxBombsPerType": "Max {{count}} bombe per tipo",
     "clarityElixirDescription": "Un filtro che allenta la presa della follia.",
     "boneDiceGambler": "Gioca due round contro lo scommettitore per visita",

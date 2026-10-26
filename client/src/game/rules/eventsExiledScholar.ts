@@ -6,12 +6,13 @@ export const exiledScholarEvents: Record<string, GameEvent> = {
     id: "exiledScholarVisit",
     condition: (state: GameState) =>
       state.buildings.darkEstate >= 1 &&
+      state.story.seen.veinrootDiscovered === true &&
       state.relics.lycan_blood &&
       state.relics.necromancer_blood &&
       state.relics.bone_devourer_blood,
     timeProbability: (state: GameState) => {
-      // Return 20 if this is the first visit, 60 if the player hasn't paid yet
-      return state.exiledScholarState?.hasPaid ? 60 : 20;
+      // 7 before the player has paid. 60 if the vials are gathered again later.
+      return state.exiledScholarState?.hasPaid ? 60 : 7;
     },
 
     priority: 10,

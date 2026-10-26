@@ -101,6 +101,7 @@
     "caveExploreBonus": "Höhlenerkundung: +{{percent}} % Bonus",
     "bombCapacityCombat": "+1 Kapazität für alle Bomben (Kampf)",
     "elixirCapacityCombat": "+1 Aderfeuer-Elixier pro Kampf",
+    "veinfireHealBonus": "Aderfeuer-Elixier: +{{amount}} Integrität",
     "maxBombsPerType": "Max. {{count}} Bomben pro Typ",
     "clarityElixirDescription": "Ein Trank, der den Griff des Wahnsinns lockert.",
     "boneDiceGambler": "Spiele pro Besuch zwei Runden gegen den Glücksspieler",

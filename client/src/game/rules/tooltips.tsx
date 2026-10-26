@@ -8,6 +8,7 @@ import {
   getMadnessComponents,
   getTotalMadness,
   getVeinrootFindMultiplier,
+  getVeinfireElixirHeal,
   computeResourceRandomRange,
   GREAT_FEAST_STRANGER_APPROACH_BONUS,
 } from "./effectsCalculation";
@@ -1149,9 +1150,9 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
     },
   },
   veinfire_elixir: {
-    getContent: () =>
+    getContent: (state) =>
       getUiTooltip("restoreIntegrity", "Restore up to {{amount}} Integrity", {
-        amount: 50,
+        amount: getVeinfireElixirHeal(state),
       }),
   },
   crushing_strike: {

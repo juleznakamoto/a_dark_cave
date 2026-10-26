@@ -16,7 +16,7 @@ const boneDevourerConfigs: BoneDevourerConfig[] = [
   { level: 3, woodenHuts: 8, boneCost: 1000, silverReward: 250 },
   { level: 4, stoneHuts: 1, boneCost: 5000, silverReward: 500 },
   { level: 5, stoneHuts: 4, boneCost: 10000, silverReward: 750 },
-  { level: 6, stoneHuts: 7, boneCost: 25000, silverReward: 1000 },
+  { level: 6, stoneHuts: 8, boneCost: 25000, silverReward: 1000 },
 ];
 
 function createBoneDevourerEvent(config: BoneDevourerConfig): GameEvent {

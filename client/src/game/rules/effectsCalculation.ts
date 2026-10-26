@@ -1454,6 +1454,19 @@ export const getTotalCriticalChance = (state: GameState): number => {
   return criticalChance;
 };
 
+/** Integrity restored by one Veinfire Elixir before bonuses. */
+export const VEINFIRE_ELIXIR_BASE_HEAL = 50;
+
+/** Veinfire Elixir heal, including `generalBonuses.veinfireHealBonus` (Blood Baptized adds 25). */
+export function getVeinfireElixirHeal(state: GameState): number {
+  let bonus = 0;
+  getActiveEffects(state).forEach((effect) => {
+    const extra = effect.bonuses.generalBonuses?.veinfireHealBonus;
+    if (typeof extra === "number") bonus += extra;
+  });
+  return VEINFIRE_ELIXIR_BASE_HEAL + bonus;
+}
+
 /** Product of `generalBonuses.veinrootFindMultiplier` from active effects (1 = no bonus). */
 export function getVeinrootFindMultiplier(state: GameState): number {
   let multiplier = 1;

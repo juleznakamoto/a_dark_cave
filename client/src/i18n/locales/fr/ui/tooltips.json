@@ -101,6 +101,7 @@
     "caveExploreBonus": "Exploration de grotte : +{{percent}} % de bonus",
     "bombCapacityCombat": "+1 capacité pour toutes les bombes (combat)",
     "elixirCapacityCombat": "+1 élixir feu-veine par combat",
+    "veinfireHealBonus": "Élixir feu-veine : +{{amount}} d'intégrité",
     "maxBombsPerType": "Max {{count}} bombes par type",
     "clarityElixirDescription": "Un breuvage qui relâche l'emprise de la folie.",
     "boneDiceGambler": "Jouez deux manches par visite contre le parieur",
