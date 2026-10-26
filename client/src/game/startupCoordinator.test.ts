@@ -57,8 +57,8 @@ describe("resolveStartupVisit", () => {
       surface: "start",
       preferences: {
         cruelMode: false,
-        musicMuted: true,
-        sfxMuted: true,
+        musicMuted: false,
+        sfxMuted: false,
       },
       steamEditionActive: false,
     });

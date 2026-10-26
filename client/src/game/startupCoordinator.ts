@@ -80,12 +80,7 @@ function createStartResolution(
   devGameMode: DevGameMode,
   savedAudio: { musicMuted: boolean; sfxMuted: boolean } | null,
 ): Extract<StartupResolution, { surface: "start" }> {
-  const audio = startAudioForVisit(
-    savedAudio,
-    isSteamBuild
-      ? { musicMuted: false, sfxMuted: false }
-      : { musicMuted: true, sfxMuted: true },
-  );
+  const audio = startAudioForVisit(savedAudio);
   // A save header already supplied volumes. With no save, keep slider levels
   // from an earlier visit.
   const stored = savedAudio ? null : readStartAudioChoice();

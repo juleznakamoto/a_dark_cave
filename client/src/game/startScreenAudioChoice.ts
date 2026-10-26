@@ -60,12 +60,12 @@ export function writeStartAudioChoice(choice: StartAudioChoice): void {
 
 /**
  * A save header wins. Otherwise a choice stored on an earlier visit wins.
- * Neither means this install has not chosen yet: the browser starts off,
- * and Steam starts on.
+ * Neither means this install has not chosen yet, so music and sound effects
+ * start on.
  */
 export function startAudioForVisit(
   header: StartAudioChoice | null,
-  firstVisit: StartAudioVisit = { musicMuted: true, sfxMuted: true },
+  firstVisit: StartAudioVisit = { musicMuted: false, sfxMuted: false },
 ): StartAudioVisit {
   if (header) {
     return {

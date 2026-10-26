@@ -15,23 +15,23 @@ describe("startAudioForVisit", () => {
     localStorage.clear();
   });
 
-  it("starts a first visit with music and sound effects off", () => {
+  it("starts a first visit with music and sound effects on", () => {
     expect(startAudioForVisit(null)).toEqual({
-      musicMuted: true,
-      sfxMuted: true,
-    });
-  });
-
-  it("starts a Steam first visit with music and sound effects on", () => {
-    expect(
-      startAudioForVisit(null, { musicMuted: false, sfxMuted: false }),
-    ).toEqual({
       musicMuted: false,
       sfxMuted: false,
     });
   });
 
-  it("keeps a stored Steam choice over the on default", () => {
+  it("uses an explicit first-visit default when nothing is stored", () => {
+    expect(
+      startAudioForVisit(null, { musicMuted: true, sfxMuted: true }),
+    ).toEqual({
+      musicMuted: true,
+      sfxMuted: true,
+    });
+  });
+
+  it("keeps a stored choice over the on default", () => {
     writeStartAudioChoice({ musicMuted: true, sfxMuted: true });
 
     expect(
