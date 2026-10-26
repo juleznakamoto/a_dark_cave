@@ -2982,6 +2982,26 @@
     "message": "Kurz vor Mitternacht treten Wölfe aus der Dunkelheit, ihre Augen glühen vor unnatürlichem Hunger. Ihr Heulen ist voller Bosheit, während sie das Dorf umkreisen.",
     "title": "Wolfsangriff"
   },
+  "crossingPathsAgain": {
+    "choices": {
+      "helpHim": {
+        "label": "Ihm helfen"
+      },
+      "killHim": {
+        "label": "Ihn töten"
+      },
+      "leaveHim": {
+        "label": "Ihn zurücklassen"
+      }
+    },
+    "log": {
+      "help": "Du bringst ihn ins Dorf und versorgst seine Wunden. Er sagt, es tue ihm leid, was er getan hat. Er gibt dir seine Axt und das Holz, das er geschlagen hat: {{woodReward}} Holz.",
+      "kill": "Du tötest ihn mit eigenen Händen und nimmst seine mächtige Axt. Die Dorfbewohner sind unzufrieden.",
+      "leave": "Du lässt ihn sterben, nimmst aber seine Axt mit."
+    },
+    "message": "Jäger kehren aus dem Wald zurück. Unter den Bäumen fanden sie einen verwundeten, muskulösen Mann: den Holzfäller. Etwas hat ihn angegriffen. Er ist schwer verletzt und wird nicht mehr lange durchhalten.",
+    "title": "Wege kreuzen sich wieder"
+  },
   "woodcutter": {
     "choices": {
       "acceptServices": {
@@ -2996,33 +3016,33 @@
       }
     },
     "log": {
-      "betray": "Du übergibst die Nahrung, doch Tage vergehen ohne Spur des Holzfällers. Du wurdest betrogen.",
+      "betray": "Du übergibst die Nahrung, doch Tage vergehen, und vom Holzfäller fehlt jede Spur. Du wurdest betrogen.",
       "betrayLast": "Du übergibst die Nahrung. Der Holzfäller grinst und zieht in den Wald. Du wartest, aber er kehrt nie zurück. Du wurdest betrogen.",
       "betrayLevel5": "Du übergibst die Nahrung. Der Holzfäller verspricht, noch am selben Tag zurückzukehren. Doch er tut es nicht. Du wurdest betrogen.",
       "denyLastUneasy": "Etwas an seinem Auftreten beunruhigt dich. Du lehnst den Handel ab. Das Lächeln des Holzfällers verblasst, und er geht ohne ein Wort.",
       "denyLevel1": "Du lehnst sein Angebot ab. Der Holzfäller zuckt mit den Schultern und geht in den Wald.",
-      "denyLevel2": "Du lehnst sein Angebot ab. Der Holzfäller nickt und zieht ohne Beschwerde weiter.",
+      "denyLevel2": "Du lehnst sein Angebot ab. Der Holzfäller nickt und zieht ohne Murren weiter.",
       "denyLevel3": "Du lehnst sein Angebot ab. Er zuckt mit den Schultern und geht zurück in den Wald.",
       "denyLevel4": "Du lehnst sein ehrgeiziges Angebot ab. Der Holzfäller wirkt enttäuscht, akzeptiert aber deine Entscheidung.",
       "denyLevel5": "Du lehnst den Handel ab. Der Holzfäller runzelt die Stirn, widerspricht aber nicht.",
       "denyLevel6": "Du lehnst den Handel ab. Der Holzfäller runzelt die Stirn, widerspricht aber nicht.",
       "timeoutLast": "Deine Unentschlossenheit frustriert den Holzfäller. Er schüttelt den Kopf und geht in den Wald.",
       "timeoutLevel1": "Deine Unentschlossenheit frustriert den Holzfäller. Er zuckt mit den Schultern und geht in den Wald.",
-      "timeoutLevel2": "Deine Unentschlossenheit frustriert den Holzfäller. Er nickt und zieht ohne Beschwerde weiter.",
+      "timeoutLevel2": "Deine Unentschlossenheit frustriert den Holzfäller. Er nickt und zieht ohne Murren weiter.",
       "timeoutLevel3": "Deine Unentschlossenheit frustriert den Holzfäller. Er zuckt mit den Schultern und geht zurück in den Wald.",
-      "timeoutLevel4": "Deine Unentschlossenheit frustriert den Holzfäller. Er wirkt enttäuscht, akzeptiert aber und geht.",
+      "timeoutLevel4": "Deine Unentschlossenheit frustriert den Holzfäller. Er wirkt enttäuscht, fügt sich aber und geht.",
       "timeoutLevel5": "Deine Unentschlossenheit frustriert den Holzfäller. Er runzelt die Stirn und geht.",
       "timeoutLevel6": "Deine Unentschlossenheit frustriert den Holzfäller. Er runzelt die Stirn und geht.",
       "successLevel1": "Der Holzfäller nimmt die Nahrung und geht in den Wald. Am Abend kehrt er mit dem versprochenen Holz zurück und stapelt es ordentlich am Dorfrand.",
       "successLevel2": "Der Holzfäller nimmt die Nahrung und verschwindet im Wald. Bei Einbruch der Dunkelheit kehrt er mit einem großen Holzstoß zurück.",
-      "successLevel3": "Der Holzfäller nimmt die Nahrung und wagt sich tief in den Wald. Er kehrt mit einer beeindruckenden Holzmenge zurück.",
+      "successLevel3": "Der Holzfäller nimmt die Nahrung und wagt sich tief in den Wald. Er kehrt mit einer beeindruckenden Ladung Holz zurück.",
       "successLevel4": "Der Holzfäller nimmt die Nahrung und verbringt den Nachmittag im Wald. Er kehrt mit einem enormen Holzstoß zurück.",
-      "successLevel5": "Der Holzfäller nimmt die Nahrung und liefert noch am selben Tag einen gewaltigen Holzvorrat ans Dorf.",
-      "successLevel6": "Der Holzfäller nimmt die Nahrung und liefert noch am selben Tag einen gewaltigen Holzvorrat ans Dorf."
+      "successLevel5": "Der Holzfäller nimmt die Nahrung und liefert noch am selben Tag einen gewaltigen Holzvorrat ins Dorf.",
+      "successLevel6": "Der Holzfäller nimmt die Nahrung und liefert noch am selben Tag einen gewaltigen Holzvorrat ins Dorf."
     },
     "message": {
       "level1": "Ein muskulöser Mann mit einer großen Axt nähert sich dem Dorf. Er spannt die Arme an. „Keiner fällt Bäume wie ich“, prahlt er. „Gib mir {{foodCost}} Nahrung, und ich bringe {{woodReward}} Holz.“",
-      "level2": "Der Holzfäller kehrt zurück, seine Axt glänzt in der Sonne. „Dein Dorf hat mehr Mäuler zu stopfen“, bemerkt er. „Ich kann dir {{woodReward}} Holz bringen. Du gibst mir {{foodCost}} Nahrung. Was sagst du?“",
+      "level2": "Der Holzfäller kehrt zurück, seine Axt glänzt in der Sonne. „Dein Dorf hat mehr Mäuler zu stopfen“, bemerkt er. „Ich kann dir {{woodReward}} Holz bringen. Du gibst mir {{foodCost}} Nahrung. Was sagst du dazu?“",
       "level3": "Der Holzfäller kommt erneut. „Dein Dorf steht noch“, sagt er mit einem Grinsen. „Ich bringe dir {{woodReward}} Holz, wenn du {{foodCost}} Nahrung dafür bezahlst.“",
       "level4": "Der Holzfäller erscheint wieder. „Willst du meine Dienste noch einmal nutzen? {{woodReward}} Holz für {{foodCost}} Nahrung“, fragt er.",
       "level5": "Der Holzfäller erscheint mit selbstbewusstem Lächeln. „Wie wäre es mit einem weiteren Handel? {{woodReward}} Holz für {{foodCost}} Nahrung.“",
@@ -3034,7 +3054,7 @@
       "level3": "Das Angebot des Holzfällers",
       "level4": "Der ehrgeizige Plan des Holzfällers",
       "level5": "Der große Vorschlag des Holzfällers",
-      "level6": "Das große Angebot des Holzfällers"
+      "level6": "Das Angebot des Holzfällers"
     }
   },
   "wrongReflections": {

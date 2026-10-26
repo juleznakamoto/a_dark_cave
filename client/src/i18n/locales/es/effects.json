@@ -509,6 +509,10 @@
     "wanderers_lantern": {
       "description": "Concede a quien lo lleva un poco de suerte y la posibilidad de ver lo que la oscuridad ocultaría.",
       "name": "Farol del vagabundo"
+    },
+    "woodcutter_axe": {
+      "description": "Poderosa hacha que el leñador llevaba consigo",
+      "name": "Hacha del leñador"
     }
   },
   "weapons": {

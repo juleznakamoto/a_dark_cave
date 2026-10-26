@@ -2982,6 +2982,26 @@
     "message": "Close to midnight, wolves emerge from the darkness, their eyes glowing with unnatural hunger. Their howls carry malice as they circle the village.",
     "title": "Wolf Attack"
   },
+  "crossingPathsAgain": {
+    "choices": {
+      "helpHim": {
+        "label": "Help him"
+      },
+      "killHim": {
+        "label": "Kill him"
+      },
+      "leaveHim": {
+        "label": "Leave him"
+      }
+    },
+    "log": {
+      "help": "You bring him into the village and tend his wounds. He says he is sorry for what he did. He gives you his axe, and the {{woodReward}} wood he chopped.",
+      "kill": "You kill him with your own hands and take his mighty axe. The villagers are displeased.",
+      "leave": "You leave him to die, but you take his axe with you."
+    },
+    "message": "Hunters return from the forest. They found a wounded muscular man under the trees: the woodcutter. Something attacked him. He is severely wounded, and he will not last long.",
+    "title": "Crossing Paths Again"
+  },
   "woodcutter": {
     "choices": {
       "acceptServices": {
@@ -2996,9 +3016,9 @@
       }
     },
     "log": {
-      "betray": "You hand over the food, but days pass with no sign of the woodcutter. You got betrayed.",
-      "betrayLast": "You hand over the food. The woodcutter grins as he leaves towards the forest. You wait, but he never returns. You got betrayed.",
-      "betrayLevel5": "You hand over the food. The woodcutter promises to return the same day. But he never does. You got betrayed.",
+      "betray": "You hand over the food, but days pass with no sign of the woodcutter. You have been betrayed.",
+      "betrayLast": "You hand over the food. The woodcutter grins as he leaves towards the forest. You wait, but he never returns. You have been betrayed.",
+      "betrayLevel5": "You hand over the food. The woodcutter promises to return the same day. But he never does. You have been betrayed.",
       "denyLastUneasy": "Something about his demeanor makes you uneasy. You refuse the deal. The woodcutter's smile fades, and he leaves without a word.",
       "denyLevel1": "You decline his offer. The woodcutter shrugs and walks away into the forest.",
       "denyLevel2": "You decline his offer. The woodcutter nods and departs without complaint.",

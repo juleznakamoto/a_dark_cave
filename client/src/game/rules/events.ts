@@ -10,6 +10,7 @@ import { storyEvents } from "./eventsStory";
 import { wanderersLanternEvents } from "./eventsWanderersLantern";
 import { choiceEvents } from "./eventsChoices";
 import { woodcutterEvents } from "./eventsWoodcutter";
+import { crossingPathsEvents } from "./eventsCrossingPaths";
 import { shopItemEvents } from "./eventsShopItems";
 import {
   merchantEvents,
@@ -74,6 +75,7 @@ export type {
 export const gameEvents: Record<string, GameEvent> = {
   ...storyEvents,
   ...woodcutterEvents,
+  ...crossingPathsEvents,
   ...loreEvents,
   ...shopItemEvents,
   ...choiceEvents,

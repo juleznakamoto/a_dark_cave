@@ -509,6 +509,10 @@
     "wanderers_lantern": {
       "description": "Dá a quem a usa um pouco de sorte e a chance de notar o que a escuridão esconderia.",
       "name": "Lanterna do Andarilho"
+    },
+    "woodcutter_axe": {
+      "description": "Machado poderoso que o lenhador carregava",
+      "name": "Machado do Lenhador"
     }
   },
   "weapons": {

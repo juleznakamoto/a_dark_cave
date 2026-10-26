@@ -176,6 +176,7 @@ export const gameStateSchema = z.object({
       obsidian_lantern: z.boolean().default(false),
       adamant_lantern: z.boolean().default(false),
       blacksteel_axe: z.boolean().default(false),
+      woodcutter_axe: z.boolean().default(false),
       blacksteel_pickaxe: z.boolean().default(false),
       blacksteel_lantern: z.boolean().default(false),
       blacksmith_hammer: z.boolean().default(false),

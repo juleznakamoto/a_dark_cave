@@ -2982,6 +2982,26 @@
     "message": "Peu avant minuit, des loups émergent des ténèbres, leurs yeux brillant d'une faim contre nature. Leurs hurlements résonnent, chargés de malveillance, tandis qu'ils encerclent le village.",
     "title": "Attaque de loups"
   },
+  "crossingPathsAgain": {
+    "choices": {
+      "helpHim": {
+        "label": "L'aider"
+      },
+      "killHim": {
+        "label": "Le tuer"
+      },
+      "leaveHim": {
+        "label": "Le laisser"
+      }
+    },
+    "log": {
+      "help": "Vous le ramenez au village et soignez ses blessures. Il dit qu'il regrette ce qu'il a fait. Il vous donne sa hache et le bois qu'il a coupé : {{woodReward}} bois.",
+      "kill": "Vous le tuez de vos propres mains et prenez sa puissante hache. Les villageois sont mécontents.",
+      "leave": "Vous le laissez mourir, mais vous emportez sa hache."
+    },
+    "message": "Les chasseurs reviennent de la forêt. Sous les arbres, ils ont trouvé un homme musclé et blessé : le bûcheron. Quelque chose l'a attaqué. Il est grièvement blessé et ne tiendra plus longtemps.",
+    "title": "Les chemins se croisent à nouveau"
+  },
   "woodcutter": {
     "choices": {
       "acceptServices": {
@@ -2989,44 +3009,44 @@
         "cost": "{{foodCost}} nourriture"
       },
       "denyServices": {
-        "label": "Refuser les services"
+        "label": "Refuser ses services"
       },
       "timeExpired": {
         "label": "Temps écoulé"
       }
     },
     "log": {
-      "betray": "Vous remettez la nourriture, mais des jours passent sans signe du bûcheron. Vous avez été trahi.",
+      "betray": "Vous remettez la nourriture, mais des jours passent sans aucune trace du bûcheron. Vous avez été trahi.",
       "betrayLast": "Vous remettez la nourriture. Le bûcheron sourit en s'enfonçant dans la forêt. Vous attendez, mais il ne revient jamais. Vous avez été trahi.",
       "betrayLevel5": "Vous remettez la nourriture. Le bûcheron promet de revenir le jour même. Mais il ne le fait pas. Vous avez été trahi.",
-      "denyLastUneasy": "Quelque chose dans son attitude vous met mal à l'aise. Vous refusez l'affaire. Le sourire du bûcheron s'efface, et il part sans un mot.",
+      "denyLastUneasy": "Quelque chose dans son attitude vous met mal à l'aise. Vous refusez le marché. Le sourire du bûcheron s'efface, et il part sans un mot.",
       "denyLevel1": "Vous refusez son offre. Le bûcheron hausse les épaules et s'enfonce dans la forêt.",
       "denyLevel2": "Vous refusez son offre. Le bûcheron hoche la tête et repart sans se plaindre.",
       "denyLevel3": "Vous déclinez son offre. Il hausse les épaules et retourne dans les bois.",
       "denyLevel4": "Vous refusez son offre ambitieuse. Le bûcheron semble déçu, mais accepte votre décision.",
-      "denyLevel5": "Vous refusez l'affaire. Le bûcheron fronce les sourcils, mais ne discute pas.",
-      "denyLevel6": "Vous refusez l'affaire. Le bûcheron fronce les sourcils, mais ne discute pas.",
+      "denyLevel5": "Vous refusez le marché. Le bûcheron fronce les sourcils, mais ne discute pas.",
+      "denyLevel6": "Vous refusez le marché. Le bûcheron fronce les sourcils, mais ne discute pas.",
       "timeoutLast": "Votre indécision frustre le bûcheron. Il secoue la tête et s'enfonce dans la forêt.",
       "timeoutLevel1": "Votre indécision frustre le bûcheron. Il hausse les épaules et s'enfonce dans la forêt.",
       "timeoutLevel2": "Votre indécision frustre le bûcheron. Il hoche la tête et repart sans se plaindre.",
       "timeoutLevel3": "Votre indécision frustre le bûcheron. Il hausse les épaules et retourne dans les bois.",
-      "timeoutLevel4": "Votre indécision frustre le bûcheron. Il semble déçu, mais accepte et part.",
+      "timeoutLevel4": "Votre indécision frustre le bûcheron. Il semble déçu, mais se résigne et part.",
       "timeoutLevel5": "Votre indécision frustre le bûcheron. Il fronce les sourcils et s'en va.",
       "timeoutLevel6": "Votre indécision frustre le bûcheron. Il fronce les sourcils et s'en va.",
       "successLevel1": "Le bûcheron prend la nourriture et s'enfonce dans la forêt. Le soir venu, il revient avec le bois promis empilé proprement au bord du village.",
       "successLevel2": "Le bûcheron prend la nourriture et disparaît dans la forêt. À la tombée de la nuit, il revient avec une grande pile de bois.",
-      "successLevel3": "Le bûcheron prend la nourriture et s'aventure au cœur de la forêt. Il revient avec une récolte impressionnante de bois.",
+      "successLevel3": "Le bûcheron prend la nourriture et s'aventure au cœur de la forêt. Il revient avec une impressionnante quantité de bois.",
       "successLevel4": "Le bûcheron prend la nourriture et passe l'après-midi dans la forêt. Il revient avec une énorme pile de bois.",
-      "successLevel5": "Le bûcheron prend la nourriture et livre le jour même un énorme stock de bois au village.",
-      "successLevel6": "Le bûcheron prend la nourriture et livre le jour même un énorme stock de bois au village."
+      "successLevel5": "Le bûcheron prend la nourriture et livre le jour même une énorme réserve de bois au village.",
+      "successLevel6": "Le bûcheron prend la nourriture et livre le jour même une énorme réserve de bois au village."
     },
     "message": {
-      "level1": "Un homme musclé portant une grande hache s'approche du village. Il contracte les bras. « Je coupe les arbres comme personne », se vante-t-il. « Donnez-moi {{foodCost}} nourriture, et je vous rapporterai {{woodReward}} bois. »",
-      "level2": "Le bûcheron revient, sa hache brillant au soleil. « Votre village a plus de bouches », observe-t-il. « Je peux vous apporter {{woodReward}} bois. Vous me donnez {{foodCost}} nourriture. Qu'en dites-vous ? »",
+      "level1": "Un homme musclé portant une grande hache s'approche du village. Il fait jouer ses muscles. « Je coupe les arbres comme personne », se vante-t-il. « Donnez-moi {{foodCost}} nourriture, et je vous rapporterai {{woodReward}} bois. »",
+      "level2": "Le bûcheron revient, sa hache brillant au soleil. « Votre village compte plus de bouches à nourrir », observe-t-il. « Je peux vous apporter {{woodReward}} bois. Vous me donnez {{foodCost}} nourriture. Qu'en dites-vous ? »",
       "level3": "Le bûcheron s'approche à nouveau. « Votre village tient encore », dit-il avec un sourire. « Je peux vous apporter {{woodReward}} bois si vous payez {{foodCost}} nourriture. »",
-      "level4": "Le bûcheron arrive une fois de plus. « Voulez-vous encore utiliser mes services ? {{woodReward}} bois contre {{foodCost}} nourriture », demande-t-il.",
+      "level4": "Le bûcheron arrive une fois de plus. « Voulez-vous encore faire appel à mes services ? {{woodReward}} bois contre {{foodCost}} nourriture », demande-t-il.",
       "level5": "Le bûcheron apparaît avec un sourire confiant. « Et si nous concluions une affaire de plus ? {{woodReward}} bois contre {{foodCost}} nourriture. »",
-      "level6": "Le bûcheron revient au village. « Voulez-vous encore utiliser mes services ? J'offre {{woodReward}} bois contre {{foodCost}} nourriture », dit-il."
+      "level6": "Le bûcheron revient au village. « Voulez-vous encore faire appel à mes services ? J'offre {{woodReward}} bois contre {{foodCost}} nourriture », dit-il."
     },
     "title": {
       "level1": "Le bûcheron",

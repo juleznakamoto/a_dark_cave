@@ -509,6 +509,10 @@
     "wanderers_lantern": {
       "description": "身に着ける者に少しの幸運と、闇が隠すものを見つける機会を与える。",
       "name": "流浪者のランタン"
+    },
+    "woodcutter_axe": {
+      "description": "木こりがかつて携えていた頑丈な斧",
+      "name": "木こりの斧"
     }
   },
   "weapons": {

@@ -509,6 +509,10 @@
     "wanderers_lantern": {
       "description": "It lends its wearer a little luck, and the chance to notice what the dark would hide.",
       "name": "Wanderer's Lantern"
+    },
+    "woodcutter_axe": {
+      "description": "Mighty axe once carried by the woodcutter",
+      "name": "Woodcutter's Axe"
     }
   },
   "weapons": {

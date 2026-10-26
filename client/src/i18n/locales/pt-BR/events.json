@@ -2982,6 +2982,26 @@
     "message": "Perto da meia-noite, os lobos emergem da escuridão, seus olhos brilhando com fome sobrenatural. Seus uivos carregam malícia enquanto circundam o vilarejo.",
     "title": "Ataque dos Lobos"
   },
+  "crossingPathsAgain": {
+    "choices": {
+      "helpHim": {
+        "label": "Ajudá-lo"
+      },
+      "killHim": {
+        "label": "Matá-lo"
+      },
+      "leaveHim": {
+        "label": "Deixá-lo"
+      }
+    },
+    "log": {
+      "help": "Você o leva ao vilarejo e trata dos ferimentos. Ele diz que lamenta o que fez. Entrega o machado e a madeira que cortou: {{woodReward}} de madeira.",
+      "kill": "Você o mata com as próprias mãos e fica com o poderoso machado. Os aldeões ficam descontentes.",
+      "leave": "Você o deixa morrer, mas leva o machado."
+    },
+    "message": "Os caçadores voltam da floresta. Sob as árvores, encontraram um homem musculoso e ferido: o lenhador. Algo o atacou. Ele está gravemente ferido e não vai durar muito.",
+    "title": "Caminhos que se cruzam de novo"
+  },
   "woodcutter": {
     "choices": {
       "acceptServices": {
@@ -2989,10 +3009,10 @@
         "cost": "{{foodCost}} comida"
       },
       "denyServices": {
-        "label": "Negar os serviços"
+        "label": "Recusar os serviços"
       },
       "timeExpired": {
-        "label": "Tempo Esgotado"
+        "label": "Tempo esgotado"
       }
     },
     "log": {
@@ -3001,32 +3021,32 @@
       "betrayLevel5": "Você entrega a comida. O lenhador promete voltar no mesmo dia. Mas ele nunca volta. Você foi traído.",
       "denyLastUneasy": "Algo no comportamento dele o deixa inquieto. Você recusa o acordo. O sorriso do lenhador se desfaz, e ele parte sem uma palavra.",
       "denyLevel1": "Você recusa a oferta dele. O lenhador dá de ombros e se afasta para a floresta.",
-      "denyLevel2": "Você recusa a oferta dele. O lenhador acena e parte sem reclamar.",
+      "denyLevel2": "Você recusa a oferta dele. O lenhador acena com a cabeça e parte sem reclamar.",
       "denyLevel3": "Você rejeita a oferta dele. Ele dá de ombros e volta para a mata.",
       "denyLevel4": "Você recusa a oferta ambiciosa dele. O lenhador parece decepcionado, mas aceita sua decisão.",
       "denyLevel5": "Você recusa o acordo. O lenhador franze a testa, mas não discute.",
       "denyLevel6": "Você recusa o acordo. O lenhador franze a testa, mas não discute.",
       "timeoutLast": "Sua indecisão frustra o lenhador. Ele balança a cabeça e se afasta para a floresta.",
       "timeoutLevel1": "Sua indecisão frustra o lenhador. Ele dá de ombros e se afasta para a floresta.",
-      "timeoutLevel2": "Sua indecisão frustra o lenhador. Ele acena e parte sem reclamar.",
+      "timeoutLevel2": "Sua indecisão frustra o lenhador. Ele acena com a cabeça e parte sem reclamar.",
       "timeoutLevel3": "Sua indecisão frustra o lenhador. Ele dá de ombros e volta para a mata.",
       "timeoutLevel4": "Sua indecisão frustra o lenhador. Ele parece decepcionado, mas aceita e parte.",
       "timeoutLevel5": "Sua indecisão frustra o lenhador. Ele franze a testa e se afasta.",
       "timeoutLevel6": "Sua indecisão frustra o lenhador. Ele franze a testa e se afasta.",
-      "successLevel1": "O lenhador pega a comida e segue para a floresta. Ao entardecer, ele retorna com a madeira prometida empilhada com capricho na orla do vilarejo.",
+      "successLevel1": "O lenhador pega a comida e segue para a floresta. Ao entardecer, ele retorna com a madeira prometida empilhada com capricho nos limites do vilarejo.",
       "successLevel2": "O lenhador pega a comida e desaparece na floresta. Ao cair da noite, ele retorna com uma grande pilha de madeira.",
       "successLevel3": "O lenhador pega a comida e se embrenha nas profundezas da floresta. Ele retorna com uma impressionante carga de madeira.",
       "successLevel4": "O lenhador pega a comida e passa a tarde na floresta. Ele retorna com uma enorme pilha de madeira.",
-      "successLevel5": "O lenhador pega a comida e, no mesmo dia, entrega um estoque massivo de madeira ao vilarejo.",
-      "successLevel6": "O lenhador pega a comida e, no mesmo dia, entrega um estoque massivo de madeira ao vilarejo."
+      "successLevel5": "O lenhador pega a comida e, no mesmo dia, entrega um enorme estoque de madeira ao vilarejo.",
+      "successLevel6": "O lenhador pega a comida e, no mesmo dia, entrega um enorme estoque de madeira ao vilarejo."
     },
     "message": {
       "level1": "Um homem musculoso com um grande machado se aproxima do vilarejo. Ele flexiona os braços. “Sei cortar árvores como ninguém”, gaba-se ele. “Dê-me {{foodCost}} de comida, e eu trarei {{woodReward}} de madeira.”",
-      "level2": "O lenhador retorna, seu machado reluzindo ao sol. “Seu vilarejo tem mais bocas”, observa ele. “Posso lhe trazer {{woodReward}} de madeira. Você me dá {{foodCost}} de comida. O que me diz?”",
+      "level2": "O lenhador retorna, seu machado reluzindo ao sol. “Seu vilarejo tem mais bocas para alimentar”, observa ele. “Posso lhe trazer {{woodReward}} de madeira. Você me dá {{foodCost}} de comida. O que me diz?”",
       "level3": "O lenhador se aproxima novamente. “Seu vilarejo ainda está de pé”, diz ele com um sorriso. “Posso lhe trazer {{woodReward}} de madeira se você pagar {{foodCost}} de comida por ela.”",
-      "level4": "O lenhador chega mais uma vez. “Quer usar meus serviços mais uma vez? {{woodReward}} de madeira por {{foodCost}} de comida”, pergunta ele.",
+      "level4": "O lenhador chega mais uma vez. “Quer contratar meus serviços mais uma vez? {{woodReward}} de madeira por {{foodCost}} de comida”, pergunta ele.",
       "level5": "O lenhador aparece com um sorriso confiante. “Que tal fecharmos mais um acordo? {{woodReward}} de madeira por {{foodCost}} de comida.”",
-      "level6": "O lenhador retorna ao vilarejo. “Quer usar meus serviços mais uma vez? Ofereço {{woodReward}} de madeira por {{foodCost}} de comida”, diz ele."
+      "level6": "O lenhador retorna ao vilarejo. “Quer contratar meus serviços mais uma vez? Ofereço {{woodReward}} de madeira por {{foodCost}} de comida”, diz ele."
     },
     "title": {
       "level1": "O Lenhador",

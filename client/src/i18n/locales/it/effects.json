@@ -509,6 +509,10 @@
     "wanderers_lantern": {
       "description": "Dona a chi la indossa un po' di fortuna e la possibilità di notare ciò che il buio nasconderebbe.",
       "name": "Lanterna del viandante"
+    },
+    "woodcutter_axe": {
+      "description": "Possente ascia che il taglialegna portava con sé",
+      "name": "Ascia del taglialegna"
     }
   },
   "weapons": {

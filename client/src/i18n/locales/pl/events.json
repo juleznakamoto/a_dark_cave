@@ -2984,6 +2984,26 @@
     "message": "Blisko północy z ciemności wyłaniają się wilki o oczach płonących nienaturalnym głodem. W ich wyciu słychać złowrogość, gdy krążą wokół wioski.",
     "title": "Atak wilków"
   },
+  "crossingPathsAgain": {
+    "choices": {
+      "helpHim": {
+        "label": "Pomóc mu"
+      },
+      "killHim": {
+        "label": "Zabić go"
+      },
+      "leaveHim": {
+        "label": "Zostawić go"
+      }
+    },
+    "log": {
+      "help": "Zabierasz go do wioski i opatrujesz rany. Mówi, że żałuje tego, co zrobił. Oddaje ci topór i drewno, które narąbał: {{woodReward}} drewna.",
+      "kill": "Zabijasz go własnymi rękami i zabierasz potężny topór. Wieśniacy są niezadowoleni.",
+      "leave": "Zostawiasz go, by umarł, ale zabierasz jego topór."
+    },
+    "message": "Myśliwi wracają z lasu. Pod drzewami znaleźli rannego, muskularnego mężczyznę: drwala. Coś go zaatakowało. Jest ciężko ranny i długo nie pociągnie.",
+    "title": "Ścieżki znów się krzyżują"
+  },
   "woodcutter": {
     "choices": {
       "acceptServices": {
@@ -2991,23 +3011,23 @@
         "cost": "{{foodCost}} żywności"
       },
       "denyServices": {
-        "label": "Odmów usług"
+        "label": "Odrzuć jego usługi"
       },
       "timeExpired": {
         "label": "Czas minął"
       }
     },
     "log": {
-      "betray": "Oddajesz żywność, ale mijają dni, a drwala ani śladu. Dałeś się oszukać.",
-      "betrayLast": "Oddajesz żywność. Drwal uśmiecha się i odchodzi ku lasowi. Czekasz, ale on nigdy nie wraca. Dałeś się oszukać.",
-      "betrayLevel5": "Oddajesz żywność. Drwal obiecuje wrócić tego samego dnia. Ale nigdy nie wraca. Dałeś się oszukać.",
+      "betray": "Oddajesz żywność, ale mijają dni, a drwala ani śladu. Oszukano cię.",
+      "betrayLast": "Oddajesz żywność. Drwal uśmiecha się i odchodzi ku lasowi. Czekasz, ale on nigdy nie wraca. Oszukano cię.",
+      "betrayLevel5": "Oddajesz żywność. Drwal obiecuje wrócić tego samego dnia. Ale nigdy nie wraca. Oszukano cię.",
       "denyLastUneasy": "Coś w jego postawie budzi twój niepokój. Odmawiasz. Uśmiech znika z twarzy drwala; odchodzi bez słowa.",
       "denyLevel1": "Odrzucasz jego ofertę. Drwal wzrusza ramionami i odchodzi w las.",
       "denyLevel2": "Odrzucasz jego ofertę. Drwal kiwa głową i odchodzi bez narzekania.",
       "denyLevel3": "Odrzucasz jego ofertę. Wzrusza ramionami i wraca do lasu.",
       "denyLevel4": "Odrzucasz jego ambitną ofertę. Drwal wygląda na rozczarowanego, ale przyjmuje twoją decyzję.",
-      "denyLevel5": "Odmawiasz umowy. Drwal marszczy brwi, ale nie kłóci się.",
-      "denyLevel6": "Odmawiasz umowy. Drwal marszczy brwi, ale nie kłóci się.",
+      "denyLevel5": "Odrzucasz umowę. Drwal marszczy brwi, ale się nie kłóci.",
+      "denyLevel6": "Odrzucasz umowę. Drwal marszczy brwi, ale się nie kłóci.",
       "timeoutLast": "Twoje wahanie drażni drwala. Kręci głową i odchodzi w las.",
       "timeoutLevel1": "Twoje wahanie drażni drwala. Wzrusza ramionami i odchodzi w las.",
       "timeoutLevel2": "Twoje wahanie drażni drwala. Kiwa głową i odchodzi bez narzekania.",
@@ -3019,15 +3039,15 @@
       "successLevel2": "Drwal bierze żywność i znika w lesie. Do zmroku wraca z wielką stertą drewna.",
       "successLevel3": "Drwal bierze żywność i zapuszcza się głęboko w las. Wraca z imponującym ładunkiem drewna.",
       "successLevel4": "Drwal bierze żywność i spędza popołudnie w lesie. Wraca z ogromną stertą drewna.",
-      "successLevel5": "Drwal bierze żywność i jeszcze tego samego dnia dostarcza do wioski masywny zapas drewna.",
-      "successLevel6": "Drwal bierze żywność i jeszcze tego samego dnia dostarcza do wioski masywny zapas drewna."
+      "successLevel5": "Drwal bierze żywność i jeszcze tego samego dnia dostarcza do wioski ogromny zapas drewna.",
+      "successLevel6": "Drwal bierze żywność i jeszcze tego samego dnia dostarcza do wioski ogromny zapas drewna."
     },
     "message": {
-      "level1": "Muskularny człowiek z wielką siekierą zbliża się do wioski. Napina ramiona. „Potrafię rąbać drzewa jak nikt inny” – chwali się. „Daj mi {{foodCost}} żywności, a przyniosę {{woodReward}} drewna.”",
-      "level2": "Drwal wraca, siekiera lśni w słońcu. „W twojej wiosce przybyło gąb do wykarmienia” – zauważa. „Mogę przynieść {{woodReward}} drewna. Ty dasz mi {{foodCost}} żywności. Co ty na to?”",
-      "level3": "Drwal zbliża się znów. „Twoja wioska wciąż stoi” – mówi z uśmiechem. „Mogę przynieść {{woodReward}} drewna, jeśli zapłacisz {{foodCost}} żywności.”",
+      "level1": "Muskularny mężczyzna z wielkim toporem zbliża się do wioski. Napina mięśnie. „Potrafię rąbać drzewa jak nikt inny” – chwali się. „Daj mi {{foodCost}} żywności, a przyniosę {{woodReward}} drewna.”",
+      "level2": "Drwal wraca, topór lśni w słońcu. „W twojej wiosce przybyło gąb do wykarmienia” – zauważa. „Mogę przynieść {{woodReward}} drewna. Ty dasz mi {{foodCost}} żywności. Co ty na to?”",
+      "level3": "Drwal znów się zbliża. „Twoja wioska wciąż stoi” – mówi z uśmiechem. „Mogę przynieść {{woodReward}} drewna, jeśli zapłacisz {{foodCost}} żywności.”",
       "level4": "Drwal przybywa raz jeszcze. „Chcesz znów skorzystać z moich usług? {{woodReward}} drewna za {{foodCost}} żywności” – pyta.",
-      "level5": "Drwal zjawia się z pewnym uśmiechem. „Może zrobimy jeszcze jeden układ? {{woodReward}} drewna za {{foodCost}} żywności.”",
+      "level5": "Drwal zjawia się z pewnym siebie uśmiechem. „Może dobijemy jeszcze jednego targu? {{woodReward}} drewna za {{foodCost}} żywności.”",
       "level6": "Drwal wraca do wioski. „Chcesz znów skorzystać z moich usług? Oferuję {{woodReward}} drewna za {{foodCost}} żywności” – mówi."
     },
     "title": {

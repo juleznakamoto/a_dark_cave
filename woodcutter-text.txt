@@ -1,0 +1,603 @@
+Woodcutter text, all languages
+Locales: en, de, es, fr, it, pt-BR, ru, zh-CN, ja, pl
+
+========================================================================
+The Woodcutter
+========================================================================
+
+[choices.acceptServices.label]
+en    Pay {{foodCost}} Food
+de    {{foodCost}} Nahrung zahlen
+es    Pagar {{foodCost}} de comida
+fr    Payer {{foodCost}} nourriture
+it    Paga {{foodCost}} cibo
+pt-BR Pagar {{foodCost}} de comida
+ru    Заплатить {{foodCost}} еды
+zh-CN 支付 {{foodCost}} 食物
+ja    食料 {{foodCost}}を払う
+pl    Zapłać {{foodCost}} żywności
+
+[choices.acceptServices.cost]
+en    {{foodCost}} food
+de    {{foodCost}} Nahrung
+es    {{foodCost}} comida
+fr    {{foodCost}} nourriture
+it    {{foodCost}} cibo
+pt-BR {{foodCost}} comida
+ru    {{foodCost}} еды
+zh-CN {{foodCost}} 食物
+ja    食料 {{foodCost}}
+pl    {{foodCost}} żywności
+
+[choices.denyServices.label]
+en    Deny services
+de    Dienste verweigern
+es    Rechazar los servicios
+fr    Refuser les services
+it    Rifiuta i servizi
+pt-BR Negar os serviços
+ru    Отказать в услугах
+zh-CN 拒绝他的服务
+ja    申し出を断る
+pl    Odmów usług
+
+[choices.timeExpired.label]
+en    Time Expired
+de    Zeit abgelaufen
+es    Tiempo agotado
+fr    Temps écoulé
+it    Tempo scaduto
+pt-BR Tempo Esgotado
+ru    Время истекло
+zh-CN 时间已到
+ja    時間切れ
+pl    Czas minął
+
+[log.betray]
+en    You hand over the food, but days pass with no sign of the woodcutter. You got betrayed.
+de    Du übergibst die Nahrung, doch Tage vergehen ohne Spur des Holzfällers. Du wurdest betrogen.
+es    Entregas la comida, pero pasan días sin señales del leñador. Te han traicionado.
+fr    Vous remettez la nourriture, mais des jours passent sans signe du bûcheron. Vous avez été trahi.
+it    Consegni il cibo, ma passano i giorni senza alcun segno del taglialegna. Sei stato tradito.
+pt-BR Você entrega a comida, mas os dias passam sem sinal do lenhador. Você foi traído.
+ru    Вы отдаёте еду, но дни проходят без вестей от лесоруба. Вас предали.
+zh-CN 你交出了食物，但日子一天天过去，不见樵夫的踪影。你被骗了。
+ja    食料を渡すが、何日経っても木こりの姿はない。騙された。
+pl    Oddajesz żywność, ale mijają dni, a drwala ani śladu. Dałeś się oszukać.
+
+[log.betrayLast]
+en    You hand over the food. The woodcutter grins as he leaves towards the forest. You wait, but he never returns. You got betrayed.
+de    Du übergibst die Nahrung. Der Holzfäller grinst und zieht in den Wald. Du wartest, aber er kehrt nie zurück. Du wurdest betrogen.
+es    Entregas la comida. El leñador sonríe mientras se adentra en el bosque. Esperas, pero nunca regresa. Te han traicionado.
+fr    Vous remettez la nourriture. Le bûcheron sourit en s'enfonçant dans la forêt. Vous attendez, mais il ne revient jamais. Vous avez été trahi.
+it    Consegni il cibo. Il taglialegna ghigna mentre si dirige verso la foresta. Aspetti, ma non torna mai. Sei stato tradito.
+pt-BR Você entrega a comida. O lenhador sorri ao partir rumo à floresta. Você espera, mas ele nunca retorna. Você foi traído.
+ru    Вы отдаёте еду. Лесоруб ухмыляется и уходит в лес. Вы ждёте, но он так и не возвращается. Вас предали.
+zh-CN 你交出了食物。樵夫咧嘴笑着走向森林。你等啊等，但他再也没有回来。你被骗了。
+ja    食料を渡す。木こりは笑みを浮かべて森へ向かう。待つが、彼は戻らない。騙された。
+pl    Oddajesz żywność. Drwal uśmiecha się i odchodzi ku lasowi. Czekasz, ale on nigdy nie wraca. Dałeś się oszukać.
+
+[log.betrayLevel5]
+en    You hand over the food. The woodcutter promises to return the same day. But he never does. You got betrayed.
+de    Du übergibst die Nahrung. Der Holzfäller verspricht, noch am selben Tag zurückzukehren. Doch er tut es nicht. Du wurdest betrogen.
+es    Entregas la comida. El leñador promete volver el mismo día. Pero no lo hace. Te han traicionado.
+fr    Vous remettez la nourriture. Le bûcheron promet de revenir le jour même. Mais il ne le fait pas. Vous avez été trahi.
+it    Consegni il cibo. Il taglialegna promette di tornare lo stesso giorno. Ma non lo fa mai. Sei stato tradito.
+pt-BR Você entrega a comida. O lenhador promete voltar no mesmo dia. Mas ele nunca volta. Você foi traído.
+ru    Вы отдаёте еду. Лесоруб обещает вернуться в тот же день. Но не возвращается. Вас предали.
+zh-CN 你交出了食物。樵夫承诺当天就会回来。但他没有。你被骗了。
+ja    食料を渡す。木こりは当日戻ると約束する。だが戻らない。騙された。
+pl    Oddajesz żywność. Drwal obiecuje wrócić tego samego dnia. Ale nigdy nie wraca. Dałeś się oszukać.
+
+[log.denyLastUneasy]
+en    Something about his demeanor makes you uneasy. You refuse the deal. The woodcutter's smile fades, and he leaves without a word.
+de    Etwas an seinem Auftreten beunruhigt dich. Du lehnst den Handel ab. Das Lächeln des Holzfällers verblasst, und er geht ohne ein Wort.
+es    Algo en su actitud te inquieta. Rechazas el trato. La sonrisa del leñador se desvanece y se marcha sin decir palabra.
+fr    Quelque chose dans son attitude vous met mal à l'aise. Vous refusez l'affaire. Le sourire du bûcheron s'efface, et il part sans un mot.
+it    C'è qualcosa nel suo atteggiamento che ti mette a disagio. Rifiuti l'accordo. Il sorriso del taglialegna svanisce, e se ne va senza una parola.
+pt-BR Algo no comportamento dele o deixa inquieto. Você recusa o acordo. O sorriso do lenhador se desfaz, e ele parte sem uma palavra.
+ru    Что-то в его поведении настораживает. Вы отказываетесь. Улыбка лесоруба гаснет, и он уходит молча.
+zh-CN 他的举止令你不安。你拒绝交易，樵夫的笑容消失，默默离去。
+ja    態度に何か落ち着かないものがある。取引を拒む。木こりの笑みが消え、無言で去る。
+pl    Coś w jego postawie budzi twój niepokój. Odmawiasz. Uśmiech znika z twarzy drwala; odchodzi bez słowa.
+
+[log.denyLevel1]
+en    You decline his offer. The woodcutter shrugs and walks away into the forest.
+de    Du lehnst sein Angebot ab. Der Holzfäller zuckt mit den Schultern und geht in den Wald.
+es    Rechazas su oferta. El leñador se encoge de hombros y se interna en el bosque.
+fr    Vous refusez son offre. Le bûcheron hausse les épaules et s'enfonce dans la forêt.
+it    Rifiuti la sua offerta. Il taglialegna alza le spalle e si allontana nella foresta.
+pt-BR Você recusa a oferta dele. O lenhador dá de ombros e se afasta para a floresta.
+ru    Вы отклоняете предложение. Лесоруб пожимает плечами и уходит в лес.
+zh-CN 你拒绝了他的提议。樵夫耸耸肩，走入森林。
+ja    申し出を断る。木こりは肩をすくめ、森へ歩いて去る。
+pl    Odrzucasz jego ofertę. Drwal wzrusza ramionami i odchodzi w las.
+
+[log.denyLevel2]
+en    You decline his offer. The woodcutter nods and departs without complaint.
+de    Du lehnst sein Angebot ab. Der Holzfäller nickt und zieht ohne Beschwerde weiter.
+es    Rechazas su oferta. El leñador asiente y se marcha sin quejarse.
+fr    Vous refusez son offre. Le bûcheron hoche la tête et repart sans se plaindre.
+it    Rifiuti la sua offerta. Il taglialegna annuisce e se ne va senza lamentarsi.
+pt-BR Você recusa a oferta dele. O lenhador acena e parte sem reclamar.
+ru    Вы отклоняете предложение. Лесоруб кивает и уходит без возражений.
+zh-CN 你拒绝提议。樵夫点头，无怨离去。
+ja    申し出を断る。木こりは頷き、抗わず去る。
+pl    Odrzucasz jego ofertę. Drwal kiwa głową i odchodzi bez narzekania.
+
+[log.denyLevel3]
+en    You turn down his offer. He shrugs and walks back into the woods.
+de    Du lehnst sein Angebot ab. Er zuckt mit den Schultern und geht zurück in den Wald.
+es    Rechazas su oferta. Se encoge de hombros y vuelve al bosque.
+fr    Vous déclinez son offre. Il hausse les épaules et retourne dans les bois.
+it    Respingi la sua offerta. Alza le spalle e torna nei boschi.
+pt-BR Você rejeita a oferta dele. Ele dá de ombros e volta para a mata.
+ru    Вы отказываетесь. Он пожимает плечами и возвращается в лес.
+zh-CN 你回绝提议。他耸耸肩，走回林中。
+ja    申し出を断る。彼は肩をすくめ、森へ戻る。
+pl    Odrzucasz jego ofertę. Wzrusza ramionami i wraca do lasu.
+
+[log.denyLevel4]
+en    You decline his ambitious offer. The woodcutter looks disappointed but accepts your decision.
+de    Du lehnst sein ehrgeiziges Angebot ab. Der Holzfäller wirkt enttäuscht, akzeptiert aber deine Entscheidung.
+es    Rechazas su ambiciosa oferta. El leñador parece decepcionado, pero acepta tu decisión.
+fr    Vous refusez son offre ambitieuse. Le bûcheron semble déçu, mais accepte votre décision.
+it    Rifiuti la sua ambiziosa offerta. Il taglialegna sembra deluso ma accetta la tua decisione.
+pt-BR Você recusa a oferta ambiciosa dele. O lenhador parece decepcionado, mas aceita sua decisão.
+ru    Вы отклоняете его амбициозное предложение. Лесоруб разочарован, но принимает решение.
+zh-CN 你拒绝了他雄心勃勃的提议。樵夫失望，但接受你的决定。
+ja    野心的な申し出を断る。木こりは落胆した様子だが、決断を受け入れる。
+pl    Odrzucasz jego ambitną ofertę. Drwal wygląda na rozczarowanego, ale przyjmuje twoją decyzję.
+
+[log.denyLevel5]
+en    You refuse the deal. The woodcutter frowns but doesn't argue.
+de    Du lehnst den Handel ab. Der Holzfäller runzelt die Stirn, widerspricht aber nicht.
+es    Rechazas el trato. El leñador frunce el ceño, pero no discute.
+fr    Vous refusez l'affaire. Le bûcheron fronce les sourcils, mais ne discute pas.
+it    Rifiuti l'accordo. Il taglialegna aggrotta la fronte ma non discute.
+pt-BR Você recusa o acordo. O lenhador franze a testa, mas não discute.
+ru    Вы отказываетесь от сделки. Лесоруб хмурится, но не спорит.
+zh-CN 你拒绝交易。樵夫皱眉，但未争辩。
+ja    取引を拒む。木こりは眉を寄せるが、抗わない。
+pl    Odmawiasz umowy. Drwal marszczy brwi, ale nie kłóci się.
+
+[log.denyLevel6]
+en    You refuse the deal. The woodcutter frowns but doesn't argue.
+de    Du lehnst den Handel ab. Der Holzfäller runzelt die Stirn, widerspricht aber nicht.
+es    Rechazas el trato. El leñador frunce el ceño, pero no discute.
+fr    Vous refusez l'affaire. Le bûcheron fronce les sourcils, mais ne discute pas.
+it    Rifiuti l'accordo. Il taglialegna aggrotta la fronte ma non discute.
+pt-BR Você recusa o acordo. O lenhador franze a testa, mas não discute.
+ru    Вы отказываетесь от сделки. Лесоруб хмурится, но не спорит.
+zh-CN 你拒绝交易。樵夫皱眉，但未争辩。
+ja    取引を拒む。木こりは眉を寄せるが、抗わない。
+pl    Odmawiasz umowy. Drwal marszczy brwi, ale nie kłóci się.
+
+[log.timeoutLast]
+en    Your indecision frustrates the woodcutter. He shakes his head and walks away into the forest.
+de    Deine Unentschlossenheit frustriert den Holzfäller. Er schüttelt den Kopf und geht in den Wald.
+es    Tu indecisión frustra al leñador. Sacude la cabeza y se interna en el bosque.
+fr    Votre indécision frustre le bûcheron. Il secoue la tête et s'enfonce dans la forêt.
+it    La tua indecisione frustra il taglialegna. Scuote la testa e si allontana nella foresta.
+pt-BR Sua indecisão frustra o lenhador. Ele balança a cabeça e se afasta para a floresta.
+ru    Ваша нерешительность раздражает лесоруба. Он качает головой и уходит в лес.
+zh-CN 你的犹豫令樵夫恼火。他摇头，走入森林。
+ja    迷いが木こりを苛立たせる。彼は首を振り、森へ歩いて去る。
+pl    Twoje wahanie drażni drwala. Kręci głową i odchodzi w las.
+
+[log.timeoutLevel1]
+en    Your indecision frustrates the woodcutter. He shrugs and walks away into the forest.
+de    Deine Unentschlossenheit frustriert den Holzfäller. Er zuckt mit den Schultern und geht in den Wald.
+es    Tu indecisión frustra al leñador. Se encoge de hombros y se interna en el bosque.
+fr    Votre indécision frustre le bûcheron. Il hausse les épaules et s'enfonce dans la forêt.
+it    La tua indecisione frustra il taglialegna. Alza le spalle e si allontana nella foresta.
+pt-BR Sua indecisão frustra o lenhador. Ele dá de ombros e se afasta para a floresta.
+ru    Ваша нерешительность раздражает лесоруба. Он пожимает плечами и уходит в лес.
+zh-CN 你的犹豫令樵夫恼火。他耸耸肩，走入森林。
+ja    迷いが木こりを苛立たせる。彼は肩をすくめ、森へ歩いて去る。
+pl    Twoje wahanie drażni drwala. Wzrusza ramionami i odchodzi w las.
+
+[log.timeoutLevel2]
+en    Your indecision frustrates the woodcutter. He nods and departs without complaint.
+de    Deine Unentschlossenheit frustriert den Holzfäller. Er nickt und zieht ohne Beschwerde weiter.
+es    Tu indecisión frustra al leñador. Asiente y se marcha sin quejarse.
+fr    Votre indécision frustre le bûcheron. Il hoche la tête et repart sans se plaindre.
+it    La tua indecisione frustra il taglialegna. Annuisce e se ne va senza lamentarsi.
+pt-BR Sua indecisão frustra o lenhador. Ele acena e parte sem reclamar.
+ru    Ваша нерешительность раздражает лесоруба. Он кивает и уходит без возражений.
+zh-CN 你的犹豫令樵夫恼火。他点头，无怨离去。
+ja    迷いが木こりを苛立たせる。彼は頷き、抗わず去る。
+pl    Twoje wahanie drażni drwala. Kiwa głową i odchodzi bez narzekania.
+
+[log.timeoutLevel3]
+en    Your indecision frustrates the woodcutter. He shrugs and walks back into the woods.
+de    Deine Unentschlossenheit frustriert den Holzfäller. Er zuckt mit den Schultern und geht zurück in den Wald.
+es    Tu indecisión frustra al leñador. Se encoge de hombros y vuelve al bosque.
+fr    Votre indécision frustre le bûcheron. Il hausse les épaules et retourne dans les bois.
+it    La tua indecisione frustra il taglialegna. Alza le spalle e torna nei boschi.
+pt-BR Sua indecisão frustra o lenhador. Ele dá de ombros e volta para a mata.
+ru    Ваша нерешительность раздражает лесоруба. Он пожимает плечами и возвращается в лес.
+zh-CN 你的犹豫令樵夫恼火。他耸耸肩，走回林中。
+ja    迷いが木こりを苛立たせる。彼は肩をすくめ、森へ戻る。
+pl    Twoje wahanie drażni drwala. Wzrusza ramionami i wraca do lasu.
+
+[log.timeoutLevel4]
+en    Your indecision frustrates the woodcutter. He looks disappointed but accepts and leaves.
+de    Deine Unentschlossenheit frustriert den Holzfäller. Er wirkt enttäuscht, akzeptiert aber und geht.
+es    Tu indecisión frustra al leñador. Parece decepcionado, pero acepta y se marcha.
+fr    Votre indécision frustre le bûcheron. Il semble déçu, mais accepte et part.
+it    La tua indecisione frustra il taglialegna. Sembra deluso ma accetta e se ne va.
+pt-BR Sua indecisão frustra o lenhador. Ele parece decepcionado, mas aceita e parte.
+ru    Ваша нерешительность раздражает лесоруба. Он разочарован, но смиряется и уходит.
+zh-CN 你的犹豫令樵夫恼火。他失望但接受，然后离开。
+ja    迷いが木こりを苛立たせる。落胆した様子だが受け入れ、去る。
+pl    Twoje wahanie drażni drwala. Wygląda na rozczarowanego, ale przyjmuje i odchodzi.
+
+[log.timeoutLevel5]
+en    Your indecision frustrates the woodcutter. He frowns and walks away.
+de    Deine Unentschlossenheit frustriert den Holzfäller. Er runzelt die Stirn und geht.
+es    Tu indecisión frustra al leñador. Frunce el ceño y se marcha.
+fr    Votre indécision frustre le bûcheron. Il fronce les sourcils et s'en va.
+it    La tua indecisione frustra il taglialegna. Aggrotta la fronte e se ne va.
+pt-BR Sua indecisão frustra o lenhador. Ele franze a testa e se afasta.
+ru    Ваша нерешительность раздражает лесоруба. Он хмурится и уходит.
+zh-CN 你的犹豫令樵夫恼火。他皱眉离去。
+ja    迷いが木こりを苛立たせる。彼は眉を寄せ、歩いて去る。
+pl    Twoje wahanie drażni drwala. Marszczy brwi i odchodzi.
+
+[log.timeoutLevel6]
+en    Your indecision frustrates the woodcutter. He frowns and walks away.
+de    Deine Unentschlossenheit frustriert den Holzfäller. Er runzelt die Stirn und geht.
+es    Tu indecisión frustra al leñador. Frunce el ceño y se marcha.
+fr    Votre indécision frustre le bûcheron. Il fronce les sourcils et s'en va.
+it    La tua indecisione frustra il taglialegna. Aggrotta la fronte e se ne va.
+pt-BR Sua indecisão frustra o lenhador. Ele franze a testa e se afasta.
+ru    Ваша нерешительность раздражает лесоруба. Он хмурится и уходит.
+zh-CN 你的犹豫令樵夫恼火。他皱眉离去。
+ja    迷いが木こりを苛立たせる。彼は眉を寄せ、歩いて去る。
+pl    Twoje wahanie drażni drwala. Marszczy brwi i odchodzi.
+
+[log.successLevel1]
+en    The woodcutter takes the food and heads into the forest. By evening, he returns with the promised wood stacked neatly at the village's edge.
+de    Der Holzfäller nimmt die Nahrung und geht in den Wald. Am Abend kehrt er mit dem versprochenen Holz zurück und stapelt es ordentlich am Dorfrand.
+es    El leñador toma la comida y se adentra en el bosque. Al anochecer, regresa con la madera prometida apilada ordenadamente al borde de la aldea.
+fr    Le bûcheron prend la nourriture et s'enfonce dans la forêt. Le soir venu, il revient avec le bois promis empilé proprement au bord du village.
+it    Il taglialegna prende il cibo e si dirige nella foresta. Verso sera, torna con la legna promessa accatastata ordinatamente ai margini del villaggio.
+pt-BR O lenhador pega a comida e segue para a floresta. Ao entardecer, ele retorna com a madeira prometida empilhada com capricho na orla do vilarejo.
+ru    Лесоруб забирает еду и уходит в лес. К вечеру он возвращается с обещанной древесиной, аккуратно сложенной у края деревни.
+zh-CN 樵夫拿走食物，走入森林。傍晚时分，他带着承诺的木材回来，整齐地堆在村庄边缘。
+ja    木こりは食料を受け取り、森へ向かう。夕方までに、約束の木材を村の端に整然と積んで戻る。
+pl    Drwal bierze żywność i idzie w las. Do wieczora wraca z obiecanym drewnem, równo ułożonym na skraju wioski.
+
+[log.successLevel2]
+en    The woodcutter takes the food and disappears into the forest. By nightfall, he returns with a large pile of wood.
+de    Der Holzfäller nimmt die Nahrung und verschwindet im Wald. Bei Einbruch der Dunkelheit kehrt er mit einem großen Holzstoß zurück.
+es    El leñador toma la comida y desaparece en el bosque. Al caer la noche, regresa con un gran montón de madera.
+fr    Le bûcheron prend la nourriture et disparaît dans la forêt. À la tombée de la nuit, il revient avec une grande pile de bois.
+it    Il taglialegna prende il cibo e scompare nella foresta. Al calar della notte, torna con una grande catasta di legna.
+pt-BR O lenhador pega a comida e desaparece na floresta. Ao cair da noite, ele retorna com uma grande pilha de madeira.
+ru    Лесоруб забирает еду и исчезает в лесу. К ночи он возвращается с большой кучей древесины.
+zh-CN 樵夫拿走食物，消失在森林中。夜幕降临时，他带着一大堆木材回来。
+ja    木こりは食料を受け取り、森へ消える。夜までに、大きな木材の山を持って戻る。
+pl    Drwal bierze żywność i znika w lesie. Do zmroku wraca z wielką stertą drewna.
+
+[log.successLevel3]
+en    The woodcutter takes the food and ventures deep into the forest. He returns with an impressive haul of wood.
+de    Der Holzfäller nimmt die Nahrung und wagt sich tief in den Wald. Er kehrt mit einer beeindruckenden Holzmenge zurück.
+es    El leñador toma la comida y se adentra profundamente en el bosque. Regresa con una impresionante carga de madera.
+fr    Le bûcheron prend la nourriture et s'aventure au cœur de la forêt. Il revient avec une récolte impressionnante de bois.
+it    Il taglialegna prende il cibo e si avventura nel profondo della foresta. Torna con un impressionante carico di legna.
+pt-BR O lenhador pega a comida e se embrenha nas profundezas da floresta. Ele retorna com uma impressionante carga de madeira.
+ru    Лесоруб забирает еду и уходит глубоко в лес. Он возвращается с впечатляющим запасом древесины.
+zh-CN 樵夫拿走食物，深入森林。他带着数量惊人的木材回来了。
+ja    木こりは食料を受け取り、森の奥へ入る。見事な量の木材を持って戻る。
+pl    Drwal bierze żywność i zapuszcza się głęboko w las. Wraca z imponującym ładunkiem drewna.
+
+[log.successLevel4]
+en    The woodcutter takes the food and spends the afternoon in the forest. He returns with an enormous pile of wood.
+de    Der Holzfäller nimmt die Nahrung und verbringt den Nachmittag im Wald. Er kehrt mit einem enormen Holzstoß zurück.
+es    El leñador toma la comida y pasa la tarde en el bosque. Regresa con un enorme montón de madera.
+fr    Le bûcheron prend la nourriture et passe l'après-midi dans la forêt. Il revient avec une énorme pile de bois.
+it    Il taglialegna prende il cibo e trascorre il pomeriggio nella foresta. Torna con un'enorme catasta di legna.
+pt-BR O lenhador pega a comida e passa a tarde na floresta. Ele retorna com uma enorme pilha de madeira.
+ru    Лесоруб забирает еду и проводит день в лесу. Он возвращается с огромной кучей древесины.
+zh-CN 樵夫拿走食物，在森林中度过整个下午。他带着一大堆木材回来。
+ja    木こりは食料を受け取り、午後を森で過ごす。膨大な木材の山を持って戻る。
+pl    Drwal bierze żywność i spędza popołudnie w lesie. Wraca z ogromną stertą drewna.
+
+[log.successLevel5]
+en    The woodcutter takes the food and within the same day he delivers a massive stockpile of wood to the village.
+de    Der Holzfäller nimmt die Nahrung und liefert noch am selben Tag einen gewaltigen Holzvorrat ans Dorf.
+es    El leñador toma la comida y ese mismo día entrega a la aldea una enorme pila de madera.
+fr    Le bûcheron prend la nourriture et livre le jour même un énorme stock de bois au village.
+it    Il taglialegna prende il cibo e nello stesso giorno consegna al villaggio una massiccia scorta di legna.
+pt-BR O lenhador pega a comida e, no mesmo dia, entrega um estoque massivo de madeira ao vilarejo.
+ru    Лесоруб забирает еду и в тот же день доставляет в деревню огромный запас древесины.
+zh-CN 樵夫拿走食物，当天就将大量木材送到了村庄。
+ja    木こりは食料を受け取り、その日のうちに膨大な木材の備蓄を村へ届ける。
+pl    Drwal bierze żywność i jeszcze tego samego dnia dostarcza do wioski masywny zapas drewna.
+
+[log.successLevel6]
+en    The woodcutter takes the food and within the same day he delivers a massive stockpile of wood to the village.
+de    Der Holzfäller nimmt die Nahrung und liefert noch am selben Tag einen gewaltigen Holzvorrat ans Dorf.
+es    El leñador toma la comida y ese mismo día entrega a la aldea una enorme pila de madera.
+fr    Le bûcheron prend la nourriture et livre le jour même un énorme stock de bois au village.
+it    Il taglialegna prende il cibo e nello stesso giorno consegna al villaggio una massiccia scorta di legna.
+pt-BR O lenhador pega a comida e, no mesmo dia, entrega um estoque massivo de madeira ao vilarejo.
+ru    Лесоруб забирает еду и в тот же день доставляет в деревню огромный запас древесины.
+zh-CN 樵夫拿走食物，当天就将大量木材送到了村庄。
+ja    木こりは食料を受け取り、その日のうちに膨大な木材の備蓄を村へ届ける。
+pl    Drwal bierze żywność i jeszcze tego samego dnia dostarcza do wioski masywny zapas drewna.
+
+[message.level1]
+en    A muscular man with a large axe approaches the village. He flexes his arms. "I can cut trees like no other," he boasts. "Give me {{foodCost}} Food, and I'll bring {{woodReward}} Wood."
+de    Ein muskulöser Mann mit einer großen Axt nähert sich dem Dorf. Er spannt die Arme an. „Keiner fällt Bäume wie ich“, prahlt er. „Gib mir {{foodCost}} Nahrung, und ich bringe {{woodReward}} Holz.“
+es    Un hombre musculoso con una gran hacha se acerca a la aldea. Flexiona los brazos. «Puedo talar árboles como nadie», presume. «Dame {{foodCost}} de comida y traeré {{woodReward}} de madera».
+fr    Un homme musclé portant une grande hache s'approche du village. Il contracte les bras. « Je coupe les arbres comme personne », se vante-t-il. « Donnez-moi {{foodCost}} nourriture, et je vous rapporterai {{woodReward}} bois. »
+it    Un uomo muscoloso con una grande ascia si avvicina al villaggio. Flette le braccia. «So tagliare gli alberi come nessun altro», si vanta. «Dammi {{foodCost}} cibo, e ti porterò {{woodReward}} legna.»
+pt-BR Um homem musculoso com um grande machado se aproxima do vilarejo. Ele flexiona os braços. “Sei cortar árvores como ninguém”, gaba-se ele. “Dê-me {{foodCost}} de comida, e eu trarei {{woodReward}} de madeira.”
+ru    К деревне подходит мускулистый мужчина с большим топором. Он напрягает руки. «Я рублю деревья как никто другой», — хвастается он. «Дайте мне {{foodCost}} еды, и я принесу {{woodReward}} древесины».
+zh-CN 一个肌肉结实、扛着大斧的男人来到村庄。他弯起手臂炫耀道：“没人比我更会砍树。给我 {{foodCost}} 食物，我就带来 {{woodReward}} 木材。”
+ja    大きな斧を持った筋骨たくましい男が村へ近づく。腕を見せつける。「誰にも負けぬ木の切り方をする。」彼は自慢する。「食料{{foodCost}}をくれ。木材{{woodReward}}を持ってくる。」
+pl    Muskularny człowiek z wielką siekierą zbliża się do wioski. Napina ramiona. „Potrafię rąbać drzewa jak nikt inny” – chwali się. „Daj mi {{foodCost}} żywności, a przyniosę {{woodReward}} drewna.”
+
+[message.level2]
+en    The woodcutter returns, his axe gleaming in the sun. "Your village has more mouths," he observes. "I can bring you {{woodReward}} Wood. You give me {{foodCost}} Food. What do you say?"
+de    Der Holzfäller kehrt zurück, seine Axt glänzt in der Sonne. „Dein Dorf hat mehr Mäuler zu stopfen“, bemerkt er. „Ich kann dir {{woodReward}} Holz bringen. Du gibst mir {{foodCost}} Nahrung. Was sagst du?“
+es    El leñador regresa, con el hacha reluciendo al sol. «Tu aldea tiene más bocas», observa. «Puedo traerte {{woodReward}} de madera. Tú me das {{foodCost}} de comida. ¿Qué dices?»
+fr    Le bûcheron revient, sa hache brillant au soleil. « Votre village a plus de bouches », observe-t-il. « Je peux vous apporter {{woodReward}} bois. Vous me donnez {{foodCost}} nourriture. Qu'en dites-vous ? »
+it    Il taglialegna ritorna, l'ascia che luccica al sole. «Il tuo villaggio ha più bocche da sfamare», osserva. «Posso portarti {{woodReward}} legna. Tu mi dai {{foodCost}} cibo. Che ne dici?»
+pt-BR O lenhador retorna, seu machado reluzindo ao sol. “Seu vilarejo tem mais bocas”, observa ele. “Posso lhe trazer {{woodReward}} de madeira. Você me dá {{foodCost}} de comida. O que me diz?”
+ru    Лесоруб возвращается, его топор блестит на солнце. «В вашей деревне больше ртов», — замечает он. «Я могу принести {{woodReward}} древесины. Вы дадите мне {{foodCost}} еды. Что скажете?»
+zh-CN 樵夫回来了，斧头在阳光下闪闪发亮。“你的村庄多了几张嘴，”他打量着说道，“我能带来 {{woodReward}} 木材。你给我 {{foodCost}} 食物。怎么样？”
+ja    木こりが戻る。斧が陽に光る。「村の口が増えたな。」彼は言う。「木材{{woodReward}}を持ってこられる。食料{{foodCost}}をくれ。どうだ。」
+pl    Drwal wraca, siekiera lśni w słońcu. „W twojej wiosce przybyło gąb do wykarmienia” – zauważa. „Mogę przynieść {{woodReward}} drewna. Ty dasz mi {{foodCost}} żywności. Co ty na to?”
+
+[message.level3]
+en    The woodcutter approaches again. "Your village still stands," he says with a grin. "I can bring you {{woodReward}} Wood if you pay {{foodCost}} Food for it."
+de    Der Holzfäller kommt erneut. „Dein Dorf steht noch“, sagt er mit einem Grinsen. „Ich bringe dir {{woodReward}} Holz, wenn du {{foodCost}} Nahrung dafür bezahlst.“
+es    El leñador se acerca de nuevo. «Tu aldea sigue en pie», dice con una sonrisa. «Puedo traerte {{woodReward}} de madera si pagas {{foodCost}} de comida».
+fr    Le bûcheron s'approche à nouveau. « Votre village tient encore », dit-il avec un sourire. « Je peux vous apporter {{woodReward}} bois si vous payez {{foodCost}} nourriture. »
+it    Il taglialegna si avvicina di nuovo. «Il tuo villaggio è ancora in piedi», dice con un ghigno. «Posso portarti {{woodReward}} legna se paghi {{foodCost}} cibo per averla.»
+pt-BR O lenhador se aproxima novamente. “Seu vilarejo ainda está de pé”, diz ele com um sorriso. “Posso lhe trazer {{woodReward}} de madeira se você pagar {{foodCost}} de comida por ela.”
+ru    Лесоруб снова подходит. «Ваша деревня ещё стоит», — говорит он с усмешкой. «Я могу принести {{woodReward}} древесины, если вы заплатите {{foodCost}} еды».
+zh-CN 樵夫再次走近。“你的村庄还在，”他咧嘴笑道，“只要你支付 {{foodCost}} 食物，我就能带来 {{woodReward}} 木材。”
+ja    木こりが再び近づく。「村はまだ立っている。」笑みで言う。「食料{{foodCost}}を払えば、木材{{woodReward}}を持ってくる。」
+pl    Drwal zbliża się znów. „Twoja wioska wciąż stoi” – mówi z uśmiechem. „Mogę przynieść {{woodReward}} drewna, jeśli zapłacisz {{foodCost}} żywności.”
+
+[message.level4]
+en    The woodcutter arrives once more. "Do you want to use my services once more? {{woodReward}} Wood for {{foodCost}} Food," he asks.
+de    Der Holzfäller erscheint wieder. „Willst du meine Dienste noch einmal nutzen? {{woodReward}} Holz für {{foodCost}} Nahrung“, fragt er.
+es    El leñador llega una vez más. «¿Quieres usar mis servicios otra vez? {{woodReward}} de madera por {{foodCost}} de comida», pregunta.
+fr    Le bûcheron arrive une fois de plus. « Voulez-vous encore utiliser mes services ? {{woodReward}} bois contre {{foodCost}} nourriture », demande-t-il.
+it    Il taglialegna arriva ancora una volta. «Vuoi usare i miei servizi un'altra volta? {{woodReward}} legna per {{foodCost}} cibo», chiede.
+pt-BR O lenhador chega mais uma vez. “Quer usar meus serviços mais uma vez? {{woodReward}} de madeira por {{foodCost}} de comida”, pergunta ele.
+ru    Лесоруб приходит ещё раз. «Хотите снова воспользоваться моими услугами? {{woodReward}} древесины за {{foodCost}} еды», — спрашивает он.
+zh-CN 樵夫又一次到来。“还想再用一次我的服务吗？{{woodReward}} 木材换 {{foodCost}} 食物，”他问道。
+ja    木こりがまた来る。「もう一度、俺を雇わないか。木材{{woodReward}}を、食料{{foodCost}}で。」と尋ねる。
+pl    Drwal przybywa raz jeszcze. „Chcesz znów skorzystać z moich usług? {{woodReward}} drewna za {{foodCost}} żywności” – pyta.
+
+[message.level5]
+en    The woodcutter appears with a confident smile. "How about we make one more deal? {{woodReward}} Wood for {{foodCost}} Food."
+de    Der Holzfäller erscheint mit selbstbewusstem Lächeln. „Wie wäre es mit einem weiteren Handel? {{woodReward}} Holz für {{foodCost}} Nahrung.“
+es    El leñador aparece con una sonrisa confiada. «¿Qué tal si hacemos un trato más? {{woodReward}} de madera por {{foodCost}} de comida».
+fr    Le bûcheron apparaît avec un sourire confiant. « Et si nous concluions une affaire de plus ? {{woodReward}} bois contre {{foodCost}} nourriture. »
+it    Il taglialegna appare con un sorriso sicuro. «Che ne dici di fare un altro affare? {{woodReward}} legna per {{foodCost}} cibo.»
+pt-BR O lenhador aparece com um sorriso confiante. “Que tal fecharmos mais um acordo? {{woodReward}} de madeira por {{foodCost}} de comida.”
+ru    Лесоруб появляется с уверенной улыбкой. «Как насчёт ещё одной сделки? {{woodReward}} древесины за {{foodCost}} еды».
+zh-CN 樵夫带着自信的笑容出现。“再做一笔交易怎么样？{{woodReward}} 木材换 {{foodCost}} 食物。”
+ja    木こりが自信に満ちた笑みで現れる。「もう一回、取引はどうだ。木材{{woodReward}}を、食料{{foodCost}}で。」
+pl    Drwal zjawia się z pewnym uśmiechem. „Może zrobimy jeszcze jeden układ? {{woodReward}} drewna za {{foodCost}} żywności.”
+
+[message.level6]
+en    The woodcutter returns to the village. "Do you want to use my services once more? I offer {{woodReward}} Wood for {{foodCost}} Food," he says.
+de    Der Holzfäller kehrt ins Dorf zurück. „Willst du meine Dienste noch einmal nutzen? Ich biete {{woodReward}} Holz für {{foodCost}} Nahrung“, sagt er.
+es    El leñador regresa a la aldea. «¿Quieres usar mis servicios otra vez? Ofrezco {{woodReward}} de madera por {{foodCost}} de comida», dice.
+fr    Le bûcheron revient au village. « Voulez-vous encore utiliser mes services ? J'offre {{woodReward}} bois contre {{foodCost}} nourriture », dit-il.
+it    Il taglialegna torna al villaggio. «Vuoi usare i miei servizi un'altra volta? Offro {{woodReward}} legna per {{foodCost}} cibo», dice.
+pt-BR O lenhador retorna ao vilarejo. “Quer usar meus serviços mais uma vez? Ofereço {{woodReward}} de madeira por {{foodCost}} de comida”, diz ele.
+ru    Лесоруб возвращается в деревню. «Хотите снова воспользоваться моими услугами? Предлагаю {{woodReward}} древесины за {{foodCost}} еды», — говорит он.
+zh-CN 樵夫回到村庄。“还想再用一次我的服务吗？我提供 {{woodReward}} 木材，换 {{foodCost}} 食物，”他说。
+ja    木こりが村へ戻る。「もう一度、俺を雇わないか。食料{{foodCost}}で、木材{{woodReward}}を持ってこよう。」彼は言う。
+pl    Drwal wraca do wioski. „Chcesz znów skorzystać z moich usług? Oferuję {{woodReward}} drewna za {{foodCost}} żywności” – mówi.
+
+[title.level1]
+en    The Woodcutter
+de    Der Holzfäller
+es    El leñador
+fr    Le bûcheron
+it    Il taglialegna
+pt-BR O Lenhador
+ru    Лесоруб
+zh-CN 樵夫
+ja    木こり
+pl    Drwal
+
+[title.level2]
+en    The Woodcutter Returns
+de    Der Holzfäller kehrt zurück
+es    El leñador regresa
+fr    Le retour du bûcheron
+it    Il taglialegna ritorna
+pt-BR O Lenhador Retorna
+ru    Лесоруб возвращается
+zh-CN 樵夫归来
+ja    木こりの再訪
+pl    Drwal wraca
+
+[title.level3]
+en    The Woodcutter's Offer
+de    Das Angebot des Holzfällers
+es    La oferta del leñador
+fr    L'offre du bûcheron
+it    L'offerta del taglialegna
+pt-BR A Oferta do Lenhador
+ru    Предложение лесоруба
+zh-CN 樵夫的提议
+ja    木こりの申し出
+pl    Oferta drwala
+
+[title.level4]
+en    The Woodcutter's Ambitious Plan
+de    Der ehrgeizige Plan des Holzfällers
+es    El plan ambicioso del leñador
+fr    Le plan ambitieux du bûcheron
+it    Il piano ambizioso del taglialegna
+pt-BR O Plano Ambicioso do Lenhador
+ru    Амбициозный план лесоруба
+zh-CN 樵夫的雄心计划
+ja    木こりの野心
+pl    Ambitny plan drwala
+
+[title.level5]
+en    The Woodcutter's Grand Proposal
+de    Der große Vorschlag des Holzfällers
+es    La gran propuesta del leñador
+fr    La grande proposition du bûcheron
+it    La grande proposta del taglialegna
+pt-BR A Grande Proposta do Lenhador
+ru    Грандиозное предложение лесоруба
+zh-CN 樵夫的宏伟提案
+ja    木こりの大提案
+pl    Wielka propozycja drwala
+
+[title.level6]
+en    The Woodcutter's Offer
+de    Das große Angebot des Holzfällers
+es    La oferta del leñador
+fr    L'offre du bûcheron
+it    L'offerta del taglialegna
+pt-BR A Oferta do Lenhador
+ru    Предложение лесоруба
+zh-CN 樵夫的提议
+ja    木こりの申し出
+pl    Oferta drwala
+
+========================================================================
+Crossing Paths Again
+========================================================================
+
+[choices.helpHim.label]
+en    Help him
+de    Ihm helfen
+es    Ayudarlo
+fr    L'aider
+it    Aiutarlo
+pt-BR Ajudá-lo
+ru    Помочь ему
+zh-CN 帮助他
+ja    助ける
+pl    Pomóc mu
+
+[choices.killHim.label]
+en    Kill him
+de    Ihn töten
+es    Matarlo
+fr    Le tuer
+it    Ucciderlo
+pt-BR Matá-lo
+ru    Убить его
+zh-CN 杀死他
+ja    殺す
+pl    Zabić go
+
+[choices.leaveHim.label]
+en    Leave him
+de    Ihn zurücklassen
+es    Dejarlo
+fr    Le laisser
+it    Lasciarlo
+pt-BR Deixá-lo
+ru    Оставить его
+zh-CN 离开他
+ja    見捨てる
+pl    Zostawić go
+
+[log.help]
+en    You bring him into the village and tend his wounds. He says he is sorry for what he did. He gives you his axe, and the {{woodReward}} wood he chopped.
+de    Du bringst ihn ins Dorf und versorgst seine Wunden. Er sagt, es tue ihm leid, was er getan hat. Er gibt dir seine Axt und das Holz, das er geschlagen hat: {{woodReward}} Holz.
+es    Lo llevas a la aldea y atiendes sus heridas. Dice que lamenta lo que hizo. Te entrega su hacha y la madera que cortó: {{woodReward}} de madera.
+fr    Vous le ramenez au village et soignez ses blessures. Il dit qu'il regrette ce qu'il a fait. Il vous donne sa hache et le bois qu'il a coupé : {{woodReward}} bois.
+it    Lo porti al villaggio e curi le sue ferite. Dice che gli dispiace per ciò che ha fatto. Ti dà la sua ascia e la legna che ha tagliato: {{woodReward}} legna.
+pt-BR Você o leva ao vilarejo e trata dos ferimentos. Ele diz que lamenta o que fez. Entrega o machado e a madeira que cortou: {{woodReward}} de madeira.
+ru    Вы приносите его в деревню и перевязываете раны. Он говорит, что сожалеет о содеянном. Он отдаёт вам свой топор и древесину, которую нарубил: {{woodReward}} древесины.
+zh-CN 你把他带回村庄，包扎伤口。他说自己为做过的事感到抱歉。他把斧头和砍下的木材送给你：{{woodReward}} 木材。
+ja    彼を村へ連れ帰り、傷の手当てをする。彼は自分の行いを詫びる。斧と、切り出した木材{{woodReward}}を渡してくる。
+pl    Zabierasz go do wioski i opatrujesz rany. Mówi, że żałuje tego, co zrobił. Oddaje ci topór i drewno, które narąbał: {{woodReward}} drewna.
+
+[log.kill]
+en    You kill him with your own hands and take his mighty axe. The villagers are displeased.
+de    Du tötest ihn mit eigenen Händen und nimmst seine mächtige Axt. Die Dorfbewohner sind unzufrieden.
+es    Lo matas con tus propias manos y te quedas con su poderosa hacha. Los aldeanos están disgustados.
+fr    Vous le tuez de vos propres mains et prenez sa puissante hache. Les villageois sont mécontents.
+it    Lo uccidi con le tue mani e prendi la sua potente ascia. Gli abitanti del villaggio sono scontenti.
+pt-BR Você o mata com as próprias mãos e fica com o poderoso machado. Os aldeões ficam descontentes.
+ru    Вы убиваете его собственными руками и забираете его могучий топор. Жители недовольны.
+zh-CN 你亲手杀了他，拿走那把沉重的斧头。村民们很不高兴。
+ja    自分の手で彼を殺し、その頑丈な斧を奪う。村人たちは不快がる。
+pl    Zabijasz go własnymi rękami i zabierasz potężny topór. Wieśniacy są niezadowoleni.
+
+[log.leave]
+en    You leave him to die, but you take his axe with you.
+de    Du lässt ihn sterben, nimmst aber seine Axt mit.
+es    Lo dejas morir, pero te llevas su hacha.
+fr    Vous le laissez mourir, mais vous emportez sa hache.
+it    Lo lasci morire, ma ti porti via la sua ascia.
+pt-BR Você o deixa morrer, mas leva o machado.
+ru    Вы оставляете его умирать, но забираете топор.
+zh-CN 你留他等死，但带走了他的斧头。
+ja    彼を死なせるままにするが、斧は持っていく。
+pl    Zostawiasz go, by umarł, ale zabierasz jego topór.
+
+[message]
+en    Hunters return from the forest. They found a wounded muscular man under the trees: the woodcutter. Something attacked him. He is severely wounded, and he will not last long.
+de    Jäger kehren aus dem Wald zurück. Unter den Bäumen fanden sie einen verwundeten, muskulösen Mann: den Holzfäller. Etwas hat ihn angegriffen. Er ist schwer verletzt und wird nicht mehr lange durchhalten.
+es    Los cazadores regresan del bosque. Bajo los árboles encontraron a un hombre musculoso y herido: el leñador. Algo lo atacó. Está gravemente herido y no aguantará mucho.
+fr    Les chasseurs reviennent de la forêt. Sous les arbres, ils ont trouvé un homme musclé et blessé : le bûcheron. Quelque chose l'a attaqué. Il est grièvement blessé et ne tiendra plus longtemps.
+it    I cacciatori tornano dalla foresta. Sotto gli alberi hanno trovato un uomo muscoloso e ferito: il taglialegna. Qualcosa lo ha attaccato. È gravemente ferito e non resisterà a lungo.
+pt-BR Os caçadores voltam da floresta. Sob as árvores, encontraram um homem musculoso e ferido: o lenhador. Algo o atacou. Ele está gravemente ferido e não vai durar muito.
+ru    Охотники возвращаются из леса. Под деревьями они нашли раненого мускулистого мужчину: лесоруба. На него кто-то напал. Он тяжело ранен и долго не протянет.
+zh-CN 猎人们从森林回来。他们在树下发现一个受伤的壮汉：那个樵夫。有什么东西袭击了他。他伤得很重，撑不了多久。
+ja    狩人たちが森から戻る。木々の下で、傷を負った筋骨たくましい男を見つけた。木こりだ。何かに襲われたらしい。傷は深く、長くはもたない。
+pl    Myśliwi wracają z lasu. Pod drzewami znaleźli rannego, muskularnego mężczyznę: drwala. Coś go zaatakowało. Jest ciężko ranny i długo nie pociągnie.
+
+[title]
+en    Crossing Paths Again
+de    Wege kreuzen sich wieder
+es    Caminos que vuelven a cruzarse
+fr    Les chemins se croisent à nouveau
+it    Strade che si incrociano di nuovo
+pt-BR Caminhos que se cruzam de novo
+ru    Пути снова пересекаются
+zh-CN 再次交会
+ja    再び交わる道
+pl    Ścieżki znów się krzyżują
+
+========================================================================
+Woodcutter's Axe
+========================================================================
+
+[description]
+en    Mighty axe once carried by the woodcutter
+de    Mächtige Axt, die einst der Holzfäller trug
+es    Poderosa hacha que el leñador llevaba consigo
+fr    Puissante hache que portait le bûcheron
+it    Possente ascia che il taglialegna portava con sé
+pt-BR Machado poderoso que o lenhador carregava
+ru    Могучий топор, который носил лесоруб
+zh-CN 樵夫曾经携带的沉重巨斧
+ja    木こりがかつて携えていた頑丈な斧
+pl    Potężny topór, który nosił drwal
+
+[name]
+en    Woodcutter's Axe
+de    Axt des Holzfällers
+es    Hacha del leñador
+fr    Hache du bûcheron
+it    Ascia del taglialegna
+pt-BR Machado do Lenhador
+ru    Топор лесоруба
+zh-CN 樵夫之斧
+ja    木こりの斧
+pl    Topór drwala
+

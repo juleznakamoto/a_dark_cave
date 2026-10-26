@@ -2982,6 +2982,26 @@
     "message": "Cerca de la medianoche, unos lobos emergen de la oscuridad, con los ojos brillando de un hambre antinatural. Sus aullidos destilan malicia mientras rodean la aldea.",
     "title": "Ataque de lobos"
   },
+  "crossingPathsAgain": {
+    "choices": {
+      "helpHim": {
+        "label": "Ayudarlo"
+      },
+      "killHim": {
+        "label": "Matarlo"
+      },
+      "leaveHim": {
+        "label": "Dejarlo"
+      }
+    },
+    "log": {
+      "help": "Lo llevas a la aldea y atiendes sus heridas. Dice que lamenta lo que hizo. Te entrega su hacha y la madera que cortó: {{woodReward}} de madera.",
+      "kill": "Lo matas con tus propias manos y te quedas con su poderosa hacha. Los aldeanos están disgustados.",
+      "leave": "Lo dejas morir, pero te llevas su hacha."
+    },
+    "message": "Los cazadores regresan del bosque. Bajo los árboles encontraron a un hombre musculoso y herido: el leñador. Algo lo atacó. Está gravemente herido y no aguantará mucho.",
+    "title": "Caminos que vuelven a cruzarse"
+  },
   "woodcutter": {
     "choices": {
       "acceptServices": {
@@ -2989,7 +3009,7 @@
         "cost": "{{foodCost}} comida"
       },
       "denyServices": {
-        "label": "Rechazar los servicios"
+        "label": "Rechazar sus servicios"
       },
       "timeExpired": {
         "label": "Tiempo agotado"
@@ -2999,7 +3019,7 @@
       "betray": "Entregas la comida, pero pasan días sin señales del leñador. Te han traicionado.",
       "betrayLast": "Entregas la comida. El leñador sonríe mientras se adentra en el bosque. Esperas, pero nunca regresa. Te han traicionado.",
       "betrayLevel5": "Entregas la comida. El leñador promete volver el mismo día. Pero no lo hace. Te han traicionado.",
-      "denyLastUneasy": "Algo en su actitud te inquieta. Rechazas el trato. La sonrisa del leñador se desvanece y se marcha sin decir palabra.",
+      "denyLastUneasy": "Algo en su actitud te inquieta. Rechazas el trato. La sonrisa del leñador se desvanece, y él se marcha sin decir palabra.",
       "denyLevel1": "Rechazas su oferta. El leñador se encoge de hombros y se interna en el bosque.",
       "denyLevel2": "Rechazas su oferta. El leñador asiente y se marcha sin quejarse.",
       "denyLevel3": "Rechazas su oferta. Se encoge de hombros y vuelve al bosque.",
@@ -3015,18 +3035,18 @@
       "timeoutLevel6": "Tu indecisión frustra al leñador. Frunce el ceño y se marcha.",
       "successLevel1": "El leñador toma la comida y se adentra en el bosque. Al anochecer, regresa con la madera prometida apilada ordenadamente al borde de la aldea.",
       "successLevel2": "El leñador toma la comida y desaparece en el bosque. Al caer la noche, regresa con un gran montón de madera.",
-      "successLevel3": "El leñador toma la comida y se adentra profundamente en el bosque. Regresa con una impresionante carga de madera.",
+      "successLevel3": "El leñador toma la comida y se adentra en lo profundo del bosque. Regresa con una impresionante carga de madera.",
       "successLevel4": "El leñador toma la comida y pasa la tarde en el bosque. Regresa con un enorme montón de madera.",
       "successLevel5": "El leñador toma la comida y ese mismo día entrega a la aldea una enorme pila de madera.",
       "successLevel6": "El leñador toma la comida y ese mismo día entrega a la aldea una enorme pila de madera."
     },
     "message": {
       "level1": "Un hombre musculoso con una gran hacha se acerca a la aldea. Flexiona los brazos. «Puedo talar árboles como nadie», presume. «Dame {{foodCost}} de comida y traeré {{woodReward}} de madera».",
-      "level2": "El leñador regresa, con el hacha reluciendo al sol. «Tu aldea tiene más bocas», observa. «Puedo traerte {{woodReward}} de madera. Tú me das {{foodCost}} de comida. ¿Qué dices?»",
+      "level2": "El leñador regresa, con el hacha reluciendo al sol. «Tu aldea tiene más bocas que alimentar», observa. «Puedo traerte {{woodReward}} de madera. Tú me das {{foodCost}} de comida. ¿Qué me dices?»",
       "level3": "El leñador se acerca de nuevo. «Tu aldea sigue en pie», dice con una sonrisa. «Puedo traerte {{woodReward}} de madera si pagas {{foodCost}} de comida».",
-      "level4": "El leñador llega una vez más. «¿Quieres usar mis servicios otra vez? {{woodReward}} de madera por {{foodCost}} de comida», pregunta.",
+      "level4": "El leñador llega una vez más. «¿Quieres volver a contratar mis servicios? {{woodReward}} de madera por {{foodCost}} de comida», pregunta.",
       "level5": "El leñador aparece con una sonrisa confiada. «¿Qué tal si hacemos un trato más? {{woodReward}} de madera por {{foodCost}} de comida».",
-      "level6": "El leñador regresa a la aldea. «¿Quieres usar mis servicios otra vez? Ofrezco {{woodReward}} de madera por {{foodCost}} de comida», dice."
+      "level6": "El leñador regresa a la aldea. «¿Quieres volver a contratar mis servicios? Ofrezco {{woodReward}} de madera por {{foodCost}} de comida», dice."
     },
     "title": {
       "level1": "El leñador",

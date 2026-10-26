@@ -254,6 +254,22 @@ export const toolEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+  // Story axe. Kept out of AXE_HIERARCHY so it stacks with the best crafted axe.
+  woodcutter_axe: {
+    id: "woodcutter_axe",
+    name: "Woodcutter's Axe",
+    description: "Mighty axe once carried by the woodcutter",
+    bonuses: {
+      generalBonuses: {
+        strength: 4,
+      },
+      actionBonuses: {
+        chopWood: {
+          resourceMultiplier: 2,
+        },
+      },
+    },
+  },
   blacksteel_pickaxe: {
     id: "blacksteel_pickaxe",
     name: "Blacksteel Pickaxe",

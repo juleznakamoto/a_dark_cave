@@ -509,6 +509,10 @@
     "wanderers_lantern": {
       "description": "Elle accorde à celui qui la porte un peu de chance, et la possibilité de voir ce que l'obscurité cacherait.",
       "name": "Lanterne du vagabond"
+    },
+    "woodcutter_axe": {
+      "description": "Puissante hache que portait le bûcheron",
+      "name": "Hache du bûcheron"
     }
   },
   "weapons": {
