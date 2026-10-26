@@ -41,7 +41,6 @@ export const WANDERERS_LANTERN_LUCK = 2;
 
 const STEAM_DEV_MODES: readonly DevGameMode[] = [
   "steamGame",
-  "steamPlaytest",
   "steamDemo",
   "demoEnd",
   "steamEndCruelOn",
@@ -50,7 +49,7 @@ const STEAM_DEV_MODES: readonly DevGameMode[] = [
 
 type LanternState = GameState & { devGameMode?: DevGameMode };
 
-/** Steam full, demo, and playtest, plus DEV Game Mode copies of those. */
+/** Steam full and demo, plus DEV Game Mode copies of those. */
 export function isWanderersLanternEdition(
   devGameMode?: DevGameMode,
 ): boolean {

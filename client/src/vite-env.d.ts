@@ -8,8 +8,6 @@ interface ImportMetaEnv {
   readonly VITE_STEAM_BUILD?: string;
   /** "1" only in the Steam desktop demo build (`build:steam-demo`). */
   readonly VITE_STEAM_DEMO?: string;
-  /** "1" only in the Steam desktop playtest build (`build:steam-playtest`). */
-  readonly VITE_STEAM_PLAYTEST?: string;
   /** "1" only in the CrazyGames HTML5 demo folder (`build:crazygames`). */
   readonly VITE_CRAZYGAMES?: string;
   /** "1" only in the itch.io HTML5 demo folder (`build:itch`). */

@@ -45,7 +45,7 @@ export function isSteamDemoOriginSave(
 
 /**
  * Full game must not silently load a Demo blob from the old shared filename.
- * Demo / playtest still reconcile their own file against IndexedDB.
+ * The demo still reconciles its own file against IndexedDB.
  */
 export function shouldAdoptSteamCloudSave(
   local: SaveData | undefined,

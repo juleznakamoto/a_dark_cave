@@ -95,7 +95,7 @@ const pushed = new Set<string>();
 /**
  * Push any newly-completed achievements to Steam. Cheap to call frequently
  * (e.g. once per production cycle and on load). No-op on web. The Steam demo
- * only unlocks basic IDs; the full/playtest apps unlock the full set. Loading
+ * only unlocks basic IDs; the full game unlocks the full set. Loading
  * a demo save in the full game backfills whatever that save already earned.
  */
 export async function syncSteamAchievements(state: GameState): Promise<void> {

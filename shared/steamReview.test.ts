@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import {
   STEAM_DEMO_APP_ID,
   STEAM_FULL_APP_ID,
-  STEAM_PLAYTEST_APP_ID,
   steamReviewPageUrl,
 } from "./steamReview";
 
@@ -13,9 +12,6 @@ describe("steamReviewPageUrl", () => {
     );
     expect(steamReviewPageUrl(STEAM_DEMO_APP_ID)).toBe(
       "https://store.steampowered.com/recommended/recommendgame/4971800",
-    );
-    expect(steamReviewPageUrl(STEAM_PLAYTEST_APP_ID)).toBe(
-      "https://store.steampowered.com/recommended/recommendgame/4972040",
     );
   });
 

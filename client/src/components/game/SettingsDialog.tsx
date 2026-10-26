@@ -72,7 +72,6 @@ const GAME_MODE_LABEL_KEYS: Record<
   DevGameMode,
   | "settings.gameModeNormal"
   | "settings.gameModeSteamGame"
-  | "settings.gameModeSteamPlaytest"
   | "settings.gameModeSteamDemo"
   | "settings.gameModeDemoEnd"
   | "settings.gameModeSteamEndCruelOn"
@@ -81,7 +80,6 @@ const GAME_MODE_LABEL_KEYS: Record<
 > = {
   normal: "settings.gameModeNormal",
   steamGame: "settings.gameModeSteamGame",
-  steamPlaytest: "settings.gameModeSteamPlaytest",
   steamDemo: "settings.gameModeSteamDemo",
   demoEnd: "settings.gameModeDemoEnd",
   steamEndCruelOn: "settings.gameModeSteamEndCruelOn",
@@ -92,7 +90,6 @@ const GAME_MODE_LABEL_KEYS: Record<
 const GAME_MODE_DEFAULTS: Record<DevGameMode, string> = {
   normal: "Normal Mode",
   steamGame: "Steam Game",
-  steamPlaytest: "Steam Playtest",
   steamDemo: "Steam Demo",
   demoEnd: "Demo End",
   steamEndCruelOn: "Steam End (Cruel On)",

@@ -127,7 +127,7 @@ export function activateOverlayToStore(
 
 /**
  * Open the Steam "Write a review" form in the overlay. Only known app ids
- * (full game, demo, playtest) are accepted. Returns true if Steam accepted the call.
+ * (full game and demo) are accepted. Returns true if Steam accepted the call.
  */
 export function activateOverlayToReview(appId: number): boolean {
   const url = steamReviewPageUrl(appId);

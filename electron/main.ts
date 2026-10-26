@@ -21,7 +21,6 @@ import {
   APP_USER_DATA_NAME,
   APP_WINDOW_TITLE,
   isSteamDemoBuild,
-  isSteamPlaytestBuild,
   resolveLegacyDemoSavePath,
   resolveSteamCloudSavePath,
   resolveSteamDemoCloudSavePath,
@@ -145,7 +144,7 @@ function resolveAppId(): number {
 
 /** This edition's Steam Cloud save file. */
 function saveFilePath(): string {
-  return resolveSteamCloudSavePath(app.getPath("appData"), app.getPath("userData"));
+  return resolveSteamCloudSavePath(app.getPath("appData"));
 }
 
 /** Demo Cloud file in the shared Auto-Cloud folder (full game reads this for import). */
@@ -179,7 +178,6 @@ async function readSavePayload(): Promise<string | null> {
 
 /** Full game: peek the Demo save without touching the full-game file. */
 async function readDemoSavePayload(): Promise<string | null> {
-  if (isSteamPlaytestBuild) return null;
   return readFirstExistingFile([
     sharedDemoSaveFilePath(),
     legacyDemoSaveFilePath(),

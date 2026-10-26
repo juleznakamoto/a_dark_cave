@@ -1,5 +1,5 @@
 /**
- * Package one Steam desktop edition (full, demo, or playtest).
+ * Package one Steam desktop edition (full or demo).
  *
  * Vite and electron-builder used to share `dist/public`. Upload-all builds the
  * next edition while the previous electron-builder is still reading hashed
@@ -32,7 +32,7 @@ function readNumericId(filePath, missingMessage, emptyMessage) {
 
 /**
  * @param {object} options
- * @param {"full" | "demo" | "playtest"} options.edition
+ * @param {"full" | "demo"} options.edition
  * @param {string} options.builderConfig electron-builder yml, relative to the repo
  * @param {Record<string, string>} options.viteEnv
  * @param {Record<string, string>} [options.electronEnv]

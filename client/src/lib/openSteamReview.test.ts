@@ -63,7 +63,7 @@ describe("openSteamReview", () => {
     expect(window.open).not.toHaveBeenCalled();
   });
 
-  it("targets the full game outside the playtest build", () => {
+  it("targets the full game", () => {
     expect(steamGameReviewAppId()).toBe(STEAM_FULL_APP_ID);
   });
 });

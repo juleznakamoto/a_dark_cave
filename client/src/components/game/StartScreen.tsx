@@ -398,7 +398,7 @@ export default function StartScreen({
   const introLineClipRefs = useRef<Array<HTMLElement | null>>([]);
   const { t } = useUiTranslation();
   const { locale } = useLocale();
-  // Steam Game / Playtest / Demo (build or DEV Game Mode) — no social/store links in footer.
+  // Steam Game / Demo (build or DEV Game Mode): no social/store links in footer.
   // Galaxy and Normal/web keep Steam / Reddit / Contact.
   const hideStartScreenSocialLinks = steamDesktopEditionActive;
   const activityPrefsRef = useRef<StartScreenPreferences>({

@@ -52,9 +52,8 @@ describe("wanderers lantern", () => {
     expect(matchesWanderersLanternCode("WANDER")).toBe(false);
   });
 
-  it("is a steam-only edition, including demo and playtest copies in DEV", () => {
+  it("is a steam-only edition, including the demo copy in DEV", () => {
     expect(isWanderersLanternEdition("steamGame")).toBe(true);
-    expect(isWanderersLanternEdition("steamPlaytest")).toBe(true);
     expect(isWanderersLanternEdition("steamDemo")).toBe(true);
     expect(isWanderersLanternEdition("demoEnd")).toBe(true);
     expect(isWanderersLanternEdition("crazyGamesDemo")).toBe(false);

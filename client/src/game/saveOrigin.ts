@@ -9,7 +9,6 @@ import {
   isSteamBuild,
   isSteamDemoBuild,
   isSteamDemoRuntime,
-  isSteamPlaytestBuild,
   getDevGameModeOverride,
   isSteamEndScreenDevMode,
 } from "@/lib/edition";
@@ -18,7 +17,6 @@ export { SAVE_ORIGIN_EDITIONS, type SaveOriginEdition };
 
 /** Edition that should be stamped on the next local / Steam Cloud write. */
 export function getSaveOriginEdition(): SaveOriginEdition {
-  if (isSteamPlaytestBuild) return "steam-playtest";
   if (isSteamDemoBuild || isSteamDemoRuntime()) return "steam-demo";
   if (isSteamBuild) return "steam-full";
   if (isItchEdition()) return "itch";
@@ -26,7 +24,6 @@ export function getSaveOriginEdition(): SaveOriginEdition {
   if (isCrazyGamesEdition()) return "crazygames";
   if (import.meta.env.DEV && !isSteamBuild) {
     const mode = getDevGameModeOverride();
-    if (mode === "steamPlaytest") return "steam-playtest";
     if (mode === "steamDemo" || mode === "demoEnd") return "steam-demo";
     if (mode === "steamGame" || isSteamEndScreenDevMode(mode)) {
       return "steam-full";

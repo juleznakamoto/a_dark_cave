@@ -1,19 +1,19 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-  Build and upload all three Steam editions (full, demo, playtest) in one run.
+  Build and upload both Steam editions (full and demo) in one run.
 
 .USAGE
-  Requires steam/config.local.json, config.demo.local.json, and config.playtest.local.json
+  Requires steam/config.local.json and config.demo.local.json
   (same setup as the individual upload scripts).
 
   Run:  npm run steam:upload-all
   Or double-click: scripts\UploadAllToSteam.cmd
 
   Each edition is packaged, then copied to
-  %LOCALAPPDATA%\a-dark-cave-steam\staged-{full,demo,playtest} so the shared
+  %LOCALAPPDATA%\a-dark-cave-steam\staged-{full,demo} so the shared
   release\win-unpacked folder can be reused. Staging lives outside the repo so
-  IDE/antivirus file locks on app.asar do not break the copy step. All three
+  IDE/antivirus file locks on app.asar do not break the copy step. Both
   SteamPipe uploads then run in a single steamcmd session (one login / Steam Guard).
 #>
 param(
@@ -189,11 +189,9 @@ function Write-SteamPipeVdfs(
 
 $fullConfig = Read-SteamConfig "steam\config.local.json" "full game"
 $demoConfig = Read-SteamConfig "steam\config.demo.local.json" "demo"
-$playtestConfig = Read-SteamConfig "steam\config.playtest.local.json" "playtest"
 
 Assert-DepotConfigured $fullConfig "steam\config.local.json"
 Assert-DepotConfigured $demoConfig "steam\config.demo.local.json"
-Assert-DepotConfigured $playtestConfig "steam\config.playtest.local.json"
 
 $sdkRoot = [string]$fullConfig.steamworksSdk
 $steamcmd = Join-Path $sdkRoot "tools\ContentBuilder\builder\steamcmd.exe"
@@ -219,14 +217,6 @@ $editions = @(
     StageDir = (Join-Path $SteamStageRoot "staged-demo")
     GeneratedDir = (Join-Path $Root "steam\generated-demo")
     OutputDir = (Join-Path $Root "steam\output-demo")
-  },
-  @{
-    Name = "playtest"
-    Config = $playtestConfig
-    PackageCmd = "npm run electron:package:playtest"
-    StageDir = (Join-Path $SteamStageRoot "staged-playtest")
-    GeneratedDir = (Join-Path $Root "steam\generated-playtest")
-    OutputDir = (Join-Path $Root "steam\output-playtest")
   }
 )
 
@@ -263,7 +253,7 @@ if ($StageOnly) {
 }
 
 $steamUser = $null
-foreach ($cfg in @($fullConfig, $demoConfig, $playtestConfig)) {
+foreach ($cfg in @($fullConfig, $demoConfig)) {
   if ($cfg.PSObject.Properties.Name -contains "steamUsername" -and $cfg.steamUsername) {
     $steamUser = [string]$cfg.steamUsername
     break
@@ -278,8 +268,8 @@ $logPath = Join-Path $Root "steam\output\upload-all.log"
 New-Item -ItemType Directory -Path (Split-Path -Parent $logPath) -Force | Out-Null
 
 Write-Host ""
-Write-Host "Uploading all three Steam editions in one steamcmd session..." -ForegroundColor Cyan
-Write-Host "  Full $($fullConfig.appId) / demo $($demoConfig.appId) / playtest $($playtestConfig.appId)" -ForegroundColor DarkGray
+Write-Host "Uploading both Steam editions in one steamcmd session..." -ForegroundColor Cyan
+Write-Host "  Full $($fullConfig.appId) / demo $($demoConfig.appId)" -ForegroundColor DarkGray
 Write-Host "Enter your Steam PASSWORD when prompted (input is hidden)." -ForegroundColor Yellow
 Write-Host "Then enter Steam Guard code if asked." -ForegroundColor Yellow
 Write-Host ""
@@ -311,8 +301,8 @@ if ($exitCode -ne 0) {
 }
 
 Write-Host ""
-Write-Host "All three uploads finished." -ForegroundColor Green
+Write-Host "Both uploads finished." -ForegroundColor Green
 Write-Host "Set each build live on branch 'default' in Steamworks > SteamPipe > Builds, then Publish." -ForegroundColor Yellow
-Write-Host "  Full / Demo / Playtest apps separately." -ForegroundColor DarkGray
+Write-Host "  Full and Demo apps separately." -ForegroundColor DarkGray
 Write-Host "Log: $logPath" -ForegroundColor DarkGray
 exit 0

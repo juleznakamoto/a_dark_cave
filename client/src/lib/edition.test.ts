@@ -28,7 +28,6 @@ describe("CrazyGames edition", () => {
     expect(edition.shouldHideSteamStoreLink("normal")).toBe(false);
     expect(edition.shouldHideSteamStoreLink("crazyGamesDemo")).toBe(false);
     expect(edition.shouldHideSteamStoreLink("steamGame")).toBe(true);
-    expect(edition.shouldHideSteamStoreLink("steamPlaytest")).toBe(true);
     expect(edition.shouldHideSteamStoreLink("steamDemo")).toBe(true);
     expect(edition.shouldHideSteamStoreLink("demoEnd")).toBe(true);
     expect(edition.shouldHideSteamStoreLink("steamEndCruelOn")).toBe(true);
@@ -44,7 +43,6 @@ describe("CrazyGames edition", () => {
     expect(edition.shouldOfferSteamDemoReview("normal")).toBe(false);
 
     expect(edition.shouldOfferSteamGameReview("steamGame")).toBe(true);
-    expect(edition.shouldOfferSteamGameReview("steamPlaytest")).toBe(true);
     expect(edition.shouldOfferSteamGameReview("steamEndCruelOn")).toBe(true);
     expect(edition.shouldOfferSteamGameReview("steamEndCruelOff")).toBe(true);
     expect(edition.shouldOfferSteamGameReview("steamDemo")).toBe(false);
@@ -87,7 +85,6 @@ describe("CrazyGames edition", () => {
     edition.setDevGameModeOverride("normal");
     expect(edition.isSteamEditionActive("normal")).toBe(false);
     expect(edition.isSteamEditionActive("steamGame")).toBe(true);
-    expect(edition.isSteamEditionActive("steamPlaytest")).toBe(true);
     edition.setDevGameModeOverride("normal");
   });
 

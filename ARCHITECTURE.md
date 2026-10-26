@@ -39,9 +39,8 @@ all game logic lives in the client. **Supabase** handles auth/cloud saves.
 
 **Root config:** `package.json`, `vite.config.ts` (+ `vite.vendorChunks.ts`),
 `tsconfig.json`, `vitest.config.ts`, `tailwind.config.ts`, `components.json`,
-`drizzle.config.ts`, `electron-builder.yml` (+ `.demo.yml` / `.playtest.yml`),
-`steam_appid.txt` (full **4882240**), `steam_appid_demo.txt` (**4971800**),
-`steam_appid_playtest.txt` (**4972040**).
+`drizzle.config.ts`, `electron-builder.yml` (+ `.demo.yml`),
+`steam_appid.txt` (full **4882240**), `steam_appid_demo.txt` (**4971800**).
 
 **Path aliases:** `@/*` → `client/src/*`, `@shared/*` → `shared/*`, `@assets` → `attached_assets`.
 
@@ -206,7 +205,6 @@ leaderboard, or marketing). Demo editions cap at 8 wooden huts
 | Web (full) | default | `mainSave` + optional Supabase | `npm run build` |
 | Steam full | `VITE_STEAM_BUILD=1` | IndexedDB + `%APPDATA%\A Dark Cave\adc-steam-save.dat` | `electron:package` |
 | Steam demo | `VITE_STEAM_DEMO=1` | Demo IndexedDB + `adc-steam-demo-save.dat` (shared folder, different file) | `electron:package:demo` |
-| Steam playtest | `VITE_STEAM_PLAYTEST=1` | Playtest IndexedDB + `adc-steam-playtest-save.dat` | `electron:package:playtest` |
 | Galaxy | URL `/galaxy` | `galaxySave` | hosted at `/galaxy` |
 | CrazyGames | `VITE_CRAZYGAMES=1` or `/crazygames` | `crazyGamesSave` + SDK Data + `localStorage` | `package:crazygames` |
 | itch.io demo | `VITE_ITCH=1` or `/itch` | `itchSave` | `package:itch` (`release/a-dark-cave-itch/`) |

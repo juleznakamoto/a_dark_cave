@@ -4,17 +4,12 @@
  * Steam desktop (live `steamBridge`): overlay web page.
  * Web / overlay failure: the same store URL in a new tab.
  */
-import { isSteamPlaytestBuild } from "@/lib/edition";
 import { hasSteamBridge, steamActivateOverlayToReview } from "@/lib/steam";
-import {
-  STEAM_FULL_APP_ID,
-  STEAM_PLAYTEST_APP_ID,
-  steamReviewPageUrl,
-} from "@shared/steamReview";
+import { STEAM_FULL_APP_ID, steamReviewPageUrl } from "@shared/steamReview";
 
-/** Full game, or the playtest app when this shell is the playtest build. */
+/** Full-game review form. The demo passes its own app id at the call site. */
 export function steamGameReviewAppId(): number {
-  return isSteamPlaytestBuild ? STEAM_PLAYTEST_APP_ID : STEAM_FULL_APP_ID;
+  return STEAM_FULL_APP_ID;
 }
 
 export async function openSteamReview(appId: number): Promise<void> {

@@ -7,13 +7,12 @@
  * `electron:package:demo`). Everything Steam-specific (no online services, no real-money
  * shop, merchant-sold artifacts, local + Steam Cloud saves)
  * keys off `isSteamBuild`; the demo cap keys off `isSteamDemoBuild` / `isDemoEdition()`.
- * Steam partner achievements sync on full, playtest, and demo
+ * Steam partner achievements sync on full and demo
  * ({@link shouldSyncSteamAchievements}); the demo only pushes basic IDs.
- * Playtest uses `VITE_STEAM_PLAYTEST=1` for an isolated save namespace (full game, no cap).
  * CrazyGames uses `VITE_CRAZYGAMES=1` (`build:crazygames`) or the `/crazygames` path.
  * itch.io uses `VITE_ITCH=1` (`package:itch`) or the `/itch` preview path.
  *
- * In DEV (non-Steam builds), Settings → Game Mode can simulate Steam Game / Playtest /
+ * In DEV (non-Steam builds), Settings → Game Mode can simulate Steam Game /
  * Demo / Demo End / Steam End (Cruel On/Off) / CrazyGames Demo via
  * {@link setDevGameModeOverride}.
  */
@@ -35,12 +34,8 @@ export function isSteamDemoRuntime(): boolean {
   return window.steamBridge?.available === true && window.steamBridge.isDemoBuild === true;
 }
 
-/** Steam desktop playtest build (`VITE_STEAM_PLAYTEST=1` with `VITE_STEAM_BUILD=1`). */
-export const isSteamPlaytestBuild = import.meta.env.VITE_STEAM_PLAYTEST === "1";
-
-/** Full Steam desktop build (release app — not demo or playtest). */
-export const isSteamFullBuild =
-  isSteamBuild && !isSteamDemoBuild && !isSteamPlaytestBuild;
+/** Full Steam desktop build (release app, not the demo). */
+export const isSteamFullBuild = isSteamBuild && !isSteamDemoBuild;
 
 /**
  * Steamworks unlocks on every Steam desktop build, including the demo.
@@ -77,7 +72,6 @@ const ITCH_PATH_PREFIX = "/itch";
 export type DevGameMode =
   | "normal"
   | "steamGame"
-  | "steamPlaytest"
   | "steamDemo"
   | "demoEnd"
   | "steamEndCruelOn"
@@ -87,7 +81,6 @@ export type DevGameMode =
 export const DEV_GAME_MODE_OPTIONS: readonly DevGameMode[] = [
   "normal",
   "steamGame",
-  "steamPlaytest",
   "steamDemo",
   "demoEnd",
   "steamEndCruelOn",
@@ -119,7 +112,7 @@ export function shouldOfferSteamDemoReview(
 }
 
 /**
- * Full Steam game end screen (or DEV Steam Game / Playtest / Steam End):
+ * Full Steam game end screen (or DEV Steam Game / Steam End):
  * offer a Steam review. Includes Cruel Mode completion.
  */
 export function shouldOfferSteamGameReview(
@@ -131,11 +124,7 @@ export function shouldOfferSteamGameReview(
   if (isSteamBuild && !isSteamDemoRuntime()) return true;
   if (!import.meta.env.DEV || isSteamBuild) return false;
   const mode = resolveDevGameMode(devGameMode);
-  return (
-    mode === "steamGame" ||
-    mode === "steamPlaytest" ||
-    isSteamEndScreenDevMode(mode)
-  );
+  return mode === "steamGame" || isSteamEndScreenDevMode(mode);
 }
 
 function isPathPrefix(prefix: string): boolean {
@@ -148,15 +137,11 @@ function isDevGameMode(mode: DevGameMode): boolean {
   return import.meta.env.DEV && !isSteamBuild && devGameModeOverride === mode;
 }
 
-/** Full Steam Game / Playtest simulation on the web client (DEV or live account). */
+/** Full Steam Game simulation on the web client (DEV or live account). */
 export function isSimulatedSteamGameMode(
   mode: DevGameMode | undefined,
 ): boolean {
-  return (
-    mode === "steamGame" ||
-    mode === "steamPlaytest" ||
-    isSteamEndScreenDevMode(mode)
-  );
+  return mode === "steamGame" || isSteamEndScreenDevMode(mode);
 }
 
 /** Galaxy.click demo hosted at https://a-dark-cave.com/galaxy */
@@ -287,7 +272,7 @@ export function getDevGameModeOverride(): DevGameMode {
 
 /**
  * Hide the Steam store / wishlist footer link. Steam desktop (and DEV Steam
- * Game / Playtest / Demo) already are on Steam. Web, Galaxy, CrazyGames, and
+ * Game / Demo) already are on Steam. Web, Galaxy, CrazyGames, and
  * itch keep the link. Store-free so the lightweight start screen can use it.
  */
 export function shouldHideSteamStoreLink(
@@ -340,7 +325,7 @@ export function isSteamEditionActive(devGameMode?: DevGameMode): boolean {
 }
 
 /**
- * Steam desktop client (or DEV Steam Game / Playtest / Demo / End simulation).
+ * Steam desktop client (or DEV Steam Game / Demo / End simulation).
  * False for public web, CrazyGames, itch, and Galaxy — use for content that
  * should not appear in browser builds even when those portals share other
  * Steam-like edition flags.

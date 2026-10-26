@@ -1,8 +1,8 @@
 /**
  * Bundle the Electron main + preload TypeScript into CommonJS for packaging.
  *
- * Set `ADC_STEAM_DEMO=1` or `ADC_STEAM_PLAYTEST=1` when packaging those variants
- * (see `package-steam-demo.mjs` / `package-steam-playtest.mjs`).
+ * Set `ADC_STEAM_DEMO=1` when packaging the demo
+ * (see `package-steam-demo.mjs`).
  */
 import { build } from "esbuild";
 import { rmSync } from "node:fs";
@@ -19,15 +19,10 @@ if (OUTDIR !== repoRoot && !OUTDIR.startsWith(repoRoot + sep)) {
   throw new Error("ADC_ELECTRON_OUT_DIR must stay inside the repo");
 }
 const isSteamDemoBuild = process.env.ADC_STEAM_DEMO === "1";
-const isSteamPlaytestBuild = process.env.ADC_STEAM_PLAYTEST === "1";
 
 rmSync(OUTDIR, { recursive: true, force: true });
 
-const variantLabel = isSteamDemoBuild
-  ? " (Steam demo)"
-  : isSteamPlaytestBuild
-    ? " (Steam playtest)"
-    : "";
+const variantLabel = isSteamDemoBuild ? " (Steam demo)" : "";
 
 const shared = {
   platform: "node",
@@ -41,9 +36,6 @@ const shared = {
   define: {
     "process.env.ADC_STEAM_DEMO_BUILD": JSON.stringify(
       isSteamDemoBuild ? "1" : "",
-    ),
-    "process.env.ADC_STEAM_PLAYTEST_BUILD": JSON.stringify(
-      isSteamPlaytestBuild ? "1" : "",
     ),
   },
 };

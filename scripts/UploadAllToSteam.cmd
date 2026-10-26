@@ -1,6 +1,6 @@
 @echo off
 setlocal
-title Upload All Steam Editions (Full + Demo + Playtest)
+title Upload All A Dark Cave Steam Editions
 
 set "ROOT=%~dp0.."
 cd /d "%ROOT%"
@@ -23,15 +23,6 @@ if not exist "steam\config.demo.local.json" (
   exit /b 1
 )
 
-if not exist "steam\config.playtest.local.json" (
-  echo.
-  echo  Missing steam\config.playtest.local.json
-  echo  Copy steam\config.playtest.example.json and set playtest appId/depotId + steamworksSdk.
-  echo.
-  pause
-  exit /b 1
-)
-
 if not exist "steam_appid_demo.txt" (
   echo.
   echo  Missing steam_appid_demo.txt ^(demo App ID 4971800^).
@@ -40,18 +31,10 @@ if not exist "steam_appid_demo.txt" (
   exit /b 1
 )
 
-if not exist "steam_appid_playtest.txt" (
-  echo.
-  echo  Missing steam_appid_playtest.txt ^(playtest App ID^).
-  echo.
-  pause
-  exit /b 1
-)
-
 echo.
-echo  Building full + demo + playtest, then uploading all three to Steam.
-echo  One Steam login / Steam Guard prompt for all editions.
-echo  This takes a while ^(three Electron packages^).
+echo  Building full + demo, then uploading both to Steam.
+echo  One Steam login / Steam Guard prompt for both editions.
+echo  This takes a while ^(two Electron packages^).
 echo.
 
 powershell -NoProfile -ExecutionPolicy Bypass -File "%ROOT%\scripts\steam-upload-all.ps1"
@@ -61,7 +44,7 @@ echo.
 if %ERR% neq 0 (
   echo  Upload-all failed ^(exit %ERR%^).
 ) else (
-  echo  Done. Set each build live in Steamworks - SteamPipe - Builds ^(full / demo / playtest^).
+  echo  Done. Set each build live in Steamworks - SteamPipe - Builds ^(full / demo^).
 )
 echo.
 pause

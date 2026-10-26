@@ -7,7 +7,6 @@ import {
   isSteamDemoBuild,
   isSteamDemoRuntime,
   isSteamFullBuild,
-  isSteamPlaytestBuild,
   type DevGameMode,
 } from "@/lib/edition";
 
@@ -17,7 +16,7 @@ export type SteamCruelModeUnlockInput = {
 };
 
 /**
- * Steam full / playtest (or a DEV Steam Game / Steam End simulation): the
+ * Steam full game (or a DEV Steam Game / Steam End simulation): the
  * player may start Cruel Mode after a normal-mode finish.
  *
  * Hidden behind {@link STEAM_CRUEL_MODE_UNLOCK} except for Settings →
@@ -33,6 +32,6 @@ export function isSteamCruelModeUnlockAvailable(
   if (input.hasWonNormalGame !== true) return false;
   if (isSteamDemoBuild || isSteamDemoRuntime()) return false;
   if (isGalaxyEdition() || isCrazyGamesEdition() || isItchEdition()) return false;
-  if (isSteamFullBuild || isSteamPlaytestBuild) return true;
+  if (isSteamFullBuild) return true;
   return isSimulatedSteamGameMode(mode);
 }

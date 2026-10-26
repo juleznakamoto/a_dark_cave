@@ -499,7 +499,7 @@ export default function ShareDialog() {
   const { toast } = useToast();
   const steamDesktopEditionActive = useSteamDesktopEditionActive();
   const devGameMode = useGameStore((s) => s.devGameMode);
-  /** Steam desktop / demo / playtest (and DEV Steam modes). Web portals keep share. */
+  /** Steam desktop / demo (and DEV Steam modes). Web portals keep share. */
   const progressShareDisabled = isSteamDesktopEditionActive(devGameMode);
   const open = useGameStore((s) => s.shareDialogOpen);
   const setOpen = useGameStore((s) => s.setShareDialogOpen);

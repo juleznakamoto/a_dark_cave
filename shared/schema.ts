@@ -53,7 +53,10 @@ export const INVITE_FRIEND_TASK_ACTIVE: boolean = false;
 /** One-time welcome gold when creating an account (email or Google). */
 export const SIGN_UP_WELCOME_GOLD = 200;
 
-/** Edition that last wrote a save. Used to tell Steam Demo files from full-game files. */
+/**
+ * Edition that last wrote a save. Used to tell Steam Demo files from full-game files.
+ * `steam-playtest` is retired. It stays so older saves still parse.
+ */
 export const SAVE_ORIGIN_EDITIONS = [
   "web",
   "steam-full",

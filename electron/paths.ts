@@ -11,35 +11,24 @@
  * (IndexedDB) stays per-variant via APP_USER_DATA_NAME. Legacy demo path is still
  * read as a fallback and dual-written by the demo.
  *
- * Variant builds set `ADC_STEAM_DEMO_BUILD` or `ADC_STEAM_PLAYTEST_BUILD` at Electron
- * bundle time (`scripts/package-steam-demo.mjs` / `scripts/package-steam-playtest.mjs`).
+ * Variant builds set `ADC_STEAM_DEMO_BUILD` at Electron bundle time
+ * (`scripts/package-steam-demo.mjs`).
  */
 import { join } from "node:path";
 
 export const isSteamDemoBuild =
   typeof process !== "undefined" && process.env.ADC_STEAM_DEMO_BUILD === "1";
 
-export const isSteamPlaytestBuild =
-  typeof process !== "undefined" &&
-  process.env.ADC_STEAM_PLAYTEST_BUILD === "1";
-
 /** Electron userData + window branding (IndexedDB lives here). */
-export const APP_USER_DATA_NAME = isSteamPlaytestBuild
-  ? "A Dark Cave Playtest"
-  : isSteamDemoBuild
-    ? "A Dark Cave Demo"
-    : "A Dark Cave";
+export const APP_USER_DATA_NAME = isSteamDemoBuild
+  ? "A Dark Cave Demo"
+  : "A Dark Cave";
 
-export const APP_WINDOW_TITLE = isSteamPlaytestBuild
-  ? "A Dark Cave Playtest"
-  : isSteamDemoBuild
-    ? "A Dark Cave Demo"
-    : "A Dark Cave";
+export const APP_WINDOW_TITLE = isSteamDemoBuild
+  ? "A Dark Cave Demo"
+  : "A Dark Cave";
 
-/**
- * Roaming subdirectory for Steam Auto-Cloud (full + demo files live here).
- * Playtest keeps an isolated cloud namespace under its own userData.
- */
+/** Roaming subdirectory for Steam Auto-Cloud (full + demo files live here). */
 export const STEAM_CLOUD_DIR_NAME = "A Dark Cave";
 
 /** Full-game Cloud filename. Demo must never write this file. */
@@ -49,24 +38,16 @@ export const STEAM_FULL_CLOUD_SAVE_FILE = "adc-steam-save.dat";
 export const STEAM_DEMO_CLOUD_SAVE_FILE = "adc-steam-demo-save.dat";
 
 /** Flat save blob mirrored from IndexedDB for this edition's Steam Cloud sync. */
-export const STEAM_CLOUD_SAVE_FILE = isSteamPlaytestBuild
-  ? "adc-steam-playtest-save.dat"
-  : isSteamDemoBuild
-    ? STEAM_DEMO_CLOUD_SAVE_FILE
-    : STEAM_FULL_CLOUD_SAVE_FILE;
+export const STEAM_CLOUD_SAVE_FILE = isSteamDemoBuild
+  ? STEAM_DEMO_CLOUD_SAVE_FILE
+  : STEAM_FULL_CLOUD_SAVE_FILE;
 
 /** Pre-split demo Auto-Cloud location (keep reading / dual-writing during cutover). */
 export const LEGACY_STEAM_DEMO_DIR_NAME = "A Dark Cave Demo";
 export const LEGACY_STEAM_DEMO_SAVE_FILE = STEAM_DEMO_CLOUD_SAVE_FILE;
 
-/** Absolute path of the shared (or playtest) Steam Cloud save file. */
-export function resolveSteamCloudSavePath(
-  appData: string,
-  userData: string,
-): string {
-  if (isSteamPlaytestBuild) {
-    return join(userData, STEAM_CLOUD_SAVE_FILE);
-  }
+/** Absolute path of this edition's Steam Cloud save file. */
+export function resolveSteamCloudSavePath(appData: string): string {
   return join(appData, STEAM_CLOUD_DIR_NAME, STEAM_CLOUD_SAVE_FILE);
 }
 

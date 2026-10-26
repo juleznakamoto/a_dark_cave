@@ -93,7 +93,7 @@ function createStartResolution(
   };
   const devSteamMode =
     (!isSteamBuild &&
-      (devGameMode === "steamGame" || devGameMode === "steamPlaytest")) ||
+      devGameMode === "steamGame") ||
     (import.meta.env.DEV && !isSteamBuild && devGameMode !== "normal");
   return {
     surface: "start",

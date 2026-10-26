@@ -1,12 +1,10 @@
-/** Steam App IDs. Demo and playtest packages use their own steam_appid files. */
+/** Steam App IDs. The demo package uses its own steam_appid file. */
 export const STEAM_FULL_APP_ID = 4882240;
 export const STEAM_DEMO_APP_ID = 4971800;
-export const STEAM_PLAYTEST_APP_ID = 4972040;
 
 const REVIEW_APP_IDS: ReadonlySet<number> = new Set([
   STEAM_FULL_APP_ID,
   STEAM_DEMO_APP_ID,
-  STEAM_PLAYTEST_APP_ID,
 ]);
 
 /**

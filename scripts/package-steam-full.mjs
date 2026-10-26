@@ -1,7 +1,7 @@
 /**
  * Build and package the Steam full-game desktop app.
  * Web and Electron output stay in dist/web-steam-full and dist/electron-steam-full
- * so a demo or playtest build cannot delete chunks this packager is reading.
+ * so a demo build cannot delete chunks this packager is reading.
  */
 import { packageSteamEdition, readRootSteamAppId } from "./package-steam-edition.mjs";
 

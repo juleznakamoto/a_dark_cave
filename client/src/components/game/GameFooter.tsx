@@ -224,7 +224,7 @@ export default function GameFooter() {
   const steamDemoActive = useSteamDemoActive();
   const crazyGamesEditionActive = useCrazyGamesEditionActive();
   const showFooterDonate = !steamEditionActive || isGalaxyEdition();
-  // Steam Game / Playtest / Demo (build or DEV Game Mode) hide the store link.
+  // Steam Game / Demo (build or DEV Game Mode) hide the store link.
   // Galaxy and Normal/web keep the wishlist link. CrazyGames moves Steam +
   // socials into the upper-right menu.
   const hideSteamStoreLink = useHideSteamStoreLink();
@@ -359,7 +359,7 @@ export default function GameFooter() {
               </Button>
             )}
             {!steamEditionActive && showFooterTrader && footerTraderParticlesPortal}
-            {/* Full / playtest / web: left. Steam demo: right (clear of progress bar). */}
+            {/* Full game / web: left. Steam demo: right (clear of progress bar). */}
             {!steamDemoActive && playlightButton}
             {showFooterDonate && (
               <Button

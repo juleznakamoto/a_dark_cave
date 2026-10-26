@@ -6,8 +6,7 @@
     "**/release/**": true,
     "**/steam/content/**": true,
     "**/steam/staged-full/**": true,
-    "**/steam/staged-demo/**": true,
-    "**/steam/staged-playtest/**": true
+    "**/steam/staged-demo/**": true
   },
   "search.exclude": {
     "**/node_modules": true,
@@ -16,8 +15,7 @@
     "**/release": true,
     "**/steam/content": true,
     "**/steam/staged-full": true,
-    "**/steam/staged-demo": true,
-    "**/steam/staged-playtest": true
+    "**/steam/staged-demo": true
   },
   "files.associations": {
     "client/src/i18n/locales/de/**/*.json": "jsonc",

@@ -49,7 +49,7 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
    */
   accountSteamMode: boolean;
   /**
-   * Simulate Normal / Steam Game / Steam Playtest / Steam Demo /
+   * Simulate Normal / Steam Game / Steam Demo /
    * Demo End / Steam End (Cruel On/Off) / CrazyGames Demo without a Steam build
    * (Settings → Game Mode in DEV, or a live account with `accountSteamMode`).
    */
