@@ -2031,9 +2031,21 @@ html.adc-text-xlarge .game-panel-produce-effects {
   animation: new-item-pulse-text 1s ease-in-out infinite;
 }
 
-/* Unread event-log lines. Same color fade, half the speed (2s vs 1s). */
+/* Unread event-log lines. Read color (foreground at 50%) to white, half the speed (2s vs 1s).
+   Unread text is already full strength, so the fade cannot start from that color. */
+@keyframes log-unread-pulse {
+  0%,
+  100% {
+    color: color-mix(in srgb, var(--foreground) 50%, transparent);
+  }
+
+  50% {
+    color: #fff;
+  }
+}
+
 .log-unread-pulse {
-  animation: new-item-pulse-text 2s ease-in-out infinite;
+  animation: log-unread-pulse 2s ease-in-out infinite;
 }
 
 /* Same tempo/opacity as new-item-pulse, but box-shadow on the bar (no text). */
