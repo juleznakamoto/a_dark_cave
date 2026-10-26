@@ -1,5 +1,11 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { gameStateSchema, type GameState } from "@shared/schema";
+import {
+  getAssignedPopulationJobIds,
+  getTotalPopulationEffects,
+  hasResourceProductionBreakdown,
+} from "@/game/population";
+import * as population from "@/game/population";
 import {
   getSidePanelModel,
   sidePanelModelEqual,
@@ -75,6 +81,40 @@ describe("getSidePanelModel", () => {
     expect(
       sidePanelModelEqual(getSidePanelModel(state), getSidePanelModel(state)),
     ).toBe(true);
+  });
+
+  it("derives hasFlow and deltas from one villager production scan", () => {
+    const parsed = gameStateSchema.parse({});
+    const state = baseState({
+      villagers: { ...parsed.villagers, gatherer: 2 },
+      seenResources: ["wood", "stone", "food", "silver"],
+      resources: {
+        ...parsed.resources,
+        wood: 1,
+        stone: 1,
+        food: 1,
+        silver: 1,
+      },
+    });
+    const spy = vi.spyOn(population, "getPopulationResourceFlows");
+    const model = getSidePanelModel(state);
+    expect(spy).toHaveBeenCalledTimes(1);
+    spy.mockRestore();
+
+    const deltas = getTotalPopulationEffects(
+      state,
+      getAssignedPopulationJobIds(state),
+    );
+    for (const row of model.resourceRows) {
+      expect(row.hasFlow).toBe(hasResourceProductionBreakdown(state, row.id));
+      expect(row.productionDelta).toBe(deltas[row.id] ?? 0);
+    }
+    expect(model.resourceRows.find((row) => row.id === "wood")?.hasFlow).toBe(
+      true,
+    );
+    expect(model.resourceRows.find((row) => row.id === "food")?.hasFlow).toBe(
+      false,
+    );
   });
 
   it("treats a resource amount change as unequal", () => {

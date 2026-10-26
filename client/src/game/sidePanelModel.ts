@@ -11,8 +11,7 @@ import {
 import { getMapFragmentCount } from "@/game/mapFragments";
 import {
   getAssignedPopulationJobIds,
-  getTotalPopulationEffects,
-  hasResourceProductionBreakdown,
+  getPopulationResourceFlows,
 } from "@/game/population";
 import { hasBonusComposition } from "@/game/rules/bonusComposition";
 import {
@@ -227,8 +226,17 @@ export function getSidePanelModel(state: GameState): SidePanelModel {
     preciousResources.includes(key),
   );
 
-  const assignedJobIds = getAssignedPopulationJobIds(state);
-  const productionDeltas = getTotalPopulationEffects(state, assignedJobIds);
+  const productionDeltas: Record<string, number> = {};
+  const resourcesWithFlow = new Set<string>();
+  // Totals and hasFlow share this scan. A per-resource breakdown reran it.
+  for (const line of getPopulationResourceFlows(
+    state,
+    getAssignedPopulationJobIds(state),
+  )) {
+    productionDeltas[line.resource] =
+      (productionDeltas[line.resource] ?? 0) + line.amount;
+    resourcesWithFlow.add(line.resource);
+  }
   const limit = getResourceLimit(state);
 
   const resourceRows: SidePanelResourceRow[] = [
@@ -239,7 +247,7 @@ export function getSidePanelModel(state: GameState): SidePanelModel {
       isPrecious: true,
       hasSpacingAfter:
         index === orderedPrecious.length - 1 && otherResources.length > 0,
-      hasFlow: hasResourceProductionBreakdown(state, key),
+      hasFlow: resourcesWithFlow.has(key),
       atCapacity: isResourceAmountAtCap(
         key,
         resources[key as keyof typeof resources] ?? 0,
@@ -252,7 +260,7 @@ export function getSidePanelModel(state: GameState): SidePanelModel {
       productionDelta: productionDeltas[key] ?? 0,
       isPrecious: false,
       hasSpacingAfter: false,
-      hasFlow: hasResourceProductionBreakdown(state, key),
+      hasFlow: resourcesWithFlow.has(key),
       atCapacity: isResourceAmountAtCap(
         key,
         resources[key as keyof typeof resources] ?? 0,

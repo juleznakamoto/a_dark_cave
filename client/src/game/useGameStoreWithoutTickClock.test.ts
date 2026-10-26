@@ -1,8 +1,14 @@
+/**
+ * @vitest-environment jsdom
+ */
+import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { useGameStore } from "@/game/state";
 import {
   cooldownActiveSetEqual,
   derivedListEqual,
   storeEqualsIgnoringTickClock,
+  useDerivedGameState,
 } from "./useGameStoreWithoutTickClock";
 
 describe("storeEqualsIgnoringTickClock", () => {
@@ -103,6 +109,89 @@ describe("derivedListEqual", () => {
         [{ sourceId: "gatherer", amount: 11 }],
       ),
     ).toBe(false);
+  });
+});
+
+describe("useDerivedGameState", () => {
+  it("does not run the selector on clock or cooldown-remaining writes", () => {
+    let calls = 0;
+    const { result } = renderHook(() =>
+      useDerivedGameState((s) => {
+        calls += 1;
+        return s.buildings.woodenHut ?? 0;
+      }),
+    );
+    const afterMount = calls;
+    const before = useGameStore.getState();
+
+    try {
+      act(() => {
+        useGameStore.setState({
+          cooldowns: { ...before.cooldowns, chopWood: 5 },
+          initialCooldowns: { ...before.initialCooldowns, chopWood: 5 },
+        });
+      });
+      const afterCooldownStart = calls;
+      expect(afterCooldownStart).toBeGreaterThan(afterMount);
+
+      act(() => {
+        const current = useGameStore.getState();
+        useGameStore.setState({
+          playTime: current.playTime + 250,
+          lifetimePlayTimeMs: (current.lifetimePlayTimeMs || 0) + 250,
+          loopProgress: 40,
+          attackWaveTimers: {
+            ...current.attackWaveTimers,
+            wave: {
+              startTime: 1,
+              duration: 10_000,
+              elapsedTime: 1000,
+              defeated: false,
+              provoked: false,
+            },
+          },
+          cooldowns: { ...current.cooldowns, chopWood: 4.75 },
+          initialCooldowns: current.initialCooldowns,
+        });
+      });
+
+      expect(calls).toBe(afterCooldownStart);
+      expect(result.current).toBe(before.buildings.woodenHut ?? 0);
+
+      act(() => {
+        useGameStore.setState({
+          cooldowns: { ...useGameStore.getState().cooldowns, chopWood: 0 },
+          initialCooldowns: {},
+        });
+      });
+      expect(calls).toBeGreaterThan(afterCooldownStart);
+
+      const afterCooldown = calls;
+      act(() => {
+        useGameStore.setState({
+          buildings: {
+            ...useGameStore.getState().buildings,
+            woodenHut: (useGameStore.getState().buildings.woodenHut ?? 0) + 1,
+          },
+        });
+      });
+      expect(calls).toBeGreaterThan(afterCooldown);
+      expect(result.current).toBe(
+        useGameStore.getState().buildings.woodenHut ?? 0,
+      );
+    } finally {
+      act(() => {
+        useGameStore.setState({
+          playTime: before.playTime,
+          lifetimePlayTimeMs: before.lifetimePlayTimeMs,
+          loopProgress: before.loopProgress,
+          attackWaveTimers: before.attackWaveTimers,
+          cooldowns: before.cooldowns,
+          initialCooldowns: before.initialCooldowns,
+          buildings: before.buildings,
+        });
+      });
+    }
   });
 });
 

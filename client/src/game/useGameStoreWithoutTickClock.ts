@@ -107,18 +107,44 @@ export function derivedListEqual<T extends object>(
 export type DerivedGameState = VillagerBlockingState;
 
 /**
+ * Notifies only when a slice other than the 4 Hz clocks changed.
+ * `useStoreWithEqualityFn` still runs its selector before the equality
+ * check, so a clock `setState` would rebuild `getSidePanelModel` even
+ * when the component does not re-render. Skip the listener first.
+ * Derived selectors must not read `GAME_STORE_TICK_CLOCK_KEYS` or
+ * cooldown remaining time; a cooldown finishing still notifies because
+ * the active set changes.
+ */
+const gameStoreIgnoringTickClock = {
+  getState: () => useGameStore.getState(),
+  getInitialState: () => useGameStore.getInitialState(),
+  subscribe: (
+    listener: (
+      state: GameStoreSnapshot,
+      previous: GameStoreSnapshot,
+    ) => void,
+  ) =>
+    useGameStore.subscribe((state, previous) => {
+      if (storeEqualsIgnoringTickClock(state, previous)) return;
+      listener(state, previous);
+    }),
+};
+
+/**
  * Subscribe to a derived helper result. Helpers may still take GameState
  * inside the selector; the component only re-renders when the result
  * changes (`Object.is`, or a custom equality fn for new-array returns).
  * The store is passed as `DerivedGameState` because `executionStartTimes`
  * lives on the store and is not part of the persisted schema.
+ * Clock writes (`playTime`, `loopProgress`, attack-wave timers, cooldown
+ * remaining time) do not run the selector.
  */
 export function useDerivedGameState<T>(
   selector: (state: DerivedGameState) => T,
   equalityFn: (a: T, b: T) => boolean = Object.is,
 ): T {
   return useStoreWithEqualityFn(
-    useGameStore,
+    gameStoreIgnoringTickClock,
     (s) => selector(s as unknown as DerivedGameState),
     equalityFn,
   );
