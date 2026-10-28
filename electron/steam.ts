@@ -6,17 +6,21 @@
  * without the Steam client). All methods degrade gracefully to no-ops.
  *
  * Overlay timing (critical): `enableSteamOverlay()` must run at module load,
- * before `app.whenReady()`. It appends `in-process-gpu` /
- * `disable-direct-composition` — those switches are ignored after Electron is
- * ready, which is the usual cause of Shift+Tab doing nothing. Call `initSteam`
- * before `whenReady` as well so SteamAPI_Init hooks before the GPU starts.
+ * before `app.whenReady()`. It appends `in-process-gpu`, which Electron ignores
+ * after ready. That is the usual cause of Shift+Tab doing nothing. Call
+ * `initSteam` before `whenReady` as well so SteamAPI_Init hooks before the GPU
+ * starts.
+ *
+ * Do not append `disable-direct-composition`. steamworks.js adds it from
+ * `electronEnableSteamOverlay()`, and on Windows 11 it leaves phantom Alt+Tab
+ * entries after the player tabs away. This file applies the rest of that
+ * helper itself and never calls it.
  */
 import { steamReviewPageUrl } from "../shared/steamReview";
 import { isSteamDemoBuild } from "./paths";
 
 type SteamworksModule = {
   init: (appId?: number) => SteamClient;
-  electronEnableSteamOverlay: (disableEachFrameInvalidation?: boolean) => void;
 };
 
 type SteamClient = {
@@ -55,18 +59,114 @@ function loadSteamworks(): SteamworksModule | null {
 }
 
 /**
+ * Chromium switches the overlay needs before `app.whenReady()`.
+ * `disable-direct-composition` is intentionally absent.
+ */
+export const STEAM_OVERLAY_CHROMIUM_SWITCHES = ["in-process-gpu"] as const;
+
+/** Same cadence steamworks.js uses so the overlay can composite. */
+export const STEAM_OVERLAY_REPAINT_MS = 1000 / 60;
+
+type OverlayBrowserWindow = {
+  isDestroyed: () => boolean;
+  webContents: {
+    isPainting: () => boolean;
+    invalidate: () => void;
+  };
+};
+
+type SteamOverlayElectron = {
+  app: {
+    commandLine: { appendSwitch: (switchName: string) => void };
+    on: (
+      event: "browser-window-created",
+      listener: (event: unknown, window: OverlayBrowserWindow) => void,
+    ) => void;
+  };
+  BrowserWindow: {
+    getAllWindows: () => OverlayBrowserWindow[];
+  };
+};
+
+const overlayRepaintTimers = new WeakMap<
+  OverlayBrowserWindow,
+  ReturnType<typeof setInterval>
+>();
+
+/**
+ * One overlay repaint tick. Returns true when the interval should stop
+ * (the window is gone).
+ */
+export function tickSteamOverlayRepaint(window: OverlayBrowserWindow): boolean {
+  if (window.isDestroyed()) return true;
+  // Same check steamworks.js uses, so overlay drawing stays on the path
+  // that already ships. Only the Chromium ghost flag was removed.
+  if (!window.webContents.isPainting()) {
+    window.webContents.invalidate();
+  }
+  return false;
+}
+
+function attachSteamOverlayRepaint(browserWindow: OverlayBrowserWindow): void {
+  if (overlayRepaintTimers.has(browserWindow)) return;
+
+  let warned = false;
+  const timer = setInterval(() => {
+    let stop = false;
+    try {
+      stop = tickSteamOverlayRepaint(browserWindow);
+    } catch (error) {
+      try {
+        stop = browserWindow.isDestroyed();
+      } catch {
+        stop = true;
+      }
+      if (!stop && !warned) {
+        warned = true;
+        // eslint-disable-next-line no-console
+        console.warn("[STEAM] overlay repaint failed:", error);
+      }
+    }
+    if (!stop) return;
+    clearInterval(timer);
+    overlayRepaintTimers.delete(browserWindow);
+  }, STEAM_OVERLAY_REPAINT_MS);
+
+  overlayRepaintTimers.set(browserWindow, timer);
+}
+
+/** Append overlay switches and the repaint hook. Does not touch Steamworks. */
+export function applySteamOverlayHooks(electron: SteamOverlayElectron): void {
+  for (const switchName of STEAM_OVERLAY_CHROMIUM_SWITCHES) {
+    electron.app.commandLine.appendSwitch(switchName);
+  }
+
+  electron.BrowserWindow.getAllWindows().forEach(attachSteamOverlayRepaint);
+  electron.app.on("browser-window-created", (_event, browserWindow) => {
+    attachSteamOverlayRepaint(browserWindow);
+  });
+}
+
+/**
  * Enable Steam Overlay hooks for Electron. Must run before `app.whenReady()`.
  * Safe to call once; failures are swallowed.
+ *
+ * Does not call `steamworks.electronEnableSteamOverlay()`. That helper always
+ * appends `disable-direct-composition`.
  */
 export function enableSteamOverlay(): void {
   if (overlayEnabled) return;
   overlayEnabled = true;
   try {
     const steamworks = loadSteamworks();
-    steamworks?.electronEnableSteamOverlay();
+    if (!steamworks) return;
+    // Lazy require: only the Electron main process has this module.
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const electron = require("electron") as SteamOverlayElectron;
+    applySteamOverlayHooks(electron);
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.warn("[STEAM] electronEnableSteamOverlay failed:", error);
+    console.warn("[STEAM] Steam overlay hooks failed:", error);
   }
 }
 
