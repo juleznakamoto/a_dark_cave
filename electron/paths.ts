@@ -19,12 +19,8 @@ import { join } from "node:path";
 export const isSteamDemoBuild =
   typeof process !== "undefined" && process.env.ADC_STEAM_DEMO_BUILD === "1";
 
-/** Electron userData + window branding (IndexedDB lives here). */
+/** Electron userData (IndexedDB lives here). The page sets the window title. */
 export const APP_USER_DATA_NAME = isSteamDemoBuild
-  ? "A Dark Cave Demo"
-  : "A Dark Cave";
-
-export const APP_WINDOW_TITLE = isSteamDemoBuild
   ? "A Dark Cave Demo"
   : "A Dark Cave";
 
