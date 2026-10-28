@@ -51,9 +51,10 @@ $script:AdcBootEnum = [AdcBootNative+EnumProc]{
   $titleBuilder = New-Object System.Text.StringBuilder 512
   [void][AdcBootNative]::GetWindowText($hWnd, $titleBuilder, $titleBuilder.Capacity)
   $title = $titleBuilder.ToString()
-  # BrowserWindow starts as "A Dark Cave" / "A Dark Cave Demo". The loaded page
-  # replaces that with the HTML title ("A Dark Cave - ...").
-  if ($title -notlike "A Dark Cave -*") { return $true }
+  # The shell window is titled "Electron" until the page loads. A resumed save
+  # then sets "A Dark Cave". The start screen sets "A Dark Cave" plus a
+  # localized subtitle (hyphen or en dash). Demo uses the same prefix.
+  if ($title -notlike "A Dark Cave*") { return $true }
 
   $rect = New-Object AdcBootNative+RECT
   [void][AdcBootNative]::GetWindowRect($hWnd, [ref]$rect)

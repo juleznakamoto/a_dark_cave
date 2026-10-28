@@ -287,7 +287,11 @@ async function createWindow(): Promise<void> {
   }
   hideAltMenuBar();
   mainWindow = new BrowserWindow({
-    title: APP_WINDOW_TITLE,
+    // Leave the shell title as Electron's default. A resumed game sets
+    // "A Dark Cave", which is what the upload boot check looks for. Setting
+    // that same title here would make a window that never finished loading
+    // look successful.
+    ...(trailer ? { title: APP_WINDOW_TITLE } : {}),
     ...(iconPath ? { icon: iconPath } : {}),
     ...(trailer
       ? {
