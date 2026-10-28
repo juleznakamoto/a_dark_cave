@@ -10,3 +10,8 @@ export function getBoneyardBurialMadnessReduction(state: GameState): number {
   const steps = Math.min(10, Math.floor(delta / 50));
   return steps === 0 ? 0 : -steps;
 }
+
+/** Grave crosses on the village map: one per point of burial madness, at most 10. */
+export function boneyardCrossCount(state: GameState): number {
+  return Math.abs(getBoneyardBurialMadnessReduction(state));
+}

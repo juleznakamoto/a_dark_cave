@@ -1,4 +1,5 @@
 import { cloneElement, createContext, isValidElement, memo, useContext, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode, type RefObject } from "react";
+import { boneyardGraveLayout, graveCrossLocalPoints } from "@/pages/village-map-demo/boneyardCrosses";
 import { heartfireHatchOpacity } from "@/game/villageMapBuild";
 import { VILLAGE_MAP_OPEN_FADE_DELAY_MS, type VillageMapReveal } from "@/game/villageMapReveal";
 import { BUILDINGS, MAP_CENTER, treeDrawScale, type BuildState, type MapTree, type SanctumGod, type Tuning } from "@/pages/village-map-demo/catalog";
@@ -234,7 +235,8 @@ export function ChitinRibbon({ d, color }: { d: string; color: string }) {
   );
 }
 
-export function markRotation(buildingId: string, at: Point): string | undefined {
+/** Degrees the mark is turned so its front faces the village. Upright marks stay at 0. */
+export function markFacingDegrees(buildingId: string, at: Point): number | undefined {
   if (
     buildingId === "heartfire" ||
     buildingId === "blackMonolith" ||
@@ -246,7 +248,12 @@ export function markRotation(buildingId: string, at: Point): string | undefined 
   const degrees = (radialAngle(at) * 180) / Math.PI;
   // Local -y is the front; rotate so that axis points at MAP_CENTER.
   // Estate and the builder buildings face the other way.
-  const facing = degrees - 90 + (buildingId === "estate" || buildingId === "builders" ? 180 : 0);
+  return degrees - 90 + (buildingId === "estate" || buildingId === "builders" ? 180 : 0);
+}
+
+export function markRotation(buildingId: string, at: Point): string | undefined {
+  const facing = markFacingDegrees(buildingId, at);
+  if (facing == null) return undefined;
   return `rotate(${facing})`;
 }
 
@@ -802,6 +809,34 @@ function BoneyardMark({ size, fill }: { size: number; fill: string }) {
         rings={<polygon points={formatPoints(offsetPolygon(outline, stroke / 2))} {...ring} />}
         fills={<polygon points={formatPoints(outline)} fill={fill} />}
       />
+    </g>
+  );
+}
+
+/** Latin crosses for the madness the yard is removing. Drawn outside the yard's wobble, in the yard's own fade. */
+function BoneyardCrosses({
+  size,
+  count,
+  at,
+}: {
+  size: number;
+  count: number;
+  at: Point;
+}) {
+  const ink = useMapInk();
+  const layout = useMemo(() => boneyardGraveLayout(size, count), [size, count]);
+  const facing = markFacingDegrees("boneyard", at) ?? 0;
+  if (layout.crosses.length === 0) return null;
+  return (
+    <g pointerEvents="none" data-testid="boneyard-crosses" opacity={0.8}>
+      {layout.crosses.map((cross, index) => (
+        <polygon
+          key={index}
+          data-testid="boneyard-cross"
+          points={formatPoints(graveCrossLocalPoints(layout.markSize, cross, facing))}
+          fill={ink}
+        />
+      ))}
     </g>
   );
 }
@@ -1567,6 +1602,7 @@ export function SlotMark({
   dedicationDeepened = null,
   drawbridge = null,
   hatchReach = 0,
+  boneyardCrosses = 0,
 }: {
   slot: PlacedSlot;
   tier: number;
@@ -1575,8 +1611,8 @@ export function SlotMark({
   /** Extra outline stays thick for 0.5s, then fades to the normal border over the last 1s. */
   fadeHighlight?: boolean;
   /**
-   * Opacity animation. It shares the wobble's element, so the drawing fades and stays wobbly.
-   * A fade-in scales the drawing from 1.15 to 1, bounces to 0.95, and settles at 1, with a slight black shadow.
+   * Opacity animation, on the wrapper outside the wobble filter.
+   * A fade-in scales the drawing from 1.15 to 1, bounces to 0.95, and settles at 1.
    */
   fadeClassName?: string;
   fadeStyle?: CSSProperties;
@@ -1588,6 +1624,8 @@ export function SlotMark({
   drawbridge?: BastionDrawbridge | null;
   /** How far the wall hatch reaches, so a drawbridge can reuse those lines. */
   hatchReach?: number;
+  /** Grave crosses on the boneyard. One per point of burial madness, up to 10. */
+  boneyardCrosses?: number;
 }) {
   const enterScale = fadeClassName?.includes("village-map-fade-in") === true;
   const mark = (
@@ -1619,18 +1657,26 @@ export function SlotMark({
       />
     </>
   );
+  const turn = markRotation(slot.buildingId, slot);
+  const crosses =
+    slot.buildingId === "boneyard" && boneyardCrosses > 0 ? (
+      <BoneyardCrosses
+        size={markSize(slot.buildingId, tuning.squareSize)}
+        count={boneyardCrosses}
+        at={slot}
+      />
+    ) : null;
+  const wobble = slot.buildingId === "heartfire" ? undefined : outlineWobble(slot.id);
+  // Opacity sits outside the wobble. Fading the filtered element redraws its noise every frame.
+  // Graves stay outside that filter, and outside the entrance scale, so they do not
+  // each pop. They share this wrapper, so they show up with the yard.
+  const drawing = <g filter={wobble}>{mark}</g>;
   return (
     <MapHighlightFadeContext.Provider value={fadeHighlight}>
       <MapBorderExtraContext.Provider value={highlighted ? MAP_HIGHLIGHT_BORDER : 0}>
-        {/* Fade and wobble share this element. Opacity on a child of the filter does not fade the drawing. */}
-        <g
-          data-facing=""
-          transform={markRotation(slot.buildingId, slot)}
-          className={fadeClassName}
-          style={fadeStyle}
-          filter={slot.buildingId === "heartfire" ? undefined : outlineWobble(slot.id)}
-        >
-          {enterScale ? <g className="village-map-enter-scale">{mark}</g> : mark}
+        <g data-facing="" transform={turn} className={fadeClassName} style={fadeStyle}>
+          {enterScale ? <g className="village-map-enter-scale">{drawing}</g> : drawing}
+          {crosses}
         </g>
       </MapBorderExtraContext.Provider>
     </MapHighlightFadeContext.Provider>

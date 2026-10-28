@@ -241,6 +241,7 @@ function withBastionProgress(base: GameState): GameState {
         bastion: 1,
         watchtower: 2,
         palisades: 1,
+        boneyard: 1,
         coinhouse: Math.max(base.buildings.coinhouse ?? 0, 1),
       },
       villagers: {
@@ -290,7 +291,13 @@ function withBastionProgress(base: GameState): GameState {
           descendedFurther: true,
           herbGardenUnlocked: true,
           boneyardUnlocked: true,
+          // 500 deaths since the yard was raised: 10 points of burial madness, 10 crosses.
+          boneyardDeathBaseline: 0,
         },
+      },
+      stats: {
+        ...base.stats,
+        villagerDeathsLifetime: 500,
       },
     },
     ["bastion"],
@@ -313,11 +320,18 @@ function finalize(state: GameState, id: DevSaveId): GameState {
   const migrated = applyGameStateLoadMigrations({
     ...state,
     gameId: `${DEV_SAVE_GAME_ID_PREFIX}${id}`,
+    flags: {
+      ...state.flags,
+      mapUnlocked: true,
+    },
   });
+  // Every fixture can open the village map. Mark the unlock blink seen so the
+  // tab does not pulse as newly discovered.
+  const withMap = withSeenTabBlinks(migrated, ["map"]);
   return {
-    ...migrated,
-    effects: calculateTotalEffects(migrated),
-    bastion_stats: calculateBastionStats(migrated),
+    ...withMap,
+    effects: calculateTotalEffects(withMap),
+    bastion_stats: calculateBastionStats(withMap),
   };
 }
 

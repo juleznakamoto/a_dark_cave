@@ -28,6 +28,8 @@ import {
 } from "@/game/madnessVisualStage";
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
+  isNewItemPulseActive,
+  NEW_ITEM_PULSE_DURATION_MS,
   NEW_ITEM_PULSE_TEXT_CLASS,
   useNewItemPulseTooltips,
 } from "@/hooks/useNewItemPulseTooltip";
@@ -138,6 +140,51 @@ const EFFECT_TOOLTIP_SECTIONS = new Set<SidePanelSectionId>([
   "schematics",
   "blessings",
 ]);
+
+/** Same rule as the row glow: effect items, building tooltips, or a stat that just gained a line. */
+function sidePanelItemShouldPulse(
+  item: SidePanelItem,
+  sectionId: SidePanelSectionId | undefined,
+  statNewLinePulseKeys: ReadonlySet<string>,
+): boolean {
+  const statPulseKey = STAT_EFFECT_PULSE_STAT_IDS.includes(
+    item.id as TooltipStatKey,
+  )
+    ? (item.id as TooltipStatKey)
+    : null;
+  if (sectionId === "stats" && statPulseKey !== null) {
+    return statNewLinePulseKeys.has(statPulseKey);
+  }
+
+  const effect =
+    clothingEffects[item.id] || weaponEffects[item.id] || toolEffects[item.id];
+  const hasGeneralBonuses =
+    effect?.bonuses?.generalBonuses &&
+    Object.keys(effect.bonuses.generalBonuses).length > 0;
+  const hasActionBonuses =
+    effect?.bonuses?.actionBonuses &&
+    Object.keys(effect.bonuses.actionBonuses).length > 0;
+  const hasEffect = Boolean(
+    effect &&
+      (hasGeneralBonuses ||
+        hasActionBonuses ||
+        effect.name ||
+        effect.description),
+  );
+  const hasTooltip =
+    item.tooltip !== undefined &&
+    item.tooltip !== false &&
+    (typeof item.tooltip !== "string" || item.tooltip.length > 0);
+
+  return (
+    (hasEffect &&
+      sectionId !== undefined &&
+      EFFECT_TOOLTIP_SECTIONS.has(sectionId)) ||
+    (hasTooltip &&
+      (sectionId === "fortifications" || sectionId === "buildings")) ||
+    (Boolean(item.tooltip) && sectionId !== "resources")
+  );
+}
 
 function getSidePanelItemTooltipType(
   sectionId: SidePanelSectionId | undefined,
@@ -626,7 +673,15 @@ export default function SidePanelSection({
   );
   const storeActiveTab = useGameStore((state) => state.activeTab);
   const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
+  const newItemPulseStartedAt = useGameStore(
+    (state) => state.newItemPulseStartedAt || {},
+  );
+  const noteNewItemPulseStarted = useGameStore(
+    (state) => state.noteNewItemPulseStarted,
+  );
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
+  // Bumped when the next new-item glow expires, so a quiet panel still stops.
+  const [pulseNow, setPulseNow] = useState(() => Date.now());
   const setHighlightedResources = useGameStore(
     (state) => state.setHighlightedResources,
   );
@@ -731,6 +786,7 @@ export default function SidePanelSection({
 
       if (gainedLine.length > 0) {
         setHoveredTooltip(statId, false);
+        useGameStore.getState().restartNewItemPulseClock(statId);
         setStatNewLinePulseKeys((prevKeys) => new Set(prevKeys).add(statId));
       }
 
@@ -755,6 +811,45 @@ export default function SidePanelSection({
       return changed ? next : prev;
     });
   }, [hoveredTooltips, sectionId]);
+
+  const pulseCandidateKey = visibleItems
+    .filter((item) =>
+      sidePanelItemShouldPulse(item, sectionId, statNewLinePulseKeys),
+    )
+    .map((item) => item.id)
+    .join("\0");
+
+  // Start the glow clock the first time an item is shown. Hover still ends it early.
+  useEffect(() => {
+    if (!pulseCandidateKey) return;
+    const started = useGameStore.getState().newItemPulseStartedAt || {};
+    const hovered = useGameStore.getState().hoveredTooltips || {};
+    for (const id of pulseCandidateKey.split("\0")) {
+      if (!id || hovered[id]) continue;
+      const startedAt = started[id];
+      if (typeof startedAt === "number" && Number.isFinite(startedAt)) continue;
+      noteNewItemPulseStarted(id);
+    }
+  }, [pulseCandidateKey, noteNewItemPulseStarted]);
+
+  useEffect(() => {
+    if (!pulseCandidateKey) return;
+    const now = Date.now();
+    let nextEnd = Infinity;
+    for (const id of pulseCandidateKey.split("\0")) {
+      if (!id || hoveredTooltips[id]) continue;
+      const startedAt = newItemPulseStartedAt[id];
+      if (typeof startedAt !== "number" || !Number.isFinite(startedAt)) continue;
+      const endsAt = startedAt + NEW_ITEM_PULSE_DURATION_MS;
+      if (endsAt <= now) continue;
+      if (endsAt < nextEnd) nextEnd = endsAt;
+    }
+    if (nextEnd === Infinity) return;
+    const timeout = setTimeout(() => {
+      setPulseNow(Date.now());
+    }, nextEnd - now);
+    return () => clearTimeout(timeout);
+  }, [pulseCandidateKey, newItemPulseStartedAt, hoveredTooltips, pulseNow]);
 
   const [maxAnimatedItems, setMaxAnimatedItems] = useState<Set<string>>(
     new Set(),
@@ -1015,12 +1110,6 @@ export default function SidePanelSection({
         effect.name ||
         effect.description);
 
-    // Check if this item has a tooltip (for buildings with stats)
-    const hasTooltip =
-      item.tooltip !== undefined &&
-      item.tooltip !== false &&
-      (typeof item.tooltip !== "string" || item.tooltip.length > 0);
-
     // Check if the item is 'madness' and if there's any madness from events to display
     const isMadnessTooltip =
       item.id === "madness" && madnessTooltipContent.length > 0;
@@ -1032,26 +1121,20 @@ export default function SidePanelSection({
       ? MADNESS_STAGE_TEXT_CLASS[getMadnessVisualStage(madnessForStyle)]
       : "";
 
-    const statPulseKey = STAT_EFFECT_PULSE_STAT_IDS.includes(
-      item.id as TooltipStatKey,
-    )
-      ? (item.id as TooltipStatKey)
-      : null;
-
     // Pulse: effect items, building/fortification tooltips, or stat rows with newly unlocked effect lines.
-    // Stat tooltips are JSX (always truthy) — never use bare `item.tooltip` for the stats section.
-    const shouldPulse =
-      sectionId === "stats" && statPulseKey !== null
-        ? statNewLinePulseKeys.has(statPulseKey)
-        : (hasEffect &&
-          sectionId !== undefined &&
-          EFFECT_TOOLTIP_SECTIONS.has(sectionId)) ||
-        (hasTooltip &&
-          (sectionId === "fortifications" || sectionId === "buildings")) ||
-        (Boolean(item.tooltip) && sectionId !== "resources");
+    // Stat tooltips are JSX (always truthy). sidePanelItemShouldPulse skips bare tooltips there.
+    const shouldPulse = sidePanelItemShouldPulse(
+      item,
+      sectionId,
+      statNewLinePulseKeys,
+    );
 
     const newItemPulseClass =
-      shouldPulse && !hoveredTooltips[item.id] ? NEW_ITEM_PULSE_TEXT_CLASS : "";
+      shouldPulse &&
+      !hoveredTooltips[item.id] &&
+      isNewItemPulseActive(newItemPulseStartedAt[item.id], pulseNow)
+        ? NEW_ITEM_PULSE_TEXT_CLASS
+        : "";
 
     // Check if this resource is highlighted (external cost hover or tooltip hover)
     const isHighlighted =

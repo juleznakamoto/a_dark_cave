@@ -1,4 +1,4 @@
-import { cloneElement, createContext, isValidElement, memo, useContext, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode, type RefObject } from "react";
+import { cloneElement, createContext, isValidElement, memo, useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent, type ReactNode, type RefObject } from "react";
 import { heartfireHatchOpacity } from "@/game/villageMapBuild";
 import type { VillageMapCoinMetal, VillageSilverCoin } from "@/game/villageMapSilver";
 import { SilverCoinMark } from "@/pages/village-map-demo/SilverCoinMark";
@@ -369,6 +369,8 @@ type VillageMapProps = {
   readOnly?: boolean;
   /** Current Feed Fire level, 0 through 5. */
   heartfireLevel?: number;
+  /** Grave crosses on the boneyard. One per point of burial madness, up to 10. */
+  boneyardCrosses?: number;
   /** Crowns planted on the demo map. The game map leaves this empty. */
   trees?: MapTree[];
   /** Variant id armed for the next click on open ground. */
@@ -403,6 +405,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
   revealEpoch = 0,
   readOnly = false,
   heartfireLevel = 5,
+  boneyardCrosses = 0,
   trees = NO_TREES,
   placingTree = null,
   onPlaceTree,
@@ -442,7 +445,32 @@ const VillageMapSvg = memo(function VillageMapSvg({
   });
   // Per slot, the fade signature whose thick border has already eased off.
   // A shared flag was cleared by whichever animation ended first, so some fades lost the border.
+  // One timer, not animationend: each animationend rebuilt this whole SVG, and the game map
+  // has a path outline for every building.
   const [easedBorder, setEasedBorder] = useState<Record<string, string>>({});
+  useEffect(() => {
+    if (!reveal?.fadeIn) return;
+    const ids = Object.keys(reveal.fadeIn);
+    if (ids.length === 0) return;
+    const openWait = reveal.openWait != null && Object.keys(reveal.openWait).length > 0;
+    const upgrade = Object.keys(reveal.fadeOutTier).length > 0;
+    const wait =
+      (openWait ? VILLAGE_MAP_OPEN_FADE_DELAY_MS : 0) + (upgrade ? 1000 : 0) + 1500;
+    const timer = window.setTimeout(() => {
+      setEasedBorder((current) => {
+        let changed = false;
+        const next = { ...current };
+        for (const id of ids) {
+          const signature = revealFadeSignature(reveal, id, revealEpoch);
+          if (signature == null || next[id] === signature) continue;
+          next[id] = signature;
+          changed = true;
+        }
+        return changed ? next : current;
+      });
+    }, wait);
+    return () => window.clearTimeout(timer);
+  }, [reveal, revealEpoch]);
   const [pathReady, setPathReady] = useState<Record<string, true>>({});
   const [pathEpoch, setPathEpoch] = useState(revealEpoch);
   if (pathEpoch !== revealEpoch) {
@@ -1137,12 +1165,16 @@ const VillageMapSvg = memo(function VillageMapSvg({
                     data-path={path.id}
                     className={pathFadeClass(path, reveal)}
                     style={waiting && pathOpensWithWait(path, reveal) ? OPEN_WAIT_STYLE : undefined}
-                    onAnimationEnd={(event) => {
-                      if (event.animationName !== "village-map-path-in") return;
-                      setPathReady((current) =>
-                        current[path.id] ? current : { ...current, [path.id]: true },
-                      );
-                    }}
+                    onAnimationEnd={
+                      readOnly
+                        ? undefined
+                        : (event) => {
+                            if (event.animationName !== "village-map-path-in") return;
+                            setPathReady((current) =>
+                              current[path.id] ? current : { ...current, [path.id]: true },
+                            );
+                          }
+                    }
                   >
                     <PathEndFades
                       fades={fades}
@@ -1263,7 +1295,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
           ) : null}
 
           {trees.length > 0 ? (
-            <g data-testid="map-trees" opacity={0.5}>
+            <g data-testid="map-trees" opacity={0.78}>
               {trees.map((tree) => {
                 if (concealedTrees.has(tree.id)) return null;
                 const variant = treeVariant(tree.variant);
@@ -1506,25 +1538,16 @@ const VillageMapSvg = memo(function VillageMapSvg({
                       brimstoneInfusion={build.brimstoneInfusion}
                       dedication={build.dedication}
                       dedicationDeepened={build.dedicationDeepened}
+                      boneyardCrosses={boneyardCrosses}
                     />
                   </g>
                 ) : null}
-                <g
-                  key={`fade-in-${revealEpoch}`}
-                  onAnimationEnd={(event) => {
-                    if (event.animationName !== "village-map-highlight-fade") return;
-                    if (event.elapsedTime < 0.5 || fadeSignature == null) return;
-                    setEasedBorder((current) =>
-                      current[slot.id] === fadeSignature ? current : { ...current, [slot.id]: fadeSignature },
-                    );
-                  }}
-                >
+                <g key={`fade-in-${revealEpoch}`}>
                   <SlotMark
                     slot={slot}
                     tier={slot.tier}
                     tuning={markTuning}
                     highlighted={fading}
-                    fadeHighlight={fading}
                     fadeClassName={fadeInClass(reveal, slot.id)}
                     fadeStyle={slotOpensWithWait(reveal, slot.id) ? OPEN_WAIT_STYLE : undefined}
                     heartfireLevel={heartfireLevel}
@@ -1532,6 +1555,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
                     brimstoneInfusion={build.brimstoneInfusion}
                     dedication={build.dedication}
                     dedicationDeepened={build.dedicationDeepened}
+                    boneyardCrosses={boneyardCrosses}
                     drawbridge={drawbridgeBySlot.get(slot.id) ?? null}
                     hatchReach={wallReach}
                   />

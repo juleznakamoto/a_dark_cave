@@ -367,6 +367,26 @@ export const createUiSlice: GameStoreCreator<Partial<GameStore>> = (set, get) =>
     }));
   },
 
+  noteNewItemPulseStarted: (tooltipId: string) => {
+    const startedAt = get().newItemPulseStartedAt?.[tooltipId];
+    if (typeof startedAt === "number" && Number.isFinite(startedAt)) return;
+    set((state) => ({
+      newItemPulseStartedAt: {
+        ...(state.newItemPulseStartedAt || {}),
+        [tooltipId]: Date.now(),
+      },
+    }));
+  },
+
+  restartNewItemPulseClock: (tooltipId: string) => {
+    set((state) => ({
+      newItemPulseStartedAt: {
+        ...(state.newItemPulseStartedAt || {}),
+        [tooltipId]: Date.now(),
+      },
+    }));
+  },
+
   setScrollIndicatorSeen: (scrollAreaId: string) => {
     set((state) => ({
       scrollIndicatorSeen: {

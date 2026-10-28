@@ -12,6 +12,7 @@ import {
 import { isStartScreenNarrativeLogEntry } from "@/i18n/resolveGameText";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { setPerfUiCounter } from "@/lib/perfProbe";
+import { NEW_ITEM_PULSE_DURATION_MS } from "@/hooks/useNewItemPulseTooltip";
 import { cn } from "@/lib/utils";
 
 // Extended log entry type to support "production" type if it exists in the data
@@ -26,7 +27,7 @@ type ExtendedLogEntry =
 
 const MARK_READ_HOVER_MS = 300;
 /** Unread text pulses for this long, then stays still. The marker dot keeps going. */
-const UNREAD_FLASH_MS = 15 * 60 * 1000;
+const UNREAD_FLASH_MS = NEW_ITEM_PULSE_DURATION_MS;
 const NEW_VILLAGER_ORB_COLOR = "rgb(255, 255, 255)";
 // thinking-orbs only draws at 20, 32, or 64. Paint at 20 and show it smaller.
 const UNREAD_ORB_DRAW = 20;

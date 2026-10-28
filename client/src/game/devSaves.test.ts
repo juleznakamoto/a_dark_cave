@@ -3,6 +3,7 @@ import { isAchievementsGameTabUnlocked } from "@/achievements/configs/overall";
 import {
   isBastionTabVisible,
   isForestTabVisible,
+  isMapTabVisible,
   isVillageTabVisible,
 } from "@shared/repairUnlockFlags";
 import { useGameStore } from "./state";
@@ -16,6 +17,7 @@ import {
 } from "./devSaves";
 import { SOCIAL_PROMPT_AUTO_OPEN_COUNT } from "./socialPromptAuto";
 import { canActivateSleep } from "./sleepActivation";
+import { boneyardCrossCount } from "./rules/boneyardMadness";
 
 describe("dev save catalog", () => {
   it("starts with six named milestones", () => {
@@ -28,6 +30,12 @@ describe("dev save catalog", () => {
     expect(parseDevSaveId("sleep-active")).toBe("sleep-active");
     expect(parseDevSaveId("nope")).toBeNull();
     expect(parseDevSaveId(null)).toBeNull();
+  });
+
+  it.each(DEV_SAVE_IDS)("%s shows the village map tab", (id) => {
+    const state = buildDevSave(id);
+    expect(state.flags.mapUnlocked).toBe(true);
+    expect(isMapTabVisible(state)).toBe(true);
   });
 
   it.each(DEV_SAVE_IDS)("%s hydrates the live store", (id) => {
@@ -120,6 +128,8 @@ describe("dev save catalog", () => {
     expect(state.story.seen.portalBlasted).toBe(true);
     expect(state.buildings.foundry).toBe(1);
     expect(state.buildings.palisades).toBeGreaterThan(0);
+    expect(state.buildings.boneyard).toBe(1);
+    expect(boneyardCrossCount(state)).toBe(10);
     expect(state.tools.iron_lantern).toBe(true);
     expect(state.tools.steel_axe).toBe(false);
     expect(state.resources.ember_bomb).toBeGreaterThan(0);

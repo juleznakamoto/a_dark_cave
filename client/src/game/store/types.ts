@@ -347,6 +347,10 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
   ) => void;
   setFlag: (flag: keyof GameState["flags"], value: boolean) => void;
   setHoveredTooltip: (tooltipId: string, value: boolean) => void;
+  /** Record when a side-panel item started glowing. Leaves an existing time alone. */
+  noteNewItemPulseStarted: (tooltipId: string) => void;
+  /** Start the side-panel glow window over (a stat row gained a new effect line). */
+  restartNewItemPulseClock: (tooltipId: string) => void;
   setScrollIndicatorSeen: (scrollAreaId: string) => void;
   initialize: (state: GameState) => void;
   restartGame: (options?: { cruelMode?: boolean }) => void;

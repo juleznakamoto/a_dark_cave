@@ -27,6 +27,7 @@ import {
 } from "@/pages/village-map-demo/catalog";
 import { VillageMap } from "@/pages/village-map-demo/VillageMap";
 import { placedSlots } from "@/pages/village-map-demo/geometry";
+import { boneyardCrossCount } from "@/game/rules/boneyardMadness";
 import { buildStateFromPlayer } from "@/game/villageMapBuild";
 import {
   mapHighlightFromSidePanelHover,
@@ -124,6 +125,7 @@ export default function VillageMapOverlay() {
     );
   }, []);
   const heartfireLevel = useGameStore((state) => state.heartfireState?.level ?? 0);
+  const boneyardCrosses = useGameStore(boneyardCrossCount);
   const wasOpen = useRef(false);
   const demoRawRef = useRef<string | null>(null);
   const demoRef = useRef<DemoSnapshot | null>(null);
@@ -285,7 +287,7 @@ export default function VillageMapOverlay() {
     // Reveal is cleared while hidden so a later fade can start again.
     <div
       hidden={!open}
-      className="absolute inset-0 z-30 flex flex-col px-2 pb-4"
+      className="village-map-overlay absolute inset-0 z-30 flex flex-col px-2 pb-4"
       style={{
         backgroundColor: DEFAULT_TUNING.ground,
         display: open ? undefined : "none",
@@ -307,6 +309,7 @@ export default function VillageMapOverlay() {
           onHoverBuilding={onHoverBuilding}
           readOnly
           heartfireLevel={heartfireLevel}
+          boneyardCrosses={boneyardCrosses}
           silverCoins={replaying ? [] : visibleCoins}
           onSilverCoin={collectSilverCoin}
           onHoverSilverCoin={onHoverCoin}

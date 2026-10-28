@@ -827,7 +827,7 @@ export default function VillageMapDemo() {
                     aria-label={variant.label}
                     aria-pressed={armed}
                     data-testid={`place-tree-${variant.id}`}
-                    className={`rounded bg-[#dedcd8] p-0.5 ${armed ? "ring-2 ring-stone-100" : "ring-1 ring-stone-700"}`}
+                    className={`rounded bg-[#adaca8] p-0.5 ${armed ? "ring-2 ring-stone-100" : "ring-1 ring-stone-700"}`}
                     onClick={() => setPlacingTree((current) => (current === variant.id ? null : variant.id))}
                   >
                     <svg viewBox="-62 -48 124 96" className="h-12 w-full" aria-hidden>

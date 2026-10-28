@@ -456,6 +456,9 @@ export const gameStateSchema = z.object({
     })
     .default({ seen: {}, merchantPurchases: 0, heavySleeperHours: 0 }),
   hoveredTooltips: z.record(z.boolean()).default({}),
+  // Wall-clock start of each side-panel new-item glow. The glow stops after
+  // the same window as an unread event-log line.
+  newItemPulseStartedAt: z.record(z.number()).default({}),
   scrollIndicatorSeen: z.record(z.boolean()).default({}),
   damagedBuildings: z
     .object({

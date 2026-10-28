@@ -23,6 +23,9 @@ if (typeof window.matchMedia !== "function") {
 
 const buildingsAtImport = useGameStore.getState().buildings;
 const blessingsAtImport = useGameStore.getState().blessings;
+const buildOrderAtImport = useGameStore.getState().villageBuildOrder;
+const statsAtImport = useGameStore.getState().stats;
+const storyAtImport = useGameStore.getState().story;
 const resourcesAtImport = useGameStore.getState().resources;
 const seenResourcesAtImport = useGameStore.getState().seenResources;
 const silverCoinsAtImport = useGameStore.getState().villageSilverCoins;
@@ -58,6 +61,9 @@ describe("VillageMapOverlay", () => {
         blessings: blessingsAtImport,
         villageMapSeenTiers: {},
         villageMapReplaying: false,
+        villageBuildOrder: buildOrderAtImport,
+        stats: statsAtImport,
+        story: storyAtImport,
         eventDialog: { isOpen: false, currentEvent: null, lastEndedAt: 0 },
         resources: resourcesAtImport,
         seenResources: seenResourcesAtImport,
@@ -141,6 +147,45 @@ describe("VillageMapOverlay", () => {
       expect(huts()).toHaveLength(2);
       expect(view.getByTestId("button-village-map-play")).toHaveAttribute("aria-pressed", "false");
       expect(useGameStore.getState().villageMapReplaying).toBe(false);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("shows every grave with the boneyard during growth replay", () => {
+    vi.useFakeTimers();
+    try {
+      const seen = useGameStore.getState().story?.seen ?? {};
+      useGameStore.setState({
+        buildings: { ...buildingsAtImport, woodenHut: 1, boneyard: 1 },
+        blessings: blessingsAtImport,
+        villageBuildOrder: ["woodenHut", "boneyard"],
+        activeTab: "map",
+        stats: {
+          ...statsAtImport,
+          villagerDeathsLifetime: 150,
+        },
+        story: {
+          ...storyAtImport,
+          seen: { ...seen, boneyardDeathBaseline: 0 },
+        },
+      });
+      const view = render(<VillageMapOverlay />);
+      const crosses = () => view.container.querySelectorAll("[data-testid='boneyard-cross']");
+      expect(crosses()).toHaveLength(3);
+
+      fireEvent.click(view.getByTestId("button-village-map-play"));
+      expect(view.container.querySelector("[data-building='boneyard']")).toBeNull();
+      expect(crosses()).toHaveLength(0);
+
+      act(() => {
+        vi.advanceTimersByTime(500);
+      });
+      const yard = view.container.querySelector("[data-building='boneyard']");
+      expect(yard).not.toBeNull();
+      expect(yard!.querySelectorAll("[data-testid='boneyard-cross']")).toHaveLength(3);
+      expect(yard!.querySelector(".village-map-fade-in")).toBeNull();
+      expect(yard!.querySelector("[data-testid='boneyard-crosses']")?.closest(".village-map-enter-scale")).toBeNull();
     } finally {
       vi.useRealTimers();
     }

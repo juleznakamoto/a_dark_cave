@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createInitialState } from "@/game/state";
 import type { GameState } from "@shared/schema";
+import { useGameStore } from "@/game/state";
 import { EventManager, type LogEntry } from "./events";
 import {
   COLLECTOR_MAX_VISITS,
@@ -525,5 +526,44 @@ describe("wandering collector stored offers", () => {
     expect(rejected._choiceRejected).toBe(true);
     expect(rejected.relics).toBeUndefined();
     expect(rejected.resources).toBeUndefined();
+  });
+
+  it("keeps the relic when the store rejects an offer that is not on the visit", () => {
+    const arrival = arrivalState();
+    const choices =
+      typeof event.choices === "function" ? event.choices(arrival) : [];
+    const afterBuy = baseState({
+      buildings: { woodenHut: 6 } as GameState["buildings"],
+      clothing: { bloodstained_belt: true } as GameState["clothing"],
+      relics: offeredRelics() as GameState["relics"],
+    });
+
+    useGameStore.getState().initialize(afterBuy);
+    const accepted = useGameStore
+      .getState()
+      .applyEventChoice(
+        "sell_unnamed_book",
+        "wandering_collector",
+        visitEntry(choices),
+      );
+    expect(accepted).toBe(true);
+    expect(useGameStore.getState().relics.unnamed_book).toBe(false);
+    expect(useGameStore.getState().resources.gold).toBe(
+      (afterBuy.resources.gold || 0) + 100,
+    );
+
+    useGameStore.getState().initialize(afterBuy);
+    const refused = useGameStore
+      .getState()
+      .applyEventChoice(
+        "sell_unnamed_book",
+        "wandering_collector",
+        visitEntry([]),
+      );
+    expect(refused).toBe(false);
+    expect(useGameStore.getState().relics.unnamed_book).toBe(true);
+    expect(useGameStore.getState().resources.gold).toBe(
+      afterBuy.resources.gold || 0,
+    );
   });
 });
