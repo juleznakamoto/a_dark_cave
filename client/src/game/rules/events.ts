@@ -39,7 +39,11 @@ import { fellowshipEvents } from "./eventsFellowship";
 import { riddleEvents } from "./eventsRiddles";
 import { ringEvents } from "./eventsRing";
 import { crowEvents } from "./eventsCrow";
-import { wanderingCollectorEvents } from "./eventsWanderingCollector";
+import {
+  findStoredCollectorTradeChoice,
+  isMissingStoredCollectorTrade,
+  wanderingCollectorEvents,
+} from "./eventsWanderingCollector";
 import { exiledScholarEvents } from "./eventsExiledScholar";
 import { obsidianOrbEvents } from "./eventsObsidianOrb";
 import { tradersDaughterEvents } from "./eventsTradersDaughter";
@@ -766,10 +770,27 @@ export class EventManager {
       return {};
     }
 
+    // Collector buy/sell buttons are snapshotted for the visit. Rebuilding the
+    // four-item window from live inventory can drop the relic on the button.
+    if (isMissingStoredCollectorTrade(eventId, choiceId, currentLogEntry)) {
+      logger.error("[EVENT MANAGER] Collector trade is not on this visit:", {
+        choiceId,
+        eventId,
+      });
+      return { _choiceRejected: true };
+    }
+    const storedCollectorTrade = findStoredCollectorTradeChoice(
+      eventId,
+      choiceId,
+      currentLogEntry,
+    );
+
     // For non-merchant events, use the standard choice execution
-    const choices = typeof eventDefinition.choices === 'function'
-      ? eventDefinition.choices(state)
-      : eventDefinition.choices || [];
+    const choices = storedCollectorTrade
+      ? [storedCollectorTrade]
+      : typeof eventDefinition.choices === "function"
+        ? eventDefinition.choices(state)
+        : eventDefinition.choices || [];
     const choice = Array.isArray(choices) ? choices.find((c) => c.id === choiceId) : null;
 
     if (!choice) {

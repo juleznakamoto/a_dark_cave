@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { createInitialState } from "@/game/state";
 import type { GameState } from "@shared/schema";
+import { EventManager, type LogEntry } from "./events";
 import {
   COLLECTOR_MAX_VISITS,
   getCollectorDepartureLogKey,
@@ -442,5 +443,87 @@ describe("leatherbound book resell", () => {
       },
     });
     expect(event.condition(beforeEnding)).toBe(false);
+  });
+});
+
+describe("wandering collector stored offers", () => {
+  const event = wanderingCollectorEvents.wandering_collector;
+
+  function offeredRelics(): Partial<GameState["relics"]> {
+    return {
+      blackened_mirror: true,
+      bone_dice: true,
+      shadow_flute: true,
+      unnamed_book: true,
+      wooden_figure: true,
+    };
+  }
+
+  function arrivalState(): GameState {
+    return baseState({
+      buildings: { woodenHut: 6 } as GameState["buildings"],
+      relics: offeredRelics() as GameState["relics"],
+    });
+  }
+
+  function visitEntry(choices: LogEntry["choices"]): LogEntry {
+    return {
+      id: "wandering_collector-1",
+      eventId: "wandering_collector",
+      message: "",
+      timestamp: 1,
+      type: "event",
+      choices,
+    };
+  }
+
+  it("sells the relic on the button after a buy shifts the live offer window", () => {
+    const arrival = arrivalState();
+    const choices =
+      typeof event.choices === "function" ? event.choices(arrival) : [];
+    expect(choices.some((choice) => choice.id === "sell_unnamed_book")).toBe(
+      true,
+    );
+
+    const afterBuy = baseState({
+      buildings: { woodenHut: 6 } as GameState["buildings"],
+      clothing: { bloodstained_belt: true } as GameState["clothing"],
+      relics: offeredRelics() as GameState["relics"],
+    });
+    const rebuilt =
+      typeof event.choices === "function" ? event.choices(afterBuy) : [];
+    expect(rebuilt.some((choice) => choice.id === "sell_unnamed_book")).toBe(
+      false,
+    );
+
+    const sold = EventManager.applyEventChoice(
+      afterBuy,
+      "sell_unnamed_book",
+      "wandering_collector",
+      visitEntry(choices),
+    );
+
+    expect(sold._choiceRejected).toBeUndefined();
+    expect(sold.relics?.unnamed_book).toBe(false);
+    expect(sold.resources?.gold).toBe((afterBuy.resources.gold || 0) + 100);
+  });
+
+  it("rejects a sell that is not on the visit snapshot", () => {
+    const afterBuy = baseState({
+      buildings: { woodenHut: 6 } as GameState["buildings"],
+      clothing: { bloodstained_belt: true } as GameState["clothing"],
+      relics: offeredRelics() as GameState["relics"],
+    });
+
+    const rejected = EventManager.applyEventChoice(
+      afterBuy,
+      "sell_unnamed_book",
+      "wandering_collector",
+      visitEntry([]),
+    );
+
+    expect(rejected._choiceRejected).toBe(true);
+    expect(rejected.relics).toBeUndefined();
+    expect(rejected.resources).toBeUndefined();
   });
 });

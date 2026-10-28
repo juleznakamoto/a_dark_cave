@@ -1,4 +1,4 @@
-import type { GameEvent, EventChoice } from "./eventTypes";
+import type { GameEvent, EventChoice, LogEntry } from "./eventTypes";
 import type { GameState } from "@shared/schema";
 import {
   getClothingOrRelicEffectName,
@@ -49,6 +49,47 @@ export function isCollectorTradeChoiceId(choiceId: string): boolean {
 
 export function isCollectorLeaveChoiceId(choiceId: string): boolean {
   return choiceId === "sell_nothing";
+}
+
+export function isWanderingCollectorEventId(eventId: string): boolean {
+  return (
+    eventId === "wandering_collector" ||
+    eventId.startsWith("wandering_collector-")
+  );
+}
+
+/**
+ * Buy/sell buttons are fixed when the collector arrives. A later click must
+ * run that button, not a new four-item window built from the live inventory.
+ * `null` means this is not a stored-trade lookup (leave, or no snapshot).
+ */
+export function findStoredCollectorTradeChoice(
+  eventId: string,
+  choiceId: string,
+  currentLogEntry?: Pick<LogEntry, "choices">,
+): EventChoice | null {
+  if (!isWanderingCollectorEventId(eventId) || !isCollectorTradeChoiceId(choiceId)) {
+    return null;
+  }
+  const stored = currentLogEntry?.choices;
+  if (!Array.isArray(stored)) return null;
+  const choice = stored.find((entry) => entry.id === choiceId);
+  if (!choice || typeof choice.effect !== "function") return null;
+  return choice;
+}
+
+/** True when a collector buy/sell click has a snapshot and that offer is not on it. */
+export function isMissingStoredCollectorTrade(
+  eventId: string,
+  choiceId: string,
+  currentLogEntry?: Pick<LogEntry, "choices">,
+): boolean {
+  if (!isWanderingCollectorEventId(eventId) || !isCollectorTradeChoiceId(choiceId)) {
+    return false;
+  }
+  const stored = currentLogEntry?.choices;
+  if (!Array.isArray(stored)) return false;
+  return findStoredCollectorTradeChoice(eventId, choiceId, currentLogEntry) == null;
 }
 
 function getCollectorVisitCount(state: GameState): number {
