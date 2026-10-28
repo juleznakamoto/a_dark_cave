@@ -59,6 +59,7 @@ import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { FullscreenButton } from "./FullscreenButton";
 import { CrazyGamesMenuItems } from "./CrazyGamesMenuLinks";
 import { STEAM_STORE_UTM_CONTENT } from "@/lib/gameFooterSocialLinks";
+import { steamQuit } from "@/lib/steam";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { REWARDS_TASKS_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 import {
@@ -622,7 +623,8 @@ export function GameHeaderControls() {
     setSettingsDialogOpen,
   } = useProfileMenu();
   const devGameMode = useGameStore((s) => s.devGameMode);
-  const progressShareDisabled = isSteamDesktopEditionActive(devGameMode);
+  const steamDesktopEdition = isSteamDesktopEditionActive(devGameMode);
+  const progressShareDisabled = steamDesktopEdition;
 
   return (
     <div className="flex items-center gap-0.5 shrink-0">
@@ -794,6 +796,22 @@ export function GameHeaderControls() {
                 </span>
               </DropdownMenuItem>
             ))}
+          {steamDesktopEdition && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  setAccountDropdownOpen(false);
+                  void steamQuit();
+                }}
+              >
+                <span className="flex items-center gap-1.5">
+                  <GameUiIcon name="signOut" />
+                  {t("profile.quitGame")}
+                </span>
+              </DropdownMenuItem>
+            </>
+          )}
         </DropdownMenuContent>
       </DropdownMenu>
       <FullscreenButton />
