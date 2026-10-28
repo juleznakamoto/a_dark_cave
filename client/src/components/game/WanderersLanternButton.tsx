@@ -153,28 +153,46 @@ export function WanderersLanternFirstRow({ children }: { children: ReactNode }) 
         return buttonRight >= bestRight ? button : best;
       }, buttons[0]);
       const gap = parseFloat(getComputedStyle(row).columnGap) || 0;
-      const left = rightmost.offsetLeft + rightmost.offsetWidth + gap;
-      const top = rightmost.offsetTop;
+      const left = Math.round(
+        rightmost.offsetLeft + rightmost.offsetWidth + gap,
+      );
+      const top = Math.round(rightmost.offsetTop);
       setPlace((prev) =>
-        prev && Math.abs(prev.left - left) < 0.5 && Math.abs(prev.top - top) < 0.5
-          ? prev
-          : { left, top },
+        prev && prev.left === left && prev.top === top ? prev : { left, top },
       );
     };
 
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(row);
-    for (const child of row.children) {
-      if (
-        child instanceof HTMLElement &&
-        child.dataset.wanderersLanternAnchor == null
-      ) {
-        observer.observe(child);
+    const resizeObserver = new ResizeObserver(measure);
+    const watchButtons = () => {
+      for (const child of row.children) {
+        if (
+          child instanceof HTMLElement &&
+          child.dataset.wanderersLanternAnchor == null
+        ) {
+          resizeObserver.observe(child);
+        }
       }
-    }
-    return () => observer.disconnect();
-  });
+    };
+
+    measure();
+    resizeObserver.observe(row);
+    watchButtons();
+
+    // Child-list changes (a craft reveals or hides a button on this row) need
+    // a fresh measure. Do not re-run this effect on every parent render: the
+    // lantern tooltip's position update would setState, this effect would
+    // measure again, and React hits the maximum update depth.
+    const mutationObserver = new MutationObserver(() => {
+      watchButtons();
+      measure();
+    });
+    mutationObserver.observe(row, { childList: true });
+
+    return () => {
+      resizeObserver.disconnect();
+      mutationObserver.disconnect();
+    };
+  }, []);
 
   return (
     <div ref={rowRef} className={gameActionButtonGridClassName("relative w-full")}>
