@@ -36,11 +36,11 @@ describe("Steam overlay hooks", () => {
     vi.useRealTimers();
   });
 
-  it("keeps the GPU switch and omits the Alt+Tab ghost flag", () => {
-    expect([...STEAM_OVERLAY_CHROMIUM_SWITCHES]).toEqual(["in-process-gpu"]);
-    expect(STEAM_OVERLAY_CHROMIUM_SWITCHES).not.toContain(
+  it("keeps both switches so a Steam launch paints the game", () => {
+    expect([...STEAM_OVERLAY_CHROMIUM_SWITCHES]).toEqual([
+      "in-process-gpu",
       "disable-direct-composition",
-    );
+    ]);
   });
 
   it("appends only those switches and repaints each window once", () => {
@@ -64,8 +64,12 @@ describe("Steam overlay hooks", () => {
     applySteamOverlayHooks(electron);
     applySteamOverlayHooks(electron);
 
-    expect(switches).toEqual(["in-process-gpu", "in-process-gpu"]);
-    expect(switches).not.toContain("disable-direct-composition");
+    expect(switches).toEqual([
+      "in-process-gpu",
+      "disable-direct-composition",
+      "in-process-gpu",
+      "disable-direct-composition",
+    ]);
     expect(created).toHaveLength(1);
 
     vi.advanceTimersByTime(STEAM_OVERLAY_REPAINT_MS);

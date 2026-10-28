@@ -556,8 +556,9 @@ if (!app.requestSingleInstanceLock()) {
   app.quit();
 } else {
   // Steam overlay + API must run before `app.whenReady()` / BrowserWindow creation.
-  // `enableSteamOverlay` appends `in-process-gpu`, which is ignored once ready.
-  // It does not append `disable-direct-composition` (phantom Alt+Tab windows).
+  // `enableSteamOverlay` appends `in-process-gpu` and
+  // `disable-direct-composition` before ready. Without the second switch,
+  // Steam opens a blank window.
   // Trailer DPI lock must also be set before ready, or Windows 200% scale
   // turns 1920x1080 into a window larger than the panel.
   if (isTrailerCaptureMode()) {

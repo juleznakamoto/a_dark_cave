@@ -164,6 +164,21 @@ function Invoke-SteamBootCheck {
     return $false
   }
 
+  # Launching the exe directly can paint while a Steam library launch stays
+  # blank. The title check never sees that. The package has to contain the
+  # switch that lets the Steam overlay present the window.
+  $asar = Join-Path $BuildDir "resources\app.asar"
+  if (-not (Test-Path -LiteralPath $asar)) {
+    Write-Host "Boot check failed ($Label): missing $asar" -ForegroundColor Red
+    return $false
+  }
+  $presents = Select-String -LiteralPath $asar -Pattern "disable-direct-composition" -SimpleMatch -Quiet -Encoding utf8
+  if (-not $presents) {
+    Write-Host "Boot check failed ($Label): the package is missing disable-direct-composition." -ForegroundColor Red
+    Write-Host "A Steam launch then opens a blank window. A direct launch can still show pixels." -ForegroundColor Yellow
+    return $false
+  }
+
   $already = @(Get-Process -Name "A Dark Cave" -ErrorAction SilentlyContinue)
   if ($already.Count -gt 0) {
     $pids = ($already | ForEach-Object { $_.Id }) -join ", "
