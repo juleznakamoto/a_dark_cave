@@ -17,6 +17,7 @@ import {
 import { calculateAdjustedCost } from "./costCalculation";
 import { applyActionCostsOnly } from "./actionEffects";
 import { canExecuteAction, getActionCostBreakdown } from "./index";
+import { calculateResourceGains } from "./tooltips";
 
 const isDemoEditionMock = vi.mocked(isDemoEdition);
 
@@ -149,5 +150,25 @@ describe("lantern torch cost", () => {
     const rows = getActionCostBreakdown("mineStone", miningState("steel_lantern", 0));
     expect(rows).toHaveLength(1);
     expect(rows[0]?.satisfied).toBe(true);
+  });
+
+  it("shows the discounted torch cost on the mining tooltip", () => {
+    const base = calculateResourceGains("mineStone", miningState());
+    expect(base.costs.find((cost) => cost.resource === "torch")?.amount).toBe(1);
+
+    const covered = calculateResourceGains(
+      "mineStone",
+      miningState("iron_lantern", 0),
+    );
+    expect(covered.costs.find((cost) => cost.resource === "torch")).toBeUndefined();
+    expect(covered.costs.find((cost) => cost.resource === "food")?.amount).toBe(10);
+
+    const sulfur = calculateResourceGains(
+      "mineSulfur",
+      miningState("blacksteel_lantern", 1),
+    );
+    const torch = sulfur.costs.find((cost) => cost.resource === "torch");
+    expect(torch?.amount).toBe(1);
+    expect(torch?.hasEnough).toBe(true);
   });
 });

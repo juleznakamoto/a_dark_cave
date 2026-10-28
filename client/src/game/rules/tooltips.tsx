@@ -4,6 +4,7 @@ import {
   getTotalKnowledge,
   getActionBonuses,
   getTotalCraftingCostReduction,
+  getLanternTorchCostReduction,
   getTotalBuildingCostReduction,
   getMadnessComponents,
   getTotalMadness,
@@ -471,9 +472,22 @@ export const calculateResourceGains = (
           const resource = key.split(".")[1];
           if (typeof value === "number") {
             // Apply crafting discount if applicable
-            const finalCost = isCraftAction
+            let finalCost = isCraftAction
               ? Math.ceil(value * (1 - craftingDiscount))
               : value;
+
+            // Lanterns lower every torch spend. A cost the lantern covers is omitted,
+            // matching getActionCostBreakdown.
+            if (resource === "torch") {
+              finalCost = Math.max(
+                0,
+                finalCost - getLanternTorchCostReduction(state),
+              );
+            }
+
+            if (finalCost <= 0) {
+              return;
+            }
 
             const hasEnough =
               (state.resources[resource as keyof typeof state.resources] ||
