@@ -6,7 +6,9 @@
     },
     "madnessDeath": {
       "one": "Jeden wieśniak ulega szaleństwu i odbiera sobie życie.",
-      "other": "{{count}} wieśniaków ulega szaleństwu i odbiera sobie życie."
+      "other": "{{count}} wieśniaków ulega szaleństwu i odbiera sobie życie.",
+      "rampageOne": "Jeden wieśniak wpada w szaleństwo, zabija drugiego, a potem siebie.",
+      "rampageOther": "Jeden wieśniak wpada w szaleństwo, zabija {{others}} innych, a potem siebie."
     },
     "madnessLevel": {
       "increased": "Zapadasz coraz głębiej w szaleństwo.",

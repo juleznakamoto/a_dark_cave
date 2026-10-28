@@ -6,7 +6,9 @@
     },
     "madnessDeath": {
       "one": "Un aldeano sucumbe a la locura y se quita la vida.",
-      "other": "{{count}} aldeanos sucumben a la locura y se quitan la vida."
+      "other": "{{count}} aldeanos sucumben a la locura y se quitan la vida.",
+      "rampageOne": "Un aldeano enloquece, mata a otro y luego a sí mismo.",
+      "rampageOther": "Un aldeano enloquece, mata a {{others}} más y luego a sí mismo."
     },
     "madnessLevel": {
       "increased": "Te hundes más en la locura.",

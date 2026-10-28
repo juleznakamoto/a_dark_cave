@@ -6,7 +6,9 @@
     },
     "madnessDeath": {
       "one": "One villager succumbs to madness and takes his own life.",
-      "other": "{{count}} villagers succumb to madness and take their own lives."
+      "other": "{{count}} villagers succumb to madness and take their own lives.",
+      "rampageOne": "One villager goes mad, kills another, and then himself.",
+      "rampageOther": "One villager goes mad, kills {{others}} others, and then himself."
     },
     "madnessLevel": {
       "increased": "You sink deeper into madness.",

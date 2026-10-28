@@ -6,7 +6,9 @@
     },
     "madnessDeath": {
       "one": "Ein Dorfbewohner erliegt dem Wahnsinn und nimmt sich das Leben.",
-      "other": "{{count}} Dorfbewohner erliegen dem Wahnsinn und nehmen sich das Leben."
+      "other": "{{count}} Dorfbewohner erliegen dem Wahnsinn und nehmen sich das Leben.",
+      "rampageOne": "Ein Dorfbewohner verfällt dem Wahnsinn, tötet einen anderen und dann sich selbst.",
+      "rampageOther": "Ein Dorfbewohner verfällt dem Wahnsinn, tötet {{others}} andere und dann sich selbst."
     },
     "madnessLevel": {
       "increased": "Du sinkst tiefer in den Wahnsinn.",

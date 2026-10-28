@@ -6,7 +6,9 @@
     },
     "madnessDeath": {
       "one": "一名村民陷入疯狂并结束了自己的生命。",
-      "other": "{{count}} 名村民陷入疯狂并结束了自己的生命。"
+      "other": "{{count}} 名村民陷入疯狂并结束了自己的生命。",
+      "rampageOne": "一名村民陷入疯狂，杀死另一人，然后自尽。",
+      "rampageOther": "一名村民陷入疯狂，杀死另外 {{others}} 人，然后自尽。"
     },
     "madnessLevel": {
       "increased": "你陷入了更深的疯狂。",

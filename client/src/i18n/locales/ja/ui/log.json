@@ -6,7 +6,9 @@
     },
     "madnessDeath": {
       "one": "村人1人が狂気に屈し、自ら命を絶った。",
-      "other": "村人{{count}}人が狂気に屈し、自ら命を絶った。"
+      "other": "村人{{count}}人が狂気に屈し、自ら命を絶った。",
+      "rampageOne": "村人1人が発狂し、もう1人を殺して自ら命を絶った。",
+      "rampageOther": "村人1人が発狂し、ほか{{others}}人を殺して自ら命を絶った。"
     },
     "madnessLevel": {
       "increased": "狂気の底へ、さらに沈んでいく。",

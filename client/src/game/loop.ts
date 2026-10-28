@@ -51,6 +51,7 @@ import {
   getMadnessDeathChancePerCycle,
   rollMadnessDeathCount,
 } from "./rules/effectsStats";
+import { buildMadnessDeathLog } from "./madnessDeathLog";
 import { buildVillagerScarcityLogEntries } from "./villagerScarcityLog";
 import {
   processPlayTimeAutoPrompts,
@@ -1440,17 +1441,13 @@ function handleMadnessCheck() {
         }),
       }));
 
-      const message =
-        madnessDeaths === 1
-          ? `One villager succumbs to madness and takes his own life.`
-          : `${madnessDeaths} villagers succumb to madness and take their own lives.`;
+      const deathLog = buildMadnessDeathLog(madnessDeaths);
 
       state.addLogEntry({
         id: `madness-death-${Date.now()}`,
-        message,
-        logKey:
-          madnessDeaths === 1 ? "madnessDeath.one" : "madnessDeath.other",
-        logVars: madnessDeaths === 1 ? undefined : { count: madnessDeaths },
+        message: deathLog.message,
+        logKey: deathLog.logKey,
+        logVars: deathLog.logVars,
         timestamp: Date.now(),
         type: "system",
       });

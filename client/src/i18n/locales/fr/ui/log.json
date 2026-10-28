@@ -6,7 +6,9 @@
     },
     "madnessDeath": {
       "one": "Un villageois succombe à la folie et se donne la mort.",
-      "other": "{{count}} villageois succombent à la folie et se donnent la mort."
+      "other": "{{count}} villageois succombent à la folie et se donnent la mort.",
+      "rampageOne": "Un villageois devient fou, en tue un autre, puis se donne la mort.",
+      "rampageOther": "Un villageois devient fou, en tue {{others}}, puis se donne la mort."
     },
     "madnessLevel": {
       "increased": "Vous sombrez plus profondément dans la folie.",
