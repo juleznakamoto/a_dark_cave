@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { getVisibleHotkeyTabs } from "./tabHotkeys";
+import { getVisibleHotkeyTabs, isGamePauseHotkey } from "./tabHotkeys";
 import { useGameStore, isModalDialogOpen, shouldBlockGameHotkeys } from "@/game/state";
 
 describe("getVisibleHotkeyTabs", () => {
@@ -136,5 +136,18 @@ describe("shouldBlockGameHotkeys", () => {
       eventDialog: { isOpen: true, currentEvent: null },
     });
     expect(shouldBlockGameHotkeys(useGameStore.getState())).toBe(false);
+  });
+});
+
+describe("isGamePauseHotkey", () => {
+  it("matches the P key the Deck Start button sends", () => {
+    expect(isGamePauseHotkey({ key: "p", code: "KeyP" })).toBe(true);
+    expect(isGamePauseHotkey({ key: "P", code: "KeyP" })).toBe(true);
+  });
+
+  it("leaves tab keys alone", () => {
+    expect(isGamePauseHotkey({ key: "a", code: "KeyA" })).toBe(false);
+    expect(isGamePauseHotkey({ key: "ArrowLeft", code: "ArrowLeft" })).toBe(false);
+    expect(isGamePauseHotkey({ key: "ArrowRight", code: "ArrowRight" })).toBe(false);
   });
 });

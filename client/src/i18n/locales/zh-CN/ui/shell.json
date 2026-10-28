@@ -16,7 +16,8 @@
     "giftCodePlaceholder": "代码",
     "giftCodeRedeem": "兑换",
     "giftCodeInvalid": "这个代码没有用",
-    "giftCodeAccepted": "代码已接受"
+    "giftCodeAccepted": "代码已接受",
+    "fullscreen": "全屏"
   },
   "textScale": {
     "label": "文字大小",

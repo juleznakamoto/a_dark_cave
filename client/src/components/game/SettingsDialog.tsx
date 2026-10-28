@@ -47,7 +47,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Maximize2 } from "lucide-react";
+import { useFullscreen } from "@/hooks/useFullscreen";
 import cn from "clsx";
 
 interface SettingsDialogProps {
@@ -422,6 +423,8 @@ export default function SettingsDialog({
   }, [isOpen]);
 
   const steamEditionActive = useSteamEditionActive();
+  const { isFullscreen, toggleFullscreen, available: fullscreenAvailable } =
+    useFullscreen();
   const showAccountSettings = !steamEditionActive && !!currentUser;
   const showDevGameMode = import.meta.env.DEV && !isSteamBuild;
   const [menuPortalContainer, setMenuPortalContainer] =
@@ -496,6 +499,24 @@ export default function SettingsDialog({
                 buttonClassName="group -mr-2 flex items-center gap-1 rounded-md px-2 py-1 text-sm hover:bg-muted/40 transition-colors"
               />
             </div>
+            {fullscreenAvailable && (
+              <div className={ROW}>
+                <span className={ICON_SLOT}>
+                  <Maximize2 className="h-5 w-5" aria-hidden />
+                </span>
+                <span className="flex-1 text-sm">{t("settings.fullscreen")}</span>
+                <Checkbox
+                  checked={isFullscreen}
+                  onCheckedChange={() => void toggleFullscreen()}
+                  aria-label={
+                    isFullscreen
+                      ? t("profile.exitFullscreen")
+                      : t("profile.enterFullscreen")
+                  }
+                  data-testid="settings-fullscreen"
+                />
+              </div>
+            )}
           </section>
 
           {showDevGameMode && (

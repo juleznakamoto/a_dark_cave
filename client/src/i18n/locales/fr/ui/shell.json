@@ -16,7 +16,8 @@
     "giftCodePlaceholder": "Code",
     "giftCodeRedeem": "Utiliser",
     "giftCodeInvalid": "Ce code ne fait rien",
-    "giftCodeAccepted": "Code accepté"
+    "giftCodeAccepted": "Code accepté",
+    "fullscreen": "Plein écran"
   },
   "textScale": {
     "label": "Taille du texte",

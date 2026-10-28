@@ -56,7 +56,6 @@ import {
 } from "@/game/socialPromoExclusiveReward";
 import { DestroyedChromeScope } from "@/components/game/gameChrome";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
-import { FullscreenButton } from "./FullscreenButton";
 import { CrazyGamesMenuItems } from "./CrazyGamesMenuLinks";
 import { STEAM_STORE_UTM_CONTENT } from "@/lib/gameFooterSocialLinks";
 import { steamQuit } from "@/lib/steam";
@@ -814,7 +813,6 @@ export function GameHeaderControls() {
           )}
         </DropdownMenuContent>
       </DropdownMenu>
-      <FullscreenButton />
     </div>
   );
 }

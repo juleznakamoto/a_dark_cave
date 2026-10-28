@@ -1,6 +1,14 @@
 import type { GameTab } from "@/game/types";
 
-/** True when the keyboard event target is an editable field — tab hotkeys should not steal focus from typing. */
+/**
+ * Start on a Steam Deck layout sends this key. Pauses the same way as the
+ * footer button. Letter P on a keyboard does the same.
+ */
+export function isGamePauseHotkey(event: { key: string; code: string }): boolean {
+  return event.code === "KeyP" || event.key === "p" || event.key === "P";
+}
+
+/** True when the keyboard event target is an editable field. Tab hotkeys should not steal focus from typing. */
 export function isEditableKeyboardTarget(target: EventTarget | null): boolean {
   if (!target || !(target instanceof HTMLElement)) return false;
   if (target.isContentEditable) return true;

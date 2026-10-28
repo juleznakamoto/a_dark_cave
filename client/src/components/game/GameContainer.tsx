@@ -85,7 +85,7 @@ import { SmokeBackground } from "@/components/ui/spooky-smoke-animation";
 import { isBloodMoonOverlayVisible, BLOOD_MOON_OVERLAY_FADE_MS } from "@/game/bloodMoonOverlay";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { getUnclaimedAchievementIds } from "@/achievements";
-import { getVisibleHotkeyTabs, isEditableKeyboardTarget } from "./tabHotkeys";
+import { getVisibleHotkeyTabs, isEditableKeyboardTarget, isGamePauseHotkey } from "./tabHotkeys";
 import TabHotkeyCallout from "./TabHotkeyCallout";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
 import {
@@ -1183,6 +1183,16 @@ export default function GameContainer() {
       if (e.defaultPrevented) return;
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       if (isEditableKeyboardTarget(e.target)) return;
+
+      // Start on the Deck layout sends P. The footer pause button stays
+      // clickable during event dialogs and only locks while Sleep is open.
+      if (isGamePauseHotkey(e) && !e.repeat) {
+        if (useGameStore.getState().idleModeDialog.isOpen) return;
+        e.preventDefault();
+        useGameStore.getState().togglePause();
+        return;
+      }
+
       if (shouldBlockGameHotkeys(useGameStore.getState())) return;
 
       const key = e.key;

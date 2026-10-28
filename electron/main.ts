@@ -360,6 +360,12 @@ async function createWindow(): Promise<void> {
   revealFallback = setTimeout(revealMainWindow, 2000);
   mainWindow.once("closed", clearRevealFallback);
 
+  // Right-click would open Chromium's menu (Back, Inspect). The Deck layout
+  // clicks with the trigger and the A button, not the right mouse button.
+  mainWindow.webContents.on("context-menu", (event) => {
+    event.preventDefault();
+  });
+
   // Open external links (e.g. Reddit/Instagram) in the Steam overlay browser / OS browser.
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith("http://") || url.startsWith("https://")) {

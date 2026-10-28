@@ -16,7 +16,8 @@
     "giftCodePlaceholder": "コード",
     "giftCodeRedeem": "使う",
     "giftCodeInvalid": "そのコードには何の効果もありません",
-    "giftCodeAccepted": "コードを受け付けました"
+    "giftCodeAccepted": "コードを受け付けました",
+    "fullscreen": "フルスクリーン"
   },
   "textScale": {
     "label": "文字サイズ",

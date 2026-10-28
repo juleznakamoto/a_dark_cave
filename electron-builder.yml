@@ -32,6 +32,15 @@ extraResources:
   - from: build-resources/icon.ico
     to: icon.ico
 
+# Deck layout, next to the exe (outside asar). Same files ship in the full
+# game and the demo. Steamworks, each app: Steam Input → Custom Configuration
+# (Bundled with game) → steam_input/steam_input_manifest.vdf
+extraFiles:
+  - from: steam/input
+    to: steam_input
+    filter:
+      - "**/*"
+
 nsis:
   oneClick: false
   perMachine: false

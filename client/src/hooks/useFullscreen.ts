@@ -11,7 +11,7 @@ function nudgeViewportResize(): void {
   window.dispatchEvent(new Event("resize"));
 }
 
-/** Survives FullscreenButton remounts during the first fullscreen layout pass. */
+/** Survives settings and start-screen remounts during the first fullscreen layout pass. */
 let sharedIsFullscreen = false;
 
 export function useFullscreen() {
