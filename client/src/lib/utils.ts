@@ -123,9 +123,25 @@ export function formatCompactDuration(
   return `${minutes}m ${secs}s`;
 }
 
-/** Action execution duration for tooltips: same compact `Xm Ys` / `Xs` form. */
+/** Hundredths of a second as `4`, `3.5`, or `3.75` (no trailing zeros). */
+function formatSecondHundredths(hundredths: number): string {
+  const whole = Math.floor(hundredths / 100);
+  const frac = hundredths % 100;
+  if (frac === 0) return String(whole);
+  if (frac % 10 === 0) return `${whole}.${frac / 10}`;
+  return `${whole}.${String(frac).padStart(2, "0")}`;
+}
+
+/**
+ * Action execution duration for tooltips. Whole seconds stay compact
+ * (`4s`, `1m 30s`). Fractional seconds are kept (`3.75s`, `3.5s`).
+ */
 export function formatExecutionDuration(seconds: number): string {
-  return formatCompactDuration(seconds, "round");
+  const hundredths = Math.round(Math.max(0, seconds) * 100);
+  const minutes = Math.floor(hundredths / 6000);
+  const secText = formatSecondHundredths(hundredths % 6000);
+  if (minutes === 0) return `${secText}s`;
+  return `${minutes}m ${secText}s`;
 }
 
 /** Format duration in milliseconds as HH:MM:SS */

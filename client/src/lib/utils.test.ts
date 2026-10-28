@@ -79,11 +79,15 @@ describe("formatCompactDuration", () => {
 });
 
 describe("formatExecutionDuration", () => {
-  it("rounds to compact Xm Ys / Xs", () => {
+  it("keeps fractional seconds and drops a trailing .0", () => {
     expect(formatExecutionDuration(90)).toBe("1m 30s");
+    expect(formatExecutionDuration(90.5)).toBe("1m 30.5s");
     expect(formatExecutionDuration(45)).toBe("45s");
     expect(formatExecutionDuration(5)).toBe("5s");
-    expect(formatExecutionDuration(3.75)).toBe("4s");
-    expect(formatExecutionDuration(0.5)).toBe("1s");
+    expect(formatExecutionDuration(4)).toBe("4s");
+    expect(formatExecutionDuration(3.75)).toBe("3.75s");
+    expect(formatExecutionDuration(3.5)).toBe("3.5s");
+    expect(formatExecutionDuration(0.5)).toBe("0.5s");
+    expect(formatExecutionDuration(0)).toBe("0s");
   });
 });
