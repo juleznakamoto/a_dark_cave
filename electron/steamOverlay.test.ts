@@ -66,13 +66,14 @@ describe("Steam overlay hooks", () => {
 
     expect(switches).toEqual(["in-process-gpu", "in-process-gpu"]);
     expect(switches).not.toContain("disable-direct-composition");
+    expect(created).toHaveLength(1);
 
     vi.advanceTimersByTime(STEAM_OVERLAY_REPAINT_MS);
     expect(first.invalidate).toHaveBeenCalledTimes(1);
 
     const second = fakeWindow();
     created[0]?.({}, second.window);
-    created[1]?.({}, second.window);
+    created[0]?.({}, second.window);
     vi.advanceTimersByTime(STEAM_OVERLAY_REPAINT_MS);
     expect(second.invalidate).toHaveBeenCalledTimes(1);
 

@@ -93,6 +93,9 @@ const overlayRepaintTimers = new WeakMap<
   ReturnType<typeof setInterval>
 >();
 
+/** Apps that already have the overlay's `browser-window-created` listener. */
+const overlayListenerApps = new WeakSet<SteamOverlayElectron["app"]>();
+
 /**
  * One overlay repaint tick. Returns true when the interval should stop
  * (the window is gone).
@@ -142,6 +145,11 @@ export function applySteamOverlayHooks(electron: SteamOverlayElectron): void {
   }
 
   electron.BrowserWindow.getAllWindows().forEach(attachSteamOverlayRepaint);
+
+  // `app.on` stacks. A second call would run the repaint hook once per
+  // listener for every new window and keep each closure until quit.
+  if (overlayListenerApps.has(electron.app)) return;
+  overlayListenerApps.add(electron.app);
   electron.app.on("browser-window-created", (_event, browserWindow) => {
     attachSteamOverlayRepaint(browserWindow);
   });
