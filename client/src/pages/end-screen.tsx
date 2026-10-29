@@ -158,31 +158,28 @@ export default function EndScreenPage() {
           line1: t("endScreen.headline1"),
           line2: t("endScreen.headline2"),
         }}
-        subtitle1={
-          isCruelModeCompletion || showSteamCruelComingSoon
-            ? ""
-            : t("endScreen.subtitle1")
-        }
-        subtitle2={
-          isCruelModeCompletion || showSteamCruelComingSoon
-            ? ""
-            : t("endScreen.subtitle2")
-        }
+        subtitle1={isCruelModeCompletion ? "" : t("endScreen.subtitle1")}
+        subtitle2={isCruelModeCompletion ? "" : t("endScreen.subtitle2")}
         subtitle3={
           isCruelModeCompletion || steamDesktopEditionActive
             ? ""
             : t("endScreen.subtitle2Discount")
         }
         buttons={{
-          ...(!isCruelModeCompletion && !showSteamCruelComingSoon
+          ...(!isCruelModeCompletion
             ? {
               primary: {
                 text: t("endScreen.cruelMode"),
-                onClick: handleCruelMode,
-                buttonId: "end-screen-cruel-mode",
-                badge: steamDesktopEditionActive
+                onClick: showSteamCruelComingSoon
                   ? undefined
-                  : t("endScreen.cruelModeBadge"),
+                  : handleCruelMode,
+                buttonId: "end-screen-cruel-mode",
+                badge: showSteamCruelComingSoon
+                  ? t("endScreen.cruelModeComingSoon")
+                  : steamDesktopEditionActive
+                    ? undefined
+                    : t("endScreen.cruelModeBadge"),
+                disabled: showSteamCruelComingSoon,
               },
             }
             : {}),
