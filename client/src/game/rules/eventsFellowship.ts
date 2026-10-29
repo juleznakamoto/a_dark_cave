@@ -7,7 +7,7 @@ export const fellowshipEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.wizardTower >= 1 && !state.fellowship.elder_wizard,
     timeProbability: (state: GameState) => {
-      return state.story.seen.wizardOfferDeclined ? 45 : 30;
+      return state.story.seen.wizardOfferDeclined ? 40 : 20;
     },
     message: (state: GameState) =>
       state.story.seen.wizardOfferDeclined ? "repeat" : "firstVisit",
