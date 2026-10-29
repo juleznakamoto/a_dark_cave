@@ -2105,7 +2105,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.story?.seen?.leatherHarnessHelped === true &&
       !state.story.seen.leatherHarnessGratefulReturn &&
       !state.clothing.ring_of_obedience,
-    timeProbability: 30,
+    timeProbability: 20,
     priority: 3,
     repeatable: false,
     choices: [

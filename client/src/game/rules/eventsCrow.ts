@@ -29,7 +29,7 @@ export const crowEvents: Record<string, GameEvent> = {
       return state.fellowship.one_eyed_crow && allCrowsSent;
     },
     timeProbability: (state: GameState) => {
-      return state.story.seen?.villageElderFirstTime ? 20 : 10;
+      return state.story.seen?.villageElderFirstTime ? 20 : 5;
     },
     message: (state: GameState) => {
       const count =
@@ -110,7 +110,7 @@ export const crowEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen?.crowSentToMonastery === true &&
       !state.story.seen?.monasteryResponse,
-    timeProbability: 15,
+    timeProbability: 5,
 
     priority: 5,
     showAsTimedTab: true,
@@ -177,7 +177,7 @@ export const crowEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen?.crowSentToSwamp === true &&
       !state.story.seen?.swampTribeResponse,
-    timeProbability: 15,
+    timeProbability: 5,
     repeatable: true,
 
     priority: 5,
@@ -222,7 +222,7 @@ export const crowEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen?.crowSentToShore === true &&
       !state.story.seen?.shoreFishermenResponse,
-    timeProbability: 15,
+    timeProbability: 5,
 
     priority: 5,
     showAsTimedTab: true,
