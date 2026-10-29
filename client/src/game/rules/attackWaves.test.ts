@@ -12,6 +12,7 @@ import {
 import {
   ATTACK_WAVE_DEFEAT_DURATION_MS,
   ATTACK_WAVE_INITIAL_DURATION_MS,
+  ATTACK_WAVE_INITIAL_PROVOKE_AFTER_MS,
   attackWaveEvents,
   getAttackWaveGoldReward,
   getPostCompletionWaveParams,
@@ -158,7 +159,7 @@ describe("attack waves expansion", () => {
     expect(canProvokeAttackWave(state)).toBe(true);
   });
 
-  it("does not let provoke skip a chart wave's first approach", () => {
+  it("keeps provoke locked for the first half of a chart wave's first approach", () => {
     const state = {
       story: { seen: { portalBlasted: true }, merchantPurchases: 0 },
       buildings: { bastion: 1 },
@@ -170,13 +171,38 @@ describe("attack waves expansion", () => {
           duration: ATTACK_WAVE_INITIAL_DURATION_MS,
           defeated: false,
           provoked: false,
-          elapsedTime: 60_000,
+          elapsedTime: ATTACK_WAVE_INITIAL_PROVOKE_AFTER_MS - 1,
         },
       },
     } as GameState;
 
     expect(canProvokeAttackWave(state)).toBe(false);
     expect(getProvokeAttackWaveExecutionUpdates(state)).toBeNull();
+  });
+
+  it("lets provoke skip the rest of a first approach after 5 minutes", () => {
+    const state = {
+      story: { seen: { portalBlasted: true }, merchantPurchases: 0 },
+      buildings: { bastion: 1 },
+      weapons: {},
+      resources: { food: 1000 },
+      attackWaveTimers: {
+        firstWave: {
+          startTime: Date.now(),
+          duration: ATTACK_WAVE_INITIAL_DURATION_MS,
+          defeated: false,
+          provoked: false,
+          elapsedTime: ATTACK_WAVE_INITIAL_PROVOKE_AFTER_MS,
+        },
+      },
+    } as GameState;
+
+    expect(canProvokeAttackWave(state)).toBe(true);
+    const updates = getProvokeAttackWaveExecutionUpdates(state);
+    expect(updates?.attackWaveTimers?.firstWave?.provoked).toBe(true);
+    expect(updates?.attackWaveTimers?.firstWave?.elapsedTime).toBe(
+      ATTACK_WAVE_INITIAL_DURATION_MS,
+    );
   });
 
   it("lets provoke skip the rematch countdown after a loss", () => {

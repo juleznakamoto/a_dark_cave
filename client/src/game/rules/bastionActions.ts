@@ -3,6 +3,7 @@ import { getGameActions } from "./actionsRegistry";
 import { CRUEL_MODE } from "@/game/cruelMode";
 import { getTotalBuildingCostReduction } from "./effectsCalculation";
 import {
+  ATTACK_WAVE_INITIAL_PROVOKE_AFTER_MS,
   getAttackWavesChartRows,
   isAttackWaveRematchTimer,
   isPostCompletionAttackWavesActive,
@@ -62,8 +63,8 @@ export function getProvokeAttackWaveFoodCost(state: GameState): number {
 
 /**
  * True when the active wave can be provoked.
- * A chart wave's first approach is a fixed wait. Provoke only skips a rematch
- * countdown, or starts an endless post-completion wave.
+ * A chart wave's first approach unlocks provoke after 5 of the 10 minutes.
+ * Provoke also skips a rematch countdown, or starts an endless post-completion wave.
  */
 export function canProvokeAttackWave(state: GameState): boolean {
   const waveId = getProvokableAttackWaveId(state);
@@ -77,11 +78,15 @@ export function canProvokeAttackWave(state: GameState): boolean {
   if (waveId === POST_COMPLETION_ATTACK_WAVE_ID) {
     return true;
   }
-  if (!isAttackWaveRematchTimer(timer)) {
+  const elapsed = timer.elapsedTime || 0;
+  const remaining = Math.max(0, timer.duration - elapsed);
+  if (remaining <= 0) {
     return false;
   }
-  const remaining = Math.max(0, timer.duration - (timer.elapsedTime || 0));
-  return remaining > 0;
+  if (!isAttackWaveRematchTimer(timer)) {
+    return elapsed >= ATTACK_WAVE_INITIAL_PROVOKE_AFTER_MS;
+  }
+  return true;
 }
 
 /** State updates for a successful provoke: pay cost via action effects + set timer. */
