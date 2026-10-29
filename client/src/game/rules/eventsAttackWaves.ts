@@ -99,11 +99,23 @@ const ATTACK_WAVE_ENEMY_NAME = "Pale Creatures";
 /** Combat UI label for boss waves. */
 const ATTACK_WAVE_BOSS_ENEMY_NAME = "Pale Beasts";
 
+/** First approach. This wait cannot be skipped by provoking. */
+export const ATTACK_WAVE_INITIAL_DURATION_MS = 10 * 60 * 1000;
+/** Rematch after a loss. Provoke can skip the time still left. */
+export const ATTACK_WAVE_DEFEAT_DURATION_MS = 30 * 60 * 1000;
+
 /** Shared countdown timers for every attack wave (ms). */
 const ATTACK_WAVE_TIMER_DEFAULTS = {
-  initialDuration: 10 * 60 * 1000,
-  defeatDuration: 30 * 60 * 1000,
+  initialDuration: ATTACK_WAVE_INITIAL_DURATION_MS,
+  defeatDuration: ATTACK_WAVE_DEFEAT_DURATION_MS,
 } as const;
+
+/** True when this countdown is the post-defeat rematch, not the first approach. */
+export function isAttackWaveRematchTimer(
+  timer: { duration: number } | undefined,
+): boolean {
+  return timer?.duration === ATTACK_WAVE_DEFEAT_DURATION_MS;
+}
 
 const CANONICAL_ATTACK_WAVE_COUNT = 12;
 const POST_WAVE_HEALTH_INCREMENT = 50;

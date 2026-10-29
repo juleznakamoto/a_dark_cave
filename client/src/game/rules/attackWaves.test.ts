@@ -10,6 +10,8 @@ import {
   TOTAL_ATTACK_WAVES,
 } from "./attackWaveOrder";
 import {
+  ATTACK_WAVE_DEFEAT_DURATION_MS,
+  ATTACK_WAVE_INITIAL_DURATION_MS,
   attackWaveEvents,
   getAttackWaveGoldReward,
   getPostCompletionWaveParams,
@@ -17,6 +19,7 @@ import {
 } from "./eventsAttackWaves";
 import {
   canProvokeAttackWave,
+  getProvokeAttackWaveExecutionUpdates,
   getProvokeAttackWaveFoodCost,
 } from "./bastionActions";
 
@@ -153,6 +156,49 @@ describe("attack waves expansion", () => {
 
     expect(isPostCompletionAttackWavesActive(state)).toBe(true);
     expect(canProvokeAttackWave(state)).toBe(true);
+  });
+
+  it("does not let provoke skip a chart wave's first approach", () => {
+    const state = {
+      story: { seen: { portalBlasted: true }, merchantPurchases: 0 },
+      buildings: { bastion: 1 },
+      weapons: {},
+      resources: { food: 1000 },
+      attackWaveTimers: {
+        firstWave: {
+          startTime: Date.now(),
+          duration: ATTACK_WAVE_INITIAL_DURATION_MS,
+          defeated: false,
+          provoked: false,
+          elapsedTime: 60_000,
+        },
+      },
+    } as GameState;
+
+    expect(canProvokeAttackWave(state)).toBe(false);
+    expect(getProvokeAttackWaveExecutionUpdates(state)).toBeNull();
+  });
+
+  it("lets provoke skip the rematch countdown after a loss", () => {
+    const state = {
+      story: { seen: { portalBlasted: true }, merchantPurchases: 0 },
+      buildings: { bastion: 1 },
+      weapons: {},
+      resources: { food: 1000 },
+      attackWaveTimers: {
+        firstWave: {
+          startTime: Date.now(),
+          duration: ATTACK_WAVE_DEFEAT_DURATION_MS,
+          defeated: false,
+          provoked: false,
+          elapsedTime: 60_000,
+        },
+      },
+    } as GameState;
+
+    expect(canProvokeAttackWave(state)).toBe(true);
+    const updates = getProvokeAttackWaveExecutionUpdates(state);
+    expect(updates?.attackWaveTimers?.firstWave?.provoked).toBe(true);
   });
 
   it("does not bank wall-clock into elapsedTime while paused", () => {

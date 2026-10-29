@@ -576,7 +576,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 25,
     },
     effects: (state: GameState) => {
-      const multiplier = state.BTP === 1 ? 2 : 1;
+      const multiplier = state.BTP === 1 ? 1.5 : 1;
       return {
         "resources.stone": "random(4,8)",
         "resources.coal": "random(4,8)",
@@ -605,7 +605,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 50,
     },
     effects: (state: GameState) => {
-      const multiplier = state.BTP === 1 ? 2 : 1;
+      const multiplier = state.BTP === 1 ? 1.5 : 1;
       return {
         "resources.stone": "random(5,10)",
         "resources.coal": "random(5,10)",
@@ -635,7 +635,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 100,
     },
     effects: (state: GameState) => {
-      const multiplier = state.BTP === 1 ? 2 : 1;
+      const multiplier = state.BTP === 1 ? 1.5 : 1;
       return {
         "resources.obsidian": "random(1,4)",
         "resources.silver": `random(2,${8 * multiplier})`,
@@ -662,7 +662,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 500,
     },
     effects: (state: GameState) => {
-      const multiplier = state.BTP === 1 ? 2 : 1;
+      const multiplier = state.BTP === 1 ? 1.5 : 1;
       return {
         "resources.obsidian": "random(1,6)",
         "resources.adamant": "random(1,4)",
@@ -690,7 +690,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 750,
     },
     effects: (state: GameState) => {
-      const multiplier = state.BTP === 1 ? 2 : 1;
+      const multiplier = state.BTP === 1 ? 1.5 : 1;
       return {
         "resources.obsidian": "random(1,8)",
         "resources.adamant": "random(1,6)",
