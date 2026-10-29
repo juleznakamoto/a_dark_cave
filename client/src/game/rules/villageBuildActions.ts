@@ -4,6 +4,7 @@ import { FULL_DARK_ESTATE_RESOURCE_COST } from "@/game/demoLimit";
 import { PRESET_SLOTS_BY_BUILDING_TIER } from "@/game/villagerJobPresets";
 import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
 import { bt, type BuildingTooltipEffect } from "./buildingTooltipEffects";
+import { foundryTanneryAmount } from "./foundryTanneryProduction";
 
 function storageResourceLimitTooltip(limit: number): BuildingTooltipEffect {
   return bt(
@@ -595,7 +596,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Prime Foundry",
     description: "Advanced foundry with improved steel production",
     tooltipEffects: (state: GameState) => {
-      const bonusSteel = state.BTP === 1 ? 2 : 1;
+      const bonusSteel = foundryTanneryAmount(state, 1);
       return [
         bt("unlocksSteelForgers", "Unlocks Steel Forgers"),
         bt("steelForgerSteel", "Steel Forger: +{{amount}} Steel", { amount: bonusSteel }),
@@ -624,7 +625,7 @@ export const villageBuildActions: Record<string, Action> = {
     productionEffects: (state: GameState) => {
       return {
         steel_forger: {
-          steel: 1 + state.BTP,
+          steel: foundryTanneryAmount(state, 1),
         },
       };
     },
@@ -1614,7 +1615,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Masterwork Foundry",
     description: "Foundry with superior steel production",
     tooltipEffects: (state: GameState) => {
-      const bonusSteel = state.BTP === 1 ? 3 : 2;
+      const bonusSteel = foundryTanneryAmount(state, 2);
       return [
         bt("unlocksSteelForgers", "Unlocks Steel Forgers"),
         bt("unlocksBlacksteelForgers", "Unlocks Blacksteel Forgers"),
@@ -1644,7 +1645,7 @@ export const villageBuildActions: Record<string, Action> = {
     productionEffects: (state: GameState) => {
       return {
         steel_forger: {
-          steel: 2 + state.BTP,
+          steel: foundryTanneryAmount(state, 2),
         },
       };
     },
@@ -2028,7 +2029,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Master Tannery",
     description: "Advanced tannery improving leather production",
     tooltipEffects: (state: GameState) => {
-      const bonusLeather = state.BTP === 1 ? 2 : 1;
+      const bonusLeather = foundryTanneryAmount(state, 1);
       return [
         bt("unlocksTanners", "Unlocks Tanners"),
         bt("tannerLeather", "Tanner: +{{amount}} Leather", { amount: bonusLeather }),
@@ -2057,7 +2058,7 @@ export const villageBuildActions: Record<string, Action> = {
     productionEffects: (state: GameState) => {
       return {
         tanner: {
-          leather: 1 + state.BTP,
+          leather: foundryTanneryAmount(state, 1),
         },
       };
     },
@@ -2070,7 +2071,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "High Tannery",
     description: "Supreme tannery for expert leather craftsmen",
     tooltipEffects: (state: GameState) => {
-      const bonusLeather = state.BTP === 1 ? 3 : 2;
+      const bonusLeather = foundryTanneryAmount(state, 2);
       return [
         bt("unlocksTanners", "Unlocks Tanners"),
         bt("tannerLeather", "Tanner: +{{amount}} Leather", { amount: bonusLeather }),
@@ -2099,7 +2100,7 @@ export const villageBuildActions: Record<string, Action> = {
     productionEffects: (state: GameState) => {
       return {
         tanner: {
-          leather: 2 + state.BTP,
+          leather: foundryTanneryAmount(state, 2),
         },
       };
     },

@@ -12,7 +12,7 @@ export { TEXT_SCALE_STORAGE_KEY, TEXT_SCALE_ZOOM_FACTOR };
 export const TEXT_SCALE_MOBILE_BREAKPOINT_PX =
   SHARED_TEXT_SCALE_MOBILE_BREAKPOINT_PX;
 
-export const TEXT_SCALE_OPTIONS = ["small", "medium", "large"] as const;
+export const TEXT_SCALE_OPTIONS = ["small", "medium", "large", "xLarge"] as const;
 
 export type TextScale = (typeof TEXT_SCALE_OPTIONS)[number];
 
@@ -39,6 +39,15 @@ export const MEDIUM_CONTROL_SCALE_FACTOR = 1.06;
  * Same ratio idea as Medium: grow hit targets without matching the full text bump.
  */
 export const LARGE_CONTROL_SCALE_FACTOR = 1.12;
+
+/** Extra pixels added to readable UI text when Extra Large is selected. */
+export const EXTRA_LARGE_TEXT_DELTA_PX = 6;
+
+/**
+ * Milder multiplier for button chrome when Extra Large is selected.
+ * Same step as Medium and Large: +0.06, short of the full text bump.
+ */
+export const EXTRA_LARGE_CONTROL_SCALE_FACTOR = 1.18;
 
 export const TEXT_SCALE_CHANGE_EVENT = "adc-text-scale-change";
 
@@ -79,16 +88,18 @@ export function normalizeTextScale(
 }
 
 export function isEnlargedTextScale(scale: TextScale): boolean {
-  return scale === "medium" || scale === "large";
+  return scale === "medium" || scale === "large" || scale === "xLarge";
 }
 
 export function getTextScaleDeltaPx(scale: TextScale): number {
+  if (scale === "xLarge") return EXTRA_LARGE_TEXT_DELTA_PX;
   if (scale === "large") return LARGE_TEXT_DELTA_PX;
   if (scale === "medium") return MEDIUM_TEXT_DELTA_PX;
   return 0;
 }
 
 export function getControlScaleFactor(scale: TextScale): number {
+  if (scale === "xLarge") return EXTRA_LARGE_CONTROL_SCALE_FACTOR;
   if (scale === "large") return LARGE_CONTROL_SCALE_FACTOR;
   if (scale === "medium") return MEDIUM_CONTROL_SCALE_FACTOR;
   return 1;
@@ -150,7 +161,7 @@ function clearManualTextScale(root: HTMLElement): void {
   root.style.setProperty("--adc-text-delta", "0px");
   root.style.removeProperty("--adc-text-scale");
   root.style.setProperty("--adc-control-scale", "1");
-  root.classList.remove("adc-text-large", "adc-text-xlarge");
+  root.classList.remove("adc-text-large", "adc-text-xlarge", "adc-text-xxlarge");
 }
 
 export function applyTextScaleToDocument(scale: TextScale): void {
@@ -158,7 +169,7 @@ export function applyTextScaleToDocument(scale: TextScale): void {
   const root = document.documentElement;
   if (usesChromiumTextZoom()) {
     // Page zoom scales type, chrome, and shaders together. The CSS delta
-    // would stack a second enlargement on top of 110% / 125%.
+    // would stack a second enlargement on top of 110% / 125% / 150%.
     clearManualTextScale(root);
     steamSetTextZoom(scale);
   } else {
@@ -171,10 +182,14 @@ export function applyTextScaleToDocument(scale: TextScale): void {
       "--adc-control-scale",
       String(getControlScaleFactor(scale)),
     );
-    // `adc-text-large` = Medium or Large (shared layout breathing room).
-    // `adc-text-xlarge` = Large only (further indicator / glyph bumps).
+    // `adc-text-large` = Medium or larger (shared layout breathing room).
+    // `adc-text-xlarge` = Large or Extra Large. `adc-text-xxlarge` = Extra Large only.
     root.classList.toggle("adc-text-large", isEnlargedTextScale(scale));
-    root.classList.toggle("adc-text-xlarge", scale === "large");
+    root.classList.toggle(
+      "adc-text-xlarge",
+      scale === "large" || scale === "xLarge",
+    );
+    root.classList.toggle("adc-text-xxlarge", scale === "xLarge");
   }
   window.dispatchEvent(
     new CustomEvent(TEXT_SCALE_CHANGE_EVENT, { detail: { scale } }),

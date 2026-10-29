@@ -24,7 +24,8 @@
     "ariaLabel": "Seleziona dimensione testo",
     "small": "Piccolo",
     "medium": "Medio",
-    "large": "Grande"
+    "large": "Grande",
+    "extraLarge": "Molto grande"
   },
   "languageSelector": {
     "label": "Lingua",

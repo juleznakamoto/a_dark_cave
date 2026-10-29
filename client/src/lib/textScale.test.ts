@@ -2,6 +2,8 @@
 import { describe, expect, it, beforeEach, afterEach } from "vitest";
 import {
   DEFAULT_TEXT_SCALE,
+  EXTRA_LARGE_CONTROL_SCALE_FACTOR,
+  EXTRA_LARGE_TEXT_DELTA_PX,
   LARGE_CONTROL_SCALE_FACTOR,
   LARGE_TEXT_DELTA_PX,
   MEDIUM_CONTROL_SCALE_FACTOR,
@@ -37,6 +39,7 @@ describe("textScale", () => {
     document.documentElement.classList.remove(
       "adc-text-large",
       "adc-text-xlarge",
+      "adc-text-xxlarge",
     );
     document.documentElement.style.removeProperty("--adc-text-delta");
     document.documentElement.style.removeProperty("--adc-control-scale");
@@ -49,6 +52,7 @@ describe("textScale", () => {
     document.documentElement.classList.remove(
       "adc-text-large",
       "adc-text-xlarge",
+      "adc-text-xxlarge",
     );
     document.documentElement.style.removeProperty("--adc-text-delta");
     document.documentElement.style.removeProperty("--adc-control-scale");
@@ -73,6 +77,7 @@ describe("textScale", () => {
   it("maps non-colliding legacy ids", () => {
     expect(normalizeTextScale("normal")).toBe("small");
     expect(normalizeTextScale("extraLarge")).toBe("large");
+    expect(normalizeTextScale("xLarge")).toBe("xLarge");
     // Current option id; old "large" (+2px) is remapped only via legacy key.
     expect(normalizeTextScale("large")).toBe("large");
   });
@@ -129,6 +134,28 @@ describe("textScale", () => {
     expect(
       document.documentElement.style.getPropertyValue("--adc-control-scale"),
     ).toBe(String(LARGE_CONTROL_SCALE_FACTOR));
+    expect(
+      document.documentElement.classList.contains("adc-text-xxlarge"),
+    ).toBe(false);
+  });
+
+  it("applies CSS variables and html classes for extra large", () => {
+    applyTextScaleToDocument("xLarge");
+    expect(document.documentElement.classList.contains("adc-text-large")).toBe(
+      true,
+    );
+    expect(
+      document.documentElement.classList.contains("adc-text-xlarge"),
+    ).toBe(true);
+    expect(
+      document.documentElement.classList.contains("adc-text-xxlarge"),
+    ).toBe(true);
+    expect(
+      document.documentElement.style.getPropertyValue("--adc-text-delta"),
+    ).toBe(`${EXTRA_LARGE_TEXT_DELTA_PX}px`);
+    expect(
+      document.documentElement.style.getPropertyValue("--adc-control-scale"),
+    ).toBe(String(EXTRA_LARGE_CONTROL_SCALE_FACTOR));
   });
 
   it("setTextScale updates storage and document", () => {
@@ -144,6 +171,12 @@ describe("textScale", () => {
     expect(getControlScaleFactor("large")).toBe(LARGE_CONTROL_SCALE_FACTOR);
     expect(isEnlargedTextScale("large")).toBe(true);
 
+    setTextScale("xLarge");
+    expect(getStoredTextScale()).toBe("xLarge");
+    expect(getTextScaleDeltaPx("xLarge")).toBe(EXTRA_LARGE_TEXT_DELTA_PX);
+    expect(getControlScaleFactor("xLarge")).toBe(EXTRA_LARGE_CONTROL_SCALE_FACTOR);
+    expect(isEnlargedTextScale("xLarge")).toBe(true);
+
     setTextScale("small");
     expect(getStoredTextScale()).toBe("small");
     expect(isEnlargedTextScale("small")).toBe(false);
@@ -152,6 +185,9 @@ describe("textScale", () => {
     );
     expect(
       document.documentElement.classList.contains("adc-text-xlarge"),
+    ).toBe(false);
+    expect(
+      document.documentElement.classList.contains("adc-text-xxlarge"),
     ).toBe(false);
     expect(
       document.documentElement.style.getPropertyValue("--adc-text-delta"),
@@ -176,6 +212,9 @@ describe("textScale", () => {
     );
     expect(
       document.documentElement.classList.contains("adc-text-xlarge"),
+    ).toBe(false);
+    expect(
+      document.documentElement.classList.contains("adc-text-xxlarge"),
     ).toBe(false);
     expect(
       document.documentElement.style.getPropertyValue("--adc-text-delta"),

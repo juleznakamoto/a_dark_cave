@@ -477,7 +477,7 @@ function rememberSteamTextZoom(scale: unknown): void {
   if (factor != null) steamTextZoomFactor = factor;
 }
 
-/** Small / Medium / Large → Chromium zoom 100% / 110% / 125%. Async IPC only. */
+/** Small / Medium / Large / Extra Large → Chromium zoom 100% / 110% / 125% / 150%. Async IPC only. */
 function applySteamTextZoom(
   contents: Electron.WebContents,
   scale: unknown,

@@ -196,7 +196,7 @@ export function hasChromiumTextZoom(): boolean {
 }
 
 /**
- * Small / Medium / Large → 100% / 110% / 125% in the Steam window.
+ * Small / Medium / Large / Extra Large → 100% / 110% / 125% / 150% in the Steam window.
  * No-op on the website.
  */
 export function steamSetTextZoom(scale: TextScaleZoomId): void {

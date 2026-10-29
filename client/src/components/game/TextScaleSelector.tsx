@@ -15,11 +15,15 @@ import cn from "clsx";
 
 const TEXT_SCALE_LABEL_KEYS: Record<
   TextScale,
-  "textScale.small" | "textScale.medium" | "textScale.large"
+  | "textScale.small"
+  | "textScale.medium"
+  | "textScale.large"
+  | "textScale.extraLarge"
 > = {
   small: "textScale.small",
   medium: "textScale.medium",
   large: "textScale.large",
+  xLarge: "textScale.extraLarge",
 };
 
 export default function TextScaleSelector({

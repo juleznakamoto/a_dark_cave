@@ -1,8 +1,13 @@
 /**
  * Chromium page zoom for the Steam shell (Electron `setZoomFactor`).
  *
- * Small / Medium / Large are 100% / 110% / 125%. The website keeps the CSS
- * text delta instead; this map is only applied when the Electron bridge is live.
+ * Small / Medium / Large / Extra Large are 100% / 110% / 125% / 150%.
+ * The website keeps the CSS text delta instead; this map is only applied
+ * when the Electron bridge is live.
+ *
+ * The id is `xLarge`, not `extraLarge`. That string is the pre-rename size
+ * and still means Large (see textScaleIdFromStorage).
+ *
  * Storage keys match `client/src/lib/textScale.ts`.
  */
 
@@ -18,12 +23,18 @@ export const TEXT_SCALE_ZOOM_FACTOR = {
   small: 1,
   medium: 1.1,
   large: 1.25,
+  xLarge: 1.5,
 } as const;
 
 export type TextScaleZoomId = keyof typeof TEXT_SCALE_ZOOM_FACTOR;
 
 export function textScaleZoomFactor(scale: string): number | null {
-  if (scale === "small" || scale === "medium" || scale === "large") {
+  if (
+    scale === "small" ||
+    scale === "medium" ||
+    scale === "large" ||
+    scale === "xLarge"
+  ) {
     return TEXT_SCALE_ZOOM_FACTOR[scale];
   }
   return null;
@@ -47,7 +58,12 @@ export function textScaleIdFromStorage(
       : "medium";
 
   if (storedV2) {
-    if (storedV2 === "small" || storedV2 === "medium" || storedV2 === "large") {
+    if (
+      storedV2 === "small" ||
+      storedV2 === "medium" ||
+      storedV2 === "large" ||
+      storedV2 === "xLarge"
+    ) {
       return storedV2;
     }
     if (storedV2 === "normal") return "small";

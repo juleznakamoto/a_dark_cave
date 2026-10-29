@@ -1,5 +1,9 @@
 import { GameState, gameStateSchema } from "@shared/schema";
-import { isFullGameUnlockedEdition } from "@/lib/edition";
+import { isFullGameUnlockedEdition, isSteamBuild } from "@/lib/edition";
+import {
+  WEB_FOUNDRY_TANNERY_PRODUCTION_SEEN_KEY,
+  webFoundryTanneryProductionForNewGame,
+} from "@/game/rules/foundryTanneryProduction";
 import {
   GAMBLER_TUTORIAL_PLAYS,
   GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY,
@@ -225,6 +229,11 @@ export const createInitialState = (): GameState => ({
       [VILLAGER_CAP_FIFTEEN_STEP_SEEN_KEY]: true,
       [VILLAGER_CAP_FIVE_STEP_SEEN_KEY]: true,
       [VILLAGER_CAP_PER_JOB_SPLIT_SEEN_KEY]: true,
+      // New Steam runs use web foundry/tannery rates. Older saves omit this
+      // and keep the BTP bonus.
+      ...(webFoundryTanneryProductionForNewGame(isSteamBuild)
+        ? { [WEB_FOUNDRY_TANNERY_PRODUCTION_SEEN_KEY]: true as const }
+        : {}),
     },
     merchantPurchases: 0,
   },

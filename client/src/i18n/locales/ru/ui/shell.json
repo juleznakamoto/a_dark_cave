@@ -24,7 +24,8 @@
     "ariaLabel": "Выбрать размер текста",
     "small": "Маленький",
     "medium": "Средний",
-    "large": "Большой"
+    "large": "Большой",
+    "extraLarge": "Очень большой"
   },
   "languageSelector": {
     "label": "Язык",
