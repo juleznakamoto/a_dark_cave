@@ -1087,13 +1087,13 @@ export default function StartScreen({
         }
 
         .cruel-start-vignette {
-          background: radial-gradient(
-            ellipse at center,
-            rgba(160, 24, 24, 0) 46%,
-            rgba(170, 28, 28, 0.2) 72%,
-            rgba(150, 20, 20, 0.42) 100%
-          );
-          animation: cruel-start-vignette 4s ease-in-out infinite;
+          background:
+            linear-gradient(to right, rgba(150, 20, 20, 0.42), rgba(170, 28, 28, 0.2) 12%, transparent 27%),
+            linear-gradient(to left, rgba(150, 20, 20, 0.42), rgba(170, 28, 28, 0.2) 12%, transparent 27%),
+            linear-gradient(to bottom, rgba(150, 20, 20, 0.42), rgba(170, 28, 28, 0.2) 12%, transparent 27%),
+            linear-gradient(to top, rgba(150, 20, 20, 0.42), rgba(170, 28, 28, 0.2) 12%, transparent 27%);
+          filter: blur(48px);
+          animation: cruel-start-vignette 8s ease-in-out infinite;
         }
 
         @media (prefers-reduced-motion: reduce) {
