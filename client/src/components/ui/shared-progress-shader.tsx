@@ -38,6 +38,8 @@ export const SHARED_PROGRESS_SHADER_FALLBACK_CLASS = "bg-red-950";
 
 /** Matches Tailwind `rounded-[4px]` on SegmentedProgress segments. */
 const SEGMENT_CORNER_RADIUS_CSS_PX = 4;
+/** Smoke redraw while Estate or Bastion is visible. 100ms is 10 fps. */
+const SHARED_PROGRESS_SHADER_FRAME_MS = 100;
 
 /**
  * Layout box used to size the shared WebGL canvas.
@@ -151,7 +153,7 @@ const SEGMENT_RIM_FILLED_CLASS =
  * above the shared smoke canvas (the in-cell rim alone would be covered).
  *
  * Filled vs empty uses `data-filled` + the same Tailwind shadow class as the
- * in-cell rim. Reading getComputedStyle here ran in the 12fps loop and forced
+ * in-cell rim. Reading getComputedStyle here ran in the paint loop and forced
  * a style recalc on every bar cell.
  */
 function syncSegmentRims(
@@ -655,7 +657,7 @@ export function SharedProgressShaderHost({
   scale?: number;
   /**
    * False while a kept-mounted tab is hidden. Parks the singleton so another
-   * host (Estate ↔ Bastion) can adopt it, and pauses the 12fps loop.
+   * host (Estate ↔ Bastion) can adopt it, and pauses the 10fps loop.
    */
   visible?: boolean;
   /** Smoke palette tokens (low → high). Defaults to estate red. */
@@ -740,7 +742,7 @@ export function SharedProgressShaderHost({
     paintRef.current = paintFrame;
 
     let stopPaint = () => { };
-    const paintLoop = createCappedPaintLoop(1000 / 12, () => {
+    const paintLoop = createCappedPaintLoop(SHARED_PROGRESS_SHADER_FRAME_MS, () => {
       const canvas = canvasRef.current;
       if (!rendererRef.current || !canvas) return;
       const box = canvas.getBoundingClientRect();
