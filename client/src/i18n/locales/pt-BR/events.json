@@ -80,6 +80,24 @@
     "message": "Um comerciante errante oferece um espelho alto e rachado, emoldurado em ferro negro. Ele irradia uma aura fria e antinatural. O homem afirma que pode mostrar vislumbres do futuro.",
     "title": "O Espelho Enegrecido"
   },
+  "blackRot": {
+    "choices": {
+      "keepFood": {
+        "label": "Guardar comida"
+      },
+      "throwAway": {
+        "cost": "{{foodCost}} comida",
+        "label": "Jogar fora"
+      }
+    },
+    "log": {
+      "outcome0": "A comida estragada queima na vala. O cheiro fica por dias.",
+      "outcome1": "Os aldeões se forçam a engolir a comida estragada. Contra todas as chances, ninguém adoece.",
+      "outcome2": "Ao anoitecer as cabanas ecoam com gemidos. Os doentes tremem no escuro, e alguns não se levantam de novo."
+    },
+    "message": "Um cheiro azedo sai do armazém. Parte da comida apodreceu. Arriscar comer o que estragou, ou jogar fora.",
+    "title": "A podridão negra"
+  },
   "blacksmithHammerChoice": {
     "choices": {
       "leaveHammer": {

@@ -80,6 +80,24 @@
     "message": "A wandering tradesman offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. He claims it can give glimpses of the future.",
     "title": "The Blackened Mirror"
   },
+  "blackRot": {
+    "choices": {
+      "keepFood": {
+        "label": "Keep food"
+      },
+      "throwAway": {
+        "cost": "{{foodCost}} food",
+        "label": "Throw out"
+      }
+    },
+    "log": {
+      "outcome0": "The spoiled food is burned in the pit. The smell lingers for days.",
+      "outcome1": "The villagers force the spoiled food down. Against the odds, no one falls ill.",
+      "outcome2": "By nightfall the huts echo with groans. The sick lie shaking in the dark, and a few do not rise again."
+    },
+    "message": "A sour smell drifts from the storehouse. Part of the food has gone rotten. Risk eating the spoiled part, or throw it out.",
+    "title": "The Black Rot"
+  },
   "blacksmithHammerChoice": {
     "choices": {
       "leaveHammer": {

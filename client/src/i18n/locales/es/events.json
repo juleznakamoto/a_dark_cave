@@ -80,6 +80,24 @@
     "message": "Un comerciante errante ofrece un espejo alto y agrietado, enmarcado en hierro negro. Irradia un aura fría y antinatural. Afirma que puede mostrar destellos del futuro.",
     "title": "El espejo ennegrecido"
   },
+  "blackRot": {
+    "choices": {
+      "keepFood": {
+        "label": "Guardar comida"
+      },
+      "throwAway": {
+        "cost": "{{foodCost}} comida",
+        "label": "Tirar"
+      }
+    },
+    "log": {
+      "outcome0": "La comida podrida se quema en el foso. El olor permanece durante días.",
+      "outcome1": "Los aldeanos se obligan a tragar la comida podrida. Contra todo pronóstico, nadie enferma.",
+      "outcome2": "Al anochecer las chozas resuenan con gemidos. Los enfermos tiemblan en la oscuridad, y algunos no vuelven a levantarse."
+    },
+    "message": "Un olor agrio sale del almacén. Parte de la comida se ha podrido. Arriesgarse a comer lo podrido, o tirarlo.",
+    "title": "La podredumbre negra"
+  },
   "blacksmithHammerChoice": {
     "choices": {
       "leaveHammer": {

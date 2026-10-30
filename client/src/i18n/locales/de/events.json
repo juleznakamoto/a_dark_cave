@@ -80,6 +80,24 @@
     "message": "Ein wandernder Händler bietet einen hohen, gesprungenen Spiegel in schwarzem Eisenrahmen an. Er strahlt eine kalte, unnatürliche Aura aus. Er behauptet, er könne Blicke in die Zukunft gewähren.",
     "title": "Der geschwärzte Spiegel"
   },
+  "blackRot": {
+    "choices": {
+      "keepFood": {
+        "label": "Behalten"
+      },
+      "throwAway": {
+        "cost": "{{foodCost}} Nahrung",
+        "label": "Wegwerfen"
+      }
+    },
+    "log": {
+      "outcome0": "Die verdorbene Nahrung wird in der Grube verbrannt. Der Gestank bleibt tagelang.",
+      "outcome1": "Die Dorfbewohner zwingen die verdorbene Nahrung hinunter. Wider Erwarten wird niemand krank.",
+      "outcome2": "Bis zur Nacht hallen die Hütten von Stöhnen. Die Kranken liegen zitternd im Dunkeln, und einige stehen nicht wieder auf."
+    },
+    "message": "Ein saurer Geruch zieht aus dem Vorratshaus. Ein Teil der Nahrung ist verdorben. Das Verdorbene essen, oder wegwerfen.",
+    "title": "Die Schwarzfäule"
+  },
   "blacksmithHammerChoice": {
     "choices": {
       "leaveHammer": {

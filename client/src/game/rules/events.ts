@@ -58,6 +58,7 @@ import { insightBlessingEvents } from "./eventsInsightBlessings";
 import { ladyMountainsEvents } from "./eventsLadyMountains";
 import { brimstoneFluxEvents } from "./eventsBrimstoneFlux";
 import { cartographerEvents } from "./eventsCartographer";
+import { blackRotEvents, stateForBlackRotDialog } from "./eventsBlackRot";
 import { GAME_CONSTANTS } from "../constants";
 import {
   getEventCatalogId,
@@ -120,6 +121,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...brimstoneFluxEvents,
   ...cartographerEvents,
   ...wanderersLanternEvents,
+  ...blackRotEvents,
 };
 
 /** Priority order for event rolls (higher first). Static priorities — sorted once at module load. */
@@ -218,8 +220,10 @@ export function buildEventDialogLogEntry(
   },
 ): LogEntry {
   const openedAt = options?.openedAt ?? Date.now();
+  const presentationState =
+    event.id === "blackRot" ? stateForBlackRotDialog(state, openedAt) : state;
   const { catalogId, i18nVars, eventChoices, localizedFallback } =
-    evaluateEventChoices(event, state);
+    evaluateEventChoices(event, presentationState);
 
   return {
     id: options?.instanceId ?? `${event.id}-${openedAt}`,

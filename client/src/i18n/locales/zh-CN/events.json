@@ -80,6 +80,24 @@
     "message": "一名流浪商贩拿出一面高大的裂镜，黑铁镶边，散发冰冷而不自然的气息。他声称它能让人窥见未来。",
     "title": "焦黑之镜"
   },
+  "blackRot": {
+    "choices": {
+      "keepFood": {
+        "label": "留下"
+      },
+      "throwAway": {
+        "cost": "{{foodCost}} 食物",
+        "label": "扔掉"
+      }
+    },
+    "log": {
+      "outcome0": "腐烂的食物被扔进坑里烧掉。气味一连几天都散不去。",
+      "outcome1": "村民硬是把腐烂的食物咽了下去。出乎意料，没有人病倒。",
+      "outcome2": "夜幕降临时，小屋里满是呻吟。病人在黑暗中发抖，有几个人再也没有起来。"
+    },
+    "message": "仓库里飘出一股酸味。一部分食物已经腐烂。冒险吃下变质的那部分，或者扔掉。",
+    "title": "黑腐"
+  },
   "blacksmithHammerChoice": {
     "choices": {
       "leaveHammer": {

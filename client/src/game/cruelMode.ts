@@ -307,6 +307,31 @@ export const CRUEL_MODE = {
     maxWoodenHut: { normal: 10, cruel: 12 },
     maxStoneHut: { normal: 10, cruel: 12 },
   },
+
+  blackRot: {
+    /** Keep-the-food success before luck. Cruel subtracts `cruelSuccessPenalty`. */
+    successBase: 0.2,
+    luckPerPoint: 0.01,
+    cruelSuccessPenalty: -0.05,
+    /** Spoiled share of the storehouse, in percent. High band is the larger share. */
+    foodPercentLow: 20,
+    foodPercentHigh: 30,
+    foodPercentLowCruel: 25,
+    foodPercentHighCruel: 35,
+    foodStep: 500,
+    /**
+     * When the spoiled share floors below one step. 20% of the 1000-food
+     * gate is 200, and cruel 25% is 250, so both modes use this floor.
+     * Otherwise throwing the rot out at the gate would burn nothing.
+     */
+    foodBelowStep: 250,
+    deathPercentMin: 15,
+    deathPercentMax: 25,
+    deathPercentMinCruel: 25,
+    deathPercentMaxCruel: 35,
+    /** Normal mode never ends a failed meal with zero deaths while someone is home. */
+    minDeathsNormal: 1,
+  },
 } as const;
 
 export function getMaxWoodenHutLevel(state: { cruelMode: boolean }): number {

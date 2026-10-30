@@ -80,6 +80,24 @@
     "message": "Un marchand ambulant propose un grand miroir fendu, serti de fer noir. Il dégage une aura froide et contre nature. Il prétend qu'il peut révéler des aperçus de l'avenir.",
     "title": "Le miroir noirci"
   },
+  "blackRot": {
+    "choices": {
+      "keepFood": {
+        "label": "Garder"
+      },
+      "throwAway": {
+        "cost": "{{foodCost}} nourriture",
+        "label": "Jeter"
+      }
+    },
+    "log": {
+      "outcome0": "La nourriture gâtée brûle dans la fosse. L'odeur reste des jours.",
+      "outcome1": "Les villageois se forcent à avaler la nourriture gâtée. Contre toute attente, personne ne tombe malade.",
+      "outcome2": "À la nuit, les huttes résonnent de gémissements. Les malades gisent tremblants dans le noir, et quelques-uns ne se relèvent pas."
+    },
+    "message": "Une odeur aigre s'échappe de la réserve. Une partie de la nourriture a pourri. Manger la part gâtée, ou la jeter.",
+    "title": "La pourriture noire"
+  },
   "blacksmithHammerChoice": {
     "choices": {
       "leaveHammer": {

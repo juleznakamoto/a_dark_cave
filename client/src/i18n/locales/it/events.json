@@ -80,6 +80,24 @@
     "message": "Un mercante errante offre un alto specchio incrinato incorniciato in ferro nero. Irradia un'aura fredda e innaturale. Afferma che può mostrare scorci del futuro.",
     "title": "Lo specchio annerito"
   },
+  "blackRot": {
+    "choices": {
+      "keepFood": {
+        "label": "Tenere"
+      },
+      "throwAway": {
+        "cost": "{{foodCost}} cibo",
+        "label": "Buttare"
+      }
+    },
+    "log": {
+      "outcome0": "Il cibo avariato brucia nella fossa. L'odore resta per giorni.",
+      "outcome1": "Gli abitanti si costringono a mandare giù il cibo avariato. Contro ogni previsione, nessuno si ammala.",
+      "outcome2": "A notte le capanne riecheggiano di gemiti. I malati tremano nel buio, e alcuni non si rialzano."
+    },
+    "message": "Un odore acre esce dal magazzino. Parte del cibo è marcita. Mangiare la parte avariata, o buttarla.",
+    "title": "Il marciume nero"
+  },
   "blacksmithHammerChoice": {
     "choices": {
       "leaveHammer": {

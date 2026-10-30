@@ -80,6 +80,24 @@
     "message": "Wędrowny handlarz oferuje wysokie, pęknięte lustro w ramie z czarnego żelaza. Promieniuje zimną, nienaturalną aurą. Twierdzi, że ukazuje przebłyski przyszłości.",
     "title": "Poczerniałe lustro"
   },
+  "blackRot": {
+    "choices": {
+      "keepFood": {
+        "label": "Zatrzymać"
+      },
+      "throwAway": {
+        "cost": "{{foodCost}} żywności",
+        "label": "Wyrzucić"
+      }
+    },
+    "log": {
+      "outcome0": "Zepsute jedzenie płonie w dole. Smród zostaje na kilka dni.",
+      "outcome1": "Mieszkańcy zmuszają się, by przełknąć zepsute jedzenie. Wbrew wszystkiemu nikt nie choruje.",
+      "outcome2": "Do zmroku chaty rozbrzmiewają jękami. Chorzy leżą drżąc w ciemności, a kilku już nie wstaje."
+    },
+    "message": "Z magazynu ciągnie kwaśny zapach. Część jedzenia zgniła. Zaryzykować zjedzenie zepsutej części, czy wyrzucić.",
+    "title": "Czarna zgnilizna"
+  },
   "blacksmithHammerChoice": {
     "choices": {
       "leaveHammer": {
