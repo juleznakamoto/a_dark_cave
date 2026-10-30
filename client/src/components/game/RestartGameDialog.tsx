@@ -154,7 +154,7 @@ export function RestartGameDialog({
                   />
                 </Checkbox>
                 <span className="inline-flex items-center gap-1">
-                  <label htmlFor="restart-cruel-mode" className="cursor-pointer">
+                  <label htmlFor="restart-cruel-mode" className="cursor-pointer font-medium">
                     {t("restart.cruelMode", { defaultValue: "Cruel Mode" })}
                   </label>
                   <TooltipWrapper
@@ -185,7 +185,7 @@ export function RestartGameDialog({
           <Button
             onClick={onClose}
             variant="outline"
-            className="w-full"
+            className="w-full font-medium"
             button_id="restart-cancel"
           >
             {t("restart.cancel")}
@@ -197,7 +197,7 @@ export function RestartGameDialog({
               )
             }
             variant="destructive"
-            className="w-full"
+            className="w-full font-medium"
             button_id="restart-confirm"
           >
             {t("restart.confirm")}
