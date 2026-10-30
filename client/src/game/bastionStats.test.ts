@@ -6,7 +6,7 @@ import { calculateBastionStats } from "@/game/bastionStats";
 import { renderFortificationTooltip } from "@/game/rules/itemTooltips";
 import { shouldShowAction } from "@/game/rules";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
-import { handleBuildHighBastion } from "@/game/rules/villageBuildHandlers";
+import { handleBuildHighBastion, handleBuildHungeringMoat } from "@/game/rules/villageBuildHandlers";
 import { useGameStore } from "@/game/state";
 import type { GameState } from "@shared/schema";
 
@@ -92,5 +92,64 @@ describe("high bastion", () => {
     expect(first).not.toContain("20 Attack");
     expect(first).toContain("10 Attack");
     expect(first).toContain("60 Integrity");
+  });
+});
+
+describe("hungering moat", () => {
+  it("replaces the moat bonus with +15 defense and +5 attack", () => {
+    const none = calculateBastionStats(fortState({ fortifiedMoat: 0 }));
+    const first = calculateBastionStats(fortState({ fortifiedMoat: 1 }));
+    const hungering = calculateBastionStats(fortState({ fortifiedMoat: 2 }));
+
+    expect(first.defense - none.defense).toBe(10);
+    expect(first.attackFromFortifications - none.attackFromFortifications).toBe(0);
+    expect(hungering.defense - none.defense).toBe(15);
+    expect(hungering.attackFromFortifications - none.attackFromFortifications).toBe(5);
+    expect(hungering.integrity).toBe(none.integrity);
+  });
+
+  it("offers Hungering Moat only after the fortified moat is built", () => {
+    expect(villageBuildActions.buildHungeringMoat.description).toBe(
+      "Bottomless trench of black water, where something hungry waits to drag down all who enter.",
+    );
+    expect(villageBuildActions.buildHungeringMoat.cost?.[1]?.["resources.stone"]).toBe(15000);
+    expect(shouldShowAction("buildHungeringMoat", fortState({ fortifiedMoat: 0 }))).toBe(false);
+    expect(shouldShowAction("buildHungeringMoat", fortState({ fortifiedMoat: 1 }))).toBe(true);
+    expect(shouldShowAction("buildFortifiedMoat", fortState({ fortifiedMoat: 1 }))).toBe(false);
+    expect(shouldShowAction("buildHungeringMoat", fortState({ fortifiedMoat: 2 }))).toBe(false);
+  });
+
+  it("raises the existing moat instead of creating a second building", () => {
+    const state = fortState({ fortifiedMoat: 1 });
+    const result = handleBuildHungeringMoat(state, {
+      stateUpdates: {},
+      logEntries: [],
+      delayedEffects: [],
+    });
+    expect(result.stateUpdates.buildings?.fortifiedMoat).toBe(2);
+  });
+
+  it("shows the Hungering Moat description and lists the fortified moat under it", () => {
+    useGameStore.setState(fortState({ fortifiedMoat: 2 }));
+    const hungering = renderToStaticMarkup(
+      renderFortificationTooltip("fortifiedMoat", "Hungering Moat") as ReactElement,
+    );
+    expect(hungering).toContain(
+      "Bottomless trench of black water, where something hungry waits to drag down all who enter.",
+    );
+    expect(hungering).not.toContain("Defensive moat slowing");
+    expect(hungering).toContain("5 Attack");
+    expect(hungering).toContain("15 Defense");
+    expect(hungering).toContain(">Fortified Moat<");
+    expect(hungering).toContain("10 Defense");
+
+    useGameStore.setState(fortState({ fortifiedMoat: 1 }));
+    const first = renderToStaticMarkup(
+      renderFortificationTooltip("fortifiedMoat", "Fortified Moat") as ReactElement,
+    );
+    expect(first).toContain("Defensive moat slowing and weakening attackers");
+    expect(first).not.toContain("Bottomless trench");
+    expect(first).toContain("10 Defense");
+    expect(first).not.toContain("5 Attack");
   });
 });

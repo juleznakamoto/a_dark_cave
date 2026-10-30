@@ -320,8 +320,12 @@ const VILLAGE_OUTLINE_FREQUENCY = 1.16;
 const VILLAGE_OUTLINE_SCALE = 20.1 * 1.15;
 const VILLAGE_OUTLINE_SEED = 4;
 export const VILLAGE_OUTLINE_WOBBLE = "url(#village-outline-wobble)";
-/** Moat stripes. Coarser, so a long stroke still reads as a little bent. */
+/** Palisade ink and wall. Coarser, so a long stroke still reads as a little bent. */
 export const VILLAGE_STROKE_WOBBLE = "url(#village-stroke-wobble)";
+/** Moat hatch only. A bit stronger than the palisade stroke, so the ditch lines look uneven. */
+export const MOAT_HATCH_WOBBLE = "url(#moat-hatch-wobble)";
+/** Hungering Moat ink edges. Short waves, so the ditch shape stays and only the line looks uneven. */
+export const MOAT_EDGE_WOBBLE = "url(#moat-edge-wobble)";
 
 const WOBBLE_CHANNELS = ["R", "G", "B"] as const;
 /** Displacement amount for the wall, moat, and traps. */
@@ -430,6 +434,8 @@ export function OutlineWobbleFilter() {
         outsideOnly
       />
       <WobbleFilter id="village-stroke-wobble" seed={9} frequency={0.05} scale={4.5} xChannel="R" yChannel="B" />
+      <WobbleFilter id="moat-hatch-wobble" seed={9} frequency={0.08} scale={6} xChannel="R" yChannel="B" />
+      <WobbleFilter id="moat-edge-wobble" seed={3} frequency={0.22} scale={3.4} xChannel="R" yChannel="G" />
       {buildingWobbleKeys().map((key) => {
         const wobble = wobbleParams(key);
         return <WobbleFilter key={key} id={wobbleFilterId(key)} {...wobble} />;
@@ -456,7 +462,7 @@ const HATCH_N_X = Math.SQRT1_2;
 const HATCH_N_Y = Math.SQRT1_2;
 
 /** 45° stripes with an irregular wave, long enough to cross the moat band. */
-export function moatHatchPaths(points: Point[], oval: number): string[] {
+export function moatHatchPaths(points: Point[], oval: number, widthScale = 1): string[] {
   let minR = Infinity;
   let maxR = 0;
   for (const point of points) {
@@ -467,7 +473,7 @@ export function moatHatchPaths(points: Point[], oval: number): string[] {
     maxR = Math.max(maxR, reach);
   }
   const inner = minR - MOAT_STROKE / 2 - 10;
-  const outer = maxR + moatOuterOffsetMax() + 10;
+  const outer = maxR + moatOuterOffsetMax(widthScale) + 10;
   const centerN = MAP_CENTER * HATCH_N_X + MAP_CENTER * HATCH_N_Y;
   const centerT = MAP_CENTER * HATCH_DIR_X + MAP_CENTER * HATCH_DIR_Y;
   const reach = outer + HATCH_AMP;

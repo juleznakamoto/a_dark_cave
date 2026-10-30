@@ -175,6 +175,10 @@
     "description": "Najwspanialsza garbarnia dla biegłych rzemieślników skóry",
     "label": "Wysoka garbarnia"
   },
+  "buildHungeringMoat": {
+    "description": "Bezdenna fosa czarnej wody, w której coś głodnego czeka, by wciągnąć każdego, kto wejdzie.",
+    "label": "Głodna fosa"
+  },
   "buildImprovedTraps": {
     "description": "Ulepszone pułapki na obwodzie, o mocniejszych mechanizmach i szerszym zasięgu",
     "label": "Ulepszone pułapki"

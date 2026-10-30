@@ -27,6 +27,7 @@ import {
   layoutWallRadius,
   moatBandEdges,
   moatCenterRadius,
+  moatWidthScale,
   outsetFromCenter,
   palisadeTowers,
   placedSlots,
@@ -208,12 +209,13 @@ function buildVillageSilverField(state: GameState): SilverField {
   const towerPad = PALISADE_TOWER_STROKE / 2 + (wallOn && build.chitin ? WALL_CHITIN_STROKE : 0);
   const slotReach = slots.map((slot) => buildingReach(slot.buildingId, hutSize, slot.tier));
   const anchor = tuning.wallThickness * 1.52;
+  const moatScale = moatWidthScale(build.hungering);
   const moatCenter = build.moat && wallOn ? moatCenterRadius(radius, anchor) : 0;
   const bridges: Point[][] = [];
   if (moatCenter > 0) {
     for (const slot of slots) {
       if (slot.buildingId !== "bastion") continue;
-      const bridge = bastionDrawbridge(slot, hutSize, radius, anchor, tuning, slot.tier);
+      const bridge = bastionDrawbridge(slot, hutSize, radius, anchor, tuning, slot.tier, moatScale);
       if (bridge) bridges.push(bridge.deck);
     }
   }
@@ -284,7 +286,7 @@ function buildVillageSilverField(state: GameState): SilverField {
     bridges,
     traps,
     trapReach: traps.length > 0 ? trapMarkReach(tuning, build.traps) : 0,
-    moat: moatCenter > 0 ? moatBandEdges(moatCenter, tuning) : null,
+    moat: moatCenter > 0 ? moatBandEdges(moatCenter, tuning, moatScale) : null,
   };
 }
 

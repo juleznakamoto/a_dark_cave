@@ -21,6 +21,13 @@ export function getBastionTierLabel(level: number): string {
   return tWithFallback("ui", "fortifications.bastion", "Bastion");
 }
 
+export function getFortifiedMoatTierLabel(level: number): string {
+  if (level >= 2) {
+    return tWithFallback("ui", "fortifications.fortifiedMoat2", "Hungering Moat");
+  }
+  return tWithFallback("ui", "fortifications.fortifiedMoat", "Fortified Moat");
+}
+
 export function getWatchtowerTierLabel(level: number): string {
   const idx = level - 1;
   const key =

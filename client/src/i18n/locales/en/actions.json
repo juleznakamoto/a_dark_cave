@@ -175,6 +175,10 @@
     "description": "Supreme tannery for expert leather craftsmen",
     "label": "High Tannery"
   },
+  "buildHungeringMoat": {
+    "description": "Bottomless trench of black water, where something hungry waits to drag down all who enter.",
+    "label": "Hungering Moat"
+  },
   "buildImprovedTraps": {
     "description": "Upgraded perimeter traps with stronger mechanisms and better coverage",
     "label": "Improved Traps"

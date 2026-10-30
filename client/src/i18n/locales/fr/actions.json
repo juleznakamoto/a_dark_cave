@@ -175,6 +175,10 @@
     "description": "Tannerie suprême pour artisans du cuir experts",
     "label": "Haute tannerie"
   },
+  "buildHungeringMoat": {
+    "description": "Douves sans fond d'eau noire, où quelque chose d'affamé attend d'entraîner quiconque y entre.",
+    "label": "Douves affamées"
+  },
   "buildImprovedTraps": {
     "description": "Pièges de périmètre améliorés, avec des mécanismes plus solides et une meilleure couverture",
     "label": "Pièges améliorés"

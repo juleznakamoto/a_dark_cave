@@ -13,6 +13,9 @@ export const BUILDING_HIERARCHIES: Record<string, string[]> = {
   // High Bastion is a separate build action that raises the same bastion count.
   bastionTier: ["bastion", "highBastion"],
 
+  // Hungering Moat is a separate build action that raises the same moat count.
+  moatTier: ["fortifiedMoat", "hungeringMoat"],
+
   // Blacksmith chain
   blacksmith: ["blacksmith", "advancedBlacksmith", "grandBlacksmith"],
 

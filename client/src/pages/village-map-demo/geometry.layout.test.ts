@@ -41,6 +41,7 @@ import {
   treeMeetsTrap,
   treeMeetsMoat,
   villageGroundPoints,
+  moatBandThickness,
   moatOuterOffset,
   moatOuterOffsetAt,
   moatOuterOffsetMax,
@@ -457,6 +458,13 @@ describe("village map geometry", () => {
     expect(Math.min(...scales)).toBeCloseTo(1, 2);
     expect(Math.max(...scales)).toBeCloseTo(1.35, 2);
     expect(moatOuterOffsetMax()).toBeCloseTo(base * 1.35 - MOAT_STROKE / 2);
+  });
+
+  it("widens the hungering moat by 20 percent without moving the inner edge", () => {
+    const inner = MOAT_STROKE / 2;
+    const plain = moatOuterOffset() + inner;
+    expect(moatOuterOffset(1.2) + inner).toBeCloseTo(plain * 1.2);
+    expect(moatBandThickness(1.2)).toBeCloseTo(plain * 1.2);
   });
 
   it("puts more and larger towers on higher palisades", () => {

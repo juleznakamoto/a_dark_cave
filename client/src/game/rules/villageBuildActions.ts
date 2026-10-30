@@ -174,6 +174,12 @@ export const getNextBuildingLevel = (
     return bastion >= 2 ? bastion : 1;
   }
 
+  // Hungering Moat raises `buildings.fortifiedMoat` the same way.
+  if (actionId === "buildHungeringMoat") {
+    const moat = state.buildings.fortifiedMoat || 0;
+    return moat >= 2 ? moat : 1;
+  }
+
   // Remove "build" prefix and lowercase first character
   let buildingKey = actionId.slice(5);
   buildingKey = buildingKey.charAt(0).toLowerCase() + buildingKey.slice(1);
@@ -877,6 +883,35 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     executionTime: 120,
+    cooldown: 0,
+  },
+
+  buildHungeringMoat: {
+    id: "buildHungeringMoat",
+    label: "Hungering Moat",
+    description:
+      "Bottomless trench of black water, where something hungry waits to drag down all who enter.",
+    tooltipEffects: [
+      bt("defenseBonus", "+{{amount}} Defense", { amount: 15 }),
+      bt("attackBonus", "+{{amount}} Attack", { amount: 5 }),
+    ],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.fortifiedMoat": 1,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 15000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.fortifiedMoat": 1,
+      },
+    },
+    executionTime: 180,
     cooldown: 0,
   },
 

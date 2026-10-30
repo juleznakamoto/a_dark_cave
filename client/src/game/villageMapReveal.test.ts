@@ -127,4 +127,18 @@ describe("village map reveal", () => {
       hasUnseenVillageMapMarks(features, { palisades: 2, fortifiedMoat: 1 }),
     ).toBe(false);
   });
+
+  it("treats a hungering moat as a new tier of the same ditch", () => {
+    const features = villageMapFeatureMarks({
+      wall: 2,
+      traps: 0,
+      moat: true,
+      hungering: true,
+      chitin: false,
+    });
+    expect(features).toContainEqual({ id: "fortifiedMoat", tier: 2 });
+    expect(
+      hasUnseenVillageMapMarks(features, { palisades: 2, fortifiedMoat: 1 }),
+    ).toBe(true);
+  });
 });

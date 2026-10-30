@@ -175,6 +175,10 @@
     "description": "供专家皮匠使用的顶级制革坊",
     "label": "高级制革坊"
   },
+  "buildHungeringMoat": {
+    "description": "无底黑水壕，饥饿之物在其中等候，要把进入者拖入深处。",
+    "label": "饥渴护城壕"
+  },
   "buildImprovedTraps": {
     "description": "升级的外围陷阱，机关更强，覆盖更广",
     "label": "改良陷阱"

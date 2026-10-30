@@ -175,6 +175,10 @@
     "description": "Curtume supremo para artesãos especialistas em couro",
     "label": "Alto Curtume"
   },
+  "buildHungeringMoat": {
+    "description": "Fosso sem fundo de água negra, onde algo faminto espera arrastar quem entrar.",
+    "label": "Fosso Faminto"
+  },
   "buildImprovedTraps": {
     "description": "Armadilhas de perímetro aprimoradas com mecanismos mais fortes e melhor cobertura",
     "label": "Armadilhas Aprimoradas"

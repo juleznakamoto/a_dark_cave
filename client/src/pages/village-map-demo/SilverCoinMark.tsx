@@ -110,7 +110,7 @@ export function SilverCoinMark({
     >
       <g className="village-silver-coin-body">
         <circle r={radius + 4} fill="#000" fillOpacity={0} />
-        <g className={metal === "gold" ? "text-yellow-600" : "text-gray-400"} pointerEvents="none">
+        <g className={metal === "gold" ? "text-yellow-600" : "text-gray-500/70"} pointerEvents="none">
           <circle r={RING_R} fill="none" stroke="currentColor" strokeWidth={RING_STROKE} />
           <circle r={INNER_R} fill="currentColor" />
         </g>

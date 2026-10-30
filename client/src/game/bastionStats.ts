@@ -99,8 +99,13 @@ export function calculateBastionStats(state: GameState): BastionStats {
     baseIntegrity += integrityBonus;
   }
 
-  // Fortified Moat (cannot be damaged, no integrity bonus)
-  if (state.buildings.fortifiedMoat > 0) {
+  // Fortified Moat (cannot be damaged, no integrity bonus).
+  // Hungering Moat (level 2) replaces that bonus.
+  const moatLevel = state.buildings.fortifiedMoat || 0;
+  if (moatLevel >= 2) {
+    defense += 15;
+    attackFromFortifications += 5;
+  } else if (moatLevel > 0) {
     defense += 10;
   }
 

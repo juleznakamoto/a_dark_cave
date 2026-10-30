@@ -3,7 +3,7 @@ import { heartfireHatchOpacity } from "@/game/villageMapBuild";
 import type { VillageMapCoinMetal, VillageSilverCoin } from "@/game/villageMapSilver";
 import { SilverCoinMark } from "@/pages/village-map-demo/SilverCoinMark";
 import { VILLAGE_MAP_OPEN_FADE_DELAY_MS, type VillageMapReveal } from "@/game/villageMapReveal";
-import { BUILDINGS, MAP_CENTER, treeDrawScale, type BuildState, type MapTree, type SanctumGod, type Tuning } from "@/pages/village-map-demo/catalog";
+import { BUILDINGS, HUNGERING_MOAT_WATER, MAP_CENTER, treeDrawScale, type BuildState, type MapTree, type SanctumGod, type Tuning } from "@/pages/village-map-demo/catalog";
 import { TreeMark, treeFill } from "@/pages/village-map-demo/TreeMark";
 import { treeReach, treeVariant } from "@/pages/village-map-demo/trees";
 import {
@@ -29,6 +29,7 @@ import {
   moatCenterRadius,
   moatRingPoints,
   moatBandEdges,
+  moatWidthScale,
   MOAT_STROKE,
   moatOuterOffsetMax,
   TRAP_DRAW_SCALE,
@@ -142,6 +143,8 @@ import {
   OUTLINE_WOBBLE,
   OutlineWobbleFilter,
   SilhouetteHighlight,
+  MOAT_EDGE_WOBBLE,
+  MOAT_HATCH_WOBBLE,
   VILLAGE_OUTLINE_WOBBLE,
   VILLAGE_STROKE_WOBBLE,
   localHatchPaths,
@@ -563,20 +566,22 @@ const VillageMapSvg = memo(function VillageMapSvg({
   // Moat and traps stay put while the palisade line itself gets heavier.
   const anchor = tuning.wallThickness * 1.52;
   const towers = palisadeTowers(build.wall, radius, tuning, tuning.squareSize);
+  const moatScale = moatWidthScale(build.hungering);
+  const moatWater = build.hungering ? HUNGERING_MOAT_WATER : tuning.water;
   const moatCenter = build.moat && build.wall > 0 ? moatCenterRadius(radius, anchor) : 0;
   const drawbridgeBySlot = new Map<string, BastionDrawbridge>();
   if (moatCenter > 0) {
     for (const slot of slots) {
       if (slot.buildingId !== "bastion") continue;
-      const bridge = bastionDrawbridge(slot, hutSize, radius, anchor, tuning, slot.tier);
+      const bridge = bastionDrawbridge(slot, hutSize, radius, anchor, tuning, slot.tier, moatScale);
       if (bridge) drawbridgeBySlot.set(slot.id, bridge);
     }
   }
   const moatPoints = moatCenter > 0 ? moatRingPoints(moatCenter, tuning) : null;
-  const moatEdges = moatCenter > 0 ? moatBandEdges(moatCenter, tuning) : null;
-  const moatBand = moatEdges
-    ? `${smoothClosedPath(moatEdges.outer)} ${smoothClosedPath(moatEdges.inner)}`
-    : null;
+  const moatEdges = moatCenter > 0 ? moatBandEdges(moatCenter, tuning, moatScale) : null;
+  const moatOuterPath = moatEdges ? smoothClosedPath(moatEdges.outer) : null;
+  const moatInnerPath = moatEdges ? smoothClosedPath(moatEdges.inner) : null;
+  const moatBand = moatOuterPath && moatInnerPath ? `${moatOuterPath} ${moatInnerPath}` : null;
   const chitinBoundary =
     build.chitin && build.wall > 0
       ? wallChitinPolygon(radius, tuning, thickness, CHITIN_STROKE)
@@ -741,11 +746,11 @@ const VillageMapSvg = memo(function VillageMapSvg({
   const ground = villageGroundPoints(
     radius,
     tuning,
-    { traps: areaLevel, moat: build.moat, wall: build.wall },
+    { traps: areaLevel, moat: build.moat, wall: build.wall, hungering: build.hungering },
     laidTraps,
   );
   const groundPath = smoothClosedPath(ground);
-  const placeableGround = furthestVillageGround(radius, tuning);
+  const placeableGround = furthestVillageGround(radius, tuning, moatScale);
   const concealedTrees = new Set(hiddenTrees);
   const trapReach = build.traps > 0 ? trapMarkReach(tuning, build.traps) : 0;
   for (const tree of trees) {
@@ -1274,21 +1279,28 @@ const VillageMapSvg = memo(function VillageMapSvg({
                 fill={tuning.waterFill}
                 fillOpacity={0.65}
                 fillRule="evenodd"
-                stroke="#000"
-                strokeWidth={1}
-                strokeLinejoin="round"
               />
               <g
-                clipPath={`url(#${moatClipId})`}
-                filter={VILLAGE_STROKE_WOBBLE}
+                filter={build.hungering ? MOAT_EDGE_WOBBLE : undefined}
                 fill="none"
-                stroke={tuning.water}
+                stroke="#000"
+                strokeWidth={build.hungering ? 2 : 1}
+                strokeLinejoin="round"
+              >
+                <path d={moatOuterPath ?? ""} />
+                <path d={moatInnerPath ?? ""} />
+              </g>
+              <g
+                clipPath={`url(#${moatClipId})`}
+                filter={MOAT_HATCH_WOBBLE}
+                fill="none"
+                stroke={moatWater}
                 strokeWidth={HATCH_WIDTH}
                 strokeOpacity={0.7}
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
-                {moatHatchPaths(moatPoints, tuning.wallOval).map((d, index) => (
+                {moatHatchPaths(moatPoints, tuning.wallOval, moatScale).map((d, index) => (
                   <path key={index} d={d} />
                 ))}
               </g>

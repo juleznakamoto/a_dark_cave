@@ -73,6 +73,7 @@ export function buildStateFromPlayer(
   build.wall = Math.min(4, Math.max(0, buildings.palisades ?? 0));
   build.traps = getTrapLevel(buildings);
   build.moat = owned(buildings, "fortifiedMoat");
+  build.hungering = (buildings.fortifiedMoat ?? 0) >= 2;
   build.chitin = owned(buildings, "chitinPlating");
   const dedication = sanctumDedicationFromBlessings(blessings);
   build.ebonGrace = blessings?.ebon_grace === true;

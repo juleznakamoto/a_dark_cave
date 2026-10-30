@@ -65,7 +65,11 @@ function getFortificationDisplayLabel(
   if (key === "bastion") {
     return level >= 2 ? t("fortifications.bastion2") : t("fortifications.bastion");
   }
-  if (key === "fortifiedMoat") return t("fortifications.fortifiedMoat");
+  if (key === "fortifiedMoat") {
+    return level >= 2
+      ? t("fortifications.fortifiedMoat2")
+      : t("fortifications.fortifiedMoat");
+  }
   if (key === "chitinPlating") return t("fortifications.chitinPlating");
   if (key === "watchtower") {
     const levelKeys = [

@@ -175,6 +175,10 @@
     "description": "Überragende Gerberei für erfahrene Lederhandwerker",
     "label": "Hohe Gerberei"
   },
+  "buildHungeringMoat": {
+    "description": "Bodenloser Graben aus schwarzem Wasser, in dem etwas Hungriges darauf wartet, jeden hinabzuziehen, der ihn betritt.",
+    "label": "Hungernder Graben"
+  },
   "buildImprovedTraps": {
     "description": "Verbesserte Fallen am Rand des Dorfes mit stärkeren Mechanismen und besserer Abdeckung",
     "label": "Verbesserte Fallen"

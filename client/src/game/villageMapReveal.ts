@@ -99,12 +99,13 @@ export function villageMapFeatureMarks(build: {
   wall: number;
   traps: number;
   moat: boolean;
+  hungering?: boolean;
   chitin: boolean;
 }): { id: string; tier: number }[] {
   const marks: { id: string; tier: number }[] = [];
   if (build.wall > 0) marks.push({ id: "palisades", tier: build.wall });
   if (build.traps > 0) marks.push({ id: "traps", tier: build.traps });
-  if (build.moat) marks.push({ id: "fortifiedMoat", tier: 1 });
+  if (build.moat) marks.push({ id: "fortifiedMoat", tier: build.hungering ? 2 : 1 });
   if (build.chitin) marks.push({ id: "chitinPlating", tier: 1 });
   return marks;
 }

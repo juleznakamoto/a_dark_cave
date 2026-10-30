@@ -14,9 +14,10 @@ function handleBuildingConstruction(
   buildingType: keyof GameState["buildings"],
 ): ActionResult {
   const currentCount = state.buildings[buildingType] || 0;
-  // High Bastion raises buildings.bastion, so its cost tier is not bastion + 1.
+  // High Bastion and Hungering Moat raise an existing count, so the cost
+  // tier is the action's own tier 1, not that building's next number.
   const level =
-    actionId === "buildHighBastion"
+    actionId === "buildHighBastion" || actionId === "buildHungeringMoat"
       ? getNextBuildingLevel(actionId, state)
       : currentCount + 1;
   const action = villageBuildActions[actionId];
@@ -1078,6 +1079,18 @@ export function handleBuildFortifiedMoat(
   }
 
   return fortifiedMoatResult;
+}
+
+export function handleBuildHungeringMoat(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(
+    state,
+    result,
+    "buildHungeringMoat",
+    "fortifiedMoat",
+  );
 }
 
 export function handleBuildTraps(

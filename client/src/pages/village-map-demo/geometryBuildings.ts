@@ -1122,15 +1122,26 @@ export const BASE_TRAP_COUNT = 40;
 export const MOAT_STROKE = 21;
 /** The moat's outer edge sits this much farther out. The inner edge stays put. */
 export const MOAT_OUTER_STRETCH = 0.5;
+/** Hungering Moat draws the ditch this much wider. Extra width grows outward. */
+export const HUNGERING_MOAT_WIDTH = 1.2;
 
-/** How far the moat's outer edge sits past its centerline at its thinnest. */
-export function moatOuterOffset(): number {
-  return MOAT_STROKE / 2 + MOAT_STROKE * MOAT_OUTER_STRETCH;
+export function moatWidthScale(hungering: boolean): number {
+  return hungering ? HUNGERING_MOAT_WIDTH : 1;
+}
+
+/**
+ * How far the moat's outer edge sits past its centerline at its thinnest.
+ * A scale above 1 widens the band outward. The inner edge stays put.
+ */
+export function moatOuterOffset(widthScale = 1): number {
+  const inner = MOAT_STROKE / 2;
+  const baseOuter = inner + MOAT_STROKE * MOAT_OUTER_STRETCH;
+  return baseOuter + (baseOuter + inner) * (widthScale - 1);
 }
 
 /** Full band at the thin spots: outer stretch plus the inner half. */
-export function moatBandThickness(): number {
-  return moatOuterOffset() + MOAT_STROKE / 2;
+export function moatBandThickness(widthScale = 1): number {
+  return moatOuterOffset(widthScale) + MOAT_STROKE / 2;
 }
 
 /** Thick stretches are this much wider than the thin ones. */
@@ -1164,13 +1175,16 @@ export function moatThicknessWave(angle: number): number {
  * Outer edge past the centerline. The inner edge stays put, and the band
  * grows by up to 35% along the ring.
  */
-export function moatOuterOffsetAt(angle: number): number {
-  return moatOuterOffset() + moatBandThickness() * MOAT_THICKNESS_VARY * moatThicknessWave(angle);
+export function moatOuterOffsetAt(angle: number, widthScale = 1): number {
+  return (
+    moatOuterOffset(widthScale) +
+    moatBandThickness(widthScale) * MOAT_THICKNESS_VARY * moatThicknessWave(angle)
+  );
 }
 
 /** Farthest the outer edge sits past the centerline. */
-export function moatOuterOffsetMax(): number {
-  return moatOuterOffset() + moatBandThickness() * MOAT_THICKNESS_VARY;
+export function moatOuterOffsetMax(widthScale = 1): number {
+  return moatOuterOffset(widthScale) + moatBandThickness(widthScale) * MOAT_THICKNESS_VARY;
 }
 /** Extra space past the touch circle before the next trap. */
 const TRAP_TOUCH_GAP = 5;
@@ -1287,7 +1301,11 @@ export function moatRingPoints(radius: number, tuning: Tuning): Point[] {
 }
 
 /** Outer and inner edges, sampled finely so the thick and thin stretches stay. */
-export function moatBandEdges(radius: number, tuning: Tuning): { outer: Point[]; inner: Point[] } {
+export function moatBandEdges(
+  radius: number,
+  tuning: Tuning,
+  widthScale = 1,
+): { outer: Point[]; inner: Point[] } {
   const count = 72;
   const outer: Point[] = [];
   const inner: Point[] = [];
@@ -1303,7 +1321,7 @@ export function moatBandEdges(radius: number, tuning: Tuning): { outer: Point[];
     const length = Math.hypot(dx, dy) || 1;
     const ux = dx / length;
     const uy = dy / length;
-    const out = moatOuterOffsetAt(angle);
+    const out = moatOuterOffsetAt(angle, widthScale);
     outer.push({ x: point.x + ux * out, y: point.y + uy * out });
     inner.push({ x: point.x - ux * (MOAT_STROKE / 2), y: point.y - uy * (MOAT_STROKE / 2) });
   }
@@ -1393,12 +1411,16 @@ export function bastionDrawbridge(
   wallStroke: number,
   tuning: Tuning,
   level = 1,
+  widthScale = 1,
 ): BastionDrawbridge | null {
   const size = markSize("bastion", hutSize);
   const mouth = bastionMouth(size, level);
   const center = moatCenterRadius(wallRadius, wallStroke);
   // The painted ditch is the smoothed curve, which bows past the sample points.
-  const hit = outwardRingDistance(at, densifyClosed(moatBandEdges(center, tuning).outer, 8));
+  const hit = outwardRingDistance(
+    at,
+    densifyClosed(moatBandEdges(center, tuning, widthScale).outer, 8),
+  );
   if (hit == null) return null;
   const centerDist = Math.hypot(at.x - MAP_CENTER, at.y - MAP_CENTER);
   const far = hit + DRAWBRIDGE_LANDING - centerDist;
@@ -1578,14 +1600,15 @@ export const MOAT_GROUND_PAD = 25;
 export function villageGroundPoints(
   wallRadius: number,
   tuning: Tuning,
-  build: Pick<BuildState, "traps" | "moat" | "wall">,
+  build: Pick<BuildState, "traps" | "moat" | "wall"> & { hungering?: boolean },
   traps: Point[],
 ): Point[] {
   const wall = ringPoints(wallRadius, tuning);
   if (build.moat && build.wall > 0) {
     const anchor = tuning.wallThickness * 1.52;
     const center = moatCenterRadius(wallRadius, anchor);
-    return outsetFromCenter(moatBandEdges(center, tuning).outer, MOAT_GROUND_PAD);
+    const scale = moatWidthScale(build.hungering === true);
+    return outsetFromCenter(moatBandEdges(center, tuning, scale).outer, MOAT_GROUND_PAD);
   }
   if (build.traps > 0 && traps.length > 0) {
     const reach = trapMarkReach(tuning, build.traps);
@@ -1602,10 +1625,14 @@ export function villageGroundPoints(
 }
 
 /** Largest village paper: just past the moat, even before that ditch is drawn. */
-export function furthestVillageGround(wallRadius: number, tuning: Tuning): Point[] {
+export function furthestVillageGround(
+  wallRadius: number,
+  tuning: Tuning,
+  widthScale = 1,
+): Point[] {
   const anchor = tuning.wallThickness * 1.52;
   const center = moatCenterRadius(wallRadius, anchor);
-  return outsetFromCenter(moatBandEdges(center, tuning).outer, MOAT_GROUND_PAD);
+  return outsetFromCenter(moatBandEdges(center, tuning, widthScale).outer, MOAT_GROUND_PAD);
 }
 
 /** A crown overlaps a trap mark. */

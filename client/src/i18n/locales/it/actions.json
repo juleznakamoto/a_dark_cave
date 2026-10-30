@@ -175,6 +175,10 @@
     "description": "Conceria suprema per esperti artigiani del cuoio",
     "label": "Alta conceria"
   },
+  "buildHungeringMoat": {
+    "description": "Fossato senza fondo d'acqua nera, dove qualcosa di affamato attende di trascinare giù chiunque vi entri.",
+    "label": "Fossato affamato"
+  },
   "buildImprovedTraps": {
     "description": "Trappole perimetrali potenziate con meccanismi più forti e copertura migliore",
     "label": "Trappole migliorate"

@@ -432,6 +432,7 @@ export default function VillageMapDemo() {
         wall: 0,
         traps: 0,
         moat: false,
+        hungering: false,
         chitin: false,
         ebonGrace: current.ebonGrace,
         brimstoneInfusion: current.brimstoneInfusion,
@@ -447,6 +448,7 @@ export default function VillageMapDemo() {
       wall: 4,
       traps: 2,
       moat: true,
+      hungering: true,
       chitin: true,
       ebonGrace: current.ebonGrace,
       brimstoneInfusion: current.brimstoneInfusion,
@@ -877,16 +879,25 @@ export default function VillageMapDemo() {
                   }))
                 }
               />
-              <label className="flex items-center justify-between gap-2 text-xs text-stone-300">
-                <span>Fortified Moat</span>
-                <input
-                  type="checkbox"
-                  checked={build.moat}
-                  onChange={(event) =>
-                    patchBuild((current) => ({ ...current, moat: event.target.checked }))
-                  }
-                />
-              </label>
+              <DefenseSelect
+                label="Moat"
+                value={build.hungering ? 2 : build.moat ? 1 : 0}
+                options={["Hidden", "Fortified Moat", "Hungering Moat"]}
+                onChange={(level) =>
+                  patchBuild((current) => ({
+                    ...current,
+                    moat: level > 0,
+                    hungering: level >= 2,
+                  }))
+                }
+                onSolo={() =>
+                  patchBuild((current) => ({
+                    ...emptyBuild(),
+                    moat: true,
+                    hungering: !current.moat || current.hungering,
+                  }))
+                }
+              />
               <label className="flex items-center justify-between gap-2 text-xs text-stone-300">
                 <span>Chitin Plating</span>
                 <input

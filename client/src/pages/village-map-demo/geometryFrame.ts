@@ -84,6 +84,7 @@ import {
   layoutWallRadius,
   moatCenterRadius,
   moatRingPoints,
+  moatWidthScale,
   offsetFromCentroid,
   ringPoints,
   trapAreaLevel,
@@ -102,6 +103,7 @@ import {
 export function mapFramePoints(build: BuildState, tuning: Tuning, slots: PlacedSlot[]): Point[] {
   const radius = layoutWallRadius(tuning);
   const anchor = tuning.wallThickness * 1.52;
+  const moatScale = moatWidthScale(build.hungering);
   const areaLevel = trapAreaLevel(build);
   const groundTraps =
     areaLevel > 0
@@ -134,7 +136,15 @@ export function mapFramePoints(build: BuildState, tuning: Tuning, slots: PlacedS
   if (build.moat && build.wall > 0) {
     for (const slot of slots) {
       if (slot.buildingId !== "bastion") continue;
-      const bridge = bastionDrawbridge(slot, tuning.squareSize, radius, anchor, tuning, slot.tier);
+      const bridge = bastionDrawbridge(
+        slot,
+        tuning.squareSize,
+        radius,
+        anchor,
+        tuning,
+        slot.tier,
+        moatScale,
+      );
       if (bridge) points.push(...bridge.deck);
     }
   }

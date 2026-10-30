@@ -175,6 +175,10 @@
     "description": "熟練の皮職人のための最高の皮なめし場",
     "label": "上級皮なめし場"
   },
+  "buildHungeringMoat": {
+    "description": "底なしの黒い水の壕。飢えた何かが、入る者を引きずり込もうと待っている。",
+    "label": "飢えた濠"
+  },
   "buildImprovedTraps": {
     "description": "より強い仕掛けと広い範囲を持つ、改良された外周の罠",
     "label": "改良罠"

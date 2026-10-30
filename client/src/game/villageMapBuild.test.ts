@@ -10,6 +10,7 @@ describe("village map build", () => {
     expect(build.wall).toBe(0);
     expect(build.traps).toBe(0);
     expect(build.moat).toBe(false);
+    expect(build.hungering).toBe(false);
   });
 
   it("uses the highest upgrade as that building's tier", () => {
@@ -40,7 +41,14 @@ describe("village map build", () => {
     expect(build.wall).toBe(4);
     expect(build.traps).toBe(2);
     expect(build.moat).toBe(true);
+    expect(build.hungering).toBe(false);
     expect(build.chitin).toBe(true);
+  });
+
+  it("marks a second moat as the hungering ditch", () => {
+    const build = buildStateFromPlayer({ fortifiedMoat: 2, palisades: 1 });
+    expect(build.moat).toBe(true);
+    expect(build.hungering).toBe(true);
   });
 
   it("fades the heartfire lines by 10 points for each level below 5", () => {

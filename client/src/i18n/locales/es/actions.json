@@ -175,6 +175,10 @@
     "description": "Curtiduría suprema para artesanos expertos del cuero",
     "label": "Alta curtiduría"
   },
+  "buildHungeringMoat": {
+    "description": "Foso sin fondo de agua negra, donde algo hambriento espera arrastrar a quien entre.",
+    "label": "Foso hambriento"
+  },
   "buildImprovedTraps": {
     "description": "Trampas perimetrales mejoradas con mecanismos más fuertes y mayor cobertura",
     "label": "Trampas mejoradas"

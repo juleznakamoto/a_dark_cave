@@ -36,6 +36,8 @@ export type BuildState = {
   /** 0 hidden, 1 traps, 2 improved traps. */
   traps: number;
   moat: boolean;
+  /** Hungering Moat: darker violet water, and a wider ditch. */
+  hungering: boolean;
   chitin: boolean;
   /** Heartfire border and the ring of short triangles. */
   ebonGrace: boolean;
@@ -426,6 +428,9 @@ export const DEFAULT_TUNING: Tuning = {
   fitView: true,
 };
 
+/** Hungering Moat hatch lines. Darker than the fortified ditch, shifted toward violet. */
+export const HUNGERING_MOAT_WATER = "#4e2874";
+
 export const GROWTH_STEPS: GrowthStep[] = [
   { label: "First hut", counts: { woodenHut: 1 } },
   { label: "Second hut", counts: { woodenHut: 2 } },
@@ -637,6 +642,7 @@ export function emptyBuild(): BuildState {
     wall: 0,
     traps: 0,
     moat: false,
+    hungering: false,
     chitin: false,
     ebonGrace: false,
     brimstoneInfusion: false,
@@ -665,6 +671,7 @@ export function sameBuild(a: BuildState, b: BuildState): boolean {
     a.wall !== b.wall ||
     a.traps !== b.traps ||
     a.moat !== b.moat ||
+    a.hungering !== b.hungering ||
     a.chitin !== b.chitin ||
     a.ebonGrace !== b.ebonGrace ||
     a.brimstoneInfusion !== b.brimstoneInfusion ||
@@ -721,6 +728,7 @@ export function sanitizeBuild(input: unknown): BuildState {
     wall: typeof source.wall === "number" ? Math.round(clamp(source.wall, 0, 4)) : 0,
     traps: typeof source.traps === "number" ? Math.round(clamp(source.traps, 0, 2)) : 0,
     moat: source.moat === true,
+    hungering: source.hungering === true,
     chitin: source.chitin === true,
     brimstoneInfusion: source.brimstoneInfusion === true,
     ...sanitizeDedication(source),
