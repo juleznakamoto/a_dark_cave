@@ -3008,6 +3008,9 @@
         "label": "Payer {{foodCost}} nourriture",
         "cost": "{{foodCost}} nourriture"
       },
+      "attack": {
+        "label": "L'attaquer"
+      },
       "denyServices": {
         "label": "Refuser ses services"
       },
@@ -3038,6 +3041,8 @@
       "successLevel3": "Le bûcheron prend la nourriture et s'aventure au cœur de la forêt. Il revient avec une impressionnante quantité de bois.",
       "successLevel4": "Le bûcheron prend la nourriture et passe l'après-midi dans la forêt. Il revient avec une énorme pile de bois.",
       "successLevel5": "Le bûcheron prend la nourriture et livre le jour même une énorme réserve de bois au village.",
+      "attackLose": "Il vous repousse et tue {{deaths}} villageois. Blessé, il s'enfonce en chancelant dans la forêt. Il ne reviendra plus proposer ses services.",
+      "attackWin": "Vous l'abattez. Sa hache est à vous, et vous prenez {{gold}} or à sa ceinture. Le bûcheron est mort.",
       "successLevel6": "Le bûcheron prend la nourriture et livre le jour même une énorme réserve de bois au village."
     },
     "message": {
@@ -3056,6 +3061,18 @@
       "level5": "La grande proposition du bûcheron",
       "level6": "L'offre du bûcheron"
     }
+  },
+  "woodcutterRemains": {
+    "choices": {
+      "takeAxe": {
+        "label": "Prendre la hache"
+      }
+    },
+    "log": {
+      "take": "Vous prenez la hache du bûcheron à côté de son corps."
+    },
+    "message": "Des chasseurs trouvent le bûcheron sous les arbres. Quelque chose dans les bois l'a attaqué et l'a tué. Sa hache gît à côté de lui.",
+    "title": "Ce que la forêt a gardé"
   },
   "wrongReflections": {
     "choices": {

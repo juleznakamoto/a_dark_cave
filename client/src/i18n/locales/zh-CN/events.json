@@ -3008,6 +3008,9 @@
         "label": "支付 {{foodCost}} 食物",
         "cost": "{{foodCost}} 食物"
       },
+      "attack": {
+        "label": "攻击他"
+      },
       "denyServices": {
         "label": "拒绝他的服务"
       },
@@ -3038,6 +3041,8 @@
       "successLevel3": "樵夫拿走食物，深入森林。他带着数量惊人的木材回来了。",
       "successLevel4": "樵夫拿走食物，在森林中度过整个下午。他带着一大堆木材回来。",
       "successLevel5": "樵夫拿走食物，当天就将大量木材送到了村庄。",
+      "attackLose": "他击退了你，杀死了{{deaths}}名村民。他带着伤踉跄走进森林，不会再带着交易回来。",
+      "attackWin": "你砍倒了他。他的斧头归你所有，你从他的腰带上取走{{gold}}金币。樵夫死了。",
       "successLevel6": "樵夫拿走食物，当天就将大量木材送到了村庄。"
     },
     "message": {
@@ -3056,6 +3061,18 @@
       "level5": "樵夫的宏伟提案",
       "level6": "樵夫的提议"
     }
+  },
+  "woodcutterRemains": {
+    "choices": {
+      "takeAxe": {
+        "label": "拿走斧头"
+      }
+    },
+    "log": {
+      "take": "你从樵夫的遗体旁拿走了他的斧头。"
+    },
+    "message": "猎人在树下发现了樵夫。林中有东西袭击并杀死了他。斧头就在他身旁。",
+    "title": "林中遗骸"
   },
   "wrongReflections": {
     "choices": {

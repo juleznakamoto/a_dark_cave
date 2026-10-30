@@ -1,7 +1,9 @@
 import { formatNumber } from "@/lib/utils";
 import type { GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
-import { getSeenResourceKeys } from "@/game/stateHelpers";
+import { CRUEL_MODE } from "../cruelMode";
+import { getSeenResourceKeys, killVillagers } from "@/game/stateHelpers";
+import { defineSuccessChance } from "./eventSuccessChance";
 
 interface WoodcutterConfig {
   level: number;
@@ -10,6 +12,88 @@ interface WoodcutterConfig {
   woodReward: number;
   betrayalChance?: number;
   isLastEvent?: boolean;
+}
+
+const woodcutterAttack = CRUEL_MODE.woodcutter.attack;
+
+const woodcutterAttackSuccess = defineSuccessChance({
+  base: woodcutterAttack.successBase,
+  stats: [{ type: "strength", multiplier: woodcutterAttack.successPerStrength }],
+  cmMultiplier: woodcutterAttack.cruelPenalty,
+  relevantStats: ["strength"],
+});
+
+export function getWoodcutterAttackSuccessChance(state: GameState): number {
+  return woodcutterAttackSuccess.success_chance(state);
+}
+
+/** Villagers killed when the woodcutter wins the fight. Visit 1 is 1-2, visit 6 is 6-12. */
+export function rollWoodcutterAttackDeaths(
+  level: number,
+  random: () => number = Math.random,
+): number {
+  const min = Math.max(1, Math.floor(level) * woodcutterAttack.deathMinMultiplier);
+  const max = Math.max(min, Math.floor(level) * woodcutterAttack.deathMaxMultiplier);
+  return min + Math.floor(random() * (max - min + 1));
+}
+
+function endWoodcutterOffers(
+  state: GameState,
+  seen: Record<string, boolean>,
+): Pick<GameState, "woodcutterState" | "story"> {
+  return {
+    woodcutterState: { isActive: false, endTime: 0 },
+    story: {
+      ...state.story,
+      seen: {
+        ...state.story.seen,
+        woodcutterEnded: true,
+        ...seen,
+      },
+    },
+  };
+}
+
+function woodcutterKillGold(level: number): number {
+  return Math.max(1, Math.floor(level)) * woodcutterAttack.goldPerVisit;
+}
+
+function woodcutterAttackChoice(level: number) {
+  return {
+    id: "attack",
+    ...woodcutterAttackSuccess,
+    effect: (state: GameState) => {
+      if (Math.random() < getWoodcutterAttackSuccessChance(state)) {
+        const gold = woodcutterKillGold(level);
+        return {
+          resources: {
+            ...state.resources,
+            gold: (state.resources.gold ?? 0) + gold,
+          },
+          tools: {
+            ...state.tools,
+            woodcutter_axe: true,
+          },
+          ...endWoodcutterOffers(state, {
+            [`woodcutter${level}Accepted`]: true,
+          }),
+          _logMessageKey: "attackWin",
+          _logMessageVars: { gold },
+        };
+      }
+
+      const deathResult = killVillagers(state, rollWoodcutterAttackDeaths(level));
+      return {
+        ...deathResult,
+        ...endWoodcutterOffers(state, {
+          woodcutterFightLost: true,
+          [`woodcutter${level}Accepted`]: true,
+        }),
+        _logMessageKey: "attackLose",
+        _logMessageVars: { deaths: deathResult.villagersKilled ?? 0 },
+      };
+    },
+  };
 }
 
 const woodcutterConfigs: WoodcutterConfig[] = [
@@ -73,8 +157,8 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
         return false;
       }
 
-      // Check if woodcutter storyline ended
-      if (state.story.seen.woodcutterEnded) {
+      // Check if woodcutter storyline ended, or a cruel fight drove him off
+      if (state.story.seen.woodcutterEnded || state.story.seen.woodcutterFightLost) {
         return false;
       }
 
@@ -124,7 +208,8 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
     showAsTimedTab: true,
     timedTabDuration: 4 * 60 * 1000,
     skipEventLog: true, // Don't add to event log, only show in timed tab
-    choices: [
+    choices: (state: GameState) => {
+      const payOrRefuse = [
       {
         id: "acceptServices",
         effect: (state: GameState) => {
@@ -205,7 +290,10 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
           };
         },
       },
-    ],
+      ];
+      if (!state.cruelMode) return payOrRefuse;
+      return [...payOrRefuse, woodcutterAttackChoice(level)];
+    },
     fallbackChoice: {
       id: "timeExpired",
       effect: (state: GameState) => {
@@ -239,8 +327,46 @@ function createWoodcutterEvent(config: WoodcutterConfig): GameEvent {
   };
 }
 
+const remains = CRUEL_MODE.woodcutter.remains;
+
+/** Cruel Mode: he won the fight, then something in the woods killed him. One choice, the axe, no gold. */
+export const woodcutterRemains: GameEvent = {
+  id: "woodcutterRemains",
+  i18nKey: "woodcutterRemains",
+  condition: (state: GameState) =>
+    state.cruelMode === true &&
+    state.story.seen.woodcutterFightLost === true &&
+    !state.tools?.woodcutter_axe &&
+    state.story.seen.woodcutterRemainsTaken !== true,
+  timeProbability: remains.timeProbabilityMinutes,
+  earliestMinutes: remains.earliestMinutes,
+  priority: 3,
+  repeatable: false,
+  choices: [
+    {
+      id: "takeAxe",
+      effect: (state: GameState) => ({
+        tools: {
+          ...state.tools,
+          woodcutter_axe: true,
+        },
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            woodcutterRemainsTaken: true,
+          },
+        },
+        _logMessageKey: "take",
+      }),
+    },
+  ],
+};
+
 // Generate all woodcutter events
-export const woodcutterEvents: Record<string, GameEvent> = {};
+export const woodcutterEvents: Record<string, GameEvent> = {
+  woodcutterRemains,
+};
 woodcutterConfigs.forEach((config) => {
   const event = createWoodcutterEvent(config);
   woodcutterEvents[event.id] = event;

@@ -3008,6 +3008,9 @@
         "label": "Paga {{foodCost}} cibo",
         "cost": "{{foodCost}} cibo"
       },
+      "attack": {
+        "label": "Attaccarlo"
+      },
       "denyServices": {
         "label": "Rifiuta i suoi servizi"
       },
@@ -3038,6 +3041,8 @@
       "successLevel3": "Il taglialegna prende il cibo e si avventura nel profondo della foresta. Torna con un impressionante carico di legna.",
       "successLevel4": "Il taglialegna prende il cibo e trascorre il pomeriggio nella foresta. Torna con un'enorme catasta di legna.",
       "successLevel5": "Il taglialegna prende il cibo e nello stesso giorno consegna al villaggio una massiccia scorta di legna.",
+      "attackLose": "Ti respinge e uccide {{deaths}} abitanti. Ferito, barcolla nella foresta. Non tornerà con offerte.",
+      "attackWin": "Lo abbatti. La sua ascia è tua, e prendi {{gold}} oro dalla sua cintura. Il taglialegna è morto.",
       "successLevel6": "Il taglialegna prende il cibo e nello stesso giorno consegna al villaggio una massiccia scorta di legna."
     },
     "message": {
@@ -3056,6 +3061,18 @@
       "level5": "La grande proposta del taglialegna",
       "level6": "L'offerta del taglialegna"
     }
+  },
+  "woodcutterRemains": {
+    "choices": {
+      "takeAxe": {
+        "label": "Prendi l'ascia"
+      }
+    },
+    "log": {
+      "take": "Prendi l'ascia del taglialegna accanto al suo corpo."
+    },
+    "message": "I cacciatori trovano il taglialegna sotto gli alberi. Qualcosa nel bosco lo ha attaccato e ucciso. La sua ascia giace accanto a lui.",
+    "title": "Ciò che il bosco ha tenuto"
   },
   "wrongReflections": {
     "choices": {

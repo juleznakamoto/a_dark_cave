@@ -3008,6 +3008,9 @@
         "label": "Pagar {{foodCost}} de comida",
         "cost": "{{foodCost}} comida"
       },
+      "attack": {
+        "label": "Atacarlo"
+      },
       "denyServices": {
         "label": "Rechazar sus servicios"
       },
@@ -3038,6 +3041,8 @@
       "successLevel3": "El leñador toma la comida y se adentra en lo profundo del bosque. Regresa con una impresionante carga de madera.",
       "successLevel4": "El leñador toma la comida y pasa la tarde en el bosque. Regresa con un enorme montón de madera.",
       "successLevel5": "El leñador toma la comida y ese mismo día entrega a la aldea una enorme pila de madera.",
+      "attackLose": "Te repele y mata a {{deaths}} aldeanos. Herido, se adentra tambaleándose en el bosque. No volverá con ofertas.",
+      "attackWin": "Lo abates. Su hacha es tuya, y tomas {{gold}} de oro de su cinturón. El leñador está muerto.",
       "successLevel6": "El leñador toma la comida y ese mismo día entrega a la aldea una enorme pila de madera."
     },
     "message": {
@@ -3056,6 +3061,18 @@
       "level5": "La gran propuesta del leñador",
       "level6": "La oferta del leñador"
     }
+  },
+  "woodcutterRemains": {
+    "choices": {
+      "takeAxe": {
+        "label": "Tomar el hacha"
+      }
+    },
+    "log": {
+      "take": "Tomas el hacha del leñador junto a su cuerpo."
+    },
+    "message": "Los cazadores encuentran al leñador bajo los árboles. Algo en el bosque lo atacó y lo mató. Su hacha yace a su lado.",
+    "title": "Lo que el bosque guardó"
   },
   "wrongReflections": {
     "choices": {

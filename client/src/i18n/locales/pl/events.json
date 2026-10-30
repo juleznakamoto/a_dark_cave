@@ -3010,6 +3010,9 @@
         "label": "Zapłać {{foodCost}} żywności",
         "cost": "{{foodCost}} żywności"
       },
+      "attack": {
+        "label": "Zaatakuj go"
+      },
       "denyServices": {
         "label": "Odrzuć jego usługi"
       },
@@ -3040,6 +3043,8 @@
       "successLevel3": "Drwal bierze żywność i zapuszcza się głęboko w las. Wraca z imponującym ładunkiem drewna.",
       "successLevel4": "Drwal bierze żywność i spędza popołudnie w lesie. Wraca z ogromną stertą drewna.",
       "successLevel5": "Drwal bierze żywność i jeszcze tego samego dnia dostarcza do wioski ogromny zapas drewna.",
+      "attackLose": "Odpiera cię i zabija {{deaths}} mieszkańców. Ranny, chwiejnym krokiem wchodzi do lasu. Nie wróci już z ofertą.",
+      "attackWin": "Ścinasz go. Jego topór jest twój, a z pasa zabierasz {{gold}} złota. Drwal nie żyje.",
       "successLevel6": "Drwal bierze żywność i jeszcze tego samego dnia dostarcza do wioski ogromny zapas drewna."
     },
     "message": {
@@ -3058,6 +3063,18 @@
       "level5": "Wielka propozycja drwala",
       "level6": "Oferta drwala"
     }
+  },
+  "woodcutterRemains": {
+    "choices": {
+      "takeAxe": {
+        "label": "Weź topór"
+      }
+    },
+    "log": {
+      "take": "Zabierasz topór drwala leżący obok ciała."
+    },
+    "message": "Łowcy znajdują drwala pod drzewami. Coś w lesie zaatakowało go i zabiło. Topór leży obok niego.",
+    "title": "To, co zatrzymał las"
   },
   "wrongReflections": {
     "choices": {

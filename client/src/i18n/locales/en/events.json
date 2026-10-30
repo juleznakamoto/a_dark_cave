@@ -3008,6 +3008,9 @@
         "label": "Pay {{foodCost}} Food",
         "cost": "{{foodCost}} food"
       },
+      "attack": {
+        "label": "Attack him"
+      },
       "denyServices": {
         "label": "Deny services"
       },
@@ -3038,6 +3041,8 @@
       "successLevel3": "The woodcutter takes the food and ventures deep into the forest. He returns with an impressive haul of wood.",
       "successLevel4": "The woodcutter takes the food and spends the afternoon in the forest. He returns with an enormous pile of wood.",
       "successLevel5": "The woodcutter takes the food and within the same day he delivers a massive stockpile of wood to the village.",
+      "attackLose": "He fights you off and kills {{deaths}} villagers. Wounded, he staggers into the forest. He will not return with offers.",
+      "attackWin": "You cut him down. His axe is yours, and you take {{gold}} gold from his belt. The woodcutter is dead.",
       "successLevel6": "The woodcutter takes the food and within the same day he delivers a massive stockpile of wood to the village."
     },
     "message": {
@@ -3056,6 +3061,18 @@
       "level5": "The Woodcutter's Grand Proposal",
       "level6": "The Woodcutter's Offer"
     }
+  },
+  "woodcutterRemains": {
+    "choices": {
+      "takeAxe": {
+        "label": "Take axe"
+      }
+    },
+    "log": {
+      "take": "You take the woodcutter's axe from beside his body."
+    },
+    "message": "Hunters find the woodcutter under the trees. Something in the woods attacked and killed him. His axe lies beside him.",
+    "title": "What the Forest Kept"
   },
   "wrongReflections": {
     "choices": {

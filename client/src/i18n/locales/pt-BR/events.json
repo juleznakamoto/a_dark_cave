@@ -3008,6 +3008,9 @@
         "label": "Pagar {{foodCost}} de comida",
         "cost": "{{foodCost}} comida"
       },
+      "attack": {
+        "label": "Atacá-lo"
+      },
       "denyServices": {
         "label": "Recusar os serviços"
       },
@@ -3038,6 +3041,8 @@
       "successLevel3": "O lenhador pega a comida e se embrenha nas profundezas da floresta. Ele retorna com uma impressionante carga de madeira.",
       "successLevel4": "O lenhador pega a comida e passa a tarde na floresta. Ele retorna com uma enorme pilha de madeira.",
       "successLevel5": "O lenhador pega a comida e, no mesmo dia, entrega um enorme estoque de madeira ao vilarejo.",
+      "attackLose": "Ele revida e mata {{deaths}} aldeões. Ferido, cambaleia para a floresta. Ele não volta com ofertas.",
+      "attackWin": "Você o derruba. O machado é seu, e você pega {{gold}} de ouro do cinto dele. O lenhador está morto.",
       "successLevel6": "O lenhador pega a comida e, no mesmo dia, entrega um enorme estoque de madeira ao vilarejo."
     },
     "message": {
@@ -3056,6 +3061,18 @@
       "level5": "A Grande Proposta do Lenhador",
       "level6": "A Oferta do Lenhador"
     }
+  },
+  "woodcutterRemains": {
+    "choices": {
+      "takeAxe": {
+        "label": "Pegar o machado"
+      }
+    },
+    "log": {
+      "take": "Você pega o machado do lenhador ao lado do corpo."
+    },
+    "message": "Caçadores encontram o lenhador sob as árvores. Algo na floresta o atacou e o matou. O machado jaz ao lado dele.",
+    "title": "O que a floresta guardou"
   },
   "wrongReflections": {
     "choices": {

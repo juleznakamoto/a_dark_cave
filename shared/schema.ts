@@ -560,6 +560,11 @@ export const gameStateSchema = z.object({
   triggeredEvents: z.record(z.boolean()).default({}),
   eventCooldowns: z.record(z.number()).default({}), // Tracks last trigger time (timestamp) for each event
   /**
+   * When an event with `earliestMinutes` first became eligible (Date.now()).
+   * Cleared when its condition is false again. Missing on old saves.
+   */
+  eventEligibleAt: z.record(z.number()).default({}),
+  /**
    * Unresolved EventDialog (choice / forced Continue). Restored on load so a
    * refresh cannot dismiss the prompt. The live `eventDialog` slice stays runtime-only.
    */

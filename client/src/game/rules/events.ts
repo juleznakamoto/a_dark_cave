@@ -326,6 +326,29 @@ export function getPendingModalEventDialogResume(state: GameState): {
   };
 }
 
+/** Milliseconds the condition must stay true before the event may roll. 0 = no floor. */
+function earliestWaitMs(event: GameEvent): number {
+  const minutes = event.earliestMinutes;
+  if (minutes == null || !Number.isFinite(minutes) || minutes <= 0) return 0;
+  return minutes * 60 * 1000;
+}
+
+/**
+ * True when `earliestMinutes` has not elapsed since the condition became true.
+ * A missing timestamp counts as waiting: the clock is recorded on this check.
+ */
+function isEarliestWaitActive(
+  event: GameEvent,
+  eligibleAt: Record<string, number>,
+  now: number,
+): boolean {
+  const waitMs = earliestWaitMs(event);
+  if (waitMs <= 0) return false;
+  const since = eligibleAt[event.id];
+  if (since == null) return true;
+  return now - since < waitMs;
+}
+
 /**
  * Average milliseconds between triggers, from `timeProbability` (minutes).
  * Null when the event has no average and fires on the next check once its
@@ -362,7 +385,10 @@ function isHeldByEventDialogGap(
 }
 
 export class EventManager {
-  static checkEvents(state: EventRollState): {
+  static checkEvents(
+    state: EventRollState,
+    events: readonly GameEvent[] = sortedEventsByPriority,
+  ): {
     newLogEntries: LogEntry[];
     stateChanges: Partial<GameState>;
   } {
@@ -371,7 +397,29 @@ export class EventManager {
 
     // Initialize event cooldowns if not present
     const eventCooldowns = state.eventCooldowns || {};
+    const eventEligibleAt: Record<string, number> = {
+      ...(state.eventEligibleAt || {}),
+    };
+    let eligibleAtChanged = false;
     const currentTime = Date.now();
+
+    // Start or clear earliest-time clocks before trigger gaps, so a dialog or
+    // timed tab does not postpone the moment the condition became true.
+    for (const event of events) {
+      if (earliestWaitMs(event) <= 0) continue;
+      if (event.triggered && !event.repeatable) continue;
+      if (state.triggeredEvents?.[event.id] && !event.repeatable) continue;
+
+      if (event.condition(state)) {
+        if (eventEligibleAt[event.id] == null) {
+          eventEligibleAt[event.id] = currentTime;
+          eligibleAtChanged = true;
+        }
+      } else if (eventEligibleAt[event.id] != null) {
+        delete eventEligibleAt[event.id];
+        eligibleAtChanged = true;
+      }
+    }
 
     const isTimedTabActive = state.timedEventTab?.isActive || false;
     const lastTimedTabEndedAt = state.timedEventTab?.lastEndedAt ?? 0;
@@ -384,7 +432,7 @@ export class EventManager {
       lastEventDialogEndedAt > 0 &&
       currentTime - lastEventDialogEndedAt < GAME_CONSTANTS.EVENT_DIALOG_MIN_GAP_MS;
 
-    for (const event of sortedEventsByPriority) {
+    for (const event of events) {
       // Skip if already triggered and not repeatable
       if (event.triggered && !event.repeatable) continue;
 
@@ -423,6 +471,10 @@ export class EventManager {
       const conditionMet = event.condition(state);
 
       if (!conditionMet) {
+        continue;
+      }
+
+      if (isEarliestWaitActive(event, eventEligibleAt, currentTime)) {
         continue;
       }
 
@@ -507,6 +559,10 @@ export class EventManager {
 
         break; // Only trigger one event per tick
       }
+    }
+
+    if (eligibleAtChanged) {
+      stateChanges = { ...stateChanges, eventEligibleAt };
     }
 
     return { newLogEntries, stateChanges };

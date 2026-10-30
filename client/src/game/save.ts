@@ -271,6 +271,7 @@ const ALWAYS_FULL_CLOUD_SLICES = [
  * `GameState` type — keep this list untyped against `keyof GameState`.
  */
 const ALWAYS_FULL_DELETE_SEMANTIC_CLOUD_SLICES = [
+  "eventEligibleAt",
   "expeditionVillagers",
   "executionStartTimes",
   "executionDurations",

@@ -3008,6 +3008,9 @@
         "label": "{{foodCost}} Nahrung zahlen",
         "cost": "{{foodCost}} Nahrung"
       },
+      "attack": {
+        "label": "Ihn angreifen"
+      },
       "denyServices": {
         "label": "Dienste verweigern"
       },
@@ -3038,6 +3041,8 @@
       "successLevel3": "Der Holzfäller nimmt die Nahrung und wagt sich tief in den Wald. Er kehrt mit einer beeindruckenden Ladung Holz zurück.",
       "successLevel4": "Der Holzfäller nimmt die Nahrung und verbringt den Nachmittag im Wald. Er kehrt mit einem enormen Holzstoß zurück.",
       "successLevel5": "Der Holzfäller nimmt die Nahrung und liefert noch am selben Tag einen gewaltigen Holzvorrat ins Dorf.",
+      "attackLose": "Er wehrt dich ab und tötet {{deaths}} Dorfbewohner. Verwundet taumelt er in den Wald. Mit Angeboten kehrt er nicht zurück.",
+      "attackWin": "Du fällst ihn. Seine Axt gehört dir, und du nimmst {{gold}} Gold von seinem Gürtel. Der Holzfäller ist tot.",
       "successLevel6": "Der Holzfäller nimmt die Nahrung und liefert noch am selben Tag einen gewaltigen Holzvorrat ins Dorf."
     },
     "message": {
@@ -3056,6 +3061,18 @@
       "level5": "Der große Vorschlag des Holzfällers",
       "level6": "Das Angebot des Holzfällers"
     }
+  },
+  "woodcutterRemains": {
+    "choices": {
+      "takeAxe": {
+        "label": "Axt nehmen"
+      }
+    },
+    "log": {
+      "take": "Du nimmst die Axt des Holzfällers neben seinem Körper an dich."
+    },
+    "message": "Jäger finden den Holzfäller unter den Bäumen. Etwas im Wald hat ihn angegriffen und getötet. Seine Axt liegt neben ihm.",
+    "title": "Was der Wald behielt"
   },
   "wrongReflections": {
     "choices": {

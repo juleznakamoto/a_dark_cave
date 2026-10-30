@@ -6,6 +6,7 @@ import {
   restorePendingModalEvent,
   getPendingModalEventDialogResume,
   type EventRollState,
+  type GameEvent,
 } from './events';
 import { GameState } from '@shared/schema';
 import { createInitialState, useGameStore } from '../state';
@@ -621,6 +622,99 @@ describe('pending modal event resume', () => {
       expect.objectContaining({ id: 'acknowledge' }),
     ]);
     expect(restored?.message).toBe('The figure is gone.');
+  });
+
+  it('waits out earliestMinutes before the first roll, then allows it', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+    const now = 1_700_000_000_000;
+    vi.spyOn(Date, 'now').mockReturnValue(now);
+    let open = true;
+    const event: GameEvent = {
+      id: 'earliestProbe',
+      condition: () => open,
+      timeProbability: 60,
+      earliestMinutes: 39,
+      repeatable: true,
+      message: 'probe',
+      choices: [{ id: 'take', effect: () => ({}) }],
+    };
+    const state = createInitialState();
+
+    const first = EventManager.checkEvents(state, [event]);
+    expect(first.newLogEntries).toHaveLength(0);
+    expect(first.stateChanges.eventEligibleAt).toEqual({ earliestProbe: now });
+
+    const early = EventManager.checkEvents(
+      { ...state, eventEligibleAt: { earliestProbe: now } },
+      [event],
+    );
+    expect(early.newLogEntries).toHaveLength(0);
+    expect(early.stateChanges.eventEligibleAt).toBeUndefined();
+
+    vi.spyOn(Date, 'now').mockReturnValue(now + 39 * 60 * 1000);
+    const ready = EventManager.checkEvents(
+      { ...state, eventEligibleAt: { earliestProbe: now } },
+      [event],
+    );
+    expect(ready.newLogEntries.some((entry) => entry.eventId === 'earliestProbe')).toBe(
+      true,
+    );
+    expect(ready.stateChanges.eventEligibleAt).toBeUndefined();
+  });
+
+  it('restarts earliestMinutes when the condition becomes false', () => {
+    const now = 1_700_000_000_000;
+    vi.spyOn(Date, 'now').mockReturnValue(now);
+    let open = false;
+    const event: GameEvent = {
+      id: 'earliestProbe',
+      condition: () => open,
+      timeProbability: 60,
+      earliestMinutes: 39,
+      repeatable: true,
+      message: 'probe',
+    };
+    const state = {
+      ...createInitialState(),
+      eventEligibleAt: { earliestProbe: now - 60 * 60 * 1000 },
+    };
+
+    const cleared = EventManager.checkEvents(state, [event]);
+    expect(cleared.stateChanges.eventEligibleAt).toEqual({});
+    expect(cleared.newLogEntries).toHaveLength(0);
+
+    open = true;
+    const restarted = EventManager.checkEvents(
+      { ...state, eventEligibleAt: {} },
+      [event],
+    );
+    expect(restarted.newLogEntries).toHaveLength(0);
+    expect(restarted.stateChanges.eventEligibleAt).toEqual({
+      earliestProbe: now,
+    });
+  });
+
+  it('starts the earliestMinutes clock while a dialog gap is holding the roll', () => {
+    const now = 1_700_000_000_000;
+    vi.spyOn(Date, 'now').mockReturnValue(now);
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+    const event: GameEvent = {
+      id: 'earliestProbe',
+      condition: () => true,
+      timeProbability: 60,
+      earliestMinutes: 39,
+      repeatable: true,
+      message: 'probe',
+      choices: [{ id: 'take', effect: () => ({}) }],
+    };
+    const state = {
+      ...createInitialState(),
+      eventDialog: { isOpen: false, lastEndedAt: now },
+    } as EventRollState;
+
+    const held = EventManager.checkEvents(state, [event]);
+    expect(held.newLogEntries).toHaveLength(0);
+    expect(held.stateChanges.eventEligibleAt).toEqual({ earliestProbe: now });
   });
 
   it('clears a pending snapshot when the event no longer exists', () => {

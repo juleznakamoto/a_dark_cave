@@ -268,6 +268,26 @@ export const CRUEL_MODE = {
     silverMin: { base: 200, whenCruel: 100 },
   },
 
+  woodcutter: {
+    attack: {
+      /** 25% + 1% per Strength. Cruel-only, so the usual 10% cruel penalty stays off. */
+      successBase: 0.25,
+      successPerStrength: 0.01,
+      cruelPenalty: 0,
+      /** Gold on the killing blow. Visit 1 pays 50, visit 6 pays 300. */
+      goldPerVisit: 50,
+      /** Deaths on a lost fight: level times min, through level times max. Visit 1 is 1-2, visit 6 is 6-12. */
+      deathMinMultiplier: 1,
+      deathMaxMultiplier: 2,
+    },
+    remains: {
+      /** Average minutes after the loss before the body can be found. */
+      timeProbabilityMinutes: 60,
+      /** Floor before that roll. 0.65 of the 60 minute average. */
+      earliestMinutes: 39,
+    },
+  },
+
   youngWomanProtest: {
     banishLeavers: { base: 10, whenCruel: 5 },
     sacrificeLeavers: { base: 21, whenCruel: 10 },

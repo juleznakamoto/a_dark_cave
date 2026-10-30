@@ -18,6 +18,14 @@ export interface GameEvent {
   repeatable?: boolean;
   priority?: number; // Higher priority events check first
   timeProbability?: number | ((state: GameState) => number); // Average minutes between triggers
+  /**
+   * Minimum minutes the condition must stay true before the event may trigger.
+   * The clock starts on the first check where the condition is true, and
+   * restarts if the condition becomes false. `timeProbability` is rolled only
+   * after this wait. A repeat whose condition never went false does not wait
+   * again; `cooldownPercent` still gates that repeat.
+   */
+  earliestMinutes?: number;
   cooldownPercent?: number; // Cooldown as fraction of timeProbability (e.g. 0.25 = 25%). Default: 0.25
   effect?: (state: GameState) => Partial<GameState>;
   // New timed choice properties
