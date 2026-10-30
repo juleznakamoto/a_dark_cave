@@ -196,12 +196,19 @@ export const CRUEL_MODE = {
 
   particles: {
     initialSpawn: { normal: 2, cruel: 20 },
-    hoverSpawn: { normal: 2, cruel: 10 },
+    hoverSpawn: { normal: 2, cruel: 20 },
     rampMax: { normal: 10, cruel: 100 },
     rampFloor: { normal: 1, cruel: 10 },
     rampRandomRange: { normal: 7, cruel: 70 },
     rampPostPlateau: { normal: 6, cruel: 60 },
-    clickBurst: { normal: 100, cruel: 200 },
+    clickBurst: { normal: 100, cruel: 250 },
+    /** Travel distance in px: min + random * range. */
+    travel: {
+      normal: { min: 40, range: 180 },
+      cruel: { min: 80, range: 280 },
+    },
+    /** Upward cone width in degrees, centered on straight up. */
+    coneDegrees: { normal: 120, cruel: 140 },
   },
 
   forestExpedition: {

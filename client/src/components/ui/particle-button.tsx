@@ -132,13 +132,21 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
         const spawnSparks = () => {
             if (!buttonRef.current) return;
             const buttonWidth = buttonRef.current.offsetWidth;
+            const travel = cruelMode
+                ? CRUEL_MODE.particles.travel.cruel
+                : CRUEL_MODE.particles.travel.normal;
+            const coneDegrees = cruelMode
+                ? CRUEL_MODE.particles.coneDegrees.cruel
+                : CRUEL_MODE.particles.coneDegrees.normal;
 
             const count = spawnCountRef.current; // dynamic number of sparks
             const newSparks: Spark[] = Array.from({ length: count }).map(
                 () => ({
                     id: idRef.current++,
-                    angle: (Math.random() * 120 - 150) * (Math.PI / 180),
-                    distance: Math.random() * 180 + 40,
+                    angle:
+                        (Math.random() * coneDegrees - (90 + coneDegrees / 2)) *
+                        (Math.PI / 180),
+                    distance: Math.random() * travel.range + travel.min,
                     color: colors[Math.floor(Math.random() * colors.length)],
                     lifetime: 0.8 + Math.random() * 1.2,
                     offsetX: buttonWidth * 0.5 + (Math.random() * 74 - 37),
