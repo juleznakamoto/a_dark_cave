@@ -205,10 +205,10 @@ export const CRUEL_MODE = {
     /** Travel distance in px: min + random * range. */
     travel: {
       normal: { min: 40, range: 180 },
-      cruel: { min: 80, range: 280 },
+      cruel: { min: 100, range: 300 },
     },
     /** Upward cone width in degrees, centered on straight up. */
-    coneDegrees: { normal: 120, cruel: 140 },
+    coneDegrees: { normal: 120, cruel: 150 },
   },
 
   forestExpedition: {
