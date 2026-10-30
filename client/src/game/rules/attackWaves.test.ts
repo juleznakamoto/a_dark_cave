@@ -311,8 +311,8 @@ describe("attack waves expansion", () => {
     const enemy = result._combatData?.enemy;
     expect(enemy?.isBoss).toBe(true);
     expect(enemy?.name).toBe("Pale Beasts");
-    expect(enemy?.healChancePercent).toBe(15);
-    expect(enemy?.stunChancePercent).toBe(10);
+    expect(enemy?.healChancePercent).toBe(10);
+    expect(enemy?.stunChancePercent).toBe(5);
 
     const victory = result._combatData?.onVictory?.() as {
       stats?: { madnessFromEvents?: number };

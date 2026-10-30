@@ -75,9 +75,12 @@ export function handleWoodenCabin(
       type: "system",
     });
   } else {
-    if (isCompletingExecution) {
-      result.stateUpdates.resources = { ...state.resources };
-    }
+    result.stateUpdates.resources = {
+      ...state.resources,
+      ...(isCompletingExecution
+        ? {}
+        : { food: (state.resources.food || 0) - 1000 }),
+    };
     const deaths = CRUEL_MODE.forestScout.woodenCabin.failureDeaths;
     const villagerDeaths = Math.min(
       state.current_population,

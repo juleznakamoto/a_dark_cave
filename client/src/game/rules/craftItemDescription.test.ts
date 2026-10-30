@@ -1,11 +1,16 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import i18n from "@/i18n/index";
+import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
 import {
   craftActionIdToItemKey,
   getCraftItemDescription,
 } from "./craftItemDescription";
 
 describe("craftItemDescription", () => {
+  beforeAll(async () => {
+    await ensureGameplayLocalesLoaded();
+  });
+
   beforeEach(async () => {
     await i18n.changeLanguage("de");
   });

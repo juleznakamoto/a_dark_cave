@@ -1,10 +1,10 @@
 import type { GameState } from "@shared/schema";
+import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 import {
   getTotalStrength,
   getTotalLuck,
   getTotalKnowledge,
 } from "./effectsCalculation";
-import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 
 export type SuccessChanceStatType = "strength" | "knowledge" | "luck";
 

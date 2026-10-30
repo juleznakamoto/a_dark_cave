@@ -71,6 +71,7 @@ describe("village silver coin reward", () => {
 describe("village silver coin spawns", () => {
   it("does nothing until the map is unlocked", () => {
     const state = buildDevSave("village");
+    state.flags.mapUnlocked = false;
     expect(tickVillageMapSilver(state, () => 0)).toBeNull();
   });
 

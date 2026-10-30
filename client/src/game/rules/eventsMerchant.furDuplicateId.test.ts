@@ -111,7 +111,7 @@ describe("merchant post-last-wave totem buys", () => {
   it("offers one or both bone/leather totems after wave 10 victory", () => {
     const state = gameStateSchema.parse({
       buildings: { woodenHut: 10, stoneHut: 8, tradePost: 1 },
-      resources: { gold: 50_000 },
+      resources: { gold: 50_000, steel: 1, blacksteel: 1 },
       story: { seen: { secondBossWaveVictory: true } },
     });
 
@@ -232,6 +232,7 @@ describe("merchant post-last-wave clarity elixir", () => {
   it("is eligible after wave 10 when Mental Clarity is incomplete, even at 0 Madness", () => {
     const state = gameStateSchema.parse({
       buildings: { woodenHut: 10, stoneHut: 8, tradePost: 1 },
+      books: { book_of_trials: true, book_of_absolution: true },
       resources: { gold: 50_000 },
       stats: { madnessFromEvents: 0 },
       story: { seen: { secondBossWaveVictory: true, clarityElixirsUsed: 4 } },

@@ -34,13 +34,13 @@ describe("getBuildingUpgradeMarginalEffectLines", () => {
 
     expect(
       getBuildingUpgradeMarginalEffectLines("scribesOffice", state),
-    ).toEqual(["Adds 2 villager job preset slots"]);
+    ).toEqual(["Makes 2 villager job preset slots available for Insight"]);
     expect(
       getBuildingUpgradeMarginalEffectLines("recordsHall", state),
-    ).toEqual(["Adds 1 villager job preset slot"]);
+    ).toEqual(["Makes 1 villager job preset slot available for Insight"]);
     expect(
       getBuildingUpgradeMarginalEffectLines("grandArchive", state),
-    ).toEqual(["Adds 2 villager job preset slots"]);
+    ).toEqual(["Makes 2 villager job preset slots available for Insight"]);
   });
 
   it("housing build tooltips show the next hut increment, not stacked max pop", () => {

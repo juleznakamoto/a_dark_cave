@@ -1077,13 +1077,14 @@ export function migrateCubeStoryArchiveOnLoad(
       : Math.min(legacyExploreCount, 3);
   }
 
-  const nextEvents = { ...state.events };
-  if (state.events.cube01 && !state.events.cubeLostCivilization) {
+  const events = state.events ?? {};
+  const nextEvents = { ...events };
+  if (events.cube01 && !events.cubeLostCivilization) {
     nextEvents.cubeLostCivilization = true;
   }
   if (
-    (state.events.cube06 || seen.portalBlasted) &&
-    !state.events.cubeLostKnowledge
+    (events.cube06 || seen.portalBlasted) &&
+    !events.cubeLostKnowledge
   ) {
     nextEvents.cubeLostKnowledge = true;
   }
@@ -1106,11 +1107,9 @@ export function migrateCubeHesitantOnLoad(
   const seen = state.story?.seen ?? {};
   if (seen[CUBE_HESITANT_V3_APPLIED_KEY]) return null;
 
-  const nextEvents = { ...state.events };
-  if (
-    (state.events.cube10 || seen.sixthWaveVictory) &&
-    !state.events.cubeHesitant
-  ) {
+  const events = state.events ?? {};
+  const nextEvents = { ...events };
+  if ((events.cube10 || seen.sixthWaveVictory) && !events.cubeHesitant) {
     nextEvents.cubeHesitant = true;
   }
 

@@ -662,10 +662,10 @@ export const forestTradeActions: Record<string, Action> = {
     show_when: {
       "story.seen.secondBossWaveVictory": true,
     },
-    cost: {
+    cost: (_state: GameState) => ({
       "resources.gold":
         POST_GAME_TOTEM_BATCH * getMerchantGoldPricePerUnit("bone_totem"),
-    },
+    }),
     effects: {
       "resources.bone_totem": POST_GAME_TOTEM_BATCH,
     },
@@ -677,10 +677,10 @@ export const forestTradeActions: Record<string, Action> = {
     show_when: {
       "story.seen.secondBossWaveVictory": true,
     },
-    cost: {
+    cost: (_state: GameState) => ({
       "resources.gold":
         POST_GAME_TOTEM_BATCH * getMerchantGoldPricePerUnit("leather_totem"),
-    },
+    }),
     effects: {
       "resources.leather_totem": POST_GAME_TOTEM_BATCH,
     },
