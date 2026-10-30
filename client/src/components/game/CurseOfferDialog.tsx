@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useGameStore } from "@/game/state";
@@ -36,6 +35,28 @@ function CurseOfferDialogOpen() {
     }
     return initial;
   });
+
+  const [shown, setShown] = useState(0);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (media.matches) {
+      setShown(CRUEL_CURSE_IDS.length + 1);
+      return;
+    }
+    const timers = CRUEL_CURSE_IDS.map((_, index) =>
+      window.setTimeout(() => setShown(index + 1), 500 * (index + 1)),
+    );
+    timers.push(
+      window.setTimeout(
+        () => setShown(CRUEL_CURSE_IDS.length + 1),
+        500 * (CRUEL_CURSE_IDS.length + 1),
+      ),
+    );
+    return () => {
+      for (const id of timers) window.clearTimeout(id);
+    };
+  }, []);
 
   const toggle = (id: CruelCurseId) => {
     setSelected((prev) => {
@@ -96,8 +117,9 @@ function CurseOfferDialogOpen() {
           </h2>
 
           <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-stretch sm:justify-center">
-            {CRUEL_CURSE_IDS.map((curseId) => {
+            {CRUEL_CURSE_IDS.map((curseId, index) => {
               const isSelected = selected.has(curseId);
+              const isShown = index < shown;
               const name = t(`curseOffer.cards.${curseId}.name`);
               const ruleColor = isSelected ? "#ef4444" : "#991b1b";
 
@@ -106,9 +128,15 @@ function CurseOfferDialogOpen() {
                   key={curseId}
                   type="button"
                   aria-pressed={isSelected}
-                  onClick={() => toggle(curseId)}
+                  aria-hidden={!isShown}
+                  tabIndex={isShown ? 0 : -1}
+                  onClick={() => {
+                    if (!isShown) return;
+                    toggle(curseId);
+                  }}
                   className={cn(
-                    "curse-offer-card group relative z-0 flex w-[13.5rem] flex-col overflow-visible rounded-lg bg-background p-3 text-left shadow-2xl sm:w-[16rem] sm:p-5",
+                    "curse-offer-card group relative z-0 flex w-[13.5rem] flex-col overflow-visible rounded-lg bg-background p-3 text-left shadow-2xl transition-opacity duration-500 ease-out sm:w-[16rem] sm:p-5",
+                    isShown ? "opacity-100" : "pointer-events-none opacity-0",
                     chromeOn
                       ? `${gameChromeDialogClassName()} game-chrome-rule--round`
                       : cn(
@@ -136,18 +164,6 @@ function CurseOfferDialogOpen() {
                         : "opacity-40 group-hover:opacity-100 group-focus-visible:opacity-100",
                     )}
                   />
-
-                  <span
-                    aria-hidden="true"
-                    className={cn(
-                      "absolute right-2.5 top-2.5 flex h-4 w-4 items-center justify-center border",
-                      isSelected
-                        ? "border-red-500 bg-red-600 text-white"
-                        : "border-red-800 bg-transparent text-transparent",
-                    )}
-                  >
-                    <Check className="h-3 w-3" strokeWidth={3} />
-                  </span>
 
                   <div className="mb-3 flex justify-center text-foreground">
                     <SidePanelSectionIcon
@@ -182,9 +198,14 @@ function CurseOfferDialogOpen() {
             type="button"
             variant="outline"
             button_id="curse-offer-continue"
+            aria-hidden={shown <= CRUEL_CURSE_IDS.length}
+            tabIndex={shown > CRUEL_CURSE_IDS.length ? 0 : -1}
             className={cn(
-              "mt-6 min-w-[10rem] border-red-600 bg-red-600/10 text-foreground",
+              "mt-6 min-w-[10rem] border-red-600 bg-red-600/10 text-foreground transition-opacity duration-500 ease-out",
               "hover:bg-red-600/20 hover:text-foreground",
+              shown > CRUEL_CURSE_IDS.length
+                ? "opacity-100"
+                : "pointer-events-none opacity-0",
             )}
             style={chromeRuleColorStyle("#dc2626")}
             onClick={() => confirmCruelCurses([...selected])}

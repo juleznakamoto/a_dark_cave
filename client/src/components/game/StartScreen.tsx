@@ -1080,9 +1080,38 @@ export default function StartScreen({
         .fire-glow-hint {
           animation: fire-glow-pulse 2.5s ease-in-out 8.5s infinite;
         }
+
+        @keyframes cruel-start-vignette {
+          0%, 100% { opacity: 0.4; }
+          50% { opacity: 1; }
+        }
+
+        .cruel-start-vignette {
+          background: radial-gradient(
+            ellipse at center,
+            rgba(160, 24, 24, 0) 46%,
+            rgba(170, 28, 28, 0.2) 72%,
+            rgba(150, 20, 20, 0.42) 100%
+          );
+          animation: cruel-start-vignette 4s ease-in-out infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .cruel-start-vignette {
+            animation: none;
+            opacity: 0.7;
+          }
+        }
       `}</style>
 
       {CloudShaderCmp ? <CloudShaderCmp /> : null}
+
+      {isCruelMode && (
+        <div
+          aria-hidden
+          className="cruel-start-vignette pointer-events-none absolute inset-0 z-[1]"
+        />
+      )}
 
       {showEyesEasterEgg && (
         <img
