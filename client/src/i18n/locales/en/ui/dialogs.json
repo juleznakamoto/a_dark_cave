@@ -29,6 +29,27 @@
     "title": "Choose a Blessing",
     "chooseBlessing": "Choose"
   },
+  "curseOffer": {
+    "title": "Choose your Curses",
+    "continue": "Continue",
+    "cards": {
+      "ashen_harvest": {
+        "name": "Ashen Harvest",
+        "curse": "Food gains are reduced",
+        "boon": "Wood gains are increased"
+      },
+      "crowded_graves": {
+        "name": "Crowded Graves",
+        "curse": "Villagers fall more often",
+        "boon": "The living work faster"
+      },
+      "loud_omens": {
+        "name": "Loud Omens",
+        "curse": "Misfortune strikes more often",
+        "boon": "Insight gains are increased"
+      }
+    }
+  },
   "socialPrompt": {
     "title": "Earn Rewards",
     "description": "Complete the tasks below to receive bonuses. Complete all tasks to receive an exclusive item.",

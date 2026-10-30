@@ -29,6 +29,27 @@
     "title": "选择一项祝福",
     "chooseBlessing": "选择"
   },
+  "curseOffer": {
+    "title": "选择你的诅咒",
+    "continue": "继续",
+    "cards": {
+      "ashen_harvest": {
+        "name": "灰烬收获",
+        "curse": "获得的食物减少",
+        "boon": "获得的木材增加"
+      },
+      "crowded_graves": {
+        "name": "拥挤的坟墓",
+        "curse": "村民更容易倒下",
+        "boon": "生者干活更快"
+      },
+      "loud_omens": {
+        "name": "喧闹的预兆",
+        "curse": "厄运更常降临",
+        "boon": "获得的洞见增加"
+      }
+    }
+  },
   "socialPrompt": {
     "title": "赢取奖励",
     "description": "完成下方任务以获得奖励。全部完成可获得专属物品。",

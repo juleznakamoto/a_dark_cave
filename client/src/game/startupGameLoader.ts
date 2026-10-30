@@ -62,7 +62,16 @@ export function commitMakeFireStart(
     });
     return;
   }
-  useGameStore.setState(preferences);
+  useGameStore.setState({
+    ...preferences,
+    ...(preferences.cruelMode
+      ? {
+          cruelCurseOfferPending: true,
+          curseOfferDialogOpen: true,
+          chosenCruelCurses: [],
+        }
+      : {}),
+  });
   useGameStore.getState().trackButtonClick("make-fire");
   useGameStore.getState().executeAction("makeFire");
   const nextFlags = useGameStore.getState().flags;

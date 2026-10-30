@@ -22,6 +22,7 @@ export function getTimedEventTabCleanupPatch(
     gamblerGame: null,
     gamblerDiceDialogOpen: false,
     blessingOfferDialogOpen: false,
+    curseOfferDialogOpen: false,
     merchantTrades: { choices: [], purchasedIds: [] },
     ...(activeTab === "timedevent" ? { activeTab: "cave" as const } : {}),
   };

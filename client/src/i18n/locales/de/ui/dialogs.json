@@ -29,6 +29,27 @@
     "title": "Wähle einen Segen",
     "chooseBlessing": "Wählen"
   },
+  "curseOffer": {
+    "title": "Wähle deine Flüche",
+    "continue": "Weiter",
+    "cards": {
+      "ashen_harvest": {
+        "name": "Ascheernte",
+        "curse": "Weniger Nahrung",
+        "boon": "Mehr Holz"
+      },
+      "crowded_graves": {
+        "name": "Volle Gräber",
+        "curse": "Dorfbewohner fallen häufiger",
+        "boon": "Die Lebenden arbeiten schneller"
+      },
+      "loud_omens": {
+        "name": "Laute Omen",
+        "curse": "Unglück trifft häufiger",
+        "boon": "Mehr Einsicht"
+      }
+    }
+  },
   "socialPrompt": {
     "title": "Verdiene Belohnungen",
     "description": "Schließe die Aufgaben unten ab, um Boni zu erhalten. Schließe alle Aufgaben ab, um einen exklusiven Gegenstand zu erhalten.",

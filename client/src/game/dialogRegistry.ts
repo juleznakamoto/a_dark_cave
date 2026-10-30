@@ -158,6 +158,13 @@ export const GAME_DIALOG_REGISTRY: readonly DialogRegistryEntry[] = [
     resetOnLoad: false,
   },
   {
+    id: "curseOffer",
+    storeKey: "curseOfferDialogOpen",
+    kind: "boolean",
+    blocking: true,
+    resetOnLoad: false,
+  },
+  {
     id: "reward",
     storeKey: "rewardDialog",
     kind: "objectIsOpen",

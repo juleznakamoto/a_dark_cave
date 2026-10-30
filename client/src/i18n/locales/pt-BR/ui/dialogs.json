@@ -29,6 +29,27 @@
     "title": "Escolha uma Bênção",
     "chooseBlessing": "Escolher"
   },
+  "curseOffer": {
+    "title": "Escolha suas maldições",
+    "continue": "Continuar",
+    "cards": {
+      "ashen_harvest": {
+        "name": "Colheita de cinzas",
+        "curse": "Você ganha menos comida",
+        "boon": "Você ganha mais madeira"
+      },
+      "crowded_graves": {
+        "name": "Túmulos lotados",
+        "curse": "Os aldeões caem com mais frequência",
+        "boon": "Os vivos trabalham mais rápido"
+      },
+      "loud_omens": {
+        "name": "Presságios altos",
+        "curse": "O azar ataca com mais frequência",
+        "boon": "Você ganha mais perspicácia"
+      }
+    }
+  },
   "socialPrompt": {
     "title": "Ganhe Recompensas",
     "description": "Conclua as tarefas abaixo para receber bônus. Conclua todas as tarefas para receber um item exclusivo.",

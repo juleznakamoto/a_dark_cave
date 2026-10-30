@@ -29,6 +29,27 @@
     "title": "Wybierz błogosławieństwo",
     "chooseBlessing": "Wybierz"
   },
+  "curseOffer": {
+    "title": "Wybierz swoje klątwy",
+    "continue": "Kontynuuj",
+    "cards": {
+      "ashen_harvest": {
+        "name": "Popielate żniwa",
+        "curse": "Mniej żywności",
+        "boon": "Więcej drewna"
+      },
+      "crowded_graves": {
+        "name": "Zatłoczone groby",
+        "curse": "Mieszkańcy padają częściej",
+        "boon": "Żywi pracują szybciej"
+      },
+      "loud_omens": {
+        "name": "Głośne omeny",
+        "curse": "Nieszczęście uderza częściej",
+        "boon": "Więcej wglądu"
+      }
+    }
+  },
   "socialPrompt": {
     "title": "Zdobywaj nagrody",
     "description": "Wykonaj zadania poniżej, by dostać premie. Wykonaj wszystkie, by dostać ekskluzywny przedmiot.",

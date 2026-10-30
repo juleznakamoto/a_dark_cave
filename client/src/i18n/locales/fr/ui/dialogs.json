@@ -29,6 +29,27 @@
     "title": "Choisissez une bénédiction",
     "chooseBlessing": "Choisir"
   },
+  "curseOffer": {
+    "title": "Choisissez vos malédictions",
+    "continue": "Continuer",
+    "cards": {
+      "ashen_harvest": {
+        "name": "Moisson de cendres",
+        "curse": "Moins de nourriture",
+        "boon": "Plus de bois"
+      },
+      "crowded_graves": {
+        "name": "Tombes bondées",
+        "curse": "Les villageois tombent plus souvent",
+        "boon": "Les vivants travaillent plus vite"
+      },
+      "loud_omens": {
+        "name": "Présages bruyants",
+        "curse": "Le malheur frappe plus souvent",
+        "boon": "Plus de perspicacité"
+      }
+    }
+  },
   "socialPrompt": {
     "title": "Gagnez des récompenses",
     "description": "Accomplissez les tâches ci-dessous pour recevoir des bonus. Accomplissez toutes les tâches pour recevoir un objet exclusif.",

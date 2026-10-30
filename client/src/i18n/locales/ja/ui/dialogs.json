@@ -29,6 +29,27 @@
     "title": "祝福を選ぶ",
     "chooseBlessing": "選ぶ"
   },
+  "curseOffer": {
+    "title": "呪いを選ぶ",
+    "continue": "続ける",
+    "cards": {
+      "ashen_harvest": {
+        "name": "灰の収穫",
+        "curse": "食料の獲得が減る",
+        "boon": "木材の獲得が増える"
+      },
+      "crowded_graves": {
+        "name": "混み合う墓",
+        "curse": "村人が倒れやすくなる",
+        "boon": "生き残った者はより速く働く"
+      },
+      "loud_omens": {
+        "name": "騒がしい兆し",
+        "curse": "不幸がより頻繁に訪れる",
+        "boon": "洞察の獲得が増える"
+      }
+    }
+  },
   "socialPrompt": {
     "title": "報酬を得る",
     "description": "下の課題を完了するとボーナスがもらえます。すべて完了すると限定アイテムがもらえます。",

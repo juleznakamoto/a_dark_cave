@@ -66,6 +66,7 @@ import InsightPotionDialog from "./InsightPotionDialog";
 import InsightIntroDialog from "./InsightIntroDialog";
 import VillageEffectDialog from "./VillageEffectDialog";
 import BlessingOfferDialog from "./BlessingOfferDialog";
+import CurseOfferDialog from "./CurseOfferDialog";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
 import { ProfileMenuProvider } from "./ProfileMenu";
@@ -1801,6 +1802,7 @@ export default function GameContainer() {
             onClose={() => setVillageEffectDialog(false)}
           />
           <BlessingOfferDialog />
+          <CurseOfferDialog />
           <DestroyedChromeScope allow={false}>
             {demoEditionActive && <DemoTimeUpDialog />}
           </DestroyedChromeScope>

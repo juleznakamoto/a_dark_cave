@@ -161,7 +161,7 @@ export function RestartGameDialog({
                     tooltip={<CruelModeRestartTooltip />}
                     tooltipId="restart-cruel-mode-info"
                     disabled
-                    tooltipContentClassName="max-w-xs border border-amber-600"
+                    tooltipContentClassName="max-w-xs border border-red-600 shadow-[0_0_10px_theme(colors.red.600/0.55)]"
                     className={GAME_INFO_TRIGGER_CLASS}
                   >
                     <span

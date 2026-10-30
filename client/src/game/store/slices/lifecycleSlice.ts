@@ -2,6 +2,7 @@ import type { GameStore } from "../types";
 import type { GameStoreCreator } from "./types";
 import { GameState } from "@shared/schema";
 import { sanitizeActionUnlockOrder } from "@/game/actionUnlockOrder";
+import { sanitizeChosenCruelCurses } from "@/game/rules/cruelCurses";
 import { pruneReadLogIds } from "@/game/persistedStateBoundary";
 import {
   isFullGameUnlockedEdition,
@@ -360,6 +361,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       idleModeDialog: { isOpen: false }, // Explicitly ensure idle mode dialog is closed
       ...getTimedEventTabCleanupPatch(get().activeTab),
       investDialogOpen: false,
+      curseOfferDialogOpen: false,
       restartGameDialogOpen: false,
       restartGamePreferCruelMode: false,
       deleteAccountDialogOpen: false,
@@ -604,6 +606,10 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
         effects: calculateTotalEffects(stateForDerived),
         bastion_stats: calculateBastionStats(stateForDerived),
         cruelMode,
+        chosenCruelCurses: sanitizeChosenCruelCurses(
+          savedState.chosenCruelCurses,
+        ),
+        cruelCurseOfferPending: savedState.cruelCurseOfferPending === true,
         absolvedItems,
         activatedPurchases: savedState.activatedPurchases || {},
         feastActivations: savedState.feastActivations || {},
@@ -807,6 +813,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
         // Resume after the reset so a live gambler round can reopen the table.
         activeTab,
         gamblerDiceDialogOpen,
+        curseOfferDialogOpen: savedState.cruelCurseOfferPending === true,
       };
 
       const migrated = applyGameStateLoadMigrations(loadedState);

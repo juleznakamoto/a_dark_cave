@@ -107,6 +107,27 @@ describe("startup game hydration handoff", () => {
     expect(mockTrackButtonClick).not.toHaveBeenCalled();
   });
 
+  it("opens the curse offer when a new Cruel Mode run starts", async () => {
+    const loader = await import("./startupGameLoader");
+
+    loader.commitMakeFireStart({
+      cruelMode: true,
+      musicMuted: false,
+      sfxMuted: false,
+      musicVolume: 1,
+      sfxVolume: 1,
+    });
+
+    expect(mockSetState).toHaveBeenCalledWith(
+      expect.objectContaining({
+        cruelMode: true,
+        cruelCurseOfferPending: true,
+        curseOfferDialogOpen: true,
+        chosenCruelCurses: [],
+      }),
+    );
+  });
+
   it("forces gameStarted when Make Fire executeAction is a no-op", async () => {
     const loader = await import("./startupGameLoader");
     mockExecuteAction.mockImplementation(() => {

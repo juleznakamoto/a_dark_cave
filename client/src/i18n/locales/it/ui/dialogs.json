@@ -29,6 +29,27 @@
     "title": "Scegli una benedizione",
     "chooseBlessing": "Scegli"
   },
+  "curseOffer": {
+    "title": "Scegli le tue maledizioni",
+    "continue": "Continua",
+    "cards": {
+      "ashen_harvest": {
+        "name": "Mietitura di cenere",
+        "curse": "Ottieni meno cibo",
+        "boon": "Ottieni più legna"
+      },
+      "crowded_graves": {
+        "name": "Tombe affollate",
+        "curse": "Gli abitanti cadono più spesso",
+        "boon": "I vivi lavorano più in fretta"
+      },
+      "loud_omens": {
+        "name": "Presagi rumorosi",
+        "curse": "La sventura colpisce più spesso",
+        "boon": "Ottieni più intuizione"
+      }
+    }
+  },
   "socialPrompt": {
     "title": "Guadagna ricompense",
     "description": "Completa le attività qui sotto per ricevere bonus. Completa tutte le attività per ricevere un oggetto esclusivo.",

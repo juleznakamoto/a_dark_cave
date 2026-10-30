@@ -29,6 +29,27 @@
     "title": "Elige una bendición",
     "chooseBlessing": "Elegir"
   },
+  "curseOffer": {
+    "title": "Elige tus maldiciones",
+    "continue": "Continuar",
+    "cards": {
+      "ashen_harvest": {
+        "name": "Cosecha de ceniza",
+        "curse": "Obtienes menos comida",
+        "boon": "Obtienes más madera"
+      },
+      "crowded_graves": {
+        "name": "Tumbas abarrotadas",
+        "curse": "Los aldeanos caen más a menudo",
+        "boon": "Los vivos trabajan más rápido"
+      },
+      "loud_omens": {
+        "name": "Augurios ruidosos",
+        "curse": "La desgracia golpea más a menudo",
+        "boon": "Obtienes más perspicacia"
+      }
+    }
+  },
   "socialPrompt": {
     "title": "Gana recompensas",
     "description": "Completa las tareas siguientes para recibir bonificaciones. Completa todas las tareas para recibir un objeto exclusivo.",

@@ -708,6 +708,10 @@ export const gameStateSchema = z.object({
   activatedPurchases: z.record(z.boolean()).default({}),
   feastActivations: z.record(z.number()).default({}), // purchaseId -> activations remaining
   cruelMode: z.boolean().default(false), // Cruel mode flag
+  /** Curse ids picked on the Cruel Mode opening offer. */
+  chosenCruelCurses: z.array(z.string()).default([]),
+  /** Opening curse offer is still waiting for Continue. */
+  cruelCurseOfferPending: z.boolean().default(false),
   /** Meta: won the game at least once (any difficulty). Persists across restarts. */
   hasWonAnyGame: z.boolean().default(false),
   /** Meta: won while not in Cruel Mode. Persists across restarts. */

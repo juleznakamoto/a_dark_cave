@@ -44,6 +44,7 @@ export const initialRuntimeState: Partial<GameStore> = {
   shopFilter: null,
   gamblerDiceDialogOpen: false,
   blessingOfferDialogOpen: false,
+  curseOfferDialogOpen: false,
   investDialogOpen: false,
   investmentResultDialog: {
     isOpen: false,
