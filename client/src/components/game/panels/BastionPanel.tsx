@@ -1,5 +1,5 @@
 import type { GameState } from "@shared/schema";
-import { useGameStoreWithoutTickClock } from "@/game/useGameStoreWithoutTickClock";
+import { useGameStoreWhileActive } from "@/game/useGameStoreWithoutTickClock";
 import {
   canExecuteAction,
   getActionCostBreakdown,
@@ -37,7 +37,7 @@ export default function BastionPanel({
 }) {
   const { t } = useUiTranslation();
   const catalogActive = useDemoEndCatalogActive();
-  const store = useGameStoreWithoutTickClock();
+  const store = useGameStoreWhileActive(active);
   const { buildings, setHighlightedResources, executeAction } = store;
   const state = store as unknown as GameState;
 

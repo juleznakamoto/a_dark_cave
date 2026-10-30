@@ -175,6 +175,40 @@ export type JobProductionCompositionLine = {
   amount: number;
 };
 
+type PopulationProductionRow = {
+  resource: string;
+  amount: number;
+  interval: number;
+  baseAmount: number;
+  totalAmount: number;
+};
+
+/**
+ * One state object is read by the side panel and the job rows in the same
+ * turn. The store replaces that object on the next write, so a feast expiring
+ * or a building changing is a cache miss. Callers must not mutate the state
+ * object in place. Returned rows are copies, so editing a total cannot poison
+ * the next read.
+ */
+const populationProductionCache = new WeakMap<
+  GameState,
+  Map<string, PopulationProductionRow[]>
+>();
+
+function populationProductionCacheKey(
+  jobId: string,
+  count: number,
+  excludeTemporary: boolean,
+): string {
+  return `${jobId}\0${count}\0${excludeTemporary ? 1 : 0}`;
+}
+
+function copyPopulationProduction(
+  rows: PopulationProductionRow[],
+): PopulationProductionRow[] {
+  return rows.map((row) => ({ ...row }));
+}
+
 export interface GetPopulationProductionOptions {
   /** When true, excludes temporary bonuses (feast, solstice gathering, heartfire, curse, frostfall, fog, disgust, mining boost, staring deer, forest fear) and Disgraced Prior food upkeep. Use for sleep / idle eligibility: those effects are inactive while the sim is paused in sleep, and the Prior does not auto-execute. */
   excludeTemporaryBonuses?: boolean;
@@ -248,6 +282,14 @@ export const getPopulationProduction = (
   options?: GetPopulationProductionOptions,
 ) => {
   const excludeTemporary = options?.excludeTemporaryBonuses ?? false;
+  const canCache = Boolean(state) && !options?.composition;
+  if (canCache && state) {
+    const hit = populationProductionCache
+      .get(state)
+      ?.get(populationProductionCacheKey(jobId, count, excludeTemporary));
+    if (hit) return copyPopulationProduction(hit);
+  }
+
   const job = populationJobs[jobId];
   if (!job) return [];
 
@@ -286,45 +328,55 @@ export const getPopulationProduction = (
     note(prod.resource, "base", prod.totalAmount);
   }
 
-  // Apply building production bonuses
+  // Apply building production bonuses. Resolve each built building once per
+  // job, then apply its rates to every output. Unbuilt entries are skipped.
   if (state?.buildings) {
-    baseProduction.forEach((prod) => {
-      let buildingBonusPerWorker = 0;
-      const buildingParts: { sourceId: string; perWorker: number }[] | null =
-        composition ? [] : null;
+    const bonusPerWorker = new Map<string, number>();
+    const bonusParts = composition
+      ? new Map<string, { sourceId: string; perWorker: number }[]>()
+      : null;
 
-      // Check all buildings for production effects that apply to this job
-      Object.entries(villageBuildActions).forEach(([actionId, buildAction]) => {
-        // Resolve productionEffects (can be object or function)
-        const productionEffects = typeof buildAction.productionEffects === 'function'
+    for (const [actionId, buildAction] of Object.entries(villageBuildActions)) {
+      const buildingKey = actionId.replace("build", "");
+      const buildingName =
+        buildingKey.charAt(0).toLowerCase() + buildingKey.slice(1);
+      const buildingCount =
+        state.buildings[buildingName as keyof typeof state.buildings] || 0;
+      if (buildingCount <= 0) continue;
+
+      const productionEffects =
+        typeof buildAction.productionEffects === "function"
           ? buildAction.productionEffects(state)
           : buildAction.productionEffects;
+      const jobEffects = productionEffects?.[jobId];
+      if (!jobEffects) continue;
 
-        if (productionEffects?.[jobId]?.[prod.resource]) {
-          // Extract building name from action ID (e.g., "buildTimberMill" -> "timberMill")
-          const buildingKey = actionId.replace("build", "");
-          const buildingName =
-            buildingKey.charAt(0).toLowerCase() + buildingKey.slice(1);
-          const buildingCount =
-            state.buildings[buildingName as keyof typeof state.buildings] || 0;
-
-          if (buildingCount > 0) {
-            const perWorker =
-              productionEffects[jobId][prod.resource] * buildingCount;
-            buildingBonusPerWorker += perWorker;
-            buildingParts?.push({ sourceId: buildingName, perWorker });
-          }
-        }
-      });
-
-      // Apply per-worker bonus: (baseAmount + buildingBonus) * workerCount
-      prod.totalAmount = (prod.baseAmount + buildingBonusPerWorker) * count;
-      if (buildingParts) {
-        for (const part of buildingParts) {
-          note(prod.resource, part.sourceId, part.perWorker * count);
+      for (const prod of baseProduction) {
+        const rate = jobEffects[prod.resource];
+        if (!rate) continue;
+        const perWorker = rate * buildingCount;
+        bonusPerWorker.set(
+          prod.resource,
+          (bonusPerWorker.get(prod.resource) ?? 0) + perWorker,
+        );
+        if (bonusParts) {
+          const parts = bonusParts.get(prod.resource);
+          if (parts) parts.push({ sourceId: buildingName, perWorker });
+          else bonusParts.set(prod.resource, [{ sourceId: buildingName, perWorker }]);
         }
       }
-    });
+    }
+
+    for (const prod of baseProduction) {
+      // (baseAmount + buildingBonus) * workerCount
+      prod.totalAmount =
+        (prod.baseAmount + (bonusPerWorker.get(prod.resource) ?? 0)) * count;
+      const parts = bonusParts?.get(prod.resource);
+      if (!parts) continue;
+      for (const part of parts) {
+        note(prod.resource, part.sourceId, part.perWorker * count);
+      }
+    }
   }
 
   // Apply feast multiplier if active
@@ -612,6 +664,17 @@ export const getPopulationProduction = (
     baseProduction.forEach((prod) => {
       scale(prod, "devMode", (n) => n * 9);
     });
+  }
+
+  if (canCache && state) {
+    const key = populationProductionCacheKey(jobId, count, excludeTemporary);
+    let bucket = populationProductionCache.get(state);
+    if (!bucket) {
+      bucket = new Map();
+      populationProductionCache.set(state, bucket);
+    }
+    bucket.set(key, baseProduction);
+    return copyPopulationProduction(baseProduction);
   }
 
   return baseProduction;

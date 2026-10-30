@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useStoreWithEqualityFn } from "zustand/traditional";
 import { useGameStore } from "@/game/state";
 import type { VillagerBlockingState } from "@/game/rules/villagerBlockingActions";
@@ -164,4 +165,34 @@ export function useGameStoreWithoutTickClock(): GameStoreSnapshot {
     (s) => s,
     storeEqualsIgnoringTickClock,
   );
+}
+
+/**
+ * Same snapshot as `useGameStoreWithoutTickClock` while `active` is true.
+ * While the tab is hidden, keep the last snapshot so a resource write does
+ * not redraw the mounted panel. The next active render reads the live store.
+ */
+export function useGameStoreWhileActive(active: boolean): GameStoreSnapshot {
+  const seen = useRef<GameStoreSnapshot>(useGameStore.getState());
+  return useStoreWithEqualityFn(
+    gameStoreIgnoringTickClock,
+    (state) => {
+      if (!active) return seen.current;
+      seen.current = state;
+      return state;
+    },
+    storeEqualsIgnoringTickClock,
+  );
+}
+
+/** Resource slice that stays still while the panel tab is hidden. */
+export function useResourcesWhileActive(
+  active: boolean,
+): GameStoreSnapshot["resources"] {
+  const seen = useRef(useGameStore.getState().resources);
+  return useStoreWithEqualityFn(gameStoreIgnoringTickClock, (state) => {
+    if (!active) return seen.current;
+    seen.current = state.resources;
+    return state.resources;
+  });
 }

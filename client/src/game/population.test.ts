@@ -13,6 +13,7 @@ import {
   VILLAGER_UPKEEP_SOURCE_ID,
   DISGRACED_PRIOR_SOURCE_ID,
 } from './population';
+import { getTotalMadness } from './rules/effectsCalculation';
 import { DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE } from './rules/skillUpgrades';
 import { GameState } from '@shared/schema';
 
@@ -979,5 +980,48 @@ describe('resource production breakdown', () => {
       villagers: { ...createTestState().villagers, gatherer: 1, free: 0 },
     });
     expect(getResourceProductionBreakdown(state, 'gold')).toEqual([]);
+  });
+});
+
+describe('production cache', () => {
+  it('repeats the same totals for one state and ignores edits to a returned row', () => {
+    const state = createTestState({
+      villagers: { ...createTestState().villagers, gatherer: 3, free: 2 },
+      buildings: { ...createTestState().buildings, timberMill: 1 },
+    });
+    const first = getPopulationProduction('gatherer', 3, state);
+    const second = getPopulationProduction('gatherer', 3, state);
+    expect(second).toEqual(first);
+    expect(second).not.toBe(first);
+    second[0].totalAmount = 0;
+    expect(getPopulationProduction('gatherer', 3, state)[0].totalAmount).toBe(
+      first[0].totalAmount,
+    );
+  });
+
+  it('uses a new state object when buildings change', () => {
+    const state = createTestState({
+      villagers: { ...createTestState().villagers, gatherer: 1, free: 4 },
+      buildings: { ...createTestState().buildings, timberMill: 0 },
+    });
+    const before = getPopulationProduction('gatherer', 1, state);
+    const next = createTestState({
+      villagers: state.villagers,
+      buildings: { ...state.buildings, timberMill: 1 },
+    });
+    const after = getPopulationProduction('gatherer', 1, next);
+    expect(after.find((row) => row.resource === 'wood')?.totalAmount).toBeGreaterThan(
+      before.find((row) => row.resource === 'wood')?.totalAmount ?? 0,
+    );
+  });
+
+  it('recalculates madness when the state object changes', () => {
+    const state = createTestState();
+    const first = getTotalMadness(state);
+    const next = createTestState({
+      stats: { ...state.stats, madnessFromEvents: 7 },
+    });
+    expect(getTotalMadness(next)).toBe(first + 7);
+    expect(getTotalMadness(state)).toBe(first);
   });
 });

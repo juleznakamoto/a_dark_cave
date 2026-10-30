@@ -9,6 +9,8 @@ import {
   derivedListEqual,
   storeEqualsIgnoringTickClock,
   useDerivedGameState,
+  useGameStoreWhileActive,
+  useResourcesWhileActive,
 } from "./useGameStoreWithoutTickClock";
 
 describe("storeEqualsIgnoringTickClock", () => {
@@ -190,6 +192,84 @@ describe("useDerivedGameState", () => {
           initialCooldowns: before.initialCooldowns,
           buildings: before.buildings,
         });
+      });
+    }
+  });
+});
+
+describe("hidden panel subscriptions", () => {
+  it("keeps the last store snapshot while the tab is hidden", () => {
+    const before = useGameStore.getState();
+    const { result, rerender } = renderHook(
+      ({ active }: { active: boolean }) => useGameStoreWhileActive(active),
+      { initialProps: { active: true } },
+    );
+    try {
+      act(() => {
+        useGameStore.setState({
+          resources: {
+            ...useGameStore.getState().resources,
+            wood: before.resources.wood + 5,
+          },
+        });
+      });
+      expect(result.current.resources.wood).toBe(before.resources.wood + 5);
+
+      rerender({ active: false });
+      const frozenWood = result.current.resources.wood;
+      act(() => {
+        useGameStore.setState({
+          resources: {
+            ...useGameStore.getState().resources,
+            wood: frozenWood + 5,
+          },
+        });
+      });
+      expect(result.current.resources.wood).toBe(frozenWood);
+
+      rerender({ active: true });
+      expect(result.current.resources.wood).toBe(frozenWood + 5);
+    } finally {
+      act(() => {
+        useGameStore.setState({ resources: before.resources });
+      });
+    }
+  });
+
+  it("keeps the last resource slice while the tab is hidden", () => {
+    const before = useGameStore.getState();
+    const { result, rerender } = renderHook(
+      ({ active }: { active: boolean }) => useResourcesWhileActive(active),
+      { initialProps: { active: true } },
+    );
+    try {
+      act(() => {
+        useGameStore.setState({
+          resources: {
+            ...useGameStore.getState().resources,
+            gold: (before.resources.gold ?? 0) + 3,
+          },
+        });
+      });
+      expect(result.current.gold).toBe((before.resources.gold ?? 0) + 3);
+
+      rerender({ active: false });
+      const frozenGold = result.current.gold;
+      act(() => {
+        useGameStore.setState({
+          resources: {
+            ...useGameStore.getState().resources,
+            gold: (frozenGold ?? 0) + 4,
+          },
+        });
+      });
+      expect(result.current.gold).toBe(frozenGold);
+
+      rerender({ active: true });
+      expect(result.current.gold).toBe((frozenGold ?? 0) + 4);
+    } finally {
+      act(() => {
+        useGameStore.setState({ resources: before.resources });
       });
     }
   });

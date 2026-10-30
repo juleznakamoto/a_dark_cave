@@ -910,9 +910,21 @@ export const getMadnessComponents = (
   return { fromItems, fromBuildings, fromEvents, total };
 };
 
+/**
+ * One resource write asks for madness once per filled job, and the event
+ * scan asks again for every madness condition. Keyed by the state object,
+ * which the store replaces on the next write. Do not mutate that object in
+ * place and expect a new total.
+ */
+const madnessTotalByState = new WeakMap<GameState, number>();
+
 // Helper function to calculate total madness
 export const getTotalMadness = (state: GameState): number => {
-  return getMadnessComponents(state).total;
+  const cached = madnessTotalByState.get(state);
+  if (cached !== undefined) return cached;
+  const total = getMadnessComponents(state).total;
+  madnessTotalByState.set(state, total);
+  return total;
 };
 
 /** Sum of `insightPerCycle` from all active effects (e.g. Unnamed Book). */

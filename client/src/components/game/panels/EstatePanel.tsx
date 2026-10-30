@@ -1,6 +1,7 @@
 import React from "react";
 import { useShallow } from "zustand/react/shallow";
 import { useGameStore } from "@/game/state";
+import { useResourcesWhileActive } from "@/game/useGameStoreWithoutTickClock";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cubeEvents } from "@/game/rules/eventsCube";
 import { resolveEventTitle } from "@/i18n/eventText";
@@ -356,7 +357,6 @@ export default function EstatePanel({
     chainmasterSkills,
     books,
     setHighlightedResources,
-    resources,
     updateFocusState,
     updateResource,
   } = useGameStore(
@@ -374,11 +374,11 @@ export default function EstatePanel({
       chainmasterSkills: s.chainmasterSkills,
       books: s.books,
       setHighlightedResources: s.setHighlightedResources,
-      resources: s.resources,
       updateFocusState: s.updateFocusState,
       updateResource: s.updateResource,
     })),
   );
+  const resources = useResourcesWhileActive(active);
   const state = useGameStore.getState();
   // Calculate focus progress based on game loop timing
   const [focusProgress, setFocusProgress] = React.useState(0);
