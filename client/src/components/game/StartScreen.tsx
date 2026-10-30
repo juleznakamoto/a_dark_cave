@@ -1082,8 +1082,8 @@ export default function StartScreen({
         }
 
         @keyframes cruel-start-vignette {
-          0%, 100% { opacity: 0.4; }
-          50% { opacity: 1; }
+          0%, 100% { opacity: 0.08; }
+          50% { opacity: 0.2; }
         }
 
         .cruel-start-vignette {
@@ -1099,7 +1099,7 @@ export default function StartScreen({
         @media (prefers-reduced-motion: reduce) {
           .cruel-start-vignette {
             animation: none;
-            opacity: 0.7;
+            opacity: 0.14;
           }
         }
       `}</style>
