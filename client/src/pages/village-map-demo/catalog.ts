@@ -373,7 +373,7 @@ export const BUILDINGS: BuildingDef[] = withSavedSlots([
   tier("boneTemple", "Dark", ["Bone Temple"], "outer", { r: 324, deg: 8 }),
   tier("boneyard", "Dark", ["Boneyard"], "outer", { r: 324, deg: 24 }),
   tier("herbGarden", "Dark", ["Herb Garden"], "outer", { r: 324, deg: 40 }),
-  tier("bastion", "Landmarks", ["Bastion"], "outer", { r: 324, deg: 188 }),
+  tier("bastion", "Landmarks", ["Bastion", "High Bastion"], "outer", { r: 324, deg: 188 }),
   tier(
     "watchtower",
     "Landmarks",
@@ -532,6 +532,7 @@ export const GROWTH_STEPS: GrowthStep[] = [
   { label: "Brimstone infusion", brimstoneInfusion: true },
   { label: "Ebon Grace", ebonGrace: true },
   { label: "Dedication", mark: "full", dedication: [...SANCTUM_GODS] },
+  { label: "High Bastion", counts: { bastion: 2 } },
 ];
 
 export const MAP_PRESETS = [

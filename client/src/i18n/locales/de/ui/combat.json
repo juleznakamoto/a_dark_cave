@@ -73,6 +73,7 @@
   },
   "fortifications": {
     "bastion": "Bastion",
+    "bastion2": "Hohe Bastion",
     "fortifiedMoat": "Befestigter Graben",
     "chitinPlating": "Chitinpanzerung",
     "watchtower1": "Wachturm",

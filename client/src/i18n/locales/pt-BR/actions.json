@@ -167,6 +167,10 @@
     "description": "Fogo sagrado que oferece conforto e uma sensação de proteção",
     "label": "Fogo do Coração"
   },
+  "buildHighBastion": {
+    "description": "Fortaleza imponente com alicerces profundos, erguida para resistir quando todo o resto caiu.",
+    "label": "Bastião alto"
+  },
   "buildHighTannery": {
     "description": "Curtume supremo para artesãos especialistas em couro",
     "label": "Alto Curtume"

@@ -73,6 +73,7 @@
   },
   "fortifications": {
     "bastion": "Bastion",
+    "bastion2": "Haut bastion",
     "fortifiedMoat": "Douves fortifiées",
     "chitinPlating": "Blindage de chitine",
     "watchtower1": "Tour de guet",

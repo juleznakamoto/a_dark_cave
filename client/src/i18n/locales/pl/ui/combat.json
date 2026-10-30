@@ -73,6 +73,7 @@
   },
   "fortifications": {
     "bastion": "Bastion",
+    "bastion2": "Wysoki bastion",
     "fortifiedMoat": "Wzmocniona fosa",
     "chitinPlating": "Pancerz z chityny",
     "watchtower1": "Strażnica",

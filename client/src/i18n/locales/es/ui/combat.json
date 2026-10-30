@@ -73,6 +73,7 @@
   },
   "fortifications": {
     "bastion": "Bastión",
+    "bastion2": "Bastión alto",
     "fortifiedMoat": "Foso fortificado",
     "chitinPlating": "Revestimiento de quitina",
     "watchtower1": "Torre de vigilancia",

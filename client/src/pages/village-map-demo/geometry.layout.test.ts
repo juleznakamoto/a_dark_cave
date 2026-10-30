@@ -91,7 +91,6 @@ import {
   bastionChitinPaths,
   bastionChitinChains,
   bastionDrawbridge,
-  drawbridgeChitinGap,
   radialAngle,
   watchtowerChitinPaths,
   watchtowerWidth,
@@ -163,7 +162,10 @@ describe("village map growth", () => {
   it("ends with every building, a level 4 wall, and improved traps", () => {
     const full = applyGrowth(stageForPreset("full"));
     for (const building of BUILDINGS) {
-      expect(full.counts[building.id], building.id).toBe(building.max);
+      // High Bastion is the step after this snapshot, so the full preset
+      // still shows the first bastion.
+      const expected = building.id === "bastion" ? 1 : building.max;
+      expect(full.counts[building.id], building.id).toBe(expected);
     }
     expect(full.wall).toBe(4);
     expect(full.traps).toBe(2);
@@ -1369,10 +1371,8 @@ describe("village map geometry", () => {
 
     const stroke = wallStrokeWidth(4, DEFAULT_TUNING.wallThickness);
     const wall = wallChitinPolygon(radius, DEFAULT_TUNING, stroke, 5);
-    const outline = 4;
-    const gap = drawbridgeChitinGap(bridge!.half, outline);
-    const chains = bastionChitinChains(bastion, size, 4, 5, wall, gap);
-    expect(chains.length).toBe(2);
+    const chains = bastionChitinChains(bastion, size, 4, 5, wall);
+    expect(chains).toHaveLength(1);
     const facing = radialAngle(bastion) - Math.PI / 2;
     const cos = Math.cos(facing);
     const sin = Math.sin(facing);
@@ -1393,7 +1393,7 @@ describe("village map geometry", () => {
         nearest = Math.min(nearest, Math.hypot(gate.x - (start.x + dx * t), gate.y - (start.y + dy * t)));
       }
     }
-    expect(nearest).toBeGreaterThan(bridge!.half + outline);
+    expect(nearest).toBeLessThan(8);
 
     const onDeck = {
       x: (bridge!.deck[0].x + bridge!.deck[2].x) / 2,

@@ -213,7 +213,7 @@ function buildVillageSilverField(state: GameState): SilverField {
   if (moatCenter > 0) {
     for (const slot of slots) {
       if (slot.buildingId !== "bastion") continue;
-      const bridge = bastionDrawbridge(slot, hutSize, radius, anchor, tuning);
+      const bridge = bastionDrawbridge(slot, hutSize, radius, anchor, tuning, slot.tier);
       if (bridge) bridges.push(bridge.deck);
     }
   }

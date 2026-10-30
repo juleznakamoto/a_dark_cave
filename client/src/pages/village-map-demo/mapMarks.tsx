@@ -87,6 +87,8 @@ import {
   ESTATE_BORDER,
   BASTION_LENGTH,
   BASTION_DEPTH,
+  bastionGateTowers,
+  bastionHallOutline,
   bastionOutlineWidth,
   LONGHOUSE_LENGTH,
   longhouseOutline,
@@ -385,6 +387,35 @@ function BuildingFootprint({
         rings={<polygon points={formatPoints(ringPoints)} {...ring} />}
         fills={<polygon points={formatPoints(outline)} fill={fill} />}
       />
+    );
+  }
+  if (shape === "bastion" && level >= 2) {
+    const outline = bastionHallOutline(size, level);
+    const towers = [...bastionTowers(size, level), ...bastionGateTowers(size, level)];
+    const towerOutset = strokeWidth / 2;
+    const ringPoints = outwardBorder ? offsetPolygon(outline, towerOutset) : outline;
+    return (
+      <g>
+        <BorderStack
+          stroke={strokeWidth}
+          rings={
+            <>
+              <polygon points={formatPoints(ringPoints)} {...ring} />
+              {towers.map((tower) => (
+                <circle key={`ring-${tower.x}:${tower.y}`} cx={tower.x} cy={tower.y} r={tower.r + towerOutset} {...ring} />
+              ))}
+            </>
+          }
+          fills={
+            <>
+              <polygon points={formatPoints(outline)} fill={fill} />
+              {towers.map((tower) => (
+                <circle key={`fill-${tower.x}:${tower.y}`} cx={tower.x} cy={tower.y} r={tower.r} fill={fill} />
+              ))}
+            </>
+          }
+        />
+      </g>
     );
   }
   if (shape === "bastion") {
@@ -1521,7 +1552,7 @@ export function TrapMark({
   );
 }
 
-function DrawbridgeMark({
+export function DrawbridgeMark({
   bridge,
   fill,
   at,
@@ -1600,8 +1631,6 @@ export function SlotMark({
   brimstoneInfusion = false,
   dedication = [],
   dedicationDeepened = null,
-  drawbridge = null,
-  hatchReach = 0,
   boneyardCrosses = 0,
 }: {
   slot: PlacedSlot;
@@ -1621,24 +1650,12 @@ export function SlotMark({
   brimstoneInfusion?: boolean;
   dedication?: readonly SanctumGod[];
   dedicationDeepened?: SanctumGod | null;
-  drawbridge?: BastionDrawbridge | null;
-  /** How far the wall hatch reaches, so a drawbridge can reuse those lines. */
-  hatchReach?: number;
   /** Grave crosses on the boneyard. One per point of burial madness, up to 10. */
   boneyardCrosses?: number;
 }) {
   const enterScale = fadeClassName?.includes("village-map-fade-in") === true;
   const mark = (
     <>
-      {drawbridge ? (
-        <DrawbridgeMark
-          bridge={drawbridge}
-          fill={tuning.fill}
-          at={slot}
-          hatchReach={hatchReach}
-          stroke={bastionOutlineWidth(tier)}
-        />
-      ) : null}
       <BuildingMark
         buildingId={slot.buildingId}
         size={

@@ -167,6 +167,10 @@
     "description": "Fuego sagrado que ofrece consuelo y sensación de protección",
     "label": "Fuego del corazón"
   },
+  "buildHighBastion": {
+    "description": "Fortaleza imponente de cimientos profundos, levantada para resistir cuando todo lo demás ha caído.",
+    "label": "Bastión alto"
+  },
   "buildHighTannery": {
     "description": "Curtiduría suprema para artesanos expertos del cuero",
     "label": "Alta curtiduría"

@@ -12,7 +12,7 @@ import {
 } from "@/pages/village-map-demo/catalog";
 
 import {
-  BASTION_DEPTH,
+  bastionMouth,
   ESTATE_BORDER,
   ESTATE_DEPTH,
   ESTATE_LENGTH,
@@ -1392,9 +1392,10 @@ export function bastionDrawbridge(
   wallRadius: number,
   wallStroke: number,
   tuning: Tuning,
+  level = 1,
 ): BastionDrawbridge | null {
   const size = markSize("bastion", hutSize);
-  const mouth = (size * BASTION_DEPTH) / 2;
+  const mouth = bastionMouth(size, level);
   const center = moatCenterRadius(wallRadius, wallStroke);
   // The painted ditch is the smoothed curve, which bows past the sample points.
   const hit = outwardRingDistance(at, densifyClosed(moatBandEdges(center, tuning).outer, 8));

@@ -62,7 +62,9 @@ function getFortificationDisplayLabel(
   level: number,
   t: (key: string, options?: Record<string, unknown>) => string,
 ): string {
-  if (key === "bastion") return t("fortifications.bastion");
+  if (key === "bastion") {
+    return level >= 2 ? t("fortifications.bastion2") : t("fortifications.bastion");
+  }
   if (key === "fortifiedMoat") return t("fortifications.fortifiedMoat");
   if (key === "chitinPlating") return t("fortifications.chitinPlating");
   if (key === "watchtower") {

@@ -14,6 +14,13 @@ const PALISADES_KEYS = [
   "palisades4",
 ] as const;
 
+export function getBastionTierLabel(level: number): string {
+  if (level >= 2) {
+    return tWithFallback("ui", "fortifications.bastion2", "High Bastion");
+  }
+  return tWithFallback("ui", "fortifications.bastion", "Bastion");
+}
+
 export function getWatchtowerTierLabel(level: number): string {
   const idx = level - 1;
   const key =

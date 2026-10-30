@@ -187,6 +187,118 @@ export const BASTION_DEPTH = 3;
 export function bastionOutlineWidth(_tier: number): number {
   return 2;
 }
+
+/** High Bastion is wider than the first bastion. The depth stays the same. */
+export const HIGH_BASTION_WIDTH_SCALE = 1.15;
+/** Corner towers grow a little more than the first bastion's towers. */
+export const HIGH_BASTION_TOWER_SCALE = 1.2;
+/**
+ * Porch size before this trim, when the body was a tenth larger in both directions.
+ * The village porch's short side is 25% shorter than that, then another 20%, then another 10%.
+ * The moat porch is another 15% less wide along the wall. Its stick-out, and the village porch's width, stay.
+ */
+const HIGH_BASTION_PORCH_BODY = 1.1;
+const BASTION_PORCH_WIDTH = 0.55;
+const BASTION_PORCH_DEPTH = 0.22;
+const BASTION_VILLAGE_PORCH_DEPTH_SCALE = 0.75 * 0.8 * 0.9;
+const BASTION_MOAT_PORCH_WIDTH_SCALE = 0.85 * 0.85;
+/** Gate towers on the moat porch, as a fraction of a corner tower's radius. */
+export const BASTION_GATE_TOWER_SCALE = 0.42;
+
+export function isHighBastion(level: number): boolean {
+  return level >= 2;
+}
+
+export type BastionPorch = {
+  /** Half-width along the wall. */
+  half: number;
+  /** How far it sticks out from the body. */
+  depth: number;
+};
+
+export type BastionLayout = {
+  length: number;
+  depth: number;
+  towerRadius: number;
+  /** Null until High Bastion. Village is inward. Moat is outward. */
+  porch: { village: BastionPorch; moat: BastionPorch } | null;
+  gateTowerRadius: number;
+};
+
+/** Body, corner towers, and the two porches. Level 1 is the original bastion. */
+export function bastionLayout(size: number, level = 1): BastionLayout {
+  const high = isHighBastion(level);
+  const length = size * BASTION_LENGTH * (high ? HIGH_BASTION_WIDTH_SCALE : 1);
+  const depth = size * BASTION_DEPTH;
+  const towerRadius = (size / 2) * (high ? HIGH_BASTION_TOWER_SCALE : 1);
+  const porchSpan = size * BASTION_LENGTH * HIGH_BASTION_PORCH_BODY * BASTION_PORCH_WIDTH;
+  const porchStick = size * BASTION_DEPTH * HIGH_BASTION_PORCH_BODY * BASTION_PORCH_DEPTH;
+  const porch = high
+    ? {
+        village: {
+          half: porchSpan / 2,
+          depth: porchStick * BASTION_VILLAGE_PORCH_DEPTH_SCALE,
+        },
+        moat: {
+          half: (porchSpan * BASTION_MOAT_PORCH_WIDTH_SCALE) / 2,
+          depth: porchStick,
+        },
+      }
+    : null;
+  return {
+    length,
+    depth,
+    towerRadius,
+    porch,
+    gateTowerRadius: porch ? towerRadius * BASTION_GATE_TOWER_SCALE : 0,
+  };
+}
+
+/**
+ * Hall plus a rectangle on the village side and the moat side.
+ * Level 1 is the plain rectangle. Local +y points at the moat.
+ */
+export function bastionHallOutline(size: number, level = 1): Point[] {
+  const layout = bastionLayout(size, level);
+  const hx = layout.length / 2;
+  const hy = layout.depth / 2;
+  if (!layout.porch) {
+    return [
+      { x: -hx, y: -hy },
+      { x: hx, y: -hy },
+      { x: hx, y: hy },
+      { x: -hx, y: hy },
+    ];
+  }
+  const village = layout.porch.village;
+  const moat = layout.porch.moat;
+  return [
+    { x: -village.half, y: -hy - village.depth },
+    { x: village.half, y: -hy - village.depth },
+    { x: village.half, y: -hy },
+    { x: hx, y: -hy },
+    { x: hx, y: hy },
+    { x: moat.half, y: hy },
+    { x: moat.half, y: hy + moat.depth },
+    { x: -moat.half, y: hy + moat.depth },
+    { x: -moat.half, y: hy },
+    { x: -hx, y: hy },
+    { x: -hx, y: -hy },
+    { x: -village.half, y: -hy },
+  ];
+}
+
+/** Local y of the outer gate. High Bastion's gate is the moat porch. */
+export function bastionMouth(size: number, level = 1): number {
+  const layout = bastionLayout(size, level);
+  return layout.depth / 2 + (layout.porch?.moat.depth ?? 0);
+}
+
+/** Local y of the village-facing door. */
+export function bastionInnerY(size: number, level = 1): number {
+  const layout = bastionLayout(size, level);
+  return -(layout.depth / 2 + (layout.porch?.village.depth ?? 0));
+}
 /** Huts are half again as long as they are wide. The long side runs across the line to the center. */
 export const HUT_LENGTH = 1.5;
 
@@ -383,16 +495,31 @@ export function estateOuterOctagon(size: number, outset = 0): Point[] {
   });
 }
 
-/** One tower circle on each corner of the bastion. Radius is half a hut. */
-export function bastionTowers(size: number): Array<{ x: number; y: number; r: number }> {
-  const length = size * BASTION_LENGTH;
-  const depth = size * BASTION_DEPTH;
-  const radius = size / 2;
+/** One tower circle on each corner of the bastion. Level 1 radius is half a hut. */
+export function bastionTowers(size: number, level = 1): Array<{ x: number; y: number; r: number }> {
+  const layout = bastionLayout(size, level);
+  const hx = layout.length / 2;
+  const hy = layout.depth / 2;
+  const radius = layout.towerRadius;
   return [
-    { x: -length / 2, y: -depth / 2, r: radius },
-    { x: length / 2, y: -depth / 2, r: radius },
-    { x: length / 2, y: depth / 2, r: radius },
-    { x: -length / 2, y: depth / 2, r: radius },
+    { x: -hx, y: -hy, r: radius },
+    { x: hx, y: -hy, r: radius },
+    { x: hx, y: hy, r: radius },
+    { x: -hx, y: hy, r: radius },
+  ];
+}
+
+/** Small towers on the moat porch's outer corners. Empty until High Bastion. */
+export function bastionGateTowers(
+  size: number,
+  level = 1,
+): Array<{ x: number; y: number; r: number }> {
+  const layout = bastionLayout(size, level);
+  if (!layout.porch) return [];
+  const y = layout.depth / 2 + layout.porch.moat.depth;
+  return [
+    { x: -layout.porch.moat.half, y, r: layout.gateTowerRadius },
+    { x: layout.porch.moat.half, y, r: layout.gateTowerRadius },
   ];
 }
 

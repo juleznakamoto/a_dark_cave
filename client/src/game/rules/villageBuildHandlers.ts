@@ -2,7 +2,7 @@ import { GameState } from "@shared/schema";
 import type { ActionResult } from "@/game/types";
 import { isHutBuildOverCap } from "@/game/cruelMode";
 import { logger } from "@/lib/logger";
-import { villageBuildActions } from "./villageBuildActions";
+import { getNextBuildingLevel, villageBuildActions } from "./villageBuildActions";
 import { calculateAdjustedCost } from "./costCalculation";
 import { pushSystemLog } from "./systemLog";
 
@@ -14,7 +14,11 @@ function handleBuildingConstruction(
   buildingType: keyof GameState["buildings"],
 ): ActionResult {
   const currentCount = state.buildings[buildingType] || 0;
-  const level = currentCount + 1;
+  // High Bastion raises buildings.bastion, so its cost tier is not bastion + 1.
+  const level =
+    actionId === "buildHighBastion"
+      ? getNextBuildingLevel(actionId, state)
+      : currentCount + 1;
   const action = villageBuildActions[actionId];
   const actionCosts = action?.cost?.[level];
   const actionEffects = action?.effects?.[level];
@@ -958,6 +962,18 @@ export function handleBuildBastion(
   }
 
   return bastionResult;
+}
+
+export function handleBuildHighBastion(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(
+    state,
+    result,
+    "buildHighBastion",
+    "bastion",
+  );
 }
 
 export function handleBuildWatchtower(

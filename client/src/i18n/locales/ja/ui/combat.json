@@ -73,6 +73,7 @@
   },
   "fortifications": {
     "bastion": "バスティオン",
+    "bastion2": "高バスティオン",
     "fortifiedMoat": "要塞濠",
     "chitinPlating": "キチン装甲",
     "watchtower1": "見張り塔",

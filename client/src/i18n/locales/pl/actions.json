@@ -167,6 +167,10 @@
     "description": "Święty ogień dający ukojenie i poczucie ochrony",
     "label": "Ogień serca"
   },
+  "buildHighBastion": {
+    "description": "Wyniosła twierdza na głębokich fundamentach, wzniesiona, by wytrwać, gdy wszystko inne padło.",
+    "label": "Wysoki bastion"
+  },
   "buildHighTannery": {
     "description": "Najwspanialsza garbarnia dla biegłych rzemieślników skóry",
     "label": "Wysoka garbarnia"

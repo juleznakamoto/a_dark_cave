@@ -132,6 +132,7 @@ import {
   handleBuildGrandBazaar,
   handleBuildMerchantsGuild,
   handleBuildBastion,
+  handleBuildHighBastion,
   handleBuildWatchtower,
   handleBuildPalisades,
   handleBuildWizardTower,
@@ -613,6 +614,8 @@ export function executeGameAction(
       return handleBuildWizardTower(state, result);
     case "buildBastion":
       return handleBuildBastion(state, result);
+    case "buildHighBastion":
+      return handleBuildHighBastion(state, result);
     case "buildWatchtower":
       return handleBuildWatchtower(state, result);
     case "buildPalisades":

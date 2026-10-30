@@ -55,6 +55,7 @@ import {
   tWithFallback,
 } from "@/i18n/resolveGameText";
 import {
+  getBastionTierLabel,
   getPalisadesTierLabel,
   getWatchtowerTierLabel,
 } from "@/i18n/fortificationLabels";
@@ -194,9 +195,10 @@ type FortificationLeveledEffectSection = {
 };
 
 function getFortificationTierLabel(
-  itemId: "watchtower" | "palisades",
+  itemId: "bastion" | "watchtower" | "palisades",
   level: number,
 ): string {
+  if (itemId === "bastion") return getBastionTierLabel(level);
   return itemId === "watchtower"
     ? getWatchtowerTierLabel(level)
     : getPalisadesTierLabel(level);
@@ -277,10 +279,40 @@ function formatFortificationLevelEffectLines(
   });
 }
 
-function getFortificationLevelEffectLines(
-  itemId: "watchtower" | "palisades",
+function bastionLevelEffectLines(
+  gameState: GameState,
   level: number,
 ): TooltipEffectLine[] {
+  const seen = { ...(gameState.story?.seen ?? {}), bastionDamaged: false };
+  const margin = getFortificationMarginalStats(
+    {
+      ...gameState,
+      buildings: { ...gameState.buildings, bastion: level },
+      story: { ...gameState.story, seen },
+    },
+    "bastion",
+  );
+  if (!margin) return [];
+  const lines: TooltipEffectLine[] = [];
+  if (margin.attack !== 0) {
+    lines.push(formatFortificationStat("attackBonus", margin.attack));
+  }
+  if (margin.defense !== 0) {
+    lines.push(formatFortificationStat("defenseBonus", margin.defense));
+  }
+  if (margin.integrity !== 0) {
+    lines.push(formatFortificationStat("integrityBonus", margin.integrity));
+  }
+  return lines;
+}
+
+function getFortificationLevelEffectLines(
+  itemId: FortificationBuildingKey,
+  level: number,
+  gameState: GameState,
+): TooltipEffectLine[] {
+  if (itemId === "bastion") return bastionLevelEffectLines(gameState, level);
+  if (itemId !== "watchtower" && itemId !== "palisades") return [];
   const fullEffects =
     itemId === "watchtower"
       ? getWatchtowerTooltipEffectsForLevel(level)
@@ -292,10 +324,11 @@ function getFortificationLevelEffectLines(
 function getFortificationLevelEffectSections(
   itemId: FortificationBuildingKey,
   currentLevel: number,
+  gameState: GameState,
 ): FortificationLeveledEffectSection[] {
   if (
     currentLevel <= 1 ||
-    (itemId !== "watchtower" && itemId !== "palisades")
+    (itemId !== "watchtower" && itemId !== "palisades" && itemId !== "bastion")
   ) {
     return [];
   }
@@ -303,7 +336,7 @@ function getFortificationLevelEffectSections(
   // Current level is shown above; list prior levels highest → lowest.
   const sections: FortificationLeveledEffectSection[] = [];
   for (let level = currentLevel - 1; level >= 1; level--) {
-    const effects = getFortificationLevelEffectLines(itemId, level);
+    const effects = getFortificationLevelEffectLines(itemId, level, gameState);
     if (effects.length > 0) {
       sections.push({
         level,
@@ -396,6 +429,10 @@ function getFortificationUpgradeLevel(
   itemId: FortificationBuildingKey,
   gameState: GameState,
 ): number | null {
+  if (itemId === "bastion") {
+    const level = gameState.buildings.bastion ?? 0;
+    return level > 0 ? level : null;
+  }
   if (itemId === "watchtower") {
     const level = gameState.buildings.watchtower ?? 0;
     return level > 0 ? level : null;
@@ -558,11 +595,18 @@ export function renderFortificationTooltip(
   );
 
   const upgradeLevel = getFortificationUpgradeLevel(fortKey, gameState);
+  const bastionLevel = gameState.buildings.bastion ?? 0;
+  const ownedActionId =
+    itemId === "bastion" && bastionLevel >= 2 ? "buildHighBastion" : actionId;
+  const ownedAction = villageBuildActions[ownedActionId] ?? buildAction;
   const titleLabel =
-    displayLabel ?? getActionLabel(actionId, buildAction.label);
+    displayLabel ??
+    (itemId === "bastion"
+      ? getBastionTierLabel(bastionLevel)
+      : getActionLabel(actionId, buildAction.label));
 
   const buildDescription = showDescription
-    ? getActionDescription(actionId, buildAction.description)
+    ? getActionDescription(ownedActionId, ownedAction.description)
     : null;
   const currentEffects = getFortificationTooltipEffectLines(
     fortKey,
@@ -571,7 +615,7 @@ export function renderFortificationTooltip(
   );
   const levelSections =
     upgradeLevel != null
-      ? getFortificationLevelEffectSections(fortKey, upgradeLevel)
+      ? getFortificationLevelEffectSections(fortKey, upgradeLevel, gameState)
       : [];
   const effectsBlock = renderLeveledEffectsBlock(
     currentEffects,

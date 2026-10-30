@@ -199,8 +199,8 @@ const ATTACK_WAVE_DEFINITIONS: Record<AttackWaveId, AttackWaveDefinition> = {
   firstBossWave: {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(6),
-    attack: { options: [70], cruelBonus: 15 },
-    health: { base: 900, cruelBonus: 150 },
+    attack: { options: [80], cruelBonus: 15 },
+    health: { base: 1000, cruelBonus: 150 },
     isBoss: true,
     healChancePercent: 10,
     healAmount: 100,
@@ -209,38 +209,38 @@ const ATTACK_WAVE_DEFINITIONS: Record<AttackWaveId, AttackWaveDefinition> = {
   sixthWave: {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(7),
-    attack: { options: [80], cruelBonus: 20 },
-    health: { base: 1000, cruelBonus: 200 },
+    attack: { options: [90], cruelBonus: 20 },
+    health: { base: 1100, cruelBonus: 200 },
   },
   seventhWave: {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(8),
-    attack: { options: [90], cruelBonus: 20 },
-    health: { base: 1100, cruelBonus: 200 },
+    attack: { options: [100], cruelBonus: 20 },
+    health: { base: 1200, cruelBonus: 200 },
   },
   eighthWave: {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(9),
-    attack: { options: [100], cruelBonus: 30 },
-    health: { base: 1200, cruelBonus: 250 },
+    attack: { options: [110], cruelBonus: 30 },
+    health: { base: 1300, cruelBonus: 250 },
   },
   ninthWave: {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(10),
-    attack: { options: [110], cruelBonus: 30 },
-    health: { base: 1300, cruelBonus: 250 },
+    attack: { options: [120], cruelBonus: 30 },
+    health: { base: 1400, cruelBonus: 250 },
   },
   tenthWave: {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(10),
-    attack: { options: [120], cruelBonus: 40 },
-    health: { base: 1400, cruelBonus: 300 },
+    attack: { options: [130], cruelBonus: 40 },
+    health: { base: 1500, cruelBonus: 300 },
   },
   secondBossWave: {
     ...ATTACK_WAVE_TIMER_DEFAULTS,
     ...attackWaveScaledParams(10),
-    attack: { options: [130], cruelBonus: 40 },
-    health: { base: 1400, cruelBonus: 300 },
+    attack: { options: [140], cruelBonus: 40 },
+    health: { base: 1500, cruelBonus: 300 },
     isBoss: true,
     healChancePercent: 15,
     healAmount: 100,
@@ -481,7 +481,7 @@ function handleDefeat(
     chance(baseChance)
   ) {
     buildingDamage = { ...buildingDamage, bastionDamaged: true };
-    damagedBuildings.push("bastion");
+    damagedBuildings.push(`bastion/${state.buildings.bastion}`);
   }
 
   if (

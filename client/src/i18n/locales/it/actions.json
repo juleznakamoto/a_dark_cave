@@ -167,6 +167,10 @@
     "description": "Fuoco sacro che offre conforto e un senso di protezione",
     "label": "Fuoco del cuore"
   },
+  "buildHighBastion": {
+    "description": "Fortezza imponente dalle fondamenta profonde, eretta per resistere quando tutto il resto è caduto.",
+    "label": "Bastione alto"
+  },
   "buildHighTannery": {
     "description": "Conceria suprema per esperti artigiani del cuoio",
     "label": "Alta conceria"

@@ -468,6 +468,7 @@ export const getPopulationProduction = (
         addFlat(prod, "huntressTraining", skillBonus.food);
         if (state.blessings?.sharp_aim) addFlat(prod, "sharp_aim", 5);
         if (state.blessings?.trail_sense) addFlat(prod, "trail_sense", 3);
+        if (state.blessings?.fishers_hand) addFlat(prod, "fishers_hand", 5);
       }
       if (prod.resource === "fur" && prod.baseAmount > 0) {
         addFlat(prod, "huntressTraining", skillBonus.fur);

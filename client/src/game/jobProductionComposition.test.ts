@@ -89,6 +89,17 @@ describe("getJobProductionComposition", () => {
     expectCompositionMatchesProduction("hunter", 1, state);
   });
 
+  it("adds Fisher's Hand food on top of the hunter base yield", () => {
+    const state = stateOf({
+      blessings: { fishers_hand: true },
+    });
+    expect(amountsFor("hunter", 2, state, "food")).toEqual([
+      { sourceId: "base", amount: 10 },
+      { sourceId: "fishers_hand", amount: 10 },
+    ]);
+    expectCompositionMatchesProduction("hunter", 2, state);
+  });
+
   it("attributes percentage bonuses as the amount they add", () => {
     const state = stateOf({
       books: { book_of_chainmaster: true },

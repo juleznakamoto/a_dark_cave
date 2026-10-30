@@ -32,8 +32,13 @@ export function calculateBastionStats(state: GameState): BastionStats {
   const palisadesDamaged = state.story?.seen?.palisadesDamaged || false;
   const palisadesMultiplier = palisadesDamaged ? 0.5 : 1;
 
-  // Bastion
-  if (state.buildings.bastion > 0) {
+  // Bastion. High Bastion (level 2) replaces the first bastion's bonus.
+  const bastionLevel = state.buildings.bastion || 0;
+  if (bastionLevel >= 2) {
+    defense += Math.floor(20 * bastionMultiplier);
+    attackFromFortifications += Math.floor(20 * bastionMultiplier);
+    baseIntegrity += Math.floor(80 * bastionMultiplier);
+  } else if (bastionLevel > 0) {
     const defenseBonus = Math.floor(10 * bastionMultiplier);
     const attackBonus = Math.floor(10 * bastionMultiplier);
     const integrityBonus = Math.floor(60 * bastionMultiplier);

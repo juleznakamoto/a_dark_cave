@@ -51,7 +51,7 @@ export function buildStateFromPlayer(
   set("boneTemple", owned(buildings, "boneTemple") ? 1 : 0);
   set("boneyard", owned(buildings, "boneyard") ? 1 : 0);
   set("herbGarden", owned(buildings, "herbGarden") ? 1 : 0);
-  set("bastion", owned(buildings, "bastion") ? 1 : 0);
+  set("bastion", Math.min(2, buildings.bastion ?? 0));
   set("wizardTower", owned(buildings, "wizardTower") ? 1 : 0);
   set("watchtower", Math.min(4, buildings.watchtower ?? 0));
 

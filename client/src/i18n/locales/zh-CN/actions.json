@@ -167,6 +167,10 @@
     "description": "带来慰藉与庇护感的神圣火焰",
     "label": "心火"
   },
+  "buildHighBastion": {
+    "description": "根基深厚的高耸要塞，在一切陷落时仍能守住。",
+    "label": "高堡垒"
+  },
   "buildHighTannery": {
     "description": "供专家皮匠使用的顶级制革坊",
     "label": "高级制革坊"

@@ -25,6 +25,7 @@ import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { getEffectName } from "@/i18n/resolveGameText";
 import {
+  getBastionTierLabel,
   getPalisadesTierLabel,
   getWatchtowerTierLabel,
 } from "@/i18n/fortificationLabels";
@@ -231,7 +232,7 @@ export default function BastionPanel({
                   setHighlightedResources([]);
                 }}
               >
-                {t("fortifications.bastion")}
+                {getBastionTierLabel(buildings.bastion || 0)}
               </CooldownButton>
             ) : (
               catalogActive && (

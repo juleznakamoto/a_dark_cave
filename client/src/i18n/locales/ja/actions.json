@@ -167,6 +167,10 @@
     "description": "安らぎと守りの気配を与える聖なる火",
     "label": "心火"
   },
+  "buildHighBastion": {
+    "description": "深い礎を持つそびえ立つ要塞。ほかのすべてが落ちても持ちこたえるために築かれた。",
+    "label": "高バスティオン"
+  },
   "buildHighTannery": {
     "description": "熟練の皮職人のための最高の皮なめし場",
     "label": "上級皮なめし場"

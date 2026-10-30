@@ -10,6 +10,9 @@ export const BUILDING_HIERARCHIES: Record<string, string[]> = {
     "chitinPlating",
   ],
 
+  // High Bastion is a separate build action that raises the same bastion count.
+  bastionTier: ["bastion", "highBastion"],
+
   // Blacksmith chain
   blacksmith: ["blacksmith", "advancedBlacksmith", "grandBlacksmith"],
 

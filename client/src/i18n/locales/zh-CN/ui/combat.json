@@ -73,6 +73,7 @@
   },
   "fortifications": {
     "bastion": "堡垒",
+    "bastion2": "高堡垒",
     "fortifiedMoat": "加固护城壕",
     "chitinPlating": "甲壳护板",
     "watchtower1": "瞭望塔",

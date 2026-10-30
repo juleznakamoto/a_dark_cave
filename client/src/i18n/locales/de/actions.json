@@ -167,6 +167,10 @@
     "description": "Heiliges Feuer, das Trost und ein Gefühl von Schutz spendet",
     "label": "Herzfeuer"
   },
+  "buildHighBastion": {
+    "description": "Hohe Festung mit tiefen Fundamenten, errichtet, um standzuhalten, wenn alles andere gefallen ist.",
+    "label": "Hohe Bastion"
+  },
   "buildHighTannery": {
     "description": "Überragende Gerberei für erfahrene Lederhandwerker",
     "label": "Hohe Gerberei"

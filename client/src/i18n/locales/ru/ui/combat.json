@@ -73,6 +73,7 @@
   },
   "fortifications": {
     "bastion": "Бастион",
+    "bastion2": "Высокий бастион",
     "fortifiedMoat": "Укреплённый ров",
     "chitinPlating": "Хитиновая обшивка",
     "watchtower1": "Сторожевая башня",

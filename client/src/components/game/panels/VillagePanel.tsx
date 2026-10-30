@@ -834,6 +834,7 @@ export default function VillagePanel() {
         { id: "buildTraps", label: "Traps" },
         { id: "buildImprovedTraps", label: "Improved Traps" },
         { id: "buildBastion", label: "Bastion" },
+        { id: "buildHighBastion", label: "High Bastion" },
         { id: "buildWatchtower", label: "Watchtower" },
         { id: "buildPalisades", label: "Palisades" },
         { id: "buildFortifiedMoat", label: "Fortified Moat" },

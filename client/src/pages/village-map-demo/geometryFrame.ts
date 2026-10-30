@@ -14,8 +14,6 @@ import {
 import {
   ALTAR_OCTAGON,
   ALTAR_PORCH_DEPTH,
-  BASTION_DEPTH,
-  BASTION_LENGTH,
   ESTATE_DEPTH,
   ESTATE_LENGTH,
   ESTATE_PORCH_CORNER,
@@ -25,6 +23,10 @@ import {
   altarCircles,
   altarOutline,
   altarSpan,
+  bastionGateTowers,
+  bastionHallOutline,
+  bastionInnerY,
+  bastionLayout,
   bastionOutlineWidth,
   bastionTowers,
   blacksmithScale,
@@ -132,7 +134,7 @@ export function mapFramePoints(build: BuildState, tuning: Tuning, slots: PlacedS
   if (build.moat && build.wall > 0) {
     for (const slot of slots) {
       if (slot.buildingId !== "bastion") continue;
-      const bridge = bastionDrawbridge(slot, tuning.squareSize, radius, anchor, tuning);
+      const bridge = bastionDrawbridge(slot, tuning.squareSize, radius, anchor, tuning, slot.tier);
       if (bridge) points.push(...bridge.deck);
     }
   }
@@ -288,7 +290,7 @@ export function innerSidePoint(
   const size = markSize(buildingId, hutSize);
   let local: Point | null = null;
   if (buildingId === "bastion") {
-    local = { x: 0, y: -(size * BASTION_DEPTH) / 2 };
+    local = { x: 0, y: bastionInnerY(size, level) };
   } else if (buildingId === "watchtower") {
     local = { x: 0, y: -watchtowerWidth(hutSize, level) / 2 };
   } else if (buildingId === "storage") {
@@ -422,8 +424,8 @@ export function buildingShapes(
     return [{ kind: "poly", points: placePoints(rectLocal(size * HUT_LENGTH, size), at, facing) }];
   }
   if (buildingId === "bastion") {
-    const body = placePoints(rectLocal(size * BASTION_LENGTH, size * BASTION_DEPTH), at, facing);
-    const towers = bastionTowers(size).map((tower) => {
+    const body = placePoints(bastionHallOutline(size, level), at, facing);
+    const towers = [...bastionTowers(size, level), ...bastionGateTowers(size, level)].map((tower) => {
       const [center] = placePoints([{ x: tower.x, y: tower.y }], at, facing);
       return { kind: "circle" as const, c: center, r: tower.r };
     });
@@ -1182,10 +1184,42 @@ function arcPointsDirected(
  * two outer towers, and runs the outer wall between those towers. The ends
  * continue inward so the caller can cut them where the city wall crosses.
  */
-function bastionOuterWrapLocal(size: number, dilate: number): Point[] {
-  const hx = (size * BASTION_LENGTH) / 2;
-  const hy = (size * BASTION_DEPTH) / 2;
-  const radius = size / 2 + dilate;
+/**
+ * Chitin around the moat porch and the outside of its gate towers.
+ * Empty until High Bastion. The straight run between the towers is the
+ * porch front, including the stretch the drawbridge crosses.
+ */
+function bastionPorchChitinLocal(size: number, dilate: number, level: number): Point[] {
+  const layout = bastionLayout(size, level);
+  if (!layout.porch) return [];
+  const hy = layout.depth / 2;
+  const pw = layout.porch.moat.half;
+  const frontY = hy + layout.porch.moat.depth;
+  const gateR = layout.gateTowerRadius + dilate;
+  const clamp = (value: number) => Math.max(-1, Math.min(1, value));
+  const leftSide = Math.acos(clamp(-dilate / gateR));
+  const front = Math.asin(clamp(dilate / gateR));
+  const leftArc = arcPointsDirected(-pw, frontY, gateR, -leftSide, front - Math.PI * 2);
+  const rightArc = arcPointsDirected(
+    pw,
+    frontY,
+    gateR,
+    Math.PI - front,
+    -Math.acos(clamp(dilate / gateR)),
+  );
+  return [
+    { x: -pw - dilate, y: hy + dilate },
+    ...leftArc,
+    ...rightArc,
+    { x: pw + dilate, y: hy + dilate },
+  ];
+}
+
+function bastionOuterWrapLocal(size: number, dilate: number, level = 1): Point[] {
+  const layout = bastionLayout(size, level);
+  const hx = layout.length / 2;
+  const hy = layout.depth / 2;
+  const radius = layout.towerRadius + dilate;
   const clamp = (value: number) => Math.max(-1, Math.min(1, value));
   const sideAbs = Math.acos(clamp(-dilate / radius));
   const outerAbs = Math.asin(clamp(dilate / radius));
@@ -1200,6 +1234,7 @@ function bastionOuterWrapLocal(size: number, dilate: number): Point[] {
   return [
     { x: -(hx + dilate), y: -hy },
     ...leftArc,
+    ...bastionPorchChitinLocal(size, dilate, level),
     ...rightArc,
     { x: hx + dilate, y: -hy },
   ];
@@ -1260,9 +1295,10 @@ function bastionOuterCapChain(
   strokeWidth: number,
   chitinStroke: number,
   wallBoundary: Point[],
+  level = 1,
 ): Point[] | null {
   const dilate = strokeWidth + chitinStroke / 2;
-  const world = placePoints(bastionOuterWrapLocal(size, dilate), at, tangentAngle(at));
+  const world = placePoints(bastionOuterWrapLocal(size, dilate, level), at, tangentAngle(at));
   return farthestOutsideChain(world, wallBoundary);
 }
 
@@ -1340,8 +1376,9 @@ function splitChainAroundGate(chain: Point[], at: Point, half: number): Point[][
 }
 
 /**
- * World-space chitin for a bastion. Follows the towers and walls, and stops
- * at the city wall. `gapHalf` opens the outer gate for the drawbridge.
+ * World-space chitin for a bastion. Follows the towers and walls, including
+ * the stretch the drawbridge crosses, and stops at the city wall.
+ * `gapHalf` can still open that stretch when a caller passes it.
  */
 export function bastionChitinPaths(
   at: Point,
@@ -1350,8 +1387,9 @@ export function bastionChitinPaths(
   chitinStroke: number,
   wallBoundary: Point[],
   gapHalf = 0,
+  level = 1,
 ): string[] {
-  const chain = bastionOuterCapChain(at, size, strokeWidth, chitinStroke, wallBoundary);
+  const chain = bastionOuterCapChain(at, size, strokeWidth, chitinStroke, wallBoundary, level);
   if (!chain) return [];
   const chains = gapHalf > 0 ? splitChainAroundGate(chain, at, gapHalf) : [chain];
   return chains.flatMap((part) => {
@@ -1360,7 +1398,7 @@ export function bastionChitinPaths(
   });
 }
 
-/** Polylines for bastion chitin spikes. `gapHalf` leaves the drawbridge gate clear. */
+/** Polylines for bastion chitin spikes. `gapHalf` can leave the drawbridge gate clear. */
 export function bastionChitinChains(
   at: Point,
   size: number,
@@ -1368,8 +1406,9 @@ export function bastionChitinChains(
   chitinStroke: number,
   wallBoundary: Point[],
   gapHalf = 0,
+  level = 1,
 ): Point[][] {
-  const chain = bastionOuterCapChain(at, size, strokeWidth, chitinStroke, wallBoundary);
+  const chain = bastionOuterCapChain(at, size, strokeWidth, chitinStroke, wallBoundary, level);
   if (!chain) return [];
   if (gapHalf <= 0) return [chain];
   return splitChainAroundGate(chain, at, gapHalf);

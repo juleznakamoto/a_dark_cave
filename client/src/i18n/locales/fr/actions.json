@@ -167,6 +167,10 @@
     "description": "Feu sacré offrant réconfort et sentiment de protection",
     "label": "Feu du cœur"
   },
+  "buildHighBastion": {
+    "description": "Forteresse imposante aux fondations profondes, bâtie pour tenir quand tout le reste a cédé.",
+    "label": "Haut bastion"
+  },
   "buildHighTannery": {
     "description": "Tannerie suprême pour artisans du cuir experts",
     "label": "Haute tannerie"

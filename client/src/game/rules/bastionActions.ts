@@ -142,7 +142,12 @@ export const bastionActions: Record<string, Action> = {
     label: "Repair Bastion",
     executionTime: 30,
     cooldown: 0,
-    cost: (state: GameState) => getBastionRepairCostPaths("buildBastion", 1, state),
+    cost: (state: GameState) => {
+      const level = state.buildings.bastion || 1;
+      return level >= 2
+        ? getBastionRepairCostPaths("buildHighBastion", 1, state)
+        : getBastionRepairCostPaths("buildBastion", 1, state);
+    },
     show_when: {
       "story.seen.bastionDamaged": true,
       "buildings.bastion": 1,

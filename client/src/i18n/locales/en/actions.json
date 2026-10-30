@@ -167,6 +167,10 @@
     "description": "Sacred fire offering comfort and a sense of protection",
     "label": "Heartfire"
   },
+  "buildHighBastion": {
+    "description": "Towering stronghold with deep foundations, built to hold when all else has fallen.",
+    "label": "High Bastion"
+  },
   "buildHighTannery": {
     "description": "Supreme tannery for expert leather craftsmen",
     "label": "High Tannery"

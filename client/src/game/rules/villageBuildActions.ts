@@ -100,6 +100,25 @@ export function getPalisadesTooltipEffectsForLevel(
   ];
 }
 
+const BASTION_STATS_BY_LEVEL: Record<
+  number,
+  { defense: number; attack: number; integrity: number }
+> = {
+  1: { defense: 10, attack: 10, integrity: 60 },
+  2: { defense: 20, attack: 20, integrity: 80 },
+};
+
+export function getBastionTooltipEffectsForLevel(
+  level: number,
+): BuildingTooltipEffect[] {
+  const stats = BASTION_STATS_BY_LEVEL[level] ?? BASTION_STATS_BY_LEVEL[2];
+  return [
+    bt("defenseBonus", "+{{amount}} Defense", { amount: stats.defense }),
+    bt("attackBonus", "+{{amount}} Attack", { amount: stats.attack }),
+    bt("integrityBonus", "+{{amount}} Integrity", { amount: stats.integrity }),
+  ];
+}
+
 /**
  * Stranger-approach bonus per completed building level, by `GameState.buildings` key.
  * effectsCalculation applies `count * bonus`; tooltips must use these same values.
@@ -147,6 +166,13 @@ export const getNextBuildingLevel = (
   state: GameState,
 ): number => {
   if (!actionId.startsWith("build")) return 1;
+
+  // High Bastion is its own action, but it still raises `buildings.bastion`.
+  // Tier 1 is the step from 1 to 2. A higher count has no cost, so the button hides.
+  if (actionId === "buildHighBastion") {
+    const bastion = state.buildings.bastion || 0;
+    return bastion >= 2 ? bastion : 1;
+  }
 
   // Remove "build" prefix and lowercase first character
   let buildingKey = actionId.slice(5);
@@ -637,11 +663,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildBastion",
     label: "Bastion",
     description: "Massive fortification serving as the last line of defense",
-    tooltipEffects: [
-      bt("defenseBonus", "+{{amount}} Defense", { amount: 10 }),
-      bt("attackBonus", "+{{amount}} Attack", { amount: 10 }),
-      bt("integrityBonus", "+{{amount}} Integrity", { amount: 50 }),
-    ],
+    tooltipEffects: getBastionTooltipEffectsForLevel(1),
     building: true,
     show_when: {
       1: {
@@ -662,6 +684,36 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     executionTime: 90,
+    cooldown: 0,
+  },
+
+  buildHighBastion: {
+    id: "buildHighBastion",
+    label: "High Bastion",
+    description: "Towering stronghold with deep foundations, built to hold when all else has fallen.",
+    tooltipEffects: getBastionTooltipEffectsForLevel(2),
+    building: true,
+    show_when: {
+      1: {
+        "buildings.bastion": 1,
+        "buildings.watchtower": 4,
+        "buildings.palisades": 4,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 15000,
+        "resources.steel": 5000,
+        "resources.obsidian": 2500,
+        "resources.adamant": 1000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.bastion": 1,
+      },
+    },
+    executionTime: 300,
     cooldown: 0,
   },
 

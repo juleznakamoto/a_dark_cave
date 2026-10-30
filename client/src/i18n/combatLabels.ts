@@ -2,6 +2,7 @@ import { fellowshipEffects } from "@/game/rules/effects";
 import { capitalizeWords } from "@/lib/utils";
 import { getEffectName, tWithFallback } from "@/i18n/resolveGameText";
 import {
+  getBastionTierLabel,
   getPalisadesTierLabel,
   getWatchtowerTierLabel,
 } from "@/i18n/fortificationLabels";
@@ -45,7 +46,7 @@ export function getDamagedBuildingDisplayName(entry: string): string {
 
   switch (id) {
     case "bastion":
-      return tWithFallback("ui", "fortifications.bastion", "Bastion");
+      return getBastionTierLabel(level);
     case "watchtower":
       return getWatchtowerTierLabel(level);
     case "palisades":

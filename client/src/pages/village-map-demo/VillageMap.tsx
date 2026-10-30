@@ -114,7 +114,6 @@ import {
   bastionChitinPaths,
   bastionChitinChains,
   bastionDrawbridge,
-  drawbridgeChitinGap,
   type BastionDrawbridge,
   watchtowerChitinPaths,
   watchtowerChitinChains,
@@ -137,6 +136,7 @@ import {
   CROSSED_HATCH_WIDTH,
   HATCH_WIDTH,
   MAP_HIGHLIGHT_BORDER,
+  MapBorderExtraContext,
   MapHoverRingContext,
   MapInkContext,
   OUTLINE_WOBBLE,
@@ -146,10 +146,12 @@ import {
   VILLAGE_STROKE_WOBBLE,
   localHatchPaths,
   moatHatchPaths,
+  wobbleFilterId,
 } from "@/pages/village-map-demo/mapChrome";
 import {
   CHITIN_STROKE,
   ChitinRibbon,
+  DrawbridgeMark,
   MAP_VIEW_PAD,
   SlotMark,
   TrapMark,
@@ -566,7 +568,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
   if (moatCenter > 0) {
     for (const slot of slots) {
       if (slot.buildingId !== "bastion") continue;
-      const bridge = bastionDrawbridge(slot, hutSize, radius, anchor, tuning);
+      const bridge = bastionDrawbridge(slot, hutSize, radius, anchor, tuning, slot.tier);
       if (bridge) drawbridgeBySlot.set(slot.id, bridge);
     }
   }
@@ -590,6 +592,8 @@ const VillageMapSvg = memo(function VillageMapSvg({
             bastionOutlineWidth(slot.tier),
             CHITIN_STROKE,
             chitinBoundary,
+            0,
+            slot.tier,
           )
           : [],
       );
@@ -643,14 +647,14 @@ const VillageMapSvg = memo(function VillageMapSvg({
       ? []
       : slots.flatMap((slot) => {
         if (slot.buildingId === "bastion") {
-          const gate = drawbridgeBySlot.get(slot.id);
           return bastionChitinPaths(
             slot,
             markSize("bastion", hutSize),
             bastionOutlineWidth(slot.tier),
             CHITIN_STROKE,
             chitinBoundary,
-            gate ? drawbridgeChitinGap(gate.half, bastionOutlineWidth(slot.tier)) : 0,
+            0,
+            slot.tier,
           ).map((d, index) => ({ key: `${slot.id}-chitin-${index}`, d }));
         }
         if (slot.buildingId === "watchtower") {
@@ -680,14 +684,14 @@ const VillageMapSvg = memo(function VillageMapSvg({
         ),
         ...slots.flatMap((slot) => {
           if (slot.buildingId === "bastion") {
-            const gate = drawbridgeBySlot.get(slot.id);
             return bastionChitinChains(
               slot,
               markSize("bastion", hutSize),
               bastionOutlineWidth(slot.tier),
               CHITIN_STROKE,
               chitinBoundary,
-              gate ? drawbridgeChitinGap(gate.half, bastionOutlineWidth(slot.tier)) : 0,
+              0,
+              slot.tier,
             ).flatMap((chain) =>
               chitinSpikesAlongPolyline(chain, CHITIN_STROKE, { closed: false, outside: "left" }),
             );
@@ -1355,6 +1359,53 @@ const VillageMapSvg = memo(function VillageMapSvg({
             )
             : null}
 
+          {slots.map((slot) => {
+            const bridge = drawbridgeBySlot.get(slot.id);
+            if (!bridge) return null;
+            const fadeSignature = revealFadeSignature(reveal, slot.id, revealEpoch);
+            const fading =
+              fadeSignature != null &&
+              easedBorder[slot.id] !== fadeSignature &&
+              !prefersReducedMotion();
+            const fadeClassName = fadeInClass(reveal, slot.id);
+            const fadeStyle = slotOpensWithWait(reveal, slot.id) ? OPEN_WAIT_STYLE : undefined;
+            const enterScale = fadeClassName?.includes("village-map-fade-in") === true;
+            const drawing = (
+              <g filter={`url(#${wobbleFilterId(slot.id)})`}>
+                <DrawbridgeMark
+                  bridge={bridge}
+                  fill={markTuning.fill}
+                  at={slot}
+                  hatchReach={wallReach}
+                  stroke={bastionOutlineWidth(slot.tier)}
+                />
+              </g>
+            );
+            return (
+              <g
+                key={`drawbridge-${slot.id}`}
+                data-building={slot.buildingId}
+                transform={`translate(${slot.x} ${slot.y})`}
+                onPointerEnter={() => {
+                  setHoveredBuilding(slot.buildingId);
+                  onActiveLabel(slot.label);
+                  onHoverBuilding?.(slot.buildingId);
+                }}
+                onPointerLeave={() => {
+                  setHoveredBuilding(null);
+                  onActiveLabel(null);
+                  onHoverBuilding?.(null);
+                }}
+              >
+                <MapBorderExtraContext.Provider value={fading ? MAP_HIGHLIGHT_BORDER : 0}>
+                  <g transform={markRotation(slot.buildingId, slot)} className={fadeClassName} style={fadeStyle}>
+                    {enterScale ? <g className="village-map-enter-scale">{drawing}</g> : drawing}
+                  </g>
+                </MapBorderExtraContext.Provider>
+              </g>
+            );
+          })}
+
           {fortChitin.length > 0 ? (
             <g data-testid="fort-chitin" filter={OUTLINE_WOBBLE}>
               {fortChitin.map((path) => (
@@ -1556,8 +1607,6 @@ const VillageMapSvg = memo(function VillageMapSvg({
                     dedication={build.dedication}
                     dedicationDeepened={build.dedicationDeepened}
                     boneyardCrosses={boneyardCrosses}
-                    drawbridge={drawbridgeBySlot.get(slot.id) ?? null}
-                    hatchReach={wallReach}
                   />
                 </g>
                 {tuning.showNames ? (
