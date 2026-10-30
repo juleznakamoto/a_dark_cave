@@ -166,7 +166,7 @@ export function RestartGameDialog({
                   >
                     <span
                       role="img"
-                      className={GAME_INFO_GLYPH_CLASS}
+                      className={`${GAME_INFO_GLYPH_CLASS} translate-y-[0.12em]`}
                       aria-label={t("restart.cruelModeInfoAriaLabel", {
                         defaultValue: "Cruel Mode details",
                       })}
