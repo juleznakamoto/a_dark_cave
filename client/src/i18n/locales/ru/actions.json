@@ -268,7 +268,7 @@
     "label": "Храм"
   },
   "buildTimberMill": {
-    "description": "Лесопилка, обрабатывающая дерево эффективнее",
+    "description": "Лесопилка, обрабатывающая древесину эффективнее",
     "label": "Лесопилка"
   },
   "buildTradePost": {
@@ -802,7 +802,7 @@
     "label": "Купить эликсир жилового огня"
   },
   "tradeGoldForWood": {
-    "label": "Купить дерево"
+    "label": "Купить древесину"
   },
   "tradeSilverForGold": {
     "label": "Купить золото"

@@ -29,6 +29,12 @@ export interface ShopItem {
   grantedOnPurchase?: boolean;
 }
 
+/**
+ * Cruel Mode mark. Callers paint `CruelModePentagramIcon` for this character
+ * and never draw it with a font.
+ */
+export const CRUEL_MODE_PENTAGRAM_GLYPH = "\u26E4";
+
 /** Duration of an activated Great Feast (shop purchase), in milliseconds. */
 export const GREAT_FEAST_DURATION_MS = 30 * 60 * 1000;
 /** Shop Great Feast village production multiplier. */
@@ -103,7 +109,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     category: "blessing",
     activationMessage:
       "Cruel Mode activated! Start a new game to experience the ultimate challenge.",
-    symbol: "⛤",
+    symbol: CRUEL_MODE_PENTAGRAM_GLYPH,
     symbolColor: "text-red-500",
   },
 

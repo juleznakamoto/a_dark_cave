@@ -16,7 +16,7 @@ import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { useGameStore } from "@/game/state";
 import { isSteamCruelModeUnlockAvailable } from "@/game/steamCruelModeUnlock";
-import { SHOP_ITEMS } from "@shared/shopItems";
+import { CruelModePentagramIcon } from "@/components/game/GameUiIcon";
 
 /** Above RestartGameDialog `z-[70]` so the activate burst stays visible. */
 const CRUEL_MODE_CHECK_PARTICLE_Z = 90;
@@ -88,10 +88,6 @@ export function RestartGameDialog({
     return () => cancelAnimationFrame(frame);
   }, [isOpen, cruelModeChecked, emitCruelBurst]);
 
-  const cruelSymbol = SHOP_ITEMS.cruel_mode.symbol ?? "⛤";
-  const cruelSymbolClass =
-    SHOP_ITEMS.cruel_mode.symbolColor ?? "text-red-500";
-
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
       <DialogContent className="[--adc-dialog-max-w:28rem] z-[70]">
@@ -122,12 +118,7 @@ export function RestartGameDialog({
                   }
                   className="h-5 w-5 data-[state=checked]:bg-transparent data-[state=checked]:text-red-500"
                 >
-                  <span
-                    className={`text-base leading-none ${cruelSymbolClass}`}
-                    aria-hidden="true"
-                  >
-                    {cruelSymbol}
-                  </span>
+                  <CruelModePentagramIcon sizeClassName="h-[18px] w-[18px]" />
                 </Checkbox>
                 <label htmlFor="restart-cruel-mode" className="cursor-pointer">
                   {t("restart.cruelMode", { defaultValue: "Cruel Mode" })}

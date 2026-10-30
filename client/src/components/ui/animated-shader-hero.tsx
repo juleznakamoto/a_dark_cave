@@ -3,7 +3,11 @@ import { createCappedPaintLoop } from "@/lib/cappedFrameLoop";
 import { logger } from "@/lib/logger";
 import { StarshipShader } from "@/components/ui/starship-shader";
 import { FooterSocialIcon } from "@/components/game/FooterSocialIcon";
-import { GameUiIcon } from "@/components/game/GameUiIcon";
+import {
+  CruelModePentagramIcon,
+  GameUiIcon,
+} from "@/components/game/GameUiIcon";
+import { CRUEL_MODE_PENTAGRAM_GLYPH } from "@shared/shopItems";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   STEAM_STORE_UTM_CONTENT,
@@ -135,19 +139,15 @@ interface HeroProps {
   className?: string;
 }
 
-/** Split "⛤ Cruel Mode" into a Noto symbol span + default-font label. */
+/** Cruel Mode CTA: pentagram image plus the label, never the font glyph. */
 function renderSymbolLabelButtonContent(text: string) {
-  const parts = text.match(/^(\S+)\s+(.*)$/);
-  if (!parts) return text;
+  const label = text.startsWith(`${CRUEL_MODE_PENTAGRAM_GLYPH} `)
+    ? text.slice(CRUEL_MODE_PENTAGRAM_GLYPH.length + 1)
+    : text;
   return (
     <>
-      <span
-        className="font-noto-symbols-2 inline-flex h-[1.1em] w-[1.1em] shrink-0 items-center justify-center text-[1.05em] leading-none translate-y-[0.12em]"
-        aria-hidden
-      >
-        {parts[1]}
-      </span>
-      <span className="leading-none">{parts[2]}</span>
+      <CruelModePentagramIcon sizeClassName="h-[1.2em] w-[1.2em]" />
+      <span className="leading-none">{label}</span>
     </>
   );
 }

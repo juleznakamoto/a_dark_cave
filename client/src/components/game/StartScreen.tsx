@@ -37,6 +37,7 @@ import {
   isStartAudioToggleTarget,
   writeStartAudioChoice,
 } from "@/game/startScreenAudioChoice";
+import { StartScreenCruelModeIcon } from "@/components/game/CruelModeHeaderMark";
 import {
   eyesEasterEggCenterFraction,
   isInEyesEasterEggHotZone,
@@ -1100,35 +1101,48 @@ export default function StartScreen({
         />
       )}
 
-      {(steamEditionActive || crazyGamesEditionActive) && (
-        <div className="absolute top-4 right-4 z-20 md:top-2 md:right-2">
-          {crazyGamesEditionActive ? (
-            CrazyGamesCornerMenuCmp ? (
-              <CrazyGamesCornerMenuCmp
-                key={startMenuEpoch}
-                steamUtmContent={STEAM_STORE_UTM_CONTENT.startScreenMenu}
-                defaultOpen={crazyGamesDefaultOpen}
-              />
-            ) : (
-              <button
-                type="button"
-                onPointerEnter={() => loadCrazyGamesCornerMenu("prefetch")}
-                onFocus={() => loadCrazyGamesCornerMenu("prefetch")}
-                onClick={() => loadCrazyGamesCornerMenu("open")}
-                aria-label={t("profile.title", { defaultValue: "Menu" })}
-                data-testid="button-crazygames-corner-menu"
-                className={`${START_FULLSCREEN_BTN} group touch-manipulation bg-transparent text-neutral-300`}
-              >
-                <GameUiIcon
-                  name="menu"
-                  sizeClassName="game-header-accent-icon"
-                  className="text-neutral-300 opacity-80"
-                />
-              </button>
-            )
-          ) : (
-            <StartScreenFullscreenButton />
+      {(isCruelMode || steamEditionActive || crazyGamesEditionActive) && (
+        <div
+          className={`absolute z-20 flex items-center gap-0.5 ${isCruelMode
+            ? "top-4 right-4"
+            : "top-4 right-4 md:top-2 md:right-2"
+            }`}
+        >
+          {isCruelMode && (
+            <StartScreenCruelModeIcon
+              label={t("footer.cruelModeActive", {
+                defaultValue: "Cruel Mode active",
+              })}
+            />
           )}
+          {(steamEditionActive || crazyGamesEditionActive) &&
+            (crazyGamesEditionActive ? (
+              CrazyGamesCornerMenuCmp ? (
+                <CrazyGamesCornerMenuCmp
+                  key={startMenuEpoch}
+                  steamUtmContent={STEAM_STORE_UTM_CONTENT.startScreenMenu}
+                  defaultOpen={crazyGamesDefaultOpen}
+                />
+              ) : (
+                <button
+                  type="button"
+                  onPointerEnter={() => loadCrazyGamesCornerMenu("prefetch")}
+                  onFocus={() => loadCrazyGamesCornerMenu("prefetch")}
+                  onClick={() => loadCrazyGamesCornerMenu("open")}
+                  aria-label={t("profile.title", { defaultValue: "Menu" })}
+                  data-testid="button-crazygames-corner-menu"
+                  className={`${START_FULLSCREEN_BTN} group touch-manipulation bg-transparent text-neutral-300`}
+                >
+                  <GameUiIcon
+                    name="menu"
+                    sizeClassName="game-header-accent-icon"
+                    className="text-neutral-300 opacity-80"
+                  />
+                </button>
+              )
+            ) : (
+              <StartScreenFullscreenButton />
+            ))}
         </div>
       )}
 

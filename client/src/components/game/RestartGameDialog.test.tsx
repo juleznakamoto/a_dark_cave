@@ -89,10 +89,14 @@ describe("RestartGameDialog", () => {
 
     const checkbox = screen.getByRole("checkbox", { name: "Cruel Mode" });
     expect(checkbox).toBeChecked();
-    expect(checkbox).toHaveTextContent("⛤");
-    expect(screen.getByText("Cruel Mode").closest("label")).not.toHaveTextContent(
-      "⛤",
-    );
+    expect(
+      checkbox.querySelector('[data-testid="cruel-mode-pentagram"]'),
+    ).not.toBeNull();
+    expect(
+      screen.getByText("Cruel Mode").closest("label")?.querySelector(
+        '[data-testid="cruel-mode-pentagram"]',
+      ),
+    ).toBeNull();
     fireEvent.click(screen.getByRole("button", { name: /Start New Game/i }));
     expect(onConfirm).toHaveBeenCalledWith({ cruelMode: true });
   });
@@ -114,10 +118,14 @@ describe("RestartGameDialog", () => {
 
     const checkbox = screen.getByRole("checkbox", { name: "Cruel Mode" });
     expect(checkbox).not.toBeChecked();
-    expect(checkbox).not.toHaveTextContent("⛤");
+    expect(
+      checkbox.querySelector('[data-testid="cruel-mode-pentagram"]'),
+    ).toBeNull();
     fireEvent.click(checkbox);
     expect(checkbox).toBeChecked();
-    expect(checkbox).toHaveTextContent("⛤");
+    expect(
+      checkbox.querySelector('[data-testid="cruel-mode-pentagram"]'),
+    ).not.toBeNull();
     await waitFor(() => {
       expect(playSound).toHaveBeenCalledWith(
         "makeFire",

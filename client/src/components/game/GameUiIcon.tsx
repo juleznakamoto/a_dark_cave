@@ -88,6 +88,30 @@ export type AudioGlyphIconName = keyof typeof AUDIO_GLYPH_SRC;
 const AUDIO_GLYPH_CLASS =
   "inline-block shrink-0 bg-current [mask-size:contain] [mask-repeat:no-repeat] [mask-position:center] [mask-mode:alpha] [-webkit-mask-size:contain] [-webkit-mask-repeat:no-repeat] [-webkit-mask-position:center]";
 
+const CRUEL_MODE_PENTAGRAM_SRC = "/icons/cruel_mode_pentagram.svg";
+
+/** SVG pentagram mask. The file is black; alpha keeps the shape and `currentColor` tints it. */
+export function CruelModePentagramIcon({
+  className,
+  sizeClassName = "h-[1.1em] w-[1.1em]",
+}: {
+  className?: string;
+  sizeClassName?: string;
+}) {
+  const src = publicUrl(CRUEL_MODE_PENTAGRAM_SRC);
+  return (
+    <span
+      aria-hidden="true"
+      data-testid="cruel-mode-pentagram"
+      className={cn(AUDIO_GLYPH_CLASS, sizeClassName, className)}
+      style={{
+        WebkitMaskImage: `url(${src})`,
+        maskImage: `url(${src})`,
+      }}
+    />
+  );
+}
+
 export function AudioGlyphIcon({
   name,
   className,

@@ -133,6 +133,24 @@ describe("start-screen first-load imports", () => {
     expect(boot).not.toMatch(/500\);/);
   });
 
+  it("shows the cruel-mode mark without pulling the game store", () => {
+    const src = source("StartScreen.tsx");
+    const mark = source("CruelModeHeaderMark.tsx");
+    expect(src).toContain("StartScreenCruelModeIcon");
+    expect(src).toContain("isCruelMode");
+    expect(staticValueFrom(src, "@/game/state")).toBe(false);
+    expect(staticValueFrom(src, "@/components/game/HoverCalloutTooltip")).toBe(
+      false,
+    );
+    expect(staticValueFrom(mark, "@/game/state")).toBe(false);
+    expect(staticValueFrom(mark, "@/components/game/HoverCalloutTooltip")).toBe(
+      false,
+    );
+    expect(mark).toContain('import("@/components/game/HoverCalloutTooltip")');
+    expect(mark).toContain("CruelModePentagramIcon");
+    expect(mark).not.toContain("mountNotoSansSymbols2FontFace");
+  });
+
   it("does not turn sound on from a page press or Make Fire", () => {
     const src = source("StartScreen.tsx");
     expect(src).not.toContain(

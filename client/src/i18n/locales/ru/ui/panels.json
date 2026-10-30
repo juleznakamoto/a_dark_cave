@@ -88,7 +88,7 @@
     "sleep": "Сон",
     "focus": "Фокус",
     "sleepTooltipReady": "Пусть мир живёт своей жизнью без вас (режим бездействия)",
-    "sleepTooltipBlocked": "Требуется положительное производство дерева и еды (бонусы производства не учитываются)",
+    "sleepTooltipBlocked": "Требуется положительное производство древесины и еды (бонусы производства не учитываются)",
     "sleepTooltipCurrentProduction": "Текущее производство:",
     "focusRewardTooltip_one": "Удвоенные награды за действия на {{count}} минуту",
     "focusRewardTooltip_other": "Удвоенные награды за действия на {{count}} минут",
@@ -270,7 +270,7 @@
     "wake": "Проснуться сейчас",
     "getUp": "Встать",
     "focusGainedLog": "Отдых принёс вам очки фокуса: {{count}}.",
-    "villagersProducedLog": "Жители произвели: {{resources}}"
+    "villagersProducedLog": "Жители добыли: {{resources}}"
   },
   "demoEnd": {
     "craftUpTo": "Создавайте и находите предметы — их {{count}}",

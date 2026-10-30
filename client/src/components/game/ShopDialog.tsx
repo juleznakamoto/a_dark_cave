@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { CruelModePentagramIcon } from "@/components/game/GameUiIcon";
 import { logger } from "@/lib/logger";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -60,6 +61,7 @@ import { userOwnsShopItemFromPurchaseRows } from "@shared/shopPurchaseEligibilit
 import {
   GREAT_FEAST_DURATION_MS,
   createShopGreatFeastActivation,
+  CRUEL_MODE_PENTAGRAM_GLYPH,
   SHOP_ITEMS,
   HIGHLIGHTS_ORDER,
   getHighlightsOrder,
@@ -450,6 +452,18 @@ function ShopGlyphForItem({
   const glyph = item.symbol;
   if (!glyph) return null;
 
+  if (glyph === CRUEL_MODE_PENTAGRAM_GLYPH) {
+    return (
+      <span
+        className={`relative inline-flex h-[1.35em] w-[1.35em] shrink-0 items-center justify-center leading-none ${className}`}
+        style={style}
+        aria-hidden={ariaHidden}
+      >
+        <CruelModePentagramIcon sizeClassName="h-full w-full" />
+      </span>
+    );
+  }
+
   const fontClass = "font-noto-symbols-2";
   const isSingleGlyph = Array.from(glyph).length === 1;
 
@@ -558,7 +572,12 @@ function ShopCardCornerGlyph({
       className={glyphWrapperClassName}
       style={glyphWrapperStyle}
     >
-      <ShopGlyphForItem item={item} />
+      <ShopGlyphForItem
+        item={item}
+        className={
+          item.symbol === CRUEL_MODE_PENTAGRAM_GLYPH ? "scale-[0.85]" : ""
+        }
+      />
     </span>
   );
 }

@@ -1528,6 +1528,18 @@ html.adc-text-xxlarge .game-panel-produce-effects {
   height: calc(18px * var(--adc-control-scale, 1));
 }
 
+/* Cruel Mode pentagram. Larger than the menu glyph, still inside the w-7 button. */
+.game-header-cruel-icon {
+  width: calc(22px * var(--adc-control-scale, 1));
+  height: calc(22px * var(--adc-control-scale, 1));
+}
+
+/* Start screen only: 20% larger than the header mark. */
+.game-start-cruel-icon {
+  width: calc(26.4px * var(--adc-control-scale, 1));
+  height: calc(26.4px * var(--adc-control-scale, 1));
+}
+
 /* Main tab + footer mask icons (~14px); track text scale with labels. */
 .game-tab-icon {
   width: calc(0.875rem + var(--adc-text-delta, 0px));

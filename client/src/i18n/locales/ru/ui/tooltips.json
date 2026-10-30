@@ -152,7 +152,7 @@
       "craftDiscountSpaced5": "5 % скидка на создание",
       "craftDiscount": "{{percent}} % скидка на создание",
       "buildDiscount": "{{percent}} % скидка на строительство",
-      "gathererWood": "Собиратель: +{{amount}} дерева",
+      "gathererWood": "Собиратель: +{{amount}} древесины",
       "gathererStone": "Собиратель: +{{amount}} камня",
       "gathererVeinroot": "Собиратель: +{{amount}} жилокорня",
       "hunterFood": "Охотник: +{{amount}} еды",

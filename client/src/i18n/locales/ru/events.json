@@ -1469,7 +1469,7 @@
         "label": "Предложить 250 золота"
       },
       "payTribute": {
-        "cost": "5000 дерева, 5000 камня, 5000 еды, 500 кожи, 500 стали",
+        "cost": "5000 древесины, 5000 камня, 5000 еды, 500 кожи, 500 стали",
         "label": "Заплатить дань"
       },
       "sendAway": {
@@ -2296,7 +2296,7 @@
     "choices": {
       "hostSolstice": {
         "cost": "{{goldCost}} золота, {{foodCost}} еды",
-        "cost_wood": "{{woodCost}} дерева, {{foodCost}} еды",
+        "cost_wood": "{{woodCost}} древесины, {{foodCost}} еды",
         "label": "Устроить праздник"
       },
       "refuseSolstice": {
