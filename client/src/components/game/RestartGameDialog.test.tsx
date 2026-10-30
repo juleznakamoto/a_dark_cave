@@ -90,6 +90,9 @@ describe("RestartGameDialog", () => {
     const checkbox = screen.getByRole("checkbox", { name: "Cruel Mode" });
     expect(checkbox).toBeChecked();
     expect(
+      screen.getByRole("img", { name: "Cruel Mode details" }),
+    ).toBeTruthy();
+    expect(
       checkbox.querySelector('[data-testid="cruel-mode-pentagram"]'),
     ).not.toBeNull();
     expect(

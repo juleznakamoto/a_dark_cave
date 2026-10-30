@@ -9,6 +9,11 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import {
+  GAME_INFO_GLYPH_CLASS,
+  GAME_INFO_TRIGGER_CLASS,
+} from "@/components/game/gameChrome";
 import { useInlineButtonParticles } from "@/components/ui/bubbly-button";
 import { CRUEL_MODE_ACTIVATE_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 import { audioManager, CRUEL_MODE_ACTIVATE_VOLUME } from "@/lib/audio";
@@ -20,6 +25,31 @@ import { CruelModePentagramIcon } from "@/components/game/GameUiIcon";
 
 /** Above RestartGameDialog `z-[70]` so the activate burst stays visible. */
 const CRUEL_MODE_CHECK_PARTICLE_Z = 90;
+
+function CruelModeRestartTooltip() {
+  const { t } = useUiTranslation();
+  const lines = [
+    t("restart.cruelModeTooltipHarsher", {
+      defaultValue: "in an even harsher world",
+    }),
+    t("restart.cruelModeTooltipEnemies", {
+      defaultValue: "with stronger enemies",
+    }),
+    t("restart.cruelModeTooltipMore", {
+      defaultValue: "more events, items and lore",
+    }),
+  ];
+  return (
+    <div className="space-y-0.5 text-xs">
+      <div>
+        {t("restart.cruelModeTooltipLead", { defaultValue: "Play again" })}
+      </div>
+      {lines.map((line) => (
+        <div key={line}>• {line}</div>
+      ))}
+    </div>
+  );
+}
 
 interface RestartGameDialogProps {
   isOpen: boolean;
@@ -118,11 +148,33 @@ export function RestartGameDialog({
                   }
                   className="h-5 w-5 data-[state=checked]:bg-transparent data-[state=checked]:text-red-500"
                 >
-                  <CruelModePentagramIcon sizeClassName="h-[18px] w-[18px]" />
+                  <CruelModePentagramIcon
+                    sizeClassName="h-[18px] w-[18px]"
+                    className="-translate-y-px"
+                  />
                 </Checkbox>
-                <label htmlFor="restart-cruel-mode" className="cursor-pointer">
-                  {t("restart.cruelMode", { defaultValue: "Cruel Mode" })}
-                </label>
+                <span className="inline-flex items-center gap-1">
+                  <label htmlFor="restart-cruel-mode" className="cursor-pointer">
+                    {t("restart.cruelMode", { defaultValue: "Cruel Mode" })}
+                  </label>
+                  <TooltipWrapper
+                    tooltip={<CruelModeRestartTooltip />}
+                    tooltipId="restart-cruel-mode-info"
+                    disabled
+                    tooltipContentClassName="max-w-xs border border-amber-600"
+                    className={GAME_INFO_TRIGGER_CLASS}
+                  >
+                    <span
+                      role="img"
+                      className={GAME_INFO_GLYPH_CLASS}
+                      aria-label={t("restart.cruelModeInfoAriaLabel", {
+                        defaultValue: "Cruel Mode details",
+                      })}
+                    >
+                      🛈
+                    </span>
+                  </TooltipWrapper>
+                </span>
               </div>
             )}
             {cruelBurstPortal}

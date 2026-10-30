@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/card";
 import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { CruelModeEffectsList } from "@/components/game/CruelModeEffectsList";
 import { PROMO_TAG_CLASS } from "@/components/game/promoTag";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGameStore } from "@/game/state";
@@ -344,24 +345,6 @@ function ArtifactEffectsList({
         <div key={line}>
           • {line}
         </div>
-      ))}
-    </div>
-  );
-}
-
-function CruelModeEffectsList() {
-  const { t } = useUiTranslation();
-  const lines = [
-    t("shop.cruelMode.moreEvents"),
-    t("shop.cruelMode.moreItems"),
-    t("shop.cruelMode.strongerEnemies"),
-    t("shop.cruelMode.harderChallenges"),
-    t("shop.cruelMode.reusePurchases"),
-  ];
-  return (
-    <div className="space-y-0.5 text-xs">
-      {lines.map((line) => (
-        <div key={line}>• {line}</div>
       ))}
     </div>
   );
