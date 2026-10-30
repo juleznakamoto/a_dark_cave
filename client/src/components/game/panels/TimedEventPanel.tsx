@@ -33,7 +33,9 @@ import {
   GAME_TAB_SECTION_HEADER_ROW,
 } from "@/components/game/gameChrome";
 import { isDemoPlayFrozen } from "@/game/demoLimit";
+import { relocalizeMerchantTradeChoice } from "@/game/rules/eventsMerchant";
 import { composeMerchantSpecialItemTooltip } from "@/game/rules/eventsMerchantTooltip";
+import { collectorChoiceDisplayLabel } from "@/game/rules/eventsWanderingCollector";
 import { composeCollectorItemTooltip } from "@/game/rules/eventsWanderingCollectorTooltip";
 import { EventChoice, type LogEntry } from "@/game/rules/events";
 import { logger } from "@/lib/logger";
@@ -78,7 +80,7 @@ import {
 import { ActionInsightBadge } from "@/components/game/ActionInsightBadge";
 
 export default function TimedEventPanel() {
-  const { t } = useUiTranslation();
+  const { t, i18n } = useUiTranslation();
   const {
     timedEventTab,
     applyEventChoice,
@@ -162,7 +164,7 @@ export default function TimedEventPanel() {
         lastLoggedEventId.current = eventId;
       }
       return Array.isArray(gameState.merchantTrades?.choices)
-        ? gameState.merchantTrades.choices
+        ? gameState.merchantTrades.choices.map(relocalizeMerchantTradeChoice)
         : [];
     }
 
@@ -173,8 +175,14 @@ export default function TimedEventPanel() {
       timedEventTab.event.eventId || getEventRulesCatalogId(timedEventTab.event.id);
     const catalogId = resolveTimedEventCatalogId(ruleEventId);
     const vars = getEventI18nVars(catalogId, gameState, ruleEventId);
-    const choices =
+    const localized =
       localizeEventChoices(catalogId, stored, gameState, vars) ?? stored;
+    const choices = isCollectorEvent
+      ? localized.map((choice) => {
+          const label = collectorChoiceDisplayLabel(choice.id);
+          return label ? { ...choice, label } : choice;
+        })
+      : localized;
 
     if (shouldLog) {
       logger.log("[TIMED EVENT PANEL] Non-merchant event, using event choices:", {
@@ -187,9 +195,11 @@ export default function TimedEventPanel() {
     return choices;
   }, [
     isMerchantEvent,
+    isCollectorEvent,
     timedEventTab.event,
     gameState.merchantTrades,
     gameState,
+    i18n.language,
   ]);
 
   useEffect(() => {
@@ -645,7 +655,10 @@ export default function TimedEventPanel() {
       const costResources = affordance.costs.map(({ resource }) => resource);
       if (costResources.length > 0) {
         if (isMerchantEvent) {
-          const buyResource = extractBuyResourceFromLabel(labelText);
+          const buyResource =
+            !tradeChoice.buyItem && tradeChoice.buyResource
+              ? tradeChoice.buyResource
+              : extractBuyResourceFromLabel(labelText);
           const highlightResources = buyResource
             ? [...costResources, buyResource]
             : costResources;

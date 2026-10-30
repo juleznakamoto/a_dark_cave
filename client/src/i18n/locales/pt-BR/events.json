@@ -448,6 +448,9 @@
       "sellBook": {
         "label": "Vender o livro",
         "reward": "+{{sellGold}} de ouro"
+      },
+      "wait": {
+        "label": "Esperar"
       }
     },
     "log": {
@@ -1535,18 +1538,6 @@
     },
     "message": "Numa noite tardia, você ouve uma batida suave na porta da propriedade. Ao abri-la, não há ninguém, apenas algo encadernado em couro marrom-escuro repousando na soleira.",
     "title": "Uma Batida Silenciosa"
-  },
-  "mysteriousNote": {
-    "choices": {
-      "throw_away": {
-        "label": "Jogar fora"
-      }
-    },
-    "log": {
-      "outcome0": "Você amassa o bilhete e o deixa cair dos dedos. Você entende as palavras, mas não consegue dar sentido algum a elas. Enquanto o papel se afasta, você capta algo trazido pelo vento, fraco e distante. Soa como um choro suave e solitário se esvaindo na noite."
-    },
-    "title": "Um Bilhete Misterioso",
-    "message": "Ao cair do crepúsculo, você encontra um pedaço de papel na soleira da sua propriedade. Alguém deixou um bilhete numa caligrafia cuidadosa e elegante: \n “Espero que você esteja aproveitando seu tempo aqui. Se estiver, por favor considere apoiar a jornada que está por vir, seja visitando a loja ou doando. Sua ajuda mantém este mundo vivo e gratuito para se aproveitar. Obrigado!”"
   },
   "mysteriousWoman": {
     "log": {

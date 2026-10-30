@@ -448,6 +448,9 @@
       "sellBook": {
         "label": "Sprzedaj księgę",
         "reward": "+{{sellGold}} złota"
+      },
+      "wait": {
+        "label": "Czekaj"
       }
     },
     "log": {
@@ -1535,18 +1538,6 @@
     },
     "message": "Późnym wieczorem słyszysz ciche pukanie do drzwi posiadłości. Gdy otwierasz, nikogo nie ma, tylko coś owiniętego w ciemnobrązową skórę leży na progu.",
     "title": "Ciche pukanie"
-  },
-  "mysteriousNote": {
-    "choices": {
-      "throw_away": {
-        "label": "Wyrzuć"
-      }
-    },
-    "log": {
-      "outcome0": "Gnieciesz kartkę i puszczasz ją z palców. Rozumiesz słowa, a jednak nie możesz z nich nic wyciągnąć. Gdy papier unosi się, łapiesz coś niesione wiatrem, słabe i dalekie. Brzmi jak cichy, samotny płacz gasnący w nocy."
-    },
-    "title": "Tajemnicza kartka",
-    "message": "Gdy zapada zmierzch, znajdujesz kartkę na progu posiadłości. Ktoś zostawił notatkę starannym, eleganckim pismem: \n „Mam nadzieję, że dobrze ci tutaj. Jeśli tak, rozważ wsparcie dalszej drogi, odwiedzając sklep albo składając darowiznę. Dzięki twojej pomocy ten świat żyje i pozostaje darmowy. Dziękuję!”"
   },
   "mysteriousWoman": {
     "log": {

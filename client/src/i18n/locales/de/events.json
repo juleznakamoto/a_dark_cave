@@ -448,6 +448,9 @@
       "sellBook": {
         "label": "Buch verkaufen",
         "reward": "+{{sellGold}} Gold"
+      },
+      "wait": {
+        "label": "Warten"
       }
     },
     "log": {
@@ -1535,18 +1538,6 @@
     },
     "message": "An einem späten Abend hörst du ein sanftes Klopfen an der Tür des Anwesens. Als du öffnest, ist niemand dort, nur etwas in dunkelbraunes Leder Gebundenes liegt auf der Schwelle.",
     "title": "Ein leises Klopfen"
-  },
-  "mysteriousNote": {
-    "choices": {
-      "throw_away": {
-        "label": "Wegwerfen"
-      }
-    },
-    "log": {
-      "outcome0": "Du zerknüllst die Notiz und lässt sie aus deinen Fingern fallen. Du verstehst die Worte, und doch ergeben sie keinen Sinn. Als das Papier davontreibt, hörst du etwas im Wind, schwach und fern. Es klingt wie leises, einsames Weinen, das in der Nacht verklingt."
-    },
-    "title": "Eine rätselhafte Notiz",
-    "message": "In der Dämmerung findest du ein Blatt Papier auf der Schwelle deines Anwesens. Jemand hat eine Notiz in sorgfältiger, eleganter Handschrift hinterlassen:\n „Ich hoffe, du genießt deine Zeit hier. Wenn ja, unterstütze bitte die weitere Reise – mit einem Besuch im Shop oder einer Spende. Deine Hilfe hält diese Welt lebendig und kostenlos spielbar. Danke!“"
   },
   "mysteriousWoman": {
     "log": {

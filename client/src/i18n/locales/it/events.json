@@ -448,6 +448,9 @@
       "sellBook": {
         "label": "Vendi il libro",
         "reward": "+{{sellGold}} oro"
+      },
+      "wait": {
+        "label": "Aspetta"
       }
     },
     "log": {
@@ -1535,18 +1538,6 @@
     },
     "message": "Una sera tardi, senti bussare piano alla porta della tenuta. Quando apri, non c'è nessuno, solo qualcosa rilegato in cuoio marrone scuro posato sulla soglia.",
     "title": "Un sommesso bussare"
-  },
-  "mysteriousNote": {
-    "choices": {
-      "throw_away": {
-        "label": "Buttala via"
-      }
-    },
-    "log": {
-      "outcome0": "Accartocci il biglietto e lo lasci cadere dalle dita. Comprendi le parole, eppure non riesci a dar loro alcun senso. Mentre la carta si allontana, cogli qualcosa portato dal vento, debole e lontano. Suona come un pianto sommesso e solitario che svanisce nella notte."
-    },
-    "title": "Un biglietto misterioso",
-    "message": "Al calar della sera, trovi un foglio di carta sulla soglia della tua tenuta. Qualcuno ha lasciato un biglietto con una calligrafia curata ed elegante: \n «Spero che il tuo soggiorno qui ti stia piacendo. Se è così, prendi in considerazione l'idea di sostenere il viaggio che ti attende, visitando il negozio o facendo una donazione. Il tuo aiuto mantiene questo mondo vivo e gratuito per tutti. Grazie!»"
   },
   "mysteriousWoman": {
     "log": {

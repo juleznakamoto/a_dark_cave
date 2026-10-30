@@ -1145,6 +1145,37 @@ function selectTrades(
 
 const allMerchantTrades = [...buyTrades, ...sellTrades, ...toolTrades];
 
+/** Rebuild a merchant button in the current language from the trade's numbers. */
+export function relocalizeMerchantTradeChoice(
+  trade: MerchantTradeData,
+): MerchantTradeData {
+  const sellName = getResourceName(trade.sellResource, trade.sellResource);
+  const cost = tWithFallback("events", "merchant.tradeCost", trade.cost, {
+    amount: trade.sellAmount,
+    resource: sellName,
+  });
+  if (trade.buyItem) {
+    return {
+      ...trade,
+      label: tWithFallback(
+        "events",
+        `merchant.toolTrades.${trade.id}.label`,
+        trade.label,
+      ),
+      cost,
+    };
+  }
+  const buyName = getResourceName(trade.buyResource, trade.buyResource);
+  return {
+    ...trade,
+    label: tWithFallback("events", "merchant.tradeLabel", trade.label, {
+      amount: trade.buyAmount,
+      resource: buyName,
+    }),
+    cost,
+  };
+}
+
 export function isMerchantTradeCurrentlyAvailable(
   tradeId: string,
   state: GameState,

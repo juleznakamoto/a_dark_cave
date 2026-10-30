@@ -3,10 +3,12 @@
  */
 import React from "react";
 import { act, cleanup, render, screen } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import TimedEventPanel from "./TimedEventPanel";
 import { useGameStore } from "@/game/state";
 import { tradersDaughterEvents } from "@/game/rules/eventsTradersDaughter";
+import i18n from "@/i18n";
+import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
 
 vi.mock("@/components/game/TooltipWrapper", () => ({
   TooltipWrapper: ({ children }: { children: React.ReactElement }) => children,
@@ -21,6 +23,11 @@ vi.mock("@/lib/logger", () => ({
 }));
 
 describe("TimedEventPanel traders_daughter choice styling", () => {
+  beforeAll(async () => {
+    await ensureGameplayLocalesLoaded();
+    await i18n.changeLanguage("en");
+  });
+
   beforeEach(() => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-03-21T12:00:00Z"));
@@ -89,8 +96,8 @@ describe("TimedEventPanel traders_daughter choice styling", () => {
     const sendButton = screen.getByRole("button", { name: "Send search party" });
     const declineButton = screen.getByRole("button", { name: "Do not help" });
 
-    expect(sendButton).toBeDisabled();
-    expect(declineButton).not.toBeDisabled();
+    expect(sendButton).toHaveAttribute("aria-disabled", "true");
+    expect(declineButton).not.toHaveAttribute("aria-disabled");
     expect(declineButton.className).toContain("bg-neutral-600/10");
     expect(sendButton.querySelector(".opacity-60")).not.toBeNull();
     expect(declineButton.querySelector(".opacity-60")).toBeNull();
@@ -104,11 +111,11 @@ describe("TimedEventPanel traders_daughter choice styling", () => {
     const sendButton = screen.getByRole("button", { name: "Send search party" });
     const declineButton = screen.getByRole("button", { name: "Do not help" });
 
-    expect(sendButton).not.toBeDisabled();
-    expect(declineButton).not.toBeDisabled();
+    expect(sendButton).not.toHaveAttribute("aria-disabled");
+    expect(declineButton).not.toHaveAttribute("aria-disabled");
 
     expect(declineButton.className).toContain("bg-neutral-600/10");
-    expect(declineButton.className).toContain("border-orange-950");
-    expect(declineButton.className).not.toContain("border-orange-950/50");
+    expect(declineButton.className).toContain("border-transparent");
+    expect(declineButton.querySelector(".opacity-60")).toBeNull();
   });
 });

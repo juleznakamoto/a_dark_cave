@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import i18n from "./index";
 import { hasLogEntryText, resolveLogPanelMessage, resolveOutcomeLogMessage } from "./logDisplay";
-import { ensureGameplayLocalesLoaded } from "./loadLocaleResources";
+import { ensureGameplayLocalesLoaded, loadLocaleResources } from "./loadLocaleResources";
 import {
   getStartScreenNarrativeEnglishFallback,
   resolveInheritedActionLogMessage,
@@ -505,6 +505,24 @@ describe("resolveLogPanelMessage", () => {
       type: "event",
     });
     expect(text).toBe("Hunter Achievement complete: +500 Wood");
+  });
+
+  it("re-localizes a German woodcutter log line when the UI is Russian", async () => {
+    await loadLocaleResources("de");
+    await loadLocaleResources("ru");
+    await i18n.changeLanguage("ru");
+    const text = resolveLogPanelMessage({
+      id: "woodcutter1-1",
+      eventId: "woodcutter1",
+      message:
+        "Ein muskulöser Mann mit einer großen Axt nähert sich dem Dorf. Er spannt die Arme an. „Keiner fällt Bäume wie ich“, prahlt er. „Gib mir 25 Nahrung, und ich bringe 250 Holz.“",
+      timestamp: 0,
+      type: "event",
+    });
+    expect(text).toContain("25");
+    expect(text).toContain("250");
+    expect(text).toContain("древесины");
+    expect(text).not.toContain("Nahrung");
   });
 
   it("re-localizes gambler practice logs via logKey in German UI", async () => {

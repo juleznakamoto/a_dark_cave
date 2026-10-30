@@ -448,6 +448,9 @@
       "sellBook": {
         "label": "Vender el libro",
         "reward": "+{{sellGold}} de oro"
+      },
+      "wait": {
+        "label": "Esperar"
       }
     },
     "log": {
@@ -1535,18 +1538,6 @@
     },
     "message": "Una noche, ya tarde, oyes un suave golpe en la puerta de la finca. Al abrir, no hay nadie; solo algo envuelto en cuero marrón oscuro descansa en el umbral.",
     "title": "Una llamada discreta"
-  },
-  "mysteriousNote": {
-    "choices": {
-      "throw_away": {
-        "label": "Tirar"
-      }
-    },
-    "log": {
-      "outcome0": "Arrugas la nota y la dejas caer de tus dedos. Entiendes las palabras, pero no logras encontrarles sentido. Mientras el papel se aleja, percibes algo llevado por el viento, tenue y distante. Suena como un llanto suave y solitario que se desvanece en la noche."
-    },
-    "title": "Una nota misteriosa",
-    "message": "Al anochecer, encuentras un papel en la puerta de tu finca. Alguien dejó una nota con una letra cuidada y elegante:\n «Espero que estés disfrutando de tu estancia aquí. Si es así, plantéate apoyar el camino que queda por delante, visitando la tienda o con un donativo. Tu ayuda mantiene vivo este mundo y gratuito para todos. ¡Gracias!»"
   },
   "mysteriousWoman": {
     "log": {

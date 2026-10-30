@@ -448,6 +448,9 @@
       "sellBook": {
         "label": "Vendre le livre",
         "reward": "+{{sellGold}} or"
+      },
+      "wait": {
+        "label": "Attendre"
       }
     },
     "log": {
@@ -1535,18 +1538,6 @@
     },
     "message": "Tard un soir, vous entendez un léger coup à la porte du domaine. Quand vous l'ouvrez, il n'y a personne, seulement quelque chose relié de cuir brun sombre posé sur le seuil.",
     "title": "Un coup discret"
-  },
-  "mysteriousNote": {
-    "choices": {
-      "throw_away": {
-        "label": "Jeter"
-      }
-    },
-    "log": {
-      "outcome0": "Vous froissez la note et la laissez tomber de vos doigts. Vous comprenez les mots, mais ils ne vous disent rien. Tandis que le papier s'éloigne, vous percevez quelque chose porté par le vent, faible et lointain. On dirait des sanglots doux et solitaires qui s'éteignent dans la nuit."
-    },
-    "title": "Une note mystérieuse",
-    "message": "À la tombée du jour, vous trouvez un papier sur le seuil de votre domaine. Quelqu'un a laissé un mot d'une écriture soignée et élégante :\n « J'espère que vous appréciez votre séjour ici. Si c'est le cas, pensez à soutenir la suite du voyage, en visitant la boutique ou en faisant un don. Votre aide permet à ce monde de rester vivant et gratuit. Merci ! »"
   },
   "mysteriousWoman": {
     "log": {

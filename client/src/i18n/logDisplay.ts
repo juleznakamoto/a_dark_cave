@@ -23,7 +23,10 @@ import {
   getUiTooltip,
 } from "@/i18n/tooltipLabels";
 import { formatThousandsInLogText } from "@/lib/utils";
-import { resolveEventMessage } from "@/i18n/eventText";
+import {
+  relocalizeStoredCatalogText,
+  resolveEventMessage,
+} from "@/i18n/eventText";
 import enEvents from "@/i18n/locales/en/events.json";
 import enLog from "@/i18n/locales/en/ui/log.json";
 import i18n from "./index";
@@ -894,6 +897,14 @@ function resolveEventLogPanelMessage(entry: LogEntry): string | null {
   if (!eventDef) return null;
 
   const catalogId = getEventCatalogIdByEventId(eventId);
+  const fromMessage = relocalizeStoredCatalogText(
+    catalogId,
+    "message",
+    entry.message,
+  );
+  if (fromMessage) return fromMessage;
+  const fromLog = relocalizeStoredCatalogText(catalogId, "log", entry.message);
+  if (fromLog) return fromLog;
 
   if (eventDef.message === undefined) {
     const localized = resolveEventMessage(

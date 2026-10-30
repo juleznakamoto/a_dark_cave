@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import i18n from "./index";
-import { gameEvents, type GameEvent } from "@/game/rules/events";
+import { buildEventDialogLogEntry, gameEvents, type GameEvent } from "@/game/rules/events";
+import { ensureGameplayLocalesLoaded, loadLocaleResources } from "./loadLocaleResources";
 import { gameStateSchema } from "@shared/schema";
 import {
   getEventCatalogId,
@@ -27,6 +28,10 @@ function getChoices(def: GameEvent, state: ReturnType<typeof gameStateSchema.par
 }
 
 describe("timed tab event i18n", () => {
+  beforeAll(async () => {
+    await ensureGameplayLocalesLoaded();
+  });
+
   beforeEach(async () => {
     await i18n.changeLanguage("en");
   });
@@ -225,5 +230,41 @@ describe("timed tab event i18n", () => {
         "Refuse trade",
       );
     }
+  });
+
+  it("re-localizes an open woodcutter tab when the language changes", async () => {
+    await loadLocaleResources("de");
+    await loadLocaleResources("ru");
+    await i18n.changeLanguage("de");
+    const state = gameStateSchema.parse({});
+    const entry = buildEventDialogLogEntry(gameEvents.woodcutter1, state);
+    expect(entry.title).toBe("Der Holzfäller");
+    expect(entry.message).toContain("Nahrung");
+
+    await i18n.changeLanguage("ru");
+    const vars = getEventI18nVars("woodcutter", state, "woodcutter1");
+    expect(
+      resolveEventDisplayTitle("woodcutter", entry.title, state, "woodcutter1"),
+    ).toBe("Лесоруб");
+    expect(
+      resolveEventDisplayMessage(
+        "woodcutter",
+        entry.message,
+        state,
+        "woodcutter1",
+      ),
+    ).toContain("древесины");
+    const choices = localizeEventChoices(
+      "woodcutter",
+      Array.isArray(entry.choices) ? entry.choices : [],
+      state,
+      vars,
+    );
+    expect(choices?.find((choice) => choice.id === "acceptServices")?.label).toBe(
+      "Заплатить 25 еды",
+    );
+    expect(choices?.find((choice) => choice.id === "denyServices")?.label).toBe(
+      "Отказать в услугах",
+    );
   });
 });

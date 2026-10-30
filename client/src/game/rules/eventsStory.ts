@@ -215,36 +215,6 @@ export const storyEvents: Record<string, GameEvent> = {
     ],
   },
 
-  mysteriousNote: {
-    id: "mysteriousNote",
-    condition: (state: GameState) =>
-      state.playTime >= 3 * 60 * 60 * 1000 * 100 && // TODO: This is deactivated for now to allow for testing300 hours in milliseconds
-      state.buildings.darkEstate >= 1 &&
-      !state.story.seen.mysteriousNoteReceived &&
-      !state.hasMadeNonFreePurchase, // Only show if player hasn't made any non-free purchases
-
-    timeProbability: 5,
-    priority: 5,
-    repeatable: false,
-    choices: [
-      {
-        id: "throw_away",
-        effect: (state: GameState) => {
-          return {
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                mysteriousNoteReceived: true,
-              },
-            },
-            _logMessageKey: "outcome0",
-          };
-        },
-      },
-    ],
-  },
-
   mysteriousBook: {
     id: "mysteriousBook",
     condition: (state: GameState) =>

@@ -1,5 +1,6 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import i18n from "./index";
+import { ensureGameplayLocalesLoaded } from "./loadLocaleResources";
 import { gameEvents, type GameEvent } from "@/game/rules/events";
 import { gameStateSchema } from "@shared/schema";
 import {
@@ -68,6 +69,10 @@ function collectMissingChoiceLabels(
 }
 
 describe("event choice i18n", () => {
+  beforeAll(async () => {
+    await ensureGameplayLocalesLoaded();
+  });
+
   beforeEach(async () => {
     await i18n.changeLanguage("en");
   });

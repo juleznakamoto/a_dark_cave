@@ -80,9 +80,8 @@ function EventDialogOpen({
   onClose,
   event,
 }: EventDialogProps & { event: LogEntry }) {
-  const { t } = useUiTranslation();
+  const { t, i18n } = useUiTranslation();
   const applyEventChoice = useGameStore((s) => s.applyEventChoice);
-  const setShopDialogOpen = useGameStore((s) => s.setShopDialogOpen);
   const gameState = useGameStoreWithoutTickClock() as unknown as GameState;
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [totalTime, setTotalTime] = useState<number>(0);
@@ -136,7 +135,7 @@ function EventDialogOpen({
         : event.choices || [];
     if (!raw.length) return [];
     return localizeEventChoices(catalogId, raw, gameState, eventI18nVars) ?? raw;
-  }, [event, catalogId, gameState, eventI18nVars]);
+  }, [event, catalogId, gameState, eventI18nVars, i18n.language]);
 
   // Reset purchased items when dialog opens
   useEffect(() => {
@@ -307,32 +306,6 @@ function EventDialogOpen({
     // For merchant trades (not goodbye), mark item as purchased but don't close dialog
     // This logic is now handled by the specific merchant event's choice effects.
     // The general handling below will apply.
-
-    // Handle special actions for mysterious note event
-    if (eventId === "mysteriousNote") {
-      const choice = eventChoices.find((c) => c.id === choiceId);
-      if (choice) {
-        const result = choice.effect(gameState);
-
-        // Handle shop opening
-        if ((result as any)._openShop) {
-          fallbackExecutedRef.current = true;
-          applyEventChoice(choiceId, eventId);
-          onClose();
-          setShopDialogOpen(true, "event");
-          return;
-        }
-
-        // Handle donation page opening
-        if ((result as any)._openDonation) {
-          fallbackExecutedRef.current = true;
-          applyEventChoice(choiceId, eventId);
-          onClose();
-          window.open("https://buymeacoffee.com/julianbudev", "_blank");
-          return;
-        }
-      }
-    }
 
     // For non-merchant events, process normally
     fallbackExecutedRef.current = true;

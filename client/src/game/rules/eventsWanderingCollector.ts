@@ -192,6 +192,17 @@ function collectorOfferLabel(itemId: string): string {
   return getClothingOrRelicEffectName(itemId);
 }
 
+/** Item name on a buy/sell button, in the current language. */
+export function collectorChoiceDisplayLabel(choiceId: string): string | undefined {
+  if (choiceId === "sell_nothing") return undefined;
+  if (!choiceId.startsWith("buy_") && !choiceId.startsWith("sell_")) {
+    return undefined;
+  }
+  const itemId = choiceId.slice(choiceId.indexOf("_") + 1);
+  if (!itemId) return undefined;
+  return collectorOfferLabel(itemId);
+}
+
 function grantCollectorItem(
   state: GameState,
   itemId: string,

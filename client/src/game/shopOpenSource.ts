@@ -5,7 +5,6 @@ export const SHOP_OPEN_SOURCES = [
   "gratitude",
   "url",
   "estate-buy-gold",
-  "event",
 ] as const;
 
 export type ShopOpenSource = (typeof SHOP_OPEN_SOURCES)[number];

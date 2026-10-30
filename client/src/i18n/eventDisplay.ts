@@ -3,6 +3,7 @@ import { gameEvents } from "@/game/rules/events";
 import {
   getEventCatalogId,
   isI18nReturnedObjectError,
+  relocalizeStoredCatalogText,
   resolveEventMessage,
   resolveEventTitle,
 } from "./eventText";
@@ -31,7 +32,11 @@ export function getEventI18nVars(
   return typeof def.i18nVars === "function" ? def.i18nVars(state) : def.i18nVars;
 }
 
-/** Title for UI — stored runtime text first, then catalog i18n. */
+/**
+ * Title for UI. A stored title is the sentence from when the event opened, so
+ * match it back to the catalog and show the current language. Dynamic titles
+ * that are not in the catalog stay as stored.
+ */
 export function resolveEventDisplayTitle(
   catalogId: string,
   storedTitle: string | undefined,
@@ -39,7 +44,10 @@ export function resolveEventDisplayTitle(
   ruleEventId?: string,
 ): string | undefined {
   if (storedTitle && !isI18nReturnedObjectError(storedTitle)) {
-    return storedTitle;
+    return (
+      relocalizeStoredCatalogText(catalogId, "title", storedTitle) ??
+      storedTitle
+    );
   }
   const ruleId = ruleEventId ?? catalogId;
   const def = gameEvents[ruleId] ?? gameEvents[catalogId];
@@ -47,14 +55,24 @@ export function resolveEventDisplayTitle(
   return resolveEventTitle(catalogId, def?.title, state, vars);
 }
 
-/** Message for UI — stored runtime text first, then catalog i18n. */
+/**
+ * Message for UI. Opening copy lives under `message`; outcome dialogs store a
+ * `log` line. Either one is re-read in the current language. Uncatalogued
+ * runtime text stays as stored.
+ */
 export function resolveEventDisplayMessage(
   catalogId: string,
   storedMessage: string | undefined,
   state: GameState,
   ruleEventId?: string,
 ): string {
-  if (storedMessage) return storedMessage;
+  if (storedMessage) {
+    return (
+      relocalizeStoredCatalogText(catalogId, "message", storedMessage) ??
+      relocalizeStoredCatalogText(catalogId, "log", storedMessage) ??
+      storedMessage
+    );
+  }
   const ruleId = ruleEventId ?? catalogId;
   const def = gameEvents[ruleId] ?? gameEvents[catalogId];
   const vars = getEventI18nVars(catalogId, state, ruleId);

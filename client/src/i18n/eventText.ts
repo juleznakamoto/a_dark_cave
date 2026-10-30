@@ -1,6 +1,7 @@
 import i18n from "i18next";
 import type { GameEvent, EventChoice } from "@/game/rules/eventTypes";
 import type { GameState } from "@shared/schema";
+import { SUPPORTED_LOCALES } from "./locales";
 
 type TranslateOptions = Record<string, string | number | boolean | undefined>;
 
@@ -233,6 +234,98 @@ export function resolveEventLogMessage(
   return tEvent(catalogId, `log.${logKey}`, options);
 }
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/** Pull `{{name}}` values out of a sentence that was filled from `template`. */
+function matchCatalogTemplate(
+  template: string,
+  stored: string,
+): Record<string, string> | null {
+  const names: string[] = [];
+  const parts: string[] = [];
+  const placeholder = /\{\{(\w+)\}\}/g;
+  let last = 0;
+  let match: RegExpExecArray | null;
+  while ((match = placeholder.exec(template))) {
+    parts.push(escapeRegExp(template.slice(last, match.index)));
+    names.push(match[1]);
+    parts.push("([\\s\\S]+?)");
+    last = match.index + match[0].length;
+  }
+  parts.push(escapeRegExp(template.slice(last)));
+  const found = stored.match(new RegExp(`^${parts.join("")}$`));
+  if (!found) return null;
+  const vars: Record<string, string> = {};
+  names.forEach((name, index) => {
+    vars[name] = found[index + 1] ?? "";
+  });
+  return vars;
+}
+
+function collectCatalogLeaves(
+  catalogId: string,
+  keyPrefix: string,
+  lng: string,
+): Array<{ suffix: string; template: string }> {
+  const node = i18n.getResource(lng, "events", `${catalogId}.${keyPrefix}`);
+  if (typeof node === "string") {
+    const template = node.trim();
+    return template ? [{ suffix: keyPrefix, template }] : [];
+  }
+  if (!node || typeof node !== "object") return [];
+  return Object.entries(node as Record<string, unknown>).flatMap(
+    ([key, value]) => {
+      if (typeof value !== "string" || !value.trim()) return [];
+      return [{ suffix: `${keyPrefix}.${key}`, template: value }];
+    },
+  );
+}
+
+const relocalizeCache = new Map<string, string | null>();
+
+/**
+ * Map a sentence stored in any loaded locale back onto the current language.
+ * Interpolation values (costs, counts) stay as they were when the line was written.
+ */
+export function relocalizeStoredCatalogText(
+  catalogId: string,
+  keyPrefix: string,
+  stored: string | undefined,
+): string | null {
+  const trimmed = stored?.trim();
+  if (!trimmed || !catalogId) return null;
+
+  const cacheKey = `${i18n.language}\0${catalogId}\0${keyPrefix}\0${trimmed}`;
+  const cached = relocalizeCache.get(cacheKey);
+  if (cached !== undefined) return cached;
+  if (relocalizeCache.size > 400) relocalizeCache.clear();
+
+  let bestSuffix = "";
+  let bestVars: Record<string, string> | null = null;
+  let bestLen = -1;
+
+  for (const lng of SUPPORTED_LOCALES) {
+    for (const { suffix, template } of collectCatalogLeaves(
+      catalogId,
+      keyPrefix,
+      lng,
+    )) {
+      const vars = matchCatalogTemplate(template, trimmed);
+      if (!vars || template.length <= bestLen) continue;
+      bestSuffix = suffix;
+      bestVars = vars;
+      bestLen = template.length;
+    }
+  }
+
+  const translated = bestVars ? tEvent(catalogId, bestSuffix, bestVars) : "";
+  const result = translated.trim() ? translated : null;
+  relocalizeCache.set(cacheKey, result);
+  return result;
+}
+
 function resolveLocalizedEventChoiceLabel(
   catalogId: string,
   choiceId: string,
@@ -274,6 +367,14 @@ function resolveLocalizedEventChoiceLabel(
       if (variantLabel) return variantLabel;
       return "";
     }
+    const relocalized = relocalizeStoredCatalogText(
+      catalogId,
+      `${choiceLabelPrefix(choiceId)}`,
+      labelDef,
+    );
+    if (relocalized) return relocalized;
+    const localized = resolveEventChoiceLabel(catalogId, choiceId, vars);
+    if (localized) return localized;
     return labelDef;
   }
 

@@ -54,11 +54,22 @@ function i18nCostVarToResourceKey(
   return null;
 }
 
+/** Display costs say "torches" / "Fackeln" while the resource id and name stay singular. */
+function sharesResourceStem(display: string, name: string): boolean {
+  if (name.length < 4 || display.length < 4) return false;
+  const [shorter, longer] =
+    display.length < name.length ? [display, name] : [name, display];
+  if (!longer.startsWith(shorter)) return false;
+  const extra = longer.slice(shorter.length);
+  return extra.length > 0 && extra.length <= 3 && /^[\p{L}]+$/u.test(extra);
+}
+
 function resolveResourceKeyFromDisplayName(
   displayName: string,
   resources: GameState["resources"],
 ): string | null {
-  const normalized = displayName.trim().toLowerCase().replace(/\s+/g, "_");
+  const display = displayName.trim().toLowerCase();
+  const normalized = display.replace(/\s+/g, "_");
   if (normalized in resources) {
     return normalized;
   }
@@ -69,7 +80,11 @@ function resolveResourceKeyFromDisplayName(
     }
 
     const localized = getResourceName(key, key).trim().toLowerCase();
-    if (localized === displayName.trim().toLowerCase()) {
+    if (
+      localized === display ||
+      sharesResourceStem(display, localized) ||
+      sharesResourceStem(normalized, key.toLowerCase())
+    ) {
       return key;
     }
   }
