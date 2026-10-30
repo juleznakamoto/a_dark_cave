@@ -22,13 +22,13 @@ describe("isSteamCruelModeUnlockAvailable", () => {
     ).toBe(false);
   });
 
-  it("stays off for a Steam Game preview while the flag is off", () => {
+  it("pretends a normal win for Settings → Steam Game while the flag is off", () => {
     expect(
       isSteamCruelModeUnlockAvailable({
         devGameMode: "steamGame",
-        hasWonNormalGame: true,
+        hasWonNormalGame: false,
       }),
-    ).toBe(false);
+    ).toBe(true);
   });
 
   it("stays off on web Normal Mode even after a normal win", () => {
