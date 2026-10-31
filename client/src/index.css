@@ -1961,6 +1961,12 @@ html.adc-text-xxlarge .game-panel-produce-effects {
   animation: flame-text 5s ease-in-out infinite;
 }
 
+.fire-hover-cruel.fire-hover:hover,
+.fire-hover-cruel.fire-hover.text-shadow-glow,
+.fire-hover-cruel.fire-active {
+  background-image: linear-gradient(50deg, #ff4a32, #ff6400, #ff7300, #ff2d00, #d21030, #ff2d00);
+}
+
 .timer-progress .bg-primary {
   background-color: #8b0000 !important;
 }

@@ -195,20 +195,30 @@ export const CRUEL_MODE = {
   },
 
   particles: {
-    initialSpawn: { normal: 2, cruel: 20 },
-    hoverSpawn: { normal: 2, cruel: 20 },
-    rampMax: { normal: 10, cruel: 100 },
+    initialSpawn: { normal: 2, cruel: 8 },
+    hoverSpawn: { normal: 2, cruel: 8 },
+    rampMax: { normal: 10, cruel: 10 },
     rampFloor: { normal: 1, cruel: 10 },
-    rampRandomRange: { normal: 7, cruel: 70 },
-    rampPostPlateau: { normal: 6, cruel: 60 },
+    rampRandomRange: { normal: 7, cruel: 41 },
+    rampPostPlateau: { normal: 6, cruel: 10 },
     clickBurst: { normal: 100, cruel: 250 },
     /** Travel distance in px: min + random * range. */
     travel: {
       normal: { min: 40, range: 180 },
       cruel: { min: 100, range: 300 },
     },
+    /** Seconds in flight: min + random * range. */
+    lifetime: {
+      normal: { min: 0.8, range: 1.2 },
+      cruel: { min: 0.8, range: 2 },
+    },
     /** Upward cone width in degrees, centered on straight up. */
-    coneDegrees: { normal: 120, cruel: 150 },
+    coneDegrees: { normal: 120, cruel: 135 },
+    /** Ember colors. Cruel is the same set, shifted toward red. */
+    colors: {
+      normal: ["#ffb347", "#ff9234", "#ffcd94", "#ff6f3c", "#ff4500"],
+      cruel: ["#ff7228", "#ff5a1c", "#ff7d55", "#ff4120", "#ff2400"],
+    },
   },
 
   forestExpedition: {

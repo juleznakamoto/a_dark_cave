@@ -1077,8 +1077,22 @@ export default function StartScreen({
           }
         }
 
+        @keyframes fire-glow-breathe {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(0.975); }
+        }
+
         .fire-glow-hint {
           animation: fire-glow-pulse 2.5s ease-in-out 8.5s infinite;
+        }
+
+        .make-fire-cruel {
+          color: rgb(228 206 198 / 0.9);
+        }
+
+        .fire-glow-breathe {
+          animation: fire-glow-breathe 2.5s ease-in-out 8.5s infinite;
+          transform-origin: center;
         }
 
         @keyframes cruel-start-vignette {
@@ -1086,18 +1100,17 @@ export default function StartScreen({
           50% { opacity: 0.2; }
         }
 
-        .cruel-start-vignette {
-          background:
-            linear-gradient(to right, rgba(150, 20, 20, 0.42), rgba(170, 28, 28, 0.2) 12%, transparent 27%),
-            linear-gradient(to left, rgba(150, 20, 20, 0.42), rgba(170, 28, 28, 0.2) 12%, transparent 27%),
-            linear-gradient(to bottom, rgba(150, 20, 20, 0.42), rgba(170, 28, 28, 0.2) 12%, transparent 27%),
-            linear-gradient(to top, rgba(150, 20, 20, 0.42), rgba(170, 28, 28, 0.2) 12%, transparent 27%);
-          filter: blur(48px);
+        .cruel-start-vignette-wash {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          overflow: visible;
           animation: cruel-start-vignette 8s ease-in-out infinite;
         }
 
         @media (prefers-reduced-motion: reduce) {
-          .cruel-start-vignette {
+          .cruel-start-vignette-wash {
             animation: none;
             opacity: 0.14;
           }
@@ -1110,7 +1123,52 @@ export default function StartScreen({
         <div
           aria-hidden
           className="cruel-start-vignette pointer-events-none absolute inset-0 z-[1]"
-        />
+        >
+          <svg className="cruel-start-vignette-wash" aria-hidden>
+            <defs>
+              <filter
+                id="cruel-start-vignette-soft"
+                x="-30%"
+                y="-30%"
+                width="160%"
+                height="160%"
+                colorInterpolationFilters="sRGB"
+              >
+                <feGaussianBlur
+                  in="SourceGraphic"
+                  stdDeviation="34"
+                  colorInterpolationFilters="linearRGB"
+                  result="soft"
+                />
+                <feTurbulence
+                  type="fractalNoise"
+                  baseFrequency="0.35"
+                  numOctaves="2"
+                  stitchTiles="stitch"
+                  result="noise"
+                />
+                <feColorMatrix
+                  in="noise"
+                  type="matrix"
+                  result="factor"
+                  values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0.65 0 0 0 0.35"
+                />
+                <feComposite in="soft" in2="factor" operator="arithmetic" k1="1" k2="0" k3="0" k4="0" />
+              </filter>
+            </defs>
+            <rect
+              x="0"
+              y="0"
+              width="100%"
+              height="100%"
+              fill="none"
+              stroke="rgb(150, 20, 20)"
+              strokeWidth="120"
+              opacity="0.5"
+              filter="url(#cruel-start-vignette-soft)"
+            />
+          </svg>
+        </div>
       )}
 
       {showEyesEasterEgg && (
@@ -1247,37 +1305,40 @@ export default function StartScreen({
           })}
         </div>
 
-        <div className={showParticles ? undefined : "fire-glow-hint"}>
-          <div
-            ref={buttonFadeRef}
-            className={
-              showParticles || buttonFadeInDone
-                ? undefined
-                : "animate-fade-in-button"
-            }
-          >
-            {ParticleButtonCmp ? (
-              <ParticleButtonCmp
-                ref={buttonRef}
-                onClick={handleMakeFire}
-                autoStart={showParticles}
-                disabled={makeFireDisabled}
-                className={`${MAKE_FIRE_BUTTON_CLASS} ${showParticles ? "fire-active" : ""}`}
-                data-testid="button-make-fire"
-              >
-                {t("startScreen.makeFire", { defaultValue: "Make Fire" })}
-              </ParticleButtonCmp>
-            ) : (
-              <Button
-                ref={buttonRef}
-                onClick={handleMakeFire}
-                disabled={makeFireDisabled}
-                className={MAKE_FIRE_BUTTON_CLASS}
-                data-testid="button-make-fire"
-              >
-                {t("startScreen.makeFire", { defaultValue: "Make Fire" })}
-              </Button>
-            )}
+        <div className={showParticles ? undefined : "fire-glow-breathe"}>
+          <div className={showParticles ? undefined : "fire-glow-hint"}>
+            <div
+              ref={buttonFadeRef}
+              className={
+                showParticles || buttonFadeInDone
+                  ? undefined
+                  : "animate-fade-in-button"
+              }
+            >
+              {ParticleButtonCmp ? (
+                <ParticleButtonCmp
+                  ref={buttonRef}
+                  onClick={handleMakeFire}
+                  autoStart={showParticles}
+                  cruelMode={isCruelMode}
+                  disabled={makeFireDisabled}
+                  className={`${MAKE_FIRE_BUTTON_CLASS}${isCruelMode ? " make-fire-cruel fire-hover-cruel" : ""}${showParticles ? " fire-active" : ""}`}
+                  data-testid="button-make-fire"
+                >
+                  {t("startScreen.makeFire", { defaultValue: "Make Fire" })}
+                </ParticleButtonCmp>
+              ) : (
+                <Button
+                  ref={buttonRef}
+                  onClick={handleMakeFire}
+                  disabled={makeFireDisabled}
+                  className={`${MAKE_FIRE_BUTTON_CLASS}${isCruelMode ? " make-fire-cruel fire-hover-cruel" : ""}`}
+                  data-testid="button-make-fire"
+                >
+                  {t("startScreen.makeFire", { defaultValue: "Make Fire" })}
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </main>

@@ -127,7 +127,9 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
         );
         const rampStartRef = useRef<number | null>(null);
 
-        const colors = ["#ffb347", "#ff9234", "#ffcd94", "#ff6f3c", "#ff4500"]; // ember-like
+        const colors = cruelMode
+            ? CRUEL_MODE.particles.colors.cruel
+            : CRUEL_MODE.particles.colors.normal;
 
         const spawnSparks = () => {
             if (!buttonRef.current) return;
@@ -135,6 +137,9 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
             const travel = cruelMode
                 ? CRUEL_MODE.particles.travel.cruel
                 : CRUEL_MODE.particles.travel.normal;
+            const lifetime = cruelMode
+                ? CRUEL_MODE.particles.lifetime.cruel
+                : CRUEL_MODE.particles.lifetime.normal;
             const coneDegrees = cruelMode
                 ? CRUEL_MODE.particles.coneDegrees.cruel
                 : CRUEL_MODE.particles.coneDegrees.normal;
@@ -148,7 +153,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
                         (Math.PI / 180),
                     distance: Math.random() * travel.range + travel.min,
                     color: colors[Math.floor(Math.random() * colors.length)],
-                    lifetime: 0.8 + Math.random() * 1.2,
+                    lifetime: lifetime.min + Math.random() * lifetime.range,
                     offsetX: buttonWidth * 0.5 + (Math.random() * 74 - 37),
                     createdAt: Date.now(),
                 }),
@@ -374,7 +379,9 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(
                     )}
                     style={{
                         textShadow: isGlowing
-                            ? `0 0 ${10 * glowIntensity}px #ff6347, 0 0 ${20 * glowIntensity}px #ff4500, 0 0 ${30 * glowIntensity}px #ff8c00, 0 0 ${40 * glowIntensity}px #ffa500`
+                            ? cruelMode
+                                ? `0 0 ${10 * glowIntensity}px #ff4a32, 0 0 ${20 * glowIntensity}px #ff2d00, 0 0 ${30 * glowIntensity}px #ff5000, 0 0 ${40 * glowIntensity}px #ff3a18`
+                                : `0 0 ${10 * glowIntensity}px #ff6347, 0 0 ${20 * glowIntensity}px #ff4500, 0 0 ${30 * glowIntensity}px #ff8c00, 0 0 ${40 * glowIntensity}px #ffa500`
                             : "none",
                     }}
                     {...props}
