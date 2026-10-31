@@ -1333,16 +1333,39 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
   return finalChoices;
 }
 
+/** True while Call Merchant's travel timer is still running. */
+function isCallMerchantInProgress(state: GameState): boolean {
+  const starts = (
+    state as GameState & { executionStartTimes?: Record<string, number> }
+  ).executionStartTimes;
+  return (starts?.callMerchant ?? 0) > 0;
+}
+
 export const merchantEvents: Record<string, GameEvent> = {
   merchant: {
     id: "merchant",
-    condition: (state: GameState) => state.buildings.woodenHut >= 3,
-    timeProbability: (state: GameState) =>
-      12 +
-      0.5 * (state.buildings.tradePost || 0) +
-      1 * (state.buildings.grandBazaar || 0) +
-      1.5 * (state.buildings.merchantsGuild || 0) -
-      3 * state.BTP,
+    // A random visit must not open on top of a call the player already paid for.
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 3 && !isCallMerchantInProgress(state),
+    timeProbability: (state: GameState) => {
+      const tradePost = state.buildings.tradePost || 0;
+      const stoneHuts = state.buildings.stoneHut || 0;
+      const seen = state.story?.seen;
+      // Call Merchant unlocks with the Trade Post. Once it does, visits are rarer.
+      // Later village and wave milestones stretch the wait further.
+      const callMerchantUnlocked = tradePost >= 1;
+      return (
+        10 +
+        tradePost +
+        1.5 * (state.buildings.grandBazaar || 0) +
+        2 * (state.buildings.merchantsGuild || 0) +
+        (callMerchantUnlocked ? 10 : 0) +
+        (stoneHuts >= 5 ? 5 : 0) +
+        (stoneHuts >= 10 ? 5 : 0) +
+        (seen?.fifthWaveVictory ? 5 : 0) +
+        (seen?.tenthWaveVictory ? 5 : 0)
+      );
+    },
 
     priority: 3,
     repeatable: true,
