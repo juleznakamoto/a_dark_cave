@@ -813,6 +813,21 @@ describe("village map geometry", () => {
     expect(improved).toBe(basic);
   });
 
+  it("keeps one frame for the fortified moat and the hungering moat", () => {
+    const full = applyGrowth(GROWTH_STEPS.length);
+    const slots = placedSlots(full, DEFAULT_TUNING, {});
+    const pad = 40;
+    const fortified = fittedViewBox(
+      mapFramePoints({ ...full, moat: true, hungering: false }, DEFAULT_TUNING, slots),
+      pad,
+    );
+    const hungering = fittedViewBox(
+      mapFramePoints({ ...full, moat: true, hungering: true }, DEFAULT_TUNING, slots),
+      pad,
+    );
+    expect(hungering).toBe(fortified);
+  });
+
   it("sets the village paper past the traps, and 25 past the moat", () => {
     const radius = layoutWallRadius(DEFAULT_TUNING);
     const anchor = DEFAULT_TUNING.wallThickness * 1.52;

@@ -103,7 +103,6 @@ import {
 export function mapFramePoints(build: BuildState, tuning: Tuning, slots: PlacedSlot[]): Point[] {
   const radius = layoutWallRadius(tuning);
   const anchor = tuning.wallThickness * 1.52;
-  const moatScale = moatWidthScale(build.hungering);
   const areaLevel = trapAreaLevel(build);
   const groundTraps =
     areaLevel > 0
@@ -123,7 +122,14 @@ export function mapFramePoints(build: BuildState, tuning: Tuning, slots: PlacedS
   const points: Point[] = [
     ...slots.map((slot) => ({ x: slot.x, y: slot.y })),
     ...ringPoints(radius, tuning),
-    ...villageGroundPoints(radius, tuning, { ...build, traps: areaLevel }, groundTraps),
+    // Room for the wide ditch, even while the plain moat is drawn. Upgrading
+    // then grows the water outward instead of zooming the village down.
+    ...villageGroundPoints(
+      radius,
+      tuning,
+      { ...build, traps: areaLevel, hungering: (build.moat && build.wall > 0) || build.hungering },
+      groundTraps,
+    ),
   ];
   const cityOnly = (build.counts.bastion ?? 0) <= 0 && build.traps <= 0;
   if (build.moat && build.wall > 0) {
@@ -143,7 +149,7 @@ export function mapFramePoints(build: BuildState, tuning: Tuning, slots: PlacedS
         anchor,
         tuning,
         slot.tier,
-        moatScale,
+        moatWidthScale(true),
       );
       if (bridge) points.push(...bridge.deck);
     }
