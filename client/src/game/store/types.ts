@@ -94,8 +94,8 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
   gamblerDiceDialogOpen: boolean;
   /** True while the Insight blessing card-picker overlay is open (blocking). */
   blessingOfferDialogOpen: boolean;
-  /** True while the Cruel Mode curse card-picker overlay is open (blocking). */
-  curseOfferDialogOpen: boolean;
+  /** True while the opening pact card-picker overlay is open (blocking). */
+  pactOfferDialogOpen: boolean;
   /** Village Invest modal open; game loop treats offer-picker as modal pause but keeps sim running while an investment is maturing. */
   investDialogOpen: boolean;
   investmentResultDialog: {
@@ -429,8 +429,8 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
   setBlessingOfferDialogOpen: (isOpen: boolean) => void;
   /** Spend Insight and grant a blessing from the active Insight blessing offer. */
   chooseInsightBlessing: (blessingId: string) => boolean;
-  /** Save the opening curse picks and close the offer. */
-  confirmCurses: (curseIds: string[]) => void;
+  /** Save the opening pact picks and close the offer. */
+  confirmPacts: (pactIds: string[]) => void;
   setInvestDialogOpen: (isOpen: boolean) => void;
   setInvestmentResultDialog: (
     isOpen: boolean,

@@ -29,9 +29,9 @@
     "title": "祝福を選ぶ",
     "chooseBlessing": "選ぶ"
   },
-  "curseOffer": {
-    "title": "呪いを選ぶ",
-    "grant": "各プレイで呪いを1つ選べる（残酷モードでは2つ）。",
+  "pactOffer": {
+    "title": "契約を選ぶ",
+    "grant": "各プレイで契約を1つ選べる（残酷モードでは2つ）。",
     "available": "残り {{count}}",
     "continue": "続ける",
     "madness": "+3 狂気",

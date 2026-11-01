@@ -830,46 +830,46 @@ describe("Gambler resume on load", () => {
   });
 });
 
-describe("curse choices from older saves", () => {
-  function saveWithoutCurseChoices(
+describe("pact choices from older saves", () => {
+  function saveWithoutPactChoices(
     overrides: Partial<GameState> = {},
   ): GameState {
     const initial = createInitialState();
-    const { curseChoices: _omitted, ...rest } = initial;
+    const { pactChoices: _omitted, ...rest } = initial;
     return { ...rest, ...overrides } as GameState;
   }
 
   it("starts at one choice when the save has no finished games", async () => {
-    mockLoadGame.mockResolvedValue(saveWithoutCurseChoices());
+    mockLoadGame.mockResolvedValue(saveWithoutPactChoices());
     await useGameStore.getState().loadGame();
-    expect(useGameStore.getState().curseChoices).toBe(1);
+    expect(useGameStore.getState().pactChoices).toBe(1);
   });
 
-  it("does not resume the curse offer when no game has been finished", async () => {
+  it("does not resume the pact offer when no game has been finished", async () => {
     mockLoadGame.mockResolvedValue(
-      saveWithoutCurseChoices({ curseOfferPending: true }),
+      saveWithoutPactChoices({ pactOfferPending: true }),
     );
     await useGameStore.getState().loadGame();
-    expect(useGameStore.getState().curseOfferDialogOpen).toBe(false);
-    expect(useGameStore.getState().curseOfferPending).toBe(false);
+    expect(useGameStore.getState().pactOfferDialogOpen).toBe(false);
+    expect(useGameStore.getState().pactOfferPending).toBe(false);
   });
 
-  it("resumes the curse offer after a finished game", async () => {
+  it("resumes the pact offer after a finished game", async () => {
     mockLoadGame.mockResolvedValue(
-      saveWithoutCurseChoices({
-        curseOfferPending: true,
+      saveWithoutPactChoices({
+        pactOfferPending: true,
         lifetimeGamesWon: 1,
         hasWonAnyGame: true,
       }),
     );
     await useGameStore.getState().loadGame();
-    expect(useGameStore.getState().curseOfferDialogOpen).toBe(true);
-    expect(useGameStore.getState().curseOfferPending).toBe(true);
+    expect(useGameStore.getState().pactOfferDialogOpen).toBe(true);
+    expect(useGameStore.getState().pactOfferPending).toBe(true);
   });
 
   it("adds one choice per game already finished, using the best known count", async () => {
     mockLoadGame.mockResolvedValue(
-      saveWithoutCurseChoices({
+      saveWithoutPactChoices({
         lifetimeGamesWon: 1,
         hasWonAnyGame: true,
         hasWonNormalGame: true,
@@ -882,45 +882,45 @@ describe("curse choices from older saves", () => {
     );
     await useGameStore.getState().loadGame();
     expect(useGameStore.getState().lifetimeGamesWon).toBe(3);
-    expect(useGameStore.getState().curseChoices).toBe(4);
+    expect(useGameStore.getState().pactChoices).toBe(4);
   });
 
   it("counts a single legacy win flag when no finish list exists", async () => {
     mockLoadGame.mockResolvedValue(
-      saveWithoutCurseChoices({ hasWonAnyGame: true }),
+      saveWithoutPactChoices({ hasWonAnyGame: true }),
     );
     await useGameStore.getState().loadGame();
-    expect(useGameStore.getState().curseChoices).toBe(2);
+    expect(useGameStore.getState().pactChoices).toBe(2);
   });
 
   it("caps older careers at five choices", async () => {
     mockLoadGame.mockResolvedValue(
-      saveWithoutCurseChoices({
+      saveWithoutPactChoices({
         lifetimeGamesWon: 9,
         hasWonAnyGame: true,
       }),
     );
     await useGameStore.getState().loadGame();
-    expect(useGameStore.getState().curseChoices).toBe(5);
+    expect(useGameStore.getState().pactChoices).toBe(5);
   });
 
   it("keeps a stored count that is already higher than recorded wins", async () => {
     mockLoadGame.mockResolvedValue({
       ...createInitialState(),
-      curseChoices: 4,
+      pactChoices: 4,
       lifetimeGamesWon: 1,
       hasWonAnyGame: true,
     });
     await useGameStore.getState().loadGame();
-    expect(useGameStore.getState().curseChoices).toBe(4);
+    expect(useGameStore.getState().pactChoices).toBe(4);
   });
 
   it("reads choices stored under the old cruel field names", async () => {
     const initial = createInitialState();
     const {
-      curseChoices: _choices,
-      chosenCurses: _chosen,
-      curseOfferPending: _pending,
+      pactChoices: _choices,
+      chosenPacts: _chosen,
+      pactOfferPending: _pending,
       ...rest
     } = initial;
     mockLoadGame.mockResolvedValue({
@@ -931,35 +931,35 @@ describe("curse choices from older saves", () => {
       cruelCurseOfferPending: true,
     } as GameState);
     await useGameStore.getState().loadGame();
-    expect(useGameStore.getState().curseChoices).toBe(4);
-    expect(useGameStore.getState().chosenCurses).toEqual(["blazesmith"]);
-    expect(useGameStore.getState().curseOfferPending).toBe(true);
-    expect(useGameStore.getState().curseOfferDialogOpen).toBe(true);
+    expect(useGameStore.getState().pactChoices).toBe(4);
+    expect(useGameStore.getState().chosenPacts).toEqual(["blazesmith"]);
+    expect(useGameStore.getState().pactOfferPending).toBe(true);
+    expect(useGameStore.getState().pactOfferDialogOpen).toBe(true);
   });
 
-  it("confirmCurses saves the picks, closes the offer, and applies madness", async () => {
+  it("confirmPacts saves the picks, closes the offer, and applies madness", async () => {
     useGameStore.getState().initialize();
     useGameStore.setState({
-      chosenCurses: [],
-      curseChoices: 3,
-      curseOfferPending: true,
-      curseOfferDialogOpen: true,
+      chosenPacts: [],
+      pactChoices: 3,
+      pactOfferPending: true,
+      pactOfferDialogOpen: true,
     });
 
-    useGameStore.getState().confirmCurses([
+    useGameStore.getState().confirmPacts([
       "avid_apprentices",
       "nope",
       "blazesmith",
       "blazesmith",
     ]);
 
-    expect(useGameStore.getState().chosenCurses).toEqual([
+    expect(useGameStore.getState().chosenPacts).toEqual([
       "blazesmith",
       "avid_apprentices",
     ]);
-    expect(useGameStore.getState().curseOfferPending).toBe(false);
-    expect(useGameStore.getState().curseOfferDialogOpen).toBe(false);
-    expect(useGameStore.getState().curseChoices).toBe(3);
+    expect(useGameStore.getState().pactOfferPending).toBe(false);
+    expect(useGameStore.getState().pactOfferDialogOpen).toBe(false);
+    expect(useGameStore.getState().pactChoices).toBe(3);
 
     await new Promise((resolve) => setTimeout(resolve, 0));
     const plain = createInitialState();
@@ -1033,14 +1033,14 @@ describe("Timed event tab cleanup on new game", () => {
     );
   });
 
-  it("restartGame keeps the curse allowance and clears the current picks", async () => {
+  it("restartGame keeps the pact allowance and clears the current picks", async () => {
     mockSaveGame.mockClear();
 
     useGameStore.setState({
-      curseChoices: 10,
-      chosenCurses: ["blazesmith", "avid_apprentices"],
-      curseOfferPending: true,
-      curseOfferDialogOpen: true,
+      pactChoices: 10,
+      chosenPacts: ["blazesmith", "avid_apprentices"],
+      pactOfferPending: true,
+      pactOfferDialogOpen: true,
       lifetimeGamesWon: 10,
       flags: { ...useGameStore.getState().flags, gameStarted: true },
     });
@@ -1048,10 +1048,10 @@ describe("Timed event tab cleanup on new game", () => {
     await useGameStore.getState().restartGame();
 
     const state = useGameStore.getState();
-    expect(state.curseChoices).toBe(5);
-    expect(state.chosenCurses).toEqual([]);
-    expect(state.curseOfferPending).toBe(false);
-    expect(state.curseOfferDialogOpen).toBe(false);
+    expect(state.pactChoices).toBe(5);
+    expect(state.chosenPacts).toEqual([]);
+    expect(state.pactOfferPending).toBe(false);
+    expect(state.pactOfferDialogOpen).toBe(false);
     expect(state.lifetimeGamesWon).toBe(10);
   });
 

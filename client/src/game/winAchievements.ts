@@ -1,5 +1,5 @@
 import type { GameState } from "@shared/schema";
-import { grantCurseChoiceForCompletedGame } from "@/game/rules/curses";
+import { grantPactChoiceForCompletedGame } from "@/game/rules/pacts";
 
 const MS_PER_HOUR = 60 * 60 * 1000;
 
@@ -25,8 +25,8 @@ export type GameWinAchievementUpdates = {
   hasSpeedrunWin?: true;
   /** Absolute lifetime win count after this award (omit if already counted this run). */
   lifetimeGamesWon?: number;
-  /** Curse picks allowed after this completion (omit if already counted this run). */
-  curseChoices?: number;
+  /** Pact picks allowed after this completion (omit if already counted this run). */
+  pactChoices?: number;
 };
 
 function hasAlreadyCountedWinThisRun(
@@ -72,7 +72,7 @@ export function getGameWinAchievementUpdates(
     | "playTime"
     | "events"
     | "lifetimeGamesWon"
-    | "curseChoices"
+    | "pactChoices"
   >,
 ): GameWinAchievementUpdates {
   const updates: GameWinAchievementUpdates = { hasWonAnyGame: true };
@@ -87,8 +87,8 @@ export function getGameWinAchievementUpdates(
   if (!hasAlreadyCountedWinThisRun(state)) {
     updates.lifetimeGamesWon =
       Math.max(0, Math.floor(Number(state.lifetimeGamesWon) || 0)) + 1;
-    updates.curseChoices = grantCurseChoiceForCompletedGame(
-      state.curseChoices,
+    updates.pactChoices = grantPactChoiceForCompletedGame(
+      state.pactChoices,
       state.cruelMode,
     );
   }

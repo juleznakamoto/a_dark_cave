@@ -29,9 +29,9 @@
     "title": "Scegli una benedizione",
     "chooseBlessing": "Scegli"
   },
-  "curseOffer": {
-    "title": "Scegli le tue maledizioni",
-    "grant": "Ogni partita concede una scelta di maledizione (due in Modalità crudele).",
+  "pactOffer": {
+    "title": "Scegli i tuoi patti",
+    "grant": "Ogni partita concede una scelta di patto (due in Modalità crudele).",
     "available": "{{count}} disponibili",
     "continue": "Continua",
     "madness": "+3 Follia",

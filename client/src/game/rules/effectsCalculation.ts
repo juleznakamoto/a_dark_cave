@@ -19,7 +19,7 @@ import {
 } from "./skillUpgrades";
 import { CRUEL_MODE } from "../cruelMode";
 import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
-import { getCurseMadness } from "./curses";
+import { getPactMadness } from "./pacts";
 import { BUILDING_HIERARCHIES } from "@/game/buildingHierarchy";
 import { getBonusSidebarLabel } from "@/i18n/resolveGameText";
 import { CRAFT_UPGRADE_ACTIONS, getCraftPriorMultiplier } from "@/game/craftUpgradeUtils";
@@ -888,7 +888,7 @@ export const getMadnessComponents = (
   fromItems: number;
   fromBuildings: number;
   fromEvents: number;
-  fromCurses: number;
+  fromPacts: number;
   total: number;
 } => {
   const effectMadness = effects.statBonuses?.madness || 0;
@@ -907,10 +907,10 @@ export const getMadnessComponents = (
   const fromItems = effectMadness + itemMadnessReduction;
   const fromBuildings = buildingMadness;
   const fromEvents = state.stats?.madnessFromEvents || 0;
-  const fromCurses = getCurseMadness(state.chosenCurses);
-  const total = Math.max(0, fromItems + fromBuildings + fromEvents + fromCurses);
+  const fromPacts = getPactMadness(state.chosenPacts);
+  const total = Math.max(0, fromItems + fromBuildings + fromEvents + fromPacts);
 
-  return { fromItems, fromBuildings, fromEvents, fromCurses, total };
+  return { fromItems, fromBuildings, fromEvents, fromPacts, total };
 };
 
 /**

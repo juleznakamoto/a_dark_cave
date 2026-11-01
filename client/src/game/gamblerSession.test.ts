@@ -168,11 +168,11 @@ describe("gambler practice and coin offer", () => {
   });
 
   it("offers the coin after a paid win only with Avid Apprentices", () => {
-    const cursed = { chosenCurses: ["avid_apprentices"] as const };
+    const cursed = { chosenPacts: ["avid_apprentices"] as const };
     expect(gamblerCoinOfferOnWin(cursed, 50, () => 0.24)).toBe(true);
     expect(gamblerCoinOfferOnWin(cursed, 50, () => 0.25)).toBe(false);
     expect(gamblerCoinOfferOnWin(cursed, 0, () => 0)).toBe(false);
-    expect(gamblerCoinOfferOnWin({ chosenCurses: [] }, 50, () => 0)).toBe(false);
+    expect(gamblerCoinOfferOnWin({ chosenPacts: [] }, 50, () => 0)).toBe(false);
   });
 });
 
@@ -181,7 +181,7 @@ describe("gambler rage after a paid win", () => {
     const state = createInitialState();
     return {
       ...state,
-      chosenCurses: ["avid_apprentices"],
+      chosenPacts: ["avid_apprentices"],
       villagers: { ...state.villagers, free: 4 },
       resources: { ...state.resources, gold: 20 },
       buildings: { ...state.buildings, woodenHut: 4 },
@@ -204,7 +204,7 @@ describe("gambler rage after a paid win", () => {
     expect(gamblerRageOnWin(state, true, () => 0.2)).toBe(false);
     expect(gamblerRageOnWin(state, false, () => 0)).toBe(false);
     expect(
-      gamblerRageOnWin({ ...state, chosenCurses: [] }, true, () => 0),
+      gamblerRageOnWin({ ...state, chosenPacts: [] }, true, () => 0),
     ).toBe(false);
     expect(
       gamblerRageOnWin(

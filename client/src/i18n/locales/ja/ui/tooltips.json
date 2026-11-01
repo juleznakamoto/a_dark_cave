@@ -21,7 +21,7 @@
     "madnessFromItems": "アイテムから{{value}}",
     "madnessFromBuildings": "建物から{{value}}",
     "madnessFromEvents": "出来事から{{value}}",
-    "madnessFromCurses": "呪いから{{value}}",
+    "madnessFromPacts": "契約から{{value}}",
     "madnessTitle": "狂気",
     "productionBonus": "生産ボーナス：{{value}}",
     "productionBase": "基本",

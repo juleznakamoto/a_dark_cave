@@ -115,7 +115,7 @@ export type SidePanelModel = {
   madnessFromItems: number;
   madnessFromBuildings: number;
   madnessFromEvents: number;
-  madnessFromCurses: number;
+  madnessFromPacts: number;
   fortificationRows: SidePanelFortificationRow[];
   bastionStats: SidePanelBastionStats | null;
   bonusRows: SidePanelBonusRow[];
@@ -435,7 +435,7 @@ export function getSidePanelModel(state: GameState): SidePanelModel {
     madnessFromItems: madnessParts.fromItems,
     madnessFromBuildings: madnessParts.fromBuildings,
     madnessFromEvents: madnessParts.fromEvents,
-    madnessFromCurses: madnessParts.fromCurses,
+    madnessFromPacts: madnessParts.fromPacts,
     fortificationRows,
     bastionStats,
     bonusRows,
@@ -492,7 +492,7 @@ export function sidePanelModelEqual(
     a.madnessFromItems === b.madnessFromItems &&
     a.madnessFromBuildings === b.madnessFromBuildings &&
     a.madnessFromEvents === b.madnessFromEvents &&
-    a.madnessFromCurses === b.madnessFromCurses &&
+    a.madnessFromPacts === b.madnessFromPacts &&
     bastionStatsEqual(a.bastionStats, b.bastionStats) &&
     a.estateUnlocked === b.estateUnlocked &&
     a.bastionUnlocked === b.bastionUnlocked &&

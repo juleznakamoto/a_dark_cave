@@ -29,9 +29,9 @@
     "title": "Wybierz błogosławieństwo",
     "chooseBlessing": "Wybierz"
   },
-  "curseOffer": {
-    "title": "Wybierz swoje klątwy",
-    "grant": "Każda rozgrywka daje jeden wybór klątwy (dwa w Trybie okrutnym).",
+  "pactOffer": {
+    "title": "Wybierz swoje pakty",
+    "grant": "Każda rozgrywka daje jeden wybór paktu (dwa w Trybie okrutnym).",
     "available": "Dostępne: {{count}}",
     "continue": "Kontynuuj",
     "madness": "+3 szaleństwa",

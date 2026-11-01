@@ -13,7 +13,7 @@ export const GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY =
 export const GAMBLER_EVENT_SEEN_KEY = "gamblerEventSeen" as const;
 
 /** Avid Apprentices: after a paid win, the Gambler may offer a coin. */
-export const GAMBLER_COIN_CURSE_ID = "avid_apprentices";
+export const GAMBLER_COIN_PACT_ID = "avid_apprentices";
 export const GAMBLER_COIN_OFFER_CHANCE = 0.25;
 
 /** Avid Apprentices: one paid win may send the Gambler out in a rage. */
@@ -30,12 +30,12 @@ const GAMBLER_ENRAGED_LOG =
 
 /** True when this paid win should offer double-or-nothing. Practice rounds never do. */
 export function gamblerCoinOfferOnWin(
-  state: { chosenCurses?: readonly string[] },
+  state: { chosenPacts?: readonly string[] },
   wager: number,
   rng: () => number = Math.random,
 ): boolean {
   if (wager <= 0) return false;
-  if (!state.chosenCurses?.includes(GAMBLER_COIN_CURSE_ID)) return false;
+  if (!state.chosenPacts?.includes(GAMBLER_COIN_PACT_ID)) return false;
   return rng() < GAMBLER_COIN_OFFER_CHANCE;
 }
 
@@ -64,7 +64,7 @@ export function isGamblerBanned(state: {
  */
 export function gamblerRageOnWin(
   state: {
-    chosenCurses?: readonly string[];
+    chosenPacts?: readonly string[];
     story?: { seen?: GameState["story"]["seen"] };
     villagers?: GameState["villagers"];
   },
@@ -72,7 +72,7 @@ export function gamblerRageOnWin(
   rng: () => number = Math.random,
 ): boolean {
   if (!paidWin) return false;
-  if (!state.chosenCurses?.includes(GAMBLER_COIN_CURSE_ID)) return false;
+  if (!state.chosenPacts?.includes(GAMBLER_COIN_PACT_ID)) return false;
   if (state.story?.seen?.[GAMBLER_ENRAGED_SEEN_KEY]) return false;
   if (isGamblerBanned(state)) return false;
   if (!state.villagers || getVillagersInVillage({ villagers: state.villagers }) <= 0) {

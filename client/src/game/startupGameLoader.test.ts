@@ -122,7 +122,7 @@ describe("startup game hydration handoff", () => {
     { cruelMode: true, wins: 1, open: true },
     { cruelMode: false, wins: 2, open: true },
   ])(
-    "opens the curse offer only after a finished game (cruelMode $cruelMode, wins $wins)",
+    "opens the pact offer only after a finished game (cruelMode $cruelMode, wins $wins)",
     async ({ cruelMode, wins, open }) => {
       mockLifetimeGamesWon.value = wins;
       const loader = await import("./startupGameLoader");
@@ -138,9 +138,9 @@ describe("startup game hydration handoff", () => {
       expect(mockSetState).toHaveBeenCalledWith(
         expect.objectContaining({
           cruelMode,
-          curseOfferPending: open,
-          curseOfferDialogOpen: open,
-          chosenCurses: [],
+          pactOfferPending: open,
+          pactOfferDialogOpen: open,
+          chosenPacts: [],
         }),
       );
     },

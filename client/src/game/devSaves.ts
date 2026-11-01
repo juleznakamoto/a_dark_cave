@@ -14,7 +14,7 @@ import {
 } from "@/game/devSaveIds";
 import { SOCIAL_PROMPT_AUTO_OPEN_COUNT } from "@/game/socialPromptAuto";
 import { resetMadnessLevelLogBaseline } from "@/game/madnessLevelLog";
-import { grantCurseChoiceForCompletedGame } from "@/game/rules/curses";
+import { grantPactChoiceForCompletedGame } from "@/game/rules/pacts";
 
 const DEV_SAVE_GAME_ID_PREFIX = "dev-save-";
 const DEV_SAVE_FINISHED_GAMES = 2;
@@ -341,8 +341,8 @@ function finalize(state: GameState, id: DevSaveId): GameState {
 /** Dev fixtures behave as if one normal game and one Cruel Mode game were already finished. */
 function withFinishedGames(state: GameState): GameState {
   const hour = 60 * 60 * 1000;
-  const curseChoices = grantCurseChoiceForCompletedGame(
-    grantCurseChoiceForCompletedGame(state.curseChoices, false),
+  const pactChoices = grantPactChoiceForCompletedGame(
+    grantPactChoiceForCompletedGame(state.pactChoices, false),
     true,
   );
   return {
@@ -351,7 +351,7 @@ function withFinishedGames(state: GameState): GameState {
     hasWonNormalGame: true,
     hasWonCruelGame: true,
     lifetimeGamesWon: DEV_SAVE_FINISHED_GAMES,
-    curseChoices,
+    pactChoices,
     game_stats: [
       {
         gameId: `${DEV_SAVE_GAME_ID_PREFIX}finished-normal`,

@@ -408,7 +408,7 @@ describe("TimedEventPanel gambler coverage", () => {
 
     useGameStore.setState((state) => ({
       ...state,
-      chosenCurses: ["avid_apprentices"],
+      chosenPacts: ["avid_apprentices"],
       villagers: { ...state.villagers, free: 4 },
       resources: { ...state.resources, gold: 100 },
       timedEventTab: {
@@ -473,7 +473,7 @@ describe("TimedEventPanel gambler coverage", () => {
       setTimedEventTab: setTimedEventTab as typeof state.setTimedEventTab,
       setHighlightedResources:
         setHighlightedResources as typeof state.setHighlightedResources,
-      chosenCurses: ["avid_apprentices"],
+      chosenPacts: ["avid_apprentices"],
       villagers: { ...state.villagers, free: 4 },
       resources: { ...state.resources, gold: 100 },
       timedEventTab: {

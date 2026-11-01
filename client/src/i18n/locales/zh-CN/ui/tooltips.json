@@ -21,7 +21,7 @@
     "madnessFromItems": "物品 {{value}}",
     "madnessFromBuildings": "建筑 {{value}}",
     "madnessFromEvents": "事件 {{value}}",
-    "madnessFromCurses": "诅咒 {{value}}",
+    "madnessFromPacts": "契约 {{value}}",
     "madnessTitle": "疯狂",
     "productionBonus": "生产加成：{{value}}",
     "productionBase": "基础",

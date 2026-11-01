@@ -2,7 +2,7 @@ import type { GameStore } from "../types";
 import type { GameStoreCreator } from "./types";
 import { GameState } from "@shared/schema";
 import { pruneReadLogIds } from "@/game/persistedStateBoundary";
-import { sanitizeChosenCurses } from "@/game/rules/curses";
+import { sanitizeChosenPacts } from "@/game/rules/pacts";
 import { StateManager } from "../StateManager";
 import {
   isFullGameUnlockedEdition,
@@ -331,11 +331,11 @@ export const createDialogsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
     set({ blessingOfferDialogOpen: isOpen });
   },
 
-  confirmCurses: (curseIds: string[]) => {
+  confirmPacts: (pactIds: string[]) => {
     set({
-      chosenCurses: sanitizeChosenCurses(curseIds),
-      curseOfferPending: false,
-      curseOfferDialogOpen: false,
+      chosenPacts: sanitizeChosenPacts(pactIds),
+      pactOfferPending: false,
+      pactOfferDialogOpen: false,
     });
     StateManager.scheduleEffectsUpdate(get);
   },

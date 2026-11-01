@@ -213,7 +213,7 @@
     "madnessFromItems": "{{value}} from Items",
     "madnessFromBuildings": "{{value}} from Buildings",
     "madnessFromEvents": "{{value}} from Events",
-    "madnessFromCurses": "{{value}} from Curses",
+    "madnessFromPacts": "{{value}} from Pacts",
     "bonusSourceEffect": "{{source}}: {{effect}}",
     "resourceFlowLine": "{{source}} {{amount}}",
     "atCapacity": "At capacity ({{limit}})",

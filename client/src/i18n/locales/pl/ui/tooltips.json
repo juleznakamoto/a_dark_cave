@@ -21,7 +21,7 @@
     "madnessFromItems": "{{value}} z przedmiotów",
     "madnessFromBuildings": "{{value}} z budynków",
     "madnessFromEvents": "{{value}} z wydarzeń",
-    "madnessFromCurses": "{{value}} z klątw",
+    "madnessFromPacts": "{{value}} z paktów",
     "madnessTitle": "Szaleństwo",
     "productionBonus": "Premia do produkcji: {{value}}",
     "productionBase": "Podstawa",

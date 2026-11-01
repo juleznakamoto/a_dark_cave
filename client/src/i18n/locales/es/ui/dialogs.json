@@ -29,9 +29,9 @@
     "title": "Elige una bendición",
     "chooseBlessing": "Elegir"
   },
-  "curseOffer": {
-    "title": "Elige tus maldiciones",
-    "grant": "Cada partida otorga una elección de maldición (dos en el modo cruel).",
+  "pactOffer": {
+    "title": "Elige tus pactos",
+    "grant": "Cada partida otorga una elección de pacto (dos en el modo cruel).",
     "available": "{{count}} disponibles",
     "continue": "Continuar",
     "madness": "+3 Locura",

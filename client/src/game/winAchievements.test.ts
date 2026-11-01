@@ -15,7 +15,7 @@ describe("getGameWinAchievementUpdates", () => {
     playTime: 6 * 60 * 60 * 1000,
     events: {},
     lifetimeGamesWon: 0,
-    curseChoices: 1,
+    pactChoices: 1,
   };
 
   it("awards Normal Victory outside cruel mode and increments lifetime wins", () => {
@@ -23,7 +23,7 @@ describe("getGameWinAchievementUpdates", () => {
       hasWonAnyGame: true,
       hasWonNormalGame: true,
       lifetimeGamesWon: 1,
-      curseChoices: 2,
+      pactChoices: 2,
     });
   });
 
@@ -34,7 +34,7 @@ describe("getGameWinAchievementUpdates", () => {
       hasWonAnyGame: true,
       hasWonCruelGame: true,
       lifetimeGamesWon: 1,
-      curseChoices: 3,
+      pactChoices: 3,
     });
   });
 
@@ -49,7 +49,7 @@ describe("getGameWinAchievementUpdates", () => {
       hasWonNormalGame: true,
       hasSpeedrunWin: true,
       lifetimeGamesWon: 1,
-      curseChoices: 2,
+      pactChoices: 2,
     });
   });
 
@@ -78,9 +78,9 @@ describe("getGameWinAchievementUpdates", () => {
       getGameWinAchievementUpdates({
         ...base,
         lifetimeGamesWon: 2,
-        curseChoices: 3,
+        pactChoices: 3,
         events: {},
-      }).curseChoices,
+      }).pactChoices,
     ).toBe(4);
   });
 });
@@ -148,7 +148,7 @@ describe("cube ending win flag effects", () => {
     expect(result.hasWonAnyGame).toBe(true);
     expect(result.hasWonNormalGame).toBe(true);
     expect(result.lifetimeGamesWon).toBe(1);
-    expect(result.curseChoices).toBe(2);
+    expect(result.pactChoices).toBe(2);
     expect(result.events?.cube15b).toBe(true);
   });
 
@@ -175,7 +175,7 @@ describe("cube ending win flag effects", () => {
     expect(result.hasWonCruelGame).toBe(true);
     expect(result.hasSpeedrunWin).toBe(true);
     expect(result.lifetimeGamesWon).toBe(1);
-    expect(result.curseChoices).toBe(3);
+    expect(result.pactChoices).toBe(3);
   });
 
   it("cube15a after cube13 does not double-count lifetime wins", () => {

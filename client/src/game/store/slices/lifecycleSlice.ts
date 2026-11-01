@@ -2,7 +2,7 @@ import type { GameStore } from "../types";
 import type { GameStoreCreator } from "./types";
 import { GameState } from "@shared/schema";
 import { sanitizeActionUnlockOrder } from "@/game/actionUnlockOrder";
-import { sanitizeChosenCurses, clampCurseChoices, resolveCurseChoicesFromSave, shouldOpenCurseOffer, readStoredChosenCurses, readStoredCurseOfferPending, readStoredCurseChoices } from "@/game/rules/curses";
+import { sanitizeChosenPacts, clampPactChoices, resolvePactChoicesFromSave, shouldOpenPactOffer, readStoredChosenPacts, readStoredPactOfferPending, readStoredPactChoices } from "@/game/rules/pacts";
 import { pruneReadLogIds } from "@/game/persistedStateBoundary";
 import {
   isFullGameUnlockedEdition,
@@ -332,7 +332,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       lifetimeStorageMaxHits: state.lifetimeStorageMaxHits || [],
       lifetimeEstateUpgradeMaxHits: state.lifetimeEstateUpgradeMaxHits || [],
       hasAchievementMaxer: state.hasAchievementMaxer || false,
-      curseChoices: clampCurseChoices(state.curseChoices),
+      pactChoices: clampPactChoices(state.pactChoices),
       originatedFromSteamDemo: state.originatedFromSteamDemo === true,
       steamDemoContinueResolved: state.steamDemoContinueResolved === true,
 
@@ -363,7 +363,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       idleModeDialog: { isOpen: false }, // Explicitly ensure idle mode dialog is closed
       ...getTimedEventTabCleanupPatch(get().activeTab),
       investDialogOpen: false,
-      curseOfferDialogOpen: false,
+      pactOfferDialogOpen: false,
       restartGameDialogOpen: false,
       restartGamePreferCruelMode: false,
       deleteAccountDialogOpen: false,
@@ -556,14 +556,17 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
           .hasWonCruelGame,
       });
 
-      const legacyCurseSave = savedState as typeof savedState & {
+      const legacyPactSave = savedState as typeof savedState & {
+        chosenCurses?: unknown;
+        curseOfferPending?: unknown;
+        curseChoices?: unknown;
         chosenCruelCurses?: unknown;
         cruelCurseOfferPending?: unknown;
         cruelCurseChoices?: unknown;
       };
-      const resumeCurseOffer =
-        shouldOpenCurseOffer(lifetimeGamesWon) &&
-        readStoredCurseOfferPending(legacyCurseSave);
+      const resumePactOffer =
+        shouldOpenPactOffer(lifetimeGamesWon) &&
+        readStoredPactOfferPending(legacyPactSave);
 
       const loadedState = {
         ...hydratedPermanent,
@@ -636,12 +639,12 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
         effects: calculateTotalEffects(stateForDerived),
         bastion_stats: calculateBastionStats(stateForDerived),
         cruelMode,
-        chosenCurses: sanitizeChosenCurses(
-          readStoredChosenCurses(legacyCurseSave),
+        chosenPacts: sanitizeChosenPacts(
+          readStoredChosenPacts(legacyPactSave),
         ),
-        curseOfferPending: resumeCurseOffer,
-        curseChoices: resolveCurseChoicesFromSave(
-          readStoredCurseChoices(legacyCurseSave),
+        pactOfferPending: resumePactOffer,
+        pactChoices: resolvePactChoicesFromSave(
+          readStoredPactChoices(legacyPactSave),
           lifetimeGamesWon,
         ),
         absolvedItems,
@@ -838,7 +841,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
         // Resume after the reset so a live gambler round can reopen the table.
         activeTab,
         gamblerDiceDialogOpen,
-        curseOfferDialogOpen: resumeCurseOffer,
+        pactOfferDialogOpen: resumePactOffer,
       };
 
       const migrated = applyGameStateLoadMigrations(loadedState);

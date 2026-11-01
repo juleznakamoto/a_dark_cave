@@ -29,9 +29,9 @@
     "title": "选择一项祝福",
     "chooseBlessing": "选择"
   },
-  "curseOffer": {
-    "title": "选择你的诅咒",
-    "grant": "每次游玩获得一次诅咒选择（残酷模式为两次）。",
+  "pactOffer": {
+    "title": "选择你的契约",
+    "grant": "每次游玩获得一次契约选择（残酷模式为两次）。",
     "available": "可用 {{count}}",
     "continue": "继续",
     "madness": "+3 疯狂",

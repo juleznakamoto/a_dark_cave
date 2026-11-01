@@ -29,9 +29,9 @@
     "title": "Wähle einen Segen",
     "chooseBlessing": "Wählen"
   },
-  "curseOffer": {
-    "title": "Wähle deine Flüche",
-    "grant": "Jeder Durchgang gewährt eine Fluchwahl (zwei im Grausamen Modus).",
+  "pactOffer": {
+    "title": "Wähle deine Pakte",
+    "grant": "Jeder Durchgang gewährt eine Paktwahl (zwei im Grausamen Modus).",
     "available": "{{count}} verfügbar",
     "continue": "Weiter",
     "madness": "+3 Wahnsinn",

@@ -29,9 +29,9 @@
     "title": "Choose a Blessing",
     "chooseBlessing": "Choose"
   },
-  "curseOffer": {
-    "title": "Choose your Curses",
-    "grant": "Each playthrough grants one curse choice (two choices if Cruel Mode).",
+  "pactOffer": {
+    "title": "Choose your Pacts",
+    "grant": "Each playthrough grants one pact choice (two choices if Cruel Mode).",
     "available": "{{count}} available",
     "continue": "Continue",
     "madness": "+3 Madness",

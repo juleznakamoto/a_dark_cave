@@ -213,7 +213,7 @@
     "madnessFromItems": "{{value}} por objetos",
     "madnessFromBuildings": "{{value}} por edificios",
     "madnessFromEvents": "{{value}} por eventos",
-    "madnessFromCurses": "{{value}} por maldiciones",
+    "madnessFromPacts": "{{value}} por pactos",
     "bonusSourceEffect": "{{source}}: {{effect}}",
     "resourceFlowLine": "{{source}} {{amount}}",
     "atCapacity": "Capacidad alcanzada ({{limit}})",

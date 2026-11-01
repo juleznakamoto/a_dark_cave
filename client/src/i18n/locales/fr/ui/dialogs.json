@@ -29,9 +29,9 @@
     "title": "Choisissez une bénédiction",
     "chooseBlessing": "Choisir"
   },
-  "curseOffer": {
-    "title": "Choisissez vos malédictions",
-    "grant": "Chaque partie accorde un choix de malédiction (deux en mode cruel).",
+  "pactOffer": {
+    "title": "Choisissez vos pactes",
+    "grant": "Chaque partie accorde un choix de pacte (deux en mode cruel).",
     "available": "{{count}} disponibles",
     "continue": "Continuer",
     "madness": "+3 Folie",
