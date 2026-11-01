@@ -38,7 +38,7 @@
     "cards": {
       "blazesmith": {
         "name": "Ferreiro da labareda",
-        "boon": "Todos os custos para criar bombas caem 50%",
+        "boon": "Os custos para criar bombas caem 50%",
         "boon2": "Dobra o bônus de produção do Fogo do Coração por nível (5%→10%)",
         "quote": "\"Algo parece errado com o alquimista.\""
       },

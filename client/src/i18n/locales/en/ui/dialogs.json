@@ -38,7 +38,7 @@
     "cards": {
       "blazesmith": {
         "name": "Blazesmith",
-        "boon": "All bomb crafting costs are reduced by 50%",
+        "boon": "Bomb crafting costs are reduced by 50%",
         "boon2": "Double Heartfire production bonus per level (5→10%)",
         "quote": "\"Something seems wrong with the Alchemist\""
       },

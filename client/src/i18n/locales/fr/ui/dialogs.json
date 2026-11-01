@@ -38,7 +38,7 @@
     "cards": {
       "blazesmith": {
         "name": "Forgeron de braise",
-        "boon": "Tous les coûts de fabrication des bombes sont réduits de 50 %",
+        "boon": "Les coûts de fabrication des bombes sont réduits de 50 %",
         "boon2": "Double le bonus de production du Feu du cœur par niveau (5 % → 10 %)",
         "quote": "« Quelque chose ne va pas chez l'alchimiste. »"
       },

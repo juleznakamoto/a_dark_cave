@@ -38,7 +38,7 @@
     "cards": {
       "blazesmith": {
         "name": "Flammenschmied",
-        "boon": "Alle Herstellungskosten für Bomben sinken um 50 %",
+        "boon": "Herstellungskosten für Bomben sinken um 50 %",
         "boon2": "Verdoppelt den Produktionsbonus des Herzfeuers pro Stufe (5 % → 10 %)",
         "quote": "„Mit dem Alchemisten stimmt etwas nicht.“"
       },

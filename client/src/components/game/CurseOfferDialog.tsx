@@ -321,6 +321,9 @@ function CurseOfferDialogOpen() {
                       {secondBoon}
                     </p>
                   ) : null}
+                  <p className="mt-1.5 min-h-[2.25rem] text-center text-xs italic leading-snug text-white">
+                    {t(`curseOffer.cards.${curseId}.quote`)}
+                  </p>
 
                   <div
                     className="my-2 h-px w-full bg-red-800/80"
@@ -329,9 +332,6 @@ function CurseOfferDialogOpen() {
 
                   <p className="text-center text-xs leading-snug text-red-400">
                     {t("curseOffer.madness", { defaultValue: "+3 Madness" })}
-                  </p>
-                  <p className="mt-1.5 text-center text-xs italic leading-snug text-red-400">
-                    {t(`curseOffer.cards.${curseId}.quote`)}
                   </p>
                 </button>
               );

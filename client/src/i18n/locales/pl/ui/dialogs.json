@@ -38,7 +38,7 @@
     "cards": {
       "blazesmith": {
         "name": "Kowal pożogi",
-        "boon": "Wszystkie koszty wytwarzania bomb są niższe o 50%",
+        "boon": "Koszty wytwarzania bomb są niższe o 50%",
         "boon2": "Podwaja premię produkcji z Ognia serca na poziom (5%→10%)",
         "quote": "„Coś jest nie tak z alchemikiem.”"
       },
