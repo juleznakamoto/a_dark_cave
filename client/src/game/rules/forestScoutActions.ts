@@ -7,7 +7,7 @@ import { defineSuccessChance } from "./eventSuccessChance";
 import { gameEvents } from "./events";
 import { logger } from "@/lib/logger";
 import { ActionEffectUpdates } from "@/game/types";
-import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
+import { CRUEL_MODE, cruelModeScale, cruelRangedDeaths } from "../cruelMode";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
 import { getActionLogMessage } from "@/i18n/resolveGameText";
 import { btpLootAmount } from "@/game/btpLoot";
@@ -1079,12 +1079,9 @@ export function handleForestCave(
       type: "system",
     });
   } else {
-    const fc = CRUEL_MODE.forestScout.forestCave.failureDeaths;
     const villagerDeaths = Math.min(
       state.current_population,
-      Math.floor(Math.random() * fc.randMax) +
-      fc.base +
-      cruelModeScale(state) * fc.whenCruel,
+      cruelRangedDeaths(state, CRUEL_MODE.forestScout.forestCave.failureDeaths),
     );
     const deathResult = killVillagers(state, villagerDeaths);
     const actualDeaths = deathResult.villagersKilled || 0;
