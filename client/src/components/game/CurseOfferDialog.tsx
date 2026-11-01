@@ -321,7 +321,7 @@ function CurseOfferDialogOpen() {
                       {secondBoon}
                     </p>
                   ) : null}
-                  <p className="mt-1.5 min-h-[2.25rem] text-center text-xs italic leading-snug text-white">
+                  <p className="mt-1.5 min-h-[2.25rem] text-center text-xs italic leading-snug text-muted-foreground">
                     {t(`curseOffer.cards.${curseId}.quote`)}
                   </p>
 
