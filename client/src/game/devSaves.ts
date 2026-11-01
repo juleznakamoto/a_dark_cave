@@ -14,8 +14,10 @@ import {
 } from "@/game/devSaveIds";
 import { SOCIAL_PROMPT_AUTO_OPEN_COUNT } from "@/game/socialPromptAuto";
 import { resetMadnessLevelLogBaseline } from "@/game/madnessLevelLog";
+import { resolveCurseChoicesFromSave } from "@/game/rules/curses";
 
 const DEV_SAVE_GAME_ID_PREFIX = "dev-save-";
+const DEV_SAVE_FINISHED_GAMES = 2;
 
 function withStartedRun(base: GameState, playTimeMs: number): GameState {
   return {
@@ -328,10 +330,33 @@ function finalize(state: GameState, id: DevSaveId): GameState {
   // Every fixture can open the village map. Mark the unlock blink seen so the
   // tab does not pulse as newly discovered.
   const withMap = withSeenTabBlinks(migrated, ["map"]);
+  const withWins = withFinishedGames(withMap);
   return {
-    ...withMap,
-    effects: calculateTotalEffects(withMap),
-    bastion_stats: calculateBastionStats(withMap),
+    ...withWins,
+    effects: calculateTotalEffects(withWins),
+    bastion_stats: calculateBastionStats(withWins),
+  };
+}
+
+/** Dev fixtures behave as if two earlier games were already completed. */
+function withFinishedGames(state: GameState): GameState {
+  const hour = 60 * 60 * 1000;
+  return {
+    ...state,
+    hasWonAnyGame: true,
+    hasWonNormalGame: true,
+    lifetimeGamesWon: DEV_SAVE_FINISHED_GAMES,
+    curseChoices: resolveCurseChoicesFromSave(
+      state.curseChoices,
+      DEV_SAVE_FINISHED_GAMES,
+    ),
+    game_stats: [1, 2].map((n) => ({
+      gameId: `${DEV_SAVE_GAME_ID_PREFIX}finished-${n}`,
+      gameMode: "normal",
+      startTime: n * hour,
+      finishTime: (n + 1) * hour,
+      playTime: hour,
+    })),
   };
 }
 

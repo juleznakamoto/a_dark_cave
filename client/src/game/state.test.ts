@@ -829,6 +829,114 @@ describe("Gambler resume on load", () => {
   });
 });
 
+describe("curse choices from older saves", () => {
+  function saveWithoutCurseChoices(
+    overrides: Partial<GameState> = {},
+  ): GameState {
+    const initial = createInitialState();
+    const { curseChoices: _omitted, ...rest } = initial;
+    return { ...rest, ...overrides } as GameState;
+  }
+
+  it("starts at one choice when the save has no finished games", async () => {
+    mockLoadGame.mockResolvedValue(saveWithoutCurseChoices());
+    await useGameStore.getState().loadGame();
+    expect(useGameStore.getState().curseChoices).toBe(1);
+  });
+
+  it("does not resume the curse offer when no game has been finished", async () => {
+    mockLoadGame.mockResolvedValue(
+      saveWithoutCurseChoices({ curseOfferPending: true }),
+    );
+    await useGameStore.getState().loadGame();
+    expect(useGameStore.getState().curseOfferDialogOpen).toBe(false);
+    expect(useGameStore.getState().curseOfferPending).toBe(false);
+  });
+
+  it("resumes the curse offer after a finished game", async () => {
+    mockLoadGame.mockResolvedValue(
+      saveWithoutCurseChoices({
+        curseOfferPending: true,
+        lifetimeGamesWon: 1,
+        hasWonAnyGame: true,
+      }),
+    );
+    await useGameStore.getState().loadGame();
+    expect(useGameStore.getState().curseOfferDialogOpen).toBe(true);
+    expect(useGameStore.getState().curseOfferPending).toBe(true);
+  });
+
+  it("adds one choice per game already finished, using the best known count", async () => {
+    mockLoadGame.mockResolvedValue(
+      saveWithoutCurseChoices({
+        lifetimeGamesWon: 1,
+        hasWonAnyGame: true,
+        hasWonNormalGame: true,
+        game_stats: [
+          { finishTime: 1_700_000_000_000 },
+          { finishTime: 1_700_100_000_000 },
+          { finishTime: 1_700_200_000_000 },
+        ] as GameState["game_stats"],
+      }),
+    );
+    await useGameStore.getState().loadGame();
+    expect(useGameStore.getState().lifetimeGamesWon).toBe(3);
+    expect(useGameStore.getState().curseChoices).toBe(4);
+  });
+
+  it("counts a single legacy win flag when no finish list exists", async () => {
+    mockLoadGame.mockResolvedValue(
+      saveWithoutCurseChoices({ hasWonAnyGame: true }),
+    );
+    await useGameStore.getState().loadGame();
+    expect(useGameStore.getState().curseChoices).toBe(2);
+  });
+
+  it("caps older careers at five choices", async () => {
+    mockLoadGame.mockResolvedValue(
+      saveWithoutCurseChoices({
+        lifetimeGamesWon: 9,
+        hasWonAnyGame: true,
+      }),
+    );
+    await useGameStore.getState().loadGame();
+    expect(useGameStore.getState().curseChoices).toBe(5);
+  });
+
+  it("keeps a stored count that is already higher than recorded wins", async () => {
+    mockLoadGame.mockResolvedValue({
+      ...createInitialState(),
+      curseChoices: 4,
+      lifetimeGamesWon: 1,
+      hasWonAnyGame: true,
+    });
+    await useGameStore.getState().loadGame();
+    expect(useGameStore.getState().curseChoices).toBe(4);
+  });
+
+  it("reads choices stored under the old cruel field names", async () => {
+    const initial = createInitialState();
+    const {
+      curseChoices: _choices,
+      chosenCurses: _chosen,
+      curseOfferPending: _pending,
+      ...rest
+    } = initial;
+    mockLoadGame.mockResolvedValue({
+      ...rest,
+      hasWonAnyGame: true,
+      cruelCurseChoices: 4,
+      chosenCruelCurses: ["firecrafter"],
+      cruelCurseOfferPending: true,
+    } as GameState);
+    await useGameStore.getState().loadGame();
+    expect(useGameStore.getState().curseChoices).toBe(4);
+    expect(useGameStore.getState().chosenCurses).toEqual(["blazesmith"]);
+    expect(useGameStore.getState().curseOfferPending).toBe(true);
+    expect(useGameStore.getState().curseOfferDialogOpen).toBe(true);
+  });
+});
+
 describe("Timed event tab cleanup on new game", () => {
   const activeTimedTab = {
     isActive: true,

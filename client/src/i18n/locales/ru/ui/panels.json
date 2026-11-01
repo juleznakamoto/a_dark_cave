@@ -237,6 +237,7 @@
     "madnessFromItems": "{{value}} от предметов",
     "madnessFromBuildings": "{{value}} от зданий",
     "madnessFromEvents": "{{value}} от событий",
+    "madnessFromCurses": "{{value}} от проклятий",
     "bonusSourceEffect": "{{source}}: {{effect}}",
     "resourceFlowLine": "{{source}} {{amount}}",
     "atCapacity": "Лимит достигнут ({{limit}})",

@@ -1,4 +1,5 @@
 import type { GameState } from "@shared/schema";
+import { grantCurseChoiceForCompletedGame } from "@/game/rules/curses";
 
 const MS_PER_HOUR = 60 * 60 * 1000;
 
@@ -24,6 +25,8 @@ export type GameWinAchievementUpdates = {
   hasSpeedrunWin?: true;
   /** Absolute lifetime win count after this award (omit if already counted this run). */
   lifetimeGamesWon?: number;
+  /** Curse picks allowed after this completion (omit if already counted this run). */
+  curseChoices?: number;
 };
 
 function hasAlreadyCountedWinThisRun(
@@ -65,7 +68,11 @@ export function getLifetimeGamesWonFromSave(state: {
 export function getGameWinAchievementUpdates(
   state: Pick<
     GameState,
-    "cruelMode" | "playTime" | "events" | "lifetimeGamesWon"
+    | "cruelMode"
+    | "playTime"
+    | "events"
+    | "lifetimeGamesWon"
+    | "curseChoices"
   >,
 ): GameWinAchievementUpdates {
   const updates: GameWinAchievementUpdates = { hasWonAnyGame: true };
@@ -80,6 +87,9 @@ export function getGameWinAchievementUpdates(
   if (!hasAlreadyCountedWinThisRun(state)) {
     updates.lifetimeGamesWon =
       Math.max(0, Math.floor(Number(state.lifetimeGamesWon) || 0)) + 1;
+    updates.curseChoices = grantCurseChoiceForCompletedGame(
+      state.curseChoices,
+    );
   }
   return updates;
 }

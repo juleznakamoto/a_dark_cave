@@ -708,10 +708,18 @@ export const gameStateSchema = z.object({
   activatedPurchases: z.record(z.boolean()).default({}),
   feastActivations: z.record(z.number()).default({}), // purchaseId -> activations remaining
   cruelMode: z.boolean().default(false), // Cruel mode flag
-  /** Curse ids picked on the Cruel Mode opening offer. */
-  chosenCruelCurses: z.array(z.string()).default([]),
+  /** Curse ids picked on the opening offer. Applies to normal and Cruel Mode runs. */
+  chosenCurses: z.array(z.string()).default([]),
   /** Opening curse offer is still waiting for Continue. */
-  cruelCurseOfferPending: z.boolean().default(false),
+  curseOfferPending: z.boolean().default(false),
+  /**
+   * How many curses the player may pick on the opening offer.
+   * Starts at 1. Each completed game adds one, up to 5.
+   * Starting a new game does not. Choosing curses does not spend these.
+   * Saves from before this field existed get 1 plus games already finished.
+   * Older saves stored this as cruelCurseChoices.
+   */
+  curseChoices: z.number().default(1),
   /** Meta: won the game at least once (any difficulty). Persists across restarts. */
   hasWonAnyGame: z.boolean().default(false),
   /** Meta: won while not in Cruel Mode. Persists across restarts. */

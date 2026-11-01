@@ -6,6 +6,7 @@ import {
   calculateTotalEffects,
   getMadnessComponents,
 } from "@/game/rules/effectsCalculation";
+import { clampCurseChoices } from "@/game/rules/curses";
 
 export const mergeStateUpdates = (
   prevState: GameState,
@@ -241,6 +242,13 @@ export const mergeStateUpdates = (
           prevState.lifetimeGamesWon ?? 0,
         )
         : (prevState.lifetimeGamesWon ?? 0),
+    curseChoices:
+      stateUpdates.curseChoices !== undefined
+        ? Math.max(
+          clampCurseChoices(stateUpdates.curseChoices),
+          clampCurseChoices(prevState.curseChoices),
+        )
+        : clampCurseChoices(prevState.curseChoices),
     lifetimePlayTimeMs:
       stateUpdates.lifetimePlayTimeMs !== undefined
         ? Math.max(

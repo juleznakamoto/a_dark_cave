@@ -45,6 +45,10 @@ describe("dev save catalog", () => {
     expect(state.gameId).toBe(`dev-save-${id}`);
     expect(state.feedbackPromptShown).toBe(true);
     expect(state.socialPromptMilestoneIndex).toBe(SOCIAL_PROMPT_AUTO_OPEN_COUNT);
+    expect(state.lifetimeGamesWon).toBe(2);
+    expect(state.hasWonAnyGame).toBe(true);
+    expect(state.game_stats).toHaveLength(2);
+    expect(state.curseChoices).toBe(3);
   });
 
   it("fresh-start is cave-only after Make Fire", () => {

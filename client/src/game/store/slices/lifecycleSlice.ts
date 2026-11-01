@@ -2,7 +2,7 @@ import type { GameStore } from "../types";
 import type { GameStoreCreator } from "./types";
 import { GameState } from "@shared/schema";
 import { sanitizeActionUnlockOrder } from "@/game/actionUnlockOrder";
-import { sanitizeChosenCruelCurses } from "@/game/rules/cruelCurses";
+import { sanitizeChosenCurses, clampCurseChoices, resolveCurseChoicesFromSave, shouldOpenCurseOffer, readStoredChosenCurses, readStoredCurseOfferPending, readStoredCurseChoices } from "@/game/rules/curses";
 import { pruneReadLogIds } from "@/game/persistedStateBoundary";
 import {
   isFullGameUnlockedEdition,
@@ -331,6 +331,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       lifetimeStorageMaxHits: state.lifetimeStorageMaxHits || [],
       lifetimeEstateUpgradeMaxHits: state.lifetimeEstateUpgradeMaxHits || [],
       hasAchievementMaxer: state.hasAchievementMaxer || false,
+      curseChoices: clampCurseChoices(state.curseChoices),
       originatedFromSteamDemo: state.originatedFromSteamDemo === true,
       steamDemoContinueResolved: state.steamDemoContinueResolved === true,
 
@@ -535,6 +536,26 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
         absolvedItems,
       };
 
+      const lifetimeGamesWon = getLifetimeGamesWonFromSave({
+        lifetimeGamesWon: (savedState as { lifetimeGamesWon?: number })
+          .lifetimeGamesWon,
+        game_stats: savedState.game_stats,
+        hasWonAnyGame: savedState.hasWonAnyGame,
+        hasWonNormalGame: (savedState as { hasWonNormalGame?: boolean })
+          .hasWonNormalGame,
+        hasWonCruelGame: (savedState as { hasWonCruelGame?: boolean })
+          .hasWonCruelGame,
+      });
+
+      const legacyCurseSave = savedState as typeof savedState & {
+        chosenCruelCurses?: unknown;
+        cruelCurseOfferPending?: unknown;
+        cruelCurseChoices?: unknown;
+      };
+      const resumeCurseOffer =
+        shouldOpenCurseOffer(lifetimeGamesWon) &&
+        readStoredCurseOfferPending(legacyCurseSave);
+
       const loadedState = {
         ...hydratedPermanent,
         // Explicit merge so a missing `flags` key cannot leave createInitialState
@@ -606,10 +627,14 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
         effects: calculateTotalEffects(stateForDerived),
         bastion_stats: calculateBastionStats(stateForDerived),
         cruelMode,
-        chosenCruelCurses: sanitizeChosenCruelCurses(
-          savedState.chosenCruelCurses,
+        chosenCurses: sanitizeChosenCurses(
+          readStoredChosenCurses(legacyCurseSave),
         ),
-        cruelCurseOfferPending: savedState.cruelCurseOfferPending === true,
+        curseOfferPending: resumeCurseOffer,
+        curseChoices: resolveCurseChoicesFromSave(
+          readStoredCurseChoices(legacyCurseSave),
+          lifetimeGamesWon,
+        ),
         absolvedItems,
         activatedPurchases: savedState.activatedPurchases || {},
         feastActivations: savedState.feastActivations || {},
@@ -757,16 +782,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
           true,
         hasSpeedrunWin:
           (savedState as { hasSpeedrunWin?: boolean }).hasSpeedrunWin === true,
-        lifetimeGamesWon: getLifetimeGamesWonFromSave({
-          lifetimeGamesWon: (savedState as { lifetimeGamesWon?: number })
-            .lifetimeGamesWon,
-          game_stats: savedState.game_stats,
-          hasWonAnyGame: savedState.hasWonAnyGame,
-          hasWonNormalGame: (savedState as { hasWonNormalGame?: boolean })
-            .hasWonNormalGame,
-          hasWonCruelGame: (savedState as { hasWonCruelGame?: boolean })
-            .hasWonCruelGame,
-        }),
+        lifetimeGamesWon,
         // Seed lifetime from current-run playTime for older saves that lack the field
         lifetimePlayTimeMs: Math.max(
           (savedState as { lifetimePlayTimeMs?: number }).lifetimePlayTimeMs ??
@@ -813,7 +829,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
         // Resume after the reset so a live gambler round can reopen the table.
         activeTab,
         gamblerDiceDialogOpen,
-        curseOfferDialogOpen: savedState.cruelCurseOfferPending === true,
+        curseOfferDialogOpen: resumeCurseOffer,
       };
 
       const migrated = applyGameStateLoadMigrations(loadedState);

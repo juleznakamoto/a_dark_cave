@@ -670,16 +670,35 @@ export const getResourceGainTooltip = (
 // Madness tooltip
 export const madnessTooltip: TooltipConfig = {
   getContent: (state) => {
-    const { fromItems, fromBuildings, fromEvents } =
+    const { fromItems, fromBuildings, fromEvents, fromCurses } =
       getMadnessComponents(state);
     if (
       fromItems === 0 &&
       fromBuildings === 0 &&
-      fromEvents === 0
+      fromEvents === 0 &&
+      fromCurses === 0
     ) {
       return "";
     }
-    return `${getUiTooltip("madnessFromItems", "{{value}} from Items", { value: formatSignedNumber(fromItems) })}\n${getUiTooltip("madnessFromBuildings", "{{value}} from Buildings", { value: formatSignedNumber(fromBuildings) })}\n${getUiTooltip("madnessFromEvents", "{{value}} from Events", { value: formatSignedNumber(fromEvents) })}`;
+    const lines = [
+      getUiTooltip("madnessFromItems", "{{value}} from Items", {
+        value: formatSignedNumber(fromItems),
+      }),
+      getUiTooltip("madnessFromBuildings", "{{value}} from Buildings", {
+        value: formatSignedNumber(fromBuildings),
+      }),
+      getUiTooltip("madnessFromEvents", "{{value}} from Events", {
+        value: formatSignedNumber(fromEvents),
+      }),
+    ];
+    if (fromCurses > 0) {
+      lines.push(
+        getUiTooltip("madnessFromCurses", "{{value}} from Curses", {
+          value: formatSignedNumber(fromCurses),
+        }),
+      );
+    }
+    return lines.join("\n");
   },
 };
 

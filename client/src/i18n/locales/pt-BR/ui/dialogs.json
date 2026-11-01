@@ -31,22 +31,40 @@
   },
   "curseOffer": {
     "title": "Escolha suas maldições",
+    "grant": "Cada partida concede uma escolha de maldição.",
+    "available": "{{count}} disponíveis",
     "continue": "Continuar",
+    "madness": "+3 de Loucura",
     "cards": {
-      "ashen_harvest": {
-        "name": "Colheita de cinzas",
-        "curse": "Você ganha menos comida",
-        "boon": "Você ganha mais madeira"
+      "blazesmith": {
+        "name": "Ferreiro da labareda",
+        "boon": "Todos os custos para criar bombas caem 50%",
+        "boon2": "Dobra o bônus de produção do Fogo do Coração por nível (5%→10%)",
+        "quote": "\"Algo parece errado com o alquimista.\""
       },
-      "crowded_graves": {
-        "name": "Túmulos lotados",
-        "curse": "Os aldeões caem com mais frequência",
-        "boon": "Os vivos trabalham mais rápido"
+      "full_larders": {
+        "name": "Despensas cheias",
+        "boon": "Aldeões livres produzem +2 de Comida",
+        "boon2": "Caçadores produzem +5 de Comida",
+        "quote": "\"Algo parece errado com o caçador.\""
       },
-      "loud_omens": {
-        "name": "Presságios altos",
-        "curse": "O azar ataca com mais frequência",
-        "boon": "Você ganha mais perspicácia"
+      "sturdy_hands": {
+        "name": "Mãos firmes",
+        "boon": "Coletores produzem +5 de Madeira",
+        "boon2": "Coletores produzem +5 de Pedra",
+        "quote": "\"Algo parece errado com o construtor.\""
+      },
+      "cunning_trader": {
+        "name": "Mercador astuto",
+        "boon": "20% de desconto no mercador viajante",
+        "boon2": "20% de taxas melhores no Posto de Comércio",
+        "quote": "\"Algo parece errado com o mercador.\""
+      },
+      "avid_apprentices": {
+        "name": "Aprendizes ávidos",
+        "boon": "Os estudiosos produzem +1 de Perspicácia",
+        "boon2": "O domínio das ações melhora 20% mais rápido",
+        "quote": "\"Algo parece errado com o apostador.\""
       }
     }
   },

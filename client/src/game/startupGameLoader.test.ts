@@ -1,13 +1,20 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { mockLoadGame, mockSetState, mockTrackButtonClick, mockExecuteAction, mockFlags } =
-  vi.hoisted(() => ({
-    mockLoadGame: vi.fn(),
-    mockSetState: vi.fn(),
-    mockTrackButtonClick: vi.fn(),
-    mockExecuteAction: vi.fn(),
-    mockFlags: { gameStarted: false, villagerCapsEnabled: false },
-  }));
+const {
+  mockLoadGame,
+  mockSetState,
+  mockTrackButtonClick,
+  mockExecuteAction,
+  mockFlags,
+  mockLifetimeGamesWon,
+} = vi.hoisted(() => ({
+  mockLoadGame: vi.fn(),
+  mockSetState: vi.fn(),
+  mockTrackButtonClick: vi.fn(),
+  mockExecuteAction: vi.fn(),
+  mockFlags: { gameStarted: false, villagerCapsEnabled: false },
+  mockLifetimeGamesWon: { value: 0 },
+}));
 
 vi.mock("./state", () => ({
   useGameStore: {
@@ -16,6 +23,7 @@ vi.mock("./state", () => ({
       trackButtonClick: mockTrackButtonClick,
       executeAction: mockExecuteAction,
       flags: mockFlags,
+      lifetimeGamesWon: mockLifetimeGamesWon.value,
     }),
     setState: mockSetState,
   },
@@ -30,6 +38,7 @@ describe("startup game hydration handoff", () => {
     mockExecuteAction.mockReset();
     mockFlags.gameStarted = false;
     mockFlags.villagerCapsEnabled = false;
+    mockLifetimeGamesWon.value = 0;
     mockLoadGame.mockResolvedValue(true);
   });
 
@@ -107,26 +116,35 @@ describe("startup game hydration handoff", () => {
     expect(mockTrackButtonClick).not.toHaveBeenCalled();
   });
 
-  it("opens the curse offer when a new Cruel Mode run starts", async () => {
-    const loader = await import("./startupGameLoader");
+  it.each([
+    { cruelMode: true, wins: 0, open: false },
+    { cruelMode: false, wins: 0, open: false },
+    { cruelMode: true, wins: 1, open: true },
+    { cruelMode: false, wins: 2, open: true },
+  ])(
+    "opens the curse offer only after a finished game (cruelMode $cruelMode, wins $wins)",
+    async ({ cruelMode, wins, open }) => {
+      mockLifetimeGamesWon.value = wins;
+      const loader = await import("./startupGameLoader");
 
-    loader.commitMakeFireStart({
-      cruelMode: true,
-      musicMuted: false,
-      sfxMuted: false,
-      musicVolume: 1,
-      sfxVolume: 1,
-    });
+      loader.commitMakeFireStart({
+        cruelMode,
+        musicMuted: false,
+        sfxMuted: false,
+        musicVolume: 1,
+        sfxVolume: 1,
+      });
 
-    expect(mockSetState).toHaveBeenCalledWith(
-      expect.objectContaining({
-        cruelMode: true,
-        cruelCurseOfferPending: true,
-        curseOfferDialogOpen: true,
-        chosenCruelCurses: [],
-      }),
-    );
-  });
+      expect(mockSetState).toHaveBeenCalledWith(
+        expect.objectContaining({
+          cruelMode,
+          curseOfferPending: open,
+          curseOfferDialogOpen: open,
+          chosenCurses: [],
+        }),
+      );
+    },
+  );
 
   it("forces gameStarted when Make Fire executeAction is a no-op", async () => {
     const loader = await import("./startupGameLoader");

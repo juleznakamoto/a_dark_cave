@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useGameStore } from "@/game/state";
 import {
-  CRUEL_CURSE_IDS,
-  isCruelCurseId,
-  type CruelCurseId,
-} from "@/game/rules/cruelCurses";
+  CURSE_IDS,
+  clampCurseChoices,
+  isCurseId,
+  type CurseId,
+} from "@/game/rules/curses";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { SidePanelSectionIcon } from "@/components/game/panels/SidePanelSectionIcon";
 import {
@@ -16,6 +17,13 @@ import {
   chromeRuleColorStyle,
   useDestroyedChrome,
 } from "@/components/game/gameChrome";
+
+function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
 
 export default function CurseOfferDialog() {
   const isOpen = useGameStore((s) => s.curseOfferDialogOpen);
@@ -26,43 +34,92 @@ export default function CurseOfferDialog() {
 function CurseOfferDialogOpen() {
   const { t } = useUiTranslation();
   const chromeOn = useDestroyedChrome();
-  const confirmCruelCurses = useGameStore((s) => s.confirmCruelCurses);
-  const chosen = useGameStore((s) => s.chosenCruelCurses);
-  const [selected, setSelected] = useState<ReadonlySet<CruelCurseId>>(() => {
-    const initial = new Set<CruelCurseId>();
+  const confirmCurses = useGameStore((s) => s.confirmCurses);
+  const chosen = useGameStore((s) => s.chosenCurses);
+  const allowance = clampCurseChoices(
+    useGameStore((s) => s.curseChoices),
+  );
+  const [selected, setSelected] = useState<ReadonlySet<CurseId>>(() => {
+    const initial = new Set<CurseId>();
     for (const id of chosen ?? []) {
-      if (isCruelCurseId(id)) initial.add(id);
+      if (!isCurseId(id)) continue;
+      initial.add(id);
+      if (initial.size >= allowance) break;
     }
     return initial;
   });
 
-  const [shown, setShown] = useState(0);
+  const [linesShown, setLinesShown] = useState(() =>
+    prefersReducedMotion() ? 3 : 0,
+  );
+  const [shown, setShown] = useState(() =>
+    prefersReducedMotion() ? CURSE_IDS.length : 0,
+  );
+  const [continueShown, setContinueShown] = useState(() =>
+    prefersReducedMotion(),
+  );
+  const [closing, setClosing] = useState(false);
+  const pendingIdsRef = useRef<CurseId[]>([]);
 
   useEffect(() => {
-    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (media.matches) {
-      setShown(CRUEL_CURSE_IDS.length + 1);
+    if (prefersReducedMotion()) {
+      setLinesShown(3);
+      setShown(CURSE_IDS.length);
+      setContinueShown(true);
       return;
     }
-    const timers = CRUEL_CURSE_IDS.map((_, index) =>
-      window.setTimeout(() => setShown(index + 1), 500 * (index + 1)),
-    );
-    timers.push(
-      window.setTimeout(
-        () => setShown(CRUEL_CURSE_IDS.length + 1),
-        500 * (CRUEL_CURSE_IDS.length + 1),
+    const lineWaitMs = 500;
+    const lineFadeMs = 500;
+    const lineStaggerMs = 500;
+    const cardStaggerMs = 500;
+    const continueDelayMs = 500;
+    const lineStarts = [
+      lineWaitMs,
+      lineWaitMs + lineStaggerMs,
+      lineWaitMs + lineStaggerMs * 2,
+    ];
+    const cardsStartMs = lineStarts[2] + lineFadeMs;
+    const timers = [
+      ...lineStarts.map((start, index) =>
+        window.setTimeout(() => setLinesShown(index + 1), start),
       ),
-    );
+      ...CURSE_IDS.map((_, index) =>
+        window.setTimeout(
+          () => setShown(index + 1),
+          cardsStartMs + index * cardStaggerMs,
+        ),
+      ),
+      window.setTimeout(
+        () => setContinueShown(true),
+        cardsStartMs +
+          (CURSE_IDS.length - 1) * cardStaggerMs +
+          continueDelayMs,
+      ),
+    ];
     return () => {
       for (const id of timers) window.clearTimeout(id);
     };
   }, []);
 
-  const toggle = (id: CruelCurseId) => {
+  useEffect(() => {
+    if (!closing) return;
+    const timer = window.setTimeout(() => {
+      confirmCurses(pendingIdsRef.current);
+    }, 1500);
+    return () => window.clearTimeout(timer);
+  }, [closing, confirmCurses]);
+
+  const remaining = Math.max(0, allowance - selected.size);
+
+  const toggle = (id: CurseId) => {
     setSelected((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+        return next;
+      }
+      if (next.size >= allowance) return prev;
+      next.add(id);
       return next;
     });
   };
@@ -81,6 +138,16 @@ function CurseOfferDialogOpen() {
         .curse-offer-card-glow {
           box-shadow: 0 0 15px 5px rgba(220, 38, 38, 0.4);
         }
+        .curse-offer-card[aria-pressed="true"] {
+          outline: 1px solid #ef4444;
+          outline-offset: 0;
+        }
+        .curse-offer-open-eye {
+          transform: translateY(-2px) scale(0.98);
+        }
+        .curse-offer-closed-eye {
+          opacity: 0.8;
+        }
         @keyframes curse-offer-title-pulse {
           0%, 100% {
             opacity: 0.45;
@@ -92,7 +159,15 @@ function CurseOfferDialogOpen() {
           }
         }
         .curse-offer-title {
-          animation: curse-offer-title-pulse 3.2s ease-in-out infinite;
+          animation: curse-offer-title-pulse 4.8s ease-in-out infinite;
+        }
+        @keyframes curse-offer-backdrop-out {
+          from { opacity: 1; }
+          to { opacity: 0; }
+        }
+        .curse-offer-backdrop-out {
+          animation: curse-offer-backdrop-out 1.5s ease-out forwards;
+          pointer-events: none;
         }
         @media (prefers-reduced-motion: reduce) {
           .curse-offer-title {
@@ -102,26 +177,77 @@ function CurseOfferDialogOpen() {
         }
       `}</style>
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 animate-fade-in p-3"
+        className={cn(
+          "fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-black p-3",
+          closing && "curse-offer-backdrop-out",
+        )}
         role="dialog"
         aria-modal="true"
         aria-labelledby="curse-offer-title"
         data-testid="curse-offer-dialog"
       >
-        <div className="flex max-h-[100dvh] w-full max-w-[min(96vw,56rem)] flex-col items-center overflow-y-auto py-4">
-          <h2
-            id="curse-offer-title"
-            className="curse-offer-title mb-5 text-center text-2xl font-semibold tracking-wide text-red-600 sm:mb-6 sm:text-3xl"
-          >
-            {title}
-          </h2>
+        <div className="flex max-h-full min-h-0 w-full max-w-[min(98vw,80rem)] flex-col items-center overflow-hidden py-2">
+          <div className="mb-4 flex flex-col items-center gap-1">
+            <div
+              className={cn(
+                "transition-opacity duration-500 ease-out",
+                linesShown >= 1 ? "opacity-100" : "opacity-0",
+              )}
+            >
+              <h2
+                id="curse-offer-title"
+                className="curse-offer-title text-center text-2xl font-semibold tracking-wide text-red-600 sm:text-3xl"
+              >
+                {title}
+              </h2>
+            </div>
+            <p
+              className={cn(
+                "text-center text-sm text-white transition-opacity duration-500 ease-out sm:text-base",
+                linesShown >= 2 ? "opacity-100" : "opacity-0",
+              )}
+            >
+              {t("curseOffer.grant", {
+                defaultValue: "Each playthrough grants one curse choice.",
+              })}
+            </p>
+            <p
+              className={cn(
+                "text-center text-sm text-white transition-opacity duration-500 ease-out sm:text-base",
+                linesShown >= 3 ? "opacity-100" : "opacity-0",
+              )}
+            >
+              {t("curseOffer.available", {
+                count: remaining,
+                defaultValue: "{{count}} available",
+              })}
+            </p>
+          </div>
 
-          <div className="flex flex-col items-center gap-3 sm:flex-row sm:items-stretch sm:justify-center">
-            {CRUEL_CURSE_IDS.map((curseId, index) => {
+          <div className="flex w-full flex-col items-center gap-3">
+            {Array.from(
+              { length: Math.ceil(CURSE_IDS.length / 3) },
+              (_, row) => row * 3,
+            ).map((start) => (
+              <div
+                key={start}
+                className="flex flex-wrap items-stretch justify-center gap-3"
+              >
+            {CURSE_IDS.slice(start, start + 3).map((curseId, offset) => {
+              const index = start + offset;
               const isSelected = selected.has(curseId);
               const isShown = index < shown;
+              const canSelect = isSelected || remaining > 0;
               const name = t(`curseOffer.cards.${curseId}.name`);
-              const ruleColor = isSelected ? "#ef4444" : "#991b1b";
+              const secondBoon =
+                curseId === "blazesmith" ||
+                curseId === "cunning_trader" ||
+                curseId === "avid_apprentices" ||
+                curseId === "full_larders" ||
+                curseId === "sturdy_hands"
+                  ? t(`curseOffer.cards.${curseId}.boon2`)
+                  : "";
+              const ruleColor = isSelected ? "#ef4444" : "#6b1515";
 
               return (
                 <button
@@ -131,19 +257,24 @@ function CurseOfferDialogOpen() {
                   aria-hidden={!isShown}
                   tabIndex={isShown ? 0 : -1}
                   onClick={() => {
-                    if (!isShown) return;
+                    if (!isShown || !canSelect) return;
                     toggle(curseId);
                   }}
                   className={cn(
-                    "curse-offer-card group relative z-0 flex w-[13.5rem] flex-col overflow-visible rounded-lg bg-background p-3 text-left shadow-2xl transition-opacity duration-500 ease-out sm:w-[16rem] sm:p-5",
+                    "curse-offer-card group relative z-0 flex w-[13.5rem] flex-col overflow-visible rounded-lg bg-background p-2.5 text-left shadow-2xl transition-opacity duration-1000 ease-out sm:w-[16rem] sm:p-4",
                     isShown ? "opacity-100" : "pointer-events-none opacity-0",
+                    canSelect ? "cursor-pointer" : "cursor-default",
                     chromeOn
                       ? `${gameChromeDialogClassName()} game-chrome-rule--round`
                       : cn(
                           "border transition-colors duration-500",
                           isSelected
                             ? "border-red-500"
-                            : "border-red-900 hover:border-red-600 focus-visible:border-red-600",
+                            : cn(
+                                "border-red-950",
+                                canSelect &&
+                                  "hover:border-red-700 focus-visible:border-red-700",
+                              ),
                         ),
                   )}
                   style={
@@ -161,54 +292,77 @@ function CurseOfferDialogOpen() {
                       "pointer-events-none absolute inset-0 -z-10 rounded-lg transition-opacity duration-500 curse-offer-card-glow",
                       isSelected
                         ? "opacity-100"
-                        : "opacity-40 group-hover:opacity-100 group-focus-visible:opacity-100",
+                        : cn(
+                            "opacity-20",
+                            canSelect &&
+                              "group-hover:opacity-70 group-focus-visible:opacity-70",
+                          ),
                     )}
                   />
 
-                  <div className="mb-3 flex justify-center text-foreground">
+                  <div className="mb-2 flex justify-center text-foreground">
                     <SidePanelSectionIcon
-                      sectionId="blessings"
+                      sectionId={isSelected ? "bonuses" : "blessings"}
                       sizeClassName="h-8 w-8 sm:h-10 sm:w-10"
-                      className="opacity-90"
+                      className={isSelected ? "curse-offer-open-eye opacity-90" : "curse-offer-closed-eye"}
                     />
                   </div>
 
-                  <h3 className="mb-3 text-center text-sm font-semibold leading-tight sm:text-base">
+                  <h3 className="mb-2 text-center text-sm font-semibold leading-tight sm:text-base">
                     {name}
                   </h3>
 
-                  <p className="min-h-[2.5rem] text-center text-xs leading-snug text-red-400">
-                    {t(`curseOffer.cards.${curseId}.curse`)}
+                  <p className="min-h-[2.25rem] text-center text-xs leading-snug text-amber-100/90">
+                    {t(`curseOffer.cards.${curseId}.boon`)}
                   </p>
+                  {secondBoon ? (
+                    <p className="mt-1.5 min-h-[2.25rem] text-center text-xs leading-snug text-amber-100/90">
+                      {secondBoon}
+                    </p>
+                  ) : null}
 
                   <div
-                    className="my-3 h-px w-full bg-red-800/80"
+                    className="my-2 h-px w-full bg-red-800/80"
                     aria-hidden="true"
                   />
 
-                  <p className="min-h-[2.5rem] text-center text-xs leading-snug text-amber-100/90">
-                    {t(`curseOffer.cards.${curseId}.boon`)}
+                  <p className="text-center text-xs leading-snug text-red-400">
+                    {t("curseOffer.madness", { defaultValue: "+3 Madness" })}
+                  </p>
+                  <p className="mt-1.5 text-center text-xs italic leading-snug text-red-400">
+                    {t(`curseOffer.cards.${curseId}.quote`)}
                   </p>
                 </button>
               );
             })}
+              </div>
+            ))}
           </div>
 
           <Button
             type="button"
             variant="outline"
             button_id="curse-offer-continue"
-            aria-hidden={shown <= CRUEL_CURSE_IDS.length}
-            tabIndex={shown > CRUEL_CURSE_IDS.length ? 0 : -1}
+            aria-hidden={!continueShown}
+            tabIndex={continueShown ? 0 : -1}
             className={cn(
-              "mt-6 min-w-[10rem] border-red-600 bg-red-600/10 text-foreground transition-opacity duration-500 ease-out",
+              "mt-4 min-w-[10rem] border-red-600 bg-red-600/10 text-foreground transition-opacity duration-500 ease-out",
               "hover:bg-red-600/20 hover:text-foreground",
-              shown > CRUEL_CURSE_IDS.length
+              continueShown
                 ? "opacity-100"
                 : "pointer-events-none opacity-0",
             )}
             style={chromeRuleColorStyle("#dc2626")}
-            onClick={() => confirmCruelCurses([...selected])}
+            onClick={() => {
+              if (closing) return;
+              const ids = [...selected];
+              if (prefersReducedMotion()) {
+                confirmCurses(ids);
+                return;
+              }
+              pendingIdsRef.current = ids;
+              setClosing(true);
+            }}
             data-testid="curse-offer-continue"
           >
             {t("curseOffer.continue", { defaultValue: "Continue" })}

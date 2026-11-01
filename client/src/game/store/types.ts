@@ -429,8 +429,8 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
   setBlessingOfferDialogOpen: (isOpen: boolean) => void;
   /** Spend Insight and grant a blessing from the active Insight blessing offer. */
   chooseInsightBlessing: (blessingId: string) => boolean;
-  /** Save the opening Cruel Mode curse picks and close the offer. */
-  confirmCruelCurses: (curseIds: string[]) => void;
+  /** Save the opening curse picks and close the offer. */
+  confirmCurses: (curseIds: string[]) => void;
   setInvestDialogOpen: (isOpen: boolean) => void;
   setInvestmentResultDialog: (
     isOpen: boolean,

@@ -31,22 +31,40 @@
   },
   "curseOffer": {
     "title": "Elige tus maldiciones",
+    "grant": "Cada partida otorga una elección de maldición.",
+    "available": "{{count}} disponibles",
     "continue": "Continuar",
+    "madness": "+3 Locura",
     "cards": {
-      "ashen_harvest": {
-        "name": "Cosecha de ceniza",
-        "curse": "Obtienes menos comida",
-        "boon": "Obtienes más madera"
+      "blazesmith": {
+        "name": "Herrero de la llamarada",
+        "boon": "Fabricar bombas cuesta un 50% menos",
+        "boon2": "Duplica la bonificación de producción del Fuego del corazón por nivel (5%→10%)",
+        "quote": "«Algo no va bien con el alquimista.»"
       },
-      "crowded_graves": {
-        "name": "Tumbas abarrotadas",
-        "curse": "Los aldeanos caen más a menudo",
-        "boon": "Los vivos trabajan más rápido"
+      "full_larders": {
+        "name": "Despensas llenas",
+        "boon": "Los aldeanos libres producen +2 Comida",
+        "boon2": "Los cazadores producen +5 Comida",
+        "quote": "«Algo no va bien con el cazador.»"
       },
-      "loud_omens": {
-        "name": "Augurios ruidosos",
-        "curse": "La desgracia golpea más a menudo",
-        "boon": "Obtienes más perspicacia"
+      "sturdy_hands": {
+        "name": "Manos firmes",
+        "boon": "Los recolectores producen +5 Madera",
+        "boon2": "Los recolectores producen +5 Piedra",
+        "quote": "«Algo no va bien con el constructor.»"
+      },
+      "cunning_trader": {
+        "name": "Mercader astuto",
+        "boon": "20% de descuento con el mercader ambulante",
+        "boon2": "20% mejores precios en el puesto comercial",
+        "quote": "«Algo no va bien con el mercader.»"
+      },
+      "avid_apprentices": {
+        "name": "Aprendices ávidos",
+        "boon": "Los eruditos producen +1 Perspicacia",
+        "boon2": "El dominio de las acciones mejora un 20% más rápido",
+        "quote": "«Algo no va bien con el tahúr.»"
       }
     }
   },

@@ -237,6 +237,7 @@
     "madnessFromItems": "{{value}} z przedmiotów",
     "madnessFromBuildings": "{{value}} z budynków",
     "madnessFromEvents": "{{value}} z wydarzeń",
+    "madnessFromCurses": "{{value}} z klątw",
     "bonusSourceEffect": "{{source}}: {{effect}}",
     "resourceFlowLine": "{{source}} {{amount}}",
     "atCapacity": "Pełna pojemność ({{limit}})",

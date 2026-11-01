@@ -21,6 +21,7 @@
     "madnessFromItems": "{{value}} dagli oggetti",
     "madnessFromBuildings": "{{value}} dagli edifici",
     "madnessFromEvents": "{{value}} dagli eventi",
+    "madnessFromCurses": "{{value}} dalle maledizioni",
     "madnessTitle": "Follia",
     "productionBonus": "Bonus di produzione: {{value}}",
     "productionBase": "Base",

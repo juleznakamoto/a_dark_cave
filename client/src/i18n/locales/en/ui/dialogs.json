@@ -31,22 +31,40 @@
   },
   "curseOffer": {
     "title": "Choose your Curses",
+    "grant": "Each playthrough grants one curse choice.",
+    "available": "{{count}} available",
     "continue": "Continue",
+    "madness": "+3 Madness",
     "cards": {
-      "ashen_harvest": {
-        "name": "Ashen Harvest",
-        "curse": "Food gains are reduced",
-        "boon": "Wood gains are increased"
+      "blazesmith": {
+        "name": "Blazesmith",
+        "boon": "All bomb crafting costs are reduced by 50%",
+        "boon2": "Double Heartfire production bonus per level (5→10%)",
+        "quote": "\"Something seems wrong with the Alchemist\""
       },
-      "crowded_graves": {
-        "name": "Crowded Graves",
-        "curse": "Villagers fall more often",
-        "boon": "The living work faster"
+      "full_larders": {
+        "name": "Full Larders",
+        "boon": "Free villagers produce +2 Food",
+        "boon2": "Hunters produce +5 Food",
+        "quote": "\"Something seems wrong with the Hunter\""
       },
-      "loud_omens": {
-        "name": "Loud Omens",
-        "curse": "Misfortune strikes more often",
-        "boon": "Insight gains are increased"
+      "sturdy_hands": {
+        "name": "Sturdy Hands",
+        "boon": "Gatherers produce +5 Wood",
+        "boon2": "Gatherers produce +5 Stone",
+        "quote": "\"Something seems wrong with the Builder\""
+      },
+      "cunning_trader": {
+        "name": "Cunning Trader",
+        "boon": "20% discount at travelling merchant",
+        "boon2": "20% better rates at Trade Post",
+        "quote": "\"Something seems wrong with the Merchant\""
+      },
+      "avid_apprentices": {
+        "name": "Avid Apprentices",
+        "boon": "Scholars produce +1 Insight",
+        "boon2": "Action mastery improves 20% faster",
+        "quote": "\"Something seems wrong with the Gambler\""
       }
     }
   },

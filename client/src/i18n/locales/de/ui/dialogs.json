@@ -31,22 +31,40 @@
   },
   "curseOffer": {
     "title": "Wähle deine Flüche",
+    "grant": "Jeder Durchgang gewährt eine Fluchwahl.",
+    "available": "{{count}} verfügbar",
     "continue": "Weiter",
+    "madness": "+3 Wahnsinn",
     "cards": {
-      "ashen_harvest": {
-        "name": "Ascheernte",
-        "curse": "Weniger Nahrung",
-        "boon": "Mehr Holz"
+      "blazesmith": {
+        "name": "Flammenschmied",
+        "boon": "Alle Herstellungskosten für Bomben sinken um 50 %",
+        "boon2": "Verdoppelt den Produktionsbonus des Herzfeuers pro Stufe (5 % → 10 %)",
+        "quote": "„Mit dem Alchemisten stimmt etwas nicht.“"
       },
-      "crowded_graves": {
-        "name": "Volle Gräber",
-        "curse": "Dorfbewohner fallen häufiger",
-        "boon": "Die Lebenden arbeiten schneller"
+      "full_larders": {
+        "name": "Volle Vorräte",
+        "boon": "Freie Dorfbewohner erzeugen +2 Nahrung",
+        "boon2": "Jäger erzeugen +5 Nahrung",
+        "quote": "„Mit dem Jäger stimmt etwas nicht.“"
       },
-      "loud_omens": {
-        "name": "Laute Omen",
-        "curse": "Unglück trifft häufiger",
-        "boon": "Mehr Einsicht"
+      "sturdy_hands": {
+        "name": "Kräftige Hände",
+        "boon": "Sammler erzeugen +5 Holz",
+        "boon2": "Sammler erzeugen +5 Stein",
+        "quote": "„Mit dem Baumeister stimmt etwas nicht.“"
+      },
+      "cunning_trader": {
+        "name": "Listiger Händler",
+        "boon": "20 % Rabatt beim reisenden Händler",
+        "boon2": "20 % bessere Kurse am Handelsposten",
+        "quote": "„Mit dem Händler stimmt etwas nicht.“"
+      },
+      "avid_apprentices": {
+        "name": "Eifrige Lehrlinge",
+        "boon": "Gelehrte erzeugen +1 Einsicht",
+        "boon2": "Meisterschaft in Aktionen verbessert sich 20 % schneller",
+        "quote": "„Mit dem Glücksspieler stimmt etwas nicht.“"
       }
     }
   },

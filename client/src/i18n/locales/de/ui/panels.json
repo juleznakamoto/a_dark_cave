@@ -213,6 +213,7 @@
     "madnessFromItems": "{{value}} durch Gegenstände",
     "madnessFromBuildings": "{{value}} durch Gebäude",
     "madnessFromEvents": "{{value}} durch Ereignisse",
+    "madnessFromCurses": "{{value}} durch Flüche",
     "bonusSourceEffect": "{{source}}: {{effect}}",
     "resourceFlowLine": "{{source}} {{amount}}",
     "atCapacity": "Kapazität erreicht ({{limit}})",

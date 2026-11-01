@@ -31,22 +31,40 @@
   },
   "curseOffer": {
     "title": "Choisissez vos malédictions",
+    "grant": "Chaque partie accorde un choix de malédiction.",
+    "available": "{{count}} disponibles",
     "continue": "Continuer",
+    "madness": "+3 Folie",
     "cards": {
-      "ashen_harvest": {
-        "name": "Moisson de cendres",
-        "curse": "Moins de nourriture",
-        "boon": "Plus de bois"
+      "blazesmith": {
+        "name": "Forgeron de braise",
+        "boon": "Tous les coûts de fabrication des bombes sont réduits de 50 %",
+        "boon2": "Double le bonus de production du Feu du cœur par niveau (5 % → 10 %)",
+        "quote": "« Quelque chose ne va pas chez l'alchimiste. »"
       },
-      "crowded_graves": {
-        "name": "Tombes bondées",
-        "curse": "Les villageois tombent plus souvent",
-        "boon": "Les vivants travaillent plus vite"
+      "full_larders": {
+        "name": "Gardes-manger pleins",
+        "boon": "Les villageois libres produisent +2 Nourriture",
+        "boon2": "Les chasseurs produisent +5 Nourriture",
+        "quote": "« Quelque chose ne va pas chez le chasseur. »"
       },
-      "loud_omens": {
-        "name": "Présages bruyants",
-        "curse": "Le malheur frappe plus souvent",
-        "boon": "Plus de perspicacité"
+      "sturdy_hands": {
+        "name": "Mains solides",
+        "boon": "Les collecteurs produisent +5 Bois",
+        "boon2": "Les collecteurs produisent +5 Pierre",
+        "quote": "« Quelque chose ne va pas chez le bâtisseur. »"
+      },
+      "cunning_trader": {
+        "name": "Marchand rusé",
+        "boon": "20 % de réduction chez le marchand itinérant",
+        "boon2": "20 % de meilleurs taux au comptoir commercial",
+        "quote": "« Quelque chose ne va pas chez le marchand. »"
+      },
+      "avid_apprentices": {
+        "name": "Apprentis avides",
+        "boon": "Les érudits produisent +1 Perspicacité",
+        "boon2": "La maîtrise des actions s'améliore 20 % plus vite",
+        "quote": "« Quelque chose ne va pas chez le parieur. »"
       }
     }
   },

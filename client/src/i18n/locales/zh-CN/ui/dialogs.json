@@ -31,22 +31,40 @@
   },
   "curseOffer": {
     "title": "选择你的诅咒",
+    "grant": "每次游玩获得一次诅咒选择。",
+    "available": "可用 {{count}}",
     "continue": "继续",
+    "madness": "+3 疯狂",
     "cards": {
-      "ashen_harvest": {
-        "name": "灰烬收获",
-        "curse": "获得的食物减少",
-        "boon": "获得的木材增加"
+      "blazesmith": {
+        "name": "烈焰铁匠",
+        "boon": "所有炸弹的制作成本降低50%",
+        "boon2": "心火每级生产加成翻倍（5%→10%）",
+        "quote": "“炼金术士似乎有些不对劲。”"
       },
-      "crowded_graves": {
-        "name": "拥挤的坟墓",
-        "curse": "村民更容易倒下",
-        "boon": "生者干活更快"
+      "full_larders": {
+        "name": "满仓",
+        "boon": "空闲村民产出+2食物",
+        "boon2": "猎人产出+5食物",
+        "quote": "“猎人似乎有些不对劲。”"
       },
-      "loud_omens": {
-        "name": "喧闹的预兆",
-        "curse": "厄运更常降临",
-        "boon": "获得的洞见增加"
+      "sturdy_hands": {
+        "name": "结实双手",
+        "boon": "采集者产出+5木材",
+        "boon2": "采集者产出+5石头",
+        "quote": "“建造者似乎有些不对劲。”"
+      },
+      "cunning_trader": {
+        "name": "狡诈商人",
+        "boon": "旅行商人20%折扣",
+        "boon2": "贸易站汇率优惠20%",
+        "quote": "“商人似乎有些不对劲。”"
+      },
+      "avid_apprentices": {
+        "name": "热忱学徒",
+        "boon": "学者产出+1洞见",
+        "boon2": "行动的掌握快20%提升",
+        "quote": "“赌徒似乎有些不对劲。”"
       }
     }
   },

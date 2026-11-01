@@ -31,22 +31,40 @@
   },
   "curseOffer": {
     "title": "Wybierz swoje klątwy",
+    "grant": "Każda rozgrywka daje jeden wybór klątwy.",
+    "available": "Dostępne: {{count}}",
     "continue": "Kontynuuj",
+    "madness": "+3 szaleństwa",
     "cards": {
-      "ashen_harvest": {
-        "name": "Popielate żniwa",
-        "curse": "Mniej żywności",
-        "boon": "Więcej drewna"
+      "blazesmith": {
+        "name": "Kowal pożogi",
+        "boon": "Wszystkie koszty wytwarzania bomb są niższe o 50%",
+        "boon2": "Podwaja premię produkcji z Ognia serca na poziom (5%→10%)",
+        "quote": "„Coś jest nie tak z alchemikiem.”"
       },
-      "crowded_graves": {
-        "name": "Zatłoczone groby",
-        "curse": "Mieszkańcy padają częściej",
-        "boon": "Żywi pracują szybciej"
+      "full_larders": {
+        "name": "Pełne spiżarnie",
+        "boon": "Wolni wieśniacy dają +2 Żywności",
+        "boon2": "Myśliwi dają +5 Żywności",
+        "quote": "„Coś jest nie tak z łowcą.”"
       },
-      "loud_omens": {
-        "name": "Głośne omeny",
-        "curse": "Nieszczęście uderza częściej",
-        "boon": "Więcej wglądu"
+      "sturdy_hands": {
+        "name": "Krzepkie dłonie",
+        "boon": "Zbieracze dają +5 Drewna",
+        "boon2": "Zbieracze dają +5 Kamienia",
+        "quote": "„Coś jest nie tak z budowniczym.”"
+      },
+      "cunning_trader": {
+        "name": "Przebiegły handlarz",
+        "boon": "20% zniżki u wędrownego handlarza",
+        "boon2": "20% lepsze kursy w faktorii",
+        "quote": "„Coś jest nie tak z handlarzem.”"
+      },
+      "avid_apprentices": {
+        "name": "Gorliwi uczniowie",
+        "boon": "Uczeni dają +1 Wglądu",
+        "boon2": "Mistrzostwo działań poprawia się o 20% szybciej",
+        "quote": "„Coś jest nie tak z hazardzistą.”"
       }
     }
   },

@@ -31,22 +31,40 @@
   },
   "curseOffer": {
     "title": "Scegli le tue maledizioni",
+    "grant": "Ogni partita concede una scelta di maledizione.",
+    "available": "{{count}} disponibili",
     "continue": "Continua",
+    "madness": "+3 Follia",
     "cards": {
-      "ashen_harvest": {
-        "name": "Mietitura di cenere",
-        "curse": "Ottieni meno cibo",
-        "boon": "Ottieni più legna"
+      "blazesmith": {
+        "name": "Fabbro della vampa",
+        "boon": "Tutti i costi per creare bombe sono ridotti del 50%",
+        "boon2": "Raddoppia il bonus di produzione del Fuoco del cuore per livello (5%→10%)",
+        "quote": "«C'è qualcosa che non va nell'alchimista.»"
       },
-      "crowded_graves": {
-        "name": "Tombe affollate",
-        "curse": "Gli abitanti cadono più spesso",
-        "boon": "I vivi lavorano più in fretta"
+      "full_larders": {
+        "name": "Dispense piene",
+        "boon": "Gli abitanti liberi producono +2 Cibo",
+        "boon2": "I cacciatori producono +5 Cibo",
+        "quote": "«C'è qualcosa che non va nel cacciatore.»"
       },
-      "loud_omens": {
-        "name": "Presagi rumorosi",
-        "curse": "La sventura colpisce più spesso",
-        "boon": "Ottieni più intuizione"
+      "sturdy_hands": {
+        "name": "Mani salde",
+        "boon": "I raccoglitori producono +5 Legna",
+        "boon2": "I raccoglitori producono +5 Pietra",
+        "quote": "«C'è qualcosa che non va nel costruttore.»"
+      },
+      "cunning_trader": {
+        "name": "Mercante astuto",
+        "boon": "20% di sconto dal mercante viaggiante",
+        "boon2": "20% di tassi migliori all'avamposto commerciale",
+        "quote": "«C'è qualcosa che non va nel mercante.»"
+      },
+      "avid_apprentices": {
+        "name": "Apprendisti avidi",
+        "boon": "Gli studiosi producono +1 Intuizione",
+        "boon2": "La maestria nelle azioni migliora il 20% più in fretta",
+        "quote": "«C'è qualcosa che non va nello scommettitore.»"
       }
     }
   },

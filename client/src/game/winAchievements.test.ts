@@ -15,6 +15,7 @@ describe("getGameWinAchievementUpdates", () => {
     playTime: 6 * 60 * 60 * 1000,
     events: {},
     lifetimeGamesWon: 0,
+    curseChoices: 1,
   };
 
   it("awards Normal Victory outside cruel mode and increments lifetime wins", () => {
@@ -22,6 +23,7 @@ describe("getGameWinAchievementUpdates", () => {
       hasWonAnyGame: true,
       hasWonNormalGame: true,
       lifetimeGamesWon: 1,
+      curseChoices: 2,
     });
   });
 
@@ -32,6 +34,7 @@ describe("getGameWinAchievementUpdates", () => {
       hasWonAnyGame: true,
       hasWonCruelGame: true,
       lifetimeGamesWon: 1,
+      curseChoices: 2,
     });
   });
 
@@ -46,6 +49,7 @@ describe("getGameWinAchievementUpdates", () => {
       hasWonNormalGame: true,
       hasSpeedrunWin: true,
       lifetimeGamesWon: 1,
+      curseChoices: 2,
     });
   });
 
@@ -70,6 +74,14 @@ describe("getGameWinAchievementUpdates", () => {
         events: {},
       }).lifetimeGamesWon,
     ).toBe(3);
+    expect(
+      getGameWinAchievementUpdates({
+        ...base,
+        lifetimeGamesWon: 2,
+        curseChoices: 3,
+        events: {},
+      }).curseChoices,
+    ).toBe(4);
   });
 });
 

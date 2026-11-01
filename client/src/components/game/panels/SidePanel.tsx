@@ -369,7 +369,8 @@ export default function SidePanel() {
   const showMadnessBreakdown =
     model.madnessFromItems !== 0 ||
     model.madnessFromBuildings !== 0 ||
-    model.madnessFromEvents !== 0;
+    model.madnessFromEvents !== 0 ||
+    model.madnessFromCurses > 0;
 
   const statsItems = [
     {
@@ -454,6 +455,13 @@ export default function SidePanel() {
                     value: formatSignedNumber(model.madnessFromEvents),
                   })}
                 </div>
+                {model.madnessFromCurses > 0 && (
+                  <div>
+                    {t("sidePanel.madnessFromCurses", {
+                      value: formatSignedNumber(model.madnessFromCurses),
+                    })}
+                  </div>
+                )}
               </div>
               <ActionTooltipSeparator />
             </>

@@ -2,7 +2,8 @@ import type { GameStore } from "../types";
 import type { GameStoreCreator } from "./types";
 import { GameState } from "@shared/schema";
 import { pruneReadLogIds } from "@/game/persistedStateBoundary";
-import { sanitizeChosenCruelCurses } from "@/game/rules/cruelCurses";
+import { sanitizeChosenCurses } from "@/game/rules/curses";
+import { StateManager } from "../StateManager";
 import {
   isFullGameUnlockedEdition,
   isLocalOnlyEdition,
@@ -330,12 +331,13 @@ export const createDialogsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
     set({ blessingOfferDialogOpen: isOpen });
   },
 
-  confirmCruelCurses: (curseIds: string[]) => {
+  confirmCurses: (curseIds: string[]) => {
     set({
-      chosenCruelCurses: sanitizeChosenCruelCurses(curseIds),
-      cruelCurseOfferPending: false,
+      chosenCurses: sanitizeChosenCurses(curseIds),
+      curseOfferPending: false,
       curseOfferDialogOpen: false,
     });
+    StateManager.scheduleEffectsUpdate(get);
   },
 
   setInvestDialogOpen: (isOpen: boolean) => {
