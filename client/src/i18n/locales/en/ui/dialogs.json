@@ -31,7 +31,7 @@
   },
   "curseOffer": {
     "title": "Choose your Curses",
-    "grant": "Each playthrough grants one curse choice.",
+    "grant": "Each playthrough grants one curse choice (two choices if Cruel Mode).",
     "available": "{{count}} available",
     "continue": "Continue",
     "madness": "+3 Madness",
@@ -177,7 +177,12 @@
     "practiceWinRemaining": "You won the practice round (no Gold at stake). {{remaining}} of {{total}} practice games remaining.",
     "practiceLoseRemaining": "You lost the practice round (no Gold at stake). {{remaining}} of {{total}} practice games remaining.",
     "practiceWinComplete": "You won the practice round (no Gold at stake). Practice complete. You may place a Gold wager.",
-    "practiceLoseComplete": "You lost the practice round (no Gold at stake). Practice complete. You may place a Gold wager."
+    "practiceLoseComplete": "You lost the practice round (no Gold at stake). Practice complete. You may place a Gold wager.",
+    "coinOffer": "The Gambler offers a coin toss. Double your winnings, or leave with nothing.",
+    "coinAccept": "Toss the coin",
+    "coinDecline": "Keep the win",
+    "coinNothing": "Nothing",
+    "coinTookWinnings": "You lost the toss. The winnings are gone."
   },
   "leaderboard": {
     "title": "Leaderboard",

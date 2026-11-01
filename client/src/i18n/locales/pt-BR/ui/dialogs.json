@@ -31,7 +31,7 @@
   },
   "curseOffer": {
     "title": "Escolha suas maldições",
-    "grant": "Cada partida concede uma escolha de maldição.",
+    "grant": "Cada partida concede uma escolha de maldição (duas no Modo Cruel).",
     "available": "{{count}} disponíveis",
     "continue": "Continuar",
     "madness": "+3 de Loucura",
@@ -177,7 +177,12 @@
     "practiceWinRemaining": "Você venceu a rodada de treino (sem ouro em jogo). {{remaining}} de {{total}} jogos de treino restantes.",
     "practiceLoseRemaining": "Você perdeu a rodada de treino (sem ouro em jogo). {{remaining}} de {{total}} jogos de treino restantes.",
     "practiceWinComplete": "Você venceu a rodada de treino (sem ouro em jogo). Treino concluído. Agora você pode fazer uma aposta em ouro.",
-    "practiceLoseComplete": "Você perdeu a rodada de treino (sem ouro em jogo). Treino concluído. Agora você pode fazer uma aposta em ouro."
+    "practiceLoseComplete": "Você perdeu a rodada de treino (sem ouro em jogo). Treino concluído. Agora você pode fazer uma aposta em ouro.",
+    "coinOffer": "O apostador oferece um cara ou coroa. Dobre o que ganhou, ou saia sem nada.",
+    "coinAccept": "Jogar a moeda",
+    "coinDecline": "Ficar com o ganho",
+    "coinNothing": "Nada",
+    "coinTookWinnings": "Você perdeu o lançamento. Os ganhos se foram."
   },
   "leaderboard": {
     "title": "Classificação",

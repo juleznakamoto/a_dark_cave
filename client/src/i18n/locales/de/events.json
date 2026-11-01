@@ -1082,6 +1082,22 @@
     "message": "Der Glücksspieler sitzt mit gekreuzten Beinen am Feuer, die Augen fest auf die Würfel gerichtet. „Setz deinen Einsatz“, haucht er mit schiefem Grinsen, „und wir finden heraus, wer durchhält.“",
     "title": "Der besessene Glücksspieler"
   },
+  "gamblerEnraged": {
+    "choices": {
+      "ban": {
+        "label": "Ihn verbannen"
+      },
+      "letReturn": {
+        "label": "Ihn gehen lassen"
+      }
+    },
+    "log": {
+      "outcome0": "Du verbannst den Glücksspieler aus dem Dorf. Er kehrt nicht zurück.",
+      "outcome1": "Du lässt den Glücksspieler gehen. Er kann zurückkehren."
+    },
+    "message": "Wütend über seine Niederlagen begann der Glücksspieler auf dem Weg aus dem Dorf eine Schlägerei mit einem Dorfbewohner und tötete ihn. Verbannst du ihn?",
+    "title": "Die Wut des Glücksspielers"
+  },
   "giftedRingDiscovery": {
     "choices": {
       "takeGiftedRing": {

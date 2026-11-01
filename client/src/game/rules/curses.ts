@@ -45,10 +45,9 @@ export function clampCurseChoices(value: unknown): number {
 
 /**
  * Opening allowance for a loaded save.
- * A run starts with 1. Each completed game adds one, up to 5.
- * Older saves have no stored count, so finished games already on the save
- * (win counter, game_stats, or win flags) count the same way.
- * A stored count that is already higher is kept.
+ * A run starts with 1. Finished games already on the save add one each, up to 5.
+ * A Cruel Mode finish grants two when that win is awarded. This backfill
+ * cannot tell those wins apart, so a stored count that is already higher is kept.
  */
 export function resolveCurseChoicesFromSave(
   stored: unknown,
@@ -64,12 +63,13 @@ export function shouldOpenCurseOffer(completedGames: unknown): boolean {
   return Math.max(0, Math.floor(Number(completedGames) || 0)) > 0;
 }
 
-/** A completed game grants one more curse choice. Starting over does not. */
-export function grantCurseChoiceForCompletedGame(current: unknown): number {
-  return Math.min(
-    CURSE_CHOICE_MAX,
-    clampCurseChoices(current) + 1,
-  );
+/** A finished game grants one curse choice. Cruel Mode grants two. Starting over does not. */
+export function grantCurseChoiceForCompletedGame(
+  current: unknown,
+  cruelMode = false,
+): number {
+  const granted = cruelMode ? 2 : 1;
+  return Math.min(CURSE_CHOICE_MAX, clampCurseChoices(current) + granted);
 }
 
 /** Keep known ids, map renamed ids, drop duplicates, and preserve offer order. */

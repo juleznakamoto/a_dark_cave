@@ -1082,6 +1082,22 @@
     "message": "赌徒盘腿坐在火边，眼睛死死盯着骰子。“下注吧，”他歪嘴一笑，低声说，“看看谁能撑到最后。”",
     "title": "痴迷的赌徒"
   },
+  "gamblerEnraged": {
+    "choices": {
+      "ban": {
+        "label": "放逐他"
+      },
+      "letReturn": {
+        "label": "让他回来"
+      }
+    },
+    "log": {
+      "outcome0": "你将赌徒逐出村子。他不会再回来。",
+      "outcome1": "你放赌徒离开。他还会再来。"
+    },
+    "message": "赌徒因连连落败而暴怒，在离镇的路上向一名村民挑起打斗，并杀死了他。要禁止他再来吗？",
+    "title": "赌徒的怒火"
+  },
   "giftedRingDiscovery": {
     "choices": {
       "takeGiftedRing": {

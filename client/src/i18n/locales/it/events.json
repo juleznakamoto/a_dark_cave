@@ -1082,6 +1082,22 @@
     "message": "Lo scommettitore siede a gambe incrociate accanto al fuoco, gli occhi fissi sui dadi. «Piazza la tua puntata», sussurra con un sorriso storto, «e scopriamo chi resiste.»",
     "title": "Lo scommettitore ossessionato"
   },
+  "gamblerEnraged": {
+    "choices": {
+      "ban": {
+        "label": "Bandirlo"
+      },
+      "letReturn": {
+        "label": "Lasciarlo tornare"
+      }
+    },
+    "log": {
+      "outcome0": "Bandisci lo scommettitore dal villaggio. Non tornerà.",
+      "outcome1": "Lasci andare lo scommettitore. Può tornare."
+    },
+    "message": "Furioso per le sconfitte, lo scommettitore ha iniziato una rissa con un abitante e lo ha ucciso sulla strada fuori dal villaggio. Gli vieti di tornare?",
+    "title": "La furia dello scommettitore"
+  },
   "giftedRingDiscovery": {
     "choices": {
       "takeGiftedRing": {

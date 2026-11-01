@@ -1082,6 +1082,22 @@
     "message": "The gambler sits cross-legged by the fire, eyes fixed on the dice. 'Place your bet,' he breathes with a crooked grin, 'and let's find out who endures.'",
     "title": "The Obsessed Gambler"
   },
+  "gamblerEnraged": {
+    "choices": {
+      "ban": {
+        "label": "Ban him"
+      },
+      "letReturn": {
+        "label": "Let him return"
+      }
+    },
+    "log": {
+      "outcome0": "You bar the gambler from the village. He will not return.",
+      "outcome1": "You let the gambler leave. He may return."
+    },
+    "message": "Raging over his losses, the gambler started a fight with a villager and killed him on the road out of town. Bar him from returning?",
+    "title": "The Gambler's Rage"
+  },
   "giftedRingDiscovery": {
     "choices": {
       "takeGiftedRing": {

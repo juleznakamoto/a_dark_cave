@@ -1082,6 +1082,22 @@
     "message": "賭博師が火のそばに胡坐をかき、骰子を見つめている。「賭けろ。」歪んだ笑みで息を吐く。「どちらが耐えるか、見極めよう。」",
     "title": "憑かれた賭博師"
   },
+  "gamblerEnraged": {
+    "choices": {
+      "ban": {
+        "label": "追放する"
+      },
+      "letReturn": {
+        "label": "帰す"
+      }
+    },
+    "log": {
+      "outcome0": "賭博師を村から追放する。二度と戻らない。",
+      "outcome1": "賭博師を帰す。また戻ってくる。"
+    },
+    "message": "負けが込み、激昂した賭博師は村を出る道で村人に喧嘩をふっかけ、その村人を殺した。二度と戻らせないか？",
+    "title": "賭博師の怒り"
+  },
   "giftedRingDiscovery": {
     "choices": {
       "takeGiftedRing": {

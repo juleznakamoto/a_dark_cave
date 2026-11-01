@@ -17,6 +17,7 @@ import { getActionLabel } from "@/i18n/resolveGameText";
 import { getCallMerchantGoldCost } from "@/game/constants";
 import { MARKETING_SUBSCRIBE_GOLD } from "@/game/marketingEmailReward";
 import { computePersistedSocialTasksGold } from "@/game/socialTasksGold";
+import { getTotalMadness } from "@/game/rules/effectsCalculation";
 
 const {
   mockLoadGame,
@@ -935,6 +936,35 @@ describe("curse choices from older saves", () => {
     expect(useGameStore.getState().curseOfferPending).toBe(true);
     expect(useGameStore.getState().curseOfferDialogOpen).toBe(true);
   });
+
+  it("confirmCurses saves the picks, closes the offer, and applies madness", async () => {
+    useGameStore.getState().initialize();
+    useGameStore.setState({
+      chosenCurses: [],
+      curseChoices: 3,
+      curseOfferPending: true,
+      curseOfferDialogOpen: true,
+    });
+
+    useGameStore.getState().confirmCurses([
+      "avid_apprentices",
+      "nope",
+      "blazesmith",
+      "blazesmith",
+    ]);
+
+    expect(useGameStore.getState().chosenCurses).toEqual([
+      "blazesmith",
+      "avid_apprentices",
+    ]);
+    expect(useGameStore.getState().curseOfferPending).toBe(false);
+    expect(useGameStore.getState().curseOfferDialogOpen).toBe(false);
+    expect(useGameStore.getState().curseChoices).toBe(3);
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    const plain = createInitialState();
+    expect(useGameStore.getState().stats.madness).toBe(getTotalMadness(plain) + 6);
+  });
 });
 
 describe("Timed event tab cleanup on new game", () => {
@@ -997,9 +1027,32 @@ describe("Timed event tab cleanup on new game", () => {
     expect(state.gamblerDiceDialogOpen).toBe(false);
     expect(state.merchantTrades.choices).toEqual([]);
     expect(state.activeTab).toBe("cave");
+    expect(state.story.seen.gamblerTutorialPlaysRemaining).toBe(0);
     expect(state.log.some((entry) => entry.id === "initial-narrative")).toBe(
       false,
     );
+  });
+
+  it("restartGame keeps the curse allowance and clears the current picks", async () => {
+    mockSaveGame.mockClear();
+
+    useGameStore.setState({
+      curseChoices: 10,
+      chosenCurses: ["blazesmith", "avid_apprentices"],
+      curseOfferPending: true,
+      curseOfferDialogOpen: true,
+      lifetimeGamesWon: 10,
+      flags: { ...useGameStore.getState().flags, gameStarted: true },
+    });
+
+    await useGameStore.getState().restartGame();
+
+    const state = useGameStore.getState();
+    expect(state.curseChoices).toBe(5);
+    expect(state.chosenCurses).toEqual([]);
+    expect(state.curseOfferPending).toBe(false);
+    expect(state.curseOfferDialogOpen).toBe(false);
+    expect(state.lifetimeGamesWon).toBe(10);
   });
 
   it("restartGame honors an explicit Cruel Mode choice", async () => {

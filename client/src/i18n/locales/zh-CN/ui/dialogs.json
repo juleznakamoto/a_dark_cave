@@ -31,7 +31,7 @@
   },
   "curseOffer": {
     "title": "选择你的诅咒",
-    "grant": "每次游玩获得一次诅咒选择。",
+    "grant": "每次游玩获得一次诅咒选择（残酷模式为两次）。",
     "available": "可用 {{count}}",
     "continue": "继续",
     "madness": "+3 疯狂",
@@ -177,7 +177,12 @@
     "practiceWinRemaining": "你赢得了练习局（不涉及黄金）。剩余 {{remaining}}/{{total}} 局练习。",
     "practiceLoseRemaining": "你输掉了练习局（不涉及黄金）。剩余 {{remaining}}/{{total}} 局练习。",
     "practiceWinComplete": "你赢得了练习局（不涉及黄金）。练习完成，现在可以下注黄金。",
-    "practiceLoseComplete": "你输掉了练习局（不涉及黄金）。练习完成，现在可以下注黄金。"
+    "practiceLoseComplete": "你输掉了练习局（不涉及黄金）。练习完成，现在可以下注黄金。",
+    "coinOffer": "赌徒提议掷硬币。赢来的黄金翻倍，或者空手离开。",
+    "coinAccept": "掷硬币",
+    "coinDecline": "收下赢金",
+    "coinNothing": "一无所获",
+    "coinTookWinnings": "掷硬币输了。赢来的黄金没了。"
   },
   "leaderboard": {
     "title": "排行榜",

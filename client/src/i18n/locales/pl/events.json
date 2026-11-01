@@ -1082,6 +1082,22 @@
     "message": "Hazardzista siedzi po turecku przy ogniu, oczy wbite w kości. „Stawiaj” – szepcze z krzywym uśmiechem – „i zobaczymy, kto przetrwa.”",
     "title": "Opętany hazardzista"
   },
+  "gamblerEnraged": {
+    "choices": {
+      "ban": {
+        "label": "Wygnać go"
+      },
+      "letReturn": {
+        "label": "Pozwolić mu wrócić"
+      }
+    },
+    "log": {
+      "outcome0": "Wypędzasz hazardzistę z osady. Nie wróci.",
+      "outcome1": "Pozwalasz hazardziście odejść. Może wrócić."
+    },
+    "message": "Wściekły po porażkach hazardzista wszczął bójkę z wieśniakiem i zabił go na drodze z osady. Wygnać go, by nie wrócił?",
+    "title": "Furia hazardzisty"
+  },
   "giftedRingDiscovery": {
     "choices": {
       "takeGiftedRing": {

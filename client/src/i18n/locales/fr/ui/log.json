@@ -100,7 +100,9 @@
     "gambler": {
       "win": "Vous avez gagné {{amount}} or face au parieur obsédé.",
       "lose": "Vous avez perdu {{amount}} or face au parieur obsédé.",
-      "forfeit": "Le parieur obsédé a pris votre silence pour un abandon."
+      "forfeit": "Le parieur obsédé a pris votre silence pour un abandon.",
+      "coinNothing": "La pièce tombe contre vous. Les gains disparaissent.",
+      "enraged": "Furieux de ses défaites, le parieur a provoqué une bagarre avec un villageois et l'a tué sur la route hors du village."
     },
     "buttonUpgrade": {
       "deepens": "Votre maîtrise de {{skill}} s'approfondit.",

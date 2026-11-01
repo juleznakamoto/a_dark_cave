@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import type { GameState } from "@shared/schema";
-import { getMadnessComponents } from "./effectsCalculation";
+import { createInitialState } from "@/game/store/createInitialState";
+import { mergeStateUpdates } from "@/game/store/mergeStateUpdates";
+import { getMadnessComponents, getTotalMadness } from "./effectsCalculation";
 import {
   clampCurseChoices,
   getCurseMadness,
@@ -35,13 +37,13 @@ describe("sanitizeChosenCurses", () => {
 describe("curse madness", () => {
   it("adds 3 madness for each chosen curse and ignores unknown ids", () => {
     expect(getCurseMadness(undefined)).toBe(0);
-    expect(getCurseMadness(["blazesmith", "nope", "firecrafter"])).toBe(3);
+    expect(getCurseMadness(["blazesmith", "nope", "blazesmith"])).toBe(3);
     expect(getCurseMadness(["cunning_trader", "avid_apprentices"])).toBe(6);
   });
 
   it("counts curse madness in the madness total", () => {
     const state = {
-      chosenCurses: ["blazesmith", "crowded_graves"],
+      chosenCurses: ["blazesmith", "full_larders"],
       stats: { madnessFromEvents: 1 },
     } as GameState;
     const parts = getMadnessComponents(state, {
@@ -50,6 +52,15 @@ describe("curse madness", () => {
     });
     expect(parts.fromCurses).toBe(6);
     expect(parts.total).toBe(9);
+  });
+
+  it("includes curse madness in the live madness total", () => {
+    const plain = createInitialState();
+    const cursed = {
+      ...plain,
+      chosenCurses: ["blazesmith", "full_larders"],
+    };
+    expect(getTotalMadness(cursed)).toBe(getTotalMadness(plain) + 6);
   });
 });
 
@@ -69,6 +80,9 @@ describe("curse choices", () => {
     expect(grantCurseChoiceForCompletedGame(1)).toBe(2);
     expect(grantCurseChoiceForCompletedGame(5)).toBe(5);
     expect(grantCurseChoiceForCompletedGame(undefined)).toBe(2);
+    expect(grantCurseChoiceForCompletedGame(1, true)).toBe(3);
+    expect(grantCurseChoiceForCompletedGame(4, true)).toBe(5);
+    expect(grantCurseChoiceForCompletedGame(5, true)).toBe(5);
   });
 
   it("gives one choice when no game has been finished", () => {
@@ -85,6 +99,13 @@ describe("curse choices", () => {
   it("does not lower a stored count that is already ahead of recorded wins", () => {
     expect(resolveCurseChoicesFromSave(4, 1)).toBe(4);
     expect(resolveCurseChoicesFromSave(5, 2)).toBe(5);
+  });
+
+  it("does not lower the allowance when a later update sends a smaller count", () => {
+    const state = { ...createInitialState(), curseChoices: 4 };
+    expect(mergeStateUpdates(state, { curseChoices: 1 }).curseChoices).toBe(4);
+    expect(mergeStateUpdates(state, { curseChoices: 10 }).curseChoices).toBe(5);
+    expect(mergeStateUpdates(state, {}).curseChoices).toBe(4);
   });
 
   it("reads saves that still use the old cruel field names", () => {

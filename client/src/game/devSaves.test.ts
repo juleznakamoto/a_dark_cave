@@ -47,8 +47,13 @@ describe("dev save catalog", () => {
     expect(state.socialPromptMilestoneIndex).toBe(SOCIAL_PROMPT_AUTO_OPEN_COUNT);
     expect(state.lifetimeGamesWon).toBe(2);
     expect(state.hasWonAnyGame).toBe(true);
-    expect(state.game_stats).toHaveLength(2);
-    expect(state.curseChoices).toBe(3);
+    expect(state.hasWonNormalGame).toBe(true);
+    expect(state.hasWonCruelGame).toBe(true);
+    expect(state.game_stats.map((entry) => entry.gameMode)).toEqual([
+      "normal",
+      "cruel",
+    ]);
+    expect(state.curseChoices).toBe(4);
   });
 
   it("fresh-start is cave-only after Make Fire", () => {

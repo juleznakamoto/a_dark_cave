@@ -1082,6 +1082,22 @@
     "message": "Le parieur est assis en tailleur près du feu, les yeux fixés sur les dés. « Placez votre mise », souffle-t-il avec un sourire de travers, « et voyons qui tiendra le coup. »",
     "title": "Le parieur obsédé"
   },
+  "gamblerEnraged": {
+    "choices": {
+      "ban": {
+        "label": "Le bannir"
+      },
+      "letReturn": {
+        "label": "Le laisser revenir"
+      }
+    },
+    "log": {
+      "outcome0": "Tu bannis le parieur du village. Il ne reviendra pas.",
+      "outcome1": "Tu laisses partir le parieur. Il peut revenir."
+    },
+    "message": "Furieux de ses défaites, le parieur a provoqué une bagarre avec un villageois et l'a tué sur la route hors du village. Lui interdis-tu de revenir ?",
+    "title": "La rage du parieur"
+  },
   "giftedRingDiscovery": {
     "choices": {
       "takeGiftedRing": {

@@ -116,6 +116,7 @@ import {
   gamblerDiceResumeOnLoad,
   getGamblerTutorialPlaysRemaining,
   GAMBLER_EVENT_SEEN_KEY,
+  GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY,
 } from "@/game/gamblerSession";
 import { logger } from "@/lib/logger";
 import { isGameTabHidden } from "@/lib/tabVisibility";
@@ -382,6 +383,14 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       startTime: Date.now(),
       playTime: 0,
       allowPlayTimeOverwrite: true,
+      // Practice dice rounds belong to the first playthrough only.
+      story: {
+        ...defaultGameState.story,
+        seen: {
+          ...defaultGameState.story.seen,
+          [GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY]: 0,
+        },
+      },
     };
 
     const socialTasksGold = computePersistedSocialTasksGold({

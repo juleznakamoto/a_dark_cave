@@ -89,6 +89,7 @@ export function getGameWinAchievementUpdates(
       Math.max(0, Math.floor(Number(state.lifetimeGamesWon) || 0)) + 1;
     updates.curseChoices = grantCurseChoiceForCompletedGame(
       state.curseChoices,
+      state.cruelMode,
     );
   }
   return updates;

@@ -31,7 +31,7 @@
   },
   "curseOffer": {
     "title": "Elige tus maldiciones",
-    "grant": "Cada partida otorga una elección de maldición.",
+    "grant": "Cada partida otorga una elección de maldición (dos en el modo cruel).",
     "available": "{{count}} disponibles",
     "continue": "Continuar",
     "madness": "+3 Locura",
@@ -177,7 +177,12 @@
     "practiceWinRemaining": "Ganaste la ronda de práctica (sin oro en juego). Quedan {{remaining}} de {{total}} partidas de práctica.",
     "practiceLoseRemaining": "Perdiste la ronda de práctica (sin oro en juego). Quedan {{remaining}} de {{total}} partidas de práctica.",
     "practiceWinComplete": "Ganaste la ronda de práctica (sin oro en juego). Práctica completada. Ya puedes apostar oro.",
-    "practiceLoseComplete": "Perdiste la ronda de práctica (sin oro en juego). Práctica completada. Ya puedes apostar oro."
+    "practiceLoseComplete": "Perdiste la ronda de práctica (sin oro en juego). Práctica completada. Ya puedes apostar oro.",
+    "coinOffer": "El tahúr ofrece lanzar una moneda. Dobla lo ganado, o te vas sin nada.",
+    "coinAccept": "Lanzar la moneda",
+    "coinDecline": "Quedarme con la ganancia",
+    "coinNothing": "Nada",
+    "coinTookWinnings": "Perdiste el lanzamiento. Lo ganado ya no está."
   },
   "leaderboard": {
     "title": "Clasificación",

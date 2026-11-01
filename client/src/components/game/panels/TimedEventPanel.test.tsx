@@ -6,7 +6,11 @@ import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import TimedEventPanel from "./TimedEventPanel";
 import { useGameStore } from "@/game/state";
-import { GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY } from "@/game/gamblerSession";
+import {
+  GAMBLER_ENRAGED_SEEN_KEY,
+  GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY,
+} from "@/game/gamblerSession";
+import * as gamblerSession from "@/game/gamblerSession";
 
 vi.mock("@/components/game/TooltipWrapper", () => ({
   TooltipWrapper: ({ children }: { children: React.ReactElement }) => children,
@@ -65,6 +69,8 @@ function makeGamblerEvent(overrides: Record<string, unknown> = {}) {
 }
 
 describe("TimedEventPanel gambler coverage", () => {
+  let restoreRageSpy: (() => void) | null = null;
+
   beforeEach(() => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-03-21T12:00:00Z"));
@@ -98,6 +104,8 @@ describe("TimedEventPanel gambler coverage", () => {
   });
 
   afterEach(() => {
+    restoreRageSpy?.();
+    restoreRageSpy = null;
     cleanup();
     // Drop pending fake timers before restoring real timers so deferred work (e.g. gambler
     // departure `setTimeout(200)` opening `eventDialog`) is not migrated onto the real clock
@@ -389,6 +397,136 @@ describe("TimedEventPanel gambler coverage", () => {
     expect(screen.getByTestId("gambler-dialog")).toHaveAttribute(
       "data-open",
       "false",
+    );
+  });
+
+  it("keeps the visit open when a cursed win is not the last game", () => {
+    const rage = vi
+      .spyOn(gamblerSession, "gamblerRageOnWin")
+      .mockReturnValue(true);
+    restoreRageSpy = () => rage.mockRestore();
+
+    useGameStore.setState((state) => ({
+      ...state,
+      chosenCurses: ["avid_apprentices"],
+      villagers: { ...state.villagers, free: 4 },
+      resources: { ...state.resources, gold: 100 },
+      timedEventTab: {
+        isActive: true,
+        event: makeGamblerEvent(),
+        expiryTime: Date.now() + 60_000,
+        startTime: Date.now() - 2_000,
+        gamblerRoundsRemaining: 2,
+      },
+    }));
+
+    act(() => {
+      render(<TimedEventPanel />);
+    });
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Accept" }));
+    });
+
+    act(() => {
+      useGameStore.setState({
+        gamblerGame: {
+          wager: 50,
+          outcome: "win" as const,
+          goldDelta: 50,
+          roundsRemainingThisEvent: 2,
+          outcomeSnapshot: {
+            playerTotal: 15,
+            npcTotal: 10,
+            goal: 15,
+          },
+        },
+      });
+    });
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Mock Close" }));
+    });
+
+    expect(rage).not.toHaveBeenCalled();
+    expect(useGameStore.getState().villagers.free).toBe(4);
+    expect(useGameStore.getState().gamblerGame).toEqual({
+      wager: 0,
+      roundsRemainingThisEvent: 1,
+    });
+    expect(screen.getByTestId("gambler-dialog")).toHaveAttribute(
+      "data-open",
+      "true",
+    );
+  });
+
+  it("ends the visit when the last cursed win enrages the gambler", () => {
+    const rage = vi
+      .spyOn(gamblerSession, "gamblerRageOnWin")
+      .mockReturnValue(true);
+    restoreRageSpy = () => rage.mockRestore();
+    const setTimedEventTab = vi.fn();
+    const setHighlightedResources = vi.fn();
+
+    useGameStore.setState((state) => ({
+      ...state,
+      setTimedEventTab: setTimedEventTab as typeof state.setTimedEventTab,
+      setHighlightedResources:
+        setHighlightedResources as typeof state.setHighlightedResources,
+      chosenCurses: ["avid_apprentices"],
+      villagers: { ...state.villagers, free: 4 },
+      resources: { ...state.resources, gold: 100 },
+      timedEventTab: {
+        isActive: true,
+        event: makeGamblerEvent(),
+        expiryTime: Date.now() + 60_000,
+        startTime: Date.now() - 2_000,
+        gamblerRoundsRemaining: 1,
+      },
+    }));
+
+    act(() => {
+      render(<TimedEventPanel />);
+    });
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Accept" }));
+    });
+
+    act(() => {
+      useGameStore.setState({
+        gamblerGame: {
+          wager: 50,
+          outcome: "win" as const,
+          goldDelta: 50,
+          roundsRemainingThisEvent: 1,
+          outcomeSnapshot: {
+            playerTotal: 15,
+            npcTotal: 10,
+            goal: 15,
+          },
+        },
+      });
+    });
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Mock Close" }));
+    });
+
+    expect(useGameStore.getState().villagers.free).toBe(3);
+    expect(
+      useGameStore.getState().story.seen[GAMBLER_ENRAGED_SEEN_KEY],
+    ).toBe(true);
+    expect(useGameStore.getState().gamblerGame).toBeNull();
+    expect(setTimedEventTab).toHaveBeenCalledWith(false);
+    expect(setHighlightedResources).toHaveBeenCalledWith([]);
+
+    act(() => {
+      vi.advanceTimersByTime(200);
+    });
+
+    expect(useGameStore.getState().eventDialog.currentEvent?.eventId).toBe(
+      "gamblerEnraged",
     );
   });
 });

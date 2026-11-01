@@ -316,9 +316,7 @@ export const createMerchantSlice: GameStoreCreator<Partial<GameStore>> = (set, g
           !!(isActive && event && event.id.split("-")[0] === "gambler");
         const isCollector =
           !!(isActive && event && event.id.split("-")[0] === "wandering_collector");
-        const tutorialLeft = getGamblerTutorialPlaysRemaining(
-          state.story?.seen,
-        );
+        const tutorialLeft = getGamblerTutorialPlaysRemaining(state);
         const gamblerRoundsRemaining = isGambler
           ? tutorialLeft > 0
             ? tutorialLeft

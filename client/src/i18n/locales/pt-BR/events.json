@@ -1082,6 +1082,22 @@
     "message": "O apostador está sentado de pernas cruzadas junto ao fogo, os olhos fixos nos dados. “Faça sua aposta”, ele sussurra com um sorriso torto, “e vamos descobrir quem resiste.”",
     "title": "O Apostador Obcecado"
   },
+  "gamblerEnraged": {
+    "choices": {
+      "ban": {
+        "label": "Bani-lo"
+      },
+      "letReturn": {
+        "label": "Deixá-lo voltar"
+      }
+    },
+    "log": {
+      "outcome0": "Você bane o apostador da vila. Ele não voltará.",
+      "outcome1": "Você deixa o apostador ir. Ele pode voltar."
+    },
+    "message": "Furioso com as derrotas, o apostador começou uma briga com um aldeão e o matou na estrada de saída da vila. Você o proíbe de voltar?",
+    "title": "A fúria do apostador"
+  },
   "giftedRingDiscovery": {
     "choices": {
       "takeGiftedRing": {

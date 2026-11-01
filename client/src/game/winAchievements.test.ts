@@ -34,7 +34,7 @@ describe("getGameWinAchievementUpdates", () => {
       hasWonAnyGame: true,
       hasWonCruelGame: true,
       lifetimeGamesWon: 1,
-      curseChoices: 2,
+      curseChoices: 3,
     });
   });
 
@@ -148,6 +148,7 @@ describe("cube ending win flag effects", () => {
     expect(result.hasWonAnyGame).toBe(true);
     expect(result.hasWonNormalGame).toBe(true);
     expect(result.lifetimeGamesWon).toBe(1);
+    expect(result.curseChoices).toBe(2);
     expect(result.events?.cube15b).toBe(true);
   });
 
@@ -174,6 +175,7 @@ describe("cube ending win flag effects", () => {
     expect(result.hasWonCruelGame).toBe(true);
     expect(result.hasSpeedrunWin).toBe(true);
     expect(result.lifetimeGamesWon).toBe(1);
+    expect(result.curseChoices).toBe(3);
   });
 
   it("cube15a after cube13 does not double-count lifetime wins", () => {

@@ -37,7 +37,12 @@ import { relocalizeMerchantTradeChoice } from "@/game/rules/eventsMerchant";
 import { composeMerchantSpecialItemTooltip } from "@/game/rules/eventsMerchantTooltip";
 import { collectorChoiceDisplayLabel } from "@/game/rules/eventsWanderingCollector";
 import { composeCollectorItemTooltip } from "@/game/rules/eventsWanderingCollectorTooltip";
-import { EventChoice, type LogEntry } from "@/game/rules/events";
+import {
+  buildEventDialogLogEntry,
+  EventChoice,
+  gameEvents,
+  type LogEntry,
+} from "@/game/rules/events";
 import { logger } from "@/lib/logger";
 import {
   calculateMerchantDiscount,
@@ -45,11 +50,15 @@ import {
   isKnowledgeBonusMaxed,
 } from "@/game/rules/effectsStats";
 import { getGamblerLeaveAfterGamesMessage } from "@/game/rules/eventsGambler";
+import { StateManager } from "@/game/store/StateManager";
 import GamblerDiceDialog from "@/components/game/GamblerDiceDialog";
 import { getTotalLuck } from "@/game/rules/effectsCalculation";
 import {
+  applyGamblerRage,
   createDefaultGamblerSession,
+  gamblerRageOnWin,
   getGamblerTutorialPlaysRemaining,
+  isGamblerPaidWin,
   GAMBLER_TUTORIAL_PLAYS,
   GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY,
 } from "@/game/gamblerSession";
@@ -923,9 +932,7 @@ export default function TimedEventPanel() {
               if (prev?.roundsRemainingThisEvent != null) {
                 roundsRemainingThisEvent = prev.roundsRemainingThisEvent;
               } else {
-                const tutorialLeft = getGamblerTutorialPlaysRemaining(
-                  s.story?.seen,
-                );
+                const tutorialLeft = getGamblerTutorialPlaysRemaining(s);
                 if (wager === 0 && tutorialLeft > 0) {
                   roundsRemainingThisEvent = tutorialLeft;
                 } else {
@@ -960,84 +967,74 @@ export default function TimedEventPanel() {
               };
             });
           }}
-          onOutcomeResolved={(outcome, wager, snapshot) => {
+          onOutcomeResolved={(outcome, wager, snapshot, payout) => {
             const practice = wager === 0;
-            if (outcome === "win") {
-              useGameStore.setState((s) => {
-                const gamblerWinsTotal =
-                  (Number(s.story?.seen?.gamblerWinsTotal) || 0) +
-                  (practice ? 0 : 1);
-                const gold = (s.resources?.gold ?? 0) + (practice ? 0 : wager);
-                const logEntry = {
-                  id: `gambler-win-${Date.now()}`,
-                  message: `You won ${wager} Gold from the obsessed gambler.`,
-                  logKey: "gambler.win",
-                  logVars: { amount: wager },
-                  timestamp: Date.now(),
-                  type: "system" as const,
-                };
-                return {
-                  resources: {
-                    ...s.resources,
-                    gold,
-                  },
-                  gamblerGame: {
-                    wager,
-                    outcome: "win",
-                    outcomeSnapshot: snapshot,
-                    stakeNotYetDeducted: false,
-                    roundsRemainingThisEvent:
-                      s.gamblerGame?.roundsRemainingThisEvent,
-                  },
-                  ...(practice
-                    ? {}
+            const goldDelta =
+              payout?.goldDelta ?? (outcome === "win" ? wager : -wager);
+            useGameStore.setState((s) => {
+              const gold = practice
+                ? (s.resources?.gold ?? 0)
+                : Math.max(0, (s.resources?.gold ?? 0) + goldDelta);
+              const gamblerWinsTotal =
+                (Number(s.story?.seen?.gamblerWinsTotal) || 0) +
+                (!practice && goldDelta > 0 ? 1 : 0);
+              const logEntry =
+                practice || goldDelta === 0
+                  ? goldDelta === 0 && !practice
+                    ? {
+                      id: `gambler-coin-nothing-${Date.now()}`,
+                      message:
+                        "The coin came up against you. The winnings are gone.",
+                      logKey: "gambler.coinNothing",
+                      timestamp: Date.now(),
+                      type: "system" as const,
+                    }
+                    : null
+                  : goldDelta > 0
+                    ? {
+                      id: `gambler-win-${Date.now()}`,
+                      message: `You won ${goldDelta} Gold from the obsessed gambler.`,
+                      logKey: "gambler.win",
+                      logVars: { amount: goldDelta },
+                      timestamp: Date.now(),
+                      type: "system" as const,
+                    }
                     : {
-                      story: {
-                        ...s.story,
-                        seen: {
-                          ...s.story?.seen,
-                          gamblerWinsTotal,
-                        },
+                      id: `gambler-lose-${Date.now()}`,
+                      message: `You lost ${wager} Gold to the obsessed gambler.`,
+                      logKey: "gambler.lose",
+                      logVars: { amount: wager },
+                      timestamp: Date.now(),
+                      type: "system" as const,
+                    };
+              return {
+                resources: {
+                  ...s.resources,
+                  gold,
+                },
+                gamblerGame: {
+                  wager,
+                  outcome,
+                  outcomeSnapshot: snapshot,
+                  goldDelta: practice ? 0 : goldDelta,
+                  stakeNotYetDeducted: false,
+                  roundsRemainingThisEvent:
+                    s.gamblerGame?.roundsRemainingThisEvent,
+                },
+                ...(!practice && goldDelta > 0
+                  ? {
+                    story: {
+                      ...s.story,
+                      seen: {
+                        ...s.story?.seen,
+                        gamblerWinsTotal,
                       },
-                    }),
-                  ...(practice ? {} : { log: [...s.log, logEntry] }),
-                };
-              });
-            } else {
-              useGameStore.setState((s) => {
-                const takeStake = !practice;
-                const gold = s.resources?.gold ?? 0;
-                return {
-                  resources: {
-                    ...s.resources,
-                    gold: takeStake ? Math.max(0, gold - wager) : gold,
-                  },
-                  gamblerGame: {
-                    wager,
-                    outcome: "lose",
-                    outcomeSnapshot: snapshot,
-                    stakeNotYetDeducted: false,
-                    roundsRemainingThisEvent:
-                      s.gamblerGame?.roundsRemainingThisEvent,
-                  },
-                  ...(practice
-                    ? {}
-                    : {
-                      log: [
-                        ...s.log,
-                        {
-                          id: `gambler-lose-${Date.now()}`,
-                          message: `You lost ${wager} Gold to the obsessed gambler.`,
-                          logKey: "gambler.lose",
-                          logVars: { amount: wager },
-                          timestamp: Date.now(),
-                          type: "system" as const,
-                        },
-                      ],
-                    }),
-                };
-              });
-            }
+                    },
+                  }
+                  : {}),
+                ...(logEntry ? { log: [...s.log, logEntry] } : {}),
+              };
+            });
           }}
           onClose={() => {
             const st = useGameStore.getState();
@@ -1159,6 +1156,35 @@ export default function TimedEventPanel() {
                 }));
                 setGamblerDialogRoundKey((k) => k + 1);
                 return;
+              }
+
+              if (isGamblerPaidWin(gg) && gamblerRageOnWin(st, true)) {
+                const ragePatch = applyGamblerRage(st);
+                if (ragePatch) {
+                  const rageEvent = gameEvents.gamblerEnraged;
+                  useGameStore.setState({
+                    ...ragePatch,
+                    gamblerGame: null,
+                  });
+                  StateManager.schedulePopulationUpdate(useGameStore.getState);
+                  StateManager.scheduleEffectsUpdate(useGameStore.getState);
+                  closeGamblerDiceDialog();
+                  setHighlightedResources([]);
+                  setTimedEventTab(false);
+                  setEventDialog(false);
+                  if (rageEvent) {
+                    setTimeout(() => {
+                      setEventDialog(
+                        true,
+                        buildEventDialogLogEntry(
+                          rageEvent,
+                          useGameStore.getState(),
+                        ),
+                      );
+                    }, 200);
+                  }
+                  return;
+                }
               }
 
               showGamblerDepartureDialog = !practiceRound && next === 0;

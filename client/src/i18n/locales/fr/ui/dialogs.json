@@ -31,7 +31,7 @@
   },
   "curseOffer": {
     "title": "Choisissez vos malédictions",
-    "grant": "Chaque partie accorde un choix de malédiction.",
+    "grant": "Chaque partie accorde un choix de malédiction (deux en mode cruel).",
     "available": "{{count}} disponibles",
     "continue": "Continuer",
     "madness": "+3 Folie",
@@ -177,7 +177,12 @@
     "practiceWinRemaining": "Vous avez gagné la manche d'entraînement (sans mise d'or). {{remaining}} sur {{total}} parties d'entraînement restantes.",
     "practiceLoseRemaining": "Vous avez perdu la manche d'entraînement (sans mise d'or). {{remaining}} sur {{total}} parties d'entraînement restantes.",
     "practiceWinComplete": "Vous avez gagné la manche d'entraînement (sans mise d'or). Entraînement terminé – vous pouvez miser de l'or.",
-    "practiceLoseComplete": "Vous avez perdu la manche d'entraînement (sans mise d'or). Entraînement terminé – vous pouvez miser de l'or."
+    "practiceLoseComplete": "Vous avez perdu la manche d'entraînement (sans mise d'or). Entraînement terminé – vous pouvez miser de l'or.",
+    "coinOffer": "Le parieur propose un pile ou face. Doublez vos gains, ou repartez sans rien.",
+    "coinAccept": "Lancer la pièce",
+    "coinDecline": "Garder le gain",
+    "coinNothing": "Rien",
+    "coinTookWinnings": "Vous avez perdu le lancer. Les gains sont perdus."
   },
   "leaderboard": {
     "title": "Classement",

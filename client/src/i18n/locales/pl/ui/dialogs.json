@@ -31,7 +31,7 @@
   },
   "curseOffer": {
     "title": "Wybierz swoje klątwy",
-    "grant": "Każda rozgrywka daje jeden wybór klątwy.",
+    "grant": "Każda rozgrywka daje jeden wybór klątwy (dwa w Trybie okrutnym).",
     "available": "Dostępne: {{count}}",
     "continue": "Kontynuuj",
     "madness": "+3 szaleństwa",
@@ -179,7 +179,12 @@
     "practiceWinRemaining": "Wygrałeś rundę treningową (bez stawki). Zostało {{remaining}} z {{total}} gier treningowych.",
     "practiceLoseRemaining": "Przegrałeś rundę treningową (bez stawki). Zostało {{remaining}} z {{total}} gier treningowych.",
     "practiceWinComplete": "Wygrałeś rundę treningową (bez stawki). Trening ukończony. Możesz postawić złoto.",
-    "practiceLoseComplete": "Przegrałeś rundę treningową (bez stawki). Trening ukończony. Możesz postawić złoto."
+    "practiceLoseComplete": "Przegrałeś rundę treningową (bez stawki). Trening ukończony. Możesz postawić złoto.",
+    "coinOffer": "Hazardzista proponuje rzut monetą. Podwajasz wygraną albo odchodzisz z niczym.",
+    "coinAccept": "Rzuć monetą",
+    "coinDecline": "Zatrzymaj wygraną",
+    "coinNothing": "Nic",
+    "coinTookWinnings": "Przegrałeś rzut. Wygrana przepadła."
   },
   "leaderboard": {
     "title": "Ranking",

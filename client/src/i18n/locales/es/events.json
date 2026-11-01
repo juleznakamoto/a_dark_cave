@@ -1082,6 +1082,22 @@
     "message": "El tahúr está sentado con las piernas cruzadas junto al fuego, con los ojos fijos en los dados. «Haz tu apuesta», susurra con una sonrisa torcida, «y veamos quién resiste».",
     "title": "El tahúr obsesionado"
   },
+  "gamblerEnraged": {
+    "choices": {
+      "ban": {
+        "label": "Desterrarlo"
+      },
+      "letReturn": {
+        "label": "Dejarlo volver"
+      }
+    },
+    "log": {
+      "outcome0": "Destierras al tahúr de la aldea. No volverá.",
+      "outcome1": "Dejas que el tahúr se vaya. Puede volver."
+    },
+    "message": "Furioso por sus derrotas, el tahúr empezó una pelea con un aldeano y lo mató en el camino de salida del pueblo. ¿Le prohíbes volver?",
+    "title": "La furia del tahúr"
+  },
   "giftedRingDiscovery": {
     "choices": {
       "takeGiftedRing": {

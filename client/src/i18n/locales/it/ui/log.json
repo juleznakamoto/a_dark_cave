@@ -100,7 +100,9 @@
     "gambler": {
       "win": "Hai vinto {{amount}} oro dallo scommettitore ossessionato.",
       "lose": "Hai perso {{amount}} oro a favore dello scommettitore ossessionato.",
-      "forfeit": "Lo scommettitore ossessionato ha interpretato il tuo silenzio come una rinuncia."
+      "forfeit": "Lo scommettitore ossessionato ha interpretato il tuo silenzio come una rinuncia.",
+      "coinNothing": "La moneta ti è contraria. La vincita svanisce.",
+      "enraged": "Furioso per le sconfitte, lo scommettitore ha iniziato una rissa con un abitante e lo ha ucciso sulla strada fuori dal villaggio."
     },
     "buttonUpgrade": {
       "deepens": "La tua maestria in {{skill}} si approfondisce.",

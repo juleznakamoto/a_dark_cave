@@ -100,7 +100,9 @@
     "gambler": {
       "win": "Wygrałeś {{amount}} złota od opętanego hazardzisty.",
       "lose": "Przegrałeś {{amount}} złota na rzecz opętanego hazardzisty.",
-      "forfeit": "Opętany hazardzista wziął twoje milczenie za rezygnację."
+      "forfeit": "Opętany hazardzista wziął twoje milczenie za rezygnację.",
+      "coinNothing": "Moneta pada przeciwko tobie. Wygrana przepada.",
+      "enraged": "Wściekły po porażkach hazardzista wszczął bójkę z wieśniakiem i zabił go na drodze z osady."
     },
     "buttonUpgrade": {
       "deepens": "Pogłębiasz mistrzostwo: {{skill}}.",

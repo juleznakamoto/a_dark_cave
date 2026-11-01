@@ -208,7 +208,8 @@ function CurseOfferDialogOpen() {
               )}
             >
               {t("curseOffer.grant", {
-                defaultValue: "Each playthrough grants one curse choice.",
+                defaultValue:
+                  "Each playthrough grants one curse choice (two choices if Cruel Mode).",
               })}
             </p>
             <p
@@ -312,11 +313,11 @@ function CurseOfferDialogOpen() {
                     {name}
                   </h3>
 
-                  <p className="min-h-[2.25rem] text-center text-xs leading-snug text-amber-100/90">
+                  <p className="min-h-[2.25rem] text-center text-xs leading-snug text-white">
                     {t(`curseOffer.cards.${curseId}.boon`)}
                   </p>
                   {secondBoon ? (
-                    <p className="mt-1.5 min-h-[2.25rem] text-center text-xs leading-snug text-amber-100/90">
+                    <p className="mt-1.5 min-h-[2.25rem] text-center text-xs leading-snug text-white">
                       {secondBoon}
                     </p>
                   ) : null}

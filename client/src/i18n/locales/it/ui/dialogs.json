@@ -31,7 +31,7 @@
   },
   "curseOffer": {
     "title": "Scegli le tue maledizioni",
-    "grant": "Ogni partita concede una scelta di maledizione.",
+    "grant": "Ogni partita concede una scelta di maledizione (due in Modalità crudele).",
     "available": "{{count}} disponibili",
     "continue": "Continua",
     "madness": "+3 Follia",
@@ -177,7 +177,12 @@
     "practiceWinRemaining": "Hai vinto il round di pratica (nessun oro in gioco). {{remaining}} di {{total}} partite di pratica rimanenti.",
     "practiceLoseRemaining": "Hai perso il round di pratica (nessun oro in gioco). {{remaining}} di {{total}} partite di pratica rimanenti.",
     "practiceWinComplete": "Hai vinto il round di pratica (nessun oro in gioco). Pratica completata. Puoi piazzare una puntata in oro.",
-    "practiceLoseComplete": "Hai perso il round di pratica (nessun oro in gioco). Pratica completata. Puoi piazzare una puntata in oro."
+    "practiceLoseComplete": "Hai perso il round di pratica (nessun oro in gioco). Pratica completata. Puoi piazzare una puntata in oro.",
+    "coinOffer": "Il giocatore propone un lancio della moneta. Raddoppia la vincita, o te ne vai senza niente.",
+    "coinAccept": "Lancia la moneta",
+    "coinDecline": "Tieni la vincita",
+    "coinNothing": "Niente",
+    "coinTookWinnings": "Hai perso il lancio. La vincita non c'è più."
   },
   "leaderboard": {
     "title": "Classifica",

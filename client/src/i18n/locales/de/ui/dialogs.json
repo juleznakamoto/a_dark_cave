@@ -31,7 +31,7 @@
   },
   "curseOffer": {
     "title": "Wähle deine Flüche",
-    "grant": "Jeder Durchgang gewährt eine Fluchwahl.",
+    "grant": "Jeder Durchgang gewährt eine Fluchwahl (zwei im Grausamen Modus).",
     "available": "{{count}} verfügbar",
     "continue": "Weiter",
     "madness": "+3 Wahnsinn",
@@ -177,7 +177,12 @@
     "practiceWinRemaining": "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Noch {{remaining}} von {{total}} Übungsspielen übrig.",
     "practiceLoseRemaining": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Noch {{remaining}} von {{total}} Übungsspielen übrig.",
     "practiceWinComplete": "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Übung abgeschlossen. Du kannst jetzt Gold setzen.",
-    "practiceLoseComplete": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Übung abgeschlossen. Du kannst jetzt Gold setzen."
+    "practiceLoseComplete": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Übung abgeschlossen. Du kannst jetzt Gold setzen.",
+    "coinOffer": "Der Glücksspieler bietet einen Münzwurf an. Verdopple deinen Gewinn, oder geh ohne etwas.",
+    "coinAccept": "Münze werfen",
+    "coinDecline": "Gewinn behalten",
+    "coinNothing": "Nichts",
+    "coinTookWinnings": "Du hast den Wurf verloren. Der Gewinn ist weg."
   },
   "leaderboard": {
     "title": "Bestenliste",

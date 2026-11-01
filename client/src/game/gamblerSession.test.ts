@@ -1,11 +1,20 @@
 import { describe, expect, it } from "vitest";
 import {
+  applyGamblerRage,
   createDefaultGamblerSession,
+  GAMBLER_BANNED_SEEN_KEY,
+  GAMBLER_ENRAGED_SEEN_KEY,
   GAMBLER_EVENT_SEEN_KEY,
+  gamblerCoinOfferOnWin,
   gamblerDiceResumeOnLoad,
+  gamblerRageOnWin,
+  getGamblerTutorialPlaysRemaining,
   hasGamblerAppearedOnce,
+  isGamblerPaidWin,
   resolveGamblerSessionForHydrate,
 } from "./gamblerSession";
+import { EventManager } from "./rules/events";
+import { gamblerEvents } from "./rules/eventsGambler";
 import type { GameState } from "@shared/schema";
 import { createInitialState } from "./state";
 
@@ -146,5 +155,110 @@ describe("gamblerSession", () => {
     const s = resolveGamblerSessionForHydrate(gg);
     expect(s.phase).toBe("playerTurn");
     expect(s.playerTotal).toBe(0);
+  });
+});
+
+describe("gambler practice and coin offer", () => {
+  it("keeps practice rounds on the first playthrough only", () => {
+    const first = createInitialState();
+    expect(getGamblerTutorialPlaysRemaining(first)).toBe(2);
+    expect(
+      getGamblerTutorialPlaysRemaining({ ...first, lifetimeGamesWon: 1 }),
+    ).toBe(0);
+  });
+
+  it("offers the coin after a paid win only with Avid Apprentices", () => {
+    const cursed = { chosenCurses: ["avid_apprentices"] as const };
+    expect(gamblerCoinOfferOnWin(cursed, 50, () => 0.24)).toBe(true);
+    expect(gamblerCoinOfferOnWin(cursed, 50, () => 0.25)).toBe(false);
+    expect(gamblerCoinOfferOnWin(cursed, 0, () => 0)).toBe(false);
+    expect(gamblerCoinOfferOnWin({ chosenCurses: [] }, 50, () => 0)).toBe(false);
+  });
+});
+
+describe("gambler rage after a paid win", () => {
+  function cursedVillage() {
+    const state = createInitialState();
+    return {
+      ...state,
+      chosenCurses: ["avid_apprentices"],
+      villagers: { ...state.villagers, free: 4 },
+      resources: { ...state.resources, gold: 20 },
+      buildings: { ...state.buildings, woodenHut: 4 },
+      stats: { ...state.stats, madnessFromEvents: 5 },
+    };
+  }
+
+  it("rolls only for a cursed paid win while a villager is home", () => {
+    const state = cursedVillage();
+    expect(isGamblerPaidWin({ wager: 50, outcome: "win", goldDelta: 50 })).toBe(
+      true,
+    );
+    expect(isGamblerPaidWin({ wager: 0, outcome: "win", goldDelta: 0 })).toBe(
+      false,
+    );
+    expect(isGamblerPaidWin({ wager: 50, outcome: "lose", goldDelta: 0 })).toBe(
+      false,
+    );
+    expect(gamblerRageOnWin(state, true, () => 0.19)).toBe(true);
+    expect(gamblerRageOnWin(state, true, () => 0.2)).toBe(false);
+    expect(gamblerRageOnWin(state, false, () => 0)).toBe(false);
+    expect(
+      gamblerRageOnWin({ ...state, chosenCurses: [] }, true, () => 0),
+    ).toBe(false);
+    expect(
+      gamblerRageOnWin(
+        { ...state, villagers: { ...state.villagers, free: 0 } },
+        true,
+        () => 0,
+      ),
+    ).toBe(false);
+    expect(
+      gamblerRageOnWin(
+        {
+          ...state,
+          story: {
+            ...state.story,
+            seen: { [GAMBLER_ENRAGED_SEEN_KEY]: true },
+          },
+        },
+        true,
+        () => 0,
+      ),
+    ).toBe(false);
+  });
+
+  it("kills one villager once, and banning keeps the gambler away", () => {
+    const state = cursedVillage();
+    const patch = applyGamblerRage(state);
+    expect(patch?.villagers?.free).toBe(3);
+    expect(patch?.story?.seen?.[GAMBLER_ENRAGED_SEEN_KEY]).toBe(true);
+    expect(patch?.log?.some((entry) => entry.logKey === "gambler.enraged")).toBe(
+      true,
+    );
+    expect(applyGamblerRage({ ...state, villagers: { ...state.villagers, free: 0 } })).toBe(
+      null,
+    );
+
+    const afterKill = { ...state, ...patch };
+    const banned = EventManager.applyEventChoice(afterKill, "ban", "gamblerEnraged");
+    expect(banned.stats?.madnessFromEvents).toBe(3);
+    expect(banned.story?.seen?.[GAMBLER_BANNED_SEEN_KEY]).toBe(true);
+
+    const spared = EventManager.applyEventChoice(
+      afterKill,
+      "letReturn",
+      "gamblerEnraged",
+    );
+    expect(spared.story?.seen?.[GAMBLER_BANNED_SEEN_KEY]).toBeUndefined();
+    expect(spared.stats?.madnessFromEvents).toBe(6);
+
+    expect(gamblerEvents.gambler.condition(afterKill)).toBe(true);
+    expect(
+      gamblerEvents.gambler.condition({
+        ...afterKill,
+        story: banned.story ?? afterKill.story,
+      }),
+    ).toBe(false);
   });
 });

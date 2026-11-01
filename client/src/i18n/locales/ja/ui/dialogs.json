@@ -31,7 +31,7 @@
   },
   "curseOffer": {
     "title": "呪いを選ぶ",
-    "grant": "各プレイで呪いを1つ選べる。",
+    "grant": "各プレイで呪いを1つ選べる（残酷モードでは2つ）。",
     "available": "残り {{count}}",
     "continue": "続ける",
     "madness": "+3 狂気",
@@ -177,7 +177,12 @@
     "practiceWinRemaining": "練習に勝った（金貨は賭けていない）。練習は残り{{remaining}}/{{total}}回。",
     "practiceLoseRemaining": "練習に負けた（金貨は賭けていない）。練習は残り{{remaining}}/{{total}}回。",
     "practiceWinComplete": "練習に勝った（金貨は賭けていない）。練習は終わり。これからは金貨を賭けられる。",
-    "practiceLoseComplete": "練習に負けた（金貨は賭けていない）。練習は終わり。これからは金貨を賭けられる。"
+    "practiceLoseComplete": "練習に負けた（金貨は賭けていない）。練習は終わり。これからは金貨を賭けられる。",
+    "coinOffer": "賭博師が硬貨を投げようと持ちかける。勝ち金は倍になるか、何も残らない。",
+    "coinAccept": "硬貨を投げる",
+    "coinDecline": "勝ち金を受け取る",
+    "coinNothing": "何もなし",
+    "coinTookWinnings": "硬貨は負けだ。勝ち金は消えた。"
   },
   "leaderboard": {
     "title": "ランキング",

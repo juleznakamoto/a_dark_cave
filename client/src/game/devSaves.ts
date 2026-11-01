@@ -14,7 +14,7 @@ import {
 } from "@/game/devSaveIds";
 import { SOCIAL_PROMPT_AUTO_OPEN_COUNT } from "@/game/socialPromptAuto";
 import { resetMadnessLevelLogBaseline } from "@/game/madnessLevelLog";
-import { resolveCurseChoicesFromSave } from "@/game/rules/curses";
+import { grantCurseChoiceForCompletedGame } from "@/game/rules/curses";
 
 const DEV_SAVE_GAME_ID_PREFIX = "dev-save-";
 const DEV_SAVE_FINISHED_GAMES = 2;
@@ -338,25 +338,36 @@ function finalize(state: GameState, id: DevSaveId): GameState {
   };
 }
 
-/** Dev fixtures behave as if two earlier games were already completed. */
+/** Dev fixtures behave as if one normal game and one Cruel Mode game were already finished. */
 function withFinishedGames(state: GameState): GameState {
   const hour = 60 * 60 * 1000;
+  const curseChoices = grantCurseChoiceForCompletedGame(
+    grantCurseChoiceForCompletedGame(state.curseChoices, false),
+    true,
+  );
   return {
     ...state,
     hasWonAnyGame: true,
     hasWonNormalGame: true,
+    hasWonCruelGame: true,
     lifetimeGamesWon: DEV_SAVE_FINISHED_GAMES,
-    curseChoices: resolveCurseChoicesFromSave(
-      state.curseChoices,
-      DEV_SAVE_FINISHED_GAMES,
-    ),
-    game_stats: [1, 2].map((n) => ({
-      gameId: `${DEV_SAVE_GAME_ID_PREFIX}finished-${n}`,
-      gameMode: "normal",
-      startTime: n * hour,
-      finishTime: (n + 1) * hour,
-      playTime: hour,
-    })),
+    curseChoices,
+    game_stats: [
+      {
+        gameId: `${DEV_SAVE_GAME_ID_PREFIX}finished-normal`,
+        gameMode: "normal",
+        startTime: hour,
+        finishTime: 2 * hour,
+        playTime: hour,
+      },
+      {
+        gameId: `${DEV_SAVE_GAME_ID_PREFIX}finished-cruel`,
+        gameMode: "cruel",
+        startTime: 2 * hour,
+        finishTime: 3 * hour,
+        playTime: hour,
+      },
+    ],
   };
 }
 

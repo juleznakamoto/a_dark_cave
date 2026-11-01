@@ -714,7 +714,7 @@ export const gameStateSchema = z.object({
   curseOfferPending: z.boolean().default(false),
   /**
    * How many curses the player may pick on the opening offer.
-   * Starts at 1. Each completed game adds one, up to 5.
+   * Starts at 1. A finished game adds one. A Cruel Mode finish adds two. Up to 5.
    * Starting a new game does not. Choosing curses does not spend these.
    * Saves from before this field existed get 1 plus games already finished.
    * Older saves stored this as cruelCurseChoices.
@@ -1188,6 +1188,8 @@ export const gameStateSchema = z.object({
         .optional(),
       /** True until a losing outcome applies the stake deduction (stake is not taken at bet time). */
       stakeNotYetDeducted: z.boolean().default(true),
+      /** Gold change applied for this round. Omitted on older saves. */
+      goldDelta: z.number().optional(),
       /**
        * 2 during first-visit practice or with Bone Dice; 1 without. Decremented when
        * the player dismisses the outcome screen (not on wager). Max stays 3 so an
