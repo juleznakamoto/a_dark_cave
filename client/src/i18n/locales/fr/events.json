@@ -1240,7 +1240,7 @@
     "log": {
       "outcome0": "Vous glissez l'anneau à votre doigt. Il vous va parfaitement. La femme sourit et prend congé, le pas plus léger."
     },
-    "message": "La femme du village revient vers vous, le visage rayonnant de gratitude. « Je devais vous remercier comme il se doit », dit-elle d'une voix chaude. « Les choses se sont… très bien passées. J'ai fabriqué cet anneau pour vous. » Elle vous tend un anneau auquel est attaché un anneau plus petit.",
+    "message": "La femme du village revient vers vous, le visage rayonnant de gratitude. « Je devais vous remercier comme il se doit », dit-elle d'une voix chaude. « Le harnais est bien fait. Prenez cet anneau. Je l'ai fait pour vous. » Elle vous tend un anneau auquel est attaché un anneau plus petit.",
     "title": "Un retour reconnaissant"
   },
   "leatherHarnessRequest": {
@@ -1254,10 +1254,10 @@
       }
     },
     "log": {
-      "outcome1": "Vous lui remettez le cuir. Elle le prend avec un sourire reconnaissant, les yeux brillants. « Merci. Il sera… très surpris. » Elle s'éloigne en hâte, serrant les peaux contre sa poitrine.",
+      "outcome1": "Vous lui remettez le cuir. Elle le prend avec un sourire reconnaissant, les yeux brillants. « Merci. C'est exactement ce qu'il me fallait. » Elle s'éloigne en hâte, serrant les peaux contre sa poitrine.",
       "outcome2": "Vous refusez. Elle hoche la tête, une déception passant sur son visage, puis retourne au village sans un mot de plus."
     },
-    "message": "Une femme du village s'approche de vous, les joues légèrement rosies. Elle hésite avant de parler, les yeux baissés : « Je me demandais si vous pourriez me céder un peu de cuir. J'aimerais fabriquer quelque chose… pour mon compagnon. Un harnais. Pour lui faire une surprise. »",
+    "message": "Une femme du village s'approche de vous, les joues légèrement rosies. Elle hésite avant de parler, les yeux baissés : « Je me demandais si vous pourriez me céder un peu de cuir. J'aimerais fabriquer un harnais de cuir. »",
     "title": "Une femme du village"
   },
   "manFromTheMountains": {

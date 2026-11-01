@@ -1240,7 +1240,7 @@
     "log": {
       "outcome0": "Wsuwasz pierścień na palec. Pasuje doskonale. Kobieta uśmiecha się i odchodzi, z lekkością w kroku."
     },
-    "message": "Kobieta z wioski podchodzi do ciebie znów, twarz promienna z wdzięczności. „Musiałam ci podziękować należycie” – mówi ciepłym głosem. „Wszystko poszło... bardzo dobrze. Zrobiłam ten pierścień dla ciebie.” Wręcza ci pierścień z mniejszym pierścieniem u boku.",
+    "message": "Kobieta z wioski podchodzi do ciebie znów, twarz promienna z wdzięczności. „Musiałam ci podziękować należycie” – mówi ciepłym głosem. „Uprząż wyszła dobrze. Weź ten pierścień. Zrobiłam go dla ciebie.” Wręcza ci pierścień z mniejszym pierścieniem u boku.",
     "title": "Wdzięczny powrót"
   },
   "leatherHarnessRequest": {
@@ -1254,10 +1254,10 @@
       }
     },
     "log": {
-      "outcome1": "Podajesz jej skórę. Bierze ją z wdzięcznym uśmiechem, oczy jej jaśnieją. „Dziękuję. On będzie… bardzo zaskoczony”. Oddala się pospiesznie, tuląc skóry do piersi.",
+      "outcome1": "Podajesz jej skórę. Bierze ją z wdzięcznym uśmiechem, oczy jej jaśnieją. „Dziękuję. Tego właśnie potrzebowałam”. Oddala się pospiesznie, tuląc skóry do piersi.",
       "outcome2": "Odmawiasz. Kiwa głową, rozczarowanie miga na twarzy, i wraca do wioski bez kolejnego słowa."
     },
-    "message": "Kobieta z wioski podchodzi do ciebie, policzki ma lekko zarumienione. Waha się, zanim przemówi, oczy spuszczone: „Zastanawiałam się, czy mógłbyś odstąpić trochę skóry. Chciałabym zrobić coś… dla mojego partnera. Uprząż. Żeby go zaskoczyć”.",
+    "message": "Kobieta z wioski podchodzi do ciebie, policzki ma lekko zarumienione. Waha się, zanim przemówi, oczy spuszczone: „Zastanawiałam się, czy mógłbyś odstąpić trochę skóry. Chciałabym zrobić skórzaną uprząż”.",
     "title": "Kobieta z wioski"
   },
   "manFromTheMountains": {

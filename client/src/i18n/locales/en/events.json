@@ -1240,7 +1240,7 @@
     "log": {
       "outcome0": "You slip the ring onto your finger. It fits perfectly. The woman smiles and takes her leave, a lightness in her step."
     },
-    "message": "The woman from the village approaches you again, her face radiant with gratitude. 'I had to thank you properly,' she says, her voice warm. 'Things went... very well. I made this ring for you.' She hands you a ring with a smaller ring attached to it.",
+    "message": "The woman from the village approaches you again, her face radiant with gratitude. 'I had to thank you properly,' she says, her voice warm. 'The harness came out well. Please take this ring. I made it for you.' She hands you a ring with a smaller ring attached to it.",
     "title": "A Grateful Return"
   },
   "leatherHarnessRequest": {
@@ -1254,10 +1254,10 @@
       }
     },
     "log": {
-      "outcome1": "You hand her the leather. She takes it with a grateful smile, her eyes brightening. 'Thank you. He'll be... very surprised.' She hurries off, clutching the hides to her chest.",
+      "outcome1": "You hand her the leather. She takes it with a grateful smile, her eyes brightening. 'Thank you. This is just what I needed.' She hurries off, clutching the hides to her chest.",
       "outcome2": "You decline. She nods, disappointment flickering across her face, and returns to the village without another word."
     },
-    "message": "A woman from the village approaches you, her cheeks faintly flushed. She hesitates before speaking, eyes cast down: 'I was wondering if you might spare some leather. I'd like to craft something... for my partner. A harness. To surprise him with.'",
+    "message": "A woman from the village approaches you, her cheeks faintly flushed. She hesitates before speaking, eyes cast down: 'I was wondering if you might spare some leather. I'd like to craft a leather harness.'",
     "title": "A Village Woman"
   },
   "manFromTheMountains": {

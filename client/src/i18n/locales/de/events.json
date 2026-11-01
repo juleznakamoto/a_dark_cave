@@ -1240,7 +1240,7 @@
     "log": {
       "outcome0": "Du streifst den Ring über deinen Finger. Er passt perfekt. Die Frau lächelt und verabschiedet sich mit beschwingtem Schritt."
     },
-    "message": "Die Frau aus dem Dorf tritt erneut an dich heran, ihr Gesicht strahlt vor Dankbarkeit. „Ich wollte mich noch richtig bei dir bedanken“, sagt sie mit warmer Stimme. „Es ist … sehr gut gelaufen. Ich habe diesen Ring für dich gemacht.“ Sie reicht dir einen Ring, an dem ein kleinerer Ring befestigt ist.",
+    "message": "Die Frau aus dem Dorf tritt erneut an dich heran, ihr Gesicht strahlt vor Dankbarkeit. „Ich wollte mich noch richtig bei dir bedanken“, sagt sie mit warmer Stimme. „Das Ledergeschirr ist gut geworden. Bitte nimm diesen Ring. Ich habe ihn für dich gemacht.“ Sie reicht dir einen Ring, an dem ein kleinerer Ring befestigt ist.",
     "title": "Eine dankbare Rückkehr"
   },
   "leatherHarnessRequest": {
@@ -1254,10 +1254,10 @@
       }
     },
     "log": {
-      "outcome1": "Du gibst ihr das Leder. Sie nimmt es mit dankbarem Lächeln, ihre Augen hellen sich auf. „Danke. Er wird... sehr überrascht sein.“ Sie eilt davon und presst die Häute an ihre Brust.",
+      "outcome1": "Du gibst ihr das Leder. Sie nimmt es mit dankbarem Lächeln, ihre Augen hellen sich auf. „Danke. Genau das habe ich gebraucht.“ Sie eilt davon und presst die Häute an ihre Brust.",
       "outcome2": "Du lehnst ab. Sie nickt, Enttäuschung flackert über ihr Gesicht, und sie kehrt ohne ein weiteres Wort ins Dorf zurück."
     },
-    "message": "Eine Frau aus dem Dorf tritt an dich heran, ihre Wangen leicht gerötet. Sie zögert, bevor sie spricht, den Blick gesenkt: „Ich wollte fragen, ob du etwas Leder entbehren könntest. Ich möchte etwas... für meinen Partner anfertigen. Ein Geschirr. Um ihn zu überraschen.“",
+    "message": "Eine Frau aus dem Dorf tritt an dich heran, ihre Wangen leicht gerötet. Sie zögert, bevor sie spricht, den Blick gesenkt: „Ich wollte fragen, ob du etwas Leder entbehren könntest. Ich möchte ein Ledergeschirr anfertigen.“",
     "title": "Eine Dorffrau"
   },
   "manFromTheMountains": {

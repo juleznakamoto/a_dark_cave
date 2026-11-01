@@ -1240,7 +1240,7 @@
     "log": {
       "outcome0": "Te pones el anillo en el dedo. Encaja perfectamente. La mujer sonríe y se marcha con paso ligero."
     },
-    "message": "La mujer de la aldea vuelve a acercarse a ti, el rostro radiante de gratitud. «Tenía que darte las gracias como corresponde», dice con voz cálida. «Las cosas salieron... muy bien. Hice este anillo para ti». Te entrega un anillo con otro más pequeño unido.",
+    "message": "La mujer de la aldea vuelve a acercarse a ti, el rostro radiante de gratitud. «Tenía que darte las gracias como corresponde», dice con voz cálida. «El arnés ha quedado bien. Por favor, toma este anillo. Lo hice para ti». Te entrega un anillo con otro más pequeño unido.",
     "title": "Un regreso agradecido"
   },
   "leatherHarnessRequest": {
@@ -1254,10 +1254,10 @@
       }
     },
     "log": {
-      "outcome1": "Le entregas el cuero. Lo toma con una sonrisa agradecida, los ojos iluminándose. «Gracias. Él estará... muy sorprendido». Se marcha deprisa, apretando las pieles contra el pecho.",
+      "outcome1": "Le entregas el cuero. Lo toma con una sonrisa agradecida, los ojos iluminándose. «Gracias. Es justo lo que necesitaba». Se marcha deprisa, apretando las pieles contra el pecho.",
       "outcome2": "Te niegas. Ella asiente, con una sombra de decepción en el rostro, y vuelve a la aldea sin decir nada más."
     },
-    "message": "Una mujer de la aldea se acerca a ti, las mejillas levemente sonrojadas. Vacila antes de hablar, con la mirada baja: «Me preguntaba si podrías darme algo de cuero. Quisiera fabricar algo... para mi pareja. Un arnés. Para sorprenderlo».",
+    "message": "Una mujer de la aldea se acerca a ti, las mejillas levemente sonrojadas. Vacila antes de hablar, con la mirada baja: «Me preguntaba si podrías darme algo de cuero. Quisiera fabricar un arnés de cuero».",
     "title": "Una mujer de la aldea"
   },
   "manFromTheMountains": {

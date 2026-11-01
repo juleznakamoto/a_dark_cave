@@ -1240,7 +1240,7 @@
     "log": {
       "outcome0": "Você desliza o anel no dedo. Ele serve perfeitamente. A mulher sorri e se despede, com leveza no passo."
     },
-    "message": "A mulher do vilarejo se aproxima de você novamente, o rosto radiante de gratidão. “Eu precisava agradecê-lo como devia”, diz ela, a voz calorosa. “As coisas correram... muito bem. Fiz este anel para você.” Ela lhe entrega um anel com um anel menor preso a ele.",
+    "message": "A mulher do vilarejo se aproxima de você novamente, o rosto radiante de gratidão. “Eu precisava agradecê-lo como devia”, diz ela, a voz calorosa. “O arreio ficou bom. Por favor, aceite este anel. Eu o fiz para você.” Ela lhe entrega um anel com um anel menor preso a ele.",
     "title": "Um Retorno Agradecido"
   },
   "leatherHarnessRequest": {
@@ -1254,10 +1254,10 @@
       }
     },
     "log": {
-      "outcome1": "Você lhe entrega o couro. Ela o recebe com um sorriso grato, os olhos se iluminando. “Obrigada. Ele vai ficar... muito surpreso.” Ela se apressa, apertando as peles contra o peito.",
+      "outcome1": "Você lhe entrega o couro. Ela o recebe com um sorriso grato, os olhos se iluminando. “Obrigada. Era exatamente o que eu precisava.” Ela se apressa, apertando as peles contra o peito.",
       "outcome2": "Você recusa. Ela acena, a decepção passando pelo rosto, e retorna ao vilarejo sem dizer mais nada."
     },
-    "message": "Uma mulher do vilarejo se aproxima de você, as bochechas levemente coradas. Ela hesita antes de falar, os olhos baixos: “Eu queria saber se você poderia ceder um pouco de couro. Gostaria de criar algo... para meu parceiro. Um arreio. Para surpreendê-lo.”",
+    "message": "Uma mulher do vilarejo se aproxima de você, as bochechas levemente coradas. Ela hesita antes de falar, os olhos baixos: “Eu queria saber se você poderia ceder um pouco de couro. Gostaria de criar um arreio de couro.”",
     "title": "Uma Mulher do Vilarejo"
   },
   "manFromTheMountains": {

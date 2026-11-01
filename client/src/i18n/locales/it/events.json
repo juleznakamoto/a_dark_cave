@@ -1240,7 +1240,7 @@
     "log": {
       "outcome0": "Infili l'anello al dito. Calza perfettamente. La donna sorride e prende congedo, con un passo leggero."
     },
-    "message": "La donna del villaggio si avvicina di nuovo a te, il volto radioso di gratitudine. «Dovevo ringraziarti come si deve», dice, la voce calda. «Le cose sono andate… molto bene. Ho fatto questo anello per te.» Ti porge un anello con un anello più piccolo attaccato.",
+    "message": "La donna del villaggio si avvicina di nuovo a te, il volto radioso di gratitudine. «Dovevo ringraziarti come si deve», dice, la voce calda. «L'imbragatura è venuta bene. Prendi questo anello. L'ho fatto per te.» Ti porge un anello con un anello più piccolo attaccato.",
     "title": "Un ritorno riconoscente"
   },
   "leatherHarnessRequest": {
@@ -1254,10 +1254,10 @@
       }
     },
     "log": {
-      "outcome1": "Le porgi il cuoio. Lo prende con un sorriso riconoscente, gli occhi che si illuminano. «Grazie. Lui sarà… molto sorpreso.» Si allontana in fretta, stringendo le pelli al petto.",
+      "outcome1": "Le porgi il cuoio. Lo prende con un sorriso riconoscente, gli occhi che si illuminano. «Grazie. È proprio quello che mi serviva.» Si allontana in fretta, stringendo le pelli al petto.",
       "outcome2": "Rifiuti. Lei annuisce, la delusione che le balena sul volto, e torna al villaggio senza un'altra parola."
     },
-    "message": "Una donna del villaggio si avvicina a te, le guance lievemente arrossate. Esita prima di parlare, gli occhi bassi: «Mi chiedevo se potessi cedermi un po' di cuoio. Vorrei creare qualcosa… per il mio compagno. Un'imbragatura. Per fargli una sorpresa.»",
+    "message": "Una donna del villaggio si avvicina a te, le guance lievemente arrossate. Esita prima di parlare, gli occhi bassi: «Mi chiedevo se potessi cedermi un po' di cuoio. Vorrei creare un'imbragatura di cuoio.»",
     "title": "Una donna del villaggio"
   },
   "manFromTheMountains": {
