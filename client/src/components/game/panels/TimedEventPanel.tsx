@@ -49,6 +49,7 @@ import {
   getTotalMerchantDiscount,
   isKnowledgeBonusMaxed,
 } from "@/game/rules/effectsStats";
+import { hasChosenPact } from "@/game/rules/pacts";
 import { getGamblerLeaveAfterGamesMessage } from "@/game/rules/eventsGambler";
 import { StateManager } from "@/game/store/StateManager";
 import GamblerDiceDialog from "@/components/game/GamblerDiceDialog";
@@ -722,6 +723,7 @@ export default function TimedEventPanel() {
       const knowledgeDiscount = calculateMerchantDiscount(knowledge);
       const hasRingOfObedience =
         gameState.clothing?.ring_of_obedience ?? false;
+      const hasCunningTrader = hasChosenPact(gameState, "cunning_trader");
 
       if (totalDiscount <= 0) return null;
 
@@ -732,7 +734,7 @@ export default function TimedEventPanel() {
               {t("timedEvent.discount", {
                 percent: Math.round(totalDiscount * 100),
               })}
-              {(knowledgeDiscount > 0 || hasRingOfObedience) && (
+              {(knowledgeDiscount > 0 || hasRingOfObedience || hasCunningTrader) && (
                 <>
                   <br />
                   {knowledgeDiscount > 0 && (
@@ -749,6 +751,12 @@ export default function TimedEventPanel() {
                   {hasRingOfObedience && (
                     <span className="text-gray-400/70">
                       {t("timedEvent.discountFromRing")}
+                    </span>
+                  )}
+                  {(knowledgeDiscount > 0 || hasRingOfObedience) && hasCunningTrader && <br />}
+                  {hasCunningTrader && (
+                    <span className="text-gray-400/70">
+                      {t("timedEvent.discountFromPact")}
                     </span>
                   )}
                 </>
@@ -982,9 +990,9 @@ export default function TimedEventPanel() {
                 practice || goldDelta === 0
                   ? goldDelta === 0 && !practice
                     ? {
-                      id: `gambler-coin-nothing-${Date.now()}`,
+                      id: `gambler-double-nothing-${Date.now()}`,
                       message:
-                        "The coin came up against you. The winnings are gone.",
+                        "The die came up against you. The winnings are gone.",
                       logKey: "gambler.coinNothing",
                       timestamp: Date.now(),
                       type: "system" as const,

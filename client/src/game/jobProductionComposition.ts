@@ -13,8 +13,17 @@ import {
 import { getBuildingDisplayName } from "@/game/rules/buildingTooltipSections";
 import { getEffectName, tWithFallback } from "@/i18n/resolveGameText";
 import { getUiTooltip } from "@/i18n/tooltipLabels";
+import { isPactId, type PactId } from "@/game/rules/pacts";
 
 export type { JobProductionCompositionLine };
+
+const PACT_NAME_FALLBACKS: Record<PactId, string> = {
+  blazesmith: "Blazesmith",
+  full_larders: "Full Larders",
+  sturdy_hands: "Sturdy Hands",
+  cunning_trader: "Cunning Trader",
+  avid_apprentices: "Avid Apprentices",
+};
 
 const TOOLTIP_SOURCES: Record<string, { key: string; fallback: string }> = {
   base: { key: "productionBase", fallback: "Base" },
@@ -110,6 +119,13 @@ export function getJobProductionSourceLabel(sourceId: string): string {
   if (tooltip) return getUiTooltip(tooltip.key, tooltip.fallback);
   if (sourceId === "huntressTraining") {
     return tWithFallback("ui", "estate.huntressTraining", "Huntress Training");
+  }
+  if (isPactId(sourceId)) {
+    return tWithFallback(
+      "ui",
+      `pactOffer.cards.${sourceId}.name`,
+      PACT_NAME_FALLBACKS[sourceId],
+    );
   }
   if (bookEffects[sourceId]) {
     return getEffectName("books", sourceId, bookEffects[sourceId].name);

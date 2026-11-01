@@ -54,6 +54,7 @@ vi.mock("@/game/save", () => ({
 
 import GamblerDiceDialog from "./GamblerDiceDialog";
 import { useGameStore } from "@/game/state";
+import * as gamblerSession from "@/game/gamblerSession";
 import { GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY } from "@/game/gamblerSession";
 import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
 import * as diceFifteenGame from "@/game/diceFifteenGame";
@@ -243,6 +244,119 @@ describe("GamblerDiceDialog", () => {
     });
 
     expect(screen.getAllByText(/you lose/i).length).toBeGreaterThan(0);
+    rollDie.mockRestore();
+  });
+
+  function renderPaidWinAtFourteen() {
+    useGameStore.setState({
+      gamblerGame: {
+        wager: 10,
+        stakeNotYetDeducted: false,
+        session: {
+          phase: "playerTurn",
+          playerTotal: 14,
+          npcTotal: 10,
+          goal: 15,
+          playerLastRoll: 4,
+          npcLastRoll: 5,
+          hasRolledThisRound: true,
+          playerStopped: false,
+          pauseAfterNextPlayerRoll: false,
+        },
+      },
+    });
+    const onOutcomeResolved = vi.fn();
+    render(
+      <GamblerDiceDialog
+        isOpen={true}
+        onOutcomeResolved={onOutcomeResolved}
+        onClose={vi.fn()}
+        playerGold={100}
+        playerLuck={50}
+        onWagerSelected={vi.fn()}
+      />,
+    );
+    return onOutcomeResolved;
+  }
+
+  it("offers one more roll after a paid win and doubles on 1 to 4", () => {
+    const offer = vi
+      .spyOn(gamblerSession, "gamblerDoubleOfferOnWin")
+      .mockReturnValue(true);
+    const rollDie = vi
+      .spyOn(diceFifteenGame, "rollDie")
+      .mockReturnValueOnce(1)
+      .mockReturnValueOnce(3);
+    const onOutcomeResolved = renderPaidWinAtFourteen();
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /^roll$/i }));
+      vi.advanceTimersByTime(1200 + WIN_LOSE_BOARD_HOLD_MS);
+    });
+
+    expect(
+      screen.getByText(/double, or nothing/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/one to four doubles your gold/i),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/five or six, I keep it/i)).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /roll the die/i }));
+      vi.advanceTimersByTime(5500 + 2000);
+    });
+
+    expect(screen.getByText("+20 Gold")).toBeInTheDocument();
+    expect(onOutcomeResolved).toHaveBeenCalledWith(
+      "win",
+      10,
+      expect.objectContaining({ playerTotal: 15 }),
+      { goldDelta: 20 },
+    );
+    offer.mockRestore();
+    rollDie.mockRestore();
+  });
+
+  it("takes the winnings when the extra roll is 5 or 6", () => {
+    const offer = vi
+      .spyOn(gamblerSession, "gamblerDoubleOfferOnWin")
+      .mockReturnValue(true);
+    const rollDie = vi
+      .spyOn(diceFifteenGame, "rollDie")
+      .mockReturnValueOnce(1)
+      .mockReturnValueOnce(6);
+    const onOutcomeResolved = renderPaidWinAtFourteen();
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /^roll$/i }));
+      vi.advanceTimersByTime(1200 + WIN_LOSE_BOARD_HOLD_MS);
+    });
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /roll the die/i }));
+      vi.advanceTimersByTime(5500 + 2000);
+    });
+
+    expect(screen.getByText("⚅")).toBeInTheDocument();
+    expect(screen.getByText(/you lost the roll/i)).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /continue/i }),
+    ).not.toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(500);
+    });
+
+    expect(
+      screen.getByRole("button", { name: /continue/i }),
+    ).toBeInTheDocument();
+    expect(onOutcomeResolved).toHaveBeenCalledWith(
+      "lose",
+      10,
+      expect.objectContaining({ playerTotal: 15 }),
+      { goldDelta: 0 },
+    );
+    offer.mockRestore();
     rollDie.mockRestore();
   });
 });

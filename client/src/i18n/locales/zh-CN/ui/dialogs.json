@@ -46,18 +46,18 @@
         "name": "满仓",
         "boon": "空闲村民产出+2食物",
         "boon2": "猎人产出+5食物",
-        "quote": "“猎人似乎有些不对劲。”"
+        "quote": "“女猎手提出由她来狩猎。”"
       },
       "sturdy_hands": {
         "name": "结实双手",
         "boon": "采集者产出+5木材",
         "boon2": "采集者产出+5石头",
-        "quote": "“建造者似乎有些不对劲。”"
+        "quote": "“商人的货车上，货物比应有的多。”"
       },
       "cunning_trader": {
         "name": "狡诈商人",
         "boon": "旅行商人20%折扣",
-        "boon2": "贸易站汇率优惠20%",
+        "boon2": "贸易站便宜20%",
         "quote": "“商人似乎有些不对劲。”"
       },
       "avid_apprentices": {
@@ -178,11 +178,11 @@
     "practiceLoseRemaining": "你输掉了练习局（不涉及黄金）。剩余 {{remaining}}/{{total}} 局练习。",
     "practiceWinComplete": "你赢得了练习局（不涉及黄金）。练习完成，现在可以下注黄金。",
     "practiceLoseComplete": "你输掉了练习局（不涉及黄金）。练习完成，现在可以下注黄金。",
-    "coinOffer": "赌徒提议掷硬币。赢来的黄金翻倍，或者空手离开。",
-    "coinAccept": "掷硬币",
+    "coinOffer": "他把骰子转到火光里，笑容渐渐收紧。“翻倍，或者一无所有。”他低声说。“一到四，你的黄金翻倍。五或六，我留下。”",
+    "coinAccept": "掷骰",
     "coinDecline": "收下赢金",
     "coinNothing": "一无所获",
-    "coinTookWinnings": "掷硬币输了。赢来的黄金没了。"
+    "coinTookWinnings": "这一掷输了。赢来的黄金没了。"
   },
   "leaderboard": {
     "title": "排行榜",
@@ -237,6 +237,7 @@
     "discountFromKnowledge": "知识 {{percent}}%{{max}}",
     "knowledgeMax": "（上限）",
     "discountFromRing": "顺从之戒 5%",
+    "discountFromPact": "狡诈商人 20%",
     "prolongForInsight": "消耗 {{cost}} {{resource}} 延长 {{minutes}} 分钟"
   },
   "share": {

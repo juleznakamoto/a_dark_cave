@@ -9,6 +9,12 @@ import {
   getTotalCraftingCostReduction,
   getTotalBuildingCostReduction,
 } from "./effectsCalculation";
+import {
+  applyTradePostBuyCost,
+  BLAZESMITH_BOMB_COST_MULTIPLIER,
+  hasChosenPact,
+  isBombCraftAction,
+} from "./pacts";
 
 function isTorchResourcePath(resourcePath?: string): boolean {
   return resourcePath === "torch" || resourcePath === "resources.torch";
@@ -76,6 +82,24 @@ export function calculateAdjustedCost(
 
   if (isTorchResourcePath(resourcePath)) {
     adjusted = Math.max(0, adjusted - getLanternTorchCostReduction(state));
+  }
+
+  if (
+    isResourceCost &&
+    isBombCraftAction(actionId) &&
+    hasChosenPact(state, "blazesmith")
+  ) {
+    adjusted = Math.floor(adjusted * BLAZESMITH_BOMB_COST_MULTIPLIER);
+  }
+
+  if (
+    isResourceCost &&
+    (resourcePath === "gold" ||
+      resourcePath === "resources.gold" ||
+      resourcePath === "silver" ||
+      resourcePath === "resources.silver")
+  ) {
+    adjusted = applyTradePostBuyCost(actionId, adjusted, state);
   }
 
   return adjusted;

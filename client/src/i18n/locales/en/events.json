@@ -2852,6 +2852,18 @@
     "message": "The wildling huntress returns from the forest. 'You saved my tribe from extinction,' she says, drawing a bone knife across her palm. Blood drips to the earth. 'By the old ways of my people, I offer you a blood oath. I will stand in your debt forever.'",
     "title": "The Blood Oath"
   },
+  "huntressOffersToHunt": {
+    "choices": {
+      "let_her_hunt": {
+        "label": "Let her hunt"
+      }
+    },
+    "log": {
+      "outcome0": "The huntress nods respectfully. From now on the Ashwraith Huntress can be sent to hunt in the forest."
+    },
+    "message": "The Ashwraith Huntress waits at the tree line. 'Let me hunt these woods,' she says quietly. 'The village will not go hungry.'",
+    "title": "Meat for the village"
+  },
   "witchsCurse": {
     "choices": {
       "attackHer": {

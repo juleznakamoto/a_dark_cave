@@ -27,6 +27,8 @@ import {
   type EffectsForMadnessComponents,
 } from "@/game/rules/effectsCalculation";
 import { getChainmasterProductionBonus } from "@/game/rules/skillUpgrades";
+import { sanitizeChosenPacts } from "@/game/rules/pacts";
+import { PACTS_ENABLED } from "@/lib/featureFlags";
 import { getSeenResourceKeys } from "@/game/stateHelpers";
 import {
   COMBAT_ITEM_RESOURCES,
@@ -107,6 +109,7 @@ export type SidePanelModel = {
   fellowshipIds: string[];
   schematicIds: string[];
   blessingIds: string[];
+  pactIds: string[];
   buildingRows: SidePanelBuildingRow[];
   luck: number;
   strength: number;
@@ -427,6 +430,7 @@ export function getSidePanelModel(state: GameState): SidePanelModel {
     fellowshipIds,
     schematicIds: schematicIdsFromState(state),
     blessingIds: blessingIdsFromState(state),
+    pactIds: PACTS_ENABLED ? sanitizeChosenPacts(state.chosenPacts) : [],
     buildingRows,
     luck: state.stats.luck,
     strength: state.stats.strength,
@@ -479,6 +483,7 @@ export function sidePanelModelEqual(
     stringListEqual(a.fellowshipIds, b.fellowshipIds) &&
     stringListEqual(a.schematicIds, b.schematicIds) &&
     stringListEqual(a.blessingIds, b.blessingIds) &&
+    stringListEqual(a.pactIds, b.pactIds) &&
     derivedListEqual(a.buildingRows, b.buildingRows) &&
     derivedListEqual(a.fortificationRows, b.fortificationRows) &&
     derivedListEqual(a.bonusRows, b.bonusRows) &&

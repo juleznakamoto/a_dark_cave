@@ -14,6 +14,7 @@ import {
   GREAT_FEAST_STRANGER_APPROACH_BONUS,
 } from "./effectsCalculation";
 import { getMadnessProductionMultiplier } from "@/game/population";
+import { getHeartfireProductionPerLevel } from "@/game/rules/pacts";
 import { BRIMSTONE_FLUX_STEEL_BONUS } from "./eventsBrimstoneFlux";
 import {
   getMadnessDeathChancePerCycle,
@@ -959,7 +960,7 @@ export const heartfireTooltip: TooltipConfig = {
     const remainingMs = Math.max(0, levelDuration - (now - lastDecrease));
 
     const villagerBonus = [0, 1, 2.5, 5, 7.5, 10][heartfireState.level] ?? 0;
-    const prodPctPerLevel = state.blessings?.ebon_grace ? 10 : 5;
+    const prodPctPerLevel = Math.round(getHeartfireProductionPerLevel(state) * 100);
     return (
       <>
         <div className="font-bold">{getUiTooltip("heartfire", "Heartfire")}</div>

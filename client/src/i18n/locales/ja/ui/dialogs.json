@@ -46,18 +46,18 @@
         "name": "満ちた食料庫",
         "boon": "空きの村人の食料+2",
         "boon2": "狩人の食料+5",
-        "quote": "「狩人の様子がどこかおかしい。」"
+        "quote": "「女狩人が狩猟を申し出る。」"
       },
       "sturdy_hands": {
         "name": "逞しい手",
         "boon": "採集者の木材+5",
         "boon2": "採集者の石+5",
-        "quote": "「棟梁の様子がどこかおかしい。」"
+        "quote": "「商人の荷車には、あるべき以上の荷がある。」"
       },
       "cunning_trader": {
         "name": "狡賢い商人",
         "boon": "行商人で20%割引",
-        "boon2": "交易所のレートが20%有利",
+        "boon2": "交易所で20%安い",
         "quote": "「商人の様子がどこかおかしい。」"
       },
       "avid_apprentices": {
@@ -178,11 +178,11 @@
     "practiceLoseRemaining": "練習に負けた（金貨は賭けていない）。練習は残り{{remaining}}/{{total}}回。",
     "practiceWinComplete": "練習に勝った（金貨は賭けていない）。練習は終わり。これからは金貨を賭けられる。",
     "practiceLoseComplete": "練習に負けた（金貨は賭けていない）。練習は終わり。これからは金貨を賭けられる。",
-    "coinOffer": "賭博師が硬貨を投げようと持ちかける。勝ち金は倍になるか、何も残らない。",
-    "coinAccept": "硬貨を投げる",
+    "coinOffer": "火明かりで骰子を回す。歪んだ笑みが細くなる。「倍か、無か。」息を吐く。「一から四ならあなたの金は倍。五か六なら私が取る。」",
+    "coinAccept": "サイコロを振る",
     "coinDecline": "勝ち金を受け取る",
     "coinNothing": "何もなし",
-    "coinTookWinnings": "硬貨は負けだ。勝ち金は消えた。"
+    "coinTookWinnings": "出目は負けだ。勝ち金は消えた。"
   },
   "leaderboard": {
     "title": "ランキング",
@@ -237,6 +237,7 @@
     "discountFromKnowledge": "知識から{{percent}}%{{max}}",
     "knowledgeMax": "（上限）",
     "discountFromRing": "服従の指輪から5%",
+    "discountFromPact": "狡賢い商人から20%",
     "prolongForInsight": "{{cost}} {{resource}}で{{minutes}}分延長"
   },
   "share": {

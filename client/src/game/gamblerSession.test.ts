@@ -1,11 +1,17 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+vi.mock("@/lib/featureFlags", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/featureFlags")>();
+  return { ...actual, PACTS_ENABLED: true };
+});
 import {
   applyGamblerRage,
   createDefaultGamblerSession,
   GAMBLER_BANNED_SEEN_KEY,
   GAMBLER_ENRAGED_SEEN_KEY,
   GAMBLER_EVENT_SEEN_KEY,
-  gamblerCoinOfferOnWin,
+  gamblerDoubleOfferOnWin,
+  gamblerDoubleRollWins,
   gamblerDiceResumeOnLoad,
   gamblerRageOnWin,
   getGamblerTutorialPlaysRemaining,
@@ -158,7 +164,7 @@ describe("gamblerSession", () => {
   });
 });
 
-describe("gambler practice and coin offer", () => {
+describe("gambler practice and double offer", () => {
   it("keeps practice rounds on the first playthrough only", () => {
     const first = createInitialState();
     expect(getGamblerTutorialPlaysRemaining(first)).toBe(2);
@@ -167,12 +173,18 @@ describe("gambler practice and coin offer", () => {
     ).toBe(0);
   });
 
-  it("offers the coin after a paid win only with Avid Apprentices", () => {
+  it("offers the extra roll after a paid win only with Avid Apprentices", () => {
     const cursed = { chosenPacts: ["avid_apprentices"] as const };
-    expect(gamblerCoinOfferOnWin(cursed, 50, () => 0.24)).toBe(true);
-    expect(gamblerCoinOfferOnWin(cursed, 50, () => 0.25)).toBe(false);
-    expect(gamblerCoinOfferOnWin(cursed, 0, () => 0)).toBe(false);
-    expect(gamblerCoinOfferOnWin({ chosenPacts: [] }, 50, () => 0)).toBe(false);
+    expect(gamblerDoubleOfferOnWin(cursed, 50, () => 0.34)).toBe(true);
+    expect(gamblerDoubleOfferOnWin(cursed, 50, () => 0.35)).toBe(false);
+    expect(gamblerDoubleOfferOnWin(cursed, 0, () => 0)).toBe(false);
+    expect(gamblerDoubleOfferOnWin({ chosenPacts: [] }, 50, () => 0)).toBe(false);
+  });
+
+  it("doubles on 1 to 4 and takes the win on 5 or 6", () => {
+    expect([1, 2, 3, 4].every(gamblerDoubleRollWins)).toBe(true);
+    expect(gamblerDoubleRollWins(5)).toBe(false);
+    expect(gamblerDoubleRollWins(6)).toBe(false);
   });
 });
 

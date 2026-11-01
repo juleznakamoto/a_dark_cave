@@ -44,6 +44,11 @@ import { gameActions, canExecuteAction, shouldShowAction } from "./rules";
 import { getResourceLimit, isResourceLimited } from "./resourceLimits";
 import { getPriorActionSuccessor, isPriorActionEligible } from "./buttonUpgrades";
 import {
+  countPriorSlotsUsed,
+  hasHuntressPriorSlot,
+  HUNTRESS_PRIOR_ACTION_ID,
+} from "./rules/pacts";
+import {
   DISGRACED_PRIOR_UPGRADES,
 } from "./rules/skillUpgrades";
 import { CRUEL_MODE, cruelModeScale, getMaxStoneHutLevel, getMaxWoodenHutLevel } from "./cruelMode";
@@ -957,8 +962,15 @@ export function processActionTicks() {
   // Note: processTick is not called during events (eventDialog.isOpen) or sleep
   // (idleModeState?.isActive) — the outer loop returns early in those cases.
   let freshState = useGameStore.getState();
-  if (freshState.fellowship?.disgraced_prior) {
-    const assigned = freshState.priorAssignedActions ?? [];
+  const huntressSlot = hasHuntressPriorSlot(freshState);
+  const priorActive = !!freshState.fellowship?.disgraced_prior;
+  // The Huntress fills one extra Hunt slot even before the Prior joins.
+  if (priorActive || huntressSlot) {
+    const assigned = priorActive
+      ? (freshState.priorAssignedActions ?? [])
+      : (freshState.priorAssignedActions ?? []).filter(
+          (id) => id === HUNTRESS_PRIOR_ACTION_ID,
+        );
 
     // When an assigned action's show_when conditions are no longer met, automatically
     // transfer the assignment to the next visible action in the same upgrade chain, or drop it if no successor exists.
@@ -975,12 +987,24 @@ export function processActionTicks() {
 
       for (const staleId of staleActions) {
         const successor = getPriorActionSuccessor(staleId, isVisible);
-        if (successor && !toExecute.includes(successor) && toExecute.length < maxActions) {
+        if (
+          successor &&
+          !toExecute.includes(successor) &&
+          countPriorSlotsUsed(toExecute, huntressSlot) < maxActions
+        ) {
           toExecute = [...toExecute, successor];
         }
       }
 
-      useGameStore.setState({ priorAssignedActions: toExecute });
+      const nextAssigned = priorActive
+        ? toExecute
+        : [
+            ...(freshState.priorAssignedActions ?? []).filter(
+              (id) => id !== HUNTRESS_PRIOR_ACTION_ID,
+            ),
+            ...toExecute,
+          ];
+      useGameStore.setState({ priorAssignedActions: nextAssigned });
     }
 
     for (const actionId of toExecute) {

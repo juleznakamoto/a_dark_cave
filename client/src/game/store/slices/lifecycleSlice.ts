@@ -2,7 +2,7 @@ import type { GameStore } from "../types";
 import type { GameStoreCreator } from "./types";
 import { GameState } from "@shared/schema";
 import { sanitizeActionUnlockOrder } from "@/game/actionUnlockOrder";
-import { sanitizeChosenPacts, clampPactChoices, resolvePactChoicesFromSave, shouldOpenPactOffer, readStoredChosenPacts, readStoredPactOfferPending, readStoredPactChoices } from "@/game/rules/pacts";
+import { sanitizeChosenPacts, clampPactChoices, resolvePactChoicesFromSave, resolvePactOfferForLoad, readStoredChosenPacts, readStoredPactOfferPending, readStoredPactChoices } from "@/game/rules/pacts";
 import { pruneReadLogIds } from "@/game/persistedStateBoundary";
 import {
   isFullGameUnlockedEdition,
@@ -565,9 +565,10 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
         cruelCurseOfferPending?: unknown;
         cruelCurseChoices?: unknown;
       };
-      const resumePactOffer =
-        shouldOpenPactOffer(lifetimeGamesWon) &&
-        readStoredPactOfferPending(legacyPactSave);
+      const pactOffer = resolvePactOfferForLoad(
+        lifetimeGamesWon,
+        readStoredPactOfferPending(legacyPactSave),
+      );
 
       const loadedState = {
         ...hydratedPermanent,
@@ -643,7 +644,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
         chosenPacts: sanitizeChosenPacts(
           readStoredChosenPacts(legacyPactSave),
         ),
-        pactOfferPending: resumePactOffer,
+        pactOfferPending: pactOffer.pactOfferPending,
         pactChoices: resolvePactChoicesFromSave(
           readStoredPactChoices(legacyPactSave),
           lifetimeGamesWon,
@@ -845,7 +846,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
         // Resume after the reset so a live gambler round can reopen the table.
         activeTab,
         gamblerDiceDialogOpen,
-        pactOfferDialogOpen: resumePactOffer,
+        pactOfferDialogOpen: pactOffer.pactOfferDialogOpen,
       };
 
       const migrated = applyGameStateLoadMigrations(loadedState);

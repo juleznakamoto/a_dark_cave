@@ -110,6 +110,11 @@ import {
   incrementButtonUsage,
   isPriorActionEligible,
 } from "@/game/buttonUpgrades";
+import {
+  canAssignAnotherPriorAction,
+  hasHuntressPriorSlot,
+  HUNTRESS_PRIOR_ACTION_ID,
+} from "@/game/rules/pacts";
 import { getExecutionTime } from "@/game/rules";
 import {
   gamblerDiceResumeOnLoad,
@@ -594,13 +599,27 @@ export const createActionsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
   togglePriorAction: (actionId: string) => {
     set((state) => {
       const assigned = state.priorAssignedActions ?? [];
-      const level = state.disgracedPriorSkills?.level ?? 0;
-      const maxActions = DISGRACED_PRIOR_UPGRADES[level]?.maxActions ?? 1;
       if (assigned.includes(actionId)) {
         return { priorAssignedActions: assigned.filter((id) => id !== actionId) };
       }
+      const priorActive = !!state.fellowship?.disgraced_prior;
+      const huntressSlot = hasHuntressPriorSlot(state);
+      const huntressOnly =
+        huntressSlot && actionId === HUNTRESS_PRIOR_ACTION_ID;
+      if (!priorActive && !huntressOnly) return {};
       if (!isPriorActionEligible(actionId, state)) return {};
-      if (assigned.length >= maxActions) return {};
+      const level = state.disgracedPriorSkills?.level ?? 0;
+      const maxActions = DISGRACED_PRIOR_UPGRADES[level]?.maxActions ?? 1;
+      if (
+        !canAssignAnotherPriorAction(
+          actionId,
+          assigned,
+          maxActions,
+          huntressSlot,
+        )
+      ) {
+        return {};
+      }
       return { priorAssignedActions: [...assigned, actionId] };
     });
     const fresh = get();

@@ -2852,6 +2852,18 @@
     "message": "La cacciatrice selvaggia torna dalla foresta. «Hai salvato la mia tribù dall'estinzione», dice, facendosi scorrere un coltello d'osso sul palmo. Il sangue gocciola a terra. «Per le antiche vie del mio popolo, ti offro un giuramento di sangue. Sarò in debito con te per sempre.»",
     "title": "Il giuramento di sangue"
   },
+  "huntressOffersToHunt": {
+    "choices": {
+      "let_her_hunt": {
+        "label": "Lasciala cacciare"
+      }
+    },
+    "log": {
+      "outcome0": "La cacciatrice annuisce rispettosamente. D'ora in poi la Cacciatrice Spettro di Cenere può essere mandata a cacciare nella foresta."
+    },
+    "message": "La Cacciatrice Spettro di Cenere aspetta al limitare del bosco. «Lasciami cacciare in questi boschi», dice a bassa voce. «Il villaggio non patirà la fame.»",
+    "title": "Carne per il villaggio"
+  },
   "witchsCurse": {
     "choices": {
       "attackHer": {

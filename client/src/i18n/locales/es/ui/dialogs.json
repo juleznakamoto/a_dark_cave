@@ -46,18 +46,18 @@
         "name": "Despensas llenas",
         "boon": "Los aldeanos libres producen +2 Comida",
         "boon2": "Los cazadores producen +5 Comida",
-        "quote": "«Algo no va bien con el cazador.»"
+        "quote": "«La cazadora se ofrece a cazar.»"
       },
       "sturdy_hands": {
         "name": "Manos firmes",
         "boon": "Los recolectores producen +5 Madera",
         "boon2": "Los recolectores producen +5 Piedra",
-        "quote": "«Algo no va bien con el constructor.»"
+        "quote": "«El carro del mercader guarda más de lo que debería.»"
       },
       "cunning_trader": {
         "name": "Mercader astuto",
         "boon": "20% de descuento con el mercader ambulante",
-        "boon2": "20% mejores precios en el puesto comercial",
+        "boon2": "20% más barato en el puesto comercial",
         "quote": "«Algo no va bien con el mercader.»"
       },
       "avid_apprentices": {
@@ -178,8 +178,8 @@
     "practiceLoseRemaining": "Perdiste la ronda de práctica (sin oro en juego). Quedan {{remaining}} de {{total}} partidas de práctica.",
     "practiceWinComplete": "Ganaste la ronda de práctica (sin oro en juego). Práctica completada. Ya puedes apostar oro.",
     "practiceLoseComplete": "Perdiste la ronda de práctica (sin oro en juego). Práctica completada. Ya puedes apostar oro.",
-    "coinOffer": "El tahúr ofrece lanzar una moneda. Dobla lo ganado, o te vas sin nada.",
-    "coinAccept": "Lanzar la moneda",
+    "coinOffer": "Gira el dado a la luz del fuego, y la sonrisa se afina. «El doble, o nada», susurra. «Del uno al cuatro, tu oro se dobla. Cinco o seis, y me lo quedo.»",
+    "coinAccept": "Tirar el dado",
     "coinDecline": "Quedarme con la ganancia",
     "coinNothing": "Nada",
     "coinTookWinnings": "Perdiste el lanzamiento. Lo ganado ya no está."
@@ -237,6 +237,7 @@
     "discountFromKnowledge": "{{percent}} % por Conocimiento{{max}}",
     "knowledgeMax": " (máx.)",
     "discountFromRing": "5 % por el Anillo de obediencia",
+    "discountFromPact": "20 % por el Mercader astuto",
     "prolongForInsight": "Ampliar el tiempo {{minutes}} min por {{cost}} de {{resource}}"
   },
   "share": {

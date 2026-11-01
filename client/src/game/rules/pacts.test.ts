@@ -1,4 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+
+vi.mock("@/lib/featureFlags", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/featureFlags")>();
+  return { ...actual, PACTS_ENABLED: true };
+});
 import type { GameState } from "@shared/schema";
 import { createInitialState } from "@/game/store/createInitialState";
 import { mergeStateUpdates } from "@/game/store/mergeStateUpdates";

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { UpgradeKey, getButtonUpgradeInfo, getUpgradeLevelsForKey } from "@/game/buttonUpgrades";
+import { UpgradeKey, getButtonUpgradeInfo, getMasteryClickRate, getUpgradeLevelsForKey } from "@/game/buttonUpgrades";
 import { getCraftProduceAmount } from "@/game/craftUpgradeUtils";
 import { useGameStore } from "@/game/state";
 import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
@@ -25,6 +25,7 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
     (state) => state.buttonUpgrades[upgradeKey],
   );
   const hasBook = useGameStore((state) => state.books?.book_of_ascension);
+  const masteryRate = useGameStore(getMasteryClickRate);
   const produceAmount = useDerivedGameState((s) =>
     getCraftProduceAmount(upgradeKey, s),
   );
@@ -48,7 +49,7 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
   const upgradeLevels = getUpgradeLevelsForKey(upgradeKey);
   const currentLevelStart = upgradeLevels[info.level]?.clicksRequired || 0;
   const nextLevelTarget = info.nextLevel?.clicksRequired || 0;
-  const clicksInCurrentLevel = info.clicks - currentLevelStart;
+  const clicksInCurrentLevel = info.clicks * masteryRate - currentLevelStart;
   const clicksNeededForLevel = nextLevelTarget - currentLevelStart;
   const progressPercent = clicksNeededForLevel > 0 ? (clicksInCurrentLevel / clicksNeededForLevel) * 100 : 0;
 

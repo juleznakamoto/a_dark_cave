@@ -8,6 +8,10 @@ import type { GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
 import { getTotalKnowledge, getTotalMadness } from "./effectsCalculation";
 import { getTotalMerchantDiscount } from "./effectsStats";
+import {
+  hasChosenPact,
+  STURDY_HANDS_EXTRA_RESOURCE_TRADES,
+} from "./pacts";
 import { logger } from "@/lib/logger";
 import { GAME_CONSTANTS } from "@/game/constants";
 import { getSeenResourceKeys } from "@/game/stateHelpers";
@@ -1224,6 +1228,11 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
   } else if (state.buildings.tradePost >= 1) {
     numBuyTrades = 2;
     numSellTrades = 2;
+  }
+
+  // Sturdy Hands: two more resource offers. The special item stays one per visit.
+  if (hasChosenPact(state, "sturdy_hands")) {
+    numBuyTrades += STURDY_HANDS_EXTRA_RESOURCE_TRADES;
   }
 
   logger.log("[MERCHANT TRADES] Generating merchant choices:", {

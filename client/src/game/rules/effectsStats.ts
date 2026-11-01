@@ -1,5 +1,6 @@
 import type { GameState } from "@shared/schema";
 import { CRUEL_MODE } from "@/game/cruelMode";
+import { CUNNING_TRADER_RATE, hasChosenPact } from "./pacts";
 
 /**
  * Calculate merchant discount based on knowledge
@@ -25,6 +26,9 @@ export function getTotalMerchantDiscount(state: GameState): number {
   let discount = calculateMerchantDiscount(knowledge);
   if (state.clothing?.ring_of_obedience) {
     discount += 0.05;
+  }
+  if (hasChosenPact(state, "cunning_trader")) {
+    discount += CUNNING_TRADER_RATE;
   }
   return Math.min(discount, 1);
 }

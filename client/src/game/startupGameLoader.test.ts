@@ -1,5 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+vi.mock("@/lib/featureFlags", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@/lib/featureFlags")>();
+  return { ...actual, PACTS_ENABLED: true };
+});
+
 const {
   mockLoadGame,
   mockSetState,

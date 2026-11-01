@@ -2852,6 +2852,18 @@
     "message": "Die wilde Jägerin kehrt aus dem Wald zurück. „Du hast meinen Stamm vor der Auslöschung bewahrt“, sagt sie und zieht ein Knochenmesser über ihre Handfläche. Blut tropft auf die Erde. „Nach den alten Bräuchen meines Volkes biete ich dir einen Blutschwur an. Ich werde für immer in deiner Schuld stehen.“",
     "title": "Der Blutschwur"
   },
+  "huntressOffersToHunt": {
+    "choices": {
+      "let_her_hunt": {
+        "label": "Sie jagen lassen"
+      }
+    },
+    "log": {
+      "outcome0": "Die Jägerin nickt respektvoll. Von nun an kann die Aschengeist-Jägerin zur Jagd in den Wald geschickt werden."
+    },
+    "message": "Die Aschengeist-Jägerin wartet am Waldrand. „Lass mich in diesen Wäldern jagen“, sagt sie leise. „Das Dorf wird nicht hungern.“",
+    "title": "Fleisch für das Dorf"
+  },
   "witchsCurse": {
     "choices": {
       "attackHer": {

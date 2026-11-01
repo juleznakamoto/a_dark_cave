@@ -1,5 +1,9 @@
 import { GameState } from "@shared/schema";
 import { isFinanceExpeditionPriorUnlocked } from "@/game/rules/financeExpedition";
+import {
+  AVID_APPRENTICES_MASTERY_RATE,
+  hasChosenPact,
+} from "@/game/rules/pacts";
 
 export type UpgradeKey =
   | "exploreCave"
@@ -291,6 +295,15 @@ export function getUpgradeClicks(key: UpgradeKey, state: GameState): number {
   return state.buttonUpgrades[key]?.clicks || 0;
 }
 
+/** Avid Apprentices: each use fills 20% more of the mastery bar. */
+export function getMasteryClickRate(
+  state: { chosenPacts?: unknown } | null | undefined,
+): number {
+  return hasChosenPact(state, "avid_apprentices")
+    ? AVID_APPRENTICES_MASTERY_RATE
+    : 1;
+}
+
 /**
  * Get the bonus percentage for current level
  */
@@ -382,9 +395,15 @@ export function incrementButtonUsage(
 } {
   const current = state.buttonUpgrades[key] || { clicks: 0, level: 0 };
   const newClicks = current.clicks + 1;
-  const newLevel = checkLevelUp(key, newClicks, current.level);
+  const progress = newClicks * getMasteryClickRate(state);
+  let newLevel = current.level;
+  while (true) {
+    const nextLevel = checkLevelUp(key, progress, newLevel);
+    if (nextLevel === null) break;
+    newLevel = nextLevel;
+  }
 
-  if (newLevel !== null) {
+  if (newLevel !== current.level) {
     const upgradeName = UPGRADE_LABELS[key];
 
     return {

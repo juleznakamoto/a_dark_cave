@@ -1,6 +1,7 @@
 import type { GameState } from "@shared/schema";
 import { INITIAL_GOAL } from "@/game/diceFifteenGame";
 import { getVillagersInVillage } from "@/game/population";
+import { hasChosenPact } from "@/game/rules/pacts";
 import { killVillagers } from "@/game/stateHelpers";
 
 /** First-time gambler visit: this many free practice rounds (no gold) before real wagers. */
@@ -12,9 +13,11 @@ export const GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY =
 /** Set when the gambler timed-tab event first appears (no dice round required). */
 export const GAMBLER_EVENT_SEEN_KEY = "gamblerEventSeen" as const;
 
-/** Avid Apprentices: after a paid win, the Gambler may offer a coin. */
+/** Avid Apprentices: after a paid win, the Gambler may offer one more roll. */
 export const GAMBLER_COIN_PACT_ID = "avid_apprentices";
-export const GAMBLER_COIN_OFFER_CHANCE = 0.25;
+export const GAMBLER_DOUBLE_OFFER_CHANCE = 0.35;
+/** 1–4 doubles the win. 5 and 6 take it. */
+export const GAMBLER_DOUBLE_WIN_MAX_FACE = 4;
 
 /** Avid Apprentices: one paid win may send the Gambler out in a rage. */
 export const GAMBLER_RAGE_CHANCE = 0.2;
@@ -29,17 +32,22 @@ const GAMBLER_ENRAGED_LOG =
   "Raging over his losses, the gambler started a fight with a villager and killed him on the road out of town.";
 
 /** True when this paid win should offer double-or-nothing. Practice rounds never do. */
-export function gamblerCoinOfferOnWin(
+export function gamblerDoubleOfferOnWin(
   state: { chosenPacts?: readonly string[] },
   wager: number,
   rng: () => number = Math.random,
 ): boolean {
   if (wager <= 0) return false;
-  if (!state.chosenPacts?.includes(GAMBLER_COIN_PACT_ID)) return false;
-  return rng() < GAMBLER_COIN_OFFER_CHANCE;
+  if (!hasChosenPact(state, GAMBLER_COIN_PACT_ID)) return false;
+  return rng() < GAMBLER_DOUBLE_OFFER_CHANCE;
 }
 
-/** Paid dice win that took gold from the Gambler. Practice and a lost coin toss do not count. */
+/** True when this extra roll doubles the win. */
+export function gamblerDoubleRollWins(roll: number): boolean {
+  return roll >= 1 && roll <= GAMBLER_DOUBLE_WIN_MAX_FACE;
+}
+
+/** Paid dice win that took gold from the Gambler. Practice and a lost extra roll do not count. */
 export function isGamblerPaidWin(game: {
   wager?: number;
   outcome?: "win" | "lose" | null;
@@ -72,7 +80,7 @@ export function gamblerRageOnWin(
   rng: () => number = Math.random,
 ): boolean {
   if (!paidWin) return false;
-  if (!state.chosenPacts?.includes(GAMBLER_COIN_PACT_ID)) return false;
+  if (!hasChosenPact(state, GAMBLER_COIN_PACT_ID)) return false;
   if (state.story?.seen?.[GAMBLER_ENRAGED_SEEN_KEY]) return false;
   if (isGamblerBanned(state)) return false;
   if (!state.villagers || getVillagersInVillage({ villagers: state.villagers }) <= 0) {

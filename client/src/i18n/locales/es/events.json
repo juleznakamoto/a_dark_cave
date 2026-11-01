@@ -2852,6 +2852,18 @@
     "message": "La cazadora salvaje regresa del bosque. «Salvaste a mi tribu de la extinción», dice, trazando un corte en su palma con un cuchillo de hueso. La sangre gotea sobre la tierra. «Por las viejas costumbres de mi pueblo, te ofrezco un juramento de sangre. Estaré en deuda contigo para siempre».",
     "title": "El juramento de sangre"
   },
+  "huntressOffersToHunt": {
+    "choices": {
+      "let_her_hunt": {
+        "label": "Dejarla cazar"
+      }
+    },
+    "log": {
+      "outcome0": "La cazadora asiente con respeto. A partir de ahora se puede enviar a la Cazadora Espectroceniza a cazar al bosque."
+    },
+    "message": "La Cazadora Espectroceniza espera al borde del bosque. «Déjame cazar en estos bosques», dice en voz baja. «La aldea no pasará hambre.»",
+    "title": "Carne para la aldea"
+  },
   "witchsCurse": {
     "choices": {
       "attackHer": {

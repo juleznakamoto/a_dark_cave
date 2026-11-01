@@ -46,18 +46,18 @@
         "name": "Full Larders",
         "boon": "Free villagers produce +2 Food",
         "boon2": "Hunters produce +5 Food",
-        "quote": "\"Something seems wrong with the Hunter\""
+        "quote": "\"The huntress offers to hunt\""
       },
       "sturdy_hands": {
         "name": "Sturdy Hands",
         "boon": "Gatherers produce +5 Wood",
         "boon2": "Gatherers produce +5 Stone",
-        "quote": "\"Something seems wrong with the Builder\""
+        "quote": "\"The merchant's cart holds more than it should\""
       },
       "cunning_trader": {
         "name": "Cunning Trader",
         "boon": "20% discount at travelling merchant",
-        "boon2": "20% better rates at Trade Post",
+        "boon2": "20% cheaper at the Trade Post",
         "quote": "\"Something seems wrong with the Merchant\""
       },
       "avid_apprentices": {
@@ -178,11 +178,11 @@
     "practiceLoseRemaining": "You lost the practice round (no Gold at stake). {{remaining}} of {{total}} practice games remaining.",
     "practiceWinComplete": "You won the practice round (no Gold at stake). Practice complete. You may place a Gold wager.",
     "practiceLoseComplete": "You lost the practice round (no Gold at stake). Practice complete. You may place a Gold wager.",
-    "coinOffer": "The Gambler offers a coin toss. Double your winnings, or leave with nothing.",
-    "coinAccept": "Toss the coin",
+    "coinOffer": "He turns the die in the firelight, and the grin thins. 'Double, or nothing,' he breathes. 'One to four doubles your gold. Five or six, I keep it.'",
+    "coinAccept": "Roll the die",
     "coinDecline": "Keep the win",
     "coinNothing": "Nothing",
-    "coinTookWinnings": "You lost the toss. The winnings are gone."
+    "coinTookWinnings": "You lost the roll. The winnings are gone."
   },
   "leaderboard": {
     "title": "Leaderboard",
@@ -237,6 +237,7 @@
     "discountFromKnowledge": "{{percent}}% from Knowledge{{max}}",
     "knowledgeMax": " (max)",
     "discountFromRing": "5% from Ring of Obedience",
+    "discountFromPact": "20% from Cunning Trader",
     "prolongForInsight": "Extend time by {{minutes}} min for {{cost}} {{resource}}"
   },
   "share": {

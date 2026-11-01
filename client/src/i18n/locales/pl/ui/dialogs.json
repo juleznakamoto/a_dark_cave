@@ -46,18 +46,18 @@
         "name": "Pełne spiżarnie",
         "boon": "Wolni wieśniacy dają +2 Żywności",
         "boon2": "Myśliwi dają +5 Żywności",
-        "quote": "„Coś jest nie tak z łowcą.”"
+        "quote": "„Łowczyni oferuje, że będzie polować.”"
       },
       "sturdy_hands": {
         "name": "Krzepkie dłonie",
         "boon": "Zbieracze dają +5 Drewna",
         "boon2": "Zbieracze dają +5 Kamienia",
-        "quote": "„Coś jest nie tak z budowniczym.”"
+        "quote": "„Wóz handlarza wiezie więcej, niż powinien.”"
       },
       "cunning_trader": {
         "name": "Przebiegły handlarz",
         "boon": "20% zniżki u wędrownego handlarza",
-        "boon2": "20% lepsze kursy w faktorii",
+        "boon2": "20% taniej w faktorii",
         "quote": "„Coś jest nie tak z handlarzem.”"
       },
       "avid_apprentices": {
@@ -180,8 +180,8 @@
     "practiceLoseRemaining": "Przegrałeś rundę treningową (bez stawki). Zostało {{remaining}} z {{total}} gier treningowych.",
     "practiceWinComplete": "Wygrałeś rundę treningową (bez stawki). Trening ukończony. Możesz postawić złoto.",
     "practiceLoseComplete": "Przegrałeś rundę treningową (bez stawki). Trening ukończony. Możesz postawić złoto.",
-    "coinOffer": "Hazardzista proponuje rzut monetą. Podwajasz wygraną albo odchodzisz z niczym.",
-    "coinAccept": "Rzuć monetą",
+    "coinOffer": "Kręci kością w blasku ognia, a uśmiech staje się cienki. „Podwójnie, albo nic”, szepcze. „Od jednego do czterech twoje złoto się podwaja. Pięć albo sześć, i ja je zabieram.”",
+    "coinAccept": "Rzuć kostką",
     "coinDecline": "Zatrzymaj wygraną",
     "coinNothing": "Nic",
     "coinTookWinnings": "Przegrałeś rzut. Wygrana przepadła."
@@ -239,6 +239,7 @@
     "discountFromKnowledge": "{{percent}}% z Wiedzy{{max}}",
     "knowledgeMax": " (maks.)",
     "discountFromRing": "5% z Pierścienia posłuszeństwa",
+    "discountFromPact": "20% z Przebiegłego handlarza",
     "prolongForInsight": "Wydłuż czas o {{minutes}} min za {{cost}} {{resource}}"
   },
   "share": {

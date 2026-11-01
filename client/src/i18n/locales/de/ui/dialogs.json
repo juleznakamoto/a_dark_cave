@@ -46,18 +46,18 @@
         "name": "Volle Vorräte",
         "boon": "Freie Dorfbewohner erzeugen +2 Nahrung",
         "boon2": "Jäger erzeugen +5 Nahrung",
-        "quote": "„Mit dem Jäger stimmt etwas nicht.“"
+        "quote": "„Die Jägerin bietet an zu jagen.“"
       },
       "sturdy_hands": {
         "name": "Kräftige Hände",
         "boon": "Sammler erzeugen +5 Holz",
         "boon2": "Sammler erzeugen +5 Stein",
-        "quote": "„Mit dem Baumeister stimmt etwas nicht.“"
+        "quote": "„Der Wagen des Händlers trägt mehr, als er sollte.“"
       },
       "cunning_trader": {
         "name": "Listiger Händler",
         "boon": "20 % Rabatt beim reisenden Händler",
-        "boon2": "20 % bessere Kurse am Handelsposten",
+        "boon2": "20 % günstiger am Handelsposten",
         "quote": "„Mit dem Händler stimmt etwas nicht.“"
       },
       "avid_apprentices": {
@@ -178,8 +178,8 @@
     "practiceLoseRemaining": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Noch {{remaining}} von {{total}} Übungsspielen übrig.",
     "practiceWinComplete": "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Übung abgeschlossen. Du kannst jetzt Gold setzen.",
     "practiceLoseComplete": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Übung abgeschlossen. Du kannst jetzt Gold setzen.",
-    "coinOffer": "Der Glücksspieler bietet einen Münzwurf an. Verdopple deinen Gewinn, oder geh ohne etwas.",
-    "coinAccept": "Münze werfen",
+    "coinOffer": "Er dreht den Würfel im Feuerschein, und das Grinsen wird schmal. „Doppelt, oder nichts“, haucht er. „Eins bis vier verdoppelt dein Gold. Fünf oder sechs, und ich behalte es.“",
+    "coinAccept": "Würfeln",
     "coinDecline": "Gewinn behalten",
     "coinNothing": "Nichts",
     "coinTookWinnings": "Du hast den Wurf verloren. Der Gewinn ist weg."
@@ -237,6 +237,7 @@
     "discountFromKnowledge": "{{percent}} % durch Wissen{{max}}",
     "knowledgeMax": " (max.)",
     "discountFromRing": "5 % durch Ring des Gehorsams",
+    "discountFromPact": "20 % durch Listiger Händler",
     "prolongForInsight": "Zeit um {{minutes}} Min. für {{cost}} {{resource}} verlängern"
   },
   "share": {

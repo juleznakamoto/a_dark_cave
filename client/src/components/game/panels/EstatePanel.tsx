@@ -351,8 +351,9 @@ export default function EstatePanel({
     huntingSkills,
     crowsEyeSkills,
     combatSkills,
-    fellowship,
-    disgracedPriorSkills,
+      fellowship,
+      huntressHunts,
+      disgracedPriorSkills,
     greyOneSkills,
     chainmasterSkills,
     books,
@@ -369,6 +370,7 @@ export default function EstatePanel({
       crowsEyeSkills: s.crowsEyeSkills,
       combatSkills: s.combatSkills,
       fellowship: s.fellowship,
+      huntressHunts: !!s.story.seen.huntressHunts,
       disgracedPriorSkills: s.disgracedPriorSkills,
       greyOneSkills: s.greyOneSkills,
       chainmasterSkills: s.chainmasterSkills,
@@ -1012,12 +1014,15 @@ export default function EstatePanel({
                           <div>{t("estate.skillHuntBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level + 1].huntBonus - HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus })}</div>
                         )}
                       </>}
-                      description={[
-                        t("estate.skillHuntBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus }),
-                        HUNTING_SKILL_UPGRADES[huntingSkills.level].food > 0 && t("estate.skillHunterFood", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].food }),
-                        HUNTING_SKILL_UPGRADES[huntingSkills.level].fur > 0 && t("estate.skillFurBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].fur }),
-                        HUNTING_SKILL_UPGRADES[huntingSkills.level].bones > 0 && t("estate.skillBonesBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].bones }),
-                      ].filter(Boolean).join(", ")}
+                      description={(() => {
+                        return [
+                          t("estate.skillHuntBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].huntBonus }),
+                          HUNTING_SKILL_UPGRADES[huntingSkills.level].food > 0 && t("estate.skillHunterFood", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].food }),
+                          HUNTING_SKILL_UPGRADES[huntingSkills.level].fur > 0 && t("estate.skillFurBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].fur }),
+                          HUNTING_SKILL_UPGRADES[huntingSkills.level].bones > 0 && t("estate.skillBonesBonus", { amount: HUNTING_SKILL_UPGRADES[huntingSkills.level].bones }),
+                          huntressHunts && t("estate.huntressHunts"),
+                        ].filter(Boolean).join(", ");
+                      })()}
                     />
                   ) : (
                     catalogActive && (

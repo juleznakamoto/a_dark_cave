@@ -101,7 +101,7 @@
       "win": "Du hast {{amount}} Gold vom besessenen Glücksspieler gewonnen.",
       "lose": "Du hast {{amount}} Gold an den besessenen Glücksspieler verloren.",
       "forfeit": "Der besessene Glücksspieler wertete dein Schweigen als Aufgabe.",
-      "coinNothing": "Die Münze fällt gegen dich. Der Gewinn ist weg.",
+      "coinNothing": "Der Würfel fällt gegen dich. Der Gewinn ist weg.",
       "enraged": "Wütend über seine Niederlagen begann der Glücksspieler auf dem Weg aus dem Dorf eine Schlägerei mit einem Dorfbewohner und tötete ihn."
     },
     "buttonUpgrade": {

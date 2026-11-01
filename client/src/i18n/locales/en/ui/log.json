@@ -101,7 +101,7 @@
       "win": "You won {{amount}} Gold from the obsessed gambler.",
       "lose": "You lost {{amount}} Gold to the obsessed gambler.",
       "forfeit": "The obsessed gambler took your silence as forfeit.",
-      "coinNothing": "The coin came up against you. The winnings are gone.",
+      "coinNothing": "The die came up against you. The winnings are gone.",
       "enraged": "Raging over his losses, the gambler started a fight with a villager and killed him on the road out of town."
     },
     "buttonUpgrade": {

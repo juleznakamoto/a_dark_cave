@@ -1,3 +1,5 @@
+import { PACTS_ENABLED } from "@/lib/featureFlags";
+
 /** Opening pact offer for a new run, normal or Cruel Mode. Each chosen pact adds madness and its two boons. */
 export const PACT_IDS = [
   "blazesmith",
@@ -22,8 +24,9 @@ export const PACT_CHOICE_MAX = 5;
 /** Madness added for each chosen pact. */
 export const PACT_MADNESS = 3;
 
-/** Madness from the pacts currently chosen. Unknown ids do not count. */
+/** Madness from the pacts currently chosen. Unknown ids do not count. None while pacts are switched off. */
 export function getPactMadness(ids: unknown): number {
+  if (!PACTS_ENABLED) return 0;
   return sanitizeChosenPacts(ids).length * PACT_MADNESS;
 }
 
@@ -58,9 +61,44 @@ export function resolvePactChoicesFromSave(
   return Math.max(clampPactChoices(stored), fromCompletions);
 }
 
-/** The opening offer waits until at least one game has been finished. */
-export function shouldOpenPactOffer(completedGames: unknown): boolean {
+/** A finished game has earned the opening offer. This ignores the feature flag. */
+export function hasEarnedPactOffer(completedGames: unknown): boolean {
   return Math.max(0, Math.floor(Number(completedGames) || 0)) > 0;
+}
+
+/**
+ * The opening offer waits until at least one game has been finished,
+ * and the pact system is switched on.
+ */
+export function shouldOpenPactOffer(completedGames: unknown): boolean {
+  return PACTS_ENABLED && hasEarnedPactOffer(completedGames);
+}
+
+/** New run: remember an earned offer, and open the dialog only while pacts are on. */
+export function resolvePactOfferForNewRun(completedGames: unknown): {
+  pactOfferPending: boolean;
+  pactOfferDialogOpen: boolean;
+} {
+  const earned = hasEarnedPactOffer(completedGames);
+  return {
+    pactOfferPending: earned,
+    pactOfferDialogOpen: PACTS_ENABLED && earned,
+  };
+}
+
+/**
+ * Loaded save: open the dialog only while pacts are on.
+ * A pending offer stays on the save so it can open after the flag is turned on.
+ */
+export function resolvePactOfferForLoad(
+  completedGames: unknown,
+  storedPending: boolean,
+): { pactOfferPending: boolean; pactOfferDialogOpen: boolean } {
+  const open = shouldOpenPactOffer(completedGames) && storedPending;
+  return {
+    pactOfferPending: PACTS_ENABLED ? open : storedPending,
+    pactOfferDialogOpen: open,
+  };
 }
 
 /** A finished game grants one pact choice. Cruel Mode grants two. Starting over does not. */
@@ -118,7 +156,141 @@ export function readStoredPactChoices(saved: LegacyPactSave): unknown {
   return saved.cruelCurseChoices;
 }
 
-/** True when every pact is selected for this run. Renamed ids still count. */
+/** True when every pact is selected for this run. Renamed ids still count. False while pacts are switched off. */
 export function hasAllPactsActive(ids: unknown): boolean {
+  if (!PACTS_ENABLED) return false;
   return sanitizeChosenPacts(ids).length === PACT_IDS.length;
+}
+
+/** True when this run has the pact selected. Renamed ids still count. False while pacts are switched off. */
+export function hasChosenPact(
+  state: { chosenPacts?: unknown } | null | undefined,
+  id: PactId,
+): boolean {
+  if (!PACTS_ENABLED || !state) return false;
+  return sanitizeChosenPacts(state.chosenPacts).includes(id);
+}
+
+/** Heartfire production bonus before Ebon Grace or Blazesmith doubles it. */
+export const HEARTFIRE_BASE_PRODUCTION_PER_LEVEL = 0.05;
+
+/** Blazesmith halves these crafting costs. Buying a bomb is a Trade Post rate, not crafting. */
+export const BOMB_CRAFT_ACTION_IDS = [
+  "craftEmberBomb",
+  "craftAshfireBomb",
+  "craftVoidBomb",
+] as const;
+
+export const BLAZESMITH_BOMB_COST_MULTIPLIER = 0.5;
+
+/** Full Larders: extra food per villager each production cycle. */
+export const FULL_LARDERS_FREE_FOOD = 2;
+export const FULL_LARDERS_HUNTER_FOOD = 5;
+
+/** The only action that can fill the Full Larders extra slot. */
+export const HUNTRESS_PRIOR_ACTION_ID = "hunt";
+
+type HuntressPriorSlotState = {
+  chosenPacts?: unknown;
+  fellowship?: { ashwraith_huntress?: boolean } | null;
+  story?: { seen?: { huntressHunts?: boolean | number } | null } | null;
+};
+
+/**
+ * Full Larders lets the Ashwraith Huntress take Hunt without spending a
+ * Prior slot, once she has offered to hunt.
+ */
+export function hasHuntressPriorSlot(
+  state: HuntressPriorSlotState | null | undefined,
+): boolean {
+  return (
+    !!state?.fellowship?.ashwraith_huntress &&
+    !!state?.story?.seen?.huntressHunts &&
+    hasChosenPact(state, "full_larders")
+  );
+}
+
+/** Assignments that consume a normal Prior slot. Hunt is free when she offers it. */
+export function countPriorSlotsUsed(
+  assigned: readonly string[] | null | undefined,
+  huntressSlot: boolean,
+): number {
+  const list = assigned ?? [];
+  if (!huntressSlot) return list.length;
+  let used = 0;
+  for (const id of list) {
+    if (id !== HUNTRESS_PRIOR_ACTION_ID) used += 1;
+  }
+  return used;
+}
+
+/** Whether another assignment fits. Hunt always fits in the extra slot. */
+export function canAssignAnotherPriorAction(
+  actionId: string,
+  assigned: readonly string[] | null | undefined,
+  maxActions: number,
+  huntressSlot: boolean,
+): boolean {
+  if (huntressSlot && actionId === HUNTRESS_PRIOR_ACTION_ID) return true;
+  return countPriorSlotsUsed(assigned, huntressSlot) < maxActions;
+}
+
+/** Sturdy Hands: extra wood and stone per gatherer each production cycle. */
+export const STURDY_HANDS_WOOD = 5;
+export const STURDY_HANDS_STONE = 5;
+
+/** Sturdy Hands: extra resource trades on every merchant visit. Tools stay the same. */
+export const STURDY_HANDS_EXTRA_RESOURCE_TRADES = 2;
+
+/** Cunning Trader: off the travelling merchant's price, and off Trade Post buy prices. */
+export const CUNNING_TRADER_RATE = 0.2;
+
+/** Avid Apprentices. */
+export const AVID_APPRENTICES_INSIGHT = 1;
+export const AVID_APPRENTICES_MASTERY_RATE = 1.2;
+
+/** Trade Post shop buys. Bridge sales and the clerks' elixir stay at full price. */
+const TRADE_POST_BUY_ACTIONS = new Set([
+  "tradeGoldForFood",
+  "tradeGoldForWood",
+  "tradeGoldForStone",
+  "tradeGoldForIron",
+  "tradeGoldForLeather",
+  "tradeGoldForSteel",
+  "tradeGoldForObsidian",
+  "tradeGoldForAdamant",
+  "tradeGoldForBlacksteel",
+  "tradeGoldForTorch",
+  "tradeSilverForGold",
+  "tradeGoldForEmberBomb",
+  "tradeGoldForAshfireBomb",
+  "tradeGoldForVoidBomb",
+  "tradeGoldForVeinfireElixir",
+]);
+
+export function isBombCraftAction(actionId: string): boolean {
+  return (BOMB_CRAFT_ACTION_IDS as readonly string[]).includes(actionId);
+}
+
+/** 5% per Heartfire level, plus 5% for each doubling (Ebon Grace, Blazesmith). */
+export function getHeartfireProductionPerLevel(state: {
+  blessings?: { ebon_grace?: boolean } | null;
+  chosenPacts?: unknown;
+} | null | undefined): number {
+  const doubles =
+    (state?.blessings?.ebon_grace ? 1 : 0) +
+    (hasChosenPact(state, "blazesmith") ? 1 : 0);
+  return HEARTFIRE_BASE_PRODUCTION_PER_LEVEL * (1 + doubles);
+}
+
+/** 20% off the gold or silver a Trade Post buy charges. The goods stay the same. */
+export function applyTradePostBuyCost(
+  actionId: string,
+  amount: number,
+  state: { chosenPacts?: unknown } | null | undefined,
+): number {
+  if (!hasChosenPact(state, "cunning_trader")) return amount;
+  if (!TRADE_POST_BUY_ACTIONS.has(actionId)) return amount;
+  if (!Number.isFinite(amount) || amount <= 0) return amount;
+  return Math.ceil(amount * (1 - CUNNING_TRADER_RATE));
 }

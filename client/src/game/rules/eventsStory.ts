@@ -4,6 +4,7 @@ import { killVillagers } from "@/game/stateHelpers";
 import { getMaxVeinfireElixirLimit } from "@/game/resourceLimits";
 import { getMapFragmentCount, MAP_FRAGMENT_TOTAL } from "../mapFragments";
 import { isSteamEditionActive } from "@/lib/edition";
+import { hasChosenPact } from "./pacts";
 
 export const storyEvents: Record<string, GameEvent> = {
   portalDiscovered: {
@@ -556,6 +557,32 @@ export const storyEvents: Record<string, GameEvent> = {
             _logMessageKey: "outcome0",
           };
         },
+      },
+    ],
+  },
+
+  huntressOffersToHunt: {
+    id: "huntressOffersToHunt",
+    condition: (state: GameState) =>
+      !!state.fellowship.ashwraith_huntress &&
+      hasChosenPact(state, "full_larders") &&
+      !state.story.seen.huntressHunts,
+    timeProbability: 5,
+    priority: 5,
+    repeatable: false,
+    choices: [
+      {
+        id: "let_her_hunt",
+        effect: (state: GameState) => ({
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              huntressHunts: true,
+            },
+          },
+          _logMessageKey: "outcome0",
+        }),
       },
     ],
   },

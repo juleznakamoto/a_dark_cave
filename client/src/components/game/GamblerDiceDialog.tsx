@@ -31,7 +31,8 @@ import {
 import { useGameStore } from "@/game/state";
 import {
   GAMBLER_TUTORIAL_PLAYS,
-  gamblerCoinOfferOnWin,
+  gamblerDoubleOfferOnWin,
+  gamblerDoubleRollWins,
   getGamblerTutorialPlaysRemaining,
   resolveGamblerSessionForHydrate,
   type GamblerDiceSession,
@@ -48,35 +49,34 @@ import {
   type WinLoseResultLine,
 } from "@/components/game/WinLoseResultScreen";
 import { cn, formatNumber } from "@/lib/utils";
-import { publicUrl } from "@/lib/publicUrl";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 
 const DICE_FACES = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"] as const;
 const SPIN_FACES = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
 const ROLL_SPIN_MS_MIN = 600;
 const ROLL_SPIN_MS_MAX = 1200;
+/** The double-or-nothing throw stays up long enough to read. */
+const DOUBLE_SPIN_MS_MIN = 3000;
+const DOUBLE_SPIN_MS_MAX = 5500;
+/** White glow fades in over the first second after the die lands. */
+const DOUBLE_GLOW_MS = 1000;
+/** The face stays up this long. The glow finishes halfway through. */
+const DOUBLE_FACE_HOLD_MS = 2000;
+/** Continue follows the loss line by this long. */
+const DOUBLE_LOSS_BUTTON_MS = 500;
 const SPIN_INTERVAL = 60;
-/** A bit slower than the die, so the two coin faces stay readable. */
-const COIN_SPIN_INTERVAL = 120;
-/** White glow fades in over the first second after the coin lands. */
-const COIN_GLOW_MS = 1000;
-/** Both faces stay up this long. The glow finishes halfway through. */
-const COIN_FACE_HOLD_MS = 2000;
-const COIN_SPIN_MS_MIN = 3000;
-const COIN_SPIN_MS_MAX = 5000;
-const COIN_CROSS_SRC = publicUrl("/images/gambler-coin-cross.svg");
-const COIN_CHECK_SRC = publicUrl("/images/gambler-coin-check.svg");
 /** After the player's roll settles, wait this long before switching to the gambler's turn (not after No Roll). */
 const PAUSE_MS_AFTER_PLAYER_ROLL = 500;
 /** Same duration after the gambler acts (roll settles or stand) before the player can roll again. */
 const PAUSE_MS_AFTER_NPC_ROLL = PAUSE_MS_AFTER_PLAYER_ROLL;
 const GAMBLER_CHROME_COLOR = "rgb(120 53 15 / 0.5)";
 
+function randomSpinDurationMs(minMs: number, maxMs: number): number {
+  return minMs + Math.floor(Math.random() * (maxMs - minMs + 1));
+}
+
 function randomRollSpinDurationMs(): number {
-  return (
-    ROLL_SPIN_MS_MIN +
-    Math.floor(Math.random() * (ROLL_SPIN_MS_MAX - ROLL_SPIN_MS_MIN + 1))
-  );
+  return randomSpinDurationMs(ROLL_SPIN_MS_MIN, ROLL_SPIN_MS_MAX);
 }
 
 /** Persist gambler + game state after each roll (and other session writes); `setTimeout(0)` runs after React commits. */
@@ -99,8 +99,8 @@ type Phase =
   | "wager"
   | "playerTurn"
   | "npcTurn"
-  | "coinOffer"
-  | "coinFlip"
+  | "doubleOffer"
+  | "doubleRoll"
   | "outcome";
 
 interface GamblerDiceDialogProps {
@@ -121,9 +121,11 @@ interface GamblerDiceDialogProps {
 function DiceFace({
   value,
   spinning,
+  glow = false,
 }: {
   value: number | null;
   spinning: boolean;
+  glow?: boolean;
 }) {
   const [displayFace, setDisplayFace] = useState(0);
 
@@ -142,45 +144,16 @@ function DiceFace({
   const face = spinning
     ? SPIN_FACES[displayFace]
     : DICE_FACES[(value ?? 1) - 1];
-  return <span className="text-6xl">{face}</span>;
-}
-
-/** Swaps the two coin faces, then holds the landing face. */
-function CoinToss({
-  spinning,
-  face,
-}: {
-  spinning: boolean;
-  face: "check" | "cross" | null;
-}) {
-  const [showCheck, setShowCheck] = useState(false);
-
-  useEffect(() => {
-    if (!spinning) return;
-    const interval = setInterval(() => {
-      setShowCheck((prev) => !prev);
-    }, COIN_SPIN_INTERVAL);
-    return () => clearInterval(interval);
-  }, [spinning]);
-
-  const landed = !spinning && face != null;
-  const check = spinning ? showCheck : face === "check";
-
   return (
-    <div
-      className="mx-auto flex h-[4.5rem] w-[4.5rem] items-center justify-center overflow-hidden rounded-full border-[3px] border-white bg-[#b1b6bf]"
+    <span
+      className="text-6xl"
       style={{
-        boxShadow: landed ? "0 0 14px rgba(255,255,255,0.9)" : "none",
-        transition: `box-shadow ${COIN_GLOW_MS}ms ease-out`,
+        textShadow: glow ? "0 0 14px rgba(255,255,255,0.9)" : "none",
+        transition: `text-shadow ${DOUBLE_GLOW_MS}ms ease-out`,
       }}
     >
-      <img
-        src={check ? COIN_CHECK_SRC : COIN_CROSS_SRC}
-        alt=""
-        className="h-[78%] w-[78%] object-contain"
-        draggable={false}
-      />
-    </div>
+      {face}
+    </span>
   );
 }
 
@@ -264,18 +237,19 @@ export default function GamblerDiceDialog({
   const dialogContentRef = useRef<HTMLDivElement>(null);
   const playerTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const npcTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const coinTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const coinSnapshotRef = useRef<{
+  const doubleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const doubleSnapshotRef = useRef<{
     playerTotal: number;
     npcTotal: number;
     goal: number;
   } | null>(null);
   const payoutGoldDeltaRef = useRef<number | null>(null);
   const [settledGoldDelta, setSettledGoldDelta] = useState<number | null>(null);
-  const [coinSpinning, setCoinSpinning] = useState(false);
-  const [coinFace, setCoinFace] = useState<"check" | "cross" | null>(null);
-  /** Coin loss stays on this screen. Text and Continue show once the glow is in. */
-  const [coinLossReady, setCoinLossReady] = useState(false);
+  const [doubleSpinning, setDoubleSpinning] = useState(false);
+  const [doubleRoll, setDoubleRoll] = useState<number | null>(null);
+  /** A lost extra roll stays on this screen so the die face stays visible. */
+  const [doubleLossReady, setDoubleLossReady] = useState(false);
+  const [doubleLossButtonReady, setDoubleLossButtonReady] = useState(false);
   const totalsRef = useRef({ playerTotal: 0, npcTotal: 0, goal: INITIAL_GOAL });
   const npcTurnNonceRef = useRef(0);
   /**
@@ -286,6 +260,18 @@ export default function GamblerDiceDialog({
   const [pauseAfterPlayerRoll, setPauseAfterPlayerRoll] = useState(false);
   /** True only after the player chooses No Roll; showdown runs only then. */
   const playerStoppedRef = useRef(false);
+
+  useEffect(() => {
+    if (!doubleLossReady) {
+      setDoubleLossButtonReady(false);
+      return;
+    }
+    const timer = setTimeout(
+      () => setDoubleLossButtonReady(true),
+      DOUBLE_LOSS_BUTTON_MS,
+    );
+    return () => clearTimeout(timer);
+  }, [doubleLossReady]);
 
   const clearTimeoutRef = (
     timeoutRef: React.MutableRefObject<ReturnType<typeof setTimeout> | null>,
@@ -299,7 +285,7 @@ export default function GamblerDiceDialog({
   const clearPendingTimeouts = useCallback(() => {
     clearTimeoutRef(playerTimeoutRef);
     clearTimeoutRef(npcTimeoutRef);
-    clearTimeoutRef(coinTimeoutRef);
+    clearTimeoutRef(doubleTimeoutRef);
   }, []);
 
   const resetGame = useCallback(() => {
@@ -314,10 +300,10 @@ export default function GamblerDiceDialog({
     setOutcome(null);
     setSettledGoldDelta(null);
     payoutGoldDeltaRef.current = null;
-    coinSnapshotRef.current = null;
-    setCoinSpinning(false);
-    setCoinFace(null);
-    setCoinLossReady(false);
+    doubleSnapshotRef.current = null;
+    setDoubleSpinning(false);
+    setDoubleRoll(null);
+    setDoubleLossReady(false);
     setSpinning(false);
     setNpcSpinning(false);
     setHasRolledThisRound(false);
@@ -406,8 +392,8 @@ export default function GamblerDiceDialog({
     if (
       !isOpen ||
       phase === "outcome" ||
-      phase === "coinOffer" ||
-      phase === "coinFlip"
+      phase === "doubleOffer" ||
+      phase === "doubleRoll"
     )
       return;
     const gg = useGameStore.getState().gamblerGame;
@@ -513,15 +499,15 @@ export default function GamblerDiceDialog({
   ) => {
     if (
       result === "win" &&
-      gamblerCoinOfferOnWin(useGameStore.getState(), wager)
+      gamblerDoubleOfferOnWin(useGameStore.getState(), wager)
     ) {
-      coinSnapshotRef.current = snapshot;
+      doubleSnapshotRef.current = snapshot;
       setPauseAfterPlayerRoll(true);
       clearTimeoutRef(playerTimeoutRef);
       clearTimeoutRef(npcTimeoutRef);
       playerTimeoutRef.current = setTimeout(() => {
         if (!isOpenRef.current) return;
-        setPhase("coinOffer");
+        setPhase("doubleOffer");
         playerTimeoutRef.current = null;
       }, WIN_LOSE_BOARD_HOLD_MS);
       return;
@@ -529,32 +515,31 @@ export default function GamblerDiceDialog({
     settleRound(result, snapshot, result === "win" ? wager : -wager);
   };
 
-  const declineCoin = () => {
-    const snapshot = coinSnapshotRef.current;
+  const declineDouble = () => {
+    const snapshot = doubleSnapshotRef.current;
     if (!snapshot) return;
     settleRound("win", snapshot, wager);
   };
 
-  const acceptCoin = () => {
-    const snapshot = coinSnapshotRef.current;
+  const acceptDouble = () => {
+    const snapshot = doubleSnapshotRef.current;
     if (!snapshot) return;
-    setCoinFace(null);
-    setCoinLossReady(false);
-    setCoinSpinning(true);
-    setPhase("coinFlip");
-    const spinMs =
-      COIN_SPIN_MS_MIN +
-      Math.floor(Math.random() * (COIN_SPIN_MS_MAX - COIN_SPIN_MS_MIN + 1));
-    const wonToss = Math.random() < 0.5;
-    clearTimeoutRef(coinTimeoutRef);
-    coinTimeoutRef.current = setTimeout(() => {
+    setDoubleRoll(null);
+    setDoubleLossReady(false);
+    setDoubleSpinning(true);
+    setPhase("doubleRoll");
+    const spinMs = randomSpinDurationMs(DOUBLE_SPIN_MS_MIN, DOUBLE_SPIN_MS_MAX);
+    const roll = rollDie();
+    const doubled = gamblerDoubleRollWins(roll);
+    clearTimeoutRef(doubleTimeoutRef);
+    doubleTimeoutRef.current = setTimeout(() => {
       if (!isOpenRef.current) return;
-      setCoinSpinning(false);
-      setCoinFace(wonToss ? "check" : "cross");
-      coinTimeoutRef.current = setTimeout(() => {
+      setDoubleSpinning(false);
+      setDoubleRoll(roll);
+      doubleTimeoutRef.current = setTimeout(() => {
         if (!isOpenRef.current) return;
-        coinTimeoutRef.current = null;
-        if (wonToss) {
+        doubleTimeoutRef.current = null;
+        if (doubled) {
           settleRound("win", snapshot, wager * 2, 0);
           return;
         }
@@ -564,8 +549,8 @@ export default function GamblerDiceDialog({
           outcomeReportedRef.current = true;
           onOutcomeResolved("lose", wager, snapshot, { goldDelta: 0 });
         }
-        setCoinLossReady(true);
-      }, COIN_FACE_HOLD_MS);
+        setDoubleLossReady(true);
+      }, DOUBLE_FACE_HOLD_MS);
     }, spinMs);
   };
 
@@ -795,7 +780,7 @@ export default function GamblerDiceDialog({
                 ? {
                   width: lockedDialogSize.width,
                   maxWidth: lockedDialogSize.width,
-                  ...(phase === "coinFlip" && coinLossReady
+                  ...(phase === "doubleRoll" && doubleLossReady
                     ? {}
                     : { minHeight: lockedDialogSize.height }),
                 }
@@ -823,7 +808,7 @@ export default function GamblerDiceDialog({
             <DialogHeader className="shrink-0">
               <DialogTitle className="pr-0 text-lg font-semibold flex items-center gap-2 leading-snug">
                 {t("gambler.title")}
-                {phase !== "coinOffer" && phase !== "coinFlip" && (
+                {phase !== "doubleOffer" && phase !== "doubleRoll" && (
                   <RulesInfoButton />
                 )}
               </DialogTitle>
@@ -930,7 +915,7 @@ export default function GamblerDiceDialog({
                 </div>
               )}
 
-              {phase === "coinOffer" && (
+              {phase === "doubleOffer" && (
                 <div className="space-y-4 py-3">
                   <p className="text-sm text-muted-foreground">
                     {t("gambler.coinOffer")}
@@ -939,24 +924,24 @@ export default function GamblerDiceDialog({
                     <Button
                       variant="outline"
                       size="xs"
-                      onClick={acceptCoin}
+                      onClick={acceptDouble}
                       className={cn(
                         "text-xs",
                         gameActionOutlineButtonClassName(false),
                       )}
-                      button_id="gambler-coin-accept"
+                      button_id="gambler-double-accept"
                     >
                       {t("gambler.coinAccept")}
                     </Button>
                     <Button
                       variant="outline"
                       size="xs"
-                      onClick={declineCoin}
+                      onClick={declineDouble}
                       className={cn(
                         "text-xs",
                         gameActionOutlineButtonClassName(false),
                       )}
-                      button_id="gambler-coin-decline"
+                      button_id="gambler-double-decline"
                     >
                       {t("gambler.coinDecline")}
                     </Button>
@@ -964,25 +949,33 @@ export default function GamblerDiceDialog({
                 </div>
               )}
 
-              {phase === "coinFlip" && (
+              {phase === "doubleRoll" && (
                 <div className={cn(
                   "flex flex-col items-center",
-                  coinLossReady ? "pb-1 pt-4" : "py-8",
+                  doubleLossReady ? "pb-1 pt-4" : "py-8",
                 )}>
-                  <CoinToss spinning={coinSpinning} face={coinFace} />
-                  {coinLossReady && (
+                  <div className="flex h-20 items-center justify-center">
+                    <DiceFace
+                      value={doubleRoll}
+                      spinning={doubleSpinning}
+                      glow={!doubleSpinning && doubleRoll != null}
+                    />
+                  </div>
+                  {doubleLossReady && (
                     <div className="mt-5 w-full">
                       <p className="text-center text-sm text-muted-foreground">
                         {t("gambler.coinTookWinnings")}
                       </p>
-                      <Button
-                        onClick={handleOutcomeClose}
-                        className="mt-3 w-full"
-                        variant="outline"
-                        button_id="gambler-coin-loss-close"
-                      >
-                        {t("common:buttons.continue")}
-                      </Button>
+                      {doubleLossButtonReady && (
+                        <Button
+                          onClick={handleOutcomeClose}
+                          className="mt-3 w-full"
+                          variant="outline"
+                          button_id="gambler-double-loss-close"
+                        >
+                          {t("common:buttons.continue")}
+                        </Button>
+                      )}
                     </div>
                   )}
                 </div>

@@ -1,5 +1,5 @@
 import type { StartScreenPreferences } from "@/components/game/StartScreen";
-import { shouldOpenPactOffer } from "@/game/rules/pacts";
+import { resolvePactOfferForNewRun } from "@/game/rules/pacts";
 import { getLifetimeGamesWonFromSave } from "@/game/winAchievements";
 import { clearPreferStartScreen } from "./startupBootSurface";
 import { useGameStore } from "./state";
@@ -64,13 +64,13 @@ export function commitMakeFireStart(
     });
     return;
   }
-  const offerPacts = shouldOpenPactOffer(
+  const pactOffer = resolvePactOfferForNewRun(
     getLifetimeGamesWonFromSave(useGameStore.getState()),
   );
   useGameStore.setState({
     ...preferences,
-    pactOfferPending: offerPacts,
-    pactOfferDialogOpen: offerPacts,
+    pactOfferPending: pactOffer.pactOfferPending,
+    pactOfferDialogOpen: pactOffer.pactOfferDialogOpen,
     chosenPacts: [],
   });
   useGameStore.getState().trackButtonClick("make-fire");

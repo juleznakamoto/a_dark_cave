@@ -2852,6 +2852,18 @@
     "message": "La chasseresse sauvageonne revient de la forêt. « Vous avez sauvé ma tribu de l'extinction », dit-elle en faisant glisser un couteau d'os sur sa paume. Le sang goutte sur la terre. « Selon les anciennes coutumes de mon peuple, je vous offre un serment de sang. Je serai à jamais votre débitrice. »",
     "title": "Le serment de sang"
   },
+  "huntressOffersToHunt": {
+    "choices": {
+      "let_her_hunt": {
+        "label": "La laisser chasser"
+      }
+    },
+    "log": {
+      "outcome0": "La chasseresse hoche la tête avec respect. Désormais, la Chasseresse des Cendres peut être envoyée chasser dans la forêt."
+    },
+    "message": "La Chasseresse des Cendres attend à la lisière. « Laissez-moi chasser dans ces bois », dit-elle à voix basse. « Le village ne connaîtra pas la faim. »",
+    "title": "Viande pour le village"
+  },
   "witchsCurse": {
     "choices": {
       "attackHer": {

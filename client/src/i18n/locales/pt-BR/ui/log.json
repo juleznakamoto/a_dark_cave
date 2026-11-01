@@ -101,7 +101,7 @@
       "win": "Você ganhou {{amount}} de ouro do apostador obcecado.",
       "lose": "Você perdeu {{amount}} de ouro para o apostador obcecado.",
       "forfeit": "O apostador obcecado tomou seu silêncio como desistência.",
-      "coinNothing": "A moeda caiu contra você. O ganho se foi.",
+      "coinNothing": "O dado caiu contra você. O ganho se foi.",
       "enraged": "Furioso com as derrotas, o apostador começou uma briga com um aldeão e o matou na estrada de saída da vila."
     },
     "buttonUpgrade": {

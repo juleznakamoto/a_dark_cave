@@ -113,6 +113,7 @@ export type SidePanelSectionId =
   | "relics"
   | "schematics"
   | "blessings"
+  | "pacts"
   | "buildings"
   | "stats"
   | "bonuses"
@@ -127,6 +128,7 @@ const SECTIONS_WITHOUT_ITEM_VALUES = new Set<SidePanelSectionId>([
   "buildings",
   "fortifications",
   "blessings",
+  "pacts",
   "schematics",
   "fellowship",
   "books",
@@ -1177,6 +1179,7 @@ export default function SidePanelSection({
           "Buildings",
           "Fortifications",
           "Blessings",
+          "Pacts",
           "Schematics",
           "Fellowship",
           "Books",

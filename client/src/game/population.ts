@@ -7,6 +7,18 @@ import {
   HUNTING_SKILL_BONUSES,
 } from "@/game/rules/skillUpgrades";
 import { getTotalMadness } from "@/game/rules/effectsCalculation";
+import {
+  AVID_APPRENTICES_INSIGHT,
+  FULL_LARDERS_FREE_FOOD,
+  FULL_LARDERS_HUNTER_FOOD,
+  getHeartfireProductionPerLevel,
+  countPriorSlotsUsed,
+  hasChosenPact,
+  hasHuntressPriorSlot,
+  HEARTFIRE_BASE_PRODUCTION_PER_LEVEL,
+  STURDY_HANDS_STONE,
+  STURDY_HANDS_WOOD,
+} from "@/game/rules/pacts";
 import type { PopulationJobConfig } from "@/game/types";
 
 // Re-export for convenience
@@ -379,6 +391,40 @@ export const getPopulationProduction = (
     }
   }
 
+  // Pact yield bonuses sit on the base, so feast, Heartfire, and penalties scale them.
+  if (state && jobId === "gatherer" && hasChosenPact(state, "sturdy_hands")) {
+    for (const prod of baseProduction) {
+      const perWorker =
+        prod.resource === "wood"
+          ? STURDY_HANDS_WOOD
+          : prod.resource === "stone"
+            ? STURDY_HANDS_STONE
+            : 0;
+      if (!perWorker || prod.baseAmount <= 0) continue;
+      const delta = perWorker * count;
+      prod.totalAmount += delta;
+      note(prod.resource, "sturdy_hands", delta);
+    }
+  }
+
+  if (state && jobId === "hunter" && hasChosenPact(state, "full_larders")) {
+    for (const prod of baseProduction) {
+      if (prod.resource !== "food" || prod.baseAmount <= 0) continue;
+      const delta = FULL_LARDERS_HUNTER_FOOD * count;
+      prod.totalAmount += delta;
+      note(prod.resource, "full_larders", delta);
+    }
+  }
+
+  if (state && jobId === "free" && hasChosenPact(state, "full_larders")) {
+    for (const prod of baseProduction) {
+      if (prod.resource !== "food" || prod.baseAmount <= 0) continue;
+      const delta = FULL_LARDERS_FREE_FOOD * count;
+      prod.totalAmount += delta;
+      note(prod.resource, "full_larders", delta);
+    }
+  }
+
   // Apply feast multiplier if active
   const feastState = state.feastState;
   const greatFeastState = state.greatFeastState;
@@ -611,21 +657,28 @@ export const getPopulationProduction = (
   const heartfireLevel = state.heartfireState?.level || 0;
   if (!excludeTemporary && heartfireLevel > 0) {
     const ebonGrace = Boolean(state.blessings?.ebon_grace);
-    const perLevel = ebonGrace ? 0.1 : 0.05;
-    const heartfireBonus = 1 + heartfireLevel * perLevel;
+    const blazesmith = hasChosenPact(state, "blazesmith");
+    const perLevel = getHeartfireProductionPerLevel(state);
     baseProduction.forEach((prod) => {
       // Only apply to positive production (don't increase consumption)
-      if (prod.totalAmount > 0) {
-        const before = prod.totalAmount;
-        prod.totalAmount = Math.ceil(before * heartfireBonus);
-        if (ebonGrace) {
-          const heartfireOnly = Math.ceil(before * (1 + heartfireLevel * 0.05));
-          note(prod.resource, "heartfire", heartfireOnly - before);
-          note(prod.resource, "ebon_grace", prod.totalAmount - heartfireOnly);
-        } else {
-          note(prod.resource, "heartfire", prod.totalAmount - before);
-        }
+      if (prod.totalAmount <= 0) return;
+      const before = prod.totalAmount;
+      const final = Math.ceil(before * (1 + heartfireLevel * perLevel));
+      let rate = HEARTFIRE_BASE_PRODUCTION_PER_LEVEL;
+      let cursor = Math.ceil(before * (1 + heartfireLevel * rate));
+      note(prod.resource, "heartfire", cursor - before);
+      if (ebonGrace) {
+        rate += HEARTFIRE_BASE_PRODUCTION_PER_LEVEL;
+        const next = blazesmith
+          ? Math.ceil(before * (1 + heartfireLevel * rate))
+          : final;
+        note(prod.resource, "ebon_grace", next - cursor);
+        cursor = next;
       }
+      if (blazesmith) {
+        note(prod.resource, "blazesmith", final - cursor);
+      }
+      prod.totalAmount = final;
     });
   }
 
@@ -643,7 +696,11 @@ export const getPopulationProduction = (
   }
 
   if (jobId === "scholar" && state) {
-    const perWorker = getScholarInsightPerWorker(state);
+    const buildingInsight = getScholarInsightPerWorker(state);
+    const pactInsight = hasChosenPact(state, "avid_apprentices")
+      ? AVID_APPRENTICES_INSIGHT
+      : 0;
+    const perWorker = buildingInsight + pactInsight;
     const sourceId = scholarInsightSourceId(state);
     baseProduction.forEach((prod) => {
       if (prod.resource === "insight") {
@@ -653,8 +710,9 @@ export const getPopulationProduction = (
           composition,
           prod.resource,
           sourceId,
-          prod.totalAmount,
+          buildingInsight * count,
         );
+        note(prod.resource, "avid_apprentices", pactInsight * count);
       }
     });
   }
@@ -755,13 +813,19 @@ export function getVillagersInVillage(
   );
 }
 
-/** Food consumed per 15s cycle for all Disgraced Prior assignments (0 if not applicable). */
+/** Food consumed per 15s cycle for Disgraced Prior assignments (0 if none). Hunt on the Huntress slot is free. */
 export function getDisgracedPriorFoodUpkeepPerCycle(
-  state: Pick<GameState, "fellowship" | "priorAssignedActions">,
+  state: Pick<GameState, "fellowship" | "priorAssignedActions"> & {
+    chosenPacts?: GameState["chosenPacts"];
+    story?: Pick<GameState, "story">["story"];
+  },
 ): number {
   if (!state.fellowship?.disgraced_prior) return 0;
-  const n = state.priorAssignedActions?.length ?? 0;
-  return n * DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE;
+  const billable = countPriorSlotsUsed(
+    state.priorAssignedActions,
+    hasHuntressPriorSlot(state),
+  );
+  return billable * DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE;
 }
 
 /** Matches accumulatePopulationSurvival / handleStarvationCheck in loop.ts. */

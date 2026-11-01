@@ -46,18 +46,18 @@
         "name": "Despensas cheias",
         "boon": "Aldeões livres produzem +2 de Comida",
         "boon2": "Caçadores produzem +5 de Comida",
-        "quote": "\"Algo parece errado com o caçador.\""
+        "quote": "\"A caçadora se oferece para caçar.\""
       },
       "sturdy_hands": {
         "name": "Mãos firmes",
         "boon": "Coletores produzem +5 de Madeira",
         "boon2": "Coletores produzem +5 de Pedra",
-        "quote": "\"Algo parece errado com o construtor.\""
+        "quote": "\"A carroça do mercador carrega mais do que deveria.\""
       },
       "cunning_trader": {
         "name": "Mercador astuto",
         "boon": "20% de desconto no mercador viajante",
-        "boon2": "20% de taxas melhores no Posto de Comércio",
+        "boon2": "20% mais barato no Posto de Comércio",
         "quote": "\"Algo parece errado com o mercador.\""
       },
       "avid_apprentices": {
@@ -178,11 +178,11 @@
     "practiceLoseRemaining": "Você perdeu a rodada de treino (sem ouro em jogo). {{remaining}} de {{total}} jogos de treino restantes.",
     "practiceWinComplete": "Você venceu a rodada de treino (sem ouro em jogo). Treino concluído. Agora você pode fazer uma aposta em ouro.",
     "practiceLoseComplete": "Você perdeu a rodada de treino (sem ouro em jogo). Treino concluído. Agora você pode fazer uma aposta em ouro.",
-    "coinOffer": "O apostador oferece um cara ou coroa. Dobre o que ganhou, ou saia sem nada.",
-    "coinAccept": "Jogar a moeda",
+    "coinOffer": "Ele gira o dado à luz do fogo, e o sorriso se estreita. “O dobro, ou nada”, ele sussurra. “De um a quatro, seu ouro dobra. Cinco ou seis, eu fico com ele.”",
+    "coinAccept": "Jogar o dado",
     "coinDecline": "Ficar com o ganho",
     "coinNothing": "Nada",
-    "coinTookWinnings": "Você perdeu o lançamento. Os ganhos se foram."
+    "coinTookWinnings": "Você perdeu a jogada. Os ganhos se foram."
   },
   "leaderboard": {
     "title": "Classificação",
@@ -237,6 +237,7 @@
     "discountFromKnowledge": "{{percent}}% por Conhecimento{{max}}",
     "knowledgeMax": " (máx.)",
     "discountFromRing": "5% do Anel da Obediência",
+    "discountFromPact": "20% do Mercador astuto",
     "prolongForInsight": "Estender o tempo em {{minutes}} min por {{cost}} de {{resource}}"
   },
   "share": {

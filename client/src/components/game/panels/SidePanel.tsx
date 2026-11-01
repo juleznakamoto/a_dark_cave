@@ -343,6 +343,20 @@ export default function SidePanel() {
     tooltip: true,
   }));
 
+  const pactItems = model.pactIds.map((id) => ({
+    id,
+    label: t(`pactOffer.cards.${id}.name`),
+    value: 1,
+    testId: `pact-${id}`,
+    visible: true,
+    tooltip: (
+      <span className="flex flex-col gap-1">
+        <span>{t(`pactOffer.cards.${id}.boon`)}</span>
+        <span>{t(`pactOffer.cards.${id}.boon2`)}</span>
+      </span>
+    ),
+  }));
+
   const buildingItems = model.buildingRows.map((row) => {
     const actionId = `build${row.id.charAt(0).toUpperCase() + row.id.slice(1)}`;
     const buildAction = villageBuildActions[actionId];
@@ -809,7 +823,7 @@ export default function SidePanel() {
       case "map":
         return ["resources", "buildings", "fortifications"].includes(sectionName);
       case "forest":
-        return ["resources", "relics", "blessings", "bonuses"].includes(
+        return ["resources", "relics", "blessings", "pacts", "bonuses"].includes(
           sectionName,
         );
       case "estate":
@@ -958,6 +972,13 @@ export default function SidePanel() {
                 sectionId="blessings"
                 title={t("sidePanel.blessings")}
                 items={panelBlessingItems}
+              />
+            )}
+            {pactItems.length > 0 && shouldShowSection("pacts") && (
+              <SidePanelSection
+                sectionId="pacts"
+                title={t("sidePanel.pacts")}
+                items={pactItems}
               />
             )}
             {panelBuildingItems.length > 0 && shouldShowSection("buildings") && (

@@ -21,28 +21,39 @@ export function getPriorDiscFillMetrics(diameterPx: number): {
   };
 }
 
+/** Silver is the Prior. Bronze is the Huntress on Hunt. */
+export type PriorDiscTone = "silver" | "bronze";
+
+const PRIOR_DISC_RGB: Record<PriorDiscTone, string> = {
+  silver: "235,235,235",
+  bronze: "205,127,50",
+};
+
 /**
  * @param active — toggled “on” (assigned / selected)
  * @param surfaceLocked — dim inactive surface (badge at capacity, or disabled radio)
  * @param hovered — pointer over control
+ * @param tone — silver Prior, or bronze Huntress
  */
 export function getPriorDiscSurfaceColors(args: {
   active: boolean;
   surfaceLocked: boolean;
   hovered: boolean;
+  tone?: PriorDiscTone;
 }): { background: string; boxShadow: string } {
-  const { active, surfaceLocked, hovered } = args;
+  const { active, surfaceLocked, hovered, tone = "silver" } = args;
+  const rgb = PRIOR_DISC_RGB[tone];
   const background = surfaceLocked
-    ? "rgba(235,235,235,0.12)"
+    ? `rgba(${rgb},0.12)`
     : hovered && !active
-      ? "rgba(235,235,235,0.9)"
-      : "rgba(235,235,235,0.5)";
+      ? `rgba(${rgb},0.9)`
+      : `rgba(${rgb},0.5)`;
 
   const boxShadow = active
-    ? `0 0 0 1.5px #252525, 0 0 0 2.5px ${hovered ? "rgba(235,235,235,1)" : "rgba(235,235,235,0.95)"}`
+    ? `0 0 0 1.5px #252525, 0 0 0 2.5px ${hovered ? `rgba(${rgb},1)` : `rgba(${rgb},0.95)`}`
     : surfaceLocked
-      ? "0 0 0 0.5px rgba(235,235,235,0.15)"
-      : `0 0 0 0.5px ${hovered ? "rgba(235,235,235,0.8)" : "rgba(235,235,235,0.7)"}`;
+      ? `0 0 0 0.5px rgba(${rgb},0.15)`
+      : `0 0 0 0.5px ${hovered ? `rgba(${rgb},0.8)` : `rgba(${rgb},0.7)`}`;
 
   return { background, boxShadow };
 }
@@ -54,13 +65,20 @@ export function getPriorDiscInnerFillStyle(args: {
   fillOffsetInPx: number;
   fillOffsetOutPx: number;
   mutedFill?: boolean;
+  tone?: PriorDiscTone;
 }): CSSProperties {
-  const { active, fillSize, fillOffsetInPx, fillOffsetOutPx, mutedFill } = args;
+  const {
+    active,
+    fillSize,
+    fillOffsetInPx,
+    fillOffsetOutPx,
+    mutedFill,
+    tone = "silver",
+  } = args;
+  const rgb = PRIOR_DISC_RGB[tone];
   const offset = active ? fillOffsetInPx : fillOffsetOutPx;
   const background =
-    mutedFill && active
-      ? "rgba(235,235,235,0.35)"
-      : "rgba(235,235,235,1)";
+    mutedFill && active ? `rgba(${rgb},0.35)` : `rgba(${rgb},1)`;
 
   return {
     width: fillSize,

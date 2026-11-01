@@ -1,5 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useGameStore } from "@/game/state";
+import {
+  canAssignAnotherPriorAction,
+  hasHuntressPriorSlot,
+  HUNTRESS_PRIOR_ACTION_ID,
+} from "@/game/rules/pacts";
 import { DISGRACED_PRIOR_UPGRADES } from "@/game/rules/skillUpgrades";
 import { useTextScale } from "@/i18n/useTextScale";
 import {
@@ -30,6 +35,8 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
   const { t } = useUiTranslation();
   const { textScale } = useTextScale();
   const fellowship = useGameStore((s) => s.fellowship);
+  const chosenPacts = useGameStore((s) => s.chosenPacts);
+  const huntressHunts = useGameStore((s) => s.story.seen.huntressHunts);
   const priorAssignedActions = useGameStore((s) => s.priorAssignedActions);
   const disgracedPriorSkills = useGameStore((s) => s.disgracedPriorSkills);
   const togglePriorAction = useGameStore((s) => s.togglePriorAction);
@@ -52,12 +59,26 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
     [textScale],
   );
 
-  if (!fellowship?.disgraced_prior) return null;
+  const huntressSlot = hasHuntressPriorSlot({
+    chosenPacts,
+    fellowship,
+    story: { seen: { huntressHunts } },
+  });
+  const isHuntressBadge =
+    huntressSlot && actionId === HUNTRESS_PRIOR_ACTION_ID;
+  if (!fellowship?.disgraced_prior && !isHuntressBadge) return null;
 
   const level = disgracedPriorSkills?.level ?? 0;
   const maxActions = DISGRACED_PRIOR_UPGRADES[level]?.maxActions ?? 1;
   const atCapacity =
-    !isAssigned && (priorAssignedActions?.length ?? 0) >= maxActions;
+    !isAssigned &&
+    !isHuntressBadge &&
+    !canAssignAnotherPriorAction(
+      actionId,
+      priorAssignedActions,
+      maxActions,
+      huntressSlot,
+    );
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -70,13 +91,15 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
   const tooltipText = atCapacity
     ? t("badges.priorUpgradeRequired")
     : isAssigned
-      ? t("badges.priorRemove")
-      : t("badges.priorAssign");
+      ? t(isHuntressBadge ? "badges.huntressRemove" : "badges.priorRemove")
+      : t(isHuntressBadge ? "badges.huntressAssign" : "badges.priorAssign");
 
+  const tone = isHuntressBadge ? "bronze" : "silver";
   const { background, boxShadow } = getPriorDiscSurfaceColors({
     active: isAssigned,
     surfaceLocked: atCapacity,
     hovered,
+    tone,
   });
 
   return (
@@ -89,6 +112,7 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
             data-testid={`prior-badge-${actionId}`}
+            data-prior-tone={tone}
             className={cn(
               "button-prior-badge",
               isAssigned && "button-prior-badge--assigned",
@@ -109,6 +133,7 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
                   fillSize: badgeFillMetrics.fillSize,
                   fillOffsetInPx: badgeFillMetrics.fillOffsetInPx,
                   fillOffsetOutPx: badgeFillMetrics.fillOffsetOutPx,
+                  tone,
                 })}
               />
             </div>

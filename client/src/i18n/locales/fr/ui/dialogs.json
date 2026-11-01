@@ -46,18 +46,18 @@
         "name": "Gardes-manger pleins",
         "boon": "Les villageois libres produisent +2 Nourriture",
         "boon2": "Les chasseurs produisent +5 Nourriture",
-        "quote": "« Quelque chose ne va pas chez le chasseur. »"
+        "quote": "« La chasseresse propose de chasser. »"
       },
       "sturdy_hands": {
         "name": "Mains solides",
         "boon": "Les collecteurs produisent +5 Bois",
         "boon2": "Les collecteurs produisent +5 Pierre",
-        "quote": "« Quelque chose ne va pas chez le bâtisseur. »"
+        "quote": "« La charrette du marchand contient plus qu'elle ne devrait. »"
       },
       "cunning_trader": {
         "name": "Marchand rusé",
         "boon": "20 % de réduction chez le marchand itinérant",
-        "boon2": "20 % de meilleurs taux au comptoir commercial",
+        "boon2": "20 % moins cher au comptoir commercial",
         "quote": "« Quelque chose ne va pas chez le marchand. »"
       },
       "avid_apprentices": {
@@ -178,8 +178,8 @@
     "practiceLoseRemaining": "Vous avez perdu la manche d'entraînement (sans mise d'or). {{remaining}} sur {{total}} parties d'entraînement restantes.",
     "practiceWinComplete": "Vous avez gagné la manche d'entraînement (sans mise d'or). Entraînement terminé – vous pouvez miser de l'or.",
     "practiceLoseComplete": "Vous avez perdu la manche d'entraînement (sans mise d'or). Entraînement terminé – vous pouvez miser de l'or.",
-    "coinOffer": "Le parieur propose un pile ou face. Doublez vos gains, ou repartez sans rien.",
-    "coinAccept": "Lancer la pièce",
+    "coinOffer": "Il fait tourner le dé à la lueur du feu, et le sourire s'amincit. « Le double, ou rien », souffle-t-il. « De un à quatre, votre or double. Cinq ou six, je le garde. »",
+    "coinAccept": "Lancer le dé",
     "coinDecline": "Garder le gain",
     "coinNothing": "Rien",
     "coinTookWinnings": "Vous avez perdu le lancer. Les gains sont perdus."
@@ -237,6 +237,7 @@
     "discountFromKnowledge": "{{percent}} % grâce au Savoir{{max}}",
     "knowledgeMax": " (max.)",
     "discountFromRing": "5 % grâce à l'Anneau d'obéissance",
+    "discountFromPact": "20 % grâce au Marchand rusé",
     "prolongForInsight": "Prolonger le temps de {{minutes}} min pour {{cost}} {{resource}}"
   },
   "share": {

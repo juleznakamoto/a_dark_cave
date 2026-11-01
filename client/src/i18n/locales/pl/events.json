@@ -2854,6 +2854,18 @@
     "message": "Dzika łowczyni wraca z lasu. „Uratowałeś moje plemię od zagłady” – mówi, przecinając dłoń nożem z kości. Krew kapie na ziemię. „Według starych zwyczajów mojego ludu oferuję ci krwawą przysięgę. Będę ci dłużna na zawsze.”",
     "title": "Krwawa przysięga"
   },
+  "huntressOffersToHunt": {
+    "choices": {
+      "let_her_hunt": {
+        "label": "Niech poluje"
+      }
+    },
+    "log": {
+      "outcome0": "Łowczyni kiwa głową z szacunkiem. Od teraz Łowczynię Popiołowego Widma można wysłać na polowanie do lasu."
+    },
+    "message": "Łowczyni Popiołowego Widma czeka na skraju lasu. „Pozwól mi polować w tych lasach”, mówi cicho. „Wioska nie zazna głodu.”",
+    "title": "Mięso dla wioski"
+  },
   "witchsCurse": {
     "choices": {
       "attackHer": {

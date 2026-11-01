@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useGameStore } from "@/game/state";
+import { PACTS_ENABLED } from "@/lib/featureFlags";
 import {
   PACT_IDS,
   clampPactChoices,
@@ -27,7 +28,7 @@ function prefersReducedMotion(): boolean {
 
 export default function PactOfferDialog() {
   const isOpen = useGameStore((s) => s.pactOfferDialogOpen);
-  if (!isOpen) return null;
+  if (!PACTS_ENABLED || !isOpen) return null;
   return <PactOfferDialogOpen />;
 }
 

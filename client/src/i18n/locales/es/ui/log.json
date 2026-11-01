@@ -101,7 +101,7 @@
       "win": "Le ganaste {{amount}} de oro al tahúr obsesionado.",
       "lose": "Perdiste {{amount}} de oro contra el tahúr obsesionado.",
       "forfeit": "El tahúr obsesionado tomó tu silencio como una rendición.",
-      "coinNothing": "La moneda cae en tu contra. Las ganancias se pierden.",
+      "coinNothing": "El dado cae en tu contra. Las ganancias se pierden.",
       "enraged": "Furioso por sus derrotas, el tahúr empezó una pelea con un aldeano y lo mató en el camino de salida del pueblo."
     },
     "buttonUpgrade": {

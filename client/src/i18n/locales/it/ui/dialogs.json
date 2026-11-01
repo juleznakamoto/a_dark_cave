@@ -46,18 +46,18 @@
         "name": "Dispense piene",
         "boon": "Gli abitanti liberi producono +2 Cibo",
         "boon2": "I cacciatori producono +5 Cibo",
-        "quote": "«C'è qualcosa che non va nel cacciatore.»"
+        "quote": "«La cacciatrice si offre di cacciare.»"
       },
       "sturdy_hands": {
         "name": "Mani salde",
         "boon": "I raccoglitori producono +5 Legna",
         "boon2": "I raccoglitori producono +5 Pietra",
-        "quote": "«C'è qualcosa che non va nel costruttore.»"
+        "quote": "«Il carro del mercante contiene più di quanto dovrebbe.»"
       },
       "cunning_trader": {
         "name": "Mercante astuto",
         "boon": "20% di sconto dal mercante viaggiante",
-        "boon2": "20% di tassi migliori all'avamposto commerciale",
+        "boon2": "20% più economico all'avamposto commerciale",
         "quote": "«C'è qualcosa che non va nel mercante.»"
       },
       "avid_apprentices": {
@@ -178,8 +178,8 @@
     "practiceLoseRemaining": "Hai perso il round di pratica (nessun oro in gioco). {{remaining}} di {{total}} partite di pratica rimanenti.",
     "practiceWinComplete": "Hai vinto il round di pratica (nessun oro in gioco). Pratica completata. Puoi piazzare una puntata in oro.",
     "practiceLoseComplete": "Hai perso il round di pratica (nessun oro in gioco). Pratica completata. Puoi piazzare una puntata in oro.",
-    "coinOffer": "Il giocatore propone un lancio della moneta. Raddoppia la vincita, o te ne vai senza niente.",
-    "coinAccept": "Lancia la moneta",
+    "coinOffer": "Gira il dado alla luce del fuoco, e il sorriso si assottiglia. «Il doppio, o niente», sussurra. «Da uno a quattro il tuo oro raddoppia. Cinque o sei, e me lo tengo.»",
+    "coinAccept": "Lancia il dado",
     "coinDecline": "Tieni la vincita",
     "coinNothing": "Niente",
     "coinTookWinnings": "Hai perso il lancio. La vincita non c'è più."
@@ -237,6 +237,7 @@
     "discountFromKnowledge": "{{percent}}% dalla conoscenza{{max}}",
     "knowledgeMax": " (max.)",
     "discountFromRing": "5% dall'anello dell'obbedienza",
+    "discountFromPact": "20% dal Mercante astuto",
     "prolongForInsight": "Estendi il tempo di {{minutes}} min per {{cost}} {{resource}}"
   },
   "share": {

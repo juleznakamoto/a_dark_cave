@@ -2852,6 +2852,18 @@
     "message": "A caçadora selvagem retorna da floresta. “Você salvou minha tribo da extinção”, diz ela, passando uma faca de osso pela palma da mão. O sangue pinga na terra. “Pelos antigos costumes do meu povo, ofereço-lhe um juramento de sangue. Estarei em dívida com você para sempre.”",
     "title": "O Juramento de Sangue"
   },
+  "huntressOffersToHunt": {
+    "choices": {
+      "let_her_hunt": {
+        "label": "Deixá-la caçar"
+      }
+    },
+    "log": {
+      "outcome0": "A caçadora acena respeitosamente. De agora em diante, a Caçadora Espectro de Cinzas pode ser enviada para caçar na floresta."
+    },
+    "message": "A Caçadora Espectro de Cinzas espera na orla da mata. “Deixe-me caçar nestes bosques”, diz ela baixinho. “O vilarejo não passará fome.”",
+    "title": "Carne para o vilarejo"
+  },
   "witchsCurse": {
     "choices": {
       "attackHer": {
