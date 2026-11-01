@@ -292,6 +292,10 @@
       "label": "Resistente",
       "description": "Juega 30 horas en total, sumando todas las partidas"
     },
+    "0-finalPact": {
+      "label": "El pacto final",
+      "description": "Gana una partida con los 5 pactos activos"
+    },
     "0-resourceMaxer": {
       "label": "Maximizador de recursos",
       "description": "Alcanza la capacidad de la Gran bóveda con cada recurso limitado"

@@ -90,6 +90,8 @@ const CATALOG = [
   ["overall", "0-resourceMaxer"],
   ["overall", "0-upgradeMaxer"],
   ["overall", "0-achievementMaxer"],
+  // Append new achievements. Inserting earlier shifts Steamworks token indexes.
+  ["overall", "0-finalPact"],
 ];
 
 const STEAM_LANGS = [

@@ -292,6 +292,10 @@
       "label": "Resistente",
       "description": "Gioca 30 ore in tutte le partite"
     },
+    "0-finalPact": {
+      "label": "Il patto finale",
+      "description": "Vinci una partita con tutti e 5 i patti attivi"
+    },
     "0-resourceMaxer": {
       "label": "Massimizzatore di risorse",
       "description": "Raggiungi la capacità del Grande caveau con ogni risorsa limitata"

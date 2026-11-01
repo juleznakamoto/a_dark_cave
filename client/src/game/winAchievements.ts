@@ -1,5 +1,8 @@
 import type { GameState } from "@shared/schema";
-import { grantPactChoiceForCompletedGame } from "@/game/rules/pacts";
+import {
+  grantPactChoiceForCompletedGame,
+  hasAllPactsActive,
+} from "@/game/rules/pacts";
 
 const MS_PER_HOUR = 60 * 60 * 1000;
 
@@ -23,6 +26,8 @@ export type GameWinAchievementUpdates = {
   hasWonNormalGame?: true;
   hasWonCruelGame?: true;
   hasSpeedrunWin?: true;
+  /** Finished this run with every pact active. */
+  hasFinalPactWin?: true;
   /** Absolute lifetime win count after this award (omit if already counted this run). */
   lifetimeGamesWon?: number;
   /** Pact picks allowed after this completion (omit if already counted this run). */
@@ -73,6 +78,7 @@ export function getGameWinAchievementUpdates(
     | "events"
     | "lifetimeGamesWon"
     | "pactChoices"
+    | "chosenPacts"
   >,
 ): GameWinAchievementUpdates {
   const updates: GameWinAchievementUpdates = { hasWonAnyGame: true };
@@ -83,6 +89,9 @@ export function getGameWinAchievementUpdates(
   }
   if ((Number(state.playTime) || 0) < SPEEDRUN_WIN_MAX_MS) {
     updates.hasSpeedrunWin = true;
+  }
+  if (hasAllPactsActive(state.chosenPacts)) {
+    updates.hasFinalPactWin = true;
   }
   if (!hasAlreadyCountedWinThisRun(state)) {
     updates.lifetimeGamesWon =

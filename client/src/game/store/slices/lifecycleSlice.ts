@@ -325,6 +325,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       hasWonNormalGame: state.hasWonNormalGame || false,
       hasWonCruelGame: state.hasWonCruelGame || false,
       hasSpeedrunWin: state.hasSpeedrunWin || false,
+      hasFinalPactWin: state.hasFinalPactWin || false,
       lifetimeGamesWon: state.lifetimeGamesWon || 0,
       villageMapOverrides: state.villageMapOverrides ?? {},
       villageMapPathOverrides: state.villageMapPathOverrides ?? {},
@@ -794,6 +795,9 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
           true,
         hasSpeedrunWin:
           (savedState as { hasSpeedrunWin?: boolean }).hasSpeedrunWin === true,
+        hasFinalPactWin:
+          (savedState as { hasFinalPactWin?: boolean }).hasFinalPactWin ===
+          true,
         lifetimeGamesWon,
         // Seed lifetime from current-run playTime for older saves that lack the field
         lifetimePlayTimeMs: Math.max(

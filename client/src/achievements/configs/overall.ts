@@ -154,6 +154,12 @@ export const overallChartConfig: AchievementChartConfig = {
         detailLabel: `<${SPEEDRUN_WIN_MAX_MS / MS_PER_HOUR} hours`,
         getCount: (state: GameState) => (state.hasSpeedrunWin ? 1 : 0),
       },
+      {
+        segmentId: "0-finalPact",
+        maxCount: 1,
+        label: "The final pact",
+        getCount: (state: GameState) => (state.hasFinalPactWin ? 1 : 0),
+      },
     ],
   ],
 };

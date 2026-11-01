@@ -156,6 +156,8 @@
 			"NEW_ACHIEVEMENT_1_74_DESC"	"Max every upgrade in the Estate tab."
 			"NEW_ACHIEVEMENT_1_75_NAME"	"Achievement Maxer"
 			"NEW_ACHIEVEMENT_1_75_DESC"	"Complete every non-Epic achievement."
+			"NEW_ACHIEVEMENT_1_76_NAME"	"The final pact"
+			"NEW_ACHIEVEMENT_1_76_DESC"	"Finish one game with all 5 pacts active."
 		}
 	}
 	"german"
@@ -314,6 +316,8 @@
 			"NEW_ACHIEVEMENT_1_74_DESC"	"Bringe jedes Upgrade im Anwesen-Tab auf die Maximalstufe."
 			"NEW_ACHIEVEMENT_1_75_NAME"	"Erfolgsmaximierer"
 			"NEW_ACHIEVEMENT_1_75_DESC"	"Schließe jeden nicht-epischen Erfolg ab."
+			"NEW_ACHIEVEMENT_1_76_NAME"	"Der letzte Pakt"
+			"NEW_ACHIEVEMENT_1_76_DESC"	"Gewinne ein Spiel mit allen 5 aktiven Pakten."
 		}
 	}
 	"french"
@@ -472,6 +476,8 @@
 			"NEW_ACHIEVEMENT_1_74_DESC"	"Maximisez chaque amélioration de l'onglet Domaine."
 			"NEW_ACHIEVEMENT_1_75_NAME"	"Maximiseur de succès"
 			"NEW_ACHIEVEMENT_1_75_DESC"	"Terminez chaque succès non épique."
+			"NEW_ACHIEVEMENT_1_76_NAME"	"Le pacte final"
+			"NEW_ACHIEVEMENT_1_76_DESC"	"Gagnez une partie avec les 5 pactes actifs."
 		}
 	}
 	"italian"
@@ -630,6 +636,8 @@
 			"NEW_ACHIEVEMENT_1_74_DESC"	"Porta al massimo ogni miglioramento della scheda Tenuta."
 			"NEW_ACHIEVEMENT_1_75_NAME"	"Massimizzatore di obiettivi"
 			"NEW_ACHIEVEMENT_1_75_DESC"	"Completa ogni obiettivo non Epico."
+			"NEW_ACHIEVEMENT_1_76_NAME"	"Il patto finale"
+			"NEW_ACHIEVEMENT_1_76_DESC"	"Vinci una partita con tutti e 5 i patti attivi."
 		}
 	}
 	"spanish"
@@ -788,6 +796,8 @@
 			"NEW_ACHIEVEMENT_1_74_DESC"	"Maximiza cada mejora de la pestaña Hacienda."
 			"NEW_ACHIEVEMENT_1_75_NAME"	"Maximizador de logros"
 			"NEW_ACHIEVEMENT_1_75_DESC"	"Completa todos los logros no épicos."
+			"NEW_ACHIEVEMENT_1_76_NAME"	"El pacto final"
+			"NEW_ACHIEVEMENT_1_76_DESC"	"Gana una partida con los 5 pactos activos."
 		}
 	}
 	"schinese"
@@ -946,6 +956,8 @@
 			"NEW_ACHIEVEMENT_1_74_DESC"	"将庄园页签中的每一项升级升至满级。"
 			"NEW_ACHIEVEMENT_1_75_NAME"	"成就达人"
 			"NEW_ACHIEVEMENT_1_75_DESC"	"完成所有非史诗成就。"
+			"NEW_ACHIEVEMENT_1_76_NAME"	"最终契约"
+			"NEW_ACHIEVEMENT_1_76_DESC"	"在全部5项契约生效时赢得一局。"
 		}
 	}
 	"russian"
@@ -1104,6 +1116,8 @@
 			"NEW_ACHIEVEMENT_1_74_DESC"	"Прокачайте каждое улучшение во вкладке Поместье до максимума."
 			"NEW_ACHIEVEMENT_1_75_NAME"	"Максимизатор достижений"
 			"NEW_ACHIEVEMENT_1_75_DESC"	"Выполните каждое неэпическое достижение."
+			"NEW_ACHIEVEMENT_1_76_NAME"	"Последний пакт"
+			"NEW_ACHIEVEMENT_1_76_DESC"	"Выиграйте игру со всеми 5 активными пактами."
 		}
 	}
 	"brazilian"
@@ -1262,6 +1276,8 @@
 			"NEW_ACHIEVEMENT_1_74_DESC"	"Maximize cada melhoria da aba Propriedade."
 			"NEW_ACHIEVEMENT_1_75_NAME"	"Maximizador de conquistas"
 			"NEW_ACHIEVEMENT_1_75_DESC"	"Complete todas as conquistas não Épicas."
+			"NEW_ACHIEVEMENT_1_76_NAME"	"O Pacto Final"
+			"NEW_ACHIEVEMENT_1_76_DESC"	"Vença uma partida com os 5 pactos ativos."
 		}
 	}
 	"japanese"
@@ -1420,6 +1436,8 @@
 			"NEW_ACHIEVEMENT_1_74_DESC"	"屋敷タブの強化をすべて最大にする。"
 			"NEW_ACHIEVEMENT_1_75_NAME"	"実績の極み"
 			"NEW_ACHIEVEMENT_1_75_DESC"	"叙事以外の実績をすべて達成する。"
+			"NEW_ACHIEVEMENT_1_76_NAME"	"最後の契約"
+			"NEW_ACHIEVEMENT_1_76_DESC"	"5つの契約がすべて有効な状態でゲームに勝利する。"
 		}
 	}
 	"polish"
@@ -1578,6 +1596,8 @@
 			"NEW_ACHIEVEMENT_1_74_DESC"	"Maksymalnie ulepsz wszystko w zakładce Posiadłość."
 			"NEW_ACHIEVEMENT_1_75_NAME"	"Mistrz osiągnięć"
 			"NEW_ACHIEVEMENT_1_75_DESC"	"Ukończ każde nieepickie osiągnięcie."
+			"NEW_ACHIEVEMENT_1_76_NAME"	"Ostatni pakt"
+			"NEW_ACHIEVEMENT_1_76_DESC"	"Wygraj grę ze wszystkimi 5 aktywnymi paktami."
 		}
 	}
 }

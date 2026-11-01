@@ -292,6 +292,10 @@
       "label": "持久者",
       "description": "在所有游戏中累计游玩30小时"
     },
+    "0-finalPact": {
+      "label": "最终契约",
+      "description": "在全部5项契约生效时赢得一局"
+    },
     "0-resourceMaxer": {
       "label": "资源达人",
       "description": "使每种有上限的资源都达到大金库容量"

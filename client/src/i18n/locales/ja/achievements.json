@@ -292,6 +292,10 @@
       "label": "忍耐者",
       "description": "全プレイを通じて30時間遊ぶ"
     },
+    "0-finalPact": {
+      "label": "最後の契約",
+      "description": "5つの契約がすべて有効な状態でゲームに勝利する"
+    },
     "0-resourceMaxer": {
       "label": "資源の極み",
       "description": "上限のある資源をすべて、大金庫の容量まで貯める"

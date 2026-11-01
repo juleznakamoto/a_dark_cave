@@ -728,6 +728,8 @@ export const gameStateSchema = z.object({
   hasWonCruelGame: z.boolean().default(false),
   /** Meta: finished a game in under 5 hours. Persists across restarts. */
   hasSpeedrunWin: z.boolean().default(false),
+  /** Meta: finished a game while all 5 pacts were active. Persists across restarts. */
+  hasFinalPactWin: z.boolean().default(false),
   /**
    * Meta: times finished (normal or cruel). Persists across restarts.
    * Increments once per completed run (Cave Veteran).

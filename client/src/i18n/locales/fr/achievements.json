@@ -292,6 +292,10 @@
       "label": "Infatigable",
       "description": "Jouez 30 heures sur toutes les parties"
     },
+    "0-finalPact": {
+      "label": "Le pacte final",
+      "description": "Gagnez une partie avec les 5 pactes actifs"
+    },
     "0-resourceMaxer": {
       "label": "Maximiseur de ressources",
       "description": "Atteignez la capacité du Grand coffre avec chaque ressource limitée"

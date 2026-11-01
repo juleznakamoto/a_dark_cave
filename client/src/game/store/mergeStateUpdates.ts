@@ -235,6 +235,9 @@ export const mergeStateUpdates = (
     hasSpeedrunWin: Boolean(
       stateUpdates.hasSpeedrunWin || prevState.hasSpeedrunWin,
     ),
+    hasFinalPactWin: Boolean(
+      stateUpdates.hasFinalPactWin || prevState.hasFinalPactWin,
+    ),
     lifetimeGamesWon:
       stateUpdates.lifetimeGamesWon !== undefined
         ? Math.max(

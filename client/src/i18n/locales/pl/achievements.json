@@ -292,6 +292,10 @@
       "label": "Wytrwały",
       "description": "Graj łącznie 30 godzin we wszystkich grach"
     },
+    "0-finalPact": {
+      "label": "Ostatni pakt",
+      "description": "Wygraj grę ze wszystkimi 5 aktywnymi paktami"
+    },
     "0-resourceMaxer": {
       "label": "Mistrz zasobów",
       "description": "Osiągnij pojemność Wielkiego skarbca dla każdego ograniczonego zasobu"

@@ -292,6 +292,10 @@
       "label": "Enduring",
       "description": "Play for 30 hours across all games"
     },
+    "0-finalPact": {
+      "label": "The final pact",
+      "description": "Finish one game with all 5 pacts active"
+    },
     "0-resourceMaxer": {
       "label": "Resource Maxer",
       "description": "Hit Great Vault capacity with every capped resource"

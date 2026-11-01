@@ -292,6 +292,10 @@
       "label": "Ausdauernd",
       "description": "Spiele über alle Spiele hinweg 30 Stunden"
     },
+    "0-finalPact": {
+      "label": "Der letzte Pakt",
+      "description": "Gewinne ein Spiel mit allen 5 aktiven Pakten"
+    },
     "0-resourceMaxer": {
       "label": "Ressourcenmaximierer",
       "description": "Erreiche die Kapazität des Großen Tresors mit jeder begrenzten Ressource"

@@ -117,3 +117,8 @@ export function readStoredPactChoices(saved: LegacyPactSave): unknown {
   if (saved.curseChoices !== undefined) return saved.curseChoices;
   return saved.cruelCurseChoices;
 }
+
+/** True when every pact is selected for this run. Renamed ids still count. */
+export function hasAllPactsActive(ids: unknown): boolean {
+  return sanitizeChosenPacts(ids).length === PACT_IDS.length;
+}

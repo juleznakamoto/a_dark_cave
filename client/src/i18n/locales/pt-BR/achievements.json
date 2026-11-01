@@ -292,6 +292,10 @@
       "label": "Resistente",
       "description": "Jogue 30 horas no total, somando todas as partidas"
     },
+    "0-finalPact": {
+      "label": "O Pacto Final",
+      "description": "Vença uma partida com os 5 pactos ativos"
+    },
     "0-resourceMaxer": {
       "label": "Maximizador de Recursos",
       "description": "Atinja a capacidade do Grande Cofre com cada recurso limitado"

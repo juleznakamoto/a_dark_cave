@@ -32,7 +32,7 @@ describe("overall achievement rings", () => {
         "0-upgradeMaxer",
         "0-achievementMaxer",
       ],
-      ["0-winNormal", "0-winCruel", "0-caveVeteran", "0-speedrunner"],
+      ["0-winNormal", "0-winCruel", "0-caveVeteran", "0-speedrunner", "0-finalPact"],
     ]);
   });
 });

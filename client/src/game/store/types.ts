@@ -291,6 +291,7 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
   hasWonNormalGame: boolean;
   hasWonCruelGame: boolean;
   hasSpeedrunWin: boolean;
+  hasFinalPactWin: boolean;
   lifetimeGamesWon: number;
   lifetimePlayTimeMs: number;
   lifetimeStorageMaxHits: string[];

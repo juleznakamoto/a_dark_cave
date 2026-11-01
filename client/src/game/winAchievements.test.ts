@@ -8,6 +8,8 @@ import {
 } from "./winAchievements";
 import type { GameState } from "@shared/schema";
 import { cubeEvents } from "./rules/eventsCube";
+import { PACT_IDS } from "./rules/pacts";
+import { mergeStateUpdates } from "./store/mergeStateUpdates";
 
 describe("getGameWinAchievementUpdates", () => {
   const base = {
@@ -16,6 +18,7 @@ describe("getGameWinAchievementUpdates", () => {
     events: {},
     lifetimeGamesWon: 0,
     pactChoices: 1,
+    chosenPacts: [] as string[],
   };
 
   it("awards Normal Victory outside cruel mode and increments lifetime wins", () => {
@@ -51,6 +54,47 @@ describe("getGameWinAchievementUpdates", () => {
       lifetimeGamesWon: 1,
       pactChoices: 2,
     });
+  });
+
+  it("awards The final pact when every pact is active", () => {
+    expect(
+      getGameWinAchievementUpdates({
+        ...base,
+        chosenPacts: [...PACT_IDS],
+      }).hasFinalPactWin,
+    ).toBe(true);
+    expect(
+      getGameWinAchievementUpdates({
+        ...base,
+        chosenPacts: [
+          "firecrafter",
+          "full_larders",
+          "sturdy_hands",
+          "cunning_trader",
+          "avid_apprentices",
+        ],
+      }).hasFinalPactWin,
+    ).toBe(true);
+  });
+
+  it("does not award The final pact for a partial pact set", () => {
+    expect(
+      getGameWinAchievementUpdates({
+        ...base,
+        chosenPacts: PACT_IDS.slice(0, 4),
+      }).hasFinalPactWin,
+    ).toBeUndefined();
+  });
+
+  it("still awards The final pact on a later cube beat in the same run", () => {
+    expect(
+      getGameWinAchievementUpdates({
+        ...base,
+        lifetimeGamesWon: 1,
+        events: { cube13: true },
+        chosenPacts: [...PACT_IDS],
+      }).hasFinalPactWin,
+    ).toBe(true);
   });
 
   it("does not increment lifetime wins again later in the same run", () => {
@@ -202,5 +246,32 @@ describe("cube ending win flag effects", () => {
     const result = effect(state);
     expect(result.hasWonAnyGame).toBe(true);
     expect(result.lifetimeGamesWon).toBeUndefined();
+  });
+
+  it("cube13 awards The final pact when every pact is active", () => {
+    const state = {
+      ...createInitialState(),
+      cruelMode: false,
+      playTime: SPEEDRUN_WIN_MAX_MS + 1,
+      chosenPacts: [...PACT_IDS],
+      story: {
+        ...createInitialState().story,
+        seen: {
+          ...createInitialState().story.seen,
+          slaughteredCreatures: true,
+        },
+      },
+      events: {
+        ...createInitialState().events,
+        cube12: true,
+      },
+    } as GameState;
+
+    const effect = cubeEvents.cube13.choices![0]!.effect!;
+    const result = effect(state);
+    expect(result.hasFinalPactWin).toBe(true);
+    expect(
+      mergeStateUpdates(state, result).hasFinalPactWin,
+    ).toBe(true);
   });
 });
