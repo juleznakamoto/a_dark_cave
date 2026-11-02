@@ -116,6 +116,14 @@ export const PRESS_LINKS: readonly PressLink[] = [
   { id: "producthunt", label: "Product Hunt", href: "https://www.producthunt.com/products/a-dark-cave", group: "directory" },
   { id: "fandom", label: "Wiki", href: "https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki", group: "directory" },
   {
+    id: "ludens-steam-launch",
+    label:
+      "Ludens (2 November 2026): 網頁版吸引50萬人 文字增量生存遊戲《A Dark Cave》Steam推出 洞穴醒來建造聚落",
+    href: "https://www.ludens.com.tw/a-dark-cave-steam-launch/",
+    group: "coverage",
+    publishedOn: "2026-11-02",
+  },
+  {
     id: "techgame-lab",
     label:
       "TechGame Lab (1 November 2026): A Dark Caveはどんなゲーム？ 小さな焚き火から集落を育てるテキスト型サバイバル",

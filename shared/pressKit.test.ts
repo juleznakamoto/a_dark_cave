@@ -110,6 +110,7 @@ describe("press kit copy", () => {
 
   it("lists press coverage newest first", () => {
     expect(pressLinksInGroup("coverage").map((link) => link.publishedOn)).toEqual([
+      "2026-11-02",
       "2026-11-01",
       "2026-10-20",
       "2026-10-20",
@@ -125,6 +126,7 @@ describe("press kit copy", () => {
       "2026-09-15",
     ]);
     const html = getPressPageInnerHtml();
+    const ludens = html.indexOf("ludens.com.tw");
     const techGameLab = html.indexOf("techgame-lab.com");
     const dayOne = html.indexOf("playday.one");
     const absoluteGamer = html.indexOf("absolutegamer.it");
@@ -133,7 +135,8 @@ describe("press kit copy", () => {
     const outputLag = html.indexOf("outputlag.com");
     const playnews = html.indexOf("playnews.gg");
     const gamersAt = html.indexOf("gamers.at");
-    expect(techGameLab).toBeGreaterThan(-1);
+    expect(ludens).toBeGreaterThan(-1);
+    expect(techGameLab).toBeGreaterThan(ludens);
     expect(dayOne).toBeGreaterThan(techGameLab);
     expect(absoluteGamer).toBeGreaterThan(dayOne);
     expect(cogconnected).toBeGreaterThan(absoluteGamer);
@@ -155,8 +158,8 @@ describe("press kit copy", () => {
     expect(html).toContain("$7.99");
     expect(html).not.toContain("<dt>Steam Next Fest</dt>");
     expect(html).not.toContain("planned");
-    expect(pressCoverageUpdatedLabel()).toBe("(last updated: 01.11.2026)");
-    expect(html).toContain("Press coverage (last updated: 01.11.2026)");
+    expect(pressCoverageUpdatedLabel()).toBe("(last updated: 02.11.2026)");
+    expect(html).toContain("Press coverage (last updated: 02.11.2026)");
   });
 });
 
