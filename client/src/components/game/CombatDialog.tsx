@@ -20,6 +20,7 @@ import {
 import {
   BLOODFLAME_SPHERE_UPGRADES,
   BOMB_BASE_DAMAGE_BY_ID,
+  bombDisplayedBaseDamage,
   bombKnowledgeDamageBonus,
   CRUSHING_STRIKE_UPGRADES,
   FERAL_HOWL_UPGRADES,
@@ -497,7 +498,7 @@ export default function CombatDialog({
     {
       id: "ember_bomb",
       name: combatItemName("ember_bomb", "Ember Bomb"),
-      damage: BOMB_BASE_DAMAGE_BY_ID.ember_bomb,
+      damage: bombDisplayedBaseDamage(BOMB_BASE_DAMAGE_BY_ID.ember_bomb, gameState),
       available:
         combatResources.ember_bomb > 0 &&
         emberBombsUsed < MAX_EMBER_BOMBS &&
@@ -506,7 +507,7 @@ export default function CombatDialog({
     {
       id: "ashfire_bomb",
       name: combatItemName("ashfire_bomb", "Ashfire Bomb"),
-      damage: BOMB_BASE_DAMAGE_BY_ID.ashfire_bomb,
+      damage: bombDisplayedBaseDamage(BOMB_BASE_DAMAGE_BY_ID.ashfire_bomb, gameState),
       available:
         combatResources.ashfire_bomb > 0 &&
         ashfireBombsUsed < MAX_CINDERFLAME_BOMBS &&
@@ -515,7 +516,7 @@ export default function CombatDialog({
     {
       id: "void_bomb",
       name: combatItemName("void_bomb", "Void Bomb"),
-      damage: BOMB_BASE_DAMAGE_BY_ID.void_bomb,
+      damage: bombDisplayedBaseDamage(BOMB_BASE_DAMAGE_BY_ID.void_bomb, gameState),
       available:
         combatResources.void_bomb > 0 &&
         voidBombsUsed < MAX_VOID_BOMBS &&
@@ -709,7 +710,10 @@ export default function CombatDialog({
     setUsedItemsInCombat((prev) => [...prev, item.id]);
 
     // Calculate final damage with knowledge bonus (bombs only)
-    const knowledgeBonus = bombKnowledgeDamageBonus(getTotalKnowledge(gameState));
+    const knowledgeBonus = bombKnowledgeDamageBonus(
+      getTotalKnowledge(gameState),
+      gameState,
+    );
     const finalDamage = item.damage + knowledgeBonus;
 
     if (item.id === "poison_arrows") {

@@ -322,6 +322,10 @@
       "description": "用于制作强大长戟的蓝图",
       "name": "风暴晶戟"
     },
+    "superior_bombs": {
+      "description": "炸弹造成更多伤害",
+      "name": "高级炸弹"
+    },
     "survivors_last_words": {
       "description": "垂死陌生人留下的最后祝福",
       "name": "幸存者遗言"

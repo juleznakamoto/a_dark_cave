@@ -481,6 +481,7 @@ export const createActionsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
         actionId === "repairPalisades";
       if (
         (actionId.startsWith("build") && result.stateUpdates.buildings) ||
+        actionId === "buildRepairAlchemistHall" ||
         isBastionRepair
       ) {
         audioManager.playSound(

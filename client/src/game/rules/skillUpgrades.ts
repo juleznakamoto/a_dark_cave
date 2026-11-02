@@ -203,9 +203,53 @@ export const BOMB_BASE_DAMAGE_BY_ID = {
   void_bomb: 60,
 } as const satisfies Record<string, number>;
 
-/** Extra bomb damage from total knowledge: +2 per 5 knowledge (floored). */
-export function bombKnowledgeDamageBonus(totalKnowledge: number): number {
-  return Math.floor(totalKnowledge / 5) * 2;
+/** Extra base damage from the Superior Bombs blessing. */
+export const SUPERIOR_BOMBS_BASE_DAMAGE = 20;
+
+const BOMB_CRAFT_ACTION_IDS = new Set([
+  "craftEmberBomb",
+  "craftAshfireBomb",
+  "craftVoidBomb",
+]);
+
+export function superiorBombsActive(
+  state: { blessings?: { superior_bombs?: boolean } } | null | undefined,
+): boolean {
+  return state?.blessings?.superior_bombs === true;
+}
+
+/** Base bomb damage, including Superior Bombs when that blessing is active. */
+export function bombDisplayedBaseDamage(
+  baseDamage: number,
+  state?: { blessings?: { superior_bombs?: boolean } } | null,
+): number {
+  return baseDamage + (superiorBombsActive(state) ? SUPERIOR_BOMBS_BASE_DAMAGE : 0);
+}
+
+/**
+ * Extra bomb damage from total knowledge: +2 per 5 knowledge.
+ * Superior Bombs adds another +1 per 5 knowledge.
+ */
+export function bombKnowledgeDamageBonus(
+  totalKnowledge: number,
+  state?: { blessings?: { superior_bombs?: boolean } } | null,
+): number {
+  const steps = Math.floor(totalKnowledge / 5);
+  const perStep = superiorBombsActive(state) ? 3 : 2;
+  return steps * perStep;
+}
+
+/** True while the wrecked hall blocks crafting ember, ashfire, and void bombs. */
+export function isBombCraftBlockedByHall(
+  actionId: string,
+  state: {
+    story?: { seen?: { alchemistHallDestroyed?: boolean | number } };
+  } | null | undefined,
+): boolean {
+  return (
+    BOMB_CRAFT_ACTION_IDS.has(actionId) &&
+    state?.story?.seen?.alchemistHallDestroyed === true
+  );
 }
 
 // Hunting Skill upgrade configurations (from Ashwraith Huntress)

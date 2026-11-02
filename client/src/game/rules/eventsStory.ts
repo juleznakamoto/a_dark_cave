@@ -75,6 +75,39 @@ export const storyEvents: Record<string, GameEvent> = {
     ],
   },
 
+  alchemistExperimentsCrossedALine: {
+    id: "alchemistExperimentsCrossedALine",
+    condition: (state: GameState) =>
+      hasChosenPact(state, "blazesmith") &&
+      (state.buildings.alchemistHall || 0) >= 1 &&
+      state.story.seen.alchemistArrives === true &&
+      state.story.seen.alchemistHallDestroyed !== true &&
+      state.blessings?.superior_bombs !== true,
+    timeProbability: 30,
+    earliestMinutes: 15,
+    priority: 5,
+    repeatable: false,
+    choices: [
+      {
+        id: "continue",
+        effect: (state: GameState) => ({
+          blessings: {
+            ...state.blessings,
+            superior_bombs: true,
+          },
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              alchemistHallDestroyed: true,
+            },
+          },
+          _logMessageKey: "outcome0",
+        }),
+      },
+    ],
+  },
+
   veinrootIntroduction: {
     id: "veinrootIntroduction",
     condition: (state: GameState) =>

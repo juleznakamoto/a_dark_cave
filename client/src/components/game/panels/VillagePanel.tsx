@@ -823,6 +823,7 @@ export default function VillagePanel() {
         { id: "buildMasterTannery", label: "Master Tannery" },
         { id: "buildHighTannery", label: "High Tannery" },
         { id: "buildAlchemistHall", label: "Alchemist's Hall" },
+        { id: "buildRepairAlchemistHall", label: "Repair Alchemist's Hall" },
         { id: "buildTradePost", label: "Trade Post" },
         { id: "buildGrandBazaar", label: "Grand Bazaar" },
         { id: "buildMerchantsGuild", label: "Merchants Guild" },

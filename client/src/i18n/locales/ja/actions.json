@@ -699,6 +699,10 @@
   "provokeAttackWave": {
     "label": "襲撃を誘発"
   },
+  "buildRepairAlchemistHall": {
+    "description": "広間を修繕し、再び爆弾を作れるようにする",
+    "label": "錬金広間を修繕"
+  },
   "repairBastion": {
     "label": "バスティオンを修繕"
   },

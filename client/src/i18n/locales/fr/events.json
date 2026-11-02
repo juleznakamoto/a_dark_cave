@@ -42,6 +42,18 @@
     "message": "L'alchimiste sort de sa salle : « J'ai mené des expériences nuit et jour. » Il brandit une fiole de poussière miroitante. « J'ai créé quelque chose d'extraordinaire et de terriblement dangereux. »",
     "title": "La découverte de l'alchimiste"
   },
+  "alchemistExperimentsCrossedALine": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "log": {
+      "outcome0": "Quand la fumée se dissipe, la salle est en ruines. Impossible de fabriquer des bombes tant qu'elle n'est pas réparée."
+    },
+    "message": "Une explosion violente déchire le village. Peu après, l'alchimiste sort de la fumée en titubant, un grand sourire aux lèvres. « J'ai réussi ! Une meilleure façon de faire des bombes ! » Son sourire vacille. « La salle est en ruines. Il faudra la réparer. »",
+    "title": "Les expériences de l'alchimiste"
+  },
   "ashwraithCanyonTradeOffer": {
     "choices": {
       "continue": {

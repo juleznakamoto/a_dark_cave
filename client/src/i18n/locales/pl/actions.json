@@ -701,6 +701,10 @@
   "provokeAttackWave": {
     "label": "Sprowokuj falę ataku"
   },
+  "buildRepairAlchemistHall": {
+    "description": "Naprawia salę, by znów dało się wytwarzać bomby",
+    "label": "Napraw salę alchemika"
+  },
   "repairBastion": {
     "label": "Napraw bastion"
   },

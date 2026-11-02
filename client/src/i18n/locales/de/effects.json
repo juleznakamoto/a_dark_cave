@@ -322,6 +322,10 @@
       "description": "Bauplan zur Herstellung einer furchteinflößenden Hellebarde",
       "name": "Sturmglas-Hellebarde"
     },
+    "superior_bombs": {
+      "description": "Bomben richten mehr Schaden an",
+      "name": "Überlegene Bomben"
+    },
     "survivors_last_words": {
       "description": "Der letzte Segen eines sterbenden Fremden",
       "name": "Letzte Worte des Überlebenden"

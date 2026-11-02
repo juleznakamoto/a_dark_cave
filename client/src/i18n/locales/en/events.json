@@ -42,6 +42,18 @@
     "message": "The alchemist emerges from his hall: 'I have been conducting experiments day and night.' He holds up a vial of shimmering dust. 'I've created something extraordinary and terribly dangerous.'",
     "title": "The Alchemist's Discovery"
   },
+  "alchemistExperimentsCrossedALine": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "log": {
+      "outcome0": "When the smoke clears, the hall lies in ruins. No bombs can be crafted until it is repaired."
+    },
+    "message": "A violent blast tears through the village. Moments later, the alchemist staggers out of the smoke, grinning. 'I did it! A better way to make bombs!' His grin falters. 'The hall is in ruins. It will need repairs.'",
+    "title": "The Alchemist's Experiments"
+  },
   "ashwraithCanyonTradeOffer": {
     "choices": {
       "continue": {

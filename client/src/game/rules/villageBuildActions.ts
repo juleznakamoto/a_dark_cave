@@ -180,6 +180,9 @@ export const getNextBuildingLevel = (
     return moat >= 2 ? moat : 1;
   }
 
+  // Repair uses the hall's tier-1 cost table, not a new building count.
+  if (actionId === "buildRepairAlchemistHall") return 1;
+
   // Remove "build" prefix and lowercase first character
   let buildingKey = actionId.slice(5);
   buildingKey = buildingKey.charAt(0).toLowerCase() + buildingKey.slice(1);
@@ -2490,6 +2493,38 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     executionTime: 180,
+    cooldown: 0,
+  },
+
+  // Half the hall's build cost and time. The hall stays owned so craft buttons remain visible.
+  buildRepairAlchemistHall: {
+    id: "buildRepairAlchemistHall",
+    label: "Repair Alchemist's Hall",
+    description: "Repairs the hall so bombs can be crafted again",
+    tooltipEffects: [
+      bt("bombsCraftableAgain", "Bombs can be crafted again"),
+    ],
+    building: true,
+    category: "building",
+    show_when: {
+      1: {
+        "buildings.alchemistHall": 1,
+        "story.seen.alchemistHallDestroyed": true,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 2500,
+        "resources.stone": 2500,
+        "resources.steel": 500,
+      },
+    },
+    effects: {
+      1: {
+        "story.seen.alchemistHallDestroyed": false,
+      },
+    },
+    executionTime: 90,
     cooldown: 0,
   },
 

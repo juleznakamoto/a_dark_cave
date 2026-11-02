@@ -322,6 +322,10 @@
       "description": "Progetto per fabbricare una formidabile alabarda",
       "name": "Alabarda di vetrotempesta"
     },
+    "superior_bombs": {
+      "description": "Le bombe infliggono più danni",
+      "name": "Bombe superiori"
+    },
     "survivors_last_words": {
       "description": "La benedizione finale di un forestiero morente",
       "name": "Ultime parole del sopravvissuto"

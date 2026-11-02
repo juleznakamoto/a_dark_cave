@@ -701,6 +701,10 @@
   "provokeAttackWave": {
     "label": "Спровоцировать волну атаки"
   },
+  "buildRepairAlchemistHall": {
+    "description": "Чинит зал, чтобы снова можно было создавать бомбы",
+    "label": "Починить зал алхимика"
+  },
   "repairBastion": {
     "label": "Починить бастион"
   },

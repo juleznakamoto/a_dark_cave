@@ -42,6 +42,18 @@
     "message": "Der Alchemist tritt aus seiner Halle: „Ich habe Tag und Nacht Experimente durchgeführt“, sagt er und hält eine Phiole mit schimmerndem Staub hoch. „Ich habe etwas Außergewöhnliches und furchtbar Gefährliches erschaffen.“",
     "title": "Die Entdeckung des Alchemisten"
   },
+  "alchemistExperimentsCrossedALine": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "log": {
+      "outcome0": "Als sich der Rauch lichtet, liegt die Halle in Trümmern. Bomben können erst nach der Reparatur gefertigt werden."
+    },
+    "message": "Eine heftige Explosion reißt durch das Dorf. Kurz darauf taumelt der Alchemist grinsend aus dem Rauch. „Ich hab's geschafft! Eine bessere Art, Bomben zu machen!“ Sein Grinsen gerät ins Wanken. „Die Halle liegt in Trümmern. Sie muss repariert werden.“",
+    "title": "Die Experimente des Alchemisten"
+  },
   "ashwraithCanyonTradeOffer": {
     "choices": {
       "continue": {

@@ -128,6 +128,7 @@ import {
   handleBuildTemple,
   handleBuildSanctum,
   handleBuildAlchemistHall,
+  handleBuildRepairAlchemistHall,
   handleBuildTradePost,
   handleBuildGrandBazaar,
   handleBuildMerchantsGuild,
@@ -605,6 +606,8 @@ export function executeGameAction(
       return handleBuildSanctum(state, result);
     case "buildAlchemistHall":
       return handleBuildAlchemistHall(state, result);
+    case "buildRepairAlchemistHall":
+      return handleBuildRepairAlchemistHall(state, result);
     case "buildTradePost":
       return handleBuildTradePost(state, result);
     case "buildGrandBazaar":

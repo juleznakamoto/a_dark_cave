@@ -42,6 +42,18 @@
     "message": "El alquimista emerge de su salón: «He estado realizando experimentos día y noche», dice, sosteniendo un vial de polvo resplandeciente. «He creado algo extraordinario y terriblemente peligroso».",
     "title": "El descubrimiento del alquimista"
   },
+  "alchemistExperimentsCrossedALine": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "log": {
+      "outcome0": "Cuando el humo se disipa, el salón está en ruinas. No se pueden fabricar bombas hasta repararlo."
+    },
+    "message": "Una explosión violenta atraviesa la aldea. Poco después, el alquimista sale tambaleándose del humo, sonriendo. «¡Lo logré! ¡Una forma mejor de hacer bombas!» Su sonrisa vacila. «El salón está en ruinas. Necesitará reparaciones.»",
+    "title": "Los experimentos del alquimista"
+  },
   "ashwraithCanyonTradeOffer": {
     "choices": {
       "continue": {

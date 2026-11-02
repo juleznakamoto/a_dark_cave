@@ -3,6 +3,7 @@ import type { ActionResult } from "@/game/types";
 import { getUpgradeBonusMultiplier } from "@/game/buttonUpgrades";
 import { scaleCraftProduceAmount } from "@/game/craftUpgradeUtils";
 import { applyActionEffects } from "./actionEffects";
+import { isBombCraftBlockedByHall } from "./skillUpgrades";
 import { pushSystemLog } from "./systemLog";
 
 const BONE_TOTEM_BASE_COST = 100;
@@ -88,6 +89,7 @@ export const caveCraftResources: Record<string, Action> = {
     },
     executionTime: 20,
     cooldown: 0,
+    canExecute: (state: GameState) => !isBombCraftBlockedByHall("craftEmberBomb", state),
   },
 
   craftAshfireBomb: {
@@ -111,6 +113,7 @@ export const caveCraftResources: Record<string, Action> = {
     },
     executionTime: 30,
     cooldown: 0,
+    canExecute: (state: GameState) => !isBombCraftBlockedByHall("craftAshfireBomb", state),
   },
 
   craftVoidBomb: {
@@ -135,6 +138,7 @@ export const caveCraftResources: Record<string, Action> = {
     },
     executionTime: 45,
     cooldown: 0,
+    canExecute: (state: GameState) => !isBombCraftBlockedByHall("craftVoidBomb", state),
   },
 
   craftVeinfireElixir: {

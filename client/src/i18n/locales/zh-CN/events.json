@@ -42,6 +42,18 @@
     "message": "炼金术士从大厅中走出，手里拿着一小瓶闪烁的粉尘：“我日夜不停地做实验，”他说，“我造出了某种非凡而极其危险的东西。”",
     "title": "炼金术士的发现"
   },
+  "alchemistExperimentsCrossedALine": {
+    "choices": {
+      "continue": {
+        "label": "继续"
+      }
+    },
+    "log": {
+      "outcome0": "烟雾散去，大厅已成废墟。修复之前无法制作炸弹。"
+    },
+    "message": "一阵猛烈的爆炸撕裂了村子。不久，炼金术士从烟雾里踉跄走出，咧嘴笑着：“成了！更好的制弹法！”笑容随即僵住。“大厅成了废墟，得修。”",
+    "title": "炼金术士的实验"
+  },
   "ashwraithCanyonTradeOffer": {
     "choices": {
       "continue": {

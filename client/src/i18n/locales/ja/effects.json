@@ -322,6 +322,10 @@
       "description": "恐るべき斧槍を作るための設計図",
       "name": "嵐晶の斧槍"
     },
+    "superior_bombs": {
+      "description": "爆弾のダメージが増える",
+      "name": "上等な爆弾"
+    },
     "survivors_last_words": {
       "description": "死にゆく見知らぬ者が残した最期の祝福",
       "name": "生存者の最期の言葉"

@@ -322,6 +322,10 @@
       "description": "Plan budowy potężnej halabardy",
       "name": "Halabarda z burzoszkła"
     },
+    "superior_bombs": {
+      "description": "Bomby zadają więcej obrażeń",
+      "name": "Lepsze bomby"
+    },
     "survivors_last_words": {
       "description": "Ostatnie błogosławieństwo umierającego obcego",
       "name": "Ostatnie słowa ocalałego"

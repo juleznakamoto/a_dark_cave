@@ -322,6 +322,10 @@
       "description": "Esquema para fabricar uma formidável alabarda",
       "name": "Alabarda de Vidro-Tempestade"
     },
+    "superior_bombs": {
+      "description": "As bombas causam mais dano",
+      "name": "Bombas Superiores"
+    },
     "survivors_last_words": {
       "description": "A bênção final de um estranho moribundo",
       "name": "Últimas Palavras do Sobrevivente"

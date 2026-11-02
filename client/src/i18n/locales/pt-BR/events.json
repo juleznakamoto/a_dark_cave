@@ -42,6 +42,18 @@
     "message": "O alquimista emerge de seu salão: “Tenho conduzido experimentos dia e noite.” Ele ergue um frasco de poeira reluzente. “Criei algo extraordinário e terrivelmente perigoso.”",
     "title": "A Descoberta do Alquimista"
   },
+  "alchemistExperimentsCrossedALine": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "log": {
+      "outcome0": "Quando a fumaça se dissipa, o salão está em ruínas. Não dá para fabricar bombas até o reparo."
+    },
+    "message": "Uma explosão violenta rasga a vila. Logo depois, o alquimista sai cambaleando da fumaça, sorrindo. “Consegui! Um jeito melhor de fazer bombas!” O sorriso vacila. “O salão está em ruínas. Vai precisar de reparos.”",
+    "title": "Os experimentos do alquimista"
+  },
   "ashwraithCanyonTradeOffer": {
     "choices": {
       "continue": {

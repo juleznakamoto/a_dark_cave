@@ -1459,6 +1459,13 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {},
   },
 
+  superior_bombs: {
+    id: "superior_bombs",
+    name: "Superior Bombs",
+    description: "Bombs deal more damage",
+    bonuses: {},
+  },
+
   ravens_mark: {
     id: "ravens_mark",
     name: "Raven's Mark",

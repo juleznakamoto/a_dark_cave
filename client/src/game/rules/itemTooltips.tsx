@@ -995,6 +995,7 @@ export function renderItemTooltip(
       itemId === "bone_dice" ||
       itemId === "ebon_grace" ||
       itemId === "wanderers_lantern" ||
+      itemId === "superior_bombs" ||
       (itemType === "weapon" && itemId === "nightshade_bow") ||
       unlockEffectLine ||
       hasUpgradeChain,
@@ -1352,6 +1353,19 @@ export function renderItemTooltip(
             "Doubles production bonus from Heartfire",
           )}
         </div>
+      )}
+      {showEffects && itemId === "superior_bombs" && (
+        <>
+          <div>
+            {getUiTooltip("superiorBombsBaseDamage", "+20 base bomb damage")}
+          </div>
+          <div>
+            {getUiTooltip(
+              "superiorBombsKnowledgeDamage",
+              "+1 damage per 5 Knowledge",
+            )}
+          </div>
+        </>
       )}
       {showEffects && hasActionBonusEffects && effect.bonuses?.actionBonuses &&
         Object.entries(effect.bonuses.actionBonuses).map(

@@ -42,6 +42,18 @@
     "message": "Alchemik wychodzi ze swojej hali: „Prowadziłem eksperymenty dniem i nocą.” Unosi fiolkę mieniącego się pyłu. „Stworzyłem coś niezwykłego i straszliwie niebezpiecznego.”",
     "title": "Odkrycie alchemika"
   },
+  "alchemistExperimentsCrossedALine": {
+    "choices": {
+      "continue": {
+        "label": "Kontynuuj"
+      }
+    },
+    "log": {
+      "outcome0": "Gdy dym opada, sala leży w gruzach. Bomb nie da się wytwarzać, dopóki nie zostanie naprawiona."
+    },
+    "message": "Gwałtowny wybuch rozdziera wieś. Wkrótce alchemik wytacza się z dymu, szczerząc zęby. „Udało się! Lepszy sposób na bomby!” Uśmiech zaczyna mu gasnąć. „Sala leży w gruzach. Trzeba ją naprawić.”",
+    "title": "Eksperymenty alchemika"
+  },
   "ashwraithCanyonTradeOffer": {
     "choices": {
       "continue": {

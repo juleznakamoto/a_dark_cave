@@ -322,6 +322,10 @@
       "description": "Plano para fabricar una alabarda formidable",
       "name": "Alabarda de cristal de tormenta"
     },
+    "superior_bombs": {
+      "description": "Las bombas infligen más daño",
+      "name": "Bombas superiores"
+    },
     "survivors_last_words": {
       "description": "La última bendición de un desconocido moribundo",
       "name": "Últimas palabras del superviviente"

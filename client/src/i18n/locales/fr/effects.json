@@ -322,6 +322,10 @@
       "description": "Plan pour fabriquer une hallebarde redoutable",
       "name": "Hallebarde de verre-tempête"
     },
+    "superior_bombs": {
+      "description": "Les bombes infligent plus de dégâts",
+      "name": "Bombes supérieures"
+    },
     "survivors_last_words": {
       "description": "La bénédiction finale d'un étranger mourant",
       "name": "Dernières paroles du survivant"

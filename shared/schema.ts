@@ -309,6 +309,7 @@ export const gameStateSchema = z.object({
       depths_gift: z.boolean().default(false),
       rich_veins: z.boolean().default(false),
       brimstone_infusion: z.boolean().default(false),
+      superior_bombs: z.boolean().default(false),
     })
     .default({}),
   books: z

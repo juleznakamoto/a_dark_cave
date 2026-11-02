@@ -28,7 +28,9 @@ import { getBoneTotemsCost } from "./forestSacrificeActions";
 import {
   BLOODFLAME_SPHERE_UPGRADES,
   BOMB_BASE_DAMAGE_BY_ID,
+  bombDisplayedBaseDamage,
   bombKnowledgeDamageBonus,
+  isBombCraftBlockedByHall,
   CRUSHING_STRIKE_UPGRADES,
   FERAL_HOWL_UPGRADES,
 } from "./skillUpgrades";
@@ -529,6 +531,7 @@ export const getResourceGainTooltip = (
 
   const bombResource = BOMB_ACTIONS[actionId];
   const isBombAtMax = bombResource && isBombAtLimit(bombResource, state);
+  const hallNeedsRepair = isBombCraftBlockedByHall(actionId, state);
   const isVeinfireElixirAtMax =
     (actionId === "craftVeinfireElixir" ||
       actionId === "tradeGoldForVeinfireElixir") &&
@@ -557,6 +560,7 @@ export const getResourceGainTooltip = (
     gains.length === 0 &&
     costs.length === 0 &&
     !isBombAtMax &&
+    !hallNeedsRepair &&
     !isVeinfireElixirAtMax &&
     !veinrootPctLine &&
     !(expeditionVillagers > 0)
@@ -581,11 +585,20 @@ export const getResourceGainTooltip = (
   const headerBlockAboveVein =
     gains.length > 0 ||
     isBombAtMax ||
+    hallNeedsRepair ||
     isVeinfireElixirAtMax ||
     hasResourceSection;
 
   const gainsBlock = (
     <>
+      {hallNeedsRepair && (
+        <div className="text-muted-foreground mb-1">
+          {getUiTooltip(
+            "alchemistHallNeedsRepair",
+            "Alchemist's Hall needs to be repaired.",
+          )}
+        </div>
+      )}
       {isBombAtMax && (
         <div className="text-muted-foreground mb-1">
           {getUiTooltip("maxBombsReached", "Max bombs reached ({{limit}} per type)", {
@@ -602,7 +615,7 @@ export const getResourceGainTooltip = (
           )}
         </div>
       )}
-      {(isBombAtMax || isVeinfireElixirAtMax) && gains.length > 0 && (
+      {(isBombAtMax || isVeinfireElixirAtMax || hallNeedsRepair) && gains.length > 0 && (
         <div className="border-t border-border my-1" />
       )}
       {gains.map((gain, index) => (
@@ -627,7 +640,7 @@ export const getResourceGainTooltip = (
   );
 
   const hasGainsSection =
-    isBombAtMax || isVeinfireElixirAtMax || gains.length > 0;
+    isBombAtMax || hallNeedsRepair || isVeinfireElixirAtMax || gains.length > 0;
 
   const costRows = costs.map((cost) => ({
     text: formatTooltipCostLine(cost.amount, cost.resource, {
@@ -1124,10 +1137,11 @@ function formatBombCombatTooltip(
   baseDamage: number,
 ): string {
   const knowledge = getTotalKnowledge(state) || 0;
-  const knowledgeBonus = bombKnowledgeDamageBonus(knowledge);
-  const total = baseDamage + knowledgeBonus;
+  const displayedBase = bombDisplayedBaseDamage(baseDamage, state);
+  const knowledgeBonus = bombKnowledgeDamageBonus(knowledge, state);
+  const total = displayedBase + knowledgeBonus;
   const lines = [
-    getUiTooltip("baseDamage", "Base Damage: {{value}}", { value: baseDamage }),
+    getUiTooltip("baseDamage", "Base Damage: {{value}}", { value: displayedBase }),
     ...(knowledge >= 5
       ? [
         getUiTooltip("knowledgeBonus", "Knowledge Bonus: +{{value}}", {

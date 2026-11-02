@@ -17,7 +17,9 @@ function handleBuildingConstruction(
   // High Bastion and Hungering Moat raise an existing count, so the cost
   // tier is the action's own tier 1, not that building's next number.
   const level =
-    actionId === "buildHighBastion" || actionId === "buildHungeringMoat"
+    actionId === "buildHighBastion" ||
+    actionId === "buildHungeringMoat" ||
+    actionId === "buildRepairAlchemistHall"
       ? getNextBuildingLevel(actionId, state)
       : currentCount + 1;
   const action = villageBuildActions[actionId];
@@ -848,6 +850,29 @@ export function handleBuildAlchemistHall(
   }
 
   return alchemistHallResult;
+}
+
+export function handleBuildRepairAlchemistHall(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const repairResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildRepairAlchemistHall",
+    "alchemistHall",
+  );
+
+  if (state.story.seen.alchemistHallDestroyed === true) {
+    pushSystemLog(
+      repairResult,
+      "alchemist-hall-repaired",
+      "building.alchemistHallRepaired",
+      "The Alchemist's Hall is repaired. Bombs can be crafted again.",
+    );
+  }
+
+  return repairResult;
 }
 
 export function handleBuildTradePost(
