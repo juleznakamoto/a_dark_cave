@@ -1200,10 +1200,11 @@ export const gameStateSchema = z.object({
       roundsRemainingThisEvent: z.number().int().min(1).max(3).optional(),
       /**
        * In-progress dice round (persisted for resume-on-refresh). Omitted once `outcome` is set.
+       * `doubleOffer` is the extra roll after a paid win. It is not the pause that hands play to the gambler.
        */
       session: z
         .object({
-          phase: z.enum(["wager", "playerTurn", "npcTurn"]),
+          phase: z.enum(["wager", "playerTurn", "npcTurn", "doubleOffer"]),
           playerTotal: z.number(),
           npcTotal: z.number(),
           goal: z.number(),

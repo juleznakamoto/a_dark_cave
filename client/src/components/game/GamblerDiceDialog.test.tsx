@@ -359,4 +359,116 @@ describe("GamblerDiceDialog", () => {
     offer.mockRestore();
     rollDie.mockRestore();
   });
+
+  it("saves the offer as its own turn and does not hand it to the gambler", () => {
+    const offer = vi
+      .spyOn(gamblerSession, "gamblerDoubleOfferOnWin")
+      .mockReturnValue(true);
+    const rollDie = vi.spyOn(diceFifteenGame, "rollDie").mockReturnValue(1);
+    renderPaidWinAtFourteen();
+
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: /^roll$/i }));
+      vi.advanceTimersByTime(1200);
+    });
+
+    expect(useGameStore.getState().gamblerGame?.session).toMatchObject({
+      phase: "doubleOffer",
+      playerTotal: 15,
+      pauseAfterNextPlayerRoll: false,
+    });
+    expect(useGameStore.getState().gamblerGame?.outcome).toBeUndefined();
+    expect(screen.queryByText(/double, or nothing/i)).not.toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(WIN_LOSE_BOARD_HOLD_MS);
+    });
+
+    expect(screen.getByText(/double, or nothing/i)).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /^roll$/i }),
+    ).not.toBeInTheDocument();
+    offer.mockRestore();
+    rollDie.mockRestore();
+  });
+
+  it("restores a saved offer instead of the gambler's turn", () => {
+    useGameStore.setState({
+      gamblerGame: {
+        wager: 10,
+        stakeNotYetDeducted: false,
+        session: {
+          phase: "doubleOffer",
+          playerTotal: 15,
+          npcTotal: 10,
+          goal: 15,
+          playerLastRoll: 1,
+          npcLastRoll: 5,
+          hasRolledThisRound: true,
+          playerStopped: false,
+          pauseAfterNextPlayerRoll: false,
+        },
+      },
+    });
+    render(
+      <GamblerDiceDialog
+        isOpen={true}
+        onOutcomeResolved={vi.fn()}
+        onClose={vi.fn()}
+        playerGold={100}
+        playerLuck={50}
+        onWagerSelected={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText(/double, or nothing/i)).toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(2000);
+    });
+
+    expect(screen.getByText(/double, or nothing/i)).toBeInTheDocument();
+    expect(screen.queryByTestId("gambler-running-total")).not.toBeInTheDocument();
+  });
+
+  it("restores an offer that was saved as the old handoff pause", () => {
+    useGameStore.setState({
+      gamblerGame: {
+        wager: 10,
+        stakeNotYetDeducted: false,
+        session: {
+          phase: "playerTurn",
+          playerTotal: 15,
+          npcTotal: 10,
+          goal: 15,
+          playerLastRoll: 1,
+          npcLastRoll: 5,
+          hasRolledThisRound: true,
+          playerStopped: false,
+          pauseAfterNextPlayerRoll: true,
+        },
+      },
+    });
+    render(
+      <GamblerDiceDialog
+        isOpen={true}
+        onOutcomeResolved={vi.fn()}
+        onClose={vi.fn()}
+        playerGold={100}
+        playerLuck={50}
+        onWagerSelected={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText(/double, or nothing/i)).toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(500);
+    });
+
+    expect(screen.queryByTestId("gambler-running-total")).not.toBeInTheDocument();
+    expect(useGameStore.getState().gamblerGame?.session?.phase).toBe(
+      "doubleOffer",
+    );
+  });
 });

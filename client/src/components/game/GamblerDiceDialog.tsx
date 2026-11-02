@@ -250,6 +250,8 @@ export default function GamblerDiceDialog({
   /** A lost extra roll stays on this screen so the die face stays visible. */
   const [doubleLossReady, setDoubleLossReady] = useState(false);
   const [doubleLossButtonReady, setDoubleLossButtonReady] = useState(false);
+  /** Board stays up briefly after the winning roll. The offer itself is already saved. */
+  const [doubleOfferReady, setDoubleOfferReady] = useState(false);
   const totalsRef = useRef({ playerTotal: 0, npcTotal: 0, goal: INITIAL_GOAL });
   const npcTurnNonceRef = useRef(0);
   /**
@@ -304,6 +306,7 @@ export default function GamblerDiceDialog({
     setDoubleSpinning(false);
     setDoubleRoll(null);
     setDoubleLossReady(false);
+    setDoubleOfferReady(false);
     setSpinning(false);
     setNpcSpinning(false);
     setHasRolledThisRound(false);
@@ -364,6 +367,27 @@ export default function GamblerDiceDialog({
       setSpinning(false);
       setNpcSpinning(false);
       outcomeReportedRef.current = false;
+      // A won roll used to be saved as the pause that hands play to the gambler.
+      const resumeOffer =
+        s.phase === "doubleOffer" ||
+        (s.phase === "playerTurn" &&
+          s.pauseAfterNextPlayerRoll &&
+          s.hasRolledThisRound &&
+          !s.playerStopped &&
+          s.playerTotal >= s.goal);
+      if (resumeOffer) {
+        doubleSnapshotRef.current = {
+          playerTotal: s.playerTotal,
+          npcTotal: s.npcTotal,
+          goal: s.goal,
+        };
+        setPhase("doubleOffer");
+        setDoubleOfferReady(true);
+        setPauseAfterPlayerRoll(false);
+        setLockedDialogSize(null);
+        return;
+      }
+      setDoubleOfferReady(false);
       // Do not use a synthetic min height here. Normal play locks size from the wager layout's
       // measured offsetHeight in handleWager; a fixed ~520px minHeight after refresh stretched
       // flex-1 content and left a tall empty band. Resume with unlocked sizing (content height).
@@ -389,13 +413,9 @@ export default function GamblerDiceDialog({
   }, [isOpen, resetGame]);
 
   useEffect(() => {
-    if (
-      !isOpen ||
-      phase === "outcome" ||
-      phase === "doubleOffer" ||
-      phase === "doubleRoll"
-    )
-      return;
+    // The extra throw is local until the face lands and the round is settled.
+    // Until then the save stays on the offer, the same way a spinning die stays on the turn that rolled it.
+    if (!isOpen || phase === "outcome" || phase === "doubleRoll") return;
     const gg = useGameStore.getState().gamblerGame;
     if (!gg || gg.outcome != null) return;
 
@@ -502,12 +522,15 @@ export default function GamblerDiceDialog({
       gamblerDoubleOfferOnWin(useGameStore.getState(), wager)
     ) {
       doubleSnapshotRef.current = snapshot;
-      setPauseAfterPlayerRoll(true);
+      // Same write as any other in-progress turn. The pause flag would look like a handoff to the gambler.
+      setPauseAfterPlayerRoll(false);
+      setDoubleOfferReady(false);
       clearTimeoutRef(playerTimeoutRef);
       clearTimeoutRef(npcTimeoutRef);
+      setPhase("doubleOffer");
       playerTimeoutRef.current = setTimeout(() => {
         if (!isOpenRef.current) return;
-        setPhase("doubleOffer");
+        setDoubleOfferReady(true);
         playerTimeoutRef.current = null;
       }, WIN_LOSE_BOARD_HOLD_MS);
       return;
@@ -536,19 +559,21 @@ export default function GamblerDiceDialog({
       if (!isOpenRef.current) return;
       setDoubleSpinning(false);
       setDoubleRoll(roll);
+      doubleTimeoutRef.current = null;
+      // The face landing commits the round, the same moment a normal roll writes its outcome.
+      if (doubled) {
+        settleRound("win", snapshot, wager * 2, DOUBLE_FACE_HOLD_MS);
+        return;
+      }
+      payoutGoldDeltaRef.current = 0;
+      setSettledGoldDelta(0);
+      if (!outcomeReportedRef.current) {
+        outcomeReportedRef.current = true;
+        onOutcomeResolved("lose", wager, snapshot, { goldDelta: 0 });
+      }
       doubleTimeoutRef.current = setTimeout(() => {
         if (!isOpenRef.current) return;
         doubleTimeoutRef.current = null;
-        if (doubled) {
-          settleRound("win", snapshot, wager * 2, 0);
-          return;
-        }
-        payoutGoldDeltaRef.current = 0;
-        setSettledGoldDelta(0);
-        if (!outcomeReportedRef.current) {
-          outcomeReportedRef.current = true;
-          onOutcomeResolved("lose", wager, snapshot, { goldDelta: 0 });
-        }
         setDoubleLossReady(true);
       }, DOUBLE_FACE_HOLD_MS);
     }, spinMs);
@@ -915,7 +940,7 @@ export default function GamblerDiceDialog({
                 </div>
               )}
 
-              {phase === "doubleOffer" && (
+              {phase === "doubleOffer" && doubleOfferReady && (
                 <div className="space-y-4 py-3">
                   <p className="text-sm text-muted-foreground">
                     {t("gambler.coinOffer")}
@@ -981,7 +1006,9 @@ export default function GamblerDiceDialog({
                 </div>
               )}
 
-              {(phase === "playerTurn" || phase === "npcTurn") && (
+              {(phase === "playerTurn" ||
+                phase === "npcTurn" ||
+                (phase === "doubleOffer" && !doubleOfferReady)) && (
                 <div className="space-y-3 flex flex-col">
                   <div className="flex flex-col gap-1 text-sm text-muted-foreground mt-2 shrink-0">
                     <span>
