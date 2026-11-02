@@ -27,10 +27,10 @@ describe("exiledScholarVisit", () => {
     const timeProbability = exiledScholarEvents.exiledScholarVisit.timeProbability;
     expect(typeof timeProbability).toBe("function");
     if (typeof timeProbability !== "function") return;
-    expect(timeProbability(scholarState())).toBe(7);
+    expect(timeProbability(scholarState())).toBe(5);
     const paid = scholarState();
     paid.exiledScholarState.hasPaid = true;
-    expect(timeProbability(paid)).toBe(60);
+    expect(timeProbability(paid)).toBe(40);
   });
 });
 

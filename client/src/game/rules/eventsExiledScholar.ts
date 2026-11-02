@@ -11,8 +11,8 @@ export const exiledScholarEvents: Record<string, GameEvent> = {
       state.relics.necromancer_blood &&
       state.relics.bone_devourer_blood,
     timeProbability: (state: GameState) => {
-      // 7 before the player has paid. 60 if the vials are gathered again later.
-      return state.exiledScholarState?.hasPaid ? 60 : 7;
+      // 5 before the player has paid. 40 if the vials are gathered again later.
+      return state.exiledScholarState?.hasPaid ? 40 : 5;
     },
 
     priority: 10,
