@@ -30,9 +30,45 @@ function getResourceFlowSourceLabel(sourceId: string): string {
   return getVillagerJobName(sourceId, capitalizeWords(sourceId));
 }
 
+function ResourceFlowDivider() {
+  return (
+    <div
+      className="my-1 h-px bg-neutral-600"
+      role="separator"
+      data-testid="resource-flow-divider"
+    />
+  );
+}
+
+function ResourceFlowLine({
+  sourceId,
+  amount,
+}: {
+  sourceId: string;
+  amount: number;
+}) {
+  const { t } = useUiTranslation();
+  const source = getResourceFlowSourceLabel(sourceId);
+  const formatted = formatSignedNumber(Math.round(amount));
+  return (
+    <div
+      className="flex justify-between gap-3"
+      data-testid="resource-flow-line"
+      aria-label={t("sidePanel.resourceFlowLine", {
+        source,
+        amount: formatted,
+        defaultValue: "{{source}} {{amount}}",
+      })}
+    >
+      <span>{source}</span>
+      <span className="text-right font-mono tabular-nums">{formatted}</span>
+    </div>
+  );
+}
+
 /**
- * Per-job production/consumption for a side-panel resource row.
- * Format: `Gatherer +10`
+ * Per-source production and consumption for a side-panel resource row.
+ * Order: costs, divider, output, divider, bold sum.
  */
 export default function ResourceFlowTooltip({
   resourceId,
@@ -51,6 +87,12 @@ export default function ResourceFlowTooltip({
     return getResourceAmountCap(resourceId, s);
   });
   if (lines.length === 0 && capacityLimit == null) return null;
+
+  const costs = lines.filter((line) => line.amount < 0);
+  const outputs = lines.filter((line) => line.amount > 0);
+  const sum = Math.round(lines.reduce((total, line) => total + line.amount, 0));
+  const formattedSum = formatSignedNumber(sum);
+
   return (
     <div className="flex min-w-[7rem] flex-col text-xs">
       {capacityLimit != null ? (
@@ -64,24 +106,35 @@ export default function ResourceFlowTooltip({
           })}
         </div>
       ) : null}
-      {lines.map((line) => {
-        const source = getResourceFlowSourceLabel(line.sourceId);
-        const amount = formatSignedNumber(Math.round(line.amount));
-        return (
+      {costs.map((line) => (
+        <ResourceFlowLine
+          key={line.sourceId}
+          sourceId={line.sourceId}
+          amount={line.amount}
+        />
+      ))}
+      {costs.length > 0 && outputs.length > 0 ? <ResourceFlowDivider /> : null}
+      {outputs.map((line) => (
+        <ResourceFlowLine
+          key={line.sourceId}
+          sourceId={line.sourceId}
+          amount={line.amount}
+        />
+      ))}
+      {lines.length > 0 ? (
+        <>
+          <ResourceFlowDivider />
           <div
-            key={line.sourceId}
-            className="flex justify-between gap-3"
-            aria-label={t("sidePanel.resourceFlowLine", {
-              source,
-              amount,
-              defaultValue: "{{source}} {{amount}}",
-            })}
+            className="flex justify-end"
+            data-testid="resource-flow-sum"
+            aria-label={formattedSum}
           >
-            <span>{source}</span>
-            <span className="text-right font-mono tabular-nums">{amount}</span>
+            <span className="text-right font-mono font-bold tabular-nums">
+              {formattedSum}
+            </span>
           </div>
-        );
-      })}
+        </>
+      ) : null}
     </div>
   );
 }

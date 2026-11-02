@@ -6,8 +6,9 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@/i18n";
 import { useGameStore } from "@/game/state";
+import { getResourceProductionBreakdown } from "@/game/population";
 import { getResourceAmountCap } from "@/game/resourceLimits";
-import { formatNumber } from "@/lib/utils";
+import { formatNumber, formatSignedNumber } from "@/lib/utils";
 import ResourceFlowTooltip from "./ResourceFlowTooltip";
 
 describe("ResourceFlowTooltip capacity line", () => {
@@ -48,5 +49,118 @@ describe("ResourceFlowTooltip capacity line", () => {
     });
     const { container } = render(<ResourceFlowTooltip resourceId="gold" />);
     expect(container).toBeEmptyDOMElement();
+  });
+});
+
+describe("ResourceFlowTooltip flow order", () => {
+  function sectionOrder(container: HTMLElement): string[] {
+    return [...container.firstElementChild!.children].map(
+      (el) => el.getAttribute("data-testid") ?? "",
+    );
+  }
+
+  it("lists costs, a divider, output, a divider, then a bold sum", () => {
+    const current = useGameStore.getState();
+    useGameStore.setState({
+      villagers: {
+        ...current.villagers,
+        gatherer: 2,
+        iron_miner: 1,
+        hunter: 0,
+        free: 2,
+      },
+      story: {
+        ...current.story,
+        seen: { ...current.story.seen, hasHunted: true },
+      },
+    });
+    const state = useGameStore.getState();
+    const breakdown = getResourceProductionBreakdown(state, "food");
+    const costs = breakdown.filter((line) => line.amount < 0);
+    const outputs = breakdown.filter((line) => line.amount > 0);
+    expect(costs.length).toBeGreaterThan(0);
+    expect(outputs.length).toBeGreaterThan(0);
+
+    const { container } = render(<ResourceFlowTooltip resourceId="food" />);
+    expect(sectionOrder(container)).toEqual([
+      ...costs.map(() => "resource-flow-line"),
+      "resource-flow-divider",
+      ...outputs.map(() => "resource-flow-line"),
+      "resource-flow-divider",
+      "resource-flow-sum",
+    ]);
+
+    const labels = screen
+      .getAllByTestId("resource-flow-line")
+      .map((el) => el.getAttribute("aria-label"));
+    expect(labels.slice(0, costs.length).every((label) => label?.includes("-"))).toBe(
+      true,
+    );
+    expect(
+      labels.slice(costs.length).every((label) => label?.includes("+")),
+    ).toBe(true);
+
+    const sum = Math.round(
+      breakdown.reduce((total, line) => total + line.amount, 0),
+    );
+    const sumRow = screen.getByTestId("resource-flow-sum");
+    expect(sumRow).toHaveTextContent(formatSignedNumber(sum));
+    expect(sumRow.querySelector(".font-bold")).not.toBeNull();
+  });
+
+  it("skips the empty costs block when a resource is only produced", () => {
+    const current = useGameStore.getState();
+    useGameStore.setState({
+      villagers: {
+        ...current.villagers,
+        gatherer: 0,
+        hunter: 0,
+        free: 0,
+        iron_miner: 1,
+      },
+    });
+    const breakdown = getResourceProductionBreakdown(
+      useGameStore.getState(),
+      "iron",
+    );
+    expect(breakdown.every((line) => line.amount > 0)).toBe(true);
+    expect(breakdown.length).toBeGreaterThan(0);
+
+    const { container } = render(<ResourceFlowTooltip resourceId="iron" />);
+    expect(sectionOrder(container)).toEqual([
+      ...breakdown.map(() => "resource-flow-line"),
+      "resource-flow-divider",
+      "resource-flow-sum",
+    ]);
+  });
+
+  it("skips the empty output block when a resource is only spent", () => {
+    const current = useGameStore.getState();
+    useGameStore.setState({
+      villagers: {
+        ...current.villagers,
+        gatherer: 0,
+        hunter: 0,
+        iron_miner: 0,
+        free: 2,
+      },
+      story: {
+        ...current.story,
+        seen: { ...current.story.seen, hasHunted: true },
+      },
+    });
+    const breakdown = getResourceProductionBreakdown(
+      useGameStore.getState(),
+      "wood",
+    );
+    expect(breakdown.every((line) => line.amount < 0)).toBe(true);
+    expect(breakdown.length).toBeGreaterThan(0);
+
+    const { container } = render(<ResourceFlowTooltip resourceId="wood" />);
+    expect(sectionOrder(container)).toEqual([
+      ...breakdown.map(() => "resource-flow-line"),
+      "resource-flow-divider",
+      "resource-flow-sum",
+    ]);
   });
 });
