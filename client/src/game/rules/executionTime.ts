@@ -7,6 +7,10 @@ import {
 import { getActionBonuses } from "./effectsCalculation";
 import { getGameActions } from "./actionsRegistry";
 import { getNextBuildingLevel } from "./villageBuildActions";
+import {
+  BAD_DREAMS_EXTRA_SECONDS,
+  isBadDreamsActive,
+} from "./eventsSleepDream";
 
 const CRAFT_UPGRADE_ACTIONS = [
   "craftTorches",
@@ -47,6 +51,11 @@ function resolveBaseExecutionTime(
   return executionTime[fallbackLevel] ?? 0;
 }
 
+/** True when the action has a timed bar. Instant actions omit executionTime. */
+export function actionHasExecutionTime(actionId: string): boolean {
+  return Boolean(getGameActions()[actionId]?.executionTime);
+}
+
 /** Get execution time in seconds for an action (0 = no execution time, instant) */
 export function getExecutionTime(actionId: string, state: GameState): number {
   const action = getGameActions()[actionId];
@@ -64,7 +73,10 @@ export function getExecutionTime(actionId: string, state: GameState): number {
   ) {
     const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
     if (upgradeKey && getUpgradeLevel(upgradeKey, state) === 10) {
-      return Math.max(1, baseTime * 0.5);
+      const halved = Math.max(1, baseTime * 0.5);
+      return isBadDreamsActive(state, Date.now())
+        ? halved + BAD_DREAMS_EXTRA_SECONDS
+        : halved;
     }
   }
 
@@ -81,6 +93,10 @@ export function getExecutionTime(actionId: string, state: GameState): number {
 
   if (state.devMode && actionId.startsWith("build")) {
     finalTime = Math.max(1, finalTime * 0.1);
+  }
+
+  if (isBadDreamsActive(state, Date.now())) {
+    finalTime += BAD_DREAMS_EXTRA_SECONDS;
   }
 
   return finalTime;

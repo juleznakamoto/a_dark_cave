@@ -57,6 +57,8 @@
     "hunterProduction": "Produkcja myśliwych: {{value}}",
     "gathererProduction": "Produkcja zbieraczy: {{value}}",
     "focus": "Skupienie",
+    "badDreams": "Złe sny",
+    "badDreamsDelay": "Akcje trwają o {{seconds}}s dłużej",
     "obsidianOrbFocusRate": "Skupienie: 1 na 15 minut",
     "obsidianOrbFocusCountdown": "{{time}} do kolejnego punktu skupienia",
     "obsidianOrbFocusCap": "Rezerwa skupienia pełna ({{max}})",

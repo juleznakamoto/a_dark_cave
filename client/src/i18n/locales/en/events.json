@@ -2327,6 +2327,14 @@
     "message": "A man on a cart drawn by two horses approaches the village. An iron cage on the cart holds three miserable slaves. The trader grins wickedly: 'I'll pay you 100 Steel for two of the villagers. What do you say?'",
     "title": "The Slave Trader"
   },
+  "goodDreams": {
+    "message": "You dreamed of the village at ease. Everyone is smiling, and for once there is nothing to fear. You woke rested, as if the night had been longer.",
+    "title": "Good Dreams"
+  },
+  "badDreams": {
+    "message": "You dreamed the village burned while something old and vast looked on from afar, and no one heard you call. You woke, and the dread did not fade.",
+    "title": "Bad Dreams"
+  },
   "solsticeGathering": {
     "choices": {
       "hostSolstice": {

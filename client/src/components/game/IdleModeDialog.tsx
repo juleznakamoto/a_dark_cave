@@ -41,6 +41,20 @@ function sortResourcesLikeSidePanel(keys: string[]): string[] {
   return [...precious, ...others, ...rest];
 }
 import { useUiTranslation } from "@/i18n/useUiTranslation";
+import { resolveEventMessage, resolveEventTitle } from "@/i18n/eventText";
+import {
+  openEventDialogNow,
+  scheduleCallbackWhenDialogClear,
+  scheduleRewardDialogWhenClear,
+} from "@/game/store/dialogScheduling";
+import {
+  buildBadDreamDialogEntry,
+  rollSleepDream,
+  SLEEP_DREAM_DELAY_MS,
+  sleepFocusPoints,
+  startBadDreams,
+} from "@/game/rules/eventsSleepDream";
+import { hasChosenPact } from "@/game/rules/pacts";
 import { getResourceName } from "@/i18n/resolveGameText";
 import {
   SLEEP_LENGTH_UPGRADES,
@@ -439,21 +453,24 @@ function IdleModeDialogOpen() {
     // Calculate Focus points gained (1 per almost 1 hour slept, or 1 per 5 seconds in dev mode)
     const focusIntervalMs = devMode ? 5 * 1000 : 59.99 * 60 * 1000;
     const hoursSlept = Math.floor(elapsed / focusIntervalMs);
+    const dream = hasChosenPact(currentGameState, "cunning_trader")
+      ? rollSleepDream(elapsed)
+      : "none";
 
     let focusToAdd = 0;
+    let focusGained = 0;
     if (hoursSlept > 0) {
       // Read after timer freeze so we keep shifted focus endTime/startTime.
       const afterFreeze = useGameStore.getState();
       const currentFocus = afterFreeze.focusState?.points || 0;
       const MAX_FOCUS = 30;
-      focusToAdd = hoursSlept;
-
-      // Double focus points if bell_blessing is active
-      if (afterFreeze.blessings?.bell_blessing && focusToAdd > 0) {
-        focusToAdd = focusToAdd * 2;
-      }
+      focusToAdd = sleepFocusPoints(hoursSlept, {
+        bellBlessing: Boolean(afterFreeze.blessings?.bell_blessing),
+        goodDream: dream === "good",
+      });
 
       const newFocusPoints = Math.min(currentFocus + focusToAdd, MAX_FOCUS);
+      focusGained = Math.max(0, newFocusPoints - currentFocus);
 
       // Update focus points in focusState (capped at 30)
       afterFreeze.updateFocusState({
@@ -488,7 +505,7 @@ function IdleModeDialogOpen() {
 
       if (resourcesList) {
         const restMsg =
-          hoursSlept > 0
+          hoursSlept > 0 && dream !== "good"
             ? `${t("idleMode.focusGainedLog", { count: focusToAdd })} `
             : "";
 
@@ -529,6 +546,34 @@ function IdleModeDialogOpen() {
       .catch((error) => {
         logger.error("[SLEEP] Failed to save after wake:", error);
       });
+
+    if (dream === "bad") {
+      scheduleCallbackWhenDialogClear(
+        useGameStore.getState,
+        () => {
+          const store = useGameStore.getState();
+          useGameStore.setState({ badDreamsState: startBadDreams() });
+          openEventDialogNow(
+            useGameStore.setState,
+            buildBadDreamDialogEntry(store),
+          );
+        },
+        SLEEP_DREAM_DELAY_MS,
+      );
+    } else if (dream === "good" && focusGained > 0) {
+      const store = useGameStore.getState();
+      scheduleRewardDialogWhenClear(
+        useGameStore.getState,
+        {
+          rewards: { focus: focusGained },
+          successLog: resolveEventMessage("goodDreams", undefined, store),
+          title:
+            resolveEventTitle("goodDreams", store) || "Good Dreams",
+          variant: "success",
+        },
+        SLEEP_DREAM_DELAY_MS,
+      );
+    }
 
     // Close dialog and reset local state
     setIsActive(false);

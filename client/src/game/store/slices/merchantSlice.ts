@@ -581,7 +581,7 @@ export const createMerchantSlice: GameStoreCreator<Partial<GameStore>> = (set, g
 
   chooseInsightBlessing: (blessingId: string) => {
     const state = get();
-    if (state.isPaused || !state.blessingOfferDialogOpen) return false;
+    if (!state.blessingOfferDialogOpen) return false;
     if (!isInsightBlessingId(blessingId)) return false;
 
     const offered = getVisibleInsightBlessingOffers(state);

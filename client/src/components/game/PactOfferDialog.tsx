@@ -3,9 +3,9 @@ import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useGameStore } from "@/game/state";
-import { PACTS_ENABLED } from "@/lib/featureFlags";
 import {
   PACT_IDS,
+  arePactsEnabled,
   clampPactChoices,
   isPactId,
   type PactId,
@@ -26,9 +26,63 @@ function prefersReducedMotion(): boolean {
   );
 }
 
+const PACT_EYE_BLINK_MS = 300;
+const PACT_EYE_BLINK_GAP_MIN_MS = 10_000;
+const PACT_EYE_BLINK_GAP_MAX_MS = 30_000;
+
+function nextPactEyeBlinkDelayMs(): number {
+  const span = PACT_EYE_BLINK_GAP_MAX_MS - PACT_EYE_BLINK_GAP_MIN_MS;
+  return PACT_EYE_BLINK_GAP_MIN_MS + Math.random() * span;
+}
+
+/** Open while the card is chosen. Closes for one blink, then opens again. */
+export function PactOfferEye({ open }: { open: boolean }) {
+  const [blinking, setBlinking] = useState(false);
+
+  useEffect(() => {
+    if (!open || prefersReducedMotion()) {
+      setBlinking(false);
+      return;
+    }
+
+    let alive = true;
+    let closeTimer = 0;
+    let reopenTimer = 0;
+
+    const schedule = () => {
+      closeTimer = window.setTimeout(() => {
+        if (!alive) return;
+        setBlinking(true);
+        reopenTimer = window.setTimeout(() => {
+          if (!alive) return;
+          setBlinking(false);
+          schedule();
+        }, PACT_EYE_BLINK_MS);
+      }, nextPactEyeBlinkDelayMs());
+    };
+
+    schedule();
+    return () => {
+      alive = false;
+      window.clearTimeout(closeTimer);
+      window.clearTimeout(reopenTimer);
+    };
+  }, [open]);
+
+  const closed = !open || blinking;
+
+  return (
+    <SidePanelSectionIcon
+      sectionId={closed ? "blessings" : "bonuses"}
+      sizeClassName="h-8 w-8 sm:h-10 sm:w-10"
+      className={closed ? "pact-offer-closed-eye" : "pact-offer-open-eye opacity-90"}
+    />
+  );
+}
+
 export default function PactOfferDialog() {
   const isOpen = useGameStore((s) => s.pactOfferDialogOpen);
-  if (!PACTS_ENABLED || !isOpen) return null;
+  if (!arePactsEnabled() || !isOpen) return null;
   return <PactOfferDialogOpen />;
 }
 
@@ -140,7 +194,12 @@ function PactOfferDialogOpen() {
           box-shadow: 0 0 15px 5px rgba(220, 38, 38, 0.4);
         }
         .pact-offer-card[aria-pressed="true"] {
-          outline: 1px solid #ef4444;
+          outline: 2px solid #ef4444;
+          outline-offset: -2px;
+        }
+        .pact-offer-card.pact-offer-card--open:not([aria-pressed="true"]):hover,
+        .pact-offer-card.pact-offer-card--open:not([aria-pressed="true"]):focus-visible {
+          outline: 1px solid var(--adc-chrome-rule-color, #6b1515);
           outline-offset: 0;
         }
         .pact-offer-open-eye {
@@ -179,7 +238,7 @@ function PactOfferDialogOpen() {
       `}</style>
       <div
         className={cn(
-          "fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-black p-3",
+          "fixed inset-0 z-50 overflow-y-auto overscroll-y-contain bg-black p-3 sm:flex sm:items-center sm:justify-center sm:overflow-hidden",
           closing && "pact-offer-backdrop-out",
         )}
         role="dialog"
@@ -187,7 +246,8 @@ function PactOfferDialogOpen() {
         aria-labelledby="pact-offer-title"
         data-testid="pact-offer-dialog"
       >
-        <div className="flex max-h-full min-h-0 w-full max-w-[min(98vw,80rem)] flex-col items-center overflow-hidden py-2">
+        <div className="flex min-h-full w-full justify-center sm:block sm:min-h-0 sm:w-full sm:max-w-[min(98vw,80rem)]">
+        <div className="m-auto flex w-full max-w-[min(98vw,80rem)] flex-col items-center py-2 sm:m-0 sm:max-w-none">
           <div className="mb-4 flex flex-col items-center gap-1">
             <div
               className={cn(
@@ -263,7 +323,8 @@ function PactOfferDialogOpen() {
                     toggle(pactId);
                   }}
                   className={cn(
-                    "pact-offer-card group relative z-0 flex w-[13.5rem] flex-col overflow-visible rounded-lg bg-background p-2.5 text-left shadow-2xl transition-opacity duration-1000 ease-out sm:w-[16rem] sm:p-4",
+                    "pact-offer-card group relative z-0 flex w-[13.5rem] flex-col overflow-visible rounded-lg bg-background p-2.5 text-left shadow-2xl transition-opacity duration-1000 ease-out sm:w-[16rem] sm:p-3",
+                    canSelect && "pact-offer-card--open",
                     isShown ? "opacity-100" : "pointer-events-none opacity-0",
                     canSelect ? "cursor-pointer" : "cursor-default",
                     chromeOn
@@ -284,6 +345,11 @@ function PactOfferDialogOpen() {
                       ? {
                           ...destroyedChromeMaskStyle(`pact-offer-${pactId}`),
                           ...chromeRuleColorStyle(ruleColor),
+                          // Stay on the solid hairline. Pact cards do not
+                          // follow the player's madness chrome stage.
+                          "--adc-chrome-solid": 1,
+                          "--adc-chrome-from": 0,
+                          "--adc-chrome-to": 0,
                         }
                       : undefined
                   }
@@ -302,37 +368,38 @@ function PactOfferDialogOpen() {
                     )}
                   />
 
-                  <div className="mb-2 flex justify-center text-foreground">
-                    <SidePanelSectionIcon
-                      sectionId={isSelected ? "bonuses" : "blessings"}
-                      sizeClassName="h-8 w-8 sm:h-10 sm:w-10"
-                      className={isSelected ? "pact-offer-open-eye opacity-90" : "pact-offer-closed-eye"}
-                    />
+                  <div className="mb-1 flex justify-center text-foreground">
+                    <PactOfferEye open={isSelected} />
                   </div>
 
-                  <h3 className="mb-2 text-center text-sm font-semibold leading-tight sm:text-base">
-                    {name}
+                  <h3
+                    className={cn(
+                      "mb-1 flex h-6 items-start justify-center text-center text-sm font-semibold leading-tight text-red-500 sm:text-base",
+                      isSelected ? "opacity-100" : "opacity-[0.85]",
+                    )}
+                  >
+                    <span className="w-full">{name}</span>
                   </h3>
 
-                  <p className="min-h-[2.25rem] text-center text-xs leading-snug text-white">
-                    {t(`pactOffer.cards.${pactId}.boon`)}
+                  <p className="flex h-[2.75rem] items-center text-center text-xs leading-snug text-white">
+                    <span className="w-full">{t(`pactOffer.cards.${pactId}.boon`)}</span>
                   </p>
-                  {secondBoon ? (
-                    <p className="mt-1.5 min-h-[2.25rem] text-center text-xs leading-snug text-white">
-                      {secondBoon}
-                    </p>
-                  ) : null}
-                  <p className="mt-1.5 min-h-[2.25rem] text-center text-xs italic leading-snug text-muted-foreground">
-                    {t(`pactOffer.cards.${pactId}.quote`)}
+                  <p className="mt-1 flex h-[2.75rem] items-center text-center text-xs leading-snug text-white">
+                    <span className="w-full">{secondBoon}</span>
+                  </p>
+                  <p className="mt-1 flex h-[2.75rem] items-center text-center text-xs italic leading-snug text-muted-foreground">
+                    <span className="w-full">{t(`pactOffer.cards.${pactId}.quote`)}</span>
                   </p>
 
                   <div
-                    className="my-2 h-px w-full bg-red-800/80"
+                    className="my-1.5 h-px w-full shrink-0 bg-red-800/80"
                     aria-hidden="true"
                   />
 
-                  <p className="text-center text-xs leading-snug text-red-400">
-                    {t("pactOffer.madness", { defaultValue: "+3 Madness" })}
+                  <p className="flex h-6 shrink-0 items-start justify-center text-center text-xs leading-snug text-red-400">
+                    <span className="w-full">
+                      {t("pactOffer.madness", { defaultValue: "+3 Madness" })}
+                    </span>
                   </p>
                 </button>
               );
@@ -369,6 +436,7 @@ function PactOfferDialogOpen() {
           >
             {t("pactOffer.continue", { defaultValue: "Continue" })}
           </Button>
+        </div>
         </div>
       </div>
     </>,

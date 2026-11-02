@@ -22,7 +22,7 @@ const PACT_NAME_FALLBACKS: Record<PactId, string> = {
   full_larders: "Full Larders",
   sturdy_hands: "Sturdy Hands",
   cunning_trader: "Cunning Trader",
-  avid_apprentices: "Avid Apprentices",
+  avid_apprentices: "Avid Apprentice",
 };
 
 const TOOLTIP_SOURCES: Record<string, { key: string; fallback: string }> = {

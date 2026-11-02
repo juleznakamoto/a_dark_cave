@@ -15,6 +15,7 @@ import { useInlineButtonParticles } from "@/components/ui/bubbly-button";
 import type { ParticleConfig } from "@/components/ui/bubbly-button.particles";
 import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
 import { isCraftOnceAction } from "@/game/rules/insightReveal";
+import { actionHasExecutionTime } from "@/game/rules/executionTime";
 import {
   ADC_PROGRESS_WIPE_PAUSED_CLASS,
   getCssTimedWipeStyle,
@@ -188,6 +189,15 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const executionStart = useGameStore((s) => s.executionStartTimes?.[actionIdFromProps] || 0);
     const executionDurationSec = useGameStore((s) => s.executionDurations?.[actionIdFromProps] || 0);
     const isCompassGlowing = useGameStore((s) => s.compassGlowButton === actionIdFromProps);
+    // End time only. Date.now() inside the selector would make the snapshot impure.
+    const badDreamsEndTime = useGameStore((s) =>
+      s.badDreamsState?.isActive ? (s.badDreamsState.endTime ?? 0) : 0,
+    );
+    const hasExecutionTime = useMemo(
+      () => actionHasExecutionTime(actionIdFromProps),
+      [actionIdFromProps],
+    );
+    const showBadDreamGlow = badDreamsEndTime > Date.now() && hasExecutionTime;
     const showOnceGlow = useMemo(
       () => isCraftOnceAction(actionIdFromProps),
       [actionIdFromProps],
@@ -427,6 +437,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           "!bg-transparent hover:!bg-transparent hover:!text-foreground",
           isButtonDisabled && "active:scale-100",
           isCompassGlowing && "compass-glow",
+          showBadDreamGlow && "bad-dream-glow",
           showOnceGlow && ONCE_ACTION_GLOW_CLASS,
           variant === "outline" && gameActionOutlineButtonClassName(isButtonDisabled),
           className,

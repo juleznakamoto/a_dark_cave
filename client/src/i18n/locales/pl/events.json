@@ -2329,6 +2329,14 @@
     "message": "Mężczyzna na wozie ciągnionym przez dwa konie zbliża się do wioski. Żelazna klatka na wozie trzyma trzech nędznych niewolników. Handlarz uśmiecha się złośliwie: „Zapłacę ci 100 stali za dwóch wieśniaków. Co powiesz?”",
     "title": "Handlarz niewolników"
   },
+  "goodDreams": {
+    "message": "Śniła ci się spokojna wioska. Wszyscy się uśmiechają i tym razem nie ma się czego bać. Obudziłeś się wypoczęty, jakby noc trwała dłużej.",
+    "title": "Dobre sny"
+  },
+  "badDreams": {
+    "message": "Śniło ci się, że wioska płonie, a coś starego i ogromnego przyglądało się z oddali, i nikt nie usłyszał twojego wołania. Obudziłeś się, a strach nie ustąpił.",
+    "title": "Złe sny"
+  },
   "solsticeGathering": {
     "choices": {
       "hostSolstice": {

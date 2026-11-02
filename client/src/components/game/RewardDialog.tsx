@@ -68,6 +68,8 @@ interface RewardDialogData {
     schematics?: (keyof GameState["schematics"])[];
     fellowship?: (keyof GameState["fellowship"])[];
     stats?: Partial<GameState["stats"]>;
+    /** Focus points gained. Not a side-panel stat, so it is listed on its own. */
+    focus?: number;
   };
   successLog?: string;
   /** Dialog heading. Actions pass their localized label; events pass the event title. */
@@ -202,6 +204,13 @@ export default function RewardDialog({
   const { rewards, successLog, title, madnessChange } = data;
 
   const rewardItems: JSX.Element[] = [];
+  if (typeof rewards.focus === "number" && rewards.focus > 0) {
+    rewardItems.push(
+      <div key="focus" className="text-sm text-foreground">
+        +{formatNumber(rewards.focus)} {t("estate.focus", { defaultValue: "Focus" })}
+      </div>,
+    );
+  }
   if (rewards.stats && Object.keys(rewards.stats).length > 0) {
     Object.entries(rewards.stats).forEach(([stat, amount]) => {
       if (

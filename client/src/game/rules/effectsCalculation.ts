@@ -907,7 +907,9 @@ export const getMadnessComponents = (
   const fromItems = effectMadness + itemMadnessReduction;
   const fromBuildings = buildingMadness;
   const fromEvents = state.stats?.madnessFromEvents || 0;
-  const fromPacts = getPactMadness(state.chosenPacts);
+  const fromPacts = state.pactOfferPending
+    ? 0
+    : getPactMadness(state.chosenPacts);
   const total = Math.max(0, fromItems + fromBuildings + fromEvents + fromPacts);
 
   return { fromItems, fromBuildings, fromEvents, fromPacts, total };

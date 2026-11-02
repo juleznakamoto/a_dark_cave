@@ -57,6 +57,8 @@
     "hunterProduction": "猎人生产：{{value}}",
     "gathererProduction": "采集者生产：{{value}}",
     "focus": "专注",
+    "badDreams": "噩梦",
+    "badDreamsDelay": "行动耗时增加 {{seconds}} 秒",
     "obsidianOrbFocusRate": "专注：每15分钟1点",
     "obsidianOrbFocusCountdown": "{{time}} 后获得下一点专注",
     "obsidianOrbFocusCap": "专注储备已满（{{max}}）",

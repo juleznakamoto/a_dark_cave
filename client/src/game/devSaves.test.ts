@@ -53,7 +53,7 @@ describe("dev save catalog", () => {
       "normal",
       "cruel",
     ]);
-    expect(state.pactChoices).toBe(4);
+    expect(state.pactChoices).toBe(5);
   });
 
   it("fresh-start is cave-only after Make Fire", () => {

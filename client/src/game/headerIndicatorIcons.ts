@@ -112,6 +112,13 @@ export const HEADER_INDICATOR_ICONS: HeaderIndicatorIcon[] = [
     glyphClassName: `${G} game-panel-header-indicator-glyph--sm text-teal-400 translate-y-[0.16em]`,
     symbol: "\u2629",
   },
+  {
+    id: "badDreams",
+    label: "Bad Dreams",
+    ringClassName: "text-red-500",
+    glyphClassName: `${G} game-panel-header-indicator-glyph--xs text-red-500 translate-y-[0.16em]`,
+    symbol: "\u25BC",
+  },
 ];
 
 /** Heartfire levels 1–5. Same shape as HEADER_INDICATOR_ICONS. */

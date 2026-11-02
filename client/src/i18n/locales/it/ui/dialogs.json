@@ -38,8 +38,8 @@
     "cards": {
       "blazesmith": {
         "name": "Fabbro della vampa",
-        "boon": "I costi per creare bombe sono ridotti del 50%",
-        "boon2": "Raddoppia il bonus di produzione del Fuoco del cuore per livello (5%→10%)",
+        "boon": "Creare bombe costa il 50% in meno",
+        "boon2": "Bonus di produzione del Fuoco del cuore ×2",
         "quote": "«C'è qualcosa che non va nell'alchimista.»"
       },
       "full_larders": {
@@ -52,16 +52,16 @@
         "name": "Mani salde",
         "boon": "I raccoglitori producono +5 Legna",
         "boon2": "I raccoglitori producono +5 Pietra",
-        "quote": "«Il carro del mercante contiene più di quanto dovrebbe.»"
+        "quote": "«Il carro del mercante è troppo pieno.»"
       },
       "cunning_trader": {
         "name": "Mercante astuto",
         "boon": "20% di sconto dal mercante viaggiante",
-        "boon2": "20% più economico all'avamposto commerciale",
-        "quote": "«C'è qualcosa che non va nel mercante.»"
+        "boon2": "20% di sconto all'avamposto commerciale",
+        "quote": "«I sogni sono strani, ultimamente.»"
       },
       "avid_apprentices": {
-        "name": "Apprendisti avidi",
+        "name": "Apprendista avido",
         "boon": "Gli studiosi producono +1 Intuizione",
         "boon2": "La maestria nelle azioni migliora il 20% più in fretta",
         "quote": "«C'è qualcosa che non va nello scommettitore.»"

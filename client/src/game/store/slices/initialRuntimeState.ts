@@ -85,6 +85,12 @@ export const initialRuntimeState: Partial<GameStore> = {
     endTime: 0,
     points: 0,
   },
+  badDreamsState: {
+    isActive: false,
+    endTime: 0,
+    startTime: 0,
+    duration: 0,
+  },
   totalFocusEarned: 0,
   authNotificationSeen: false,
   authNotificationVisible: false,

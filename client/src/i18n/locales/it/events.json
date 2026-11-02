@@ -2327,6 +2327,14 @@
     "message": "Un uomo su un carro trainato da due cavalli si avvicina al villaggio. Sul carro, una gabbia di ferro rinchiude tre schiavi miserabili. Il mercante ghigna malvagio: «Ti pago 100 acciaio per due degli abitanti. Che ne dici?»",
     "title": "Il mercante di schiavi"
   },
+  "goodDreams": {
+    "message": "Hai sognato il villaggio in pace. Tutti sorridono e, per una volta, non c'è nulla da temere. Ti sei svegliato riposato, come se la notte fosse durata di più.",
+    "title": "Sogni belli"
+  },
+  "badDreams": {
+    "message": "Hai sognato il villaggio in fiamme, mentre qualcosa di antico e immenso osservava da lontano, e nessuno ha sentito il tuo richiamo. Ti sei svegliato, e il terrore non è svanito.",
+    "title": "Brutti sogni"
+  },
   "solsticeGathering": {
     "choices": {
       "hostSolstice": {

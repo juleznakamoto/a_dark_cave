@@ -57,6 +57,8 @@
     "hunterProduction": "狩人の生産：{{value}}",
     "gathererProduction": "採集者の生産：{{value}}",
     "focus": "集中",
+    "badDreams": "悪夢",
+    "badDreamsDelay": "行動に{{seconds}}秒余分にかかる",
     "obsidianOrbFocusRate": "集中：15分ごとに1",
     "obsidianOrbFocusCountdown": "次の集中ポイントまで{{time}}",
     "obsidianOrbFocusCap": "集中の蓄えがいっぱい（{{max}}）",

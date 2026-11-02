@@ -14,7 +14,7 @@ import {
   rewardPayloadHasPositiveChanges,
   rewardPayloadHasOutcomeLosses,
 } from "./state";
-import { EventManager } from "./rules/events";
+import { EventManager, buildEventDialogLogEntry, gameEvents } from "./rules/events";
 import { gameActions } from "./rules";
 import { GameState, REFERRAL_REWARD_GOLD, SIGN_UP_WELCOME_GOLD } from "@shared/schema";
 import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
@@ -1038,7 +1038,7 @@ describe("Timed event tab cleanup on new game", () => {
     );
   });
 
-  it("restartGame keeps the pact allowance and clears the current picks", async () => {
+  it("restartGame keeps the pact allowance and the last picks", async () => {
     mockSaveGame.mockClear();
 
     useGameStore.setState({
@@ -1054,8 +1054,8 @@ describe("Timed event tab cleanup on new game", () => {
 
     const state = useGameStore.getState();
     expect(state.pactChoices).toBe(5);
-    expect(state.chosenPacts).toEqual([]);
-    expect(state.pactOfferPending).toBe(false);
+    expect(state.chosenPacts).toEqual(["blazesmith", "avid_apprentices"]);
+    expect(state.pactOfferPending).toBe(true);
     expect(state.pactOfferDialogOpen).toBe(false);
     expect(state.lifetimeGamesWon).toBe(10);
   });
@@ -1250,6 +1250,21 @@ describe("pending modal event persist", () => {
 
     useGameStore.getState().setEventDialog(false);
     expect(useGameStore.getState().pendingModalEvent).toBeNull();
+  });
+
+  it("resolves an open event choice while paused and stays paused", () => {
+    const entry = buildEventDialogLogEntry(gameEvents.portalBlasted, useGameStore.getState(), {
+      skipSound: true,
+    });
+    useGameStore.getState().setEventDialog(true, entry);
+    useGameStore.setState({ isPaused: true });
+
+    const applied = useGameStore
+      .getState()
+      .applyEventChoice("continue", "portalBlasted", entry);
+
+    expect(applied).toBe(true);
+    expect(useGameStore.getState().isPaused).toBe(true);
   });
 
   it("reopens the event dialog from a saved pendingModalEvent", async () => {

@@ -68,6 +68,7 @@ import {
   isVeinfireElixirAtLimit,
 } from "@/game/resourceLimits";
 import { getExecutionTime } from "./executionTime";
+import { isBadDreamsActive } from "./eventsSleepDream";
 import { CheckmarkIcon } from "@/components/ui/checkmark-icon";
 import { XMarkIcon } from "@/components/ui/x-mark-icon";
 
@@ -133,9 +134,10 @@ export const getActionDurationLine = (
 ): React.ReactNode | null => {
   const seconds = getExecutionTime(actionId, state);
   if (seconds <= 0) return null;
+  const slowed = isBadDreamsActive(state, Date.now());
   return (
     <IconCostLine
-      className={SATISFIED_COST_CLASS}
+      className={slowed ? "text-red-500" : SATISFIED_COST_CLASS}
       icon={
         <span className="inline-block translate-y-[0.105em] font-noto-symbols-2 text-[1.2em] leading-none" aria-hidden>
           {DURATION_COST_GLYPH}
@@ -1129,6 +1131,26 @@ export const focusTooltip: TooltipConfig = {
     }
 
     return null;
+  },
+};
+
+export const badDreamsTooltip: TooltipConfig = {
+  getContent: (state: GameState) => {
+    if (!isBadDreamsActive(state, Date.now())) return null;
+    const remainingMs = (state.badDreamsState?.endTime ?? 0) - Date.now();
+    return (
+      <>
+        <div className="font-bold">
+          {getUiTooltip("badDreams", "Bad Dreams")}
+        </div>
+        <div>
+          {getUiTooltip("badDreamsDelay", "Actions take {{seconds}}s longer", {
+            seconds: 2,
+          })}
+        </div>
+        <div>{formatEffectRemaining(remainingMs)}</div>
+      </>
+    );
   },
 };
 

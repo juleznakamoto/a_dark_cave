@@ -13,6 +13,7 @@ export type TimedEffectsState = {
   fogState?: TimedEndSlice;
   disgustState?: TimedEndSlice;
   focusState?: TimedEndSlice;
+  badDreamsState?: TimedEndSlice;
   miningBoostState?: TimedEndSlice;
   brimstoneFluxState?: TimedEndSlice;
   staringDeerState?: TimedEndSlice;
@@ -28,6 +29,7 @@ export const TIMED_EFFECT_KEYS = [
   "fogState",
   "disgustState",
   "focusState",
+  "badDreamsState",
   "miningBoostState",
   "brimstoneFluxState",
   "staringDeerState",

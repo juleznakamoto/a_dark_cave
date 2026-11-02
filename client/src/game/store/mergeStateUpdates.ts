@@ -127,6 +127,7 @@ export const mergeStateUpdates = (
         ? stateUpdates.madness
         : prevState.madness,
     heartfireState: stateUpdates.heartfireState || prevState.heartfireState,
+    badDreamsState: stateUpdates.badDreamsState || prevState.badDreamsState,
     miningBoostState:
       stateUpdates.miningBoostState || prevState.miningBoostState,
     brimstoneFluxState:

@@ -37,6 +37,22 @@ describe("RewardDialog button", () => {
     expect(screen.getByRole("button", { name: "Claim Rewards" })).toBeTruthy();
   });
 
+  it("lists focus points gained", () => {
+    render(
+      <RewardDialog
+        isOpen
+        onClose={vi.fn()}
+        data={{
+          title: "Good Dreams",
+          rewards: { focus: 4 },
+        }}
+      />,
+    );
+
+    expect(screen.getByText("+4 Focus")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Claim Rewards" })).toBeTruthy();
+  });
+
   it("says Continue when the outcome is only a loss", () => {
     render(
       <RewardDialog

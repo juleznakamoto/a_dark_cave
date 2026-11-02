@@ -57,6 +57,8 @@
     "hunterProduction": "Производство охотников: {{value}}",
     "gathererProduction": "Производство собирателей: {{value}}",
     "focus": "Фокус",
+    "badDreams": "Дурные сны",
+    "badDreamsDelay": "Действия занимают на {{seconds}} с больше",
     "obsidianOrbFocusRate": "Фокус: 1 очко каждые 15 минут",
     "obsidianOrbFocusCountdown": "{{time}} до следующего очка фокуса",
     "obsidianOrbFocusCap": "Запас фокуса полон ({{max}})",

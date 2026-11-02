@@ -145,7 +145,6 @@ describe("startup game hydration handoff", () => {
           cruelMode,
           pactOfferPending: open,
           pactOfferDialogOpen: open,
-          chosenPacts: [],
         }),
       );
     },

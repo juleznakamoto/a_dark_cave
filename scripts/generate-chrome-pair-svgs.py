@@ -1132,6 +1132,14 @@ def emit_mask_css() -> None:
         for kind in MASK_KINDS:
             sel = f'.adc-chrome-stage-preview[data-adc-chrome-stage="{stage}"] {KIND_SELECTOR[kind]}'
             chunks.extend([f"{sel} {{", mask_decls(stage, kind, prev=False), mask_decls(stage, kind, prev=True), "}", ""])
+    chunks.append(
+        "/* A nested element's previous stage beats the current-stage prev pin above. */"
+    )
+    chunks.append("")
+    for stage in (1, 2, 3, 4):
+        for kind in MASK_KINDS:
+            sel = f'.adc-chrome-stage-preview[data-adc-chrome-prev-stage="{stage}"] {KIND_SELECTOR[kind]}'
+            chunks.extend(emit_kind_block(sel, stage, kind, prev=True))
     MASK_CSS.write_text("\n".join(chunks).rstrip() + "\n", encoding="utf-8", newline="\n")
     print(f"wrote {MASK_CSS.relative_to(MASK_CSS.parents[3])}")
 

@@ -473,8 +473,9 @@ export const createEventsSlice: GameStoreCreator<Partial<GameStore>> = (set, get
 
   applyEventChoice: (choiceId: string, eventId: string, currentLogEntry?: LogEntry) => {
     const state = get();
-    // If the game is paused, do not apply event choices
-    if (state.isPaused) return false;
+    // Pause blocks new events in checkEvents. A dialog already on screen
+    // must still take its choice, or the player cannot dismiss it.
+    if (state.isPaused && !state.eventDialog.isOpen) return false;
     if (!canResolveOpenEventDuringDemoEnd(state)) return false;
 
     // Use passed currentLogEntry or fall back to eventDialog.currentEvent

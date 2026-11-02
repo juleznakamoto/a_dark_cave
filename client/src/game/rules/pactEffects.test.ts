@@ -252,8 +252,16 @@ describe("pact merchant stock", () => {
     ).length;
   }
 
-  it("offers two more resource trades on every visit", () => {
-    const resources = { food: 500, wood: 500, stone: 500, gold: 100 };
+  it("offers three more resource trades on every visit", () => {
+    const resources = {
+      food: 500,
+      wood: 500,
+      stone: 500,
+      leather: 100,
+      steel: 100,
+      torch: 50,
+      gold: 100,
+    };
     const plain = stateOf({
       buildings: { woodenHut: 5, tradePost: 1 },
       resources,
@@ -266,7 +274,7 @@ describe("pact merchant stock", () => {
 
     for (let roll = 0; roll < 20; roll += 1) {
       expect(resourceBuys(plain)).toBe(2);
-      expect(resourceBuys(cursed)).toBe(4);
+      expect(resourceBuys(cursed)).toBe(5);
     }
   });
 });

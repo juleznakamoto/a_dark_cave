@@ -176,6 +176,15 @@ export function scheduleEventDialogWhenClear(
  * after the blocking dialog closes so back-to-back popups do not feel spammed.
  * Waits for an already-open reward so a second outcome cannot overwrite the first.
  */
+/** After `initialDelayMs`, runs `onOpen` once no visible modal is up. */
+export function scheduleCallbackWhenDialogClear(
+  get: () => GameStore,
+  onOpen: () => void,
+  initialDelayMs: number,
+): void {
+  scheduleWhenDialogClear(get, isVisibleModalDialogOpen, onOpen, initialDelayMs);
+}
+
 export function scheduleRewardDialogWhenClear(
   get: () => GameStore,
   data: NonNullable<GameStore["rewardDialog"]["data"]>,

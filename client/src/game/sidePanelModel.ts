@@ -27,8 +27,7 @@ import {
   type EffectsForMadnessComponents,
 } from "@/game/rules/effectsCalculation";
 import { getChainmasterProductionBonus } from "@/game/rules/skillUpgrades";
-import { sanitizeChosenPacts } from "@/game/rules/pacts";
-import { PACTS_ENABLED } from "@/lib/featureFlags";
+import { arePactsEnabled, sanitizeChosenPacts } from "@/game/rules/pacts";
 import { getSeenResourceKeys } from "@/game/stateHelpers";
 import {
   COMBAT_ITEM_RESOURCES,
@@ -430,7 +429,10 @@ export function getSidePanelModel(state: GameState): SidePanelModel {
     fellowshipIds,
     schematicIds: schematicIdsFromState(state),
     blessingIds: blessingIdsFromState(state),
-    pactIds: PACTS_ENABLED ? sanitizeChosenPacts(state.chosenPacts) : [],
+    pactIds:
+      arePactsEnabled() && !state.pactOfferPending
+        ? sanitizeChosenPacts(state.chosenPacts)
+        : [],
     buildingRows,
     luck: state.stats.luck,
     strength: state.stats.strength,

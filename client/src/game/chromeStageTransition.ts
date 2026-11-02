@@ -14,7 +14,8 @@ import {
 
 const hairlineRafs = new WeakMap<HTMLElement, number>();
 
-let fadeGeneration = 0;
+/** Per element, so a pact-card fade does not cancel the document fade. */
+const fadeGeneration = new WeakMap<HTMLElement, number>();
 
 const LEGACY_FADE_STYLE_ID = "adc-chrome-stage-fade";
 
@@ -23,6 +24,12 @@ function prefersReducedMotion(): boolean {
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
+}
+
+function bumpFadeGeneration(el: HTMLElement): number {
+  const next = (fadeGeneration.get(el) ?? 0) + 1;
+  fadeGeneration.set(el, next);
+  return next;
 }
 
 function clearHairlineRaf(el: HTMLElement): void {
@@ -65,7 +72,7 @@ export function applyChromeVisualStage(
 ): void {
   const from = parseMadnessVisualStage(el.getAttribute(ADC_CHROME_STAGE_ATTR));
   clearHairlineRaf(el);
-  const generation = ++fadeGeneration;
+  const generation = bumpFadeGeneration(el);
 
   if (
     from == null ||
@@ -92,7 +99,7 @@ export function applyChromeVisualStage(
 
   const started = performance.now();
   const tick = (now: number) => {
-    if (generation !== fadeGeneration) return;
+    if (fadeGeneration.get(el) !== generation) return;
     const t = Math.min(1, (now - started) / ADC_CHROME_STAGE_FADE_MS);
     const weights = chromeStageFadeWeights(fromStage, stage, t);
     writeChromeFadeVars(el, weights.fromCrack, weights.toCrack, weights.solid);
@@ -107,7 +114,7 @@ export function applyChromeVisualStage(
 }
 
 export function clearChromeVisualStage(el: HTMLElement): void {
-  fadeGeneration += 1;
+  bumpFadeGeneration(el);
   clearHairlineRaf(el);
   el.removeAttribute(ADC_CHROME_STAGE_ATTR);
   el.removeAttribute(ADC_CHROME_PREV_STAGE_ATTR);

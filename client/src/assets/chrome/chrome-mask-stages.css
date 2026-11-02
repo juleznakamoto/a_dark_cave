@@ -322,3 +322,89 @@
   --adc-chrome-mask-v-prev: url("./rule-v-slot-s4.svg?v=430224e4");
   --adc-chrome-mask-v2-prev: url("./rule-v2-slot-s4.svg?v=26babc82");
 }
+
+/* A nested element's previous stage beats the current-stage prev pin above. */
+
+.adc-chrome-stage-preview[data-adc-chrome-prev-stage="1"] .game-chrome-rule {
+  --adc-chrome-mask-h-prev: url("./rule-h-s1.svg?v=5d9d91a1");
+  --adc-chrome-mask-h2-prev: url("./rule-h2-s1.svg?v=dc3ad485");
+  --adc-chrome-mask-v-prev: url("./rule-v-s1.svg?v=556a782d");
+  --adc-chrome-mask-v2-prev: url("./rule-v2-s1.svg?v=8ab396cc");
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-prev-stage="1"] .game-chrome-rule--box {
+  --adc-chrome-mask-h-prev: url("./rule-h-s1.svg?v=5d9d91a1");
+  --adc-chrome-mask-h2-prev: url("./rule-h2-s1.svg?v=dc3ad485");
+  --adc-chrome-mask-v-prev: url("./rule-v-s1.svg?v=556a782d");
+  --adc-chrome-mask-v2-prev: url("./rule-v2-s1.svg?v=8ab396cc");
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-prev-stage="1"] .game-chrome-rule--compact {
+  --adc-chrome-mask-h-prev: url("./rule-h-slot-s1.svg?v=7a243cc2");
+  --adc-chrome-mask-h2-prev: url("./rule-h2-slot-s1.svg?v=15dcc469");
+  --adc-chrome-mask-v-prev: url("./rule-v-slot-s1.svg?v=16ef4c96");
+  --adc-chrome-mask-v2-prev: url("./rule-v2-slot-s1.svg?v=1d5b7c12");
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-prev-stage="2"] .game-chrome-rule {
+  --adc-chrome-mask-h-prev: url("./rule-h-s2.svg?v=9420bec9");
+  --adc-chrome-mask-h2-prev: url("./rule-h2-s2.svg?v=0d910314");
+  --adc-chrome-mask-v-prev: url("./rule-v-s2.svg?v=a6d2c7fd");
+  --adc-chrome-mask-v2-prev: url("./rule-v2-s2.svg?v=adec94cc");
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-prev-stage="2"] .game-chrome-rule--box {
+  --adc-chrome-mask-h-prev: url("./rule-h-s2.svg?v=9420bec9");
+  --adc-chrome-mask-h2-prev: url("./rule-h2-s2.svg?v=0d910314");
+  --adc-chrome-mask-v-prev: url("./rule-v-s2.svg?v=a6d2c7fd");
+  --adc-chrome-mask-v2-prev: url("./rule-v2-s2.svg?v=adec94cc");
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-prev-stage="2"] .game-chrome-rule--compact {
+  --adc-chrome-mask-h-prev: url("./rule-h-slot-s2.svg?v=a812304a");
+  --adc-chrome-mask-h2-prev: url("./rule-h2-slot-s2.svg?v=c2fff767");
+  --adc-chrome-mask-v-prev: url("./rule-v-slot-s2.svg?v=ffdc2e32");
+  --adc-chrome-mask-v2-prev: url("./rule-v2-slot-s2.svg?v=8e061527");
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-prev-stage="3"] .game-chrome-rule {
+  --adc-chrome-mask-h-prev: url("./rule-h-s3.svg?v=c5bddd65");
+  --adc-chrome-mask-h2-prev: url("./rule-h2-s3.svg?v=3df676f3");
+  --adc-chrome-mask-v-prev: url("./rule-v-s3.svg?v=d2d8174d");
+  --adc-chrome-mask-v2-prev: url("./rule-v2-s3.svg?v=d52a99b5");
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-prev-stage="3"] .game-chrome-rule--box {
+  --adc-chrome-mask-h-prev: url("./rule-h-box-s3.svg?v=c5bddd65");
+  --adc-chrome-mask-h2-prev: url("./rule-h2-box-s3.svg?v=3df676f3");
+  --adc-chrome-mask-v-prev: url("./rule-v-box-s3.svg?v=d2d8174d");
+  --adc-chrome-mask-v2-prev: url("./rule-v2-box-s3.svg?v=d52a99b5");
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-prev-stage="3"] .game-chrome-rule--compact {
+  --adc-chrome-mask-h-prev: url("./rule-h-slot-s3.svg?v=4c741ced");
+  --adc-chrome-mask-h2-prev: url("./rule-h2-slot-s3.svg?v=cd64c066");
+  --adc-chrome-mask-v-prev: url("./rule-v-slot-s3.svg?v=06b96b9b");
+  --adc-chrome-mask-v2-prev: url("./rule-v2-slot-s3.svg?v=4d5f8d68");
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-prev-stage="4"] .game-chrome-rule {
+  --adc-chrome-mask-h-prev: url("./rule-h-s4.svg?v=3648adac");
+  --adc-chrome-mask-h2-prev: url("./rule-h2-s4.svg?v=fa2f07c3");
+  --adc-chrome-mask-v-prev: url("./rule-v-s4.svg?v=7aacc2b7");
+  --adc-chrome-mask-v2-prev: url("./rule-v2-s4.svg?v=bba8ece2");
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-prev-stage="4"] .game-chrome-rule--box {
+  --adc-chrome-mask-h-prev: url("./rule-h-box-s4.svg?v=3648adac");
+  --adc-chrome-mask-h2-prev: url("./rule-h2-box-s4.svg?v=fa2f07c3");
+  --adc-chrome-mask-v-prev: url("./rule-v-box-s4.svg?v=7aacc2b7");
+  --adc-chrome-mask-v2-prev: url("./rule-v2-box-s4.svg?v=bba8ece2");
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-prev-stage="4"] .game-chrome-rule--compact {
+  --adc-chrome-mask-h-prev: url("./rule-h-slot-s4.svg?v=6f787db6");
+  --adc-chrome-mask-h2-prev: url("./rule-h2-slot-s4.svg?v=9fd1afaa");
+  --adc-chrome-mask-v-prev: url("./rule-v-slot-s4.svg?v=430224e4");
+  --adc-chrome-mask-v2-prev: url("./rule-v2-slot-s4.svg?v=26babc82");
+}

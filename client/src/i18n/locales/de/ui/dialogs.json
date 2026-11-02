@@ -38,8 +38,8 @@
     "cards": {
       "blazesmith": {
         "name": "Flammenschmied",
-        "boon": "Herstellungskosten für Bomben sinken um 50 %",
-        "boon2": "Verdoppelt den Produktionsbonus des Herzfeuers pro Stufe (5 % → 10 %)",
+        "boon": "Bombenherstellung kostet 50 % weniger",
+        "boon2": "Herzfeuer-Produktionsbonus verdoppelt",
         "quote": "„Mit dem Alchemisten stimmt etwas nicht.“"
       },
       "full_larders": {
@@ -57,13 +57,13 @@
       "cunning_trader": {
         "name": "Listiger Händler",
         "boon": "20 % Rabatt beim reisenden Händler",
-        "boon2": "20 % günstiger am Handelsposten",
-        "quote": "„Mit dem Händler stimmt etwas nicht.“"
+        "boon2": "20 % Rabatt am Handelsposten",
+        "quote": "„Die Träume sind in letzter Zeit seltsam.“"
       },
       "avid_apprentices": {
-        "name": "Eifrige Lehrlinge",
+        "name": "Eifriger Lehrling",
         "boon": "Gelehrte erzeugen +1 Einsicht",
-        "boon2": "Meisterschaft in Aktionen verbessert sich 20 % schneller",
+        "boon2": "Meisterschaft steigt 20 % schneller",
         "quote": "„Mit dem Glücksspieler stimmt etwas nicht.“"
       }
     }

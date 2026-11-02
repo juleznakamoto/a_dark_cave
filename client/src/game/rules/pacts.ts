@@ -1,4 +1,10 @@
+import { isSteamDesktopEditionActive } from "@/lib/edition";
 import { PACTS_ENABLED } from "@/lib/featureFlags";
+
+/** Web, Galaxy, CrazyGames, and itch. Off on the Steam desktop client and DEV previews of it. */
+export function arePactsEnabled(): boolean {
+  return PACTS_ENABLED && !isSteamDesktopEditionActive();
+}
 
 /** Opening pact offer for a new run, normal or Cruel Mode. Each chosen pact adds madness and its two boons. */
 export const PACT_IDS = [
@@ -26,7 +32,7 @@ export const PACT_MADNESS = 3;
 
 /** Madness from the pacts currently chosen. Unknown ids do not count. None while pacts are switched off. */
 export function getPactMadness(ids: unknown): number {
-  if (!PACTS_ENABLED) return 0;
+  if (!arePactsEnabled()) return 0;
   return sanitizeChosenPacts(ids).length * PACT_MADNESS;
 }
 
@@ -71,7 +77,7 @@ export function hasEarnedPactOffer(completedGames: unknown): boolean {
  * and the pact system is switched on.
  */
 export function shouldOpenPactOffer(completedGames: unknown): boolean {
-  return PACTS_ENABLED && hasEarnedPactOffer(completedGames);
+  return arePactsEnabled() && hasEarnedPactOffer(completedGames);
 }
 
 /** New run: remember an earned offer, and open the dialog only while pacts are on. */
@@ -82,7 +88,7 @@ export function resolvePactOfferForNewRun(completedGames: unknown): {
   const earned = hasEarnedPactOffer(completedGames);
   return {
     pactOfferPending: earned,
-    pactOfferDialogOpen: PACTS_ENABLED && earned,
+    pactOfferDialogOpen: arePactsEnabled() && earned,
   };
 }
 
@@ -96,7 +102,7 @@ export function resolvePactOfferForLoad(
 ): { pactOfferPending: boolean; pactOfferDialogOpen: boolean } {
   const open = shouldOpenPactOffer(completedGames) && storedPending;
   return {
-    pactOfferPending: PACTS_ENABLED ? open : storedPending,
+    pactOfferPending: arePactsEnabled() ? open : storedPending,
     pactOfferDialogOpen: open,
   };
 }
@@ -158,16 +164,16 @@ export function readStoredPactChoices(saved: LegacyPactSave): unknown {
 
 /** True when every pact is selected for this run. Renamed ids still count. False while pacts are switched off. */
 export function hasAllPactsActive(ids: unknown): boolean {
-  if (!PACTS_ENABLED) return false;
+  if (!arePactsEnabled()) return false;
   return sanitizeChosenPacts(ids).length === PACT_IDS.length;
 }
 
-/** True when this run has the pact selected. Renamed ids still count. False while pacts are switched off. */
+/** True when this run has the pact selected. Renamed ids still count. False while pacts are switched off, and while the offer is still open. */
 export function hasChosenPact(
-  state: { chosenPacts?: unknown } | null | undefined,
+  state: { chosenPacts?: unknown; pactOfferPending?: boolean } | null | undefined,
   id: PactId,
 ): boolean {
-  if (!PACTS_ENABLED || !state) return false;
+  if (!arePactsEnabled() || !state || state.pactOfferPending === true) return false;
   return sanitizeChosenPacts(state.chosenPacts).includes(id);
 }
 
@@ -240,7 +246,7 @@ export const STURDY_HANDS_WOOD = 5;
 export const STURDY_HANDS_STONE = 5;
 
 /** Sturdy Hands: extra resource trades on every merchant visit. Tools stay the same. */
-export const STURDY_HANDS_EXTRA_RESOURCE_TRADES = 2;
+export const STURDY_HANDS_EXTRA_RESOURCE_TRADES = 3;
 
 /** Cunning Trader: off the travelling merchant's price, and off Trade Post buy prices. */
 export const CUNNING_TRADER_RATE = 0.2;

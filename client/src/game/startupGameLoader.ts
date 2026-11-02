@@ -71,7 +71,6 @@ export function commitMakeFireStart(
     ...preferences,
     pactOfferPending: pactOffer.pactOfferPending,
     pactOfferDialogOpen: pactOffer.pactOfferDialogOpen,
-    chosenPacts: [],
   });
   useGameStore.getState().trackButtonClick("make-fire");
   useGameStore.getState().executeAction("makeFire");

@@ -11,7 +11,8 @@ export const STEAM_CRUEL_MODE_UNLOCK = false;
 
 /**
  * Opening pact offer, pact boons, pact madness, and pact UI.
- * Off until the pact set is ready to ship. Picks already stored on a save
- * stay there and start working when this is turned on.
+ * On for non-Steam versions. The Steam desktop build stays off
+ * (`arePactsEnabled` in the pact rules). Picks already stored on a save
+ * stay there and start working where pacts are on.
  */
-export const PACTS_ENABLED = false;
+export const PACTS_ENABLED = true;

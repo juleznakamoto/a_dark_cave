@@ -71,7 +71,8 @@ interface EventDialogProps {
 }
 
 export default function EventDialog(props: EventDialogProps) {
-  if (!props.isOpen || !props.event) return null;
+  const pactOfferOpen = useGameStore((s) => s.pactOfferDialogOpen);
+  if (!props.isOpen || !props.event || pactOfferOpen) return null;
   return <EventDialogOpen {...props} event={props.event} />;
 }
 

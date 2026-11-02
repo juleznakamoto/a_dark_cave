@@ -2,7 +2,7 @@ import type { GameStore } from "../types";
 import type { GameStoreCreator } from "./types";
 import { GameState } from "@shared/schema";
 import { sanitizeActionUnlockOrder } from "@/game/actionUnlockOrder";
-import { sanitizeChosenPacts, clampPactChoices, resolvePactChoicesFromSave, resolvePactOfferForLoad, readStoredChosenPacts, readStoredPactOfferPending, readStoredPactChoices } from "@/game/rules/pacts";
+import { sanitizeChosenPacts, clampPactChoices, resolvePactChoicesFromSave, resolvePactOfferForLoad, readStoredChosenPacts, readStoredPactOfferPending, readStoredPactChoices, hasEarnedPactOffer } from "@/game/rules/pacts";
 import { pruneReadLogIds } from "@/game/persistedStateBoundary";
 import {
   isFullGameUnlockedEdition,
@@ -334,6 +334,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       lifetimeEstateUpgradeMaxHits: state.lifetimeEstateUpgradeMaxHits || [],
       hasAchievementMaxer: state.hasAchievementMaxer || false,
       pactChoices: clampPactChoices(state.pactChoices),
+      chosenPacts: sanitizeChosenPacts(state.chosenPacts),
       originatedFromSteamDemo: state.originatedFromSteamDemo === true,
       steamDemoContinueResolved: state.steamDemoContinueResolved === true,
 
@@ -365,6 +366,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       ...getTimedEventTabCleanupPatch(get().activeTab),
       investDialogOpen: false,
       pactOfferDialogOpen: false,
+      pactOfferPending: hasEarnedPactOffer(state.lifetimeGamesWon),
       restartGameDialogOpen: false,
       restartGamePreferCruelMode: false,
       deleteAccountDialogOpen: false,

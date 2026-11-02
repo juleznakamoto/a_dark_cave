@@ -38,33 +38,33 @@
     "cards": {
       "blazesmith": {
         "name": "Ferreiro da labareda",
-        "boon": "Os custos para criar bombas caem 50%",
-        "boon2": "Dobra o bônus de produção do Fogo do Coração por nível (5%→10%)",
-        "quote": "\"Algo parece errado com o alquimista.\""
+        "boon": "Criar bombas custa 50% menos",
+        "boon2": "Dobra o bônus de produção do Fogo do Coração",
+        "quote": "“Algo parece errado com o alquimista.”"
       },
       "full_larders": {
         "name": "Despensas cheias",
         "boon": "Aldeões livres produzem +2 de Comida",
         "boon2": "Caçadores produzem +5 de Comida",
-        "quote": "\"A caçadora se oferece para caçar.\""
+        "quote": "“A caçadora se oferece para caçar.”"
       },
       "sturdy_hands": {
         "name": "Mãos firmes",
         "boon": "Coletores produzem +5 de Madeira",
         "boon2": "Coletores produzem +5 de Pedra",
-        "quote": "\"A carroça do mercador carrega mais do que deveria.\""
+        "quote": "“A carroça do mercador carrega mais do que deveria.”"
       },
       "cunning_trader": {
         "name": "Mercador astuto",
         "boon": "20% de desconto no mercador viajante",
-        "boon2": "20% mais barato no Posto de Comércio",
-        "quote": "\"Algo parece errado com o mercador.\""
+        "boon2": "20% de desconto no Posto de Comércio",
+        "quote": "“Os sonhos andam estranhos ultimamente.”"
       },
       "avid_apprentices": {
-        "name": "Aprendizes ávidos",
+        "name": "Aprendiz ávido",
         "boon": "Os estudiosos produzem +1 de Perspicácia",
         "boon2": "O domínio das ações melhora 20% mais rápido",
-        "quote": "\"Algo parece errado com o apostador.\""
+        "quote": "“Algo parece errado com o apostador.”"
       }
     }
   },

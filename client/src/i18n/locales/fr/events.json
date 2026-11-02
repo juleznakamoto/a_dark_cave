@@ -2327,6 +2327,14 @@
     "message": "Un homme sur une charrette tirée par deux chevaux approche du village. Une cage de fer sur la charrette retient trois esclaves misérables. Le trafiquant sourit avec cruauté : « Je vous paierai 100 unités d'acier pour deux des villageois. Qu'en dites-vous ? »",
     "title": "Le trafiquant d'esclaves"
   },
+  "goodDreams": {
+    "message": "Vous avez rêvé du village paisible. Tout le monde sourit, et pour une fois, il n'y a rien à craindre. Vous vous êtes réveillé reposé, comme si la nuit avait été plus longue.",
+    "title": "Beaux rêves"
+  },
+  "badDreams": {
+    "message": "Vous avez rêvé que le village brûlait, tandis que quelque chose d'ancien et d'immense observait de loin, et personne n'a entendu votre appel. Vous vous êtes réveillé, et l'effroi ne s'est pas dissipé.",
+    "title": "Mauvais rêves"
+  },
   "solsticeGathering": {
     "choices": {
       "hostSolstice": {

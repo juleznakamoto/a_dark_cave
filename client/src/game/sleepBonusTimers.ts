@@ -35,6 +35,7 @@ export type SleepBonusTimerState = {
   forestFearState?: TimedEndSlice;
   woodcutterState?: TimedEndSlice;
   focusState?: FocusSlice;
+  badDreamsState?: FocusSlice;
   heartfireState?: HeartfireSlice;
   obsidianOrbState?: ObsidianOrbSlice;
 };
@@ -92,6 +93,16 @@ export function buildSleepBonusTimerFreezePatch(
       ...focus,
       endTime: (focus!.endTime ?? 0) + pauseMs,
       // Keep progress UI in sync: elapsed = now - startTime uses wall clock too.
+      startTime: startTime > 0 ? startTime + pauseMs : startTime,
+    };
+  }
+
+  const badDreams = state.badDreamsState;
+  if (wasActiveAtSleepStart(badDreams, sleepStartedAt)) {
+    const startTime = badDreams!.startTime ?? 0;
+    patch.badDreamsState = {
+      ...badDreams,
+      endTime: (badDreams!.endTime ?? 0) + pauseMs,
       startTime: startTime > 0 ? startTime + pauseMs : startTime,
     };
   }

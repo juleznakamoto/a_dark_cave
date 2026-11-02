@@ -2327,6 +2327,14 @@
     "message": "Um homem numa carroça puxada por dois cavalos se aproxima do vilarejo. Uma jaula de ferro na carroça contém três escravos miseráveis. O mercador sorri maldosamente: “Pagarei 100 de aço por dois dos aldeões. O que me diz?”",
     "title": "O Mercador de Escravos"
   },
+  "goodDreams": {
+    "message": "Você sonhou com a vila em paz. Todos sorriem e, por uma vez, não há nada a temer. Você acordou descansado, como se a noite tivesse sido mais longa.",
+    "title": "Bons sonhos"
+  },
+  "badDreams": {
+    "message": "Você sonhou que a vila ardia enquanto algo antigo e imenso observava de longe, e ninguém ouviu seu chamado. Você acordou, e o pavor não passou.",
+    "title": "Pesadelos"
+  },
   "solsticeGathering": {
     "choices": {
       "hostSolstice": {

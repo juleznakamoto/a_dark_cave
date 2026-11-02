@@ -38,8 +38,8 @@
     "cards": {
       "blazesmith": {
         "name": "Forgeron de braise",
-        "boon": "Les coûts de fabrication des bombes sont réduits de 50 %",
-        "boon2": "Double le bonus de production du Feu du cœur par niveau (5 % → 10 %)",
+        "boon": "Fabriquer des bombes coûte 50 % de moins",
+        "boon2": "Double le bonus de production du Feu du cœur",
         "quote": "« Quelque chose ne va pas chez l'alchimiste. »"
       },
       "full_larders": {
@@ -52,16 +52,16 @@
         "name": "Mains solides",
         "boon": "Les collecteurs produisent +5 Bois",
         "boon2": "Les collecteurs produisent +5 Pierre",
-        "quote": "« La charrette du marchand contient plus qu'elle ne devrait. »"
+        "quote": "« La charrette du marchand est trop pleine. »"
       },
       "cunning_trader": {
         "name": "Marchand rusé",
         "boon": "20 % de réduction chez le marchand itinérant",
-        "boon2": "20 % moins cher au comptoir commercial",
-        "quote": "« Quelque chose ne va pas chez le marchand. »"
+        "boon2": "20 % de réduction au comptoir commercial",
+        "quote": "« Les rêves sont étranges, ces derniers temps. »"
       },
       "avid_apprentices": {
-        "name": "Apprentis avides",
+        "name": "Apprenti avide",
         "boon": "Les érudits produisent +1 Perspicacité",
         "boon2": "La maîtrise des actions s'améliore 20 % plus vite",
         "quote": "« Quelque chose ne va pas chez le parieur. »"

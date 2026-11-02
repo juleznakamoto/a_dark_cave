@@ -392,9 +392,6 @@ export default function TimedEventPanel() {
       }
       return;
     }
-    if (gameState.isPaused) {
-      return;
-    }
 
     setHighlightedResources([]); // Clear highlights before closing
 

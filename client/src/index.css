@@ -826,6 +826,23 @@ html[data-adc-chrome-stage="0"] {
   --adc-chrome-c-to: var(--adc-chrome-c-4, 15);
 }
 
+/* During a nested fade, outgoing corners follow the previous stage. */
+.adc-chrome-stage-preview[data-adc-chrome-prev-stage="1"] .game-chrome-rule--box {
+  --adc-chrome-c-from: var(--adc-chrome-c-1, 15);
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-prev-stage="2"] .game-chrome-rule--box {
+  --adc-chrome-c-from: var(--adc-chrome-c-2, 15);
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-prev-stage="3"] .game-chrome-rule--box {
+  --adc-chrome-c-from: var(--adc-chrome-c-3, 15);
+}
+
+.adc-chrome-stage-preview[data-adc-chrome-prev-stage="4"] .game-chrome-rule--box {
+  --adc-chrome-c-from: var(--adc-chrome-c-4, 15);
+}
+
 @media (min-width: 768px) {
   .md\:game-chrome-rule--none {
     border-top-width: 0;
@@ -2685,6 +2702,22 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
 
 .focus-glow {
   animation: focus-glow 3s ease-in-out infinite;
+}
+
+@keyframes bad-dream-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 3px rgba(239, 68, 68, .55), 0 0 7px rgba(239, 68, 68, .35);
+  }
+
+  50% {
+    box-shadow: 0 0 4px rgba(239, 68, 68, .85), 0 0 9px rgba(239, 68, 68, .55);
+  }
+}
+
+.bad-dream-glow {
+  animation: bad-dream-glow 3s ease-in-out infinite;
 }
 
 /* One-time crafts. Starts as the normal action outline (#431407).

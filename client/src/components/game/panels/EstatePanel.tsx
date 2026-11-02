@@ -35,7 +35,7 @@ import {
   getGreyOneEffectLines,
 } from "@/game/rules/skillUpgrades";
 import { isTraderShopUnlocked, stackTimedDebuff } from "@/game/stateHelpers";
-import { focusTooltip } from "@/game/rules/tooltips";
+import { badDreamsTooltip, focusTooltip } from "@/game/rules/tooltips";
 import {
   GAME_PANEL_HEADER_INDICATOR_CLASS,
   GAME_PANEL_HEADER_INDICATOR_INNER_CLASS,
@@ -384,8 +384,11 @@ export default function EstatePanel({
   const state = useGameStore.getState();
   // Calculate focus progress based on game loop timing
   const [focusProgress, setFocusProgress] = React.useState(0);
+  const [badDreamsProgress, setBadDreamsProgress] = React.useState(0);
   const focusState = useGameStore((state) => state.focusState);
+  const badDreamsState = useGameStore((state) => state.badDreamsState);
   const focusIcon = headerIndicatorIcon("focus");
+  const badDreamsIcon = headerIndicatorIcon("badDreams");
 
   React.useEffect(() => {
     const updateFocusProgress = () => {
@@ -430,6 +433,49 @@ export default function EstatePanel({
 
     return () => clearInterval(interval);
   }, [focusState]);
+
+  React.useEffect(() => {
+    const updateBadDreamsProgress = () => {
+      const now = Date.now();
+      if (badDreamsState?.isActive && badDreamsState.endTime > now) {
+        const fromStored =
+          typeof badDreamsState.duration === "number" &&
+          badDreamsState.duration > 0
+            ? badDreamsState.duration
+            : null;
+        const fromRange =
+          badDreamsState.startTime &&
+          badDreamsState.endTime > badDreamsState.startTime
+            ? badDreamsState.endTime - badDreamsState.startTime
+            : null;
+        const duration = fromStored ?? fromRange ?? 10 * 60 * 1000;
+        const elapsed = duration - (badDreamsState.endTime - now);
+        setBadDreamsProgress(
+          Math.min(100, Math.max(0, (elapsed / duration) * 100)),
+        );
+      } else {
+        setBadDreamsProgress(0);
+        if (
+          badDreamsState?.isActive &&
+          badDreamsState.endTime <= now &&
+          !isDemoPlayFrozen(useGameStore.getState())
+        ) {
+          useGameStore.setState({
+            badDreamsState: {
+              isActive: false,
+              endTime: 0,
+              startTime: 0,
+              duration: 0,
+            },
+          });
+        }
+      }
+    };
+
+    updateBadDreamsProgress();
+    const interval = setInterval(updateBadDreamsProgress, 1000);
+    return () => clearInterval(interval);
+  }, [badDreamsState]);
 
   // Keep Focus button mounted while active so Sleep upgrades don't jump up when points hit 0
   const showFocusButton =
@@ -723,6 +769,34 @@ export default function EstatePanel({
                     />
                     <span className={focusIcon.glyphClassName}>
                       {focusIcon.symbol}
+                    </span>
+                  </div>
+                </TooltipWrapper>
+              )}
+              {badDreamsState?.isActive && badDreamsState.endTime > Date.now() && (
+                <TooltipWrapper
+                  tooltip={
+                    <div className="text-xs">
+                      {badDreamsTooltip.getContent(state)}
+                    </div>
+                  }
+                  tooltipId="bad-dreams-progress"
+                  disabled
+                  tooltipTriggerClassName={
+                    GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
+                  }
+                  className={GAME_PANEL_HEADER_INDICATOR_CLASS}
+                >
+                  <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
+                    <CircularProgress
+                      value={badDreamsProgress}
+                      size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+                      fill
+                      strokeWidth={2}
+                      className="text-red-500"
+                    />
+                    <span className={badDreamsIcon.glyphClassName}>
+                      {badDreamsIcon.symbol}
                     </span>
                   </div>
                 </TooltipWrapper>

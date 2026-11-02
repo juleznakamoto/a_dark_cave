@@ -2327,6 +2327,14 @@
     "message": "Un hombre en un carro tirado por dos caballos se acerca a la aldea. Una jaula de hierro en el carro contiene a tres esclavos miserables. El traficante sonríe con malicia: «Te pagaré 100 de acero por dos de los aldeanos. ¿Qué dices?»",
     "title": "El traficante de esclavos"
   },
+  "goodDreams": {
+    "message": "Soñaste con el pueblo en paz. Todos sonríen y, por una vez, no hay nada que temer. Despertaste descansado, como si la noche hubiera durado más.",
+    "title": "Buenos sueños"
+  },
+  "badDreams": {
+    "message": "Soñaste que el pueblo ardía mientras algo antiguo e inmenso observaba desde lejos, y nadie oyó tu llamada. Despertaste, y el pavor no se disipó.",
+    "title": "Malos sueños"
+  },
   "solsticeGathering": {
     "choices": {
       "hostSolstice": {

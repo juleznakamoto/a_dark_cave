@@ -1230,7 +1230,7 @@ export function generateMerchantChoices(state: GameState): MerchantTradeData[] {
     numSellTrades = 2;
   }
 
-  // Sturdy Hands: two more resource offers. The special item stays one per visit.
+  // Sturdy Hands: three more resource offers. The special item stays one per visit.
   if (hasChosenPact(state, "sturdy_hands")) {
     numBuyTrades += STURDY_HANDS_EXTRA_RESOURCE_TRADES;
   }

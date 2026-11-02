@@ -10,6 +10,7 @@ import {
   isDemoLimitReachedFromState,
 } from "@/game/demoLimit";
 import { applySaveBoost, canApplySaveBoost } from "@/game/boost";
+import { resolvePactOfferForLoad } from "@/game/rules/pacts";
 import { getTransientDialogResetOnLoad } from "@/game/stateHelpers";
 import { StateManager, useGameStore } from "@/game/state";
 import { startGameLoop } from "@/game/loop";
@@ -122,6 +123,15 @@ export async function runGameplayInitialization(
     ...getTransientDialogResetOnLoad(),
   });
   useGameStore.getState().resumePendingModalEventDialog?.();
+  const afterDialogReset = useGameStore.getState();
+  const pactOffer = resolvePactOfferForLoad(
+    afterDialogReset.lifetimeGamesWon,
+    afterDialogReset.pactOfferPending,
+  );
+  useGameStore.setState({
+    pactOfferPending: pactOffer.pactOfferPending,
+    pactOfferDialogOpen: pactOffer.pactOfferDialogOpen,
+  });
 
   if (hadPersistedSave) {
     logger.log("[GAME] Game loaded from save");

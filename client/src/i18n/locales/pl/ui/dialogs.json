@@ -38,8 +38,8 @@
     "cards": {
       "blazesmith": {
         "name": "Kowal pożogi",
-        "boon": "Koszty wytwarzania bomb są niższe o 50%",
-        "boon2": "Podwaja premię produkcji z Ognia serca na poziom (5%→10%)",
+        "boon": "Wytwarzanie bomb kosztuje 50% mniej",
+        "boon2": "Podwaja premię produkcji Ognia serca",
         "quote": "„Coś jest nie tak z alchemikiem.”"
       },
       "full_larders": {
@@ -57,11 +57,11 @@
       "cunning_trader": {
         "name": "Przebiegły handlarz",
         "boon": "20% zniżki u wędrownego handlarza",
-        "boon2": "20% taniej w faktorii",
-        "quote": "„Coś jest nie tak z handlarzem.”"
+        "boon2": "20% zniżki w faktorii",
+        "quote": "„Sny są ostatnio dziwne.”"
       },
       "avid_apprentices": {
-        "name": "Gorliwi uczniowie",
+        "name": "Gorliwy uczeń",
         "boon": "Uczeni dają +1 Wglądu",
         "boon2": "Mistrzostwo działań poprawia się o 20% szybciej",
         "quote": "„Coś jest nie tak z hazardzistą.”"

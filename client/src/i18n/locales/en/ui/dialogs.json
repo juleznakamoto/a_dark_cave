@@ -38,33 +38,33 @@
     "cards": {
       "blazesmith": {
         "name": "Blazesmith",
-        "boon": "Bomb crafting costs are reduced by 50%",
-        "boon2": "Double Heartfire production bonus per level (5→10%)",
-        "quote": "\"Something seems wrong with the Alchemist\""
+        "boon": "Bombs crafting costs 50% less",
+        "boon2": "Double Heartfire production bonus",
+        "quote": "'Something seems wrong with the Alchemist'"
       },
       "full_larders": {
         "name": "Full Larders",
         "boon": "Free villagers produce +2 Food",
         "boon2": "Hunters produce +5 Food",
-        "quote": "\"The huntress offers to hunt\""
+        "quote": "'The huntress offers to hunt'"
       },
       "sturdy_hands": {
         "name": "Sturdy Hands",
         "boon": "Gatherers produce +5 Wood",
         "boon2": "Gatherers produce +5 Stone",
-        "quote": "\"The merchant's cart holds more than it should\""
+        "quote": "'The merchant's cart holds more than it should'"
       },
       "cunning_trader": {
         "name": "Cunning Trader",
         "boon": "20% discount at travelling merchant",
-        "boon2": "20% cheaper at the Trade Post",
-        "quote": "\"Something seems wrong with the Merchant\""
+        "boon2": "20% discount at the trade post",
+        "quote": "'Dreams are strange lately'"
       },
       "avid_apprentices": {
-        "name": "Avid Apprentices",
+        "name": "Avid Apprentice",
         "boon": "Scholars produce +1 Insight",
         "boon2": "Action mastery improves 20% faster",
-        "quote": "\"Something seems wrong with the Gambler\""
+        "quote": "'Something seems wrong with the Gambler'"
       }
     }
   },

@@ -958,6 +958,20 @@ export const gameStateSchema = z.object({
       startTime: 0,
       duration: 0,
     }),
+  /** Cunning Trader bad dream. Timed actions take longer until endTime. */
+  badDreamsState: z
+    .object({
+      isActive: z.boolean().default(false),
+      endTime: z.number().default(0),
+      startTime: z.number().default(0),
+      duration: z.number().default(0),
+    })
+    .default({
+      isActive: false,
+      endTime: 0,
+      startTime: 0,
+      duration: 0,
+    }),
 
   huntingSkills: z
     .object({

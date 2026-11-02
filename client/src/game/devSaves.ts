@@ -341,8 +341,12 @@ function finalize(state: GameState, id: DevSaveId): GameState {
 /** Dev fixtures behave as if one normal game and one Cruel Mode game were already finished. */
 function withFinishedGames(state: GameState): GameState {
   const hour = 60 * 60 * 1000;
+  // Two finished games would offer 4. One extra choice lets a fixture reach the cap of 5.
   const pactChoices = grantPactChoiceForCompletedGame(
-    grantPactChoiceForCompletedGame(state.pactChoices, false),
+    grantPactChoiceForCompletedGame(
+      grantPactChoiceForCompletedGame(state.pactChoices, false),
+      false,
+    ),
     true,
   );
   return {
@@ -352,6 +356,7 @@ function withFinishedGames(state: GameState): GameState {
     hasWonCruelGame: true,
     lifetimeGamesWon: DEV_SAVE_FINISHED_GAMES,
     pactChoices,
+    pactOfferPending: true,
     game_stats: [
       {
         gameId: `${DEV_SAVE_GAME_ID_PREFIX}finished-normal`,

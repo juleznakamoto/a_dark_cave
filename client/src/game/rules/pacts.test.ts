@@ -67,6 +67,17 @@ describe("pact madness", () => {
     };
     expect(getTotalMadness(cursed)).toBe(getTotalMadness(plain) + 6);
   });
+
+  it("does not count pact madness while the offer is still open", () => {
+    const plain = createInitialState();
+    const offered = {
+      ...plain,
+      chosenPacts: ["blazesmith", "full_larders"],
+      pactOfferPending: true,
+    };
+    expect(getMadnessComponents(offered).fromPacts).toBe(0);
+    expect(getTotalMadness(offered)).toBe(getTotalMadness(plain));
+  });
 });
 
 describe("pact choices", () => {

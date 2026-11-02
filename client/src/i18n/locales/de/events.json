@@ -2327,6 +2327,14 @@
     "message": "Ein Mann auf einem von zwei Pferden gezogenen Karren nähert sich dem Dorf. Auf dem Karren steht ein Eisenkäfig mit drei elenden Sklaven. Der Händler grinst böse: „Ich zahle dir 100 Stahl für zwei der Dorfbewohner. Was sagst du?“",
     "title": "Der Sklavenhändler"
   },
+  "goodDreams": {
+    "message": "Du hast vom Dorf in Frieden geträumt. Alle lächeln, und ausnahmsweise gibt es nichts zu fürchten. Du bist ausgeruht erwacht, als wäre die Nacht länger gewesen.",
+    "title": "Gute Träume"
+  },
+  "badDreams": {
+    "message": "Du hast geträumt, dass das Dorf brannte, während etwas Uraltes und Gewaltiges aus der Ferne zusah, und niemand hörte dich rufen. Du bist erwacht, und das Grauen wich nicht.",
+    "title": "Schlechte Träume"
+  },
   "solsticeGathering": {
     "choices": {
       "hostSolstice": {
