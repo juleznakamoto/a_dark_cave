@@ -29,7 +29,7 @@
       },
       "steam": {
         "q": "Gibt es eine Steam-Version?",
-        "a": "Ja. A Dark Cave erscheint am 27. Oktober 2026 auf <steam>Steam</steam>. Eine <demo>kostenlose Demo</demo> ist jetzt verfügbar."
+        "a": "Ja. A Dark Cave ist am 27. Oktober 2026 auf <steam>Steam</steam> erschienen. Eine <demo>kostenlose Demo</demo> ist verfügbar."
       },
       "download": {
         "q": "Muss ich das Browserspiel herunterladen?",
@@ -63,7 +63,7 @@
     "about": {
       "intro1": "Ich habe dieses Spiel gemacht, weil ich vor vielen Jahren A Dark Room gespielt habe. Das hat mich inspiriert, eines Tages selbst ein Spiel zu machen. Dieser Tag ist gekommen.",
       "intro2": "Du wachst am Eingang einer dunklen Höhle auf. Keine Erinnerung. Kein Besitz. Du machst ein Feuer, sammelst etwas Holz, fertigst eine Fackel, baust deinen ersten Unterschlupf. Fremde kommen an. Die Siedlung wächst. Du beginnst zu erkunden, was tief in der Höhle liegt. Die Vergangenheit deiner Zivilisation. Deine Vergangenheit. Das ist A Dark Cave: ein Text-Incremental übers Überleben, Bauen und Herausfinden, was da unten wirklich ist, und vielleicht wohin wir uns als Menschheit bewegen.",
-      "intro3": "Es ist kostenlos im Browser: <site>a-dark-cave.com</site>. Zur Unterstützung des Spiels gibt es vollständig optionale Käufe. Es gibt eine <demo>Steam-Demo</demo>, wenn du es lieber so spielen willst. Die vollständige Steam-Version ist für den 27. Oktober 2026 geplant.",
+      "intro3": "Es ist kostenlos im Browser: <site>a-dark-cave.com</site>. Zur Unterstützung des Spiels gibt es vollständig optionale Käufe. Es gibt eine <demo>Steam-Demo</demo>, wenn du es lieber so spielen willst. Die vollständige Steam-Version ist am 27. Oktober 2026 erschienen.",
       "howHeading": "So spielt es sich",
       "how1": "Du fängst mit nichts an. Nach und nach schaltest du Gegenstände, Gebäude, Fähigkeiten, Berufe, Gefährten und vieles mehr frei. Eine Geschichte entfaltet sich, reich an Lore, über die Vergangenheit einer Zivilisation, die zuvor lebte. Je tiefer du in die Höhle gehst, desto mehr erfährst du. Aber die Gefahr wächst ebenfalls.",
       "how2": "Das Spiel ist aktiv. Du triffst Entscheidungen, die das Spiel beeinflussen. Es gibt auch einen Idle-Modus, damit das Spiel weiterlaufen kann, während du weg bist. Das Spiel hat ein Ende, oder vielleicht mehr als eines.",

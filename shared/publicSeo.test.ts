@@ -289,6 +289,8 @@ describe("publicSeo", () => {
     );
     expect(faq).toContain('content="index, follow"');
     expect(faq).toContain("What is A Dark Cave?");
+    expect(faq).toContain("It released on 27 October 2026");
+    expect(faq).not.toContain("planned");
     expect(faq).toContain("fully optional purchases");
     expect(faq).toContain("FAQPage");
     expect(faq).not.toContain("Who made A Dark Cave?");
@@ -304,6 +306,8 @@ describe("publicSeo", () => {
     expect(about).toContain(
       "I made A Dark Cave, a text incremental: make a fire, build a village, explore a dark cave",
     );
+    expect(about).toContain("The full Steam version released on 27 October 2026");
+    expect(about).not.toContain("planned");
     expect(about).toContain("How it plays");
     expect(about).toContain("Julian Bauer");
     expect(about).toContain("utm_content=html_noscript_footer");
@@ -325,6 +329,10 @@ describe("publicSeo", () => {
     expect(press).toContain(
       "Dark story-driven minimalist incremental village builder",
     );
+    expect(press).toContain("released on 27 October 2026");
+    expect(press).not.toContain("<dt>Steam Next Fest</dt>");
+    expect(press).not.toContain("planned");
+    expect(press).toContain("Press coverage (last updated: 01.11.2026)");
     expect(press).toContain("Short boilerplate");
     expect(press).toContain("a_dark_cave_press_kit.zip");
     expect(press).toContain("support@a-dark-cave.com");

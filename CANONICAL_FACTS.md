@@ -87,14 +87,16 @@ buy", "no IAP", or "free with no MTX".
 - Free to play with optional unlocks / optional in-game purchases (in
   player-facing copy)
 - JSON-LD `offers.price: "0"` as the only offer (keep a separate Steam
-  PreOrder offer so web and Steam are not collapsed into one free price)
+  InStock offer at $7.99 USD so web and Steam are not collapsed into one
+  free price)
 
 ### Steam
 
-Paid game (price not public yet). Free demo. Planned release **27 October 2026**.
+Paid game, list price **$7.99 USD**. Free demo. Released **27 October 2026**.
 Windows. Not "coming 31 December 2026" and not "Q4 2026" as the only date.
 
-Do not describe Steam as free.
+Do not describe Steam as free. Do not say the release is still planned, and
+do not mention Steam Next Fest in current pages.
 
 ### itch.io
 
@@ -109,8 +111,10 @@ Do not write a single "released on" date that collapses web and Steam.
 | Edition | Date |
 | --- | --- |
 | Browser / web | Already live. Web listing date: **17 November 2025**. |
-| Steam | Planned **27 October 2026**. Demo is out now. |
-| Steam Next Fest | **19-26 October 2026**. |
+| Steam | Released **27 October 2026**. Demo is still available. |
+
+Steam Next Fest (19-26 October 2026) is over. Leave it out of /press, /about,
+/faq, and `llms.txt`.
 
 ---
 
@@ -150,8 +154,8 @@ H2: `Play for Free in Your Browser`.
 `["Incremental", "Strategy", "Survival", "Settlement Builder", "Resource Management", "Text-Based"]`
 
 Remove `Idle`. Do not use a lone `offers.price: "0"`. Prefer a browser offer
-described as play-for-free, plus a Steam offer without a fake price
-(PreOrder / URL to the Steam page).
+described as play-for-free, plus a Steam offer at $7.99 USD with
+`availability: InStock` and a URL to the Steam page. Not PreOrder.
 
 `VideoGame` should include `image` (`https://a-dark-cave.com/og-image-1200x630.png`),
 `author` (Julian Bauer), `gamePlatform` including `"Web Browser"` and `"PC"`,

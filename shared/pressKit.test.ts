@@ -13,6 +13,7 @@ import {
   PRESS_SCREENSHOTS,
   countWords,
   getPressPageInnerHtml,
+  pressCoverageUpdatedLabel,
   pressLinksInGroup,
 } from "./pressKit";
 
@@ -65,7 +66,9 @@ describe("press kit copy", () => {
     assertPressSafe(PRESS_BOILERPLATE_LONG);
     expect(PRESS_BOILERPLATE_LONG).toMatch(/A Dark Room/);
     expect(PRESS_BOILERPLATE_LONG).toMatch(/Kittens Game/);
-    expect(PRESS_BOILERPLATE_LONG).toMatch(/19 to 26 October 2026/);
+    expect(PRESS_BOILERPLATE_LONG).toMatch(/released on Steam on 27 October 2026/);
+    expect(PRESS_BOILERPLATE_LONG).not.toMatch(/Next Fest/);
+    expect(PRESS_BOILERPLATE_LONG).not.toMatch(/planned/);
     expect(PRESS_BOILERPLATE_LONG).toMatch(/support@a-dark-cave\.com/);
   });
 
@@ -107,19 +110,37 @@ describe("press kit copy", () => {
 
   it("lists press coverage newest first", () => {
     expect(pressLinksInGroup("coverage").map((link) => link.publishedOn)).toEqual([
+      "2026-11-01",
+      "2026-10-20",
+      "2026-10-20",
+      "2026-10-19",
+      "2026-10-19",
+      "2026-10-19",
       "2026-10-17",
+      "2026-10-14",
+      "2026-10-13",
       "2026-10-01",
       "2026-09-28",
       "2026-09-23",
       "2026-09-15",
     ]);
     const html = getPressPageInnerHtml();
+    const techGameLab = html.indexOf("techgame-lab.com");
+    const dayOne = html.indexOf("playday.one");
+    const absoluteGamer = html.indexOf("absolutegamer.it");
+    const cogconnected = html.indexOf("cogconnected.com");
     const indieGamesInside = html.indexOf("indiegames-inside.de");
+    const outputLag = html.indexOf("outputlag.com");
+    const playnews = html.indexOf("playnews.gg");
     const gamersAt = html.indexOf("gamers.at");
-    const indistation = html.indexOf("indistation.com");
-    expect(indieGamesInside).toBeGreaterThan(-1);
-    expect(gamersAt).toBeGreaterThan(indieGamesInside);
-    expect(indistation).toBeGreaterThan(gamersAt);
+    expect(techGameLab).toBeGreaterThan(-1);
+    expect(dayOne).toBeGreaterThan(techGameLab);
+    expect(absoluteGamer).toBeGreaterThan(dayOne);
+    expect(cogconnected).toBeGreaterThan(absoluteGamer);
+    expect(indieGamesInside).toBeGreaterThan(cogconnected);
+    expect(outputLag).toBeGreaterThan(indieGamesInside);
+    expect(playnews).toBeGreaterThan(outputLag);
+    expect(gamersAt).toBeGreaterThan(playnews);
   });
 
   it("ships first-HTML with boilerplate and the zip link", () => {
@@ -130,6 +151,12 @@ describe("press kit copy", () => {
     expect(html).toContain("/press-kit/video/a_dark_cave_gameplay_trailer.mp4");
     expect(html).not.toContain("G8Gm7o4cZfQ");
     expect(html).toContain("support@a-dark-cave.com");
+    expect(html).toContain("27 October 2026");
+    expect(html).toContain("$7.99");
+    expect(html).not.toContain("<dt>Steam Next Fest</dt>");
+    expect(html).not.toContain("planned");
+    expect(pressCoverageUpdatedLabel()).toBe("(last updated: 01.11.2026)");
+    expect(html).toContain("Press coverage (last updated: 01.11.2026)");
   });
 });
 

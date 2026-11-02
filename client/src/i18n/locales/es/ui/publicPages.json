@@ -29,7 +29,7 @@
       },
       "steam": {
         "q": "¿Hay versión de Steam?",
-        "a": "Sí. A Dark Cave llega a <steam>Steam</steam> el 27 de octubre de 2026. Ya hay una <demo>demo gratuita</demo>."
+        "a": "Sí. A Dark Cave salió en <steam>Steam</steam> el 27 de octubre de 2026. Hay una <demo>demo gratuita</demo>."
       },
       "download": {
         "q": "¿Tengo que descargar el juego del navegador?",
@@ -63,7 +63,7 @@
     "about": {
       "intro1": "Hice este juego porque hace muchos años jugué a A Dark Room, que me inspiró a crear el mío algún día. Ese día ha llegado.",
       "intro2": "Despiertas a la entrada de una cueva oscura. Sin memoria. Sin posesiones. Enciendes un fuego, luego recoges algo de madera, fabricas una antorcha, construyes tu primer refugio. Llegan extraños. El asentamiento crece. Empiezas a explorar lo que hay en lo profundo de la cueva. El pasado de tu civilización. Tu pasado. Eso es A Dark Cave: un incremental de texto sobre sobrevivir, construir y descubrir qué hay realmente ahí abajo, y tal vez hacia dónde vamos como humanidad.",
-      "intro3": "Es gratis en el navegador: <site>a-dark-cave.com</site>. Para apoyar el juego hay compras totalmente opcionales. Hay una <demo>demo de Steam</demo> si prefieres jugarlo así. La versión completa de Steam está prevista para el 27 de octubre de 2026.",
+      "intro3": "Es gratis en el navegador: <site>a-dark-cave.com</site>. Para apoyar el juego hay compras totalmente opcionales. Hay una <demo>demo de Steam</demo> si prefieres jugarlo así. La versión completa de Steam salió el 27 de octubre de 2026.",
       "howHeading": "Cómo se juega",
       "how1": "Empiezas sin nada. Poco a poco desbloqueas objetos, edificios, habilidades, oficios, miembros de la compañía y mucho más. Se despliega una historia, rica en lore, sobre el pasado de una civilización que vivió antes. Aprendes más cuanto más profundo vas en la cueva. Pero el peligro también crece.",
       "how2": "El juego es activo. Tomas decisiones que influyen en la partida. También hay un modo idle para que el juego avance mientras no estás. El juego tiene un final, o quizá más de uno.",

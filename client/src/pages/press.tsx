@@ -5,6 +5,7 @@ import {
   PRESS_CAPSULES,
   PRESS_CONTACT_EMAIL,
   PRESS_CONTACT_MAILTO,
+  PRESS_COVERAGE_HEADING,
   PRESS_FACTS,
   PRESS_GIFS,
   PRESS_HEADING,
@@ -16,6 +17,7 @@ import {
   PRESS_TRAILER_FILE_HREF,
   PRESS_VIDEOS,
   PRESS_ZIP_HREF,
+  pressCoverageUpdatedLabel,
   pressLinksInGroup,
   type PressAsset,
   type PressLink,
@@ -183,14 +185,21 @@ function AssetGrid({
 
 function LinkList({
   title,
+  titleNote,
   links,
 }: {
   title: string;
+  titleNote?: string;
   links: PressLink[];
 }) {
   return (
     <section className="space-y-2">
-      <h2 className="m-0 text-lg text-white">{title}</h2>
+      <h2 className="m-0 text-lg text-white">
+        {title}
+        {titleNote ? (
+          <span className="text-base font-normal text-neutral-400"> {titleNote}</span>
+        ) : null}
+      </h2>
       <ul className="m-0 list-none space-y-1 p-0">
         {links.map((link) => (
           <li key={link.id}>
@@ -355,7 +364,11 @@ export default function Press() {
           </p>
         </section>
 
-        <LinkList title="Press coverage" links={pressLinksInGroup("coverage")} />
+        <LinkList
+          title={PRESS_COVERAGE_HEADING}
+          titleNote={pressCoverageUpdatedLabel()}
+          links={pressLinksInGroup("coverage")}
+        />
 
       </PublicDocPage>
       {preview ? (

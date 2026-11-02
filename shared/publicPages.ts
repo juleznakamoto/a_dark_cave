@@ -112,8 +112,8 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "Is there a Steam version?",
     answerText:
-      "Yes. A Dark Cave is coming to Steam on 27 October 2026. A free demo is available now.",
-    answerHtml: `Yes. A Dark Cave is coming to ${htmlAnchor(PUBLIC_STEAM_URL, "Steam", { external: true })} on 27 October 2026. A ${htmlAnchor(PUBLIC_STEAM_DEMO_URL, "free demo", { external: true })} is available now.`,
+      "Yes. A Dark Cave is on Steam. It released on 27 October 2026. A free demo is available now.",
+    answerHtml: `Yes. A Dark Cave is on ${htmlAnchor(PUBLIC_STEAM_URL, "Steam", { external: true })}. It released on 27 October 2026. A ${htmlAnchor(PUBLIC_STEAM_DEMO_URL, "free demo", { external: true })} is available now.`,
   },
   {
     question: "Do I need to download the browser game?",
@@ -196,7 +196,7 @@ export const ABOUT_SECTIONS: {
       paragraphsHtml: [
         "I made this game because many years ago I played A Dark Room, which inspired me to create my own game one day. That day has come.",
         "You wake up at the entrance of a dark cave. No memory. No possessions. You make a fire, then gather some wood, craft a torch, build your first shelter. Strangers arrive. The settlement grows. You start to explore what is deep in the cave. The past of your civilization. Your past. That is A Dark Cave: a text incremental about surviving, building, and finding out what is actually down there, and maybe where we are heading as humanity.",
-        `It is free in your browser: ${aboutSiteLink}. To support the game, there are fully optional purchases. There is a ${aboutDemoLink("Steam demo")} if you would rather play it that way. The full Steam version is planned for 27 October 2026.`,
+        `It is free in your browser: ${aboutSiteLink}. To support the game, there are fully optional purchases. There is a ${aboutDemoLink("Steam demo")} if you would rather play it that way. The full Steam version released on 27 October 2026.`,
       ],
     },
     {

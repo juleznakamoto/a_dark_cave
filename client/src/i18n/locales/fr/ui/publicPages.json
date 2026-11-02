@@ -29,7 +29,7 @@
       },
       "steam": {
         "q": "Y a-t-il une version Steam ?",
-        "a": "Oui. A Dark Cave arrive sur <steam>Steam</steam> le 27 octobre 2026. Une <demo>démo gratuite</demo> est déjà disponible."
+        "a": "Oui. A Dark Cave est sorti sur <steam>Steam</steam> le 27 octobre 2026. Une <demo>démo gratuite</demo> est disponible."
       },
       "download": {
         "q": "Faut-il télécharger le jeu navigateur ?",
@@ -63,7 +63,7 @@
     "about": {
       "intro1": "J'ai créé ce jeu parce qu'il y a bien des années, j'ai joué à A Dark Room, qui m'a donné envie de créer un jour mon propre jeu. Ce jour est venu.",
       "intro2": "Vous vous réveillez à l'entrée d'une grotte sombre. Aucun souvenir. Aucune possession. Vous allumez un feu, puis ramassez du bois, fabriquez une torche, bâtissez votre premier abri. Des inconnus arrivent. Le village grandit. Vous commencez à explorer les profondeurs de la grotte. Le passé de votre civilisation. Votre passé. Voilà A Dark Cave : un jeu incrémental textuel où il s'agit de survivre, de bâtir et de découvrir ce qui se cache vraiment là-dessous – et peut-être vers quoi nous allons en tant qu'humanité.",
-      "intro3": "Il est gratuit dans votre navigateur : <site>a-dark-cave.com</site>. Pour soutenir le jeu, des achats entièrement facultatifs sont proposés. Une <demo>démo Steam</demo> est disponible si vous préférez jouer ainsi. La version Steam complète est prévue pour le 27 octobre 2026.",
+      "intro3": "Il est gratuit dans votre navigateur : <site>a-dark-cave.com</site>. Pour soutenir le jeu, des achats entièrement facultatifs sont proposés. Une <demo>démo Steam</demo> est disponible si vous préférez jouer ainsi. La version Steam complète est sortie le 27 octobre 2026.",
       "howHeading": "Comment on joue",
       "how1": "Vous partez de rien. Vous débloquez peu à peu des objets, des bâtiments, des compétences, des métiers, des membres de la compagnie et bien plus encore. Une histoire riche en secrets se déploie, sur le passé d'une civilisation qui vous a précédés. Plus vous descendez dans la grotte, plus vous en apprenez. Mais le danger grandit aussi.",
       "how2": "Le jeu est actif : vous prenez des décisions qui influencent la partie. Il existe aussi un mode idle pour que le jeu progresse en votre absence. Le jeu a une fin, ou peut-être plusieurs.",

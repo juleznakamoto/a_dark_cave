@@ -29,7 +29,7 @@
       },
       "steam": {
         "q": "Czy jest wersja na Steam?",
-        "a": "Tak. A Dark Cave ukaże się na <steam>Steam</steam> 27 października 2026. <demo>Darmowe demo</demo> jest już dostępne."
+        "a": "Tak. A Dark Cave jest już na <steam>Steam</steam>. Premiera: 27 października 2026. <demo>Darmowe demo</demo> jest dostępne."
       },
       "download": {
         "q": "Czy muszę pobierać grę przeglądarkową?",
@@ -63,7 +63,7 @@
     "about": {
       "intro1": "Zrobiłem tę grę, bo wiele lat temu zagrałem w A Dark Room i to mnie zainspirowało, żeby kiedyś stworzyć własną. Ten dzień nadszedł.",
       "intro2": "Budzisz się u wejścia do ciemnej jaskini. Bez pamięci. Bez rzeczy. Rozpalasz ogień, zbierasz trochę drewna, robisz pochodnię, budujesz pierwszy schron. Przychodzą obcy. Osada rośnie. Zaczynasz badać to, co leży głęboko w jaskini. Przeszłość twojej cywilizacji. Twoją przeszłość. To jest A Dark Cave: tekstowa gra przyrostowa o przetrwaniu, budowaniu i odkrywaniu, co naprawdę jest na dole, i może dokąd zmierzamy jako ludzkość.",
-      "intro3": "W przeglądarce jest za darmo: <site>a-dark-cave.com</site>. Żeby wesprzeć grę, są w pełni opcjonalne zakupy. Jest też <demo>demo na Steam</demo>, jeśli wolisz grać tak. Pełna wersja na Steam jest planowana na 27 października 2026.",
+      "intro3": "W przeglądarce jest za darmo: <site>a-dark-cave.com</site>. Żeby wesprzeć grę, są w pełni opcjonalne zakupy. Jest też <demo>demo na Steam</demo>, jeśli wolisz grać tak. Pełna wersja na Steam ukazała się 27 października 2026.",
       "howHeading": "Jak się gra",
       "how1": "Zaczynasz od niczego. Stopniowo odblokowujesz przedmioty, budynki, umiejętności, zajęcia, towarzyszy i wiele więcej. Rozwija się historia, bogata w tło świata, o przeszłości cywilizacji, która żyła wcześniej. Im głębiej schodzisz do jaskini, tym więcej się dowiadujesz. Ale niebezpieczeństwo też rośnie.",
       "how2": "Rozgrywka jest aktywna. Podejmujesz decyzje, które wpływają na grę. Jest też tryb idle, dzięki któremu gra toczy się dalej, gdy cię nie ma. Gra ma zakończenie, a może więcej niż jedno.",

@@ -21,11 +21,11 @@ export const PRESS_LOCKED_LINE =
 
 /** ~50 words. Quote-ready. No MTX. Do not call Steam free. */
 export const PRESS_BOILERPLATE_SHORT =
-  "A Dark Cave is a text-based incremental. You wake in a cave, light a fire, gather resources, and build a village as the story unfolds. Play for free in your browser. A paid Steam edition for Windows is planned for 27 October 2026. A free demo is available now.";
+  "A Dark Cave is a text-based incremental. You wake in a cave, light a fire, gather resources, and build a village as the story unfolds. Play for free in your browser. A paid Steam edition for Windows released on 27 October 2026. A free demo is available now.";
 
 /** ~150 words. Quote-ready. No MTX. Do not call Steam free. */
 export const PRESS_BOILERPLATE_LONG =
-  "A Dark Cave is a text-based incremental survival and settlement game. You wake at the mouth of a cave with no memory. A small fire is all that stands between you and the dark. You gather wood, craft tools, recruit villagers, and grow a settlement while a story about a lost civilization unfolds below. The game is semi-idle and active: you make choices, manage jobs, explore, and fight, rather than clicking a second-screen idle. Graphics stay minimal so the writing, systems, and atmosphere do the work. If you liked A Dark Room or Kittens Game, this is aimed at that taste. Play for free in your browser on desktop or mobile. A paid Windows edition is coming to Steam on 27 October 2026. A free Steam demo is available now. A Dark Cave will appear at Steam Next Fest from 19 to 26 October 2026. Julian Bauer is the solo developer. Press contact: support@a-dark-cave.com.";
+  "A Dark Cave is a text-based incremental survival and settlement game. You wake at the mouth of a cave with no memory. A small fire is all that stands between you and the dark. You gather wood, craft tools, recruit villagers, and grow a settlement while a story about a lost civilization unfolds below. The game is semi-idle and active: you make choices, manage jobs, explore, and fight, rather than clicking a second-screen idle. Graphics stay minimal so the writing, systems, and atmosphere do the work. If you liked A Dark Room or Kittens Game, this is aimed at that taste. Play for free in your browser on desktop or mobile. A paid Windows edition released on Steam on 27 October 2026. A free Steam demo is available now. Julian Bauer is the solo developer. Press contact: support@a-dark-cave.com.";
 
 export const PRESS_COMPS_LINE = "A Dark Room, Kittens Game, Universal Paperclips";
 
@@ -53,8 +53,7 @@ export const PRESS_FACTS: readonly PressFact[] = [
     value: "Web browser (desktop and mobile), Windows (Steam)",
   },
   { label: "Web listing", value: "17 November 2025" },
-  { label: "Steam release", value: "27 October 2026 (planned)" },
-  { label: "Steam Next Fest", value: "19-26 October 2026" },
+  { label: "Steam release", value: "27 October 2026" },
   { label: "Developer / publisher", value: "Julian Bauer" },
   {
     label: "Website",
@@ -72,7 +71,7 @@ export const PRESS_FACTS: readonly PressFact[] = [
     href: PUBLIC_STEAM_DEMO_URL,
   },
   { label: "Browser", value: "Play for free at a-dark-cave.com", href: SITE },
-  { label: "Price", value: "Browser: play for free. Steam: paid (price TBA)." },
+  { label: "Price", value: "Browser: play for free. Steam: $7.99." },
   {
     label: "Languages",
     value:
@@ -117,6 +116,54 @@ export const PRESS_LINKS: readonly PressLink[] = [
   { id: "producthunt", label: "Product Hunt", href: "https://www.producthunt.com/products/a-dark-cave", group: "directory" },
   { id: "fandom", label: "Wiki", href: "https://a-dark-cave.fandom.com/wiki/A_Dark_Cave_Wiki", group: "directory" },
   {
+    id: "techgame-lab",
+    label:
+      "TechGame Lab (1 November 2026): A Dark Caveはどんなゲーム？ 小さな焚き火から集落を育てるテキスト型サバイバル",
+    href: "https://techgame-lab.com/techgame-lab/?p=4451",
+    group: "coverage",
+    publishedOn: "2026-11-01",
+  },
+  {
+    id: "dayone-next-fest-vol-9",
+    label:
+      "DayOne (20 October 2026): UPDATE 2: Steam Next Fest Demo Roundup | Vol. 9, October '26",
+    href: "https://playday.one/2026/10/20/steam-next-fest-demo-roundup-vol-9-october-26/",
+    group: "coverage",
+    publishedOn: "2026-10-20",
+  },
+  {
+    id: "absolute-gamer",
+    label:
+      "Absolute Gamer (20 October 2026): Demo del Next Fest e uscite indie: A Dark Cave si gioca nel browser, Warding Witches butta via le bombe e HorrorVale porta su console otto anni di lavoro",
+    href: "https://www.absolutegamer.it/demo-del-next-fest-indie-20-ottobre/",
+    group: "coverage",
+    publishedOn: "2026-10-20",
+  },
+  {
+    id: "cogconnected",
+    label:
+      "COGconnected (19 October 2026): A Dark Cave Joins Steam Next Fest Ahead of Its Release Later This Month",
+    href: "https://cogconnected.com/2026/10/a-dark-cave-joins-steam-next-fest-ahead-of-its-release-later-this-month/",
+    group: "coverage",
+    publishedOn: "2026-10-19",
+  },
+  {
+    id: "gamebiz",
+    label:
+      "gamebiz (19 October 2026): Julian Bauer、テキストベースのインクリメンタルゲーム『A Dark Cave』を2026年10月27日にSteamでリリース",
+    href: "https://gamebiz.jp/news/434306",
+    group: "coverage",
+    publishedOn: "2026-10-19",
+  },
+  {
+    id: "the-nerdy-type",
+    label:
+      "The Nerdy Type (19 October 2026): 10 incremental demos to make numbers go brrr during Steam Next Fest, October 2026",
+    href: "https://www.thenerdytype.com/post/10-incremental-demos-to-make-numbers-go-brrr-during-steam-next-fest-october-2026",
+    group: "coverage",
+    publishedOn: "2026-10-19",
+  },
+  {
     id: "indiegames-inside",
     label:
       "IndieGames Inside (17 October 2026): Im textbasierten Incremental-Abenteuer A Dark Cave wächst ein Lagerfeuer zur Siedlung heran",
@@ -146,6 +193,22 @@ export const PRESS_LINKS: readonly PressLink[] = [
     publishedOn: "2026-09-15",
   },
   {
+    id: "output-lag",
+    label:
+      "Output Lag (14 October 2026): A Dark Cave, a text-based incremental game, arrives on Steam October 27",
+    href: "https://outputlag.com/news/a-dark-cave-a-text-based-incremental-game-arrives-on-steam-october-27/",
+    group: "coverage",
+    publishedOn: "2026-10-14",
+  },
+  {
+    id: "playnews",
+    label:
+      "Playnews (13 October 2026): A Dark Cave on Steam: release on October 27, 2026 and playable free demo",
+    href: "https://www.playnews.gg/en/announcements/a-dark-cave-on-steam-release-on-october-27-2026-and-playable-free-demo",
+    group: "coverage",
+    publishedOn: "2026-10-13",
+  },
+  {
     id: "gamers-at-indie-roundup-week-40",
     label: "Gamers.at (1 October 2026): Indie Roundup Week 40: Demos, Playtests und neue Spiele im Oktober",
     href: "https://www.gamers.at/indie-roundup-week-40-demos-playtests-und-neue-spiele-im-oktober/",
@@ -158,6 +221,16 @@ export function pressLinksInGroup(group: PressLink["group"]): PressLink[] {
   const links = PRESS_LINKS.filter((link) => link.group === group);
   if (group !== "coverage") return [...links];
   return [...links].sort((a, b) => (b.publishedOn ?? "").localeCompare(a.publishedOn ?? ""));
+}
+
+export const PRESS_COVERAGE_HEADING = "Press coverage";
+
+/** DD.MM.YYYY from the newest coverage item. Empty when the list has no dates. */
+export function pressCoverageUpdatedLabel(): string {
+  const latest = pressLinksInGroup("coverage")[0]?.publishedOn ?? "";
+  const [year, month, day] = latest.split("-");
+  if (!year || !month || !day) return "";
+  return `(last updated: ${day}.${month}.${year})`;
 }
 
 export type PressAssetKind = "logo" | "screenshot" | "capsule" | "gif" | "video";
@@ -316,6 +389,6 @@ export function getPressPageInnerHtml(): string {
     `<h2>Links</h2><ul>${linkItems()}</ul>`,
     `<h2>Permissions</h2><p>${escapeHtml(PRESS_PERMISSIONS)}</p>`,
     `<h2>Contact</h2><p>Julian Bauer. ${htmlAnchor(PRESS_CONTACT_MAILTO, PRESS_CONTACT_EMAIL, false)}</p>`,
-    `<h2>Press coverage</h2><ul>${linkItems("coverage")}</ul>`,
+    `<h2>${escapeHtml(PRESS_COVERAGE_HEADING)} ${escapeHtml(pressCoverageUpdatedLabel())}</h2><ul>${linkItems("coverage")}</ul>`,
   ].join("");
 }

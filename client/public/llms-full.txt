@@ -1,6 +1,6 @@
 # A Dark Cave
 
-> A text-based survival and settlement-building incremental. Play for free in your browser on desktop or mobile. Steam demo available; full Steam release planned 27 October 2026.
+> A text-based survival and settlement-building incremental. Play for free in your browser on desktop or mobile. Full Steam edition released 27 October 2026 ($7.99). A free demo is also available.
 
 A Dark Cave is a single-player HTML5 game for desktop and mobile browsers. No native app and no app-store download. Progress saves in the browser. Players make choices and manage a settlement: semi-idle plus active, not a clicker and not a second-screen idle. Inspired by minimalist incrementals such as A Dark Room, Kittens Game, and Candy Box. It is a separate game, not a remake or clone of those titles.
 
@@ -10,8 +10,8 @@ See the short index: [llms.txt](https://a-dark-cave.com/llms.txt).
 
 - Developer: Julian Bauer
 - Genre: incremental, text-based survival, settlement builder (semi-idle + active; not a clicker, not a second-screen idle)
-- Platforms: web browser (desktop and mobile browsers). Steam (Windows) with a free demo. Not on the App Store or Google Play.
-- Price: play for free in the browser. Steam is a paid game with a free demo.
+- Platforms: web browser (desktop and mobile browsers). Steam (Windows) released 27 October 2026, with a free demo. Not on the App Store or Google Play.
+- Price: play for free in the browser. Steam is a paid game ($7.99) with a free demo.
 - Comps: A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13, KEROS-9
 - Languages: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, Japanese, Polish, Russian
 - Contact: support@a-dark-cave.com
@@ -28,8 +28,8 @@ See the short index: [llms.txt](https://a-dark-cave.com/llms.txt).
 - Title: A Dark Cave
 - Developer / publisher: Julian Bauer
 - Genre: Incremental, Strategy, Survival, Settlement Builder, Resource Management, Text-Based
-- Platform: Web browser (HTML5), desktop and mobile. Steam (Windows) with a free demo (app 4971800). Full Steam desktop edition planned 27 October 2026 (wishlist available). Not on the App Store or Google Play.
-- Price: play for free in the browser. Steam is a paid game with a free demo. itch.io is name-your-own-price and is not the canonical price.
+- Platform: Web browser (HTML5), desktop and mobile. Steam (Windows) with a free demo (app 4971800). Full Steam desktop edition released 27 October 2026 (app 4882240, $7.99). Not on the App Store or Google Play.
+- Price: play for free in the browser. Steam is a paid game ($7.99) with a free demo. itch.io is name-your-own-price and is not the canonical price.
 - Play mode: Single player
 - Languages: English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, Japanese, Polish, Russian
 - Play time: Long incremental playthrough. A speed-focused run can finish in under 5 hours. Settlement production can continue while you are away.
@@ -57,10 +57,10 @@ Q: Does it work on mobile?
 A: Yes. It runs in mobile and desktop browsers. It is not a native App Store or Google Play app.
 
 Q: Do I need to download it?
-A: No. Open [a-dark-cave.com](https://a-dark-cave.com/) in a browser. A free Steam Demo is also available (app 4971800). Wishlist the full Steam edition (app 4882240) for the Windows release planned 27 October 2026.
+A: No. Open [a-dark-cave.com](https://a-dark-cave.com/) in a browser. A free Steam Demo is also available (app 4971800). The full Steam edition (app 4882240) released on 27 October 2026.
 
 Q: Is there a Steam version?
-A: Yes. A free Steam Demo is available now (app 4971800). The full Steam release is planned for 27 October 2026. The browser version is also available now.
+A: Yes. The full Steam edition released on 27 October 2026 (app 4882240, $7.99). A free Steam Demo is also available (app 4971800). The browser version is available now.
 
 Q: Does progress save?
 A: Yes. Progress saves automatically in the browser. You can also use an optional account for cloud save.

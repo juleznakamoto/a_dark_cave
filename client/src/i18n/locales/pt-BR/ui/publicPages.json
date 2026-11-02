@@ -29,7 +29,7 @@
       },
       "steam": {
         "q": "Existe versão para Steam?",
-        "a": "Sim. A Dark Cave chega à <steam>Steam</steam> em 27 de outubro de 2026. Já existe uma <demo>demo grátis</demo>."
+        "a": "Sim. A Dark Cave foi lançado na <steam>Steam</steam> em 27 de outubro de 2026. Já existe uma <demo>demo grátis</demo>."
       },
       "download": {
         "q": "Preciso baixar o jogo do navegador?",
@@ -63,7 +63,7 @@
     "about": {
       "intro1": "Eu fiz este jogo porque, há muitos anos, joguei A Dark Room, que me inspirou a criar o meu próprio jogo um dia. Esse dia chegou.",
       "intro2": "Você acorda na entrada de uma caverna escura. Sem memória. Sem posses. Você acende um fogo, depois junta um pouco de madeira, fabrica uma tocha, constrói o primeiro abrigo. Estranhos chegam. O assentamento cresce. Você começa a explorar o que há no fundo da caverna. O passado da sua civilização. O seu passado. Isso é A Dark Cave: um incremental em texto sobre sobreviver, construir e descobrir o que realmente tem lá embaixo, e talvez para onde estamos indo como humanidade.",
-      "intro3": "É de graça no navegador: <site>a-dark-cave.com</site>. Para apoiar o jogo, há compras totalmente opcionais. Tem uma <demo>demo da Steam</demo> se você preferir jogar assim. A versão completa da Steam está prevista para 27 de outubro de 2026.",
+      "intro3": "É de graça no navegador: <site>a-dark-cave.com</site>. Para apoiar o jogo, há compras totalmente opcionais. Tem uma <demo>demo da Steam</demo> se você preferir jogar assim. A versão completa da Steam foi lançada em 27 de outubro de 2026.",
       "howHeading": "Como se joga",
       "how1": "Você começa sem nada. Vai desbloqueando aos poucos itens, construções, habilidades, trabalhos, membros da irmandade e muito mais. Uma história de rica mitologia se desenrola, sobre o passado de uma civilização que viveu antes. Você aprende mais quanto mais fundo vai na caverna. Mas o perigo também cresce.",
       "how2": "A jogabilidade é ativa. Você toma decisões que influenciam o jogo. Também tem um modo idle para o jogo avançar enquanto você está longe. O jogo tem um final, ou talvez mais de um.",
