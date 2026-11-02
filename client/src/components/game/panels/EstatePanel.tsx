@@ -26,6 +26,8 @@ import {
   BLOODFLAME_SPHERE_UPGRADES,
   FERAL_HOWL_UPGRADES,
   HUNTING_SKILL_UPGRADES,
+  BLACK_ESTATE_SLEEP_HOURS,
+  BLACK_ESTATE_SLEEP_INTENSITY_PERCENT,
   SLEEP_LENGTH_UPGRADES,
   SLEEP_INTENSITY_UPGRADES,
   CROWS_EYE_UPGRADES,
@@ -714,8 +716,10 @@ export default function EstatePanel({
       (s, level) => ({ combatSkills: { ...s.combatSkills, feralHowlLevel: level } }),
     );
 
-  const blackEstateBonusHours = (state.buildings.blackEstate || 0) * 3;
-  const blackEstateBonusIntensity = (state.buildings.blackEstate || 0) * 5;
+  const blackEstateBonusHours =
+    (state.buildings.blackEstate || 0) * BLACK_ESTATE_SLEEP_HOURS;
+  const blackEstateBonusIntensity =
+    (state.buildings.blackEstate || 0) * BLACK_ESTATE_SLEEP_INTENSITY_PERCENT;
 
   const currentLengthUpgrade = SLEEP_LENGTH_UPGRADES[sleepUpgrades.lengthLevel];
   const nextLengthUpgrade =

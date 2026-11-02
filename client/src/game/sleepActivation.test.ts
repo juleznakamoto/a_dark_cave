@@ -130,6 +130,45 @@ describe("handleInactivity auto-sleep", () => {
     expect(state.isGameLoopActive).toBe(false);
   });
 
+  it("does not pause or auto-sleep after the story ending", async () => {
+    useGameStore.getState().initialize(buildDevSave("sleep-unlocked"));
+    useGameStore.setState({
+      events: {
+        ...useGameStore.getState().events,
+        cube15a: true,
+      },
+    });
+    startGameLoop();
+
+    await handleInactivity();
+
+    const state = useGameStore.getState();
+    expect(state.inactivityDialogOpen).toBe(false);
+    expect(state.inactivityReason).toBeNull();
+    expect(state.idleModeDialog.isOpen).toBe(false);
+    expect(state.idleModeState.isActive).toBe(false);
+    expect(state.isGameLoopActive).toBe(true);
+    expect(saveModule.saveGame).not.toHaveBeenCalled();
+  });
+
+  it("does not pause after the communicate ending when sleep is unavailable", async () => {
+    useGameStore.getState().initialize(buildDevSave("village"));
+    useGameStore.setState({
+      events: {
+        ...useGameStore.getState().events,
+        cube15b: true,
+      },
+    });
+    startGameLoop();
+
+    await handleInactivity();
+
+    const state = useGameStore.getState();
+    expect(state.inactivityDialogOpen).toBe(false);
+    expect(state.isGameLoopActive).toBe(true);
+    expect(state.idleModeState.isActive).toBe(false);
+  });
+
   it("shows the inactivity dialog when sleep production prereqs fail", async () => {
     useGameStore.getState().initialize(buildDevSave("sleep-unlocked"));
     useGameStore.setState({

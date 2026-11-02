@@ -285,16 +285,22 @@ export const SLEEP_LENGTH_UPGRADES = [
 ];
 
 export const SLEEP_INTENSITY_UPGRADES = [
-  { level: 0, percentage: 10, cost: 0, currency: null },
-  { level: 1, percentage: 15, cost: 100, currency: "gold" },
-  { level: 2, percentage: 20, cost: 250, currency: "gold" },
-  { level: 3, percentage: 25, cost: 500, currency: "gold" },
-  { level: 4, percentage: 30, cost: 750, currency: "gold" },
-  { level: 5, percentage: 35, cost: 1000, currency: "gold" },
-  { level: 6, percentage: 40, cost: 1250, currency: "gold" },
-  { level: 7, percentage: 45, cost: 1500, currency: "gold" },
-  { level: 8, percentage: 50, cost: 1750, currency: "gold" },
+  { level: 0, percentage: 20, cost: 0, currency: null },
+  { level: 1, percentage: 25, cost: 100, currency: "gold" },
+  { level: 2, percentage: 30, cost: 250, currency: "gold" },
+  { level: 3, percentage: 35, cost: 500, currency: "gold" },
+  { level: 4, percentage: 40, cost: 750, currency: "gold" },
+  { level: 5, percentage: 45, cost: 1000, currency: "gold" },
+  { level: 6, percentage: 50, cost: 1250, currency: "gold" },
+  { level: 7, percentage: 55, cost: 1500, currency: "gold" },
+  { level: 8, percentage: 60, cost: 1750, currency: "gold" },
 ];
+
+/** Hours added to Sleep Length by one Black Estate. */
+export const BLACK_ESTATE_SLEEP_HOURS = 6;
+
+/** Percentage points added to Sleep Intensity by one Black Estate. */
+export const BLACK_ESTATE_SLEEP_INTENSITY_PERCENT = 10;
 
 /** Food consumed per 15s production cycle for each action assigned to the Disgraced Prior. */
 export const DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE = 20;

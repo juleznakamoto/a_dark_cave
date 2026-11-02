@@ -57,6 +57,8 @@ import {
 import { hasChosenPact } from "@/game/rules/pacts";
 import { getResourceName } from "@/i18n/resolveGameText";
 import {
+  BLACK_ESTATE_SLEEP_HOURS,
+  BLACK_ESTATE_SLEEP_INTENSITY_PERCENT,
   SLEEP_LENGTH_UPGRADES,
   SLEEP_INTENSITY_UPGRADES,
 } from "@/game/rules/skillUpgrades";
@@ -182,8 +184,9 @@ function IdleModeDialogOpen() {
 
   // Get current sleep duration and multiplier from upgrades (+ Black Estate)
   const blackEstateCount = buildings?.blackEstate ?? 0;
-  const estateBonusHours = blackEstateCount * 3;
-  const estateBonusIntensityPct = blackEstateCount * 5;
+  const estateBonusHours = blackEstateCount * BLACK_ESTATE_SLEEP_HOURS;
+  const estateBonusIntensityPct =
+    blackEstateCount * BLACK_ESTATE_SLEEP_INTENSITY_PERCENT;
   const sleepLengthConfig =
     SLEEP_LENGTH_UPGRADES[sleepUpgrades?.lengthLevel || 0];
   const sleepIntensityConfig =

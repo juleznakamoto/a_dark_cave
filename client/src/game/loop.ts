@@ -71,6 +71,7 @@ import {
   beginSleepMode,
   shouldAutoSleepOnInactivity,
 } from "./sleepActivation";
+import { isGameStoryCompleted } from "./rules/eventsAttackWaves";
 let gameLoopRunning = false;
 let gameLoopTimer: ReturnType<typeof setTimeout> | null = null;
 /** Set while the loop is started so the timer can call the nested tick. */
@@ -462,6 +463,11 @@ export function startGameLoop() {
       return;
     }
 
+    // Finished runs keep simulating. No AFK pause and no auto-sleep.
+    if (isGameStoryCompleted(state)) {
+      return;
+    }
+
     const timeSinceActivity = now - lastUserActivity;
 
     // Stop after 15 minutes without input — including when the tab is in the background.
@@ -788,9 +794,15 @@ export function clearExpiredTimedEventTab() {
 
 /** Exported for tests; normally triggered by the inactivity interval. */
 export async function handleInactivity() {
+  const state = useGameStore.getState();
+  // Story is over (cube15a/b). Leave the loop running: no pause dialog, no auto-sleep.
+  if (isGameStoryCompleted(state)) {
+    return;
+  }
+
   // Estate + Sleep ready: fall asleep instead of the AFK dialog.
   // Keep the loop running; Sleep owns pause / production while open.
-  if (shouldAutoSleepOnInactivity(useGameStore.getState())) {
+  if (shouldAutoSleepOnInactivity(state)) {
     isInactive = true;
     try {
       logger.log("[GAME LOOP] Auto-starting sleep after inactivity timeout");

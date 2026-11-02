@@ -5,6 +5,10 @@ import { PRESET_SLOTS_BY_BUILDING_TIER } from "@/game/villagerJobPresets";
 import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
 import { bt, type BuildingTooltipEffect } from "./buildingTooltipEffects";
 import { foundryTanneryAmount } from "./foundryTanneryProduction";
+import {
+  BLACK_ESTATE_SLEEP_HOURS,
+  BLACK_ESTATE_SLEEP_INTENSITY_PERCENT,
+} from "./skillUpgrades";
 
 function storageResourceLimitTooltip(limit: number): BuildingTooltipEffect {
   return bt(
@@ -1486,8 +1490,12 @@ export const villageBuildActions: Record<string, Action> = {
     description:
       "Towering estate of black timber and stone, overlooking the city.",
     tooltipEffects: [
-      bt("sleepLengthHours", "Sleep Length +{{hours}} hours", { hours: 3 }),
-      bt("sleepIntensityPercent", "Sleep Intensity +{{percent}}%", { percent: 5 }),
+      bt("sleepLengthHours", "Sleep Length +{{hours}} hours", {
+        hours: BLACK_ESTATE_SLEEP_HOURS,
+      }),
+      bt("sleepIntensityPercent", "Sleep Intensity +{{percent}}%", {
+        percent: BLACK_ESTATE_SLEEP_INTENSITY_PERCENT,
+      }),
       bt("maxVillagers", "+{{amount}} Max Villagers", { amount: 10 }),
     ],
     building: true,
