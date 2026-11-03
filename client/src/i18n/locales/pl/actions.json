@@ -718,8 +718,8 @@
     "description": "Podążaj za wznoszącym się dymem do obozu banitów.",
     "label": "Wznoszący się dym",
     "log": {
-      "success": "Wyprawa odnajduje obóz banitów. Walka jest okrutna, lecz zwyciężasz. W skrzyni znajdujesz 500 złota.",
-      "successKeyBonus": " Wytrychem otwierasz ukrytą skrytkę i znajdujesz kolejne 250 złota.",
+      "success": "Wyprawa odnajduje obóz banitów. Walka jest okrutna, lecz zwyciężasz. W skrzyni znajdujesz {{gold}} złota.",
+      "successKeyBonus": " Wytrychem otwierasz ukrytą skrytkę i znajdujesz kolejne {{gold}} złota.",
       "captiveOne": " 1 jeniec z obozu postanawia dołączyć do wioski.",
       "captivesOther": " {{count}} jeńców z obozu postanawia dołączyć do wioski.",
       "failure": "Wyprawa dociera do obozu banitów, lecz walka idzie fatalnie. {{count}} wieśniaków pada, zanim ocalali uciekają z powrotem do wioski."

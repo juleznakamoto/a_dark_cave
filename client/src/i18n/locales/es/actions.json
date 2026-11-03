@@ -716,8 +716,8 @@
     "description": "Sigue el humo que asciende hasta un campamento de forajidos.",
     "label": "Humo ascendente",
     "log": {
-      "success": "Tu expedición encuentra un campamento de forajidos. La lucha es brutal, pero vences. En un cofre encuentras 500 de oro.",
-      "successKeyBonus": " Con tu llave maestra abres un compartimento oculto y encuentras otros 250 de oro.",
+      "success": "Tu expedición encuentra un campamento de forajidos. La lucha es brutal, pero vences. En un cofre encuentras {{gold}} de oro.",
+      "successKeyBonus": " Con tu llave maestra abres un compartimento oculto y encuentras otros {{gold}} de oro.",
       "captiveOne": " 1 cautivo del campamento decide unirse a la aldea.",
       "captivesOther": " {{count}} cautivos del campamento deciden unirse a la aldea.",
       "failure": "Tu expedición llega a un campamento de forajidos, pero la lucha sale terriblemente mal. {{count}} aldeanos caen antes de que los supervivientes huyan de vuelta a la aldea."

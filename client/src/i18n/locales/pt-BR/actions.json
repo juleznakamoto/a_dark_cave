@@ -716,8 +716,8 @@
     "description": "Siga a fumaça que sobe até um acampamento de foras da lei.",
     "label": "Fumaça Subindo",
     "log": {
-      "success": "Sua expedição encontra um acampamento de foras da lei. A luta é brutal, mas você vence. Num baú, você encontra 500 de ouro.",
-      "successKeyBonus": " Com sua chave-mestra, você abre um compartimento oculto e encontra mais 250 de ouro.",
+      "success": "Sua expedição encontra um acampamento de foras da lei. A luta é brutal, mas você vence. Num baú, você encontra {{gold}} de ouro.",
+      "successKeyBonus": " Com sua chave-mestra, você abre um compartimento oculto e encontra mais {{gold}} de ouro.",
       "captiveOne": " 1 cativo do acampamento decide se juntar ao vilarejo.",
       "captivesOther": " {{count}} cativos do acampamento decidem se juntar ao vilarejo.",
       "failure": "Sua expedição alcança um acampamento de foras da lei, mas a luta dá terrivelmente errado. {{count}} aldeões caem antes que os sobreviventes fujam de volta ao vilarejo."

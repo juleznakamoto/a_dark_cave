@@ -716,8 +716,8 @@
     "description": "Folge dem aufsteigenden Rauch zu einem Gesetzlosenlager.",
     "label": "Aufsteigender Rauch",
     "log": {
-      "success": "Deine Expedition findet ein Gesetzlosenlager. Der Kampf ist brutal, doch deine Leute siegen. In einer Truhe findest du 500 Gold.",
-      "successKeyBonus": " Mit deinem Skelettschlüssel öffnest du ein verborgenes Fach und findest weitere 250 Gold.",
+      "success": "Deine Expedition findet ein Gesetzlosenlager. Der Kampf ist brutal, doch deine Leute siegen. In einer Truhe findest du {{gold}} Gold.",
+      "successKeyBonus": " Mit deinem Skelettschlüssel öffnest du ein verborgenes Fach und findest weitere {{gold}} Gold.",
       "captiveOne": " 1 Gefangener aus dem Lager schließt sich dem Dorf an.",
       "captivesOther": " {{count}} Gefangene aus dem Lager schließen sich dem Dorf an.",
       "failure": "Deine Expedition erreicht ein Gesetzlosenlager, doch der Kampf geht furchtbar schief. {{count}} Dorfbewohner fallen, bevor die Überlebenden zurück ins Dorf fliehen."

@@ -1207,10 +1207,9 @@ export function handleRisingSmoke(
   if (Math.random() < successChance) {
     const isCompletingExecution =
       (state as any)._completingExecution === "risingSmoke";
-    let goldGain = btpLootAmount(500, state);
-    if (state.tools.skeleton_key) {
-      goldGain += btpLootAmount(250, state);
-    }
+    const chestGold = btpLootAmount(500, state);
+    const keyGold = state.tools.skeleton_key ? btpLootAmount(250, state) : 0;
+    const goldGain = chestGold + keyGold;
 
     const { added, patch: captivePatch } = addFreeVillagersWithinCap(state, 20);
 
@@ -1236,13 +1235,15 @@ export function handleRisingSmoke(
     let successMessage = getActionLogMessage(
       "risingSmoke",
       "success",
-      "Your expedition finds an outlaw camp. The fight is brutal, but you win. In a chest you find 500 Gold.",
+      "Your expedition finds an outlaw camp. The fight is brutal, but you win. In a chest you find {{gold}} Gold.",
+      { gold: chestGold },
     );
-    if (state.tools.skeleton_key) {
+    if (keyGold > 0) {
       successMessage += getActionLogMessage(
         "risingSmoke",
         "successKeyBonus",
-        " With your skeleton key you open a hidden compartment and find another 250 Gold.",
+        " With your skeleton key you open a hidden compartment and find another {{gold}} Gold.",
+        { gold: keyGold },
       );
     }
     if (added === 1) {

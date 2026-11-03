@@ -716,8 +716,8 @@
     "description": "Follow the rising smoke to an outlaw camp.",
     "label": "Rising Smoke",
     "log": {
-      "success": "Your expedition finds an outlaw camp. The fight is brutal, but you win. In a chest you find 500 Gold.",
-      "successKeyBonus": " With your skeleton key you open a hidden compartment and find another 250 Gold.",
+      "success": "Your expedition finds an outlaw camp. The fight is brutal, but you win. In a chest you find {{gold}} Gold.",
+      "successKeyBonus": " With your skeleton key you open a hidden compartment and find another {{gold}} Gold.",
       "captiveOne": " 1 captive from the camp chooses to join the village.",
       "captivesOther": " {{count}} captives from the camp choose to join the village.",
       "failure": "Your expedition reaches an outlaw camp, but the fight goes terribly wrong. {{count}} villagers fall before the survivors flee back to the village."

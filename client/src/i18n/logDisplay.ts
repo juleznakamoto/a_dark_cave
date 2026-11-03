@@ -646,12 +646,6 @@ const LEGACY_ACTION_LOG_MESSAGES: Array<{
         "The giant trap is set, but when checked only giant claw marks are found next to it. Whatever prowls these forests is too cunning for your trap... this time.",
     },
     {
-      actionId: "risingSmoke",
-      logKey: "success",
-      message:
-        "Your expedition finds an outlaw camp. The fight is brutal, but you win. In a chest you find 500 Gold.",
-    },
-    {
       actionId: "steelDelivery",
       logKey: "success",
       message:
@@ -666,19 +660,30 @@ const LEGACY_ACTION_LOG_MESSAGES: Array<{
   ];
 
 function resolveLegacyRisingSmokeSuccess(message: string): string | null {
-  const base =
-    "Your expedition finds an outlaw camp. The fight is brutal, but you win. In a chest you find 500 Gold.";
-  if (!message.startsWith(base)) return null;
+  const baseMatch = message.match(
+    /^Your expedition finds an outlaw camp\. The fight is brutal, but you win\. In a chest you find (\d+) Gold\./,
+  );
+  if (!baseMatch) return null;
 
-  let text = getActionLogMessage("risingSmoke", "success", base);
-  const remainder = message.slice(base.length);
+  let text = getActionLogMessage(
+    "risingSmoke",
+    "success",
+    "Your expedition finds an outlaw camp. The fight is brutal, but you win. In a chest you find {{gold}} Gold.",
+    { gold: Number(baseMatch[1]) },
+  );
+  let rest = message.slice(baseMatch[0].length);
 
-  const keySuffix =
-    " With your skeleton key you open a hidden compartment and find another 250 Gold.";
-  let rest = remainder;
-  if (rest.startsWith(keySuffix)) {
-    text += getActionLogMessage("risingSmoke", "successKeyBonus", keySuffix);
-    rest = rest.slice(keySuffix.length);
+  const keyMatch = rest.match(
+    /^ With your skeleton key you open a hidden compartment and find another (\d+) Gold\./,
+  );
+  if (keyMatch) {
+    text += getActionLogMessage(
+      "risingSmoke",
+      "successKeyBonus",
+      " With your skeleton key you open a hidden compartment and find another {{gold}} Gold.",
+      { gold: Number(keyMatch[1]) },
+    );
+    rest = rest.slice(keyMatch[0].length);
   }
 
   const captiveOneSuffix =

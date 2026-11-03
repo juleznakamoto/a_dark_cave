@@ -716,8 +716,8 @@
     "description": "Segui il fumo che sale fino a un campo di fuorilegge.",
     "label": "Fumo che si alza",
     "log": {
-      "success": "La tua spedizione trova un accampamento di fuorilegge. Lo scontro è brutale, ma vinci. In un baule trovi 500 oro.",
-      "successKeyBonus": " Con il tuo passe-partout apri uno scomparto nascosto e trovi altri 250 oro.",
+      "success": "La tua spedizione trova un accampamento di fuorilegge. Lo scontro è brutale, ma vinci. In un baule trovi {{gold}} oro.",
+      "successKeyBonus": " Con il tuo passe-partout apri uno scomparto nascosto e trovi altri {{gold}} oro.",
       "captiveOne": " 1 prigioniero dell'accampamento sceglie di unirsi al villaggio.",
       "captivesOther": " {{count}} prigionieri dell'accampamento scelgono di unirsi al villaggio.",
       "failure": "La tua spedizione raggiunge un accampamento di fuorilegge, ma lo scontro va terribilmente storto. {{count}} abitanti cadono prima che i sopravvissuti fuggano al villaggio."

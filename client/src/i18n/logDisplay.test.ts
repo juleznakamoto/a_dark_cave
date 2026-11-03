@@ -541,4 +541,25 @@ describe("resolveLogPanelMessage", () => {
       "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Noch 2 von 3 Übungsspielen übrig.",
     );
   });
+
+  it("re-localizes rising smoke loot, including the doubled store amounts", async () => {
+    await i18n.changeLanguage("de");
+    const web = resolveLogPanelMessage(
+      systemEntry(
+        "Your expedition finds an outlaw camp. The fight is brutal, but you win. In a chest you find 500 Gold.",
+      ),
+    );
+    expect(web).toBe(
+      "Deine Expedition findet ein Gesetzlosenlager. Der Kampf ist brutal, doch deine Leute siegen. In einer Truhe findest du 500 Gold.",
+    );
+
+    const steam = resolveLogPanelMessage(
+      systemEntry(
+        "Your expedition finds an outlaw camp. The fight is brutal, but you win. In a chest you find 1000 Gold. With your skeleton key you open a hidden compartment and find another 500 Gold. 3 captives from the camp choose to join the village.",
+      ),
+    );
+    expect(steam).toBe(
+      "Deine Expedition findet ein Gesetzlosenlager. Der Kampf ist brutal, doch deine Leute siegen. In einer Truhe findest du 1'000 Gold. Mit deinem Skelettschlüssel öffnest du ein verborgenes Fach und findest weitere 500 Gold. 3 Gefangene aus dem Lager schließen sich dem Dorf an.",
+    );
+  });
 });
