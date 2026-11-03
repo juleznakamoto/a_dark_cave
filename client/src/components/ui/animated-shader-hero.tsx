@@ -222,11 +222,11 @@ function EndScreenCornerBadge({
 }) {
   const toneClass =
     tone === "red"
-      ? "border-red-500 bg-red-950 text-red-100"
+      ? "border-red-600 bg-red-950 text-red-200"
       : "border-emerald-500/90 bg-emerald-950/95 text-emerald-300";
   const placeClass =
     align === "edge"
-      ? "top-0 -right-3 origin-center -translate-y-1/2 scale-90 inline-flex items-center justify-center leading-none h-5 py-0 font-normal border-[1.5px] shadow-[0_0_10px_3px_rgba(239,68,68,0.95)]"
+      ? "top-0 -right-3 origin-center -translate-y-1/2 scale-90 inline-flex items-center justify-center leading-none h-[22px] py-0 font-medium border-[1px] shadow-[0_0_10px_3px_rgba(220,38,38,0.95)]"
       : "-top-2.5 -right-2 py-px leading-tight font-medium border shadow-md";
   return (
     <span className={`${END_SCREEN_CORNER_BADGE_CLASS} ${placeClass} ${toneClass}`}>
@@ -865,63 +865,63 @@ const Hero: React.FC<HeroProps> = ({
             buttons?.rateItch) && (
               <div className="flex flex-col items-center gap-3 animate-fade-in-up animation-delay-4500 px-2">
                 {(buttons?.secondaryTrailing || buttons?.rateItch || !hideSupport) && (
-                <div className="w-full flex justify-center">
-                  <div className="flex flex-wrap justify-center gap-3 sm:gap-4 items-center">
-                    {buttons?.secondaryTrailing && (
-                      <button
-                        type="button"
-                        onClick={buttons.secondaryTrailing.onClick}
-                        button_id={buttons.secondaryTrailing.buttonId}
-                        className={END_SCREEN_LINK_BUTTON_HOVER_CLASS}
-                      >
-                        <GameUiIcon
-                          name="discover"
-                          sizeClassName="h-3.5 w-3.5"
-                          className="text-blue-400 opacity-100"
-                        />
-                        <span>{buttons.secondaryTrailing.text}</span>
-                      </button>
-                    )}
-                    {buttons?.rateItch && (
-                      <button
-                        type="button"
-                        onClick={buttons.rateItch.onClick}
-                        button_id={buttons.rateItch.buttonId}
-                        className={END_SCREEN_LINK_BUTTON_HOVER_CLASS}
-                      >
-                        <FooterSocialIcon
-                          platform="itch"
-                          variant="brand"
-                          className="h-3.5 w-3.5 shrink-0"
-                        />
-                        <span>{buttons.rateItch.text}</span>
-                      </button>
-                    )}
-                    {!hideSupport && (
-                      <button
-                        type="button"
-                        onClick={() =>
-                          window.open(
-                            "https://buymeacoffee.com/julez.b",
-                            "_blank",
-                            "noopener,noreferrer",
-                          )
-                        }
-                        className={END_SCREEN_LINK_BUTTON_HOVER_CLASS}
-                      >
-                        <span
-                          className="donate-heart inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center text-sm leading-none text-red-600"
-                          aria-hidden
+                  <div className="w-full flex justify-center">
+                    <div className="flex flex-wrap justify-center gap-3 sm:gap-4 items-center">
+                      {buttons?.secondaryTrailing && (
+                        <button
+                          type="button"
+                          onClick={buttons.secondaryTrailing.onClick}
+                          button_id={buttons.secondaryTrailing.buttonId}
+                          className={END_SCREEN_LINK_BUTTON_HOVER_CLASS}
                         >
-                          ❤︎⁠
-                        </span>
-                        <span>
-                          {t("endScreen.buyMeACoffee")}
-                        </span>
-                      </button>
-                    )}
+                          <GameUiIcon
+                            name="discover"
+                            sizeClassName="h-3.5 w-3.5"
+                            className="text-blue-400 opacity-100"
+                          />
+                          <span>{buttons.secondaryTrailing.text}</span>
+                        </button>
+                      )}
+                      {buttons?.rateItch && (
+                        <button
+                          type="button"
+                          onClick={buttons.rateItch.onClick}
+                          button_id={buttons.rateItch.buttonId}
+                          className={END_SCREEN_LINK_BUTTON_HOVER_CLASS}
+                        >
+                          <FooterSocialIcon
+                            platform="itch"
+                            variant="brand"
+                            className="h-3.5 w-3.5 shrink-0"
+                          />
+                          <span>{buttons.rateItch.text}</span>
+                        </button>
+                      )}
+                      {!hideSupport && (
+                        <button
+                          type="button"
+                          onClick={() =>
+                            window.open(
+                              "https://buymeacoffee.com/julez.b",
+                              "_blank",
+                              "noopener,noreferrer",
+                            )
+                          }
+                          className={END_SCREEN_LINK_BUTTON_HOVER_CLASS}
+                        >
+                          <span
+                            className="donate-heart inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center text-sm leading-none text-red-600"
+                            aria-hidden
+                          >
+                            ❤︎⁠
+                          </span>
+                          <span>
+                            {t("endScreen.buyMeACoffee")}
+                          </span>
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
                 )}
                 {(buttons?.secondary || buttons?.secondaryBeside) && (
                   <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-3">
