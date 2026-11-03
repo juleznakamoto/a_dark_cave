@@ -40,19 +40,19 @@
         "name": "Blazesmith",
         "boon": "Bombs crafting costs 50% less",
         "boon2": "Double Heartfire production bonus",
-        "quote": "'Something seems wrong with the Alchemist'"
+        "quote": "'The Alchemist's experiments crossed a line'"
       },
       "full_larders": {
         "name": "Full Larders",
         "boon": "Free villagers produce +2 Food",
         "boon2": "Hunters produce +5 Food",
-        "quote": "'The huntress offers to hunt'"
+        "quote": "'The Huntress offers to hunt'"
       },
       "sturdy_hands": {
         "name": "Sturdy Hands",
         "boon": "Gatherers produce +5 Wood",
         "boon2": "Gatherers produce +5 Stone",
-        "quote": "'The merchant's cart holds more than it should'"
+        "quote": "'The Merchant's cart holds more than it should'"
       },
       "cunning_trader": {
         "name": "Cunning Trader",
