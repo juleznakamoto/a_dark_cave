@@ -862,7 +862,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 3 &&
       !state.buildings.furTents &&
       !state.story.seen.furTentsUnlocked,
-    timeProbability: 45,
+    timeProbability: 30,
     cooldownPercent: 0.5,
     priority: 3,
     repeatable: true,

@@ -145,7 +145,7 @@ export const storyEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 7 && !state.story.seen.collapsedTowerExplored,
 
     timeProbability: (state: GameState) =>
-      state.story.seen.bloodDrainedVillagersFirstTime ? 30 : 45,
+      state.story.seen.bloodDrainedVillagersFirstTime ? 30 : 40,
     message: (state: GameState) =>
       !state.story.seen.bloodDrainedVillagersFirstTime ? "firstTime" : "repeat",
     priority: 4,
@@ -540,7 +540,7 @@ export const storyEvents: Record<string, GameEvent> = {
       state.buildings.darkEstate >= 1 &&
       !state.story.seen.forestTribeHelpAccepted,
     timeProbability: (state: GameState) =>
-      state.story.seen.forestTribeHelpRejected ? 60 : 10,
+      state.story.seen.forestTribeHelpRejected ? 45 : 10,
     priority: 5,
     repeatable: true,
     choices: [

@@ -219,7 +219,7 @@ export const ringEvents: Record<string, GameEvent> = {
       !state.story.seen.mercenaryDemand_giveRing &&
       !state.story.seen.mercenaryDemand_payGold,
 
-    timeProbability: 60,
+    timeProbability: 45,
 
     priority: 4,
     repeatable: true,
