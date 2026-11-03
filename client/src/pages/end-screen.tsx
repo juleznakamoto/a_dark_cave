@@ -79,6 +79,10 @@ export default function EndScreenPage() {
     navigateSpa("/?game=true");
   };
 
+  const handleNewGame = () => {
+    navigateSpa("/?game=true&openNewGame=true");
+  };
+
   const handleCruelMode = async () => {
     if (steamCruelUnlockAvailable) {
       navigateSpa("/?game=true&openNewGame=true&cruelMode=true");
@@ -196,6 +200,12 @@ export default function EndScreenPage() {
             text: t("endScreen.continuePlaying"),
             onClick: handleMainMenu,
             buttonId: "end-screen-close",
+          },
+          secondaryBeside: {
+            text: t("endScreen.newGame"),
+            onClick: handleNewGame,
+            buttonId: "end-screen-new-game",
+            badge: t("endScreen.pactsBadge"),
           },
           ...(!steamEditionActive
             ? {

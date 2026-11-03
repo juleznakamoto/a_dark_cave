@@ -106,7 +106,15 @@ interface HeroProps {
       onClick?: () => void;
       buttonId?: string;
     };
-    /** Shown to the right of `secondary` on the same row (e.g. end screen: More Games). */
+    /** Shown to the right of `secondary` (e.g. end screen: New Game). */
+    secondaryBeside?: {
+      text: string;
+      onClick?: () => void;
+      buttonId?: string;
+      /** Small pill at the upper-right, same slot as the Cruel Mode badge. */
+      badge?: string;
+    };
+    /** Link row above Continue Playing (e.g. end screen: More Games). */
     secondaryTrailing?: {
       text: string;
       onClick?: () => void;
@@ -193,7 +201,43 @@ const END_SCREEN_CTA_BUTTON_GROUP_CLASS =
   `${END_SCREEN_CTA_BUTTON_BASE_CLASS} group-hover:bg-primary/90`;
 
 const END_SCREEN_LINK_BUTTON_CLASS =
-  "px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 hover:scale-105 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0";
+  "px-2.5 sm:px-3 py-1.5 sm:py-1.5 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-normal text-xs sm:text-sm transition-all duration-300 backdrop-blur-sm flex items-center gap-1 sm:gap-1.5 min-w-0";
+
+const END_SCREEN_LINK_BUTTON_HOVER_CLASS =
+  `${END_SCREEN_LINK_BUTTON_CLASS} hover:scale-105`;
+
+/** Upper-right pill, same placement as the Cruel Mode "Coming soon" badge. */
+const END_SCREEN_CORNER_BADGE_CLASS =
+  "pointer-events-none absolute z-10 max-w-[min(12rem,calc(100vw-4rem))] rounded px-2 text-center text-2xs uppercase tracking-wide sm:text-xs opacity-100";
+
+function EndScreenCornerBadge({
+  text,
+  tone,
+  align = "raised",
+}: {
+  text: string;
+  tone: "emerald" | "red";
+  /** `edge` centers the pill on the button's top border. */
+  align?: "raised" | "edge";
+}) {
+  const toneClass =
+    tone === "red"
+      ? "border-red-500 bg-red-950 text-red-100"
+      : "border-emerald-500/90 bg-emerald-950/95 text-emerald-300";
+  const placeClass =
+    align === "edge"
+      ? "top-0 -right-3 origin-center -translate-y-1/2 scale-90 inline-flex items-center justify-center leading-none h-5 py-0 font-normal border-[1.5px] shadow-[0_0_10px_3px_rgba(239,68,68,0.95)]"
+      : "-top-2.5 -right-2 py-0.5 leading-tight font-semibold border shadow-md";
+  return (
+    <span className={`${END_SCREEN_CORNER_BADGE_CLASS} ${placeClass} ${toneClass}`}>
+      {align === "edge" ? (
+        <span className="relative top-px">{text}</span>
+      ) : (
+        text
+      )}
+    </span>
+  );
+}
 
 // Reusable Shader Background Hook
 const useShaderBackground = (enabled: boolean) => {
@@ -735,9 +779,7 @@ const Hero: React.FC<HeroProps> = ({
                 }
               >
                 {buttons.primary.badge && (
-                  <span className="pointer-events-none absolute -top-2.5 -right-2 z-10 max-w-[min(12rem,calc(100vw-4rem))] rounded border border-emerald-500/90 bg-emerald-950/95 px-2 py-0.5 text-center text-2xs font-semibold uppercase leading-tight tracking-wide text-emerald-300 shadow-md sm:text-xs opacity-100">
-                    {buttons.primary.badge}
-                  </span>
+                  <EndScreenCornerBadge text={buttons.primary.badge} tone="emerald" />
                 )}
                 <button
                   type="button"
@@ -816,8 +858,9 @@ const Hero: React.FC<HeroProps> = ({
             </div>
           )}
 
-          {/* Buy Me a Coffee + Continue Playing (+ More Games / Rate on itch.io on web) */}
+          {/* Buy Me a Coffee + Continue Playing (+ New Game, More Games / Rate on itch.io on web) */}
           {(buttons?.secondary ||
+            buttons?.secondaryBeside ||
             buttons?.secondaryTrailing ||
             buttons?.rateItch) && (
               <div className="flex flex-col items-center gap-3 animate-fade-in-up animation-delay-4500 px-2">
@@ -829,7 +872,7 @@ const Hero: React.FC<HeroProps> = ({
                         type="button"
                         onClick={buttons.secondaryTrailing.onClick}
                         button_id={buttons.secondaryTrailing.buttonId}
-                        className={END_SCREEN_LINK_BUTTON_CLASS}
+                        className={END_SCREEN_LINK_BUTTON_HOVER_CLASS}
                       >
                         <GameUiIcon
                           name="discover"
@@ -844,7 +887,7 @@ const Hero: React.FC<HeroProps> = ({
                         type="button"
                         onClick={buttons.rateItch.onClick}
                         button_id={buttons.rateItch.buttonId}
-                        className={END_SCREEN_LINK_BUTTON_CLASS}
+                        className={END_SCREEN_LINK_BUTTON_HOVER_CLASS}
                       >
                         <FooterSocialIcon
                           platform="itch"
@@ -864,7 +907,7 @@ const Hero: React.FC<HeroProps> = ({
                             "noopener,noreferrer",
                           )
                         }
-                        className={END_SCREEN_LINK_BUTTON_CLASS}
+                        className={END_SCREEN_LINK_BUTTON_HOVER_CLASS}
                       >
                         <span
                           className="donate-heart inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center text-sm leading-none text-red-600"
@@ -880,20 +923,49 @@ const Hero: React.FC<HeroProps> = ({
                   </div>
                 </div>
                 )}
-                {buttons?.secondary && (
-                  <button
-                    type="button"
-                    onClick={buttons.secondary.onClick}
-                    button_id={buttons.secondary.buttonId}
-                    className={END_SCREEN_LINK_BUTTON_CLASS}
-                  >
-                    <GameUiIcon
-                      name="unpause"
-                      sizeClassName="h-3.5 w-3.5"
-                      className="opacity-100"
-                    />
-                    <span>{buttons.secondary.text}</span>
-                  </button>
+                {(buttons?.secondary || buttons?.secondaryBeside) && (
+                  <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 pt-3">
+                    {buttons?.secondary && (
+                      <button
+                        type="button"
+                        onClick={buttons.secondary.onClick}
+                        button_id={buttons.secondary.buttonId}
+                        className={END_SCREEN_LINK_BUTTON_HOVER_CLASS}
+                      >
+                        <GameUiIcon
+                          name="unpause"
+                          sizeClassName="h-3.5 w-3.5"
+                          className="opacity-100"
+                        />
+                        <span>{buttons.secondary.text}</span>
+                      </button>
+                    )}
+                    {buttons?.secondaryBeside && (
+                      <div className="relative inline-flex origin-center transition-transform duration-300 hover:scale-105">
+                        {buttons.secondaryBeside.badge && (
+                          <EndScreenCornerBadge
+                            text={buttons.secondaryBeside.badge}
+                            tone="red"
+                            align="edge"
+                          />
+                        )}
+                        <button
+                          type="button"
+                          onClick={buttons.secondaryBeside.onClick}
+                          button_id={buttons.secondaryBeside.buttonId}
+                          data-testid="button-end-screen-new-game"
+                          className={END_SCREEN_LINK_BUTTON_CLASS}
+                        >
+                          <GameUiIcon
+                            name="newGame"
+                            sizeClassName="h-3.5 w-3.5"
+                            className="opacity-100"
+                          />
+                          <span>{buttons.secondaryBeside.text}</span>
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
             )}
