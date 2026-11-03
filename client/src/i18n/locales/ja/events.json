@@ -1987,6 +1987,33 @@
       "success_second": "その影はかすかに頷き、夜へ消える。夜明け、立っていた場所に、すり減った革の金貨袋がある。"
     }
   },
+  "riddleOfAges_alt": {
+    "title": "闇の声",
+    "message": {
+      "original": "衣の影が青白い月明かりの下、屋敷へ戻る。声が響く。「朝は足元に横たわり、一日中ついて来て、正午には死にかける。」"
+    },
+    "choices": {
+      "answerSleep": {
+        "label": "眠り"
+      },
+      "answerShadow": {
+        "label": "影"
+      },
+      "answerHunger": {
+        "label": "飢え"
+      },
+      "answerFootsteps": {
+        "label": "足音"
+      },
+      "timeout": {
+        "label": "答えず"
+      }
+    },
+    "log": {
+      "wrong": "その影は首を振って消える。翌日、濃い霧が村へ忍び寄る。村人たちは中に動く形を見たと主張し、多くは小屋を出るのを恐れる。",
+      "success_second": "その影はかすかに頷き、夜へ消える。夜明け、立っていた場所に、すり減った革の金貨袋がある。"
+    }
+  },
   "riddleOfDevourer": {
     "title": "夜の訪問者",
     "message": {
@@ -2033,6 +2060,33 @@
       },
       "answerHand": {
         "label": "手"
+      },
+      "timeout": {
+        "label": "答えず"
+      }
+    },
+    "log": {
+      "wrong": "その影は首を振って消える。翌日、濃い霧が村へ忍び寄る。村人たちは中に動く形を見たと主張し、多くは小屋を出るのを恐れる。",
+      "success_third": "その影は静かに認め、頭を傾げて薄闇へ下がる。朝になると、戸口の外にすり減った金貨の財布がある。"
+    }
+  },
+  "riddleOfDevourer_alt": {
+    "title": "夜の訪問者",
+    "message": {
+      "original": "再び、謎の影が屋敷に現れる。低い声で囁く。「呼べば答え、呼ぶのをやめれば死ぬ。」"
+    },
+    "choices": {
+      "answerReflection": {
+        "label": "鏡像"
+      },
+      "answerBell": {
+        "label": "鐘"
+      },
+      "answerEcho": {
+        "label": "こだま"
+      },
+      "answerSilence": {
+        "label": "静寂"
       },
       "timeout": {
         "label": "答えず"
@@ -2099,6 +2153,33 @@
       "success_fifth": "その影は黙って頭を下げ、完全に消える。立っていた場所に、大きな金貨の袋がある。"
     }
   },
+  "riddleOfEternal_alt": {
+    "title": "未知の客",
+    "message": {
+      "original": "夜の影がもう一度屋敷に現れる。声が夜を渡る。「あらゆる刃に傷つけられ、一度も癒えたことがない。」"
+    },
+    "choices": {
+      "answerFlesh": {
+        "label": "肉"
+      },
+      "answerBone": {
+        "label": "骨"
+      },
+      "answerShield": {
+        "label": "盾"
+      },
+      "answerSkin": {
+        "label": "皮膚"
+      },
+      "timeout": {
+        "label": "答えず"
+      }
+    },
+    "log": {
+      "wrong": "その影は首を振って消える。翌日、濃い霧が村へ忍び寄る。村人たちは中に動く形を見たと主張し、多くは小屋を出るのを恐れる。",
+      "success_fifth": "その影は黙って頭を下げ、完全に消える。立っていた場所に、大きな金貨の袋がある。"
+    }
+  },
   "riddleOfTears": {
     "title": "フードの客",
     "message": {
@@ -2145,6 +2226,33 @@
       },
       "answerDeath": {
         "label": "死"
+      },
+      "timeout": {
+        "label": "答えず"
+      }
+    },
+    "log": {
+      "wrong": "その影は首を振って消える。翌日、濃い霧が村へ忍び寄る。村人たちは中に動く形を見たと主張し、多くは小屋を出るのを恐れる。",
+      "success_fourth": "その影はフードの頭を一瞬下げ、影へ溶ける。冷たい地面に小さな金貨の袋が残る。"
+    }
+  },
+  "riddleOfTears_alt": {
+    "title": "フードの客",
+    "message": {
+      "original": "フードの影が再び屋敷に現れる。囁く。「作る者はそれを売り、買う者はそれを使わず、使う者はそれを知らない。」"
+    },
+    "choices": {
+      "answerCrown": {
+        "label": "王冠"
+      },
+      "answerSword": {
+        "label": "剣"
+      },
+      "answerCoffin": {
+        "label": "棺"
+      },
+      "answerCompass": {
+        "label": "羅針盤"
       },
       "timeout": {
         "label": "答えず"
@@ -2804,6 +2912,33 @@
       },
       "answerDiamond": {
         "label": "ダイヤモンド"
+      },
+      "timeout": {
+        "label": "答えず"
+      }
+    },
+    "log": {
+      "wrong": "その影は首を振って消える。翌日、濃い霧が村へ忍び寄る。村人たちは中に動く形を見たと主張し、多くは小屋を出るのを恐れる。",
+      "success_first": "その影はわずかに頷き、闇へ消える。朝までに、屋敷の戸口に小さな金貨の袋がある。"
+    }
+  },
+  "whispererInTheDark_alt": {
+    "title": "闇の囁き手",
+    "message": {
+      "original": "屋敷の扉にノックが来る。暗い衣に完全に包まれた影が、外の闇に立っている。囁く。「常に飢え、常に糧を求める。触れた指はたちまち赤くなる。」"
+    },
+    "choices": {
+      "answerFire": {
+        "label": "火"
+      },
+      "answerBlood": {
+        "label": "血"
+      },
+      "answerPaint": {
+        "label": "絵の具"
+      },
+      "answerHeart": {
+        "label": "心臓"
       },
       "timeout": {
         "label": "答えず"

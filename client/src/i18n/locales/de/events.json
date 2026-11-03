@@ -1987,6 +1987,33 @@
       "success_second": "Die Gestalt nickt kaum merklich und verschwindet in der Nacht. Im Morgengrauen liegt ein verwitterter Lederbeutel mit Gold dort, wo sie stand."
     }
   },
+  "riddleOfAges_alt": {
+    "title": "Stimmen in der Dunkelheit",
+    "message": {
+      "original": "Die verhüllte Gestalt kehrt im blassen Mondlicht zum Anwesen zurück. Ihre Stimme hallt wider: „Liegt dir morgens zu Füßen, folgt dir den ganzen Tag, stirbt fast am Mittag.“"
+    },
+    "choices": {
+      "answerSleep": {
+        "label": "Schlaf"
+      },
+      "answerShadow": {
+        "label": "Schatten"
+      },
+      "answerHunger": {
+        "label": "Hunger"
+      },
+      "answerFootsteps": {
+        "label": "Schritte"
+      },
+      "timeout": {
+        "label": "Keine Antwort gegeben"
+      }
+    },
+    "log": {
+      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
+      "success_second": "Die Gestalt nickt kaum merklich und verschwindet in der Nacht. Im Morgengrauen liegt ein verwitterter Lederbeutel mit Gold dort, wo sie stand."
+    }
+  },
   "riddleOfDevourer": {
     "title": "Ein nächtlicher Besucher",
     "message": {
@@ -2033,6 +2060,33 @@
       },
       "answerHand": {
         "label": "Hand"
+      },
+      "timeout": {
+        "label": "Keine Antwort gegeben"
+      }
+    },
+    "log": {
+      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
+      "success_third": "Die Gestalt neigt den Kopf in stiller Anerkennung und tritt zurück ins Dämmerlicht. Mit dem Morgen liegt ein abgenutzter Goldbeutel vor der Tür."
+    }
+  },
+  "riddleOfDevourer_alt": {
+    "title": "Ein nächtlicher Besucher",
+    "message": {
+      "original": "Erneut erscheint die geheimnisvolle Gestalt am Anwesen. Sie flüstert mit tiefer Stimme: „Antwortet, wenn du rufst, und stirbt, wenn du verstummst.“"
+    },
+    "choices": {
+      "answerReflection": {
+        "label": "Spiegelbild"
+      },
+      "answerBell": {
+        "label": "Glocke"
+      },
+      "answerEcho": {
+        "label": "Echo"
+      },
+      "answerSilence": {
+        "label": "Stille"
       },
       "timeout": {
         "label": "Keine Antwort gegeben"
@@ -2099,6 +2153,33 @@
       "success_fifth": "Die Gestalt verbeugt sich in stillem Respekt und verblasst vollständig. Ein großer Goldsack liegt dort auf dem Boden, wo sie stand."
     }
   },
+  "riddleOfEternal_alt": {
+    "title": "Der unbekannte Gast",
+    "message": {
+      "original": "Die nächtliche Gestalt erscheint ein letztes Mal am Anwesen. Ihre Stimme trägt durch die Nacht: „Von jeder Klinge gezeichnet und nie geheilt.“"
+    },
+    "choices": {
+      "answerFlesh": {
+        "label": "Fleisch"
+      },
+      "answerBone": {
+        "label": "Knochen"
+      },
+      "answerShield": {
+        "label": "Schild"
+      },
+      "answerSkin": {
+        "label": "Haut"
+      },
+      "timeout": {
+        "label": "Keine Antwort gegeben"
+      }
+    },
+    "log": {
+      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
+      "success_fifth": "Die Gestalt verbeugt sich in stillem Respekt und verblasst vollständig. Ein großer Goldsack liegt dort auf dem Boden, wo sie stand."
+    }
+  },
   "riddleOfTears": {
     "title": "Ein vermummter Gast",
     "message": {
@@ -2145,6 +2226,33 @@
       },
       "answerDeath": {
         "label": "Tod"
+      },
+      "timeout": {
+        "label": "Keine Antwort gegeben"
+      }
+    },
+    "log": {
+      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
+      "success_fourth": "Die Gestalt senkt kurz den verhüllten Kopf, bevor sie sich in den Schatten auflöst. Ein kleiner Goldsack bleibt auf dem kalten Boden zurück."
+    }
+  },
+  "riddleOfTears_alt": {
+    "title": "Ein vermummter Gast",
+    "message": {
+      "original": "Die verhüllte Gestalt erscheint erneut am Anwesen. Sie flüstert: „Wer ihn macht, verkauft ihn. Wer ihn kauft, benutzt ihn nie. Wer ihn benutzt, weiß es nie.“"
+    },
+    "choices": {
+      "answerCrown": {
+        "label": "Krone"
+      },
+      "answerSword": {
+        "label": "Schwert"
+      },
+      "answerCoffin": {
+        "label": "Sarg"
+      },
+      "answerCompass": {
+        "label": "Kompass"
       },
       "timeout": {
         "label": "Keine Antwort gegeben"
@@ -2804,6 +2912,33 @@
       },
       "answerDiamond": {
         "label": "Diamant"
+      },
+      "timeout": {
+        "label": "Keine Antwort gegeben"
+      }
+    },
+    "log": {
+      "wrong": "Die Gestalt schüttelt den Kopf und verschwindet. Am nächsten Tag kriecht dichter Nebel ins Dorf. Dorfbewohner behaupten, darin wandelnde Gestalten zu sehen; viele trauen sich nicht mehr aus ihren Hütten.",
+      "success_first": "Die Gestalt nickt leicht und verblasst in der Dunkelheit. Am Morgen liegt ein kleiner Beutel Gold auf der Schwelle des Anwesens."
+    }
+  },
+  "whispererInTheDark_alt": {
+    "title": "Flüsterer im Dunkeln",
+    "message": {
+      "original": "Es klopft an der Tür des Anwesens. Eine Gestalt, ganz in dunkle Roben gehüllt, steht draußen im Schatten. Sie flüstert: „Immer hungrig, muss immer gefüttert werden. Der Finger, den es berührt, wird bald rot.“"
+    },
+    "choices": {
+      "answerFire": {
+        "label": "Feuer"
+      },
+      "answerBlood": {
+        "label": "Blut"
+      },
+      "answerPaint": {
+        "label": "Farbe"
+      },
+      "answerHeart": {
+        "label": "Herz"
       },
       "timeout": {
         "label": "Keine Antwort gegeben"

@@ -1987,6 +1987,33 @@
       "success_second": "A figura dá um leve aceno e desaparece na noite. Ao amanhecer, uma surrada bolsa de couro com ouro jaz onde ela estava."
     }
   },
+  "riddleOfAges_alt": {
+    "title": "Vozes na Escuridão",
+    "message": {
+      "original": "A figura encapuzada retorna à propriedade sob a pálida luz da lua. Sua voz ecoa: “De manhã está aos seus pés, segue você o dia todo, quase morre ao meio-dia.”"
+    },
+    "choices": {
+      "answerSleep": {
+        "label": "Sono"
+      },
+      "answerShadow": {
+        "label": "Sombra"
+      },
+      "answerHunger": {
+        "label": "Fome"
+      },
+      "answerFootsteps": {
+        "label": "Passos"
+      },
+      "timeout": {
+        "label": "Nenhuma resposta dada"
+      }
+    },
+    "log": {
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "success_second": "A figura dá um leve aceno e desaparece na noite. Ao amanhecer, uma surrada bolsa de couro com ouro jaz onde ela estava."
+    }
+  },
   "riddleOfDevourer": {
     "title": "Um Visitante Noturno",
     "message": {
@@ -2033,6 +2060,33 @@
       },
       "answerHand": {
         "label": "Mão"
+      },
+      "timeout": {
+        "label": "Nenhuma resposta dada"
+      }
+    },
+    "log": {
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "success_third": "A figura inclina a cabeça em silencioso reconhecimento antes de recuar para a penumbra. Quando a manhã chega, uma surrada bolsa de moedas de ouro é encontrada do lado de fora da porta."
+    }
+  },
+  "riddleOfDevourer_alt": {
+    "title": "Um Visitante Noturno",
+    "message": {
+      "original": "Mais uma vez, a figura misteriosa aparece na propriedade. Ela sussurra com voz baixa: “Responde quando você chama e morre quando você para.”"
+    },
+    "choices": {
+      "answerReflection": {
+        "label": "Reflexo"
+      },
+      "answerBell": {
+        "label": "Sino"
+      },
+      "answerEcho": {
+        "label": "Eco"
+      },
+      "answerSilence": {
+        "label": "Silêncio"
       },
       "timeout": {
         "label": "Nenhuma resposta dada"
@@ -2099,6 +2153,33 @@
       "success_fifth": "A figura inclina a cabeça em silenciosa reverência antes de desaparecer completamente. Um grande saco de ouro jaz no chão onde ela estava."
     }
   },
+  "riddleOfEternal_alt": {
+    "title": "O Hóspede Desconhecido",
+    "message": {
+      "original": "A figura noturna aparece mais uma vez na propriedade. Sua voz atravessa a noite: “Marcado por toda lâmina, e nunca curado.”"
+    },
+    "choices": {
+      "answerFlesh": {
+        "label": "Carne"
+      },
+      "answerBone": {
+        "label": "Osso"
+      },
+      "answerShield": {
+        "label": "Escudo"
+      },
+      "answerSkin": {
+        "label": "Pele"
+      },
+      "timeout": {
+        "label": "Nenhuma resposta dada"
+      }
+    },
+    "log": {
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "success_fifth": "A figura inclina a cabeça em silenciosa reverência antes de desaparecer completamente. Um grande saco de ouro jaz no chão onde ela estava."
+    }
+  },
   "riddleOfTears": {
     "title": "Um Hóspede Encapuzado",
     "message": {
@@ -2145,6 +2226,33 @@
       },
       "answerDeath": {
         "label": "Morte"
+      },
+      "timeout": {
+        "label": "Nenhuma resposta dada"
+      }
+    },
+    "log": {
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "success_fourth": "A figura baixa a cabeça encapuzada por um momento antes de se dissolver nas sombras. Um pequeno saco de ouro permanece no chão frio."
+    }
+  },
+  "riddleOfTears_alt": {
+    "title": "Um Hóspede Encapuzado",
+    "message": {
+      "original": "A figura encapuzada aparece mais uma vez na propriedade. Ela sussurra: “Quem faz vende, quem compra nunca usa, quem usa nunca sabe.”"
+    },
+    "choices": {
+      "answerCrown": {
+        "label": "Coroa"
+      },
+      "answerSword": {
+        "label": "Espada"
+      },
+      "answerCoffin": {
+        "label": "Caixão"
+      },
+      "answerCompass": {
+        "label": "Bússola"
       },
       "timeout": {
         "label": "Nenhuma resposta dada"
@@ -2804,6 +2912,33 @@
       },
       "answerDiamond": {
         "label": "Diamante"
+      },
+      "timeout": {
+        "label": "Nenhuma resposta dada"
+      }
+    },
+    "log": {
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "success_first": "A figura acena levemente com a cabeça antes de se esvair na escuridão. Pela manhã, um pequeno saco de ouro repousa na soleira da propriedade."
+    }
+  },
+  "whispererInTheDark_alt": {
+    "title": "O Sussurrante na Escuridão",
+    "message": {
+      "original": "Uma batida vem da porta da propriedade. Uma figura completamente envolta em vestes escuras está nas sombras lá fora. Ela sussurra: “Sempre faminto, precisa sempre ser alimentado. O dedo que ele toca logo fica vermelho.”"
+    },
+    "choices": {
+      "answerFire": {
+        "label": "Fogo"
+      },
+      "answerBlood": {
+        "label": "Sangue"
+      },
+      "answerPaint": {
+        "label": "Tinta"
+      },
+      "answerHeart": {
+        "label": "Coração"
       },
       "timeout": {
         "label": "Nenhuma resposta dada"

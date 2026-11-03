@@ -1987,6 +1987,33 @@
       "success_second": "La silhouette hoche à peine la tête et disparaît dans la nuit. À l'aube, une bourse de cuir usée remplie d'or gît là où elle se tenait."
     }
   },
+  "riddleOfAges_alt": {
+    "title": "Voix dans l'obscurité",
+    "message": {
+      "original": "La silhouette voilée revient au domaine sous la pâle clarté de la lune. Sa voix résonne : « Couchée à tes pieds au matin, elle te suit tout le jour et meurt presque à midi. »"
+    },
+    "choices": {
+      "answerSleep": {
+        "label": "Sommeil"
+      },
+      "answerShadow": {
+        "label": "Ombre"
+      },
+      "answerHunger": {
+        "label": "Faim"
+      },
+      "answerFootsteps": {
+        "label": "Pas"
+      },
+      "timeout": {
+        "label": "Aucune réponse"
+      }
+    },
+    "log": {
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "success_second": "La silhouette hoche à peine la tête et disparaît dans la nuit. À l'aube, une bourse de cuir usée remplie d'or gît là où elle se tenait."
+    }
+  },
   "riddleOfDevourer": {
     "title": "Un visiteur nocturne",
     "message": {
@@ -2033,6 +2060,33 @@
       },
       "answerHand": {
         "label": "Main"
+      },
+      "timeout": {
+        "label": "Aucune réponse"
+      }
+    },
+    "log": {
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "success_third": "La silhouette incline la tête en signe de reconnaissance silencieuse avant de reculer dans la pénombre. Au matin, une vieille bourse remplie d'or est trouvée devant la porte."
+    }
+  },
+  "riddleOfDevourer_alt": {
+    "title": "Un visiteur nocturne",
+    "message": {
+      "original": "Une fois encore, la silhouette mystérieuse apparaît au domaine. Elle murmure d'une voix basse : « Il répond quand tu appelles et meurt quand tu te tais. »"
+    },
+    "choices": {
+      "answerReflection": {
+        "label": "Reflet"
+      },
+      "answerBell": {
+        "label": "Cloche"
+      },
+      "answerEcho": {
+        "label": "Écho"
+      },
+      "answerSilence": {
+        "label": "Silence"
       },
       "timeout": {
         "label": "Aucune réponse"
@@ -2099,6 +2153,33 @@
       "success_fifth": "La silhouette incline la tête en révérence silencieuse avant de disparaître complètement. Un grand sac d'or gît là où elle se tenait."
     }
   },
+  "riddleOfEternal_alt": {
+    "title": "L'hôte inconnu",
+    "message": {
+      "original": "La silhouette nocturne apparaît une dernière fois au domaine. Sa voix porte dans la nuit : « Marqué par chaque lame, et jamais guéri. »"
+    },
+    "choices": {
+      "answerFlesh": {
+        "label": "Chair"
+      },
+      "answerBone": {
+        "label": "Os"
+      },
+      "answerShield": {
+        "label": "Bouclier"
+      },
+      "answerSkin": {
+        "label": "Peau"
+      },
+      "timeout": {
+        "label": "Aucune réponse"
+      }
+    },
+    "log": {
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "success_fifth": "La silhouette incline la tête en révérence silencieuse avant de disparaître complètement. Un grand sac d'or gît là où elle se tenait."
+    }
+  },
   "riddleOfTears": {
     "title": "Un hôte encapuchonné",
     "message": {
@@ -2145,6 +2226,33 @@
       },
       "answerDeath": {
         "label": "Mort"
+      },
+      "timeout": {
+        "label": "Aucune réponse"
+      }
+    },
+    "log": {
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "success_fourth": "La silhouette baisse un instant sa tête encapuchonnée avant de se dissoudre dans les ombres. Un petit sac d'or reste sur le sol froid."
+    }
+  },
+  "riddleOfTears_alt": {
+    "title": "Un hôte encapuchonné",
+    "message": {
+      "original": "La silhouette voilée réapparaît une fois de plus au domaine. Elle murmure : « Qui fabrique, vend. Qui achète, ne s'en sert jamais. Qui s'en sert, ne sait jamais. »"
+    },
+    "choices": {
+      "answerCrown": {
+        "label": "Couronne"
+      },
+      "answerSword": {
+        "label": "Épée"
+      },
+      "answerCoffin": {
+        "label": "Cercueil"
+      },
+      "answerCompass": {
+        "label": "Boussole"
       },
       "timeout": {
         "label": "Aucune réponse"
@@ -2804,6 +2912,33 @@
       },
       "answerDiamond": {
         "label": "Diamant"
+      },
+      "timeout": {
+        "label": "Aucune réponse"
+      }
+    },
+    "log": {
+      "wrong": "La silhouette secoue la tête avant de disparaître. Le lendemain, un brouillard dense envahit le village. Les villageois prétendent y voir des formes mouvantes ; beaucoup n'osent plus quitter leur hutte.",
+      "success_first": "La silhouette incline légèrement la tête avant de s'estomper dans l'obscurité. Au matin, un petit sac d'or repose sur le seuil du domaine."
+    }
+  },
+  "whispererInTheDark_alt": {
+    "title": "Le murmureur dans l'obscurité",
+    "message": {
+      "original": "On frappe à la porte du domaine. Une silhouette entièrement enveloppée de robes sombres se tient dans l'ombre dehors. Elle murmure : « Toujours affamé, il faut toujours le nourrir. Le doigt qu'il touche ne tarde pas à rougir. »"
+    },
+    "choices": {
+      "answerFire": {
+        "label": "Feu"
+      },
+      "answerBlood": {
+        "label": "Sang"
+      },
+      "answerPaint": {
+        "label": "Peinture"
+      },
+      "answerHeart": {
+        "label": "Cœur"
       },
       "timeout": {
         "label": "Aucune réponse"

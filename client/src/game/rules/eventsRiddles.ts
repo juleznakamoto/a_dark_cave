@@ -1,4 +1,3 @@
-
 import type { GameEvent } from "./eventTypes";
 import { GameState } from "@shared/schema";
 import { riddleFogDurationMs, cruelModeScale } from "../cruelMode";
@@ -79,7 +78,40 @@ const VARIANT_CHOICES: Record<string, RiddleChoice[]> = {
   ],
 };
 
-// Riddle configurations
+// Third riddle for the same visit. Hearing any one of the three closes the visit.
+const ALT_CHOICES: Record<string, RiddleChoice[]> = {
+  whispererInTheDark: [
+    { id: "answerFire", isCorrect: true },
+    { id: "answerBlood", isCorrect: false },
+    { id: "answerPaint", isCorrect: false },
+    { id: "answerHeart", isCorrect: false },
+  ],
+  riddleOfAges: [
+    { id: "answerSleep", isCorrect: false },
+    { id: "answerShadow", isCorrect: true },
+    { id: "answerHunger", isCorrect: false },
+    { id: "answerFootsteps", isCorrect: false },
+  ],
+  riddleOfDevourer: [
+    { id: "answerReflection", isCorrect: false },
+    { id: "answerBell", isCorrect: false },
+    { id: "answerEcho", isCorrect: true },
+    { id: "answerSilence", isCorrect: false },
+  ],
+  riddleOfTears: [
+    { id: "answerCrown", isCorrect: false },
+    { id: "answerSword", isCorrect: false },
+    { id: "answerCoffin", isCorrect: true },
+    { id: "answerCompass", isCorrect: false },
+  ],
+  riddleOfEternal: [
+    { id: "answerFlesh", isCorrect: false },
+    { id: "answerBone", isCorrect: false },
+    { id: "answerShield", isCorrect: true },
+    { id: "answerSkin", isCorrect: false },
+  ],
+};
+
 interface RiddleChoice {
   id: string;
   isCorrect: boolean;
@@ -90,6 +122,8 @@ interface RiddleConfig {
   level: "first" | "second" | "third" | "fourth" | "fifth";
   precondition: (state: GameState) => boolean;
 }
+
+type RiddleForm = "original" | "variant" | "alt";
 
 const RIDDLE_CONFIGS: RiddleConfig[] = [
   {
@@ -120,35 +154,55 @@ const RIDDLE_CONFIGS: RiddleConfig[] = [
   },
 ];
 
+function formEventId(baseEventId: string, form: RiddleForm): string {
+  return form === "original" ? baseEventId : `${baseEventId}_${form}`;
+}
+
+function visitFormIds(baseEventId: string): string[] {
+  return [
+    baseEventId,
+    `${baseEventId}_variant`,
+    `${baseEventId}_alt`,
+  ];
+}
+
+function eventHeard(state: GameState, eventId: string): boolean {
+  return (state.events as Record<string, boolean | undefined>)[eventId] === true;
+}
+
+function visitAlreadyHeard(state: GameState, baseEventId: string): boolean {
+  return visitFormIds(baseEventId).some((eventId) => eventHeard(state, eventId));
+}
+
+function visitHeardFlags(baseEventId: string): Record<string, true> {
+  return Object.fromEntries(visitFormIds(baseEventId).map((eventId) => [eventId, true]));
+}
+
+function choicesFor(baseEventId: string, form: RiddleForm): RiddleChoice[] {
+  if (form === "alt") return ALT_CHOICES[baseEventId];
+  if (form === "variant") return VARIANT_CHOICES[baseEventId];
+  return ORIGINAL_CHOICES[baseEventId];
+}
+
 function applyPenalty(
   state: GameState,
-  eventId: string,
   baseEventId: string,
-  oppositeEventId: string,
 ): Partial<GameState> & { _logMessageKey?: string } {
   const fogDuration = riddleFogDurationMs(cruelModeScale(state));
   return {
     events: {
       ...state.events,
-      [eventId]: true,
-      [baseEventId]: true,
-      [oppositeEventId]: true,
-    } as any,
+      ...visitHeardFlags(baseEventId),
+    } as GameState["events"],
     fogState: stackTimedDebuff(state.fogState, fogDuration),
     _logMessageKey: "wrong",
   };
 }
 
-function createRiddleEvent(
-  config: RiddleConfig,
-  isVariant: boolean,
-): GameEvent {
+function createRiddleEvent(config: RiddleConfig, form: RiddleForm): GameEvent {
   const baseEventId = config.eventId;
-  const eventId = isVariant ? `${baseEventId}_variant` : baseEventId;
-  const oppositeEventId = isVariant ? baseEventId : `${baseEventId}_variant`;
-  const choices = isVariant
-    ? VARIANT_CHOICES[config.eventId]
-    : ORIGINAL_CHOICES[config.eventId];
+  const eventId = formEventId(baseEventId, form);
+  const choices = choicesFor(baseEventId, form);
   const level = config.level;
 
   const createChoiceEffect = (choice: RiddleChoice) => {
@@ -160,27 +214,25 @@ function createRiddleEvent(
         },
         events: {
           ...state.events,
-          [baseEventId]: true,
+          ...visitHeardFlags(baseEventId),
           [`${baseEventId}_correct`]: true,
-          [eventId]: true,
-          [oppositeEventId]: true,
-        } as any,
+        } as GameState["events"],
         _logMessageKey: `success_${level}`,
       });
     }
-    return (state: GameState) => applyPenalty(state, eventId, baseEventId, oppositeEventId);
+    return (state: GameState) => applyPenalty(state, baseEventId);
   };
 
   return {
     id: eventId,
     condition: (state: GameState) =>
-      !(state.events as any)[oppositeEventId] &&
-      !(state.events as any)[eventId] &&
-      config.precondition(state),
+      !visitAlreadyHeard(state, baseEventId) && config.precondition(state),
 
-    timeProbability: level === "first" ? 30 : 45,
+    // The old pair used 30 / 45. Three forms share that same visit, so each
+    // waits 1.5 times as long and the figure still arrives about as often.
+    timeProbability: level === "first" ? 45 : 67.5,
     cooldownPercent: 0.3,
-    message: isVariant ? "variant" : "original",
+    message: form === "variant" ? "variant" : "original",
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
@@ -191,18 +243,20 @@ function createRiddleEvent(
     })),
     fallbackChoice: {
       id: "timeout",
-      effect: (state: GameState) => applyPenalty(state, eventId, baseEventId, oppositeEventId),
+      effect: (state: GameState) => applyPenalty(state, baseEventId),
     },
   };
 }
 
 export const riddleEvents: Record<string, GameEvent> = {
-  // Generate both original and variant riddle events
   ...Object.fromEntries(
-    RIDDLE_CONFIGS.flatMap((config) => [
-      [config.eventId, createRiddleEvent(config, false)],
-      [`${config.eventId}_variant`, createRiddleEvent(config, true)],
-    ]),
+    RIDDLE_CONFIGS.flatMap((config) => {
+      const forms: RiddleForm[] = ["original", "variant", "alt"];
+      return forms.map(
+        (form) =>
+          [formEventId(config.eventId, form), createRiddleEvent(config, form)] as const,
+      );
+    }),
   ),
 
   whisperersReward: {

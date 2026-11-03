@@ -1989,6 +1989,33 @@
       "success_second": "Postać ledwie kiwa głową i znika w nocy. O świcie tam, gdzie stała, leży wytarty skórzany mieszek złota."
     }
   },
+  "riddleOfAges_alt": {
+    "title": "Głosy w mroku",
+    "message": {
+      "original": "Zakapturzona postać wraca do posiadłości w bladym świetle księżyca. Jej głos niesie się echem: „Rano leży u twych stóp, cały dzień idzie za tobą, w południe prawie umiera.”"
+    },
+    "choices": {
+      "answerSleep": {
+        "label": "Sen"
+      },
+      "answerShadow": {
+        "label": "Cień"
+      },
+      "answerHunger": {
+        "label": "Głód"
+      },
+      "answerFootsteps": {
+        "label": "Kroki"
+      },
+      "timeout": {
+        "label": "Brak odpowiedzi"
+      }
+    },
+    "log": {
+      "wrong": "Postać kręci głową, zanim zniknie. Nazajutrz gęsta mgła wpełza do wioski. Wieśniacy twierdzą, że widzą w niej zmieniające się kształty, wielu boi się wychodzić z chat.",
+      "success_second": "Postać ledwie kiwa głową i znika w nocy. O świcie tam, gdzie stała, leży wytarty skórzany mieszek złota."
+    }
+  },
   "riddleOfDevourer": {
     "title": "Nocny gość",
     "message": {
@@ -2035,6 +2062,33 @@
       },
       "answerHand": {
         "label": "Dłoń"
+      },
+      "timeout": {
+        "label": "Brak odpowiedzi"
+      }
+    },
+    "log": {
+      "wrong": "Postać kręci głową, zanim zniknie. Nazajutrz gęsta mgła wpełza do wioski. Wieśniacy twierdzą, że widzą w niej zmieniające się kształty, wielu boi się wychodzić z chat.",
+      "success_third": "Postać przechyla głowę w cichym uznaniu, zanim cofnie się w półmrok. Gdy przychodzi ranek, przy drzwiach leży wytarta sakiewka złota."
+    }
+  },
+  "riddleOfDevourer_alt": {
+    "title": "Nocny gość",
+    "message": {
+      "original": "Znów tajemnicza postać zjawia się w posiadłości. Szepcze niskim głosem: „Odpowiada, gdy wołasz, i umiera, gdy przestajesz.”"
+    },
+    "choices": {
+      "answerReflection": {
+        "label": "Odbicie"
+      },
+      "answerBell": {
+        "label": "Dzwon"
+      },
+      "answerEcho": {
+        "label": "Echo"
+      },
+      "answerSilence": {
+        "label": "Cisza"
       },
       "timeout": {
         "label": "Brak odpowiedzi"
@@ -2101,6 +2155,33 @@
       "success_fifth": "Postać pochyla głowę w milczącym szacunku, po czym całkiem się rozpływa. Tam, gdzie stała, leży wielki worek złota."
     }
   },
+  "riddleOfEternal_alt": {
+    "title": "Nieznany gość",
+    "message": {
+      "original": "Nocna postać zjawia się jeszcze raz w posiadłości. Jej głos niesie się przez noc: „Pocięta każdym ostrzem i ani razu nie zagojona.”"
+    },
+    "choices": {
+      "answerFlesh": {
+        "label": "Mięso"
+      },
+      "answerBone": {
+        "label": "Kość"
+      },
+      "answerShield": {
+        "label": "Tarcza"
+      },
+      "answerSkin": {
+        "label": "Skóra"
+      },
+      "timeout": {
+        "label": "Brak odpowiedzi"
+      }
+    },
+    "log": {
+      "wrong": "Postać kręci głową, zanim zniknie. Nazajutrz gęsta mgła wpełza do wioski. Wieśniacy twierdzą, że widzą w niej zmieniające się kształty, wielu boi się wychodzić z chat.",
+      "success_fifth": "Postać pochyla głowę w milczącym szacunku, po czym całkiem się rozpływa. Tam, gdzie stała, leży wielki worek złota."
+    }
+  },
   "riddleOfTears": {
     "title": "Gość w kapturze",
     "message": {
@@ -2147,6 +2228,33 @@
       },
       "answerDeath": {
         "label": "Śmierć"
+      },
+      "timeout": {
+        "label": "Brak odpowiedzi"
+      }
+    },
+    "log": {
+      "wrong": "Postać kręci głową, zanim zniknie. Nazajutrz gęsta mgła wpełza do wioski. Wieśniacy twierdzą, że widzą w niej zmieniające się kształty, wielu boi się wychodzić z chat.",
+      "success_fourth": "Postać na chwilę opuszcza zakapturzoną głowę, zanim rozpłynie się w cieniach. Na zimnej ziemi zostaje mały worek złota."
+    }
+  },
+  "riddleOfTears_alt": {
+    "title": "Gość w kapturze",
+    "message": {
+      "original": "Zakapturzona postać zjawia się raz jeszcze w posiadłości. Szepcze: „Kto to robi, ten to sprzedaje. Kto to kupuje, nigdy tego nie używa. Kto tego używa, nigdy o tym nie wie.”"
+    },
+    "choices": {
+      "answerCrown": {
+        "label": "Korona"
+      },
+      "answerSword": {
+        "label": "Miecz"
+      },
+      "answerCoffin": {
+        "label": "Trumna"
+      },
+      "answerCompass": {
+        "label": "Kompas"
       },
       "timeout": {
         "label": "Brak odpowiedzi"
@@ -2806,6 +2914,33 @@
       },
       "answerDiamond": {
         "label": "Diament"
+      },
+      "timeout": {
+        "label": "Brak odpowiedzi"
+      }
+    },
+    "log": {
+      "wrong": "Postać kręci głową, zanim zniknie. Nazajutrz gęsta mgła wpełza do wioski. Wieśniacy twierdzą, że widzą w niej zmieniające się kształty, wielu boi się wychodzić z chat.",
+      "success_first": "Postać lekko kiwa głową, zanim rozpłynie się w ciemności. Do rana na progu posiadłości pojawia się mały woreczek złota."
+    }
+  },
+  "whispererInTheDark_alt": {
+    "title": "Szeptacz w mroku",
+    "message": {
+      "original": "Pukanie dobiega od drzwi posiadłości. Postać całkowicie zakapturzona w ciemne szaty stoi w cieniu na zewnątrz. Szepcze: „Wiecznie chce jeść, trzeba wciąż karmić. Palec, którego dotknie, wnet poczerwienieje.”"
+    },
+    "choices": {
+      "answerFire": {
+        "label": "Ogień"
+      },
+      "answerBlood": {
+        "label": "Krew"
+      },
+      "answerPaint": {
+        "label": "Farba"
+      },
+      "answerHeart": {
+        "label": "Serce"
       },
       "timeout": {
         "label": "Brak odpowiedzi"

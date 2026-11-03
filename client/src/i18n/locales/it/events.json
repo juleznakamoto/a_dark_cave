@@ -1987,6 +1987,33 @@
       "success_second": "La figura fa un debole cenno e svanisce nella notte. All'alba, una logora borsa di cuoio piena d'oro giace dove si trovava."
     }
   },
+  "riddleOfAges_alt": {
+    "title": "Voci nel buio",
+    "message": {
+      "original": "La figura incappucciata torna alla tenuta sotto la pallida luce della luna. La sua voce echeggia: «Al mattino giace ai tuoi piedi, ti segue tutto il giorno, a mezzogiorno quasi muore.»"
+    },
+    "choices": {
+      "answerSleep": {
+        "label": "Sonno"
+      },
+      "answerShadow": {
+        "label": "Ombra"
+      },
+      "answerHunger": {
+        "label": "Fame"
+      },
+      "answerFootsteps": {
+        "label": "Passi"
+      },
+      "timeout": {
+        "label": "Nessuna risposta data"
+      }
+    },
+    "log": {
+      "wrong": "La figura scuote la testa prima di svanire. Il giorno dopo, una fitta nebbia s'insinua nel villaggio. Gli abitanti affermano di vedere forme mutevoli al suo interno, e molti hanno troppa paura per lasciare le loro capanne.",
+      "success_second": "La figura fa un debole cenno e svanisce nella notte. All'alba, una logora borsa di cuoio piena d'oro giace dove si trovava."
+    }
+  },
   "riddleOfDevourer": {
     "title": "Un visitatore notturno",
     "message": {
@@ -2033,6 +2060,33 @@
       },
       "answerHand": {
         "label": "Mano"
+      },
+      "timeout": {
+        "label": "Nessuna risposta data"
+      }
+    },
+    "log": {
+      "wrong": "La figura scuote la testa prima di svanire. Il giorno dopo, una fitta nebbia s'insinua nel villaggio. Gli abitanti affermano di vedere forme mutevoli al suo interno, e molti hanno troppa paura per lasciare le loro capanne.",
+      "success_third": "La figura inclina il capo in silenzioso riconoscimento prima di rientrare nella penombra. Quando viene il mattino, una logora borsa di monete d'oro viene trovata fuori dalla porta."
+    }
+  },
+  "riddleOfDevourer_alt": {
+    "title": "Un visitatore notturno",
+    "message": {
+      "original": "Ancora una volta, la misteriosa figura appare alla tenuta. Sussurra a bassa voce: «Risponde quando chiami e muore quando smetti.»"
+    },
+    "choices": {
+      "answerReflection": {
+        "label": "Riflesso"
+      },
+      "answerBell": {
+        "label": "Campana"
+      },
+      "answerEcho": {
+        "label": "Eco"
+      },
+      "answerSilence": {
+        "label": "Silenzio"
       },
       "timeout": {
         "label": "Nessuna risposta data"
@@ -2099,6 +2153,33 @@
       "success_fifth": "La figura china il capo in silenziosa riverenza prima di svanire del tutto. Un grosso sacco d'oro giace a terra dove si trovava."
     }
   },
+  "riddleOfEternal_alt": {
+    "title": "L'ospite sconosciuto",
+    "message": {
+      "original": "La figura notturna appare un'altra volta alla tenuta. La sua voce si propaga nella notte: «Segnato da ogni lama, e mai guarito.»"
+    },
+    "choices": {
+      "answerFlesh": {
+        "label": "Carne"
+      },
+      "answerBone": {
+        "label": "Osso"
+      },
+      "answerShield": {
+        "label": "Scudo"
+      },
+      "answerSkin": {
+        "label": "Pelle"
+      },
+      "timeout": {
+        "label": "Nessuna risposta data"
+      }
+    },
+    "log": {
+      "wrong": "La figura scuote la testa prima di svanire. Il giorno dopo, una fitta nebbia s'insinua nel villaggio. Gli abitanti affermano di vedere forme mutevoli al suo interno, e molti hanno troppa paura per lasciare le loro capanne.",
+      "success_fifth": "La figura china il capo in silenziosa riverenza prima di svanire del tutto. Un grosso sacco d'oro giace a terra dove si trovava."
+    }
+  },
   "riddleOfTears": {
     "title": "Un ospite incappucciato",
     "message": {
@@ -2145,6 +2226,33 @@
       },
       "answerDeath": {
         "label": "Morte"
+      },
+      "timeout": {
+        "label": "Nessuna risposta data"
+      }
+    },
+    "log": {
+      "wrong": "La figura scuote la testa prima di svanire. Il giorno dopo, una fitta nebbia s'insinua nel villaggio. Gli abitanti affermano di vedere forme mutevoli al suo interno, e molti hanno troppa paura per lasciare le loro capanne.",
+      "success_fourth": "La figura abbassa il capo incappucciato per un istante prima di dissolversi nell'ombra. Un piccolo sacco d'oro resta sul freddo terreno."
+    }
+  },
+  "riddleOfTears_alt": {
+    "title": "Un ospite incappucciato",
+    "message": {
+      "original": "La figura incappucciata appare ancora una volta alla tenuta. Sussurra: «Chi la fa la vende, chi la compra non la usa mai, chi la usa non lo sa mai.»"
+    },
+    "choices": {
+      "answerCrown": {
+        "label": "Corona"
+      },
+      "answerSword": {
+        "label": "Spada"
+      },
+      "answerCoffin": {
+        "label": "Bara"
+      },
+      "answerCompass": {
+        "label": "Bussola"
       },
       "timeout": {
         "label": "Nessuna risposta data"
@@ -2804,6 +2912,33 @@
       },
       "answerDiamond": {
         "label": "Diamante"
+      },
+      "timeout": {
+        "label": "Nessuna risposta data"
+      }
+    },
+    "log": {
+      "wrong": "La figura scuote la testa prima di svanire. Il giorno dopo, una fitta nebbia s'insinua nel villaggio. Gli abitanti affermano di vedere forme mutevoli al suo interno, e molti hanno troppa paura per lasciare le loro capanne.",
+      "success_first": "La figura annuisce leggermente prima di svanire nell'oscurità. Al mattino, un piccolo sacco d'oro giace sulla soglia della tenuta."
+    }
+  },
+  "whispererInTheDark_alt": {
+    "title": "Il sussurratore nell'oscurità",
+    "message": {
+      "original": "Un colpo risuona dalla porta della tenuta. Una figura completamente avvolta in vesti scure sta nell'ombra fuori. Sussurra: «Sempre affamato, va sempre nutrito. Presto si fa rosso il dito che ha lambito.»"
+    },
+    "choices": {
+      "answerFire": {
+        "label": "Fuoco"
+      },
+      "answerBlood": {
+        "label": "Sangue"
+      },
+      "answerPaint": {
+        "label": "Vernice"
+      },
+      "answerHeart": {
+        "label": "Cuore"
       },
       "timeout": {
         "label": "Nessuna risposta data"

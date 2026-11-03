@@ -1987,6 +1987,33 @@
       "success_second": "The figure gives a faint nod and vanishes into the night. At dawn, a weathered leather pouch of gold lies where it stood."
     }
   },
+  "riddleOfAges_alt": {
+    "title": "Voices in the Dark",
+    "message": {
+      "original": "The cloaked figure returns to the estate under the pale moonlight. Its voice echoes: 'Lies at your feet in the morning, follows all day, nearly dies at noon.'"
+    },
+    "choices": {
+      "answerSleep": {
+        "label": "Sleep"
+      },
+      "answerShadow": {
+        "label": "Shadow"
+      },
+      "answerHunger": {
+        "label": "Hunger"
+      },
+      "answerFootsteps": {
+        "label": "Footsteps"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_second": "The figure gives a faint nod and vanishes into the night. At dawn, a weathered leather pouch of gold lies where it stood."
+    }
+  },
   "riddleOfDevourer": {
     "title": "A nightly Visitor",
     "message": {
@@ -2033,6 +2060,33 @@
       },
       "answerHand": {
         "label": "Hand"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_third": "The figure tilts its head in quiet acknowledgment before stepping back into the dim. When morning comes, a worn coin purse of gold is found outside the door."
+    }
+  },
+  "riddleOfDevourer_alt": {
+    "title": "A nightly Visitor",
+    "message": {
+      "original": "Once again, the mysterious figure appears at the estate. It whispers with a low voice: 'Answers when you call, and dies when you stop.'"
+    },
+    "choices": {
+      "answerReflection": {
+        "label": "Reflection"
+      },
+      "answerBell": {
+        "label": "Bell"
+      },
+      "answerEcho": {
+        "label": "Echo"
+      },
+      "answerSilence": {
+        "label": "Silence"
       },
       "timeout": {
         "label": "No answer given"
@@ -2099,6 +2153,33 @@
       "success_fifth": "The figure bows its head in silent reverence before fading completely. A big sack of gold lies on the ground where it stood."
     }
   },
+  "riddleOfEternal_alt": {
+    "title": "The Unknown Guest",
+    "message": {
+      "original": "The nightly figure appears one more time at the estate. Its voice carries through the night: 'Scarred by every blade, and never once healed.'"
+    },
+    "choices": {
+      "answerFlesh": {
+        "label": "Flesh"
+      },
+      "answerBone": {
+        "label": "Bone"
+      },
+      "answerShield": {
+        "label": "Shield"
+      },
+      "answerSkin": {
+        "label": "Skin"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_fifth": "The figure bows its head in silent reverence before fading completely. A big sack of gold lies on the ground where it stood."
+    }
+  },
   "riddleOfTears": {
     "title": "A hooded Guest",
     "message": {
@@ -2145,6 +2226,33 @@
       },
       "answerDeath": {
         "label": "Death"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_fourth": "The figure lowers its hooded head for a moment before dissolving into the shadows. A small sack of gold remains behind on the cold ground."
+    }
+  },
+  "riddleOfTears_alt": {
+    "title": "A hooded Guest",
+    "message": {
+      "original": "The hooded figure appears once more at the estate. It whispers: 'The maker sells it, the buyer never uses it, the user never knows.'"
+    },
+    "choices": {
+      "answerCrown": {
+        "label": "Crown"
+      },
+      "answerSword": {
+        "label": "Sword"
+      },
+      "answerCoffin": {
+        "label": "Coffin"
+      },
+      "answerCompass": {
+        "label": "Compass"
       },
       "timeout": {
         "label": "No answer given"
@@ -2804,6 +2912,33 @@
       },
       "answerDiamond": {
         "label": "Diamond"
+      },
+      "timeout": {
+        "label": "No answer given"
+      }
+    },
+    "log": {
+      "wrong": "The figure shakes its head before vanishing. The next day, a dense fog creeps into the village. Villagers claim to see shifting shapes within it, many are too fearful to leave their huts.",
+      "success_first": "The figure nods its head slightly before fading into the darkness. By morning, a small bag of gold rests upon the estate's doorstep."
+    }
+  },
+  "whispererInTheDark_alt": {
+    "title": "Whisperer in the Dark",
+    "message": {
+      "original": "A knock comes from the estate door. A figure completely hooded in dark robes stands in the shadows outside. It whispers: 'Always hungry, must always be fed. The finger it touches soon turns red.'"
+    },
+    "choices": {
+      "answerFire": {
+        "label": "Fire"
+      },
+      "answerBlood": {
+        "label": "Blood"
+      },
+      "answerPaint": {
+        "label": "Paint"
+      },
+      "answerHeart": {
+        "label": "Heart"
       },
       "timeout": {
         "label": "No answer given"

@@ -1987,6 +1987,33 @@
       "success_second": "La figura asiente apenas y desaparece en la noche. Al amanecer, una bolsa de cuero desgastada llena de oro yace donde estuvo."
     }
   },
+  "riddleOfAges_alt": {
+    "title": "Voces en la oscuridad",
+    "message": {
+      "original": "La figura encapuchada regresa a la finca bajo la pálida luz de la luna. Su voz resuena: «Por la mañana yace a tus pies, te sigue todo el día y casi muere a mediodía»."
+    },
+    "choices": {
+      "answerSleep": {
+        "label": "Sueño"
+      },
+      "answerShadow": {
+        "label": "Sombra"
+      },
+      "answerHunger": {
+        "label": "Hambre"
+      },
+      "answerFootsteps": {
+        "label": "Pasos"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_second": "La figura asiente apenas y desaparece en la noche. Al amanecer, una bolsa de cuero desgastada llena de oro yace donde estuvo."
+    }
+  },
   "riddleOfDevourer": {
     "title": "Un visitante nocturno",
     "message": {
@@ -2033,6 +2060,33 @@
       },
       "answerHand": {
         "label": "Mano"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_third": "La figura inclina la cabeza en silencioso reconocimiento antes de retroceder hacia la penumbra. Al amanecer, aparece junto a la puerta una gastada bolsa de monedas de oro."
+    }
+  },
+  "riddleOfDevourer_alt": {
+    "title": "Un visitante nocturno",
+    "message": {
+      "original": "Una vez más, la misteriosa figura aparece en la finca. Susurra con voz baja: «Responde cuando llamas y muere cuando callas»."
+    },
+    "choices": {
+      "answerReflection": {
+        "label": "Reflejo"
+      },
+      "answerBell": {
+        "label": "Campana"
+      },
+      "answerEcho": {
+        "label": "Eco"
+      },
+      "answerSilence": {
+        "label": "Silencio"
       },
       "timeout": {
         "label": "Sin respuesta"
@@ -2099,6 +2153,33 @@
       "success_fifth": "La figura inclina la cabeza en reverencia silenciosa antes de desvanecerse por completo. Un gran saco de oro yace en el suelo donde estuvo."
     }
   },
+  "riddleOfEternal_alt": {
+    "title": "El huésped desconocido",
+    "message": {
+      "original": "La figura nocturna aparece una vez más en la finca. Su voz recorre la noche: «Marcado por cada filo, y nunca curado»."
+    },
+    "choices": {
+      "answerFlesh": {
+        "label": "Carne"
+      },
+      "answerBone": {
+        "label": "Hueso"
+      },
+      "answerShield": {
+        "label": "Escudo"
+      },
+      "answerSkin": {
+        "label": "Piel"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_fifth": "La figura inclina la cabeza en reverencia silenciosa antes de desvanecerse por completo. Un gran saco de oro yace en el suelo donde estuvo."
+    }
+  },
   "riddleOfTears": {
     "title": "Un huésped encapuchado",
     "message": {
@@ -2145,6 +2226,33 @@
       },
       "answerDeath": {
         "label": "Muerte"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_fourth": "La figura baja su cabeza encapuchada un momento antes de disolverse en las sombras. Un pequeño saco de oro queda sobre el suelo frío."
+    }
+  },
+  "riddleOfTears_alt": {
+    "title": "Un huésped encapuchado",
+    "message": {
+      "original": "La figura encapuchada aparece una vez más en la finca. Susurra: «Quien fabrica, vende. Quien compra, nunca usa. Quien usa, nunca sabe»."
+    },
+    "choices": {
+      "answerCrown": {
+        "label": "Corona"
+      },
+      "answerSword": {
+        "label": "Espada"
+      },
+      "answerCoffin": {
+        "label": "Ataúd"
+      },
+      "answerCompass": {
+        "label": "Brújula"
       },
       "timeout": {
         "label": "Sin respuesta"
@@ -2804,6 +2912,33 @@
       },
       "answerDiamond": {
         "label": "Diamante"
+      },
+      "timeout": {
+        "label": "Sin respuesta"
+      }
+    },
+    "log": {
+      "wrong": "La figura niega con la cabeza antes de desaparecer. Al día siguiente, una densa niebla se cuela en la aldea. Los aldeanos afirman ver formas cambiantes en ella; muchos temen salir de sus chozas.",
+      "success_first": "La figura asiente levemente antes de desvanecerse en la oscuridad. Por la mañana, una pequeña bolsa de oro reposa en el umbral de la finca."
+    }
+  },
+  "whispererInTheDark_alt": {
+    "title": "El susurrador en la oscuridad",
+    "message": {
+      "original": "Llaman a la puerta de la finca. Una figura completamente envuelta en ropas oscuras permanece en las sombras afuera. Susurra: «Siempre hambriento, siempre hay que alimentarlo. El dedo que toca pronto se vuelve rojo»."
+    },
+    "choices": {
+      "answerFire": {
+        "label": "Fuego"
+      },
+      "answerBlood": {
+        "label": "Sangre"
+      },
+      "answerPaint": {
+        "label": "Pintura"
+      },
+      "answerHeart": {
+        "label": "Corazón"
       },
       "timeout": {
         "label": "Sin respuesta"

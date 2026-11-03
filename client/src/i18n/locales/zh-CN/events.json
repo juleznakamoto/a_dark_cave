@@ -1987,6 +1987,33 @@
       "success_second": "那身影微微点头，消失在夜色中。黎明时分，一个装着黄金的磨损皮袋躺在它曾站立之处。"
     }
   },
+  "riddleOfAges_alt": {
+    "title": "黑暗中的声音",
+    "message": {
+      "original": "披着斗篷的身影在苍白月光下回到庄园。它的声音回荡：“清晨卧在你脚下，整日紧随你身后，正午时分几近消亡。”"
+    },
+    "choices": {
+      "answerSleep": {
+        "label": "睡眠"
+      },
+      "answerShadow": {
+        "label": "影子"
+      },
+      "answerHunger": {
+        "label": "饥饿"
+      },
+      "answerFootsteps": {
+        "label": "脚步"
+      },
+      "timeout": {
+        "label": "未作答"
+      }
+    },
+    "log": {
+      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
+      "success_second": "那身影微微点头，消失在夜色中。黎明时分，一个装着黄金的磨损皮袋躺在它曾站立之处。"
+    }
+  },
   "riddleOfDevourer": {
     "title": "夜间的访客",
     "message": {
@@ -2033,6 +2060,33 @@
       },
       "answerHand": {
         "label": "手"
+      },
+      "timeout": {
+        "label": "未作答"
+      }
+    },
+    "log": {
+      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
+      "success_third": "那身影静静点头，退入昏暗之中。天亮时，门外发现一个磨损的黄金袋。"
+    }
+  },
+  "riddleOfDevourer_alt": {
+    "title": "夜间的访客",
+    "message": {
+      "original": "神秘的身影再次出现在庄园。它低声呢喃：“你呼唤时它回应，你住口时它消亡。”"
+    },
+    "choices": {
+      "answerReflection": {
+        "label": "倒影"
+      },
+      "answerBell": {
+        "label": "钟"
+      },
+      "answerEcho": {
+        "label": "回声"
+      },
+      "answerSilence": {
+        "label": "寂静"
       },
       "timeout": {
         "label": "未作答"
@@ -2099,6 +2153,33 @@
       "success_fifth": "那身影无声地低头致意，随即完全消失。一大袋黄金留在它曾站立的地上。"
     }
   },
+  "riddleOfEternal_alt": {
+    "title": "未知的客人",
+    "message": {
+      "original": "夜间的身影最后一次出现在庄园。它的声音穿过夜色：“每一把刀刃都在它身上留下伤痕，它却从不愈合。”"
+    },
+    "choices": {
+      "answerFlesh": {
+        "label": "血肉"
+      },
+      "answerBone": {
+        "label": "骨头"
+      },
+      "answerShield": {
+        "label": "盾牌"
+      },
+      "answerSkin": {
+        "label": "皮肤"
+      },
+      "timeout": {
+        "label": "未作答"
+      }
+    },
+    "log": {
+      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
+      "success_fifth": "那身影无声地低头致意，随即完全消失。一大袋黄金留在它曾站立的地上。"
+    }
+  },
   "riddleOfTears": {
     "title": "戴兜帽的客人",
     "message": {
@@ -2145,6 +2226,33 @@
       },
       "answerDeath": {
         "label": "死亡"
+      },
+      "timeout": {
+        "label": "未作答"
+      }
+    },
+    "log": {
+      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
+      "success_fourth": "那身影短暂低下兜帽，随即溶入阴影。冰冷的地面上留下一小袋黄金。"
+    }
+  },
+  "riddleOfTears_alt": {
+    "title": "戴兜帽的客人",
+    "message": {
+      "original": "裹在袍中的身影再次出现在庄园。它低语：“造它的人卖掉它，买它的人从不用它，用它的人永远不知道。”"
+    },
+    "choices": {
+      "answerCrown": {
+        "label": "王冠"
+      },
+      "answerSword": {
+        "label": "剑"
+      },
+      "answerCoffin": {
+        "label": "棺材"
+      },
+      "answerCompass": {
+        "label": "罗盘"
       },
       "timeout": {
         "label": "未作答"
@@ -2804,6 +2912,33 @@
       },
       "answerDiamond": {
         "label": "钻石"
+      },
+      "timeout": {
+        "label": "未作答"
+      }
+    },
+    "log": {
+      "wrong": "那身影摇了摇头便消失了。第二天，浓雾渗入村庄。村民们声称看见其中有变幻的形状，许多人不敢离开自己的小屋。",
+      "success_first": "那身影微微点头，随即没入黑暗。到了早晨，一小袋黄金放在庄园门口。"
+    }
+  },
+  "whispererInTheDark_alt": {
+    "title": "黑暗中的低语者",
+    "message": {
+      "original": "庄园的门被敲响。一个完全被黑袍包裹的身影站在门外的阴影中。它低语道：“永远饥饿，总要喂养。手指一碰，转眼变红。”"
+    },
+    "choices": {
+      "answerFire": {
+        "label": "火"
+      },
+      "answerBlood": {
+        "label": "血"
+      },
+      "answerPaint": {
+        "label": "颜料"
+      },
+      "answerHeart": {
+        "label": "心"
       },
       "timeout": {
         "label": "未作答"
