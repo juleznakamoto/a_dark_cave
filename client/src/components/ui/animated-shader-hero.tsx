@@ -227,7 +227,7 @@ function EndScreenCornerBadge({
   const placeClass =
     align === "edge"
       ? "top-0 -right-3 origin-center -translate-y-1/2 scale-90 inline-flex items-center justify-center leading-none h-5 py-0 font-normal border-[1.5px] shadow-[0_0_10px_3px_rgba(239,68,68,0.95)]"
-      : "-top-2.5 -right-2 py-0.5 leading-tight font-semibold border shadow-md";
+      : "-top-2.5 -right-2 py-px leading-tight font-medium border shadow-md";
   return (
     <span className={`${END_SCREEN_CORNER_BADGE_CLASS} ${placeClass} ${toneClass}`}>
       {align === "edge" ? (
