@@ -49,8 +49,13 @@ export default function EndScreenPage() {
           useGameStore.getState().loadGame(),
         ]);
         const state = useGameStore.getState();
-        setIsCruelModeRun(Boolean(state.cruelMode));
-        setPreviewNormalSteamEnd(isSteamEndScreenDevMode(state.devGameMode));
+        const cruelEndPreview =
+          import.meta.env.DEV &&
+          new URLSearchParams(window.location.search).get("cruelEnd") === "1";
+        setIsCruelModeRun(cruelEndPreview || Boolean(state.cruelMode));
+        setPreviewNormalSteamEnd(
+          !cruelEndPreview && isSteamEndScreenDevMode(state.devGameMode),
+        );
         setSteamCruelUnlockAvailable(
           isSteamCruelModeUnlockAvailable({
             devGameMode: state.devGameMode,

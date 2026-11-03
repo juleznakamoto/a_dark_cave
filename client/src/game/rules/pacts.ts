@@ -1,9 +1,9 @@
-import { isSteamDesktopEditionActive } from "@/lib/edition";
+import { isSteamDemoEditionActive } from "@/lib/edition";
 import { PACTS_ENABLED } from "@/lib/featureFlags";
 
-/** Web, Galaxy, CrazyGames, and itch. Off on the Steam desktop client and DEV previews of it. */
+/** Web, portals, and the full Steam game. Off on the Steam demo and its DEV preview. */
 export function arePactsEnabled(): boolean {
-  return PACTS_ENABLED && !isSteamDesktopEditionActive();
+  return PACTS_ENABLED && !isSteamDemoEditionActive();
 }
 
 /** Opening pact offer for a new run, normal or Cruel Mode. Each chosen pact adds madness and its two boons. */

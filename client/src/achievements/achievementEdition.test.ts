@@ -32,6 +32,8 @@ describe("web-only achievements (Steam)", () => {
     const ids = filtered.rings.flat().map((s) => s.segmentId);
     expect(ids).not.toContain("0-supporter");
     expect(ids).toContain("0-winNormal");
+    expect(ids).toContain("0-winCruel");
+    expect(ids).toContain("0-finalPact");
     expect(ids).toContain("0-caveVeteran");
     expect(ids).toContain("0-resourceMaxer");
     expect(ids).toContain("0-upgradeMaxer");

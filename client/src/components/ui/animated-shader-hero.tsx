@@ -146,7 +146,7 @@ function renderSymbolLabelButtonContent(text: string) {
     : text;
   return (
     <>
-      <CruelModePentagramIcon sizeClassName="h-[1.2em] w-[1.2em]" />
+      <CruelModePentagramIcon sizeClassName="h-5 w-5" />
       <span className="leading-none">{label}</span>
     </>
   );
@@ -184,7 +184,7 @@ function EndScreenHaloCopy({
 }
 
 const END_SCREEN_CTA_BUTTON_BASE_CLASS =
-  "px-4 sm:px-5 py-2.5 sm:py-3 bg-primary text-primary-foreground rounded-md font-semibold text-base sm:text-lg transition-all duration-300 inline-flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap";
+  "h-11 px-4 sm:px-5 bg-primary text-primary-foreground rounded-md font-semibold text-base sm:text-lg transition-all duration-300 inline-flex items-center justify-center gap-1.5 sm:gap-2 whitespace-nowrap";
 
 const END_SCREEN_CTA_BUTTON_CLASS =
   `${END_SCREEN_CTA_BUTTON_BASE_CLASS} hover:bg-primary/90 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25`;
@@ -675,7 +675,7 @@ const Hero: React.FC<HeroProps> = ({
           </div>
         )} */}
 
-        <div className="text-center space-y-4 md:space-y-7 w-full max-w-[min(100vw,64rem)] mx-auto px-6 sm:px-8 min-w-0 box-border py-6 sm:py-0">
+        <div className="text-center space-y-3 md:space-y-5 w-full max-w-[min(100vw,64rem)] mx-auto px-6 sm:px-8 min-w-0 box-border py-6 sm:py-0">
           {/* Main Heading with Animation */}
           <div className="space-y-2 min-w-0">
             <EndScreenHaloCopy
@@ -701,7 +701,7 @@ const Hero: React.FC<HeroProps> = ({
                 <EndScreenHaloCopy
                   as="p"
                   text={subtitle1}
-                  className={`mt-4 md:mt-6 ${END_SCREEN_BODY_BASE_CLASS}`}
+                  className={`mt-2 md:mt-3 ${END_SCREEN_BODY_BASE_CLASS}`}
                   fillClassName="text-grey-200"
                 />
               ) : null}
@@ -726,7 +726,7 @@ const Hero: React.FC<HeroProps> = ({
 
           {/* CTA Buttons with Animation */}
           {buttons && buttons.primary && (
-            <div className="flex flex-wrap justify-center gap-4 mt-10 md:mt-14 animate-fade-in-up animation-delay-3000">
+            <div className="flex flex-wrap justify-center gap-4 mt-6 md:mt-8 animate-fade-in-up animation-delay-3000">
               <div
                 className={
                   buttons.primary.disabled
@@ -760,9 +760,40 @@ const Hero: React.FC<HeroProps> = ({
             </div>
           )}
 
+          {buttons?.rateSteam && (
+            <div className="py-1 md:py-2 flex flex-col items-center gap-2 md:gap-3 mt-6 md:mt-8 animate-fade-in-up animation-delay-4000 w-full min-w-0">
+              <EndScreenHaloCopy
+                as="p"
+                text={t("endScreen.reviewBlurb")}
+                className={`${END_SCREEN_BODY_BASE_CLASS} text-center max-w-md sm:max-w-3xl px-2 sm:px-4`}
+                fillClassName="text-grey-200"
+              />
+              <button
+                type="button"
+                onClick={buttons.rateSteam.onClick}
+                button_id={buttons.rateSteam.buttonId}
+                data-testid="button-end-screen-steam-review"
+                className={END_SCREEN_CTA_BUTTON_CLASS}
+              >
+                <FooterSocialIcon
+                  platform="steam"
+                  className="h-5 w-5 shrink-0 text-white"
+                />
+                <span className="leading-none">{buttons.rateSteam.text}</span>
+              </button>
+            </div>
+          )}
+
+          {/* Steam Wishlist Section — hidden on Steam desktop (already on Steam). */}
+          {!hideSteamWishlist && (
+            <div className="pt-2 md:pt-3 flex flex-col items-center gap-3 mt-5 md:mt-7 animate-fade-in-up animation-delay-4500 w-full min-w-0">
+              <SteamStoreWidget />
+            </div>
+          )}
+
           {/* Feedback CTA */}
           {buttons?.feedback && (
-            <div className="py-3 md:py-5 flex flex-col items-center gap-3 md:gap-5 mt-14 md:mt-20 animate-fade-in-up animation-delay-4000 w-full min-w-0">
+            <div className="flex flex-col items-center gap-2 md:gap-3 mt-4 md:mt-6 animate-fade-in-up animation-delay-4500 w-full min-w-0">
               <EndScreenHaloCopy
                 as="p"
                 text={t("endScreen.feedbackBlurb")}
@@ -785,19 +816,12 @@ const Hero: React.FC<HeroProps> = ({
             </div>
           )}
 
-          {/* Steam Wishlist Section — hidden on Steam desktop (already on Steam). */}
-          {!hideSteamWishlist && (
-            <div className="pt-3 md:pt-5 flex flex-col items-center gap-3 mt-8 md:mt-12 animate-fade-in-up animation-delay-4500 w-full min-w-0">
-              <SteamStoreWidget />
-            </div>
-          )}
-
           {/* Buy Me a Coffee + Continue Playing (+ More Games / Rate on itch.io on web) */}
           {(buttons?.secondary ||
             buttons?.secondaryTrailing ||
-            buttons?.rateItch ||
-            buttons?.rateSteam) && (
-              <div className="flex flex-col items-center gap-4 animate-fade-in-up animation-delay-4500 px-2">
+            buttons?.rateItch) && (
+              <div className="flex flex-col items-center gap-3 animate-fade-in-up animation-delay-4500 px-2">
+                {(buttons?.secondaryTrailing || buttons?.rateItch || !hideSupport) && (
                 <div className="w-full flex justify-center">
                   <div className="flex flex-wrap justify-center gap-3 sm:gap-4 items-center">
                     {buttons?.secondaryTrailing && (
@@ -813,22 +837,6 @@ const Hero: React.FC<HeroProps> = ({
                           className="text-blue-400 opacity-100"
                         />
                         <span>{buttons.secondaryTrailing.text}</span>
-                      </button>
-                    )}
-                    {buttons?.rateSteam && (
-                      <button
-                        type="button"
-                        onClick={buttons.rateSteam.onClick}
-                        button_id={buttons.rateSteam.buttonId}
-                        data-testid="button-end-screen-steam-review"
-                        className={END_SCREEN_LINK_BUTTON_CLASS}
-                      >
-                        <FooterSocialIcon
-                          platform="steam"
-                          variant="brand"
-                          className="h-3.5 w-3.5 shrink-0"
-                        />
-                        <span>{buttons.rateSteam.text}</span>
                       </button>
                     )}
                     {buttons?.rateItch && (
@@ -869,23 +877,24 @@ const Hero: React.FC<HeroProps> = ({
                         </span>
                       </button>
                     )}
-                    {buttons?.secondary && (
-                      <button
-                        type="button"
-                        onClick={buttons.secondary.onClick}
-                        button_id={buttons.secondary.buttonId}
-                        className={END_SCREEN_LINK_BUTTON_CLASS}
-                      >
-                        <GameUiIcon
-                          name="unpause"
-                          sizeClassName="h-3.5 w-3.5"
-                          className="opacity-100"
-                        />
-                        <span>{buttons.secondary.text}</span>
-                      </button>
-                    )}
                   </div>
                 </div>
+                )}
+                {buttons?.secondary && (
+                  <button
+                    type="button"
+                    onClick={buttons.secondary.onClick}
+                    button_id={buttons.secondary.buttonId}
+                    className={END_SCREEN_LINK_BUTTON_CLASS}
+                  >
+                    <GameUiIcon
+                      name="unpause"
+                      sizeClassName="h-3.5 w-3.5"
+                      className="opacity-100"
+                    />
+                    <span>{buttons.secondary.text}</span>
+                  </button>
+                )}
               </div>
             )}
         </div>

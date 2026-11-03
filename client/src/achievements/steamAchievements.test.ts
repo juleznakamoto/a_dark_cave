@@ -23,6 +23,7 @@ vi.mock("@/lib/steam", () => ({
 import { createInitialState } from "@/game/state";
 import {
   isSteamDemoAchievementId,
+  listSteamAchievementMappings,
   listSteamDemoAchievementMappings,
   resetSteamAchievementSyncForTests,
   syncSteamAchievements,
@@ -49,6 +50,8 @@ function stateWithDemoAndLaterProgress() {
   return {
     ...initial,
     hasWonNormalGame: true,
+    hasWonCruelGame: true,
+    hasFinalPactWin: true,
     buildings: {
       ...initial.buildings,
       woodenHut: 10,
@@ -86,7 +89,25 @@ describe("syncSteamAchievements", () => {
       true,
     );
     expect(unlocked).not.toContain(toSteamApiName("overall-0-winNormal"));
+    expect(unlocked).not.toContain("ACH_OVERALL_0_WINCRUEL");
+    expect(unlocked).not.toContain("ACH_OVERALL_0_FINALPACT");
     expect(unlocked).not.toContain(toSteamApiName("building-0-0"));
+  });
+
+  it("unlocks Cruel Victory and The final pact on the full game", async () => {
+    const initial = createInitialState();
+    await syncSteamAchievements({
+      ...initial,
+      hasWonCruelGame: true,
+      hasFinalPactWin: true,
+    });
+    const unlocked = mocks.unlock.mock.calls.map((call) => call[0]);
+    expect(unlocked).toContain("ACH_OVERALL_0_WINCRUEL");
+    expect(unlocked).toContain("ACH_OVERALL_0_FINALPACT");
+    expect(toSteamApiName("overall-0-winCruel")).toBe("ACH_OVERALL_0_WINCRUEL");
+    expect(toSteamApiName("overall-0-finalPact")).toBe(
+      "ACH_OVERALL_0_FINALPACT",
+    );
   });
 
   it("unlocks completed demo progress when a demo save is loaded in the full game", async () => {
@@ -103,6 +124,24 @@ describe("syncSteamAchievements", () => {
     await syncSteamAchievements(stateWithWoodGathered(499));
     expect(mocks.unlock).not.toHaveBeenCalledWith(
       toSteamApiName("basic-0-woodGatherer"),
+    );
+  });
+});
+
+describe("Steam achievement API names", () => {
+  it("maps Cruel Victory and The final pact to the Steamworks names", () => {
+    const mappings = listSteamAchievementMappings();
+    expect(mappings).toEqual(
+      expect.arrayContaining([
+        {
+          canonicalId: "overall-0-winCruel",
+          apiName: "ACH_OVERALL_0_WINCRUEL",
+        },
+        {
+          canonicalId: "overall-0-finalPact",
+          apiName: "ACH_OVERALL_0_FINALPACT",
+        },
+      ]),
     );
   });
 });

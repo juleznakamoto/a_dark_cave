@@ -4,11 +4,11 @@ vi.mock("@/lib/edition", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/lib/edition")>();
   return {
     ...actual,
-    isSteamDesktopEditionActive: vi.fn(() => false),
+    isSteamDemoEditionActive: vi.fn(() => false),
   };
 });
 
-import { isSteamDesktopEditionActive } from "@/lib/edition";
+import { isSteamDemoEditionActive } from "@/lib/edition";
 import { PACTS_ENABLED } from "@/lib/featureFlags";
 import { gamblerDoubleOfferOnWin, gamblerRageOnWin } from "@/game/gamblerSession";
 import { createInitialState } from "@/game/state";
@@ -29,12 +29,12 @@ import {
 } from "./pacts";
 
 afterEach(() => {
-  vi.mocked(isSteamDesktopEditionActive).mockReset();
-  vi.mocked(isSteamDesktopEditionActive).mockReturnValue(false);
+  vi.mocked(isSteamDemoEditionActive).mockReset();
+  vi.mocked(isSteamDemoEditionActive).mockReturnValue(false);
 });
 
 describe("PACTS_ENABLED", () => {
-  it("runs pact boons on non-Steam versions", () => {
+  it("runs pact boons on web and the full Steam game", () => {
     expect(PACTS_ENABLED).toBe(true);
     expect(hasEarnedPactOffer(1)).toBe(true);
     expect(shouldOpenPactOffer(3)).toBe(true);
@@ -101,8 +101,8 @@ describe("PACTS_ENABLED", () => {
     });
   });
 
-  it("keeps pacts off on the Steam desktop version", () => {
-    vi.mocked(isSteamDesktopEditionActive).mockReturnValue(true);
+  it("keeps pacts off on the Steam demo", () => {
+    vi.mocked(isSteamDemoEditionActive).mockReturnValue(true);
 
     expect(hasEarnedPactOffer(1)).toBe(true);
     expect(shouldOpenPactOffer(3)).toBe(false);

@@ -96,6 +96,16 @@ describe("CrazyGames edition", () => {
     expect(edition.isSteamDesktopEditionActive("crazyGamesDemo")).toBe(false);
   });
 
+  it("treats only the Steam demo as the pact-off edition", async () => {
+    const edition = await loadEdition();
+    expect(edition.isSteamDemoEditionActive("normal")).toBe(false);
+    expect(edition.isSteamDemoEditionActive("steamGame")).toBe(false);
+    expect(edition.isSteamDemoEditionActive("steamEndCruelOn")).toBe(false);
+    expect(edition.isSteamDemoEditionActive("steamDemo")).toBe(true);
+    expect(edition.isSteamDemoEditionActive("demoEnd")).toBe(true);
+    expect(edition.isSteamDemoEditionActive("crazyGamesDemo")).toBe(false);
+  });
+
   it("treats /itch as a local-only capped demo that still links to Steam", async () => {
     vi.stubGlobal("window", {
       location: { pathname: "/itch" },

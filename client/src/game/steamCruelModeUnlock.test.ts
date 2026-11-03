@@ -3,8 +3,11 @@ import { STEAM_CRUEL_MODE_UNLOCK } from "@/lib/featureFlags";
 import { isSteamCruelModeUnlockAvailable } from "./steamCruelModeUnlock";
 
 describe("isSteamCruelModeUnlockAvailable", () => {
-  it("is on for Settings → Steam End (Cruel On) even when the flag is off", () => {
-    expect(STEAM_CRUEL_MODE_UNLOCK).toBe(false);
+  it("ships Cruel Mode for the full Steam game", () => {
+    expect(STEAM_CRUEL_MODE_UNLOCK).toBe(true);
+  });
+
+  it("is on for Settings → Steam End (Cruel On)", () => {
     expect(
       isSteamCruelModeUnlockAvailable({
         devGameMode: "steamEndCruelOn",
@@ -22,7 +25,7 @@ describe("isSteamCruelModeUnlockAvailable", () => {
     ).toBe(false);
   });
 
-  it("pretends a normal win for Settings → Steam Game while the flag is off", () => {
+  it("offers Cruel Mode in Settings → Steam Game before a normal win", () => {
     expect(
       isSteamCruelModeUnlockAvailable({
         devGameMode: "steamGame",

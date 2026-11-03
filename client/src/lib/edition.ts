@@ -342,3 +342,16 @@ export function isSteamDesktopEditionActive(
     mode === "demoEnd"
   );
 }
+
+/**
+ * Steam desktop demo, or DEV Settings → Steam Demo / Demo End.
+ * False for the full Steam game and for web / portal builds.
+ */
+export function isSteamDemoEditionActive(
+  devGameMode?: DevGameMode,
+): boolean {
+  if (isSteamDemoRuntime()) return true;
+  if (isSteamBuild || !import.meta.env.DEV) return false;
+  const mode = resolveDevGameMode(devGameMode);
+  return mode === "steamDemo" || mode === "demoEnd";
+}

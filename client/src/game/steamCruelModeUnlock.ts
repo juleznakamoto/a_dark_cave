@@ -20,10 +20,10 @@ export type SteamCruelModeUnlockInput = {
  * Steam full game (or a DEV Steam Game / Steam End simulation): the
  * player may start Cruel Mode after a normal-mode finish.
  *
- * Hidden behind {@link STEAM_CRUEL_MODE_UNLOCK} except for Settings →
- * Steam End (Cruel On), and Settings → Steam Game, which pretends a
- * normal win so New Game can offer Cruel Mode while the shipped flag
- * is still off.
+ * Gated by {@link STEAM_CRUEL_MODE_UNLOCK}. The Steam demo never offers it.
+ * Settings → Steam End (Cruel Off) stays hidden. Settings → Steam End
+ * (Cruel On) always offers it, and DEV Settings → Steam Game offers it
+ * before a normal win so the new-game checkbox can be checked.
  */
 export function isSteamCruelModeUnlockAvailable(
   input: SteamCruelModeUnlockInput = {},
@@ -31,7 +31,7 @@ export function isSteamCruelModeUnlockAvailable(
   const mode = input.devGameMode;
   if (mode === "steamEndCruelOff") return false;
   if (mode === "steamEndCruelOn") return true;
-  // DEV Settings → Steam Game only. The packaged Steam app keeps the flag.
+  // DEV Settings → Steam Game only. The packaged app still requires a normal win.
   if (mode === "steamGame" && import.meta.env.DEV && !isSteamBuild) return true;
   if (!STEAM_CRUEL_MODE_UNLOCK) return false;
   if (input.hasWonNormalGame !== true) return false;
