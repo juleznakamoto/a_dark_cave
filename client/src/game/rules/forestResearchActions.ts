@@ -5,16 +5,17 @@ import { bt } from "./buildingTooltipEffects";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
 import { gameEvents } from "./events";
 import {
-  FINANCE_EXPEDITION_TIERS,
+  getChainmasterBookOfferChance,
   getFinanceExpeditionFoodCost,
   getFinanceExpeditionGoldCost,
   getFinanceExpeditionTier,
-  getFinanceExpeditionTierIndex,
   getFinanceExpeditionUsageCount,
 } from "./financeExpedition";
 
 export {
+  CHAINMASTER_BOOK_OFFER_CHANCES,
   FINANCE_EXPEDITION_TIERS,
+  getChainmasterBookOfferChance,
   getFinanceExpeditionUsageCount,
   getFinanceExpeditionTierIndex,
   getFinanceExpeditionTier,
@@ -59,12 +60,11 @@ export function handleFinanceExpedition(
 ): ActionResult {
   const usageCount = getFinanceExpeditionUsageCount(state);
   const tier = getFinanceExpeditionTier(state);
-  const isMaxTier =
-    getFinanceExpeditionTierIndex(state) === FINANCE_EXPEDITION_TIERS.length - 1;
-  // leatherboundBookFound is only set on Accept - a missed dialog re-offers on the
-  // next max-tier expedition instead of soft-locking the book forever.
+  // leatherboundBookFound is only set on Accept. A missed dialog can be
+  // offered again on a later return instead of locking the book away.
   const shouldOfferBook =
-    isMaxTier && !state.story.seen.leatherboundBookFound;
+    !state.story.seen.leatherboundBookFound &&
+    Math.random() < getChainmasterBookOfferChance(usageCount);
 
   const existingStory = result.stateUpdates.story ?? { ...state.story };
   const existingSeen = {

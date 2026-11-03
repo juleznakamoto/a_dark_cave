@@ -7,12 +7,24 @@ import type { GameState } from "@shared/schema";
  */
 
 export const FINANCE_EXPEDITION_TIERS = [
-  { gold: 10, food: 250, villagers: 4, executionTime: 30, insight: 250 },
-  { gold: 20, food: 500, villagers: 6, executionTime: 45, insight: 500 },
-  { gold: 30, food: 750, villagers: 8, executionTime: 60, insight: 750 },
-  { gold: 40, food: 1000, villagers: 10, executionTime: 75, insight: 1000 },
-  { gold: 50, food: 1500, villagers: 12, executionTime: 90, insight: 1500 },
+  { gold: 10, food: 250, villagers: 2, executionTime: 30, insight: 250 },
+  { gold: 20, food: 500, villagers: 4, executionTime: 45, insight: 500 },
+  { gold: 30, food: 750, villagers: 6, executionTime: 60, insight: 750 },
+  { gold: 40, food: 1000, villagers: 8, executionTime: 75, insight: 1000 },
+  { gold: 50, food: 1500, villagers: 10, executionTime: 90, insight: 1500 },
 ] as const;
+
+/**
+ * Chance the returning expedition offers the leatherbound book.
+ * Index 0 is the first run. Later runs keep the last chance.
+ */
+export const CHAINMASTER_BOOK_OFFER_CHANCES = [0, 0.1, 0.25, 0.5, 1] as const;
+
+export function getChainmasterBookOfferChance(usageCount: number): number {
+  const index = Math.max(0, Math.floor(usageCount) || 0);
+  const last = CHAINMASTER_BOOK_OFFER_CHANCES.length - 1;
+  return CHAINMASTER_BOOK_OFFER_CHANCES[Math.min(index, last)];
+}
 
 export function getFinanceExpeditionUsageCount(
   state: Pick<GameState, "story">,

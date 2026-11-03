@@ -6,10 +6,10 @@ import {
 } from "./financeExpedition";
 
 /**
- * The chainmaster storyline starts when a max-tier finance expedition returns
- * with the leatherbound book. That completion raises the usage count to
- * FINANCE_EXPEDITION_TIERS.length. Until then the player has not made enough
- * expeditions to receive it.
+ * The leatherbound book can return from the second Finance Expedition on.
+ * The fifth completion makes that offer certain and raises the usage count to
+ * FINANCE_EXPEDITION_TIERS.length. The treasure hint stays until then, or
+ * until the book has already been found.
  */
 export function hasMadeEnoughExpeditionsForChainmaster(
   state: Pick<GameState, "story">,
