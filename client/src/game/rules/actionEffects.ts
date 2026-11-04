@@ -28,6 +28,36 @@ import { calculateAdjustedCost } from "./costCalculation";
 import { clothingEffects } from "./effects";
 import { scaleDemoActionBaseRange, scaleDemoActionBaseReward } from "@/game/demoActionRewards";
 
+/** Flat find chance added once the 10th Stone Hut is built. */
+export const STONE_HUT_FIND_BONUS = 0.05;
+export const STONE_HUT_FIND_BONUS_AT = 10;
+
+const CAVE_FIND_ACTIONS = new Set([
+  "exploreCave",
+  "ventureDeeper",
+  "descendFurther",
+  "exploreRuins",
+  "exploreTemple",
+  "exploreCitadel",
+]);
+
+/**
+ * +5% on cave finds and hunt finds after 10 Stone Huts.
+ * Hunt Veinroot stays on its own chance.
+ */
+export function stoneHutFindBonus(
+  actionId: string,
+  effectKey: string,
+  state: { buildings?: { stoneHut?: number } },
+): number {
+  if ((state.buildings?.stoneHut ?? 0) < STONE_HUT_FIND_BONUS_AT) return 0;
+  if (actionId === "hunt") {
+    return effectKey === "veinroot" ? 0 : STONE_HUT_FIND_BONUS;
+  }
+  if (CAVE_FIND_ACTIONS.has(actionId)) return STONE_HUT_FIND_BONUS;
+  return 0;
+}
+
 export const FOCUS_ELIGIBLE_ACTIONS = [
   "exploreCave",
   "ventureDeeper",
@@ -484,6 +514,11 @@ export function applyActionEffects(
             baseProbability * getVeinrootFindMultiplier(state),
           );
         }
+
+        baseProbability = Math.min(
+          1,
+          baseProbability + stoneHutFindBonus(actionId, finalKey, state),
+        );
 
         const totalLuck = getTotalLuckCalc(state);
         const luckBonus = totalLuck / 100;

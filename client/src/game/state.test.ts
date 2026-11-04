@@ -23,6 +23,7 @@ import { getCallMerchantGoldCost } from "@/game/constants";
 import { MARKETING_SUBSCRIBE_GOLD } from "@/game/marketingEmailReward";
 import { computePersistedSocialTasksGold } from "@/game/socialTasksGold";
 import { getTotalMadness } from "@/game/rules/effectsCalculation";
+import { CRUEL_WORLD_CODE_SEEN_KEY } from "@/game/steamCruelModeUnlock";
 
 const {
   mockLoadGame,
@@ -1074,6 +1075,29 @@ describe("Timed event tab cleanup on new game", () => {
     const state = useGameStore.getState();
     expect(state.cruelMode).toBe(true);
     expect(state.activatedPurchases.cruel_mode).toBe(true);
+  });
+
+  it("restartGame keeps the Cruel World code without starting in Cruel Mode", async () => {
+    mockSaveGame.mockClear();
+
+    const current = useGameStore.getState();
+    useGameStore.setState({
+      cruelMode: false,
+      story: {
+        ...current.story,
+        seen: {
+          ...current.story.seen,
+          [CRUEL_WORLD_CODE_SEEN_KEY]: true,
+        },
+      },
+      flags: { ...current.flags, gameStarted: true },
+    });
+
+    await useGameStore.getState().restartGame();
+
+    const state = useGameStore.getState();
+    expect(state.story.seen[CRUEL_WORLD_CODE_SEEN_KEY]).toBe(true);
+    expect(state.cruelMode).toBe(false);
   });
 
   it("restartGame can start a normal run even if Cruel Mode was active", async () => {

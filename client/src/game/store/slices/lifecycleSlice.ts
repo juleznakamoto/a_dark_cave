@@ -118,6 +118,7 @@ import {
   GAMBLER_EVENT_SEEN_KEY,
   GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY,
 } from "@/game/gamblerSession";
+import { CRUEL_WORLD_CODE_SEEN_KEY } from "@/game/steamCruelModeUnlock";
 import { logger } from "@/lib/logger";
 import { isGameTabHidden } from "@/lib/tabVisibility";
 import {
@@ -392,6 +393,9 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
         seen: {
           ...defaultGameState.story.seen,
           [GAMBLER_TUTORIAL_PLAYS_REMAINING_SEEN_KEY]: 0,
+          ...(state.story?.seen?.[CRUEL_WORLD_CODE_SEEN_KEY] === true
+            ? { [CRUEL_WORLD_CODE_SEEN_KEY]: true as const }
+            : {}),
         },
       },
     };

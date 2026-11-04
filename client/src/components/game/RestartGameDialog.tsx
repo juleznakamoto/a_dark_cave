@@ -20,7 +20,10 @@ import { audioManager, CRUEL_MODE_ACTIVATE_VOLUME } from "@/lib/audio";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { useGameStore } from "@/game/state";
-import { isSteamCruelModeUnlockAvailable } from "@/game/steamCruelModeUnlock";
+import {
+  hasCruelWorldCode,
+  isSteamCruelModeUnlockAvailable,
+} from "@/game/steamCruelModeUnlock";
 import { CruelModePentagramIcon } from "@/components/game/GameUiIcon";
 
 /** Above RestartGameDialog `z-[70]` so the activate burst stays visible. */
@@ -66,12 +69,14 @@ export function RestartGameDialog({
   const isSteamEdition = useSteamEditionActive();
   const preferCruelMode = useGameStore((s) => s.restartGamePreferCruelMode);
   const hasWonNormalGame = useGameStore((s) => s.hasWonNormalGame);
+  const cruelWorldCode = useGameStore((s) => hasCruelWorldCode(s));
   const devGameMode = useGameStore((s) => s.devGameMode);
   const showCruelCheckbox =
     preferCruelMode ||
     isSteamCruelModeUnlockAvailable({
       devGameMode,
       hasWonNormalGame,
+      cruelWorldCode,
     });
   const [cruelModeChecked, setCruelModeChecked] = useState(false);
   const checkboxRef = useRef<HTMLButtonElement>(null);

@@ -29,6 +29,11 @@ import {
   isWanderersLanternEdition,
   markWanderersLanternCodeEntered,
 } from "@/game/wanderersLantern";
+import {
+  hasCruelWorldCode,
+  markCruelWorldCodeEntered,
+  matchesCruelWorldCode,
+} from "@/game/steamCruelModeUnlock";
 import { AudioGlyphIcon, GameUiIcon } from "@/components/game/GameUiIcon";
 import { VOLUME_SLIDER } from "@/components/game/volumeSlider";
 import { useEffect, useState } from "react";
@@ -368,7 +373,7 @@ export default function SettingsDialog({
       devGameMode: s.devGameMode,
       setDevGameMode: s.setDevGameMode,
       activeDevSaveId: s.activeDevSaveId,
-      giftCodeEntered: hasWanderersLanternCode(s),
+      giftCodeEntered: hasWanderersLanternCode(s) || hasCruelWorldCode(s),
     })),
   );
   const [giftCode, setGiftCode] = useState("");
@@ -376,11 +381,14 @@ export default function SettingsDialog({
   const showGiftCode = isWanderersLanternEdition(devGameMode);
 
   const redeemGiftCode = () => {
-    if (!matchesWanderersLanternCode(giftCode)) {
+    if (matchesWanderersLanternCode(giftCode)) {
+      useGameStore.setState((state) => markWanderersLanternCodeEntered(state));
+    } else if (matchesCruelWorldCode(giftCode)) {
+      useGameStore.setState((state) => markCruelWorldCodeEntered(state));
+    } else {
       setGiftCodeInvalid(true);
       return;
     }
-    useGameStore.setState((state) => markWanderersLanternCodeEntered(state));
     setGiftCode("");
     setGiftCodeInvalid(false);
   };

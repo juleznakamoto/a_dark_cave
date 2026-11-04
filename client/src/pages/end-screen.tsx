@@ -5,7 +5,10 @@ import { initPlaylight } from "@/lib/playlight";
 import { mountFiraSansFontFace } from "@/lib/firaSansFontFace";
 import { mountNotoSansSymbols2FontFace } from "@/lib/notoSansSymbols2FontFace";
 import { useGameStore } from "@/game/state";
-import { isSteamCruelModeUnlockAvailable } from "@/game/steamCruelModeUnlock";
+import {
+  hasCruelWorldCode,
+  isSteamCruelModeUnlockAvailable,
+} from "@/game/steamCruelModeUnlock";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
 import {
@@ -60,6 +63,7 @@ export default function EndScreenPage() {
           isSteamCruelModeUnlockAvailable({
             devGameMode: state.devGameMode,
             hasWonNormalGame: state.hasWonNormalGame,
+            cruelWorldCode: hasCruelWorldCode(state),
           }),
         );
       } catch {
