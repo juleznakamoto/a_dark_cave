@@ -10,6 +10,7 @@ import {
   curseLikeDurationMs,
   disgustDurationMs,
   cruelModeScale,
+  frostfallPrepareFurCost,
   frostfallPrepareResourceCost,
 } from "../cruelMode";
 import { btpLootAmount } from "@/game/btpLoot";
@@ -45,10 +46,12 @@ function frostfallPrepareAmounts(state: GameState): {
   timesOccurred: number;
   woodCost: number;
   foodCost: number;
+  furCost: number;
 } {
   const timesOccurred = (state.story?.seen?.frostfallCount as number) || 0;
   const amount = frostfallPrepareResourceCost(state.cruelMode, timesOccurred);
-  return { timesOccurred, woodCost: amount, foodCost: amount };
+  const furCost = frostfallPrepareFurCost(state.cruelMode, timesOccurred);
+  return { timesOccurred, woodCost: amount, foodCost: amount, furCost };
 }
 
 export const choiceEvents: Record<string, GameEvent> = {
@@ -1935,11 +1938,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "prepareFrostfall",
         cost: (state: GameState) => {
-          const { woodCost, foodCost } = frostfallPrepareAmounts(state);
-          return `${woodCost} wood, ${foodCost} food`;
+          const { woodCost, foodCost, furCost } = frostfallPrepareAmounts(state);
+          return `${woodCost} wood, ${foodCost} food, ${furCost} fur`;
         },
         effect: (state: GameState) => {
-          const { timesOccurred, woodCost, foodCost } =
+          const { timesOccurred, woodCost, foodCost, furCost } =
             frostfallPrepareAmounts(state);
 
           return {
@@ -1947,6 +1950,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.resources,
               wood: state.resources.wood - woodCost,
               food: state.resources.food - foodCost,
+              fur: state.resources.fur - furCost,
             },
             stats: {
               ...state.stats,

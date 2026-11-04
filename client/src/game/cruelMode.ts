@@ -73,8 +73,9 @@ export const CRUEL_MODE = {
   },
 
   frostfall: {
-    /** Prepare cost per resource. Normal steps by 250; cruel keeps the +500 ladder. */
+    /** Wood and food start at 500. Fur starts at 250. Both step by 250 normally and by 500 in cruel mode. */
     prepareBase: 500,
+    prepareFurBase: 250,
     prepareStepNormal: 250,
     prepareStepCruel: 500,
   },
@@ -406,14 +407,29 @@ export function bloodMoonSubsequentMinPopulation(cruelMode: boolean): number {
   return cruelMode ? cruel : normal;
 }
 
+function frostfallPrepareStep(cruelMode: boolean): number {
+  const { prepareStepNormal, prepareStepCruel } = CRUEL_MODE.frostfall;
+  return cruelMode ? prepareStepCruel : prepareStepNormal;
+}
+
 export function frostfallPrepareResourceCost(
   cruelMode: boolean,
   timesOccurred: number,
 ): number {
-  const { prepareBase, prepareStepNormal, prepareStepCruel } =
-    CRUEL_MODE.frostfall;
-  const step = cruelMode ? prepareStepCruel : prepareStepNormal;
-  return prepareBase + timesOccurred * step;
+  return (
+    CRUEL_MODE.frostfall.prepareBase +
+    timesOccurred * frostfallPrepareStep(cruelMode)
+  );
+}
+
+export function frostfallPrepareFurCost(
+  cruelMode: boolean,
+  timesOccurred: number,
+): number {
+  return (
+    CRUEL_MODE.frostfall.prepareFurBase +
+    timesOccurred * frostfallPrepareStep(cruelMode)
+  );
 }
 
 export function bloodMoonSacrificeAmount(
