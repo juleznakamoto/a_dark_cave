@@ -16,7 +16,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "whisperingVoices",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 10 && !state.events.whisperingVoices,
-    timeProbability: 30,
+    timeProbability: 20,
     priority: 2,
     repeatable: false,
     isTimedChoice: true,
@@ -61,7 +61,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "shadowsMove",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 15 && !state.events.shadowsMove,
-    timeProbability: 30,
+    timeProbability: 20,
     priority: 1,
     repeatable: false,
     isTimedChoice: true,
@@ -129,7 +129,7 @@ export const madnessEvents: Record<string, GameEvent> = {
       getTotalMadness(state) >= 20 &&
       state.villagers.free > 0 &&
       !state.events.villagerStares,
-    timeProbability: 30,
+    timeProbability: 20,
 
     priority: 3,
     repeatable: false,
@@ -210,7 +210,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "bloodInWater",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 25 && !state.events.bloodInWater,
-    timeProbability: 30,
+    timeProbability: 20,
     priority: 2,
     repeatable: false,
     isTimedChoice: true,
@@ -276,7 +276,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "facesInWalls",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 27 && !state.events.facesInWalls,
-    timeProbability: 30,
+    timeProbability: 20,
     priority: 3,
     repeatable: false,
     isTimedChoice: true,
@@ -358,7 +358,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         !state.events.wrongVillagers
       );
     },
-    timeProbability: 30,
+    timeProbability: 20,
     priority: 2,
     repeatable: false,
     isTimedChoice: true,
@@ -430,7 +430,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "skinCrawling",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 35 && !state.events.skinCrawling,
-    timeProbability: 30,
+    timeProbability: 20,
 
     priority: 4,
     repeatable: false,
@@ -516,7 +516,7 @@ export const madnessEvents: Record<string, GameEvent> = {
       getTotalMadness(state) >= 35 &&
       state.buildings.woodenHut > 0 &&
       !state.events.creatureInHut,
-    timeProbability: 30,
+    timeProbability: 20,
 
     priority: 3,
     repeatable: false,
@@ -604,7 +604,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "wrongReflections",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 40 && !state.events.wrongReflections,
-    timeProbability: 30,
+    timeProbability: 20,
 
     priority: 2,
     repeatable: false,
@@ -688,7 +688,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "villagersStareAtSky",
     condition: (state: GameState) =>
       getTotalMadness(state) >= 45 && !state.events.villagersStareAtSky,
-    timeProbability: 30,
+    timeProbability: 20,
 
     priority: 2,
     repeatable: false,

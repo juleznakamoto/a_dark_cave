@@ -10,6 +10,7 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Changed
 
+- Madness visions tend to arrive sooner once you qualify for them.
 - Purchase tooltips show the cost first, then what you gain. The achievement badge says it unlocks the title and the description.
 - Each Longhouse and each Fur Tent now adds 0.25% to the chance a new villager arrives.
 - Preparing for Frostfall now costs fur as well as wood and food. The fur price rises each time you face it.
