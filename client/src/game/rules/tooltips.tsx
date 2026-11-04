@@ -56,7 +56,10 @@ import {
   getUiTooltip,
   tooltipHeldAmount,
 } from "@/i18n/tooltipLabels";
-import { wrapTooltipHeaderWithTrailing } from "./actionTooltipLayout";
+import {
+  ActionTooltipSeparator,
+  wrapTooltipHeaderWithTrailing,
+} from "./actionTooltipLayout";
 import {
   FOCUS_TOOLTIP_HIGHLIGHT_CLASS,
   isFocusGlowActive,
@@ -243,6 +246,33 @@ export function TooltipCostLines({
       ))}
     </>
   );
+}
+
+/** Purchase tooltip: cost line, divider, then what you gain. */
+export function costBenefitTooltip(options: {
+  amount: number;
+  available: number;
+  resourceKey?: string;
+  satisfied: boolean;
+  benefit: string;
+}): { tooltip: React.ReactNode; label: string } {
+  const costLine = formatTooltipCostLine(
+    options.amount,
+    options.resourceKey ?? "insight",
+    { available: options.available },
+  );
+  return {
+    label: `${costLine}. ${options.benefit}`,
+    tooltip: (
+      <div className="text-xs whitespace-nowrap">
+        <TooltipCostLines
+          costs={[{ text: costLine, satisfied: options.satisfied }]}
+        />
+        <ActionTooltipSeparator />
+        <div>{options.benefit}</div>
+      </div>
+    ),
+  };
 }
 
 /**

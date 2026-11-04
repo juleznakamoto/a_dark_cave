@@ -151,7 +151,7 @@ export default function TabHotkeyCallout({
       style={{ zIndex: Z_INDEX.tabHotkeyOverlay }}
     >
       <div
-        className="pointer-events-auto absolute w-max max-w-[calc(100vw-1rem)] -translate-x-1/2 rounded border border-red-500 bg-neutral-950 px-5 pb-4 pt-1.5"
+        className="pointer-events-auto absolute w-max max-w-[calc(100vw-1rem)] -translate-x-1/2 rounded border border-red-500 bg-neutral-950 px-5 pb-2 pt-1.5"
         style={{ top: layout.top, left: layout.centerX }}
         data-testid={testId}
       >

@@ -1,6 +1,5 @@
 "use client";
 
-import { useMemo } from "react";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   BuildingActionBadge,
@@ -14,10 +13,10 @@ import {
   getConstructionBoostReductionSeconds,
   isConstructionBoostAvailable,
 } from "@/game/constructionQueueSlots";
+import { costBenefitTooltip } from "@/game/rules/tooltips";
 import { useGameStore } from "@/game/state";
 import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
-import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
-import { cn, formatCompactDuration, formatNumber } from "@/lib/utils";
+import { cn, formatCompactDuration } from "@/lib/utils";
 import { useUntilTimestamp } from "@/lib/uiClock";
 
 /** Noto text double-triangle (U+23E9 + text VS). Do not use the ⏩ emoji form. */
@@ -73,30 +72,27 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
 
   const insight = useGameStore((s) => s.resources.insight ?? 0);
   const savedTime = formatCompactDuration(reductionSeconds, "round");
-  const insightResource = formatTooltipResourceName("insight");
-  const costLabel = `${formatNumber(insight)} / ${formatNumber(cost)}`;
 
   const isCraftAction = actionId.startsWith("craft");
-  const costTooltip = useMemo(
-    () =>
-      finishesBuild
-        ? t(isCraftAction ? "cave.craftingBoostFinish" : "village.constructionBoostFinish", {
-          defaultValue: isCraftAction
-            ? "Finish crafting for {{cost}} {{resource}}"
-            : "Finish construction for {{cost}} {{resource}}",
-          cost: costLabel,
-          resource: insightResource,
-        })
-        : t(isCraftAction ? "cave.craftingBoost" : "village.constructionBoost", {
-          defaultValue: isCraftAction
-            ? "Speed up crafting by {{time}} for {{cost}} {{resource}}"
-            : "Speed up construction by {{time}} for {{cost}} {{resource}}",
-          time: savedTime,
-          cost: costLabel,
-          resource: insightResource,
-        }),
-    [t, isCraftAction, finishesBuild, savedTime, costLabel, insightResource],
-  );
+  const benefit = finishesBuild
+    ? t(
+        isCraftAction ? "cave.craftingBoostFinish" : "village.constructionBoostFinish",
+        {
+          defaultValue: isCraftAction ? "Finish crafting" : "Finish construction",
+        },
+      )
+    : t(isCraftAction ? "cave.craftingBoost" : "village.constructionBoost", {
+        defaultValue: isCraftAction
+          ? "Speed up crafting by {{time}}"
+          : "Speed up construction by {{time}}",
+        time: savedTime,
+      });
+  const { tooltip: costTooltip, label: costLabel } = costBenefitTooltip({
+    amount: cost,
+    available: insight,
+    satisfied: insight >= cost,
+    benefit,
+  });
 
   if (!canShow) return null;
 
@@ -125,7 +121,7 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
               className: "flex h-full w-full",
             }),
           )}
-          aria-label={costTooltip}
+          aria-label={costLabel}
           disabled={!canAfford}
           data-testid={`construction-boost-${actionId}`}
           onClick={(e) => {

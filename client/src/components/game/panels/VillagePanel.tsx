@@ -30,6 +30,7 @@ import {
   forestFearTooltip,
   ActionTooltipResourceRows,
   TooltipCostLines,
+  costBenefitTooltip,
 } from "@/game/rules/tooltips";
 import { getBuildingDisplayName } from "@/game/rules/buildingTooltipSections";
 import {
@@ -1692,19 +1693,25 @@ export default function VillagePanel() {
                       const hideQueueSlotUnlockAfterReveal =
                         queueSlotUnlockRevealStartedRef.current &&
                         !isQueueSlotUnlockAnimating;
+                      const insightHeld = state.resources.insight ?? 0;
+                      const queueUnlock =
+                        showQueueSlotUnlock && nextUnlockCost !== null
+                          ? costBenefitTooltip({
+                              amount: nextUnlockCost,
+                              available: insightHeld,
+                              satisfied: insightHeld >= nextUnlockCost,
+                              benefit: t("village.queueSlotUnlock", {
+                                defaultValue: "Unlock construction queue slot",
+                              }),
+                            })
+                          : null;
                       return (
                         <div className={GAME_PANEL_HEADER_SLOT_ROW_CLASS}>
                           {showQueueSlotUnlock &&
                             !hideQueueSlotUnlockAfterReveal && (
                               <TooltipWrapper
                                 tooltipId="queue-slot-unlock"
-                                tooltip={
-                                  <div className="text-xs">
-                                    {t("village.queueSlotUnlock", {
-                                      cost: formatNumber(nextUnlockCost),
-                                    })}
-                                  </div>
-                                }
+                                tooltip={queueUnlock?.tooltip}
                                 tooltipContentClassName="text-white"
                                 className="inline-flex items-center"
                                 tooltipTriggerClassName={
@@ -1730,9 +1737,7 @@ export default function VillagePanel() {
                                         HEADER_SLOT_INSIGHT_BUTTON_CLASS,
                                     }),
                                   )}
-                                  aria-label={t("village.queueSlotUnlock", {
-                                    cost: formatNumber(nextUnlockCost),
-                                  })}
+                                  aria-label={queueUnlock?.label}
                                   disabled={!canInteractQueueUnlock}
                                   aria-busy={isQueueSlotUnlockAnimating}
                                   onClick={(e) => {
@@ -1784,16 +1789,20 @@ export default function VillagePanel() {
                                         },
                                       )
                                       : insightUnlockCost !== null
-                                        ? t(
-                                          "village.slotInsightUnlockAvailable",
-                                          {
-                                            cost: formatNumber(
+                                        ? costBenefitTooltip({
+                                            amount: insightUnlockCost,
+                                            available:
+                                              state.resources.insight ?? 0,
+                                            satisfied:
+                                              (state.resources.insight ?? 0) >=
                                               insightUnlockCost,
+                                            benefit: t(
+                                              "village.slotInsightUnlockAvailable",
+                                              {
+                                                defaultValue: "Can be unlocked",
+                                              },
                                             ),
-                                            defaultValue:
-                                              "Can be unlocked for {{cost}} Insight",
-                                          },
-                                        )
+                                          }).tooltip
                                         : isLocked
                                           ? t("village.queueSlotLocked", {
                                             slot,
@@ -2514,18 +2523,24 @@ export default function VillagePanel() {
                       const hidePresetUnlockAfterReveal =
                         presetUnlockRevealStartedRef.current &&
                         !isPresetUnlockAnimating;
+                      const insightHeld = state.resources.insight ?? 0;
+                      const presetUnlock =
+                        showPresetUnlock && nextUnlockCost !== null
+                          ? costBenefitTooltip({
+                              amount: nextUnlockCost,
+                              available: insightHeld,
+                              satisfied: insightHeld >= nextUnlockCost,
+                              benefit: t("village.presetUnlock", {
+                                defaultValue: "Unlock villager preset",
+                              }),
+                            })
+                          : null;
                       return (
                         <div className={GAME_PANEL_HEADER_SLOT_ROW_CLASS}>
                           {showPresetUnlock && !hidePresetUnlockAfterReveal && (
                             <TooltipWrapper
                               tooltipId="preset-unlock"
-                              tooltip={
-                                <div className="text-xs">
-                                  {t("village.presetUnlock", {
-                                    cost: formatNumber(nextUnlockCost),
-                                  })}
-                                </div>
-                              }
+                              tooltip={presetUnlock?.tooltip}
                               tooltipContentClassName="text-white"
                               className="inline-flex items-center"
                               tooltipTriggerClassName={
@@ -2550,9 +2565,7 @@ export default function VillagePanel() {
                                     className: HEADER_SLOT_INSIGHT_BUTTON_CLASS,
                                   }),
                                 )}
-                                aria-label={t("village.presetUnlock", {
-                                  cost: formatNumber(nextUnlockCost),
-                                })}
+                                aria-label={presetUnlock?.label}
                                 disabled={!canInteractPresetUnlock}
                                 aria-busy={isPresetUnlockAnimating}
                                 onClick={(e) => {
@@ -2623,16 +2636,20 @@ export default function VillagePanel() {
                                   tooltip={
                                     <div className="text-xs">
                                       {insightUnlockCost !== null
-                                        ? t(
-                                          "village.slotInsightUnlockAvailable",
-                                          {
-                                            cost: formatNumber(
+                                        ? costBenefitTooltip({
+                                            amount: insightUnlockCost,
+                                            available:
+                                              state.resources.insight ?? 0,
+                                            satisfied:
+                                              (state.resources.insight ?? 0) >=
                                               insightUnlockCost,
+                                            benefit: t(
+                                              "village.slotInsightUnlockAvailable",
+                                              {
+                                                defaultValue: "Can be unlocked",
+                                              },
                                             ),
-                                            defaultValue:
-                                              "Can be unlocked for {{cost}} Insight",
-                                          },
-                                        )
+                                          }).tooltip
                                         : t("village.presetLocked", {
                                           defaultValue:
                                             "Locked: available for purchase",

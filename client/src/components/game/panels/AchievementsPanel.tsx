@@ -23,6 +23,7 @@ import {
   overallChartConfig,
 } from "@/achievements";
 import { getAchievementRows, claimAchievement, formatRewardsTooltip } from "@/achievements/achievementHelpers";
+import { costBenefitTooltip } from "@/game/rules/tooltips";
 import {
   canRevealAchievementTitle,
   getAchievementTitleInsightCost,
@@ -141,9 +142,13 @@ function AchievementTitleInsightBadge({
   const affordable = getInsightAmount(gameState) >= insightCost;
   const playing = isRevealing;
   const isDisabled = playing || !canUnlock;
-  const unlockLabel = t("achievements.unlockTitleForInsight", {
-    cost: insightCost,
-    defaultValue: "Unlock title for {{cost}} Insight",
+  const unlock = costBenefitTooltip({
+    amount: insightCost,
+    available: getInsightAmount(gameState),
+    satisfied: affordable,
+    benefit: t("achievements.unlockTitleForInsight", {
+      defaultValue: "Unlock title and description",
+    }),
   });
 
   const handleClick = () => {
@@ -154,7 +159,7 @@ function AchievementTitleInsightBadge({
 
   return (
     <TooltipWrapper
-      tooltip={<div className="text-xs">{unlockLabel}</div>}
+      tooltip={unlock.tooltip}
       tooltipId={`achievement-unlock-title-${achievementId}`}
       // Match ActionInsightBadge: only treat as disabled when the button
       // cannot run. A hard-coded `disabled` forced cursor-default and blocked
@@ -171,7 +176,7 @@ function AchievementTitleInsightBadge({
     >
       <button
         type="button"
-        aria-label={unlockLabel}
+        aria-label={unlock.label}
         aria-busy={playing}
         disabled={isDisabled}
         onClick={(e) => {

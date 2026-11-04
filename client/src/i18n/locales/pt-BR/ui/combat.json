@@ -55,6 +55,8 @@
     "calm": "Está calmo, por enquanto...",
     "soon": "em breve",
     "provoke": "Provocar",
+    "delay": "Atrasar",
+    "delayTooltip": "Empurra esta onda mais {{minutes}} minutos para trás.",
     "postCompletion": "Onda {{waveNumber}}",
     "waves": {
       "firstWave": "Primeira Onda",

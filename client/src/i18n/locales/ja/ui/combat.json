@@ -55,6 +55,8 @@
     "calm": "今は静かだ……。",
     "soon": "まもなく",
     "provoke": "誘発",
+    "delay": "遅らせる",
+    "delayTooltip": "この波の到来をさらに{{minutes}}分遅らせる。",
     "postCompletion": "第{{waveNumber}}波",
     "waves": {
       "firstWave": "第1波",

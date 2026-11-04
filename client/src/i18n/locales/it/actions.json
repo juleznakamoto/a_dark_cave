@@ -699,6 +699,9 @@
   "provokeAttackWave": {
     "label": "Provoca ondata di attacco"
   },
+  "delayAttackWave": {
+    "label": "Ritarda l'ondata di attacco"
+  },
   "buildRepairAlchemistHall": {
     "description": "Ripara la sala così si possono fabbricare di nuovo le bombe",
     "label": "Ripara la sala dell'alchimista"

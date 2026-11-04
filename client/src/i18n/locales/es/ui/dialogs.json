@@ -238,7 +238,7 @@
     "knowledgeMax": " (máx.)",
     "discountFromRing": "5 % por el Anillo de obediencia",
     "discountFromPact": "20 % por el Mercader astuto",
-    "prolongForInsight": "Ampliar el tiempo {{minutes}} min por {{cost}} de {{resource}}"
+    "prolongForInsight": "Ampliar el tiempo {{minutes}} min"
   },
   "share": {
     "title": "Mira tu progreso",

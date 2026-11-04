@@ -17,14 +17,21 @@ import {
   POST_COMPLETION_ATTACK_WAVE_ID,
   TOTAL_ATTACK_WAVES,
 } from "@/game/rules/attackWaveOrder";
-import { canProvokeAttackWave } from "@/game/rules/bastionActions";
+import {
+  ATTACK_WAVE_DELAY_MS,
+  canDelayAttackWave,
+  canProvokeAttackWave,
+} from "@/game/rules/bastionActions";
 import {
   canExecuteAction,
   getActionCostBreakdown,
   getResourcesFromActionCost,
 } from "@/game/rules";
-import CooldownButton from "@/components/CooldownButton";
+import CooldownButton, {
+  gameActionButtonGridClassName,
+} from "@/components/CooldownButton";
 import { ActionTooltipResourceRows } from "@/game/rules/tooltips";
+import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
 import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
@@ -38,6 +45,8 @@ import {
 } from "@/game/timerUrgencyPulse";
 
 const PROVOKE_ACTION_ID = "provokeAttackWave" as const;
+const DELAY_ACTION_ID = "delayAttackWave" as const;
+const DELAY_MINUTES = ATTACK_WAVE_DELAY_MS / 60_000;
 
 export default function AttackWavesChart({
   visible = true,
@@ -196,40 +205,85 @@ export default function AttackWavesChart({
             </span>
           </div>
           {attackWaveTimers?.[activeWave.id] && canProvokeAttackWave(state) && (
-            <CooldownButton
-              actionId={PROVOKE_ACTION_ID}
-              onClick={async () => {
-                executeAction(PROVOKE_ACTION_ID);
-                const { manualSave } = await import("@/game/loop");
-                await manualSave();
-              }}
-              cooldownMs={0}
-              variant="outline"
-              size="xs"
-              className="w-19 "
-              button_id="provoke-attack"
-              data-testid="button-provoke-attack"
-              disabled={!canExecuteAction(PROVOKE_ACTION_ID, state)}
-              tooltip={
-                <div className="text-xs whitespace-nowrap">
-                  <ActionTooltipResourceRows
-                    actionId={PROVOKE_ACTION_ID}
-                    state={state}
-                    costs={getActionCostBreakdown(PROVOKE_ACTION_ID, state)}
-                  />
-                </div>
-              }
-              onMouseEnter={() => {
-                setHighlightedResources(
-                  getResourcesFromActionCost(PROVOKE_ACTION_ID, state),
-                );
-              }}
-              onMouseLeave={() => {
-                setHighlightedResources([]);
-              }}
-            >
-              {t("attackWaves.provoke")}
-            </CooldownButton>
+            <div className={gameActionButtonGridClassName()}>
+              <CooldownButton
+                actionId={PROVOKE_ACTION_ID}
+                onClick={async () => {
+                  executeAction(PROVOKE_ACTION_ID);
+                  const { manualSave } = await import("@/game/loop");
+                  await manualSave();
+                }}
+                cooldownMs={0}
+                variant="outline"
+                size="xs"
+                className="w-19 "
+                button_id="provoke-attack"
+                data-testid="button-provoke-attack"
+                disabled={!canExecuteAction(PROVOKE_ACTION_ID, state)}
+                tooltip={
+                  <div className="text-xs whitespace-nowrap">
+                    <ActionTooltipResourceRows
+                      actionId={PROVOKE_ACTION_ID}
+                      state={state}
+                      costs={getActionCostBreakdown(PROVOKE_ACTION_ID, state)}
+                    />
+                  </div>
+                }
+                onMouseEnter={() => {
+                  setHighlightedResources(
+                    getResourcesFromActionCost(PROVOKE_ACTION_ID, state),
+                  );
+                }}
+                onMouseLeave={() => {
+                  setHighlightedResources([]);
+                }}
+              >
+                {t("attackWaves.provoke")}
+              </CooldownButton>
+              {canDelayAttackWave(state) && (
+                <CooldownButton
+                  actionId={DELAY_ACTION_ID}
+                  onClick={async () => {
+                    executeAction(DELAY_ACTION_ID);
+                    const { manualSave } = await import("@/game/loop");
+                    await manualSave();
+                  }}
+                  cooldownMs={0}
+                  variant="outline"
+                  size="xs"
+                  button_id="delay-attack"
+                  data-testid="button-delay-attack"
+                  disabled={!canExecuteAction(DELAY_ACTION_ID, state)}
+                  tooltip={
+                    <div className="text-xs max-w-[16rem]">
+                      <ActionTooltipResourceRows
+                        actionId={DELAY_ACTION_ID}
+                        state={state}
+                        costs={getActionCostBreakdown(DELAY_ACTION_ID, state)}
+                      />
+                      <ActionTooltipSeparator />
+                      <p>
+                        {t("attackWaves.delayTooltip", {
+                          minutes: DELAY_MINUTES,
+                          defaultValue:
+                            "Pushes this wave back another {{minutes}} minutes.",
+                        })}
+                      </p>
+                    </div>
+                  }
+                  onMouseEnter={() => {
+                    setHighlightedResources(
+                      getResourcesFromActionCost(DELAY_ACTION_ID, state),
+                    );
+                  }}
+                  onMouseLeave={() => {
+                    setHighlightedResources([]);
+                  }}
+                >
+                  {t("attackWaves.delay", { defaultValue: "Delay" })}
+                </CooldownButton>
+              )}
+            </div>
           )}
         </div>
       ) : postCompletionActive && postCompletionWaveNumber ? (

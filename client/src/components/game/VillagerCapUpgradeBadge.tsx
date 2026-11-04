@@ -10,6 +10,7 @@ import { useGameStore } from "@/game/state";
 import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
 import { cn } from "@/lib/utils";
+import { costBenefitTooltip } from "@/game/rules/tooltips";
 import { getInsightAmount } from "@/game/rules/insightReveal";
 import {
   getNextCapUpgradeCost,
@@ -112,11 +113,15 @@ export function VillagerCapUpgradeBadge({
   const cost = getNextCapUpgradeCost(level);
   const affordable = insight >= cost;
   const isDisabled = !affordable || isPlaying;
-  const upgradeTooltip = getUiTooltip(
-    "unlockMoreJobsForInsight",
-    "Increase limit for {{cost}} Insight",
-    { cost },
-  );
+  const upgrade = costBenefitTooltip({
+    amount: cost,
+    available: insight,
+    satisfied: affordable,
+    benefit: getUiTooltip(
+      "unlockMoreJobsForInsight",
+      "Increase limit",
+    ),
+  });
 
   const handleClick = () => {
     if (isDisabled) return;
@@ -127,7 +132,7 @@ export function VillagerCapUpgradeBadge({
 
   return (
     <TooltipWrapper
-      tooltip={<div className="text-xs">{upgradeTooltip}</div>}
+      tooltip={upgrade.tooltip}
       tooltipId={tooltipId}
       disabled={isDisabled}
       tooltipContentClassName="max-w-xs"
@@ -143,7 +148,7 @@ export function VillagerCapUpgradeBadge({
       <button
         type="button"
         data-testid={`villager-cap-upgrade-${groupId}-${jobId}`}
-        aria-label={upgradeTooltip}
+        aria-label={upgrade.label}
         aria-busy={isPlaying}
         disabled={isDisabled}
         onClick={(e) => {

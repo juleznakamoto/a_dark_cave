@@ -16,7 +16,10 @@ import {
 } from "@/game/rules/forestResearchActions";
 import { handleTameWolf } from "@/game/rules/villageUtilityActions";
 import { killVillagers } from "@/game/stateHelpers";
-import { getProvokeAttackWaveExecutionUpdates } from "@/game/rules/bastionActions";
+import {
+  getDelayAttackWaveExecutionUpdates,
+  getProvokeAttackWaveExecutionUpdates,
+} from "@/game/rules/bastionActions";
 // Import all handlers from the modular action files
 import {
   handleMakeFire,
@@ -838,6 +841,38 @@ export function executeGameAction(
         logEntries: [],
         delayedEffects: [],
       };
+
+    case "delayAttackWave": {
+      const updates = getDelayAttackWaveExecutionUpdates(state);
+      if (!updates) {
+        return {
+          stateUpdates: {},
+          logEntries: [],
+          delayedEffects: [],
+        };
+      }
+      return {
+        ...result,
+        stateUpdates: {
+          ...result.stateUpdates,
+          ...updates,
+          cooldowns: {
+            ...result.stateUpdates.cooldowns,
+            ...updates.cooldowns,
+          },
+          story: {
+            ...state.story,
+            ...result.stateUpdates.story,
+            ...updates.story,
+            seen: {
+              ...state.story.seen,
+              ...result.stateUpdates.story?.seen,
+              ...updates.story?.seen,
+            },
+          },
+        },
+      };
+    }
 
     case "provokeAttackWave": {
       const updates = getProvokeAttackWaveExecutionUpdates(state);

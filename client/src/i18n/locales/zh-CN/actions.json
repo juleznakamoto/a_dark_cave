@@ -699,6 +699,9 @@
   "provokeAttackWave": {
     "label": "挑起袭击浪潮"
   },
+  "delayAttackWave": {
+    "label": "推迟袭击浪潮"
+  },
   "buildRepairAlchemistHall": {
     "description": "修复大厅，以便再次制作炸弹",
     "label": "修复炼金大厅"

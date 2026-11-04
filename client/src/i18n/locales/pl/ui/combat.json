@@ -55,6 +55,8 @@
     "calm": "Na razie jest spokojnie...",
     "soon": "wkrótce",
     "provoke": "Sprowokuj",
+    "delay": "Opóźnij",
+    "delayTooltip": "Opóźnia tę falę o kolejne {{minutes}} minut.",
     "postCompletion": "Fala {{waveNumber}}",
     "waves": {
       "firstWave": "Pierwsza fala",

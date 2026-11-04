@@ -55,6 +55,8 @@
     "calm": "Пока что спокойно…",
     "soon": "скоро",
     "provoke": "Спровоцировать",
+    "delay": "Отсрочить",
+    "delayTooltip": "Оттесняет эту волну ещё на {{minutes}} минут.",
     "postCompletion": "Волна {{waveNumber}}",
     "waves": {
       "firstWave": "Первая волна",

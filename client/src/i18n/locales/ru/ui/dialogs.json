@@ -240,7 +240,7 @@
     "knowledgeMax": " (макс.)",
     "discountFromRing": "5 % от Кольца повиновения",
     "discountFromPact": "20 % от Хитрого торговца",
-    "prolongForInsight": "Продлить время на {{minutes}} мин. за {{cost}} {{resource}}"
+    "prolongForInsight": "Продлить время на {{minutes}} мин."
   },
   "share": {
     "title": "Ваш прогресс",

@@ -238,7 +238,7 @@
     "knowledgeMax": "（上限）",
     "discountFromRing": "服従の指輪から5%",
     "discountFromPact": "狡賢い商人から20%",
-    "prolongForInsight": "{{cost}} {{resource}}で{{minutes}}分延長"
+    "prolongForInsight": "{{minutes}}分延長"
   },
   "share": {
     "title": "進捗を見る",

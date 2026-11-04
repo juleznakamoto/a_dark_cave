@@ -699,6 +699,9 @@
   "provokeAttackWave": {
     "label": "襲撃を誘発"
   },
+  "delayAttackWave": {
+    "label": "襲撃を遅らせる"
+  },
   "buildRepairAlchemistHall": {
     "description": "広間を修繕し、再び爆弾を作れるようにする",
     "label": "錬金広間を修繕"

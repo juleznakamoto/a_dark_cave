@@ -55,6 +55,8 @@
     "calm": "Por ahora reina la calma…",
     "soon": "pronto",
     "provoke": "Provocar",
+    "delay": "Retrasar",
+    "delayTooltip": "Retrasa esta oleada otros {{minutes}} minutos.",
     "postCompletion": "Oleada {{waveNumber}}",
     "waves": {
       "firstWave": "Primera oleada",

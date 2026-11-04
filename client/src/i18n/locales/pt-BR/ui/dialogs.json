@@ -238,7 +238,7 @@
     "knowledgeMax": " (máx.)",
     "discountFromRing": "5% do Anel da Obediência",
     "discountFromPact": "20% do Mercador astuto",
-    "prolongForInsight": "Estender o tempo em {{minutes}} min por {{cost}} de {{resource}}"
+    "prolongForInsight": "Estender o tempo em {{minutes}} min"
   },
   "share": {
     "title": "Veja seu progresso",

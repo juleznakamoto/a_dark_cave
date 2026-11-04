@@ -240,7 +240,7 @@
     "knowledgeMax": " (maks.)",
     "discountFromRing": "5% z Pierścienia posłuszeństwa",
     "discountFromPact": "20% z Przebiegłego handlarza",
-    "prolongForInsight": "Wydłuż czas o {{minutes}} min za {{cost}} {{resource}}"
+    "prolongForInsight": "Wydłuż czas o {{minutes}} min"
   },
   "share": {
     "title": "Zobacz swój postęp",

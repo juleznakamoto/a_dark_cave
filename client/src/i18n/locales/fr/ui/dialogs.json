@@ -238,7 +238,7 @@
     "knowledgeMax": " (max.)",
     "discountFromRing": "5 % grâce à l'Anneau d'obéissance",
     "discountFromPact": "20 % grâce au Marchand rusé",
-    "prolongForInsight": "Prolonger le temps de {{minutes}} min pour {{cost}} {{resource}}"
+    "prolongForInsight": "Prolonger le temps de {{minutes}} min"
   },
   "share": {
     "title": "Voir votre progression",

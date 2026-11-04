@@ -55,6 +55,7 @@ import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { formatTooltipCostLine } from "@/i18n/tooltipLabels";
 import { TooltipCostLines } from "@/game/rules/tooltips";
+import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
 import { getEffectName, getResourceName } from "@/i18n/resolveGameText";
 import { useDemoEndCatalogActive, useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import { isDemoPlayFrozen } from "@/game/demoLimit";
@@ -150,11 +151,11 @@ function SkillUpgradeRow({
             <TooltipWrapper
               tooltip={
                 <div className="text-xs whitespace-nowrap">
-                  {tooltipContent}
-                  <div className="border-t border-border my-1" />
                   <TooltipCostLines
                     costs={[{ text: costLine, satisfied: canAfford }]}
                   />
+                  <ActionTooltipSeparator />
+                  {tooltipContent}
                 </div>
               }
               tooltipId={tooltipId}
@@ -917,12 +918,6 @@ export default function EstatePanel({
                       <TooltipWrapper
                         tooltip={
                           <div className="text-xs whitespace-nowrap">
-                            <div>
-                              +
-                              {nextLengthUpgrade.hours - currentLengthUpgrade.hours}
-                              h
-                            </div>
-                            <div className="border-t border-border my-1" />
                             <TooltipCostLines
                               costs={[
                                 {
@@ -936,6 +931,12 @@ export default function EstatePanel({
                                 },
                               ]}
                             />
+                            <ActionTooltipSeparator />
+                            <div>
+                              +
+                              {nextLengthUpgrade.hours - currentLengthUpgrade.hours}
+                              h
+                            </div>
                           </div>
                         }
                         tooltipId="upgrade-length-button"
@@ -980,13 +981,6 @@ export default function EstatePanel({
                       <TooltipWrapper
                         tooltip={
                           <div className="text-xs whitespace-nowrap">
-                            <div>
-                              +
-                              {nextIntensityUpgrade.percentage -
-                                currentIntensityUpgrade.percentage}
-                              %
-                            </div>
-                            <div className="border-t border-border my-1" />
                             <TooltipCostLines
                               costs={[
                                 {
@@ -1000,6 +994,13 @@ export default function EstatePanel({
                                 },
                               ]}
                             />
+                            <ActionTooltipSeparator />
+                            <div>
+                              +
+                              {nextIntensityUpgrade.percentage -
+                                currentIntensityUpgrade.percentage}
+                              %
+                            </div>
                           </div>
                         }
                         tooltipId="upgrade-intensity-button"

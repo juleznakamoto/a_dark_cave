@@ -113,11 +113,14 @@ const ATTACK_WAVE_TIMER_DEFAULTS = {
   defeatDuration: ATTACK_WAVE_DEFEAT_DURATION_MS,
 } as const;
 
-/** True when this countdown is the post-defeat rematch, not the first approach. */
+/**
+ * True when this countdown is the post-defeat rematch, not the first approach.
+ * Delaying a rematch adds time on top of the 30 minute wait, so duration only grows.
+ */
 export function isAttackWaveRematchTimer(
   timer: { duration: number } | undefined,
 ): boolean {
-  return timer?.duration === ATTACK_WAVE_DEFEAT_DURATION_MS;
+  return (timer?.duration ?? 0) >= ATTACK_WAVE_DEFEAT_DURATION_MS;
 }
 
 const CANONICAL_ATTACK_WAVE_COUNT = 12;
@@ -713,7 +716,9 @@ function createAttackWaveEvent(waveId: AttackWaveId): GameEvent {
                   startTime: Date.now(),
                   duration: def.defeatDuration,
                   defeated: false,
+                  provoked: false,
                   elapsedTime: 0,
+                  delayed: false,
                 },
               },
               events:

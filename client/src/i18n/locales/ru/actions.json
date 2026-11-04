@@ -701,6 +701,9 @@
   "provokeAttackWave": {
     "label": "Спровоцировать волну атаки"
   },
+  "delayAttackWave": {
+    "label": "Отсрочить волну атаки"
+  },
   "buildRepairAlchemistHall": {
     "description": "Чинит зал, чтобы снова можно было создавать бомбы",
     "label": "Починить зал алхимика"

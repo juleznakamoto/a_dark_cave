@@ -38,6 +38,11 @@ export function getBastionRepairCostPaths(
 const CANONICAL_PROVOKE_FOOD_COST = 500;
 const POST_COMPLETION_PROVOKE_FOOD_COST = 5000;
 
+/** Insight spent to push a lost wave's return back by `ATTACK_WAVE_DELAY_MS`. */
+export const ATTACK_WAVE_DELAY_INSIGHT_COST = 1000;
+/** Added once to the current rematch countdown. A new loss allows it again. */
+export const ATTACK_WAVE_DELAY_MS = 10 * 60 * 1000;
+
 function getProvokableAttackWaveId(state: GameState): string | null {
   const waves = getAttackWavesChartRows({
     story: state.story,
@@ -87,6 +92,49 @@ export function canProvokeAttackWave(state: GameState): boolean {
     return elapsed >= ATTACK_WAVE_INITIAL_PROVOKE_AFTER_MS;
   }
   return true;
+}
+
+/**
+ * True on a chart wave's rematch countdown (the wave already happened, and the player lost).
+ * The first approach and endless post-completion waves stay on Provoke alone.
+ */
+export function canDelayAttackWave(state: GameState): boolean {
+  const waveId = getProvokableAttackWaveId(state);
+  if (!waveId || waveId === POST_COMPLETION_ATTACK_WAVE_ID) {
+    return false;
+  }
+  const timer = state.attackWaveTimers?.[waveId];
+  if (!timer || timer.defeated || timer.provoked) {
+    return false;
+  }
+  if (!isAttackWaveRematchTimer(timer) || timer.delayed) {
+    return false;
+  }
+  const elapsed = timer.elapsedTime || 0;
+  return timer.duration - elapsed > 0;
+}
+
+/** Pay Insight and add 10 minutes to the active rematch countdown. */
+export function getDelayAttackWaveExecutionUpdates(
+  state: GameState,
+): Partial<GameState> | null {
+  if (!canDelayAttackWave(state)) {
+    return null;
+  }
+  const waveId = getProvokableAttackWaveId(state)!;
+  const timer = state.attackWaveTimers![waveId]!;
+  const effectUpdates = applyActionEffects("delayAttackWave", state);
+  return {
+    ...effectUpdates,
+    attackWaveTimers: {
+      ...state.attackWaveTimers,
+      [waveId]: {
+        ...timer,
+        duration: timer.duration + ATTACK_WAVE_DELAY_MS,
+        delayed: true,
+      },
+    },
+  };
 }
 
 /** State updates for a successful provoke: pay cost via action effects + set timer. */
@@ -196,6 +244,18 @@ export const bastionActions: Record<string, Action> = {
       "buildings.bastion": 1,
     },
     canExecute: (state: GameState) => canProvokeAttackWave(state),
+    effects: {},
+  },
+  delayAttackWave: {
+    id: "delayAttackWave",
+    label: "Delay attack wave",
+    executionTime: 0,
+    cooldown: 0,
+    cost: { "resources.insight": ATTACK_WAVE_DELAY_INSIGHT_COST },
+    show_when: {
+      "buildings.bastion": 1,
+    },
+    canExecute: (state: GameState) => canDelayAttackWave(state),
     effects: {},
   },
 };

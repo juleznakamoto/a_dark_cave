@@ -17,6 +17,8 @@ const attackWaveTimerSchema = z.object({
   provoked: z.boolean().default(false),
   pausedAt: z.number().optional(), // Timestamp when timer was paused
   elapsedTime: z.number().default(0), // Accumulated elapsed time (only increments when not paused)
+  /** True after Delay is used on this rematch. A new loss clears it. */
+  delayed: z.boolean().default(false),
 });
 
 // Fellowship member shape — defined separately so the key order can be exported

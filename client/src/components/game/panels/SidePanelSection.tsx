@@ -4,7 +4,7 @@ import {
   weaponEffects,
   toolEffects,
 } from "@/game/rules/effects";
-import { madnessTooltip } from "@/game/rules/tooltips";
+import { costBenefitTooltip, madnessTooltip } from "@/game/rules/tooltips";
 import {
   renderFortificationTooltip,
   renderItemTooltip,
@@ -437,6 +437,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
     return getNextEnchantCost(s, weaponId) != null;
   });
   const cost = useDerivedGameState((s) => getNextEnchantCost(s, weaponId));
+  const insight = useDerivedGameState((s) => s.resources.insight ?? 0);
   const affordable = useDerivedGameState((s) => canEnchantWeapon(s, weaponId));
   const [suppressHover, setSuppressHover] = useState(false);
   const revealStartedRef = useRef(false);
@@ -463,11 +464,13 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
 
   if (!canShow && !isRevealing) return null;
   const isDisabled = !affordable || playing;
-  const enchantTooltip = getUiTooltip(
-    "enchantForInsight",
-    "Enchant for {{cost}} Insight",
-    { cost: cost ?? lastCostRef.current ?? 0 },
-  );
+  const enchantCost = cost ?? lastCostRef.current ?? 0;
+  const enchant = costBenefitTooltip({
+    amount: enchantCost,
+    available: insight,
+    satisfied: insight >= enchantCost,
+    benefit: getUiTooltip("enchantForInsight", "Enchant"),
+  });
 
   const handleClick = () => {
     if (isDisabled) return;
@@ -478,11 +481,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
 
   return (
     <TooltipWrapper
-      tooltip={
-        <div className="text-xs">
-          {enchantTooltip}
-        </div>
-      }
+      tooltip={enchant.tooltip}
       tooltipId={tooltipId}
       disabled={isDisabled}
       tooltipContentClassName="max-w-xs"
@@ -498,7 +497,7 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
       <button
         type="button"
         data-testid={`button-enchant-${weaponId}`}
-        aria-label={enchantTooltip}
+        aria-label={enchant.label}
         aria-busy={playing}
         disabled={isDisabled}
         onClick={(e) => {
@@ -539,6 +538,7 @@ function ItemAbsolveBadge({ itemId }: { itemId: string }) {
   const canShow = useDerivedGameState((s) =>
     shouldShowAbsolveBadge(s, itemId),
   );
+  const insight = useDerivedGameState((s) => s.resources.insight ?? 0);
   const affordable = useDerivedGameState((s) => canAbsolveItem(s, itemId));
   const [suppressHover, setSuppressHover] = useState(false);
   const revealStartedRef = useRef(false);
@@ -563,11 +563,15 @@ function ItemAbsolveBadge({ itemId }: { itemId: string }) {
 
   if (!canShow && !isRevealing) return null;
   const isDisabled = !affordable || playing;
-  const absolveTooltip = getUiTooltip(
-    "absolveMadnessForInsight",
-    "Reduce Madness by 1 for {{cost}} Insight",
-    { cost: ABSOLUTION_INSIGHT_COST },
-  );
+  const absolve = costBenefitTooltip({
+    amount: ABSOLUTION_INSIGHT_COST,
+    available: insight,
+    satisfied: insight >= ABSOLUTION_INSIGHT_COST,
+    benefit: getUiTooltip(
+      "absolveMadnessForInsight",
+      "Reduce Madness by 1",
+    ),
+  });
 
   const handleClick = () => {
     if (isDisabled) return;
@@ -578,7 +582,7 @@ function ItemAbsolveBadge({ itemId }: { itemId: string }) {
 
   return (
     <TooltipWrapper
-      tooltip={<div className="text-xs">{absolveTooltip}</div>}
+      tooltip={absolve.tooltip}
       tooltipId={tooltipId}
       disabled={isDisabled}
       tooltipContentClassName="max-w-xs"
@@ -594,7 +598,7 @@ function ItemAbsolveBadge({ itemId }: { itemId: string }) {
       <button
         type="button"
         data-testid={`button-absolve-${itemId}`}
-        aria-label={absolveTooltip}
+        aria-label={absolve.label}
         aria-busy={playing}
         disabled={isDisabled}
         onClick={(e) => {

@@ -701,6 +701,9 @@
   "provokeAttackWave": {
     "label": "Sprowokuj falę ataku"
   },
+  "delayAttackWave": {
+    "label": "Opóźnij falę ataku"
+  },
   "buildRepairAlchemistHall": {
     "description": "Naprawia salę, by znów dało się wytwarzać bomby",
     "label": "Napraw salę alchemika"

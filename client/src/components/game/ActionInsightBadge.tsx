@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   BuildingActionBadge,
@@ -18,8 +18,7 @@ import {
   getTimedEventTabEffectiveRemainingMs,
   useGameStore,
 } from "@/game/state";
-import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
-import { formatNumber } from "@/lib/utils";
+import { costBenefitTooltip } from "@/game/rules/tooltips";
 import { useUntilTimestamp } from "@/lib/uiClock";
 
 const PROLONG_MINUTES = TIMED_EVENT_TAB_PROLONG_MS / 60_000;
@@ -29,7 +28,7 @@ type ActionInsightBadgeProps = {
 };
 
 export function ActionInsightBadge({ timeRemainingMs }: ActionInsightBadgeProps) {
-  const { t, i18n } = useUiTranslation();
+  const { t } = useUiTranslation();
   const clerksHut = useGameStore((s) => s.buildings.clerksHut ?? 0);
   const insight = useGameStore((s) => s.resources.insight ?? 0);
   const timedTabActive = useGameStore((s) => s.timedEventTab.isActive);
@@ -74,18 +73,15 @@ export function ActionInsightBadge({ timeRemainingMs }: ActionInsightBadgeProps)
     return () => setHighlightedResources([]);
   }, [playing, setHighlightedResources]);
 
-  const insightResource = formatTooltipResourceName("insight");
-  const costTooltip = useMemo(
-    () =>
-      t("timedEvent.prolongForInsight", {
-        defaultValue:
-          "Extend time by {{minutes}} min for {{cost}} {{resource}}",
-        minutes: PROLONG_MINUTES,
-        cost: formatNumber(TIMED_EVENT_TAB_PROLONG_INSIGHT_COST),
-        resource: insightResource,
-      }),
-    [t, i18n.language, insightResource],
-  );
+  const prolong = costBenefitTooltip({
+    amount: TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
+    available: insight,
+    satisfied: insight >= TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
+    benefit: t("timedEvent.prolongForInsight", {
+      defaultValue: "Extend time by {{minutes}} min",
+      minutes: PROLONG_MINUTES,
+    }),
+  });
 
   if (!canShow) return null;
   if (revealStartedRef.current && !isInsightRevealAnimating) return null;
@@ -117,7 +113,7 @@ export function ActionInsightBadge({ timeRemainingMs }: ActionInsightBadgeProps)
         playing,
         className: INSIGHT_BADGE_LG_SIZE_CLASS,
       })}
-      aria-label={costTooltip}
+      aria-label={prolong.label}
       aria-busy={playing}
       disabled={isBadgeDisabled}
       onClick={(e) => {
@@ -135,7 +131,7 @@ export function ActionInsightBadge({ timeRemainingMs }: ActionInsightBadgeProps)
       onPointerDown={(e) => e.stopPropagation()}
     >
       <TooltipWrapper
-        tooltip={costTooltip}
+        tooltip={prolong.tooltip}
         tooltipId="timed-event-insight-prolong"
         tooltipContentClassName="text-white"
         className="inline-flex items-center"

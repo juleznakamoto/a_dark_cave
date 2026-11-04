@@ -699,6 +699,9 @@
   "provokeAttackWave": {
     "label": "Angriffswelle provozieren"
   },
+  "delayAttackWave": {
+    "label": "Angriffswelle verzögern"
+  },
   "buildRepairAlchemistHall": {
     "description": "Repariert die Halle, damit wieder Bomben gefertigt werden können",
     "label": "Alchemistenhalle reparieren"

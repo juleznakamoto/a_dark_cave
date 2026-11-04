@@ -699,6 +699,9 @@
   "provokeAttackWave": {
     "label": "Provoke attack wave"
   },
+  "delayAttackWave": {
+    "label": "Delay attack wave"
+  },
   "buildRepairAlchemistHall": {
     "description": "Repairs the hall so bombs can be crafted again",
     "label": "Repair Alchemist's Hall"

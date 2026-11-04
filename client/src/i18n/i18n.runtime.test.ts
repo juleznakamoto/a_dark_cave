@@ -71,19 +71,19 @@ describe("i18n runtime", () => {
   });
 
   it("resolves timed event prolong tooltip in ui namespace", () => {
-    const opts = { minutes: 5, cost: 250, resource: "Insight" };
+    const opts = { minutes: 5 };
     expect(i18n.exists("timedEvent.prolongForInsight", { ns: "ui" })).toBe(true);
     expect(i18n.t("ui:timedEvent.prolongForInsight", opts)).toBe(
-      "Extend time by 5 min for 250 Insight",
+      "Extend time by 5 min",
     );
     expect(
       tWithFallback(
         "ui",
         "timedEvent.prolongForInsight",
-        "Extend time by {{minutes}} min for {{cost}} {{resource}}",
+        "Extend time by {{minutes}} min",
         opts,
       ),
-    ).toBe("Extend time by 5 min for 250 Insight");
+    ).toBe("Extend time by 5 min");
   });
 
   it("tWithFallback returns English default when ui key is missing", async () => {
@@ -100,20 +100,20 @@ describe("i18n runtime", () => {
 
   it("resolves timed event prolong tooltip in German", async () => {
     await i18n.changeLanguage("de");
-    const opts = { minutes: 5, cost: 250, resource: "Einsicht" };
+    const opts = { minutes: 5 };
     expect(
       tWithFallback(
         "ui",
         "timedEvent.prolongForInsight",
-        "Extend time by {{minutes}} min for {{cost}} {{resource}}",
+        "Extend time by {{minutes}} min",
         opts,
       ),
-    ).toBe("Zeit um 5 Min. für 250 Einsicht verlängern");
+    ).toBe("Zeit um 5 Min. verlängern");
     expect(
       tWithFallback(
         "ui",
         "timedEvent.prolongForInsight",
-        "Extend time by {{minutes}} min for {{cost}} {{resource}}",
+        "Extend time by {{minutes}} min",
         opts,
       ),
     ).not.toContain("Extend time by");
@@ -122,13 +122,11 @@ describe("i18n runtime", () => {
   it("resolves prolong tooltip via reactive t() with ui: prefix in German", async () => {
     await i18n.changeLanguage("de");
     const opts = {
-      defaultValue: "Extend time by {{minutes}} min for {{cost}} {{resource}}",
+      defaultValue: "Extend time by {{minutes}} min",
       minutes: 5,
-      cost: 250,
-      resource: "Einsicht",
     };
     const result = i18n.t("ui:timedEvent.prolongForInsight", opts);
-    expect(result).toBe("Zeit um 5 Min. für 250 Einsicht verlängern");
+    expect(result).toBe("Zeit um 5 Min. verlängern");
     expect(result).not.toContain("Extend time by");
   });
 
@@ -179,7 +177,7 @@ describe("i18n runtime", () => {
 
   it("tWithFallback uses German catalog when language tag is de-DE", async () => {
     await i18n.changeLanguage("de-DE");
-    const opts = { minutes: 5, cost: 250, resource: "Einsicht" };
+    const opts = { minutes: 5 };
     expect(
       i18n.exists("timedEvent.prolongForInsight", { ns: "ui", lng: "de" }),
     ).toBe(true);
@@ -187,10 +185,10 @@ describe("i18n runtime", () => {
       tWithFallback(
         "ui",
         "timedEvent.prolongForInsight",
-        "Extend time by {{minutes}} min for {{cost}} {{resource}}",
+        "Extend time by {{minutes}} min",
         opts,
       ),
-    ).toBe("Zeit um 5 Min. für 250 Einsicht verlängern");
+    ).toBe("Zeit um 5 Min. verlängern");
   });
 
   it("pluralizes layTrap trapSuccessWithDeaths by villager count", async () => {

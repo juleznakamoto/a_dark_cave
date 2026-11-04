@@ -19,10 +19,15 @@ import {
   isPostCompletionAttackWavesActive,
 } from "./eventsAttackWaves";
 import {
+  ATTACK_WAVE_DELAY_INSIGHT_COST,
+  ATTACK_WAVE_DELAY_MS,
+  canDelayAttackWave,
   canProvokeAttackWave,
+  getDelayAttackWaveExecutionUpdates,
   getProvokeAttackWaveExecutionUpdates,
   getProvokeAttackWaveFoodCost,
 } from "./bastionActions";
+import { canExecuteAction } from "./index";
 
 describe("attack waves expansion", () => {
   beforeEach(() => {
@@ -203,6 +208,143 @@ describe("attack waves expansion", () => {
     expect(updates?.attackWaveTimers?.firstWave?.elapsedTime).toBe(
       ATTACK_WAVE_INITIAL_DURATION_MS,
     );
+  });
+
+  it("does not offer Delay on a wave's first approach", () => {
+    const state = {
+      story: { seen: { portalBlasted: true }, merchantPurchases: 0 },
+      buildings: { bastion: 1 },
+      weapons: {},
+      resources: { insight: ATTACK_WAVE_DELAY_INSIGHT_COST },
+      attackWaveTimers: {
+        firstWave: {
+          startTime: Date.now(),
+          duration: ATTACK_WAVE_INITIAL_DURATION_MS,
+          defeated: false,
+          provoked: false,
+          elapsedTime: ATTACK_WAVE_INITIAL_PROVOKE_AFTER_MS,
+        },
+      },
+    } as GameState;
+
+    expect(canDelayAttackWave(state)).toBe(false);
+    expect(getDelayAttackWaveExecutionUpdates(state)).toBeNull();
+  });
+
+  it("spends 1000 Insight to push a lost wave back another 10 minutes", () => {
+    const state = {
+      story: { seen: { portalBlasted: true }, merchantPurchases: 0 },
+      buildings: { bastion: 1 },
+      weapons: {},
+      cooldowns: {},
+      resources: { insight: ATTACK_WAVE_DELAY_INSIGHT_COST },
+      attackWaveTimers: {
+        firstWave: {
+          startTime: Date.now(),
+          duration: ATTACK_WAVE_DEFEAT_DURATION_MS,
+          defeated: false,
+          provoked: false,
+          elapsedTime: 60_000,
+        },
+      },
+    } as GameState;
+
+    expect(canDelayAttackWave(state)).toBe(true);
+    expect(canExecuteAction("delayAttackWave", state)).toBe(true);
+    const updates = getDelayAttackWaveExecutionUpdates(state);
+    expect(updates?.resources?.insight).toBe(0);
+    expect(updates?.attackWaveTimers?.firstWave?.duration).toBe(
+      ATTACK_WAVE_DEFEAT_DURATION_MS + ATTACK_WAVE_DELAY_MS,
+    );
+    expect(updates?.attackWaveTimers?.firstWave?.provoked).toBeFalsy();
+    expect(updates?.attackWaveTimers?.firstWave?.delayed).toBe(true);
+
+    const spent = {
+      ...state,
+      resources: { insight: ATTACK_WAVE_DELAY_INSIGHT_COST },
+      attackWaveTimers: updates!.attackWaveTimers!,
+    } as GameState;
+    expect(canDelayAttackWave(spent)).toBe(false);
+    expect(getDelayAttackWaveExecutionUpdates(spent)).toBeNull();
+  });
+
+  it("offers Delay again only after that wave is lost once more", () => {
+    const used = {
+      story: { seen: { portalBlasted: true }, merchantPurchases: 0 },
+      buildings: { bastion: 1 },
+      weapons: {},
+      resources: { insight: ATTACK_WAVE_DELAY_INSIGHT_COST },
+      attackWaveTimers: {
+        firstWave: {
+          startTime: Date.now(),
+          duration: ATTACK_WAVE_DEFEAT_DURATION_MS + ATTACK_WAVE_DELAY_MS,
+          defeated: false,
+          provoked: false,
+          elapsedTime: 0,
+          delayed: true,
+        },
+      },
+    } as GameState;
+    expect(canDelayAttackWave(used)).toBe(false);
+
+    const lostAgain = {
+      ...used,
+      attackWaveTimers: {
+        firstWave: {
+          startTime: Date.now(),
+          duration: ATTACK_WAVE_DEFEAT_DURATION_MS,
+          defeated: false,
+          provoked: false,
+          elapsedTime: 0,
+          delayed: false,
+        },
+      },
+    } as GameState;
+    expect(canDelayAttackWave(lostAgain)).toBe(true);
+  });
+
+  it("keeps Delay visible but unaffordable below 1000 Insight", () => {
+    const state = {
+      story: { seen: { portalBlasted: true }, merchantPurchases: 0 },
+      buildings: { bastion: 1 },
+      weapons: {},
+      cooldowns: {},
+      resources: { insight: ATTACK_WAVE_DELAY_INSIGHT_COST - 1 },
+      attackWaveTimers: {
+        firstWave: {
+          startTime: Date.now(),
+          duration: ATTACK_WAVE_DEFEAT_DURATION_MS,
+          defeated: false,
+          provoked: false,
+          elapsedTime: 0,
+        },
+      },
+    } as GameState;
+
+    expect(canDelayAttackWave(state)).toBe(true);
+    expect(canExecuteAction("delayAttackWave", state)).toBe(false);
+  });
+
+  it("does not offer Delay on endless waves", () => {
+    const state = {
+      events: { cube15a: true },
+      story: { seen: { secondBossWaveVictory: true }, merchantPurchases: 0 },
+      buildings: { bastion: 1 },
+      weapons: {},
+      resources: { insight: ATTACK_WAVE_DELAY_INSIGHT_COST },
+      postCompletionAttackWaveCount: 0,
+      attackWaveTimers: {
+        [POST_COMPLETION_ATTACK_WAVE_ID]: {
+          startTime: Date.now(),
+          duration: ATTACK_WAVE_DEFEAT_DURATION_MS,
+          defeated: false,
+          provoked: false,
+          elapsedTime: 0,
+        },
+      },
+    } as GameState;
+
+    expect(canDelayAttackWave(state)).toBe(false);
   });
 
   it("lets provoke skip the rematch countdown after a loss", () => {

@@ -127,8 +127,8 @@ describe("getStrangerApproachProbability", () => {
       },
     });
     const result = getStrangerApproachProbability(state);
-    // 2*0.01 + 3*0.0075 + 2*0.005 + 2*0.005 (see VILLAGE_BUILDING_STRANGER_APPROACH_BONUS)
-    expect(result.fromBuildings).toBeCloseTo(0.0625, 10);
+    // 2*0.01 + 3*0.0075 + 2*0.0025 + 2*0.0025 (see VILLAGE_BUILDING_STRANGER_APPROACH_BONUS)
+    expect(result.fromBuildings).toBeCloseTo(0.0525, 10);
   });
 
   it("should add fromBlessings for ravens_mark", () => {

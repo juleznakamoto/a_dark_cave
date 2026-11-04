@@ -238,7 +238,7 @@
     "knowledgeMax": "（上限）",
     "discountFromRing": "顺从之戒 5%",
     "discountFromPact": "狡诈商人 20%",
-    "prolongForInsight": "消耗 {{cost}} {{resource}} 延长 {{minutes}} 分钟"
+    "prolongForInsight": "延长 {{minutes}} 分钟"
   },
   "share": {
     "title": "查看进度",

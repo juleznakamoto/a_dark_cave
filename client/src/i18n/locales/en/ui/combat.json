@@ -55,6 +55,8 @@
     "calm": "It is calm, for now...",
     "soon": "soon",
     "provoke": "Provoke",
+    "delay": "Delay",
+    "delayTooltip": "Pushes this wave back another {{minutes}} minutes.",
     "postCompletion": "Wave {{waveNumber}}",
     "waves": {
       "firstWave": "First Wave",

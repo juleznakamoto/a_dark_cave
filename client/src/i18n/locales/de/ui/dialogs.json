@@ -238,7 +238,7 @@
     "knowledgeMax": " (max.)",
     "discountFromRing": "5 % durch Ring des Gehorsams",
     "discountFromPact": "20 % durch Listiger Händler",
-    "prolongForInsight": "Zeit um {{minutes}} Min. für {{cost}} {{resource}} verlängern"
+    "prolongForInsight": "Zeit um {{minutes}} Min. verlängern"
   },
   "share": {
     "title": "Dein Fortschritt",
