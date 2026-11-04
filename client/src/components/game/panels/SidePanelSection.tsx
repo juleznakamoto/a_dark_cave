@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   clothingEffects,
   weaponEffects,
@@ -18,6 +18,7 @@ import {
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import ResourceChangeNotification from "./ResourceChangeNotification";
+import { paintSidePanelHighlightLine } from "./sidePanelHighlightLine";
 import { SidePanelSectionIcon } from "./SidePanelSectionIcon";
 import { useGameStore } from "@/game/state";
 import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
@@ -168,10 +169,10 @@ function sidePanelItemShouldPulse(
     Object.keys(effect.bonuses.actionBonuses).length > 0;
   const hasEffect = Boolean(
     effect &&
-      (hasGeneralBonuses ||
-        hasActionBonuses ||
-        effect.name ||
-        effect.description),
+    (hasGeneralBonuses ||
+      hasActionBonuses ||
+      effect.name ||
+      effect.description),
   );
   const hasTooltip =
     item.tooltip !== undefined &&
@@ -296,6 +297,8 @@ export function useSidePanelActiveTooltipHoverId(): string | null {
 }
 /** leading-tight keeps rows compact but leaves room for descenders (e.g. Insight "g"). */
 const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-tight";
+/** Bright side-panel names. The line fades at both ends. Counts and coin glyphs stay plain. */
+const HIGHLIGHTED_WORD_CLASS = "side-panel-highlight-line";
 /** Third column: production rate and change popup share one right-aligned slot. */
 const RESOURCE_DELTA_SLOT_CLASS =
   "block w-full min-w-[3rem] text-right font-mono tabular-nums whitespace-nowrap";
@@ -640,6 +643,7 @@ export default function SidePanelSection({
   >(new Set());
   const activeTooltipHoverId = useSidePanelActiveTooltipHoverId();
   const mapHoveredBuildingId = useVillageMapHoveredBuildingId();
+  const rootRef = useRef<HTMLDivElement>(null);
   const prevValuesRef = useRef<Map<string, number>>(new Map());
   const isInitialRender = useRef(true);
   const storageLimit = useDerivedGameState((s) => getResourceLimit(s));
@@ -701,6 +705,14 @@ export default function SidePanelSection({
         Array.isArray(highlightedResourcesRaw) ? highlightedResourcesRaw : [],
       );
   const isMobile = useIsMobile();
+  const highlightLineSig = `${mapHoveredBuildingId ?? ""}|${activeTooltipHoverId ?? ""}|${[...highlightedResources].join(",")}|${visibleItems.map((item) => item.id).join(",")}`;
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    root
+      .querySelectorAll<HTMLElement>(".side-panel-highlight-line")
+      .forEach(paintSidePanelHighlightLine);
+  }, [highlightLineSig]);
   const openTooltipId = useOpenGlobalTooltipId();
 
   const sidePanelTooltipTriggerClass = cn(
@@ -1092,7 +1104,7 @@ export default function SidePanelSection({
       (isBombResource(item.id)
         ? item.value >= bombLimit
         : isVeinfireElixirResource(item.id) &&
-          item.value >= getMaxVeinfireElixirLimit());
+        item.value >= getMaxVeinfireElixirLimit());
     const showCapacityMark =
       (sectionId === "resources" && isAtMax) || combatItemAtCapacity;
 
@@ -1137,8 +1149,8 @@ export default function SidePanelSection({
 
     const newItemPulseClass =
       shouldPulse &&
-      !hoveredTooltips[item.id] &&
-      isNewItemPulseActive(newItemPulseStartedAt[item.id], pulseNow)
+        !hoveredTooltips[item.id] &&
+        isNewItemPulseActive(newItemPulseStartedAt[item.id], pulseNow)
         ? NEW_ITEM_PULSE_TEXT_CLASS
         : "";
 
@@ -1221,9 +1233,13 @@ export default function SidePanelSection({
         )}
         {typeof item.label === "string" && item.label.includes("↓") ? (
           <>
-            {item.label.replace(" ↓", "")}
+            <span className={isHighlighted ? HIGHLIGHTED_WORD_CLASS : undefined}>
+              {item.label.replace(" ↓", "")}
+            </span>
             <span className="text-red-800 ml-1">↓</span>
           </>
+        ) : isHighlighted ? (
+          <span className={HIGHLIGHTED_WORD_CLASS}>{item.label}</span>
         ) : (
           item.label
         )}
@@ -1313,7 +1329,7 @@ export default function SidePanelSection({
           className={cn(
             valueCellClassName,
             showCapacitySlot &&
-              "inline-flex w-full items-baseline justify-end",
+            "inline-flex w-full items-baseline justify-end",
           )}
         >
           <span>{displayValue}</span>
@@ -1630,7 +1646,7 @@ export default function SidePanelSection({
   );
 
   return (
-    <div className={cn("min-w-0 w-full", className)}>
+    <div ref={rootRef} className={cn("min-w-0 w-full", className)}>
       <div className="min-w-0 flex-1">{titleHeading}</div>
       <div className="side-panel-item-list min-w-0 text-xs">
         {visibleItems.map((item) => (

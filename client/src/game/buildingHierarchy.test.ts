@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { getTrapLevel, getTrapWinChanceBonus } from "./buildingHierarchy";
+import {
+  getBuildHoverHighlightId,
+  getTrapLevel,
+  getTrapWinChanceBonus,
+} from "./buildingHierarchy";
 import { villageAttackEvents } from "./rules/eventsVillageAttacks";
 
 describe("getTrapLevel", () => {
@@ -13,6 +17,26 @@ describe("getTrapLevel", () => {
   it("gives +10% / +20% win chance", () => {
     expect(getTrapWinChanceBonus({ traps: 1 })).toBe(0.1);
     expect(getTrapWinChanceBonus({ traps: 1, improvedTraps: 1 })).toBe(0.2);
+  });
+});
+
+describe("getBuildHoverHighlightId", () => {
+  it("lights the building the button adds when the player already has one", () => {
+    const owned = { woodenHut: 8, stoneHut: 2, furTents: 1, longhouse: 0, cabin: 1 };
+    expect(getBuildHoverHighlightId("woodenHut", owned)).toBe("woodenHut");
+    expect(getBuildHoverHighlightId("stoneHut", owned)).toBe("stoneHut");
+    expect(getBuildHoverHighlightId("furTents", owned)).toBe("furTents");
+    expect(getBuildHoverHighlightId("longhouse", owned)).toBeNull();
+    expect(getBuildHoverHighlightId("cabin", owned)).toBe("cabin");
+  });
+
+  it("lights the building an upgrade replaces when the new one is not built yet", () => {
+    expect(
+      getBuildHoverHighlightId("storehouse", { supplyHut: 1, storehouse: 0 }),
+    ).toBe("supplyHut");
+    expect(
+      getBuildHoverHighlightId("storehouse", { supplyHut: 1, storehouse: 1 }),
+    ).toBe("storehouse");
   });
 });
 

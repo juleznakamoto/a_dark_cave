@@ -35,9 +35,7 @@ body {
   --adc-control-scale: 1;
   /* Side-panel resource name column. Tracks .text-xs (0.8125rem + delta)
      so longer names keep the same fit when text size grows. */
-  --adc-resource-name-col: calc(
-    5.5rem + (5.5 / 0.8125) * var(--adc-text-delta, 0px)
-  );
+  --adc-resource-name-col: calc(5.5rem + (5.5 / 0.8125) * var(--adc-text-delta, 0px));
 }
 
 /* Apply Fira Sans as soon as it's loaded */
@@ -1426,6 +1424,32 @@ html.adc-text-large .side-panel-item-list {
   gap: 0.125rem;
 }
 
+/* One line: faded ends, a gap around the dot, and a gap where a letter would cross it.
+   The dot shares that line. Counts and coin glyphs stay plain. */
+.side-panel-highlight-line:not(:has(> .side-panel-name)):not(:has(.inline-flex)),
+.side-panel-highlight-line>.side-panel-name,
+.side-panel-highlight-line .inline-flex>span:not(.font-noto-symbols-2) {
+  position: relative;
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  background-position: center bottom;
+}
+
+.side-panel-highlight-line:not(:has(> .side-panel-name)):not(:has(.inline-flex))::after,
+.side-panel-highlight-line>.side-panel-name::after,
+.side-panel-highlight-line .inline-flex>span:not(.font-noto-symbols-2)::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  transform: translate(-50%, 1px);
+  pointer-events: none;
+}
+
 .game-panel-header-indicator-glyph--md {
   font-size: calc(12px * var(--adc-indicator-scale, 1));
 }
@@ -2098,6 +2122,7 @@ html.adc-text-xxlarge .game-panel-produce-effects {
 /* Unread event-log lines. Read color (foreground at 50%) to white, half the speed (2s vs 1s).
    Unread text is already full strength, so the fade cannot start from that color. */
 @keyframes log-unread-pulse {
+
   0%,
   100% {
     color: color-mix(in srgb, var(--foreground) 50%, transparent);

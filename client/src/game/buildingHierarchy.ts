@@ -136,7 +136,8 @@ export function isBuildingUpgrade(buildingKey: string): boolean {
 }
 
 /**
- * Side-panel building id to highlight when hovering a build upgrade action (green arrow tooltip).
+ * Building this upgrade replaces, when the player still has that one.
+ * Level upgrades that reuse a key (watchtower, palisades) return that key.
  */
 export function getBuildingUpgradeHighlightId(
   buildingKey: string,
@@ -144,7 +145,6 @@ export function getBuildingUpgradeHighlightId(
 ): string | null {
   if (!isBuildingUpgrade(buildingKey)) return null;
 
-  // Level upgrades reuse the same fortification key (watchtower 1→2, palisades 1→2, …).
   if (buildingKey === "watchtower" || buildingKey === "palisades") {
     return (buildings[buildingKey] ?? 0) > 0 ? buildingKey : null;
   }
@@ -170,13 +170,28 @@ export function getBuildingUpgradeHighlightId(
   return null;
 }
 
+/**
+ * Side-panel row to light when hovering a build button.
+ * Lights the building that button adds, when the player already has one.
+ * An upgrade that replaces a different building lights that current building.
+ */
+export function getBuildHoverHighlightId(
+  buildingKey: string,
+  buildings: Record<string, number>,
+): string | null {
+  if ((buildings[buildingKey] ?? 0) > 0) return buildingKey;
+  return getBuildingUpgradeHighlightId(buildingKey, buildings);
+}
+
 /** Stackable housing — not chain upgrades; omit "Level" in building tooltips. */
-const BUILDING_TOOLTIP_LEVEL_EXCLUSIONS = new Set([
+const STACKABLE_HOUSING_IDS = [
   "woodenHut",
   "stoneHut",
   "furTents",
   "longhouse",
-]);
+] as const;
+
+const BUILDING_TOOLTIP_LEVEL_EXCLUSIONS = new Set<string>(STACKABLE_HOUSING_IDS);
 
 /** Not linear upgrade chains — omit tier labels / level breakdown in building tooltips. */
 const BUILDING_TOOLTIP_CHAIN_EXCLUSIONS = new Set([

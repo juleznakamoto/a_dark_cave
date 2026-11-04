@@ -192,9 +192,11 @@ export default function SidePanel() {
     }
   }, [model.hasResourceAtLimit, model.hasHitResourceLimit]);
 
-  const resourceItems = model.resourceRows.map((row) => ({
-    id: row.id,
-    label: row.isPrecious ? (
+  const resourceItems = model.resourceRows.map((row) => {
+    const resourceName = getResourceName(row.id, capitalizeWords(row.id));
+    return {
+      id: row.id,
+      label: row.isPrecious ? (
       <span className="inline-flex items-center gap-1">
         {row.id === "insight" ? (
           <ResourceInsightIcon className={cn("shrink-0", "text-blue-600")} />
@@ -207,22 +209,23 @@ export default function SidePanel() {
             )}
           />
         )}
-        <span>{getResourceName(row.id, capitalizeWords(row.id))}</span>
+        <span>{resourceName}</span>
       </span>
     ) : (
-      getResourceName(row.id, capitalizeWords(row.id))
-    ),
-    value: row.value,
-    productionDelta:
-      row.productionDelta === 0 ? undefined : row.productionDelta,
-    tooltip: row.hasFlow || row.atCapacity ? (
-      <ResourceFlowTooltip resourceId={row.id} />
-    ) : undefined,
-    testId: `resource-${row.id}`,
-    visible: true,
-    isPrecious: row.isPrecious,
-    hasSpacingAfter: row.hasSpacingAfter,
-  }));
+      resourceName
+      ),
+      value: row.value,
+      productionDelta:
+        row.productionDelta === 0 ? undefined : row.productionDelta,
+      tooltip: row.hasFlow || row.atCapacity ? (
+        <ResourceFlowTooltip resourceId={row.id} />
+      ) : undefined,
+      testId: `resource-${row.id}`,
+      visible: true,
+      isPrecious: row.isPrecious,
+      hasSpacingAfter: row.hasSpacingAfter,
+    };
+  });
 
   const toolItems = model.toolIds.map((key) => ({
     id: key,
@@ -368,7 +371,8 @@ export default function SidePanel() {
       id: row.id,
       label: row.showCount ? (
         <>
-          {label} <span className="text-muted-foreground">({row.value})</span>
+          <span className="side-panel-name">{label}</span>
+          <span className="text-muted-foreground"> ({row.value})</span>
         </>
       ) : (
         label

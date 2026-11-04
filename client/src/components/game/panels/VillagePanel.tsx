@@ -154,7 +154,7 @@ import {
   riddleFogDurationMs,
 } from "@/game/cruelMode";
 import {
-  getBuildingUpgradeHighlightId,
+  getBuildHoverHighlightId,
   isBuildingUpgrade,
 } from "@/game/buildingHierarchy";
 import { BuildingUpgradeTooltipIcon } from "@/game/rules/buildingUpgradeTooltipIndicator";
@@ -501,6 +501,7 @@ function VillageCallMerchantButton({ label }: { label: string }) {
   const timedEventTab = useGameStore((s) => s.timedEventTab);
   const resources = useGameStore((s) => s.resources);
   const callMerchant = useGameStore((s) => s.callMerchant);
+  const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
   const isCallingMerchant = useGameStore(
     (s) => !!s.executionStartTimes?.callMerchant,
   );
@@ -575,6 +576,8 @@ function VillageCallMerchantButton({ label }: { label: string }) {
       variant="outline"
       className=""
       tooltip={tooltipContent}
+      onMouseEnter={() => setHighlightedResources(["gold"])}
+      onMouseLeave={() => setHighlightedResources([])}
       style={{ pointerEvents: "auto" }}
     >
       <span className="flex items-center gap-1">
@@ -989,6 +992,10 @@ export default function VillagePanel() {
           variant="outline"
           className=""
           tooltip={tooltipContent}
+          onMouseEnter={() => {
+            if (currentLevel < 5) setHighlightedResources(["wood"]);
+          }}
+          onMouseLeave={() => setHighlightedResources([])}
           style={{ pointerEvents: "auto" }}
         >
           <span className="flex items-center gap-1">
@@ -1062,8 +1069,8 @@ export default function VillagePanel() {
         particleConfig={BUILD_PARTICLE_CONFIG}
         onMouseEnter={() => {
           const highlights = getResourcesFromActionCost(actionId, state);
-          if (isUpgrade && buildingKey) {
-            const buildingHighlight = getBuildingUpgradeHighlightId(
+          if (buildingKey) {
+            const buildingHighlight = getBuildHoverHighlightId(
               buildingKey,
               state.buildings,
             );
