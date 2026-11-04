@@ -17,7 +17,7 @@ import {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const EN_DIR = path.join(ROOT, "client/src/i18n/locales/en");
-const TARGETS = ["de", "fr", "es", "it", "pt-BR", "zh-CN", "ja", "pl", "ru"];
+const TARGETS = ["de", "fr", "es", "it", "pt-BR", "zh-CN", "ja", "pl", "ru", "tr"];
 
 /** Ensure a property line ends with a comma before a trailing // comment (if any). */
 export function withTrailingComma(line) {

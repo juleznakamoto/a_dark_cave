@@ -1,0 +1,87 @@
+{
+  "publicPages": {
+    "faqHeading": "Sıkça sorulan sorular",
+    "aboutHeading": "A Dark Cave hakkında",
+    "faq": {
+      "whatIs": {
+        "q": "A Dark Cave nedir?",
+        "a": "A Dark Cave, metin tabanlı, artımlı bir hayatta kalma ve yerleşim oyunu. Bir mağarada hiçbir şey hatırlamadan uyanıyorsun; ateş yakıyor, kaynak topluyor, köy kuruyor ve karanlığın derinliklerine iniyorsun."
+      },
+      "free": {
+        "q": "A Dark Cave ücretsiz mi?",
+        "a": "Evet. <site>a-dark-cave.com</site> adresinde, tarayıcında ücretsiz oynayabilirsin. Satın alımların hepsi tamamen isteğe bağlı."
+      },
+      "idle": {
+        "q": "Bu bir idle ya da clicker oyunu mu?",
+        "a": "Hayır. Yarı idle, yarı aktif oynanan artımlı bir oyun. Seçimler yapıyor, bir yerleşimi yönetiyorsun. İkinci ekranda açık bırakıp ara sıra tıkladığın türden bir oyun değil."
+      },
+      "sleepMode": {
+        "q": "Uyku Modu nedir?",
+        "a": "Uyku Modu açıkken sen oynamasan da köylüler kaynak üretmeye devam eder; idle oyunlardaki bekleme moduna benzer. Uyku Süresi bu modda ne kadar kalabileceğini, Uyku Yoğunluğu ise normal üretiminin ne kadarını alacağını belirler (geçici bonuslar hariç)."
+      },
+      "like": {
+        "q": "Hangi oyunlara benziyor?",
+        "a": "A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13 ya da KEROS-9 gibi oyunları seviyorsan, bu oyun tam da o zevke göre yapıldı. Bu oyunlarla resmî bir bağı yok."
+      },
+      "phone": {
+        "q": "Telefonda oynayabilir miyim?",
+        "a": "Evet, mobil tarayıcıdan oynayabilirsin. App Store ya da Google Play uygulaması yok."
+      },
+      "steam": {
+        "q": "Steam sürümü var mı?",
+        "a": "Evet. A Dark Cave <steam>Steam</steam> mağazasında; 27 Ekim 2026'da çıktı. <demo>Ücretsiz demosunu</demo> da hemen oynayabilirsin."
+      },
+      "download": {
+        "q": "Tarayıcı sürümü için bir şey indirmem gerekiyor mu?",
+        "a": "Hayır. Doğrudan tarayıcında oyna."
+      },
+      "save": {
+        "q": "İlerlemem kaydediliyor mu?",
+        "a": "Evet. İlerlemen tarayıcıya otomatik kaydedilir. İstersen hesap açıp bulut kaydını da kullanabilirsin."
+      },
+      "account": {
+        "q": "Hesap açmam gerekiyor mu?",
+        "a": "Hayır. Hesapsız da oynayabilirsin. Hesap yalnızca bulut kaydı için gerekir."
+      },
+      "singlePlayer": {
+        "q": "Tek oyunculu mu?",
+        "a": "Evet. A Dark Cave tek oyunculu bir oyun."
+      },
+      "ending": {
+        "q": "Oyunun bir sonu var mı?",
+        "a": "Evet. Bir hikâyesi, bolca sırrı ve efsanesi, birden fazla da sonu var."
+      },
+      "languages": {
+        "q": "Hangi diller destekleniyor?",
+        "a": "Tarayıcı sürümünde İngilizce, Almanca, Fransızca, İspanyolca, İtalyanca, Portekizce (Brezilya), Basitleştirilmiş Çince, Japonca, Lehçe ve Rusça."
+      },
+      "help": {
+        "q": "Nereden yardım alabilirim?",
+        "a": "<email>support@a-dark-cave.com</email> adresine yaz ya da <reddit>A Dark Cave subreddit'inde</reddit> sor."
+      }
+    },
+    "about": {
+      "intro1": "Bu oyunu yaptım, çünkü yıllar önce oynadığım A Dark Room bende bir gün kendi oyunumu yapma hevesi uyandırmıştı. O gün geldi.",
+      "intro2": "Karanlık bir mağaranın ağzında uyanıyorsun. Hafızan yok. Hiçbir şeyin yok. Ateş yakıyorsun, sonra biraz odun topluyor, bir meşale yapıyor, ilk barınağını kuruyorsun. Yabancılar geliyor. Yerleşim büyüyor. Mağaranın derinliklerinde ne olduğunu keşfetmeye başlıyorsun. Uygarlığının geçmişini. Kendi geçmişini. İşte A Dark Cave bu: hayatta kalmak, inşa etmek, aşağıda gerçekten ne olduğunu ve belki de insanlığın nereye gittiğini öğrenmek üzerine metin tabanlı, artımlı bir oyun.",
+      "intro3": "Tarayıcıda ücretsiz: <site>a-dark-cave.com</site>. Oyunu desteklemek isteyenler için tamamen isteğe bağlı satın alımlar var. Steam'de oynamayı tercih edersen bir <demo>Steam demosu</demo> da var. Tam Steam sürümü 27 Ekim 2026'da çıktı.",
+      "howHeading": "Oynanış",
+      "how1": "Elinde hiçbir şey olmadan başlıyorsun. Zamanla yeni eşyalar, binalar, beceriler, meslekler, yoldaşlar ve çok daha fazlasını açıyorsun. Çok eskiden yaşamış bir uygarlığın geçmişini anlatan, efsanelerle dolu bir hikâye yavaş yavaş açığa çıkıyor. Mağaranın derinlerine indikçe daha çok şey öğreniyorsun. Ama tehlike de büyüyor.",
+      "how2": "Oynanış aktif. Verdiğin kararlar oyunun gidişatını değiştiriyor. Ayrıca sen yokken oyunun ilerlemeye devam ettiği bir bekleme modu var. Oyunun bir sonu var, belki de birden fazla.",
+      "likedHeading": "Eski artımlı oyunları sevdiysen",
+      "liked1": "Bu oyunu bulanlar genelde A Dark Room, Kittens Game, Universal Paperclips, Candy Box ve benzeri oyunlardan geliyor. Bu oyunların bazı mekaniklerini A Dark Cave'de de bulacaksın. A Dark Cave'in grafikleri sade; ama animasyonları tek tek elle hazırladım, bolca ses ekledim ve bugünkü oynama alışkanlıklarımıza uysun diye oyunu hem masaüstüne hem mobile uyarladım.",
+      "whoHeading": "Kimler için?",
+      "who1": "Basit başlayıp bilerek, adım adım karmaşıklaşan oyunları sevenler için. Bir eğitim bölümü daha ilk dakikada önüne yirmi sistem yığdığı için değil, bir sonrakini hak ettiğin için.",
+      "who2": "Göz alıcı grafikler arıyorsan yanlış yerdesin. Oyunun çoğu metin; aralarda (umarım) emeğinin karşılığını hissettiren animasyonlar var. Kendi hikâyemize ve geleceğimize derinden bağlı, ilgi çekici bir hikâye kurmak için çok zaman harcadım.",
+      "platformsHeading": "Platformlar",
+      "platforms1": "Masaüstü ya da mobil tarayıcıda oyna. App Store ya da Google Play uygulaması yok. İlerlemen cihazına kaydedilir. Bulut kaydı istersen hesap açabilirsin.",
+      "platforms2": "<steam>Steam</steam> (Windows) sürümü ücretli, <demo>ücretsiz bir demosu</demo> da var. Tarayıcı sürümü ücretsiz kalmaya devam ediyor.",
+      "platforms3": "Oyunun dilleri: İngilizce, Almanca, Fransızca, İspanyolca, İtalyanca, Portekizce (Brezilya), Basitleştirilmiş Çince, Japonca, Lehçe ve Rusça.",
+      "meHeading": "Ben kimim?",
+      "me1": "Ben Julian Bauer. A Dark Cave'i tek başıma yaptım. Bir şey bozuksa ya da sadece merhaba demek istersen <email>support@a-dark-cave.com</email> adresine yaz.",
+      "play": "Oyna",
+      "faq": "SSS",
+      "steam": "Steam",
+      "reddit": "Reddit"
+    }
+  }
+}

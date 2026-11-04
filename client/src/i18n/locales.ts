@@ -10,6 +10,7 @@ export const SUPPORTED_LOCALES = [
   "ja",
   "pl",
   "ru",
+  "tr",
 ] as const;
 
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
@@ -29,6 +30,7 @@ export const LOCALE_LABELS: Record<SupportedLocale, string> = {
   ja: "日本語",
   pl: "Polski",
   ru: "Русский",
+  tr: "Türkçe",
 };
 
 /** BCP-47 tags for schema.org `availableLanguage` (keep `client/index.html` in sync). */
@@ -48,6 +50,7 @@ export const OG_LOCALE_TAGS: Record<SupportedLocale, string> = {
   ja: "ja_JP",
   pl: "pl_PL",
   ru: "ru_RU",
+  tr: "tr_TR",
 };
 
 export const I18N_NAMESPACES = [
@@ -79,6 +82,7 @@ export function normalizeLocale(value: string | null | undefined): SupportedLoca
   if (lower.startsWith("ja")) return "ja";
   if (lower.startsWith("pl")) return "pl";
   if (lower.startsWith("ru")) return "ru";
+  if (lower.startsWith("tr")) return "tr";
   return DEFAULT_LOCALE;
 }
 

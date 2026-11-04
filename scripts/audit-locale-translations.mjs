@@ -21,7 +21,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
 const EN_DIR = path.join(ROOT, "client/src/i18n/locales/en");
 
-const SUPPORTED_LOCALES = ["de", "fr", "es", "it", "pt-BR", "zh-CN", "ja", "pl", "ru"];
+const SUPPORTED_LOCALES = ["de", "fr", "es", "it", "pt-BR", "zh-CN", "ja", "pl", "ru", "tr"];
 
 const localeArg = process.argv[2];
 
