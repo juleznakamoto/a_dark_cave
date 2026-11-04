@@ -97,17 +97,19 @@ function lineTarget(highlight: HTMLElement): HTMLElement {
 
 let measureCanvas: HTMLCanvasElement | null = null;
 
-/** Paint the highlight line for one highlighted name. */
-export function paintSidePanelHighlightLine(highlight: HTMLElement): void {
+/** Paint the highlight line for one highlighted name. Returns the element that received it. */
+export function paintSidePanelHighlightLine(
+  highlight: HTMLElement,
+): HTMLElement | null {
   const target = lineTarget(highlight);
   const text = target.textContent ?? "";
   const width = target.getBoundingClientRect().width;
-  if (width <= 0 || text.length === 0) return;
+  if (width <= 0 || text.length === 0) return null;
   const font = getComputedStyle(target).font;
   const fontSize = parseFloat(getComputedStyle(target).fontSize) || 12;
   measureCanvas ??= document.createElement("canvas");
   const context = measureCanvas.getContext("2d");
-  if (!context) return;
+  if (!context) return null;
   context.font = font;
   let measuredWidth = 0;
   const holes = highlightLineHoles(text, (char) => {
@@ -129,4 +131,28 @@ export function paintSidePanelHighlightLine(highlight: HTMLElement): void {
       end: hole.end * scale,
     })),
   );
+  return target;
+}
+
+/**
+ * Drop lines painted last pass, then paint whatever still has the highlight
+ * class. The gradient is an inline style, so a node that loses the class
+ * keeps it until this clears it.
+ */
+export function syncSidePanelHighlightLines(
+  root: ParentNode | null,
+  previous: readonly HTMLElement[],
+): HTMLElement[] {
+  for (const node of previous) {
+    node.style.removeProperty("background-image");
+  }
+  if (!root) return [];
+  const painted: HTMLElement[] = [];
+  root
+    .querySelectorAll<HTMLElement>(".side-panel-highlight-line")
+    .forEach((highlight) => {
+      const target = paintSidePanelHighlightLine(highlight);
+      if (target) painted.push(target);
+    });
+  return painted;
 }

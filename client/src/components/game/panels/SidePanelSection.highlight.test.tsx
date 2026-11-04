@@ -20,6 +20,31 @@ function word(label: string) {
   );
 }
 
+function stubHighlightMeasurement() {
+  vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue({
+    width: 80,
+    height: 14,
+    top: 0,
+    left: 0,
+    bottom: 14,
+    right: 80,
+    x: 0,
+    y: 0,
+    toJSON() {
+      return {};
+    },
+  });
+  vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({
+    font: "",
+    measureText: () => ({
+      width: 8,
+      actualBoundingBoxDescent: 0,
+      actualBoundingBoxLeft: 0,
+      actualBoundingBoxRight: 8,
+    }),
+  } as unknown as CanvasRenderingContext2D);
+}
+
 function renderBuildings() {
   return render(
     <SidePanelSection
@@ -38,6 +63,7 @@ describe("SidePanelSection highlight underline", () => {
     setVillageMapHoveredBuilding(null);
     useGameStore.setState({ highlightedResources: [] });
     vi.unstubAllGlobals();
+    vi.restoreAllMocks();
   });
 
   it("underlines the side-panel name that matches the building under the map cursor", () => {
@@ -123,5 +149,39 @@ describe("SidePanelSection highlight underline", () => {
     );
     expect(name?.parentElement?.className).toContain("side-panel-highlight-line");
     expect(count?.className).not.toContain("side-panel-highlight-line");
+  });
+
+  it("clears the line on a damaged fortification after the pointer leaves", () => {
+    vi.stubGlobal("matchMedia", (query: string) => ({
+      matches: false,
+      media: query,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      addListener: () => {},
+      removeListener: () => {},
+      dispatchEvent: () => false,
+    }));
+    stubHighlightMeasurement();
+    setVillageMapHoveredBuilding("palisades");
+    render(
+      <SidePanelSection
+        title="Fortifications"
+        sectionId="fortifications"
+        items={[{ id: "palisades", label: "Palisade ↓", value: 1 }]}
+      />,
+    );
+
+    const highlighted = word("Palisade");
+    expect(highlighted?.style.backgroundImage).toContain("linear-gradient");
+
+    act(() => {
+      setVillageMapHoveredBuilding(null);
+    });
+
+    const reused = Array.from(document.querySelectorAll("span")).find(
+      (node) => node.textContent === "Palisade",
+    );
+    expect(reused?.style.backgroundImage ?? "").not.toContain("linear-gradient");
+    expect(word("Palisade")).toBeUndefined();
   });
 });

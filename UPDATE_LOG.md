@@ -21,5 +21,6 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Fixed
 
+- The fading line under a damaged fortification's name disappears when you move the pointer away.
 - The ground around the village on the map is clear, so a blood moon shows through it.
 - Hovering Feed Fire highlights Wood in the side panel, and hovering Call Merchant highlights Gold.

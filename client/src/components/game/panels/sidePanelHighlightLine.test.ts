@@ -1,7 +1,11 @@
-import { describe, expect, it } from "vitest";
+/**
+ * @vitest-environment jsdom
+ */
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   buildHighlightLineGradient,
   highlightLineHoles,
+  syncSidePanelHighlightLines,
 } from "./sidePanelHighlightLine";
 
 function measure(char: string) {
@@ -39,5 +43,66 @@ describe("buildHighlightLineGradient", () => {
     expect(gradient).toContain("transparent 38px");
     expect(gradient).toContain("transparent 56px");
     expect(gradient).toContain("transparent 64px");
+  });
+});
+
+describe("syncSidePanelHighlightLines", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  function stubMeasurement() {
+    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockReturnValue({
+      width: 80,
+      height: 14,
+      top: 0,
+      left: 0,
+      bottom: 14,
+      right: 80,
+      x: 0,
+      y: 0,
+      toJSON() {
+        return {};
+      },
+    });
+    vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue({
+      font: "",
+      measureText: () => ({
+        width: 8,
+        actualBoundingBoxDescent: 0,
+        actualBoundingBoxLeft: 0,
+        actualBoundingBoxRight: 8,
+      }),
+    } as unknown as CanvasRenderingContext2D);
+  }
+
+  it("clears the gradient on a node that lost the highlight class", () => {
+    stubMeasurement();
+    const root = document.createElement("div");
+    const name = document.createElement("span");
+    name.className = "side-panel-highlight-line";
+    name.textContent = "Palisade";
+    root.append(name);
+
+    const painted = syncSidePanelHighlightLines(root, []);
+    expect(name.style.backgroundImage).toContain("linear-gradient");
+
+    name.className = "";
+    syncSidePanelHighlightLines(root, painted);
+    expect(name.style.backgroundImage).toBe("");
+  });
+
+  it("paints the line again when the name stays highlighted", () => {
+    stubMeasurement();
+    const root = document.createElement("div");
+    const name = document.createElement("span");
+    name.className = "side-panel-highlight-line";
+    name.textContent = "Palisade";
+    root.append(name);
+
+    const painted = syncSidePanelHighlightLines(root, []);
+    const again = syncSidePanelHighlightLines(root, painted);
+    expect(name.style.backgroundImage).toContain("linear-gradient");
+    expect(again).toEqual([name]);
   });
 });

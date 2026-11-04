@@ -18,7 +18,7 @@ import {
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import ResourceChangeNotification from "./ResourceChangeNotification";
-import { paintSidePanelHighlightLine } from "./sidePanelHighlightLine";
+import { syncSidePanelHighlightLines } from "./sidePanelHighlightLine";
 import { SidePanelSectionIcon } from "./SidePanelSectionIcon";
 import { useGameStore } from "@/game/state";
 import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
@@ -706,12 +706,12 @@ export default function SidePanelSection({
       );
   const isMobile = useIsMobile();
   const highlightLineSig = `${mapHoveredBuildingId ?? ""}|${activeTooltipHoverId ?? ""}|${[...highlightedResources].join(",")}|${visibleItems.map((item) => item.id).join(",")}`;
+  const paintedHighlightLinesRef = useRef<HTMLElement[]>([]);
   useLayoutEffect(() => {
-    const root = rootRef.current;
-    if (!root) return;
-    root
-      .querySelectorAll<HTMLElement>(".side-panel-highlight-line")
-      .forEach(paintSidePanelHighlightLine);
+    paintedHighlightLinesRef.current = syncSidePanelHighlightLines(
+      rootRef.current,
+      paintedHighlightLinesRef.current,
+    );
   }, [highlightLineSig]);
   const openTooltipId = useOpenGlobalTooltipId();
 
@@ -1206,6 +1206,11 @@ export default function SidePanelSection({
       showValue || (sectionId === undefined && title === "Stats");
     const usesLabelValueGridLayout = showItemValue;
 
+    const damagedFortificationName =
+      typeof item.label === "string" && item.label.includes("↓")
+        ? item.label.replace(" ↓", "")
+        : null;
+
     const labelContent = (
       <span
         className={cn(
@@ -1231,11 +1236,15 @@ export default function SidePanelSection({
             {item.icon}
           </span>
         )}
-        {typeof item.label === "string" && item.label.includes("↓") ? (
+        {damagedFortificationName !== null ? (
           <>
-            <span className={isHighlighted ? HIGHLIGHTED_WORD_CLASS : undefined}>
-              {item.label.replace(" ↓", "")}
-            </span>
+            {isHighlighted ? (
+              <span className={HIGHLIGHTED_WORD_CLASS}>
+                {damagedFortificationName}
+              </span>
+            ) : (
+              damagedFortificationName
+            )}
             <span className="text-red-800 ml-1">↓</span>
           </>
         ) : isHighlighted ? (
