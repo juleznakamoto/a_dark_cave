@@ -98,6 +98,17 @@ describe("VillageMapOverlay", () => {
     expect(svg.querySelector(".village-map-fade-in")).not.toBeNull();
   });
 
+  it("leaves the map ground clear so the page background shows through", () => {
+    useGameStore.setState({ activeTab: "map" });
+    const view = render(<VillageMapOverlay />);
+    const overlay = view.getByTestId("village-map-overlay");
+    expect(overlay.style.backgroundColor).toBe("");
+    const outside = view.getByTestId("village-map").querySelector("[data-ground='outside']");
+    const interior = view.getByTestId("village-map").querySelector("[data-ground='interior']");
+    expect(outside).toHaveAttribute("fill-opacity", "0");
+    expect(interior).toHaveAttribute("fill-opacity", "1");
+  });
+
   it("plays owned buildings one step at a time and resets when the tab closes", () => {
     vi.useFakeTimers();
     try {

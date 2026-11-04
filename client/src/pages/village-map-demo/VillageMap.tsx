@@ -390,6 +390,8 @@ type VillageMapProps = {
   onHoverSilverCoin?: (metal: VillageMapCoinMetal | null) => void;
   silverCoinLabel?: string;
   goldCoinLabel?: string;
+  /** Leave the ground around the village unpainted so the page background shows through. */
+  clearGround?: boolean;
 };
 
 type VillageMapSvgProps = Omit<VillageMapProps, "highlightId"> & {
@@ -421,6 +423,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
   onHoverSilverCoin,
   silverCoinLabel = "Silver",
   goldCoinLabel = "Gold",
+  clearGround = false,
   svgRef,
   highlightRef,
 }: VillageMapSvgProps) {
@@ -1042,7 +1045,16 @@ const VillageMapSvg = memo(function VillageMapSvg({
               </mask>
             ) : null}
           </defs>
-          <rect data-ground="outside" x={frameX} y={frameY} width={frameSize} height={frameSize} fill={tuning.ground} />
+          <rect
+            data-ground="outside"
+            x={frameX}
+            y={frameY}
+            width={frameSize}
+            height={frameSize}
+            fill={tuning.ground}
+            fillOpacity={clearGround ? 0 : undefined}
+            pointerEvents={clearGround ? "all" : undefined}
+          />
 
           <path
             data-ground="interior"

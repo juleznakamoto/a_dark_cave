@@ -289,7 +289,6 @@ export default function VillageMapOverlay() {
       hidden={!open}
       className="village-map-overlay absolute inset-0 z-30 flex flex-col px-2 pb-4"
       style={{
-        backgroundColor: DEFAULT_TUNING.ground,
         display: open ? undefined : "none",
       }}
       data-testid="village-map-overlay"
@@ -298,6 +297,7 @@ export default function VillageMapOverlay() {
         <VillageMap
           build={shownBuild}
           tuning={DEFAULT_TUNING}
+          clearGround
           overrides={overrides}
           pathOverrides={pathOverrides}
           trees={demo?.trees ?? VILLAGE_MAP_TREES}
