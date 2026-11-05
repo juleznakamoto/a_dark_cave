@@ -48,6 +48,18 @@ const PROVOKE_ACTION_ID = "provokeAttackWave" as const;
 const DELAY_ACTION_ID = "delayAttackWave" as const;
 const DELAY_MINUTES = ATTACK_WAVE_DELAY_MS / 60_000;
 
+/** Stable empty map so a hidden Bastion chart does not re-render on 4 Hz timer writes. */
+const HIDDEN_ATTACK_WAVE_TIMERS: GameState["attackWaveTimers"] = {};
+
+/** Timer slice for the chart. Hidden keep-alive Bastion must not subscribe to the tick clock. */
+export function selectAttackWaveTimersForChart(
+  visible: boolean,
+  timers: GameState["attackWaveTimers"] | undefined,
+): GameState["attackWaveTimers"] {
+  if (!visible) return HIDDEN_ATTACK_WAVE_TIMERS;
+  return timers ?? HIDDEN_ATTACK_WAVE_TIMERS;
+}
+
 export default function AttackWavesChart({
   visible = true,
 }: {
@@ -58,7 +70,7 @@ export default function AttackWavesChart({
   const buildings = useGameStore((s) => s.buildings);
   const weapons = useGameStore((s) => s.weapons);
   const attackWaveTimers = useGameStore((s) =>
-    visible ? s.attackWaveTimers : null,
+    selectAttackWaveTimersForChart(visible, s.attackWaveTimers),
   );
   const setHighlightedResources = useGameStore((s) => s.setHighlightedResources);
   const executeAction = useGameStore((s) => s.executeAction);
