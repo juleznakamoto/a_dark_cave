@@ -42,6 +42,7 @@ const KNOWN_LOCALES = [
   "ru",
   "ja",
   "zh-CN",
+  "tr",
 ];
 
 /** Soft post-review tweaks per locale (on top of the dump). */

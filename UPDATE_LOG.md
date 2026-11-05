@@ -6,6 +6,7 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Added
 
+- You can play the game in Turkish.
 - After you lose an attack wave, you can spend 1000 Insight once to push its return back 10 minutes, and again only after you lose that wave once more.
 
 ### Changed

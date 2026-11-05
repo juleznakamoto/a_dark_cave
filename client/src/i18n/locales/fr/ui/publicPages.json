@@ -53,7 +53,7 @@
       },
       "languages": {
         "q": "Quelles langues sont prises en charge ?",
-        "a": "Dans le navigateur : anglais, allemand, français, espagnol, italien, portugais (Brésil), chinois simplifié, japonais, polonais et russe."
+        "a": "Dans le navigateur : anglais, allemand, français, espagnol, italien, portugais (Brésil), chinois simplifié, japonais, polonais, russe et turc."
       },
       "help": {
         "q": "Où puis-je obtenir de l'aide ?",
@@ -75,7 +75,7 @@
       "platformsHeading": "Plateformes",
       "platforms1": "Jouez dans un navigateur sur ordinateur ou mobile. Il n'existe pas d'application App Store ni Google Play. La progression est sauvegardée sur votre appareil. Vous pouvez créer un compte si vous souhaitez une sauvegarde dans le cloud.",
       "platforms2": "Sur <steam>Steam</steam> (Windows), le jeu est payant, avec une <demo>démo gratuite</demo>. Le jeu sur navigateur reste gratuit.",
-      "platforms3": "Le jeu est en anglais, allemand, français, espagnol, italien, portugais (Brésil), chinois simplifié, japonais, polonais et russe.",
+      "platforms3": "Le jeu est en anglais, allemand, français, espagnol, italien, portugais (Brésil), chinois simplifié, japonais, polonais, russe et turc.",
       "meHeading": "Qui je suis",
       "me1": "Je m'appelle Julian Bauer et j'ai créé A Dark Cave seul. Si quelque chose ne fonctionne pas, ou si vous voulez simplement me contacter, écrivez à <email>support@a-dark-cave.com</email>.",
       "play": "Jouer",

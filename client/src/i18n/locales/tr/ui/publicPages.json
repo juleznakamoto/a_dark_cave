@@ -53,7 +53,7 @@
       },
       "languages": {
         "q": "Hangi diller destekleniyor?",
-        "a": "Tarayıcı sürümünde İngilizce, Almanca, Fransızca, İspanyolca, İtalyanca, Portekizce (Brezilya), Basitleştirilmiş Çince, Japonca, Lehçe ve Rusça."
+        "a": "Tarayıcı sürümünde İngilizce, Almanca, Fransızca, İspanyolca, İtalyanca, Portekizce (Brezilya), Basitleştirilmiş Çince, Japonca, Lehçe, Rusça ve Türkçe."
       },
       "help": {
         "q": "Nereden yardım alabilirim?",
@@ -75,7 +75,7 @@
       "platformsHeading": "Platformlar",
       "platforms1": "Masaüstü ya da mobil tarayıcıda oyna. App Store ya da Google Play uygulaması yok. İlerlemen cihazına kaydedilir. Bulut kaydı istersen hesap açabilirsin.",
       "platforms2": "<steam>Steam</steam> (Windows) sürümü ücretli, <demo>ücretsiz bir demosu</demo> da var. Tarayıcı sürümü ücretsiz kalmaya devam ediyor.",
-      "platforms3": "Oyunun dilleri: İngilizce, Almanca, Fransızca, İspanyolca, İtalyanca, Portekizce (Brezilya), Basitleştirilmiş Çince, Japonca, Lehçe ve Rusça.",
+      "platforms3": "Oyunun dilleri: İngilizce, Almanca, Fransızca, İspanyolca, İtalyanca, Portekizce (Brezilya), Basitleştirilmiş Çince, Japonca, Lehçe, Rusça ve Türkçe.",
       "meHeading": "Ben kimim?",
       "me1": "Ben Julian Bauer. A Dark Cave'i tek başıma yaptım. Bir şey bozuksa ya da sadece merhaba demek istersen <email>support@a-dark-cave.com</email> adresine yaz.",
       "play": "Oyna",

@@ -121,7 +121,7 @@ Steam Next Fest (19-26 October 2026) is over. Leave it out of /press, /about,
 ## Languages
 
 Site UI languages: English, German, French, Spanish, Italian, Portuguese
-(Brazil), Simplified Chinese, Japanese, Polish, Russian.
+(Brazil), Simplified Chinese, Japanese, Polish, Russian, Turkish.
 
 `html lang` stays `en` for the default document unless the app already switches
 it per locale. Do not add hreflang unless a later SEO pass asks for it.
@@ -183,4 +183,4 @@ Organization `logo` may keep `/og-image.png` until a real wordmark exists.
   `client/public/press-kit/video/a_dark_cave_gameplay_trailer.mp4`.
   Do not link the older YouTube upload `G8Gm7o4cZfQ`.
 - UI locales live under `client/src/i18n/locales/` as `en`, `de`, `fr`, `es`,
-  `it`, `pt-BR`, `zh-CN`, `ja`, `pl`, `ru`.
+  `it`, `pt-BR`, `zh-CN`, `ja`, `pl`, `ru`, `tr`.
