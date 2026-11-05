@@ -1,0 +1,80 @@
+{
+  "buttons": {
+    "close": "Kapat",
+    "continue": "Devam Et",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "claim": "Al",
+    "activate": "Etkinleştir",
+    "deactivate": "Devre Dışı Bırak"
+  },
+  "status": {
+    "loading": "Yükleniyor...",
+    "processing": "İşleniyor...",
+    "free": "Ücretsiz",
+    "error": "Hata",
+    "success": "Başarılı!",
+    "active": "Etkin",
+    "activated": "Etkinleştirildi"
+  },
+  "tabs": {
+    "cave": "Mağara",
+    "village": "Köy",
+    "city": "Şehir",
+    "forest": "Orman",
+    "estate": "Malikâne",
+    "bastion": "Tabya",
+    "fortress": "Kale",
+    "map": "Harita",
+    "achievements": "Başarımlar",
+    "trader": "Tüccar",
+    "event": "Olay",
+    "merchant": "Tacir"
+  },
+  "resources": {
+    "wood": "Odun",
+    "stone": "Taş",
+    "food": "Yiyecek",
+    "veinroot": "Damarkökü",
+    "bones": "Kemik",
+    "fur": "Kürk",
+    "leather": "Deri",
+    "bone_totem": "Kemik Totemi",
+    "leather_totem": "Deri Totemi",
+    "iron": "Demir",
+    "coal": "Kömür",
+    "sulfur": "Kükürt",
+    "obsidian": "Obsidyen",
+    "adamant": "Adamantit",
+    "steel": "Çelik",
+    "blacksteel": "Karaçelik",
+    "moonstone": "Aytaşı",
+    "black_powder": "Kara Barut",
+    "ember_bomb": "Kor Bombası",
+    "ashfire_dust": "Külateşi Tozu",
+    "ashfire_bomb": "Külateşi Bombası",
+    "void_bomb": "Hiçlik Bombası",
+    "veinfire_elixir": "Damarateşi İksiri",
+    "poison_arrows": "Zehirli Oklar",
+    "torch": "Meşale",
+    "silver": "Gümüş",
+    "gold": "Altın",
+    "insight": "İçgörü"
+  },
+  "stats": {
+    "strength": "Güç",
+    "knowledge": "Bilgi",
+    "luck": "Şans",
+    "madness": "Delilik",
+    "attack": "Saldırı",
+    "defense": "Savunma",
+    "integrity": "Sağlamlık"
+  },
+  "population": {
+    "villager_one": "{{count}} köylü",
+    "villager_other": "{{count}} köylü"
+  },
+  "currency": {
+    "goldAmount": "{{amount}} Altın"
+  }
+}

@@ -1,0 +1,282 @@
+{
+  "event": {
+    "fallbackTitle": "Olay",
+    "knowledgeTimeBonus": "Bilgi sayesinde +{{seconds}} sn Karar Süresi{{maxSuffix}}",
+    "knowledgeTimeBonusMax": " (en fazla)",
+    "successChance": "Başarı Şansı: %{{percent}}",
+    "successChanceBase": "Temel: %{{percent}}",
+    "successChanceStatLine": "{{statValue}} {{statName}} * %{{percentPerPoint}} = %{{contribution}}",
+    "successChanceCruel": "Acımasız Mod: %{{percent}}",
+    "influencedBy": "Etkileyenler:"
+  },
+  "reward": {
+    "actionReward": "Eylem Ödülü",
+    "claimRewards": "Ödülleri Al"
+  },
+  "madness": {
+    "title": "Delilik Olayı",
+    "change": "{{sign}} {{amount}} Delilik"
+  },
+  "insightPotion": {
+    "title": "İçgörü İksiri",
+    "message": "İçgörü İksirini içiyorsun. Zihninde yeni bir kavrayış filizleniyor."
+  },
+  "insightIntro": {
+    "title": "İçgörü",
+    "message": "Bir bilgin yanına geliyor. 'Dünyayı İçgörü kazanmak için inceliyoruz,' diyor. 'İçgörü dünyanın sırlarını açığa çıkarır. Zamanla da dünyayı irademize boyun eğdirmeyi öğretir.'"
+  },
+  "blessingOffer": {
+    "title": "Bir Kutsama Seç",
+    "chooseBlessing": "Seç"
+  },
+  "pactOffer": {
+    "title": "Paktlarını Seç",
+    "grant": "Her oyunda bir pakt seçebilirsin (Acımasız Modda iki).",
+    "available": "{{count}} seçim hakkı",
+    "continue": "Devam Et",
+    "madness": "+3 Delilik",
+    "cards": {
+      "blazesmith": {
+        "name": "Alev Ustası",
+        "boon": "Bomba yapımı %50 daha ucuz",
+        "boon2": "Yürek Ateşinin üretim bonusu iki katına çıkar",
+        "quote": "'Simyacı deneylerinde fazla ileri gitti'"
+      },
+      "full_larders": {
+        "name": "Dolu Kiler",
+        "boon": "Boştaki köylüler +2 Yiyecek üretir",
+        "boon2": "Avcılar +5 Yiyecek üretir",
+        "quote": "'Avcı Kadın ava çıkmayı öneriyor'"
+      },
+      "sturdy_hands": {
+        "name": "Nasırlı Eller",
+        "boon": "Toplayıcılar +5 Odun üretir",
+        "boon2": "Toplayıcılar +5 Taş üretir",
+        "quote": "'Tacirin arabasında olması gerekenden fazlası var'"
+      },
+      "cunning_trader": {
+        "name": "Kurnaz Tüccar",
+        "boon": "Seyyar Tacirde %20 indirim",
+        "boon2": "Ticaret Noktasında %20 indirim",
+        "quote": "'Rüyalar son zamanlarda tuhaf'"
+      },
+      "avid_apprentices": {
+        "name": "Hevesli Çırak",
+        "boon": "Bilginler +1 İçgörü üretir",
+        "boon2": "Eylem ustalığı %20 daha hızlı gelişir",
+        "quote": "'Kumarbazda bir tuhaflık var'"
+      }
+    }
+  },
+  "socialPrompt": {
+    "title": "Ödül Kazan",
+    "description": "Bonus almak için aşağıdaki görevleri tamamla. Hepsini tamamlarsan özel bir eşya kazanırsın.",
+    "signUpRequiresSignInTooltip": "Bu görevi tamamlamak için giriş yap",
+    "signUpTitle": "Kaydol",
+    "signUpDesc": "Oyundaki ilerlemeni cihazlar arasında eşitlemek için ücretsiz bir hesap aç. Hesabın yoksa ilerlemen yalnızca bu cihazda saklanır ve kaybolabilir.",
+    "signUpButton": "Kaydol",
+    "emailUpdatesTitle": "E-posta bülteni",
+    "subscribe": "Abone Ol",
+    "claim": "Al",
+    "playlightTitle": "1 oyun dene",
+    "discoverGames": "Dene",
+    "inviteTitle": "1 arkadaşını davet et",
+    "inviteDesc": "En fazla {{cap}} arkadaşını davet edebilirsin. Her davette ikiniz de {{amount}} Altın kazanırsınız ({{count}}/{{cap}} davet edildi).",
+    "copyInviteLink": "Davet bağlantısını kopyala",
+    "progressComplete": "Bütün görevleri tamamladın. Ödülün yakında gelecek.",
+    "tasksRemaining_one": "1 görev kaldı",
+    "tasksRemaining_other": "{{count}} görev kaldı",
+    "exclusiveRewardEffect": "%{{percent}} ihtimalle eylem kazançları iki katına çıkar",
+    "progressAriaLabel": "Özel ödül",
+    "alreadyClaimedReward": "Bu ödülü zaten aldın!",
+    "resourceBonus": "+{{amount}} {{resource}}",
+    "playlightDiscoverRewardLog": "Bir oyunu denediğin için {{amount}} {{resource}} kazandın!",
+    "marketingSubscribeLog": "E-posta bültenine abone olduğun için {{amount}} Altın kazandın!",
+    "followRewardLog": "{{platform}} sayfamızı takip ettiğin için {{amount}} {{resource}} kazandın!",
+    "subscribeRewardLog": "{{platform}} kanalımıza abone olduğun için {{amount}} {{resource}} kazandın!",
+    "platforms": {
+      "youtube": {
+        "title": "YouTube",
+        "actionSubscribe": "Abone Ol"
+      },
+      "instagram": {
+        "title": "Instagram",
+        "actionFollow": "Takip Et"
+      },
+      "reddit": {
+        "title": "Reddit",
+        "actionJoin": "Katıl"
+      }
+    }
+  },
+  "referral": {
+    "invitedLog": "Bu dünyaya yeni birini davet ettin! +{{amount}} Altın"
+  },
+  "invite": {
+    "button": "Davet Et",
+    "copyInviteCode": "Davet Kodunu Kopyala",
+    "goldBonus": "+{{amount}} Altın",
+    "linkCopied": "Davet bağlantısı kopyalandı!",
+    "linkCopiedDesc": "Arkadaşlarınla paylaş, her biri için {{amount}} Altın kazan.",
+    "copyFailed": "Davet bağlantısı kopyalanamadı",
+    "copyFailedNotSignedIn": "Davet bağlantını kopyalamak için giriş yap",
+    "tooltip": "<bold>Arkadaşlarını davet et</bold>, ikiniz de {{amount}} Altın kazanırsınız. En fazla {{cap}} arkadaşını davet edebilirsin. ({{count}}/{{cap}} davet edildi)."
+  },
+  "invest": {
+    "title": "Yatırım",
+    "strategy": "Yatırım Stratejisi",
+    "amount": "Yatırım Miktarı",
+    "startInvestment": "Yatırımı Başlat",
+    "infoAriaLabel": "Yatırımları ve strateji tablosunu açıkla",
+    "unlockTooltip": "{{building}} ile açılır",
+    "minutes": "{{count}} dk",
+    "luckyChanceTop": "Kısmet Şansı %{{percent}} (Şanstan %{{fromLuck}})",
+    "luckyChanceLine": "%{{percent}} Kısmet Şansı: {{gold}}",
+    "headers": {
+      "time": "Süre",
+      "success": "Başarı",
+      "profit": "Kâr",
+      "lucky": "Kısmet Şansı",
+      "loss": "Zarar"
+    },
+    "tooltip": {
+      "time": "Yatırımın ne kadar süreceği.",
+      "success": "Yatırımın başarılı olma ihtimali.",
+      "profit": "Yatırım başarılı olursa kazanacağın kâr.",
+      "lucky": "Yatırım başarılı olduğunda kârının {{multiplier}} katına çıkma ihtimali.",
+      "loss": "Yatırım başarısız olursa kaybedeceğin altın.",
+      "wait": "Her yatırımdan sonra yeni tekliflerin gelmesi 15 dakika sürer."
+    }
+  },
+  "gambler": {
+    "title": "Saplantılı Kumarbaz",
+    "srDescription": "Saplantılı kumarbaza karşı zar oyunu",
+    "rulesAriaLabel": "Zar oyunu kuralları",
+    "rulesTurns": "Kumarbazla sırayla zar atarsınız.",
+    "rulesTotals": "Her oyuncunun attığı zarlar toplanır.",
+    "rulesGoal": "Hedef sayı 15.",
+    "rulesWinLose": "Hedefe tam ulaşan oyuncu kazanır. Hedefi aşan kaybeder.",
+    "rulesStand": "Sırası gelen oyuncunun toplamı rakibinkinden yüksekse zar atmamayı seçebilir.",
+    "tutorialIntro": "Oyunu öğrenmen için Kumarbaz {{count}} kez bahissiz oynamayı teklif ediyor.",
+    "boneDiceIntro": "Bahsini koy. Kemik Zarlar sayesinde Kumarbaza karşı iki kez oynayabilirsin.",
+    "placeBet": "Bahsini koy.",
+    "gamesRemaining": "Kalan oyun: {{remaining}}/{{total}}.",
+    "requiresLuck": "Açmak için {{luck}} Şans gerekir",
+    "bet": "Bahis:",
+    "practiceBet": "Alıştırma (0 Altın)",
+    "goal": "Hedef:",
+    "you": "Sen",
+    "gambler": "Kumarbaz",
+    "roll": "Zar At",
+    "noRoll": "Pas Geç",
+    "youWin": "Kazandın",
+    "youLose": "Kaybettin",
+    "practiceOutcome": "Alıştırma turu. Altın kazanmadın, kaybetmedin.",
+    "goldWon": "+{{amount}} Altın",
+    "goldLost": "-{{amount}} Altın",
+    "practiceWinRemaining": "Alıştırma turunu kazandın (ortaya Altın konmadı). Kalan alıştırma oyunu: {{remaining}}/{{total}}.",
+    "practiceLoseRemaining": "Alıştırma turunu kaybettin (ortaya Altın konmadı). Kalan alıştırma oyunu: {{remaining}}/{{total}}.",
+    "practiceWinComplete": "Alıştırma turunu kazandın (ortaya Altın konmadı). Alıştırma bitti. Artık ortaya Altın koyabilirsin.",
+    "practiceLoseComplete": "Alıştırma turunu kaybettin (ortaya Altın konmadı). Alıştırma bitti. Artık ortaya Altın koyabilirsin.",
+    "coinOffer": "Zarı ateşin ışığında evirip çeviriyor, sırıtışı inceliyor. 'Ya iki katı ya hiç,' diye fısıldıyor. 'Bir ile dört arası gelirse altının ikiye katlanır. Beş ya da altı gelirse hepsi benim.'",
+    "coinAccept": "Zarı At",
+    "coinDecline": "Kazancı Al",
+    "coinNothing": "Hiçbir şey",
+    "coinTookWinnings": "Zar senden yana gelmedi. Kazancın gitti."
+  },
+  "leaderboard": {
+    "title": "Liderlik Tablosu",
+    "dev": "Geliştirme",
+    "prod": "Canlı",
+    "rank": "Sıra",
+    "player": "Oyuncu",
+    "completionTime": "Bitirme Süresi",
+    "noEntries": "Henüz kayıt yok",
+    "lastUpdated": "Son güncelleme: {{time}}",
+    "recentCompletionsNote": "Yalnızca son 6 ayda bitirilen oyunlar gösterilir.",
+    "username": "Kullanıcı adı:",
+    "notSet": "Belirlenmedi",
+    "currentPlaytime": "Şu anki oyun süresi:",
+    "enterName": "Adını gir",
+    "normalMode": "Normal Mod",
+    "cruelMode": "Acımasız Mod",
+    "loadFailed": "Liderlik tablosu yüklenemedi",
+    "invalidUsername": "Geçersiz kullanıcı adı",
+    "usernameEmpty": "Kullanıcı adı boş olamaz",
+    "usernameTooLong": "Kullanıcı adı en fazla 20 karakter olabilir",
+    "mustSignIn": "Kullanıcı adı belirlemek için giriş yapmalısın",
+    "usernameNotAllowed": "Bu kullanıcı adına izin verilmiyor",
+    "usernameInappropriate": "Bu kullanıcı adında uygunsuz ifadeler var. Lütfen başka bir ad seç.",
+    "usernameTaken": "Kullanıcı adı alınmış",
+    "usernameTakenDesc": "Bu kullanıcı adı zaten kullanılıyor. Lütfen başka bir ad seç.",
+    "usernameSaved": "Kullanıcı adı kaydedildi",
+    "usernameSavedDesc": "Kullanıcı adın güncellendi",
+    "saveFailed": "Kullanıcı adı kaydedilemedi"
+  },
+  "investmentResult": {
+    "title": "Yatırım Sonucu",
+    "success": "{{amount}} Altınlık yatırımın başarılı oldu.",
+    "luckyChance": "Kısmet Şansı! {{amount}} Altınlık yatırımının kazancı {{multiplier}} katına çıktı.",
+    "partialLoss": "{{amount}} Altınlık yatırımın başarısız oldu."
+  },
+  "cube": {
+    "fallbackTitle": "Fısıldayan Küp",
+    "fallbackMessage": "Küp kadim sırlar fısıldıyor...",
+    "close": "Kapat",
+    "previous": "Önceki küp",
+    "next": "Sonraki küp",
+    "completionLog": "Bu yolculuğu tamamladın. Buradan devam edebilir ya da yeni bir oyuna başlayabilirsin. Belki de Acımasız Modda, tabii cesaretin varsa."
+  },
+  "timedEvent": {
+    "buy": "Satın Al",
+    "sell": "Sat",
+    "buyFor": "{{amount}} Altına Satın Al",
+    "sellFor": "{{amount}} Altına Sat",
+    "sayGoodbye": "Vedalaş",
+    "discount": "%{{percent}} indirim",
+    "discountFromKnowledge": "Bilgiden %{{percent}}{{max}}",
+    "knowledgeMax": " (en fazla)",
+    "discountFromRing": "İtaat Yüzüğünden %5",
+    "discountFromPact": "Kurnaz Tüccardan %20",
+    "prolongForInsight": "Süreyi {{minutes}} dk uzat"
+  },
+  "share": {
+    "title": "İlerlemene göz at",
+    "resources": "Kaynaklar: %{{percent}}",
+    "achievements": "Başarımlar: %{{percent}}",
+    "killedCreatures": "Öldürülen Yaratıklar",
+    "highestAttackWave": "En Yüksek Saldırı Dalgası",
+    "cruelMode": "Acımasız Mod",
+    "on": "Açık",
+    "off": "Kapalı",
+    "playTime": "Oyun süresi",
+    "playForFreeAt": "Ücretsiz oyna:",
+    "save": "Kaydet",
+    "copy": "Kopyala",
+    "copiedTitle": "Panoya kopyalandı",
+    "copyErrorTitle": "Görsel kopyalanamadı",
+    "copyErrorDesc": "Panoya kopyalarken bir sorun çıktı.",
+    "share": "Paylaş",
+    "errorTitle": "Görsel oluşturulamadı",
+    "errorDesc": "Görsel oluşturulurken bir sorun çıktı."
+  },
+  "feedback": {
+    "title": "Geri Bildirim",
+    "message": "Bir hata ya da çeviri sorunu mu buldun, yoksa bir önerin mi var? Yazarsan çok sevinirim.",
+    "openForm": "Geri Bildirim Gönder",
+    "contactVia": "Bana şuralardan da ulaşabilirsin:",
+    "reddit": "Reddit",
+    "instagram": "Instagram",
+    "email": "E-posta"
+  },
+  "galaxy": {
+    "title": "Demo burada bitiyor",
+    "description": "Oyun çıktığında yolculuğuna devam etmek için tam sürümü Steam'de istek listene ekle.",
+    "storeHeaderLink": "İstek listesine ekle",
+    "wishlistButton": "İstek listesine ekle",
+    "feedbackButton": "Geri Bildirim",
+    "startNewGameButton": "Yeni Oyuna Başla",
+    "continuePlayingButton": "Oynamaya devam et",
+    "seeWhatsNextButton": "Sırada ne var?"
+  }
+}

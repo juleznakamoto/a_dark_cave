@@ -1,0 +1,24 @@
+{
+  "endScreen": {
+    "pageTitle": "Yolculuk Tamamlandı - A Dark Cave",
+    "trustBadge": "Tebrikler!",
+    "headline1": "Yolculuğun burada sona eriyor",
+    "headline2": "",
+    "subtitle1": "En azından şimdilik...",
+    "subtitle2": "Acımasız Mod, daha zorlu bir oyunla seni bekliyor.",
+    "subtitle2Discount": "Oyunu bitirdiğin için indirim kazandın.",
+    "cruelMode": "Acımasız Mod",
+    "cruelModeBadge": "Özel indirim",
+    "cruelModeComingSoon": "Çok yakında",
+    "feedback": "Geri Bildirim",
+    "feedbackBlurb": "Bir hata ya da çeviri sorunu mu buldun, aklında bir öneri mi var? Görüşlerini duymayı çok isterim.",
+    "reviewBlurb": "Oyunu sevdiysen bir değerlendirme yazman beni çok sevindirir.",
+    "buyMeACoffee": "Destekle",
+    "continuePlaying": "Oynamaya Devam Et",
+    "newGame": "Yeni Oyun",
+    "pactsBadge": "Paktlar",
+    "moreGames": "Diğer Oyunlar",
+    "rateOnItch": "itch.io'da Puan Ver",
+    "writeReview": "Değerlendirme Yaz"
+  }
+}

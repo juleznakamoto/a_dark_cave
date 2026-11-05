@@ -1,0 +1,624 @@
+{
+  "books": {
+    "book_of_ascension": {
+      "description": "Benliğin yükselişine dair bir kitap. Bir işi yaptıkça o işte ustalaşırsın.",
+      "name": "Yükseliş Kitabı"
+    },
+    "book_of_absolution": {
+      "description": "Lanetli nesneleri yatıştırmaya yarayan ayinlerin kitabı. Olumsuz etkilerini zayıflatabilirsin.",
+      "name": "Arınma Kitabı"
+    },
+    "book_of_chainmaster": {
+      "description": "Çoktan ölmüş Zincir Efendisi'nin kitabı; işçileri sınırlarının ötesine zorlamanın acımasız yollarını anlatır.",
+      "name": "Zincir Efendisi'nin Kitabı"
+    },
+    "book_of_trials": {
+      "description": "Hayatın sınavlarından nasıl geçileceğini anlatan kitap.",
+      "name": "Sınavlar Kitabı"
+    }
+  },
+  "clothing": {
+    "alphas_hide": {
+      "description": "Sürü başı kurdun postu; ilkel bir güç taşır",
+      "name": "Alfanın Postu"
+    },
+    "ancient_scrolls": {
+      "description": "Bilinmeyen bir dilde yazılmış, çözülmeyi bekleyen gizemli parşömenler",
+      "name": "Kadim Parşömenler"
+    },
+    "arbalest_schematic": {
+      "description": "Güçlü bir tatar yayının çizimi",
+      "name": "Arbalet"
+    },
+    "ashen_embrace": {
+      "description": "Madencilik becerin artar",
+      "name": "Külden Kucak"
+    },
+    "ashen_embrace_enhanced": {
+      "description": "Madencilik becerin büyük ölçüde artar",
+      "name": "Külden Derin Kucak"
+    },
+    "bell_blessing": {
+      "description": "Ön kolunda gizemli bir çan izi. Uykuda kazandığın Odak Puanlarını ikiye katlar.",
+      "name": "Çan Kutsaması"
+    },
+    "black_bear_fur": {
+      "description": "Bu dünyaya ait olmayan dev bir ayının lanetli kara kürkü",
+      "name": "Kara Ayı Kürkü"
+    },
+    "black_wood": {
+      "description": "Kutsal alandaki ağaçtan kesilmiş, ışığı emen sık dokulu bir kalas.",
+      "name": "Kara Kereste"
+    },
+    "blackened_mirror": {
+      "description": "Kara demir çerçeveli, çevresine soğuk bir hava yayan uzun, çatlak ayna",
+      "name": "Kararmış Ayna"
+    },
+    "blacksteel_armor": {
+      "description": "Ölümcül dikenlerle bezeli ağır zırh",
+      "name": "Karaçelik Zırh"
+    },
+    "blood_baptized": {
+      "description": "Güçlü yaratıkların kanında yıkandıktan sonra kazanılır",
+      "name": "Kan Vaftizi"
+    },
+    "bloodstained_belt": {
+      "description": "Eski kanla lekelenmiş deri kemer",
+      "name": "Kan Lekeli Kemer"
+    },
+    "bloodstone": {
+      "description": "Karanlık bir enerjiyle nabız gibi atan kızıl taş",
+      "name": "Kantaşı"
+    },
+    "bone_devourer_blood": {
+      "description": "Kemik Yutucu'dan alınmış bir şişe soluk kan. Etkileri bilinmiyor.",
+      "name": "Yutucu Kanı"
+    },
+    "bone_dice": {
+      "description": "Kemikten oyulmuş, tedirgin edici bir pürüzsüzlükte cilalanmış zarlar. Kumarbazla fazladan bir el oynayabilirsin.",
+      "name": "Kemik Zarlar"
+    },
+    "bone_necklace": {
+      "description": "İnsan kemiklerinden yapılmış ilkel kolye",
+      "name": "Kemik Kolye"
+    },
+    "chitin_plates": {
+      "description": "Dev bataklık yaratıklarından çıkarılmış sağlam kitin plakalar. Bunlarla tahkimatlara Kitin Kaplama ekleyebilirsin.",
+      "name": "Kitin Plakalar"
+    },
+    "cracked_crown": {
+      "description": "Gizemli bir güç yayan kadim altın taç",
+      "name": "Çatlak Taç"
+    },
+    "creatures_bones": {
+      "description": "Yeraltı gölündeki yaratığın devasa kemikleri. Demirci bunlardan büyük bir kalkan dövebilir.",
+      "name": "Yaratığın Kemikleri"
+    },
+    "dagons_gift": {
+      "description": "Avcılık becerin artar",
+      "name": "Dagon'un Hediyesi"
+    },
+    "depths_gift": {
+      "description": "Mağarayı keşfederken daha çok şey bulursun",
+      "name": "Derinliklerin Hediyesi"
+    },
+    "dagons_gift_enhanced": {
+      "description": "Avcılık becerin büyük ölçüde artar",
+      "name": "Dagon'un Büyük Hediyesi"
+    },
+    "devourer_crown": {
+      "description": "Kemik Yutucu'nun kemikten yapılmış tacı",
+      "name": "Yutucu Tacı"
+    },
+    "ebon_grace": {
+      "description": "Kara ağaçtan gelen karanlık bir kutsama",
+      "name": "Kara Lütuf"
+    },
+    "ebony_ring": {
+      "description": "Orman tanrılarının hediye diye bıraktığı kara yüzük",
+      "name": "Abanoz Yüzük"
+    },
+    "elder_scroll": {
+      "description": "Yasak bilgiler barındıran kadim parşömen",
+      "name": "Ulu Parşömen"
+    },
+    "explorer_pack": {
+      "description": "Omuzlardaki yükü hafifleten, özenle yapılmış deri sırt çantası",
+      "name": "Kaşif Sırt Çantası"
+    },
+    "fang_charm": {
+      "description": "Devasa bir yaratığın kara dişlerinden dizilmiş kordon",
+      "name": "Diş Tılsımı"
+    },
+    "feeding_ring": {
+      "description": "Bir sabah beliren, parmağına kaynamış gibi duran yüzük",
+      "name": "Doyumsuz Yüzük"
+    },
+    "fishers_hand": {
+      "description": "Kıyı balıkçılarından öğrenilmiş, balık tuzağı kurmanın kadim yolları",
+      "name": "Balıkçı Eli"
+    },
+    "flames_touch": {
+      "description": "İmalat bedelleri azalır",
+      "name": "Alevin Dokunuşu"
+    },
+    "flames_touch_enhanced": {
+      "description": "İmalat bedelleri büyük ölçüde azalır",
+      "name": "Alevin Güçlü Dokunuşu"
+    },
+    "forests_grace": {
+      "description": "Ormanın geyikleri seni daha az fark ediyor gibi",
+      "name": "Ormanın Lütfu"
+    },
+    "brimstone_infusion": {
+      "description": "Çelik Ustaları +1 Çelik üretir",
+      "name": "Kükürt Özü"
+    },
+    "fresh_blood": {
+      "description": "Yabancılar köye daha sık gelir",
+      "name": "Taze Kan"
+    },
+    "frostglass": {
+      "description": "Soğuk yayan billur madde",
+      "name": "Ayazcam"
+    },
+    "keen_builder": {
+      "description": "İnşaat bedelleri azalır",
+      "name": "Gayretli Yapı Ustası"
+    },
+    "gifted_ring": {
+      "description": "Birinin bulman için bıraktığı sade yüzük",
+      "name": "Talih Yüzüğü"
+    },
+    "flask_harness": {
+      "description": "Fazladan Damarateşi İksiri taşımak için yastıklı yuvaları olan deri kuşak",
+      "name": "Şişe Kuşağı"
+    },
+    "grenadier_bag": {
+      "description": "Daha çok patlayıcı taşımak için güçlendirilmiş deri çanta",
+      "name": "Bombacı Çantası"
+    },
+    "highpriest_robe": {
+      "description": "Altın sırma işlemeli kutsal cüppe",
+      "name": "Başrahip Cüppesi"
+    },
+    "hollow_king_scepter": {
+      "description": "Kayıp kralın asası; güç ve delilik saçar. Madencilikte %5 ihtimalle kazanç ikiye katlanır.",
+      "name": "Kof Kral Asası"
+    },
+    "fur_cloak": {
+      "description": "Her adımı yumuşatan kalın kürk pelerin",
+      "name": "Kürk Pelerin"
+    },
+    "hunter_cloak": {
+      "description": "Her hareketi sessizleştiren esnek deri pelerin",
+      "name": "Avcı Pelerini"
+    },
+    "knights_burden": {
+      "description": "Şövalyenin seninle paylaştığı, zihnine ağır gelen bilgiler",
+      "name": "Şövalyenin Yükü"
+    },
+    "leatherbound_book": {
+      "description": "Deriyle ciltlenmiş, kapağına zincir damgası vurulmuş kadim kitap",
+      "name": "Deri Ciltli Kitap"
+    },
+    "loggers_gloves": {
+      "description": "Odun toplamayı kolaylaştıran sağlam deri eldivenler",
+      "name": "Oduncu Eldivenleri"
+    },
+    "lycan_blood": {
+      "description": "Alfa bir kurtadamdan alınmış bir şişe koyu kan. Etkileri bilinmiyor.",
+      "name": "Kurtadam Kanı"
+    },
+    "map_fragment": {
+      "description": "Bilinmeyen bir yeri gösteren harita parçaları.",
+      "name": "Harita Parçası"
+    },
+    "moon_bracelet": {
+      "description": "Eskimeyen beyaz taştan yapılmış, tüy gibi hafif, zarif bilezik",
+      "name": "Ay Bileziği"
+    },
+    "muttering_amulet": {
+      "description": "Tuhaf sesler çıkaran gizemli muska",
+      "name": "Mırıldanan Muska"
+    },
+    "necromancer_blood": {
+      "description": "Bir ölüçağırandan alınmış bir şişe kara kan. Etkileri bilinmiyor.",
+      "name": "Ölüçağıran Kanı"
+    },
+    "nightshade_bow_schematic": {
+      "description": "Zehirli bir yayın çizimi",
+      "name": "Gecegölgesi Yayı"
+    },
+    "obsidian_orb": {
+      "description": "Volkan camından yapılmış, zihne güç veren kudretli küre",
+      "name": "Obsidyen Küre"
+    },
+    "obsidian_orb_schematic": {
+      "description": "Kudretli bir obsidyen kürenin çizimi",
+      "name": "Obsidyen Küre"
+    },
+    "occultist_grimoire": {
+      "description": "Sapkın bir okültistin şeytani bilgileriyle dolu büyü kitabı",
+      "name": "Okültistin Büyü Kitabı"
+    },
+    "odd_trinket": {
+      "description": "Odun keserken bulunan, kehribar renginde parlayan iksir",
+      "name": "Tuhaf İksir"
+    },
+    "ravenfeather_mantle": {
+      "description": "Işıldayan kuzgun tüylerinden dokunmuş gizemli pelerin",
+      "name": "Kuzgun Tüyü Pelerin"
+    },
+    "ravens_mark": {
+      "description": "Yabancılar köye daha sık gelir",
+      "name": "Kuzgunun Damgası"
+    },
+    "rich_veins": {
+      "description": "Madencilik becerin artar",
+      "name": "Zengin Damarlar"
+    },
+    "ravens_mark_enhanced": {
+      "description": "Yabancılar köye çok daha sık gelir",
+      "name": "Kuzgunun Büyük Damgası"
+    },
+    "rootseeker_charm": {
+      "description": "Yabanda ot toplayanların karşısına Damarkökü çıkaran oyma tılsım.",
+      "name": "Kökarayan Tılsım"
+    },
+    "ravens_orb": {
+      "description": "Kuzgunların kadim bilgiyle kutsadığı kara küre",
+      "name": "Kuzgunun Küresi"
+    },
+    "red_mask": {
+      "description": "Koyu kızıl deriden yapılmış iğrenç maske",
+      "name": "Kızıl Maske"
+    },
+    "ring_of_clarity": {
+      "description": "Pırıl pırıl kristalden oyulmuş yüzük",
+      "name": "Berraklık Yüzüğü"
+    },
+    "ring_of_drowned": {
+      "description": "Hep ıslak ve soğuk duran, kararmış yüzük",
+      "name": "Boğulmuşların Yüzüğü"
+    },
+    "ring_of_obedience": {
+      "description": "Mutlu bir kadının hediyesi; ucuna daha küçük bir yüzük iliştirilmiş",
+      "name": "İtaat Yüzüğü"
+    },
+    "sacrificial_tunic": {
+      "description": "Eski tanrılara sunulan adakları güçlendiren kutsal giysi",
+      "name": "Kurban Tuniği"
+    },
+    "sealed_chest": {
+      "description": "Açamadığın, çok sağlam bir sandık",
+      "name": "Mühürlü Sandık"
+    },
+    "shadow_boots": {
+      "description": "Her türlü zeminde gölge gibi hızlı yürü",
+      "name": "Gölge Çizmeleri"
+    },
+    "shadow_flute": {
+      "description": "Gölgeleri doğaya aykırı biçimde kımıldatan kemik kaval",
+      "name": "Gölge Kavalı"
+    },
+    "sharp_aim": {
+      "description": "Avcıların nişanı keskinleşir",
+      "name": "Keskin Nişan"
+    },
+    "skilled_hands": {
+      "description": "İmalat bedelleri azalır",
+      "name": "Becerikli Eller"
+    },
+    "skeleton_key_schematic": {
+      "description": "Bir maymuncuğun çizimi",
+      "name": "Maymuncuk"
+    },
+    "stonebinders_codex": {
+      "description": "Gizli kütüphaneden gelen, verimli inşaatın sırlarını açan cilt",
+      "name": "Taşbağlayanın Elyazması"
+    },
+    "stormglass_halberd_schematic": {
+      "description": "Heybetli bir teberin çizimi",
+      "name": "Fırtınacam Teber"
+    },
+    "superior_bombs": {
+      "description": "Simyacı bombaları geliştirdi; artık daha çok hasar veriyorlar",
+      "name": "Üstün Bombalar"
+    },
+    "survivors_last_words": {
+      "description": "Can çekişen bir yabancının son duası",
+      "name": "Hayatta Kalanın Son Sözleri"
+    },
+    "survivors_notes": {
+      "description": "Uzun zaman önce burada yaşamış birinin bıraktığı, işe yarar öğütlerle dolu yıpranmış parşömen.",
+      "name": "Hayatta Kalanın Notları"
+    },
+    "tarnished_amulet": {
+      "description": "Uğur getiren, yıllanmış muska",
+      "name": "Eskimiş Muska"
+    },
+    "tarnished_compass": {
+      "description": "Yol arayanlar için kadim bir kalıntı.",
+      "name": "Eskimiş Pusula"
+    },
+    "trail_sense": {
+      "description": "Avcıların daha çok yiyecek getirir",
+      "name": "İz Sezgisi"
+    },
+    "unnamed_book": {
+      "description": "İnsan derisiyle ciltlenmiş, yasak bilgilerle dolu kitap",
+      "name": "Adsız Kitap"
+    },
+    "whisperers_mark": {
+      "description": "Karanlıkta fısıldayanın damgası",
+      "name": "Fısıldayanın Damgası"
+    },
+    "whispering_cube": {
+      "description": "Kökeni bilinmeyen, kusursuz cilalanmış metal küp; kayıp uygarlığın tarihinden kırıntılar fısıldıyor.",
+      "name": "Fısıldayan Küp"
+    },
+    "wooden_figure": {
+      "description": "Dokunaçlı, tekinsiz bir yaratığı betimleyen oyma ahşap heykelcik",
+      "name": "Ahşap Heykelcik"
+    }
+  },
+  "fellowship": {
+    "ashwraith_huntress": {
+      "description": "Orman kabilesinden, kan yeminiyle bağlanmış yabani bir avcı kadın.",
+      "name": "Külhayalet Avcısı"
+    },
+    "disgraced_prior": {
+      "description": "Tarikatından kovulmuş eski başkeşiş. Bitmek bilmeyen emekle günahlarının kefaretini ödüyor.",
+      "name": "Düşkün Başkeşiş"
+    },
+    "elder_wizard": {
+      "description": "Son günlerini yaşayan yaşlı büyücü. Büyülü ateş sanatlarında çok uzun zaman önce ustalaşmış.",
+      "name": "Yaşlı Büyücü"
+    },
+    "one_eyed_crow": {
+      "description": "Tek gözünün bakışı insanı delip geçen gizemli karga. Karga Koşumuyla evcilleştirildi.",
+      "name": "Tek Gözlü Karga"
+    },
+    "restless_knight": {
+      "description": "Savaşlarda pişmiş, eski dünyanın kalıntılarını görmüş bir gazi.",
+      "name": "Huzursuz Şövalye"
+    },
+    "the_hound": {
+      "description": "Zehirlenmiş bir dağ köyünden sağ kurtulan, iri kaslı, yüzü biçimsizleşmiş adam.",
+      "name": "Hoyrat Tazı"
+    },
+    "grey_one": {
+      "description": "Öldürülen alfanın yanından alınıp evcilleştirilmiş kurt yavrusu.",
+      "name": "Boz"
+    }
+  },
+  "tools": {
+    "adamant_axe": {
+      "description": "En sert metalden dövülmüş, kırılmaz balta",
+      "name": "Adamantit Balta"
+    },
+    "adamant_lantern": {
+      "description": "Fenerlerin en üstünü; her yolu aydınlatır",
+      "name": "Adamantit Fener"
+    },
+    "adamant_pickaxe": {
+      "description": "Maden aletlerinin zirvesi; eğilmez, şaşmaz",
+      "name": "Adamantit Kazma"
+    },
+    "blacksmith_hammer": {
+      "description": "Bir zamanlar büyük bir demirciye ait olan efsanevi çekiç",
+      "name": "Demirci Çekici"
+    },
+    "blacksteel_axe": {
+      "description": "Nadir Karaçelikten dövülmüş balta",
+      "name": "Karaçelik Balta"
+    },
+    "blacksteel_lantern": {
+      "description": "Nadir Karaçelikten dövülmüş fener",
+      "name": "Karaçelik Fener"
+    },
+    "blacksteel_pickaxe": {
+      "description": "Nadir Karaçelikten dövülmüş kazma",
+      "name": "Karaçelik Kazma"
+    },
+    "bone_saw": {
+      "description": "Ölüçağıranın aleti; et kesmekte insanı ürpertecek kadar etkili",
+      "name": "Kemik Testeresi"
+    },
+    "crow_harness": {
+      "description": "Karga yakalamak için özel yapılmış koşum. Bununla Karauçurum Kanyonu'nda bir karga yakalayabilirsin.",
+      "name": "Karga Koşumu"
+    },
+    "giant_trap": {
+      "description": "Ormanın dev yaratıklarını bile yakalayabilen koca tuzak",
+      "name": "Dev Tuzak"
+    },
+    "hidden_library_map": {
+      "description": "Manastırdan gelen, mağaranın derinliklerindeki gizli kütüphanenin yerini gösteren harita",
+      "name": "Gizli Kütüphane Haritası"
+    },
+    "iron_axe": {
+      "description": "Kalın gövdeleri devirmeye yarayan keskin balta",
+      "name": "Demir Balta"
+    },
+    "iron_lantern": {
+      "description": "Güvenilir ışık veren basit fener",
+      "name": "Demir Fener"
+    },
+    "iron_pickaxe": {
+      "description": "Verimli kazı için dayanıklı kazma",
+      "name": "Demir Kazma"
+    },
+    "mastermason_chisel": {
+      "description": "Çoktan unutulmuş bir yapı ustasının ince işçilikli aleti",
+      "name": "Taş Ustasının Keskisi"
+    },
+    "natharit_pickaxe": {
+      "description": "Bilinmeyen bir maddeden yapılmış, son derece sağlam ve eşsiz kalitede kazma",
+      "name": "Natharit Kazma"
+    },
+    "obsidian_axe": {
+      "description": "Ustura gibi keskin, volkanik ağızlı efsanevi balta",
+      "name": "Obsidyen Balta"
+    },
+    "obsidian_lantern": {
+      "description": "Güçlü, titremeyen bir ışık saçan kudretli fener",
+      "name": "Obsidyen Fener"
+    },
+    "obsidian_pickaxe": {
+      "description": "Volkan camından yapılmış usta işi maden aleti",
+      "name": "Obsidyen Kazma"
+    },
+    "occultist_map": {
+      "description": "Mağaradaki bir okültistin odasını gösteren yıpranmış harita",
+      "name": "Okültistin Haritası"
+    },
+    "mountain_village_map": {
+      "description": "Yüksek geçitlerden bir dağ köyüne giden yolun işaretlendiği kaba harita.",
+      "name": "Dağ Köyü Haritası"
+    },
+    "reinforced_rope": {
+      "description": "Mağaranın daha derin odalarına inmeye yarayan sağlam halat",
+      "name": "Takviyeli Halat"
+    },
+    "skeleton_key": {
+      "description": "Her kilidi açtığı söylenen gizemli anahtar",
+      "name": "Maymuncuk"
+    },
+    "skull_lantern": {
+      "description": "Lanetli kemikten yapılmış, en derin karanlıkları aydınlatır",
+      "name": "Kafatası Feneri"
+    },
+    "steel_axe": {
+      "description": "Su verilmiş çelikten dövülmüş, ince işçilikli balta",
+      "name": "Çelik Balta"
+    },
+    "steel_lantern": {
+      "description": "En karanlık yerleri aydınlatan parlak fener",
+      "name": "Çelik Fener"
+    },
+    "steel_pickaxe": {
+      "description": "Dayanıklı çelikten yapılmış çok sağlam maden aleti",
+      "name": "Çelik Kazma"
+    },
+    "stone_axe": {
+      "description": "Odun kesmek için basit balta",
+      "name": "Taş Balta"
+    },
+    "stone_pickaxe": {
+      "description": "Maden çıkarmak için ilkel kazma",
+      "name": "Taş Kazma"
+    },
+    "wanderers_lantern": {
+      "description": "Taşıyana biraz şans verir, karanlığın gizlediklerini fark etme fırsatı da.",
+      "name": "Gezginin Feneri"
+    },
+    "woodcutter_axe": {
+      "description": "Bir zamanlar oduncunun taşıdığı güçlü balta",
+      "name": "Oduncunun Baltası"
+    }
+  },
+  "weapons": {
+    "adamant_sword": {
+      "description": "Eşsiz güçte efsanevi kılıç",
+      "name": "Adamantit Kılıç"
+    },
+    "arbalest": {
+      "description": "Dâhi bir mühendisin tasarladığı, titizlikle yapılmış arbalet",
+      "name": "Arbalet"
+    },
+    "ashen_dagger": {
+      "description": "Külgetiren'in verdiği, volkan külünden dövülmüş hançer",
+      "name": "Külden Hançer"
+    },
+    "ashen_greatshield": {
+      "description": "Yeraltı gölündeki yaratığın kemiklerinden dövülmüş devasa kalkan",
+      "name": "Külden Büyük Kalkan"
+    },
+    "ashfire_bomb": {
+      "description": "Bu dünyaya ait olmayan bir ateşle parlayan yıkıcı bomba",
+      "name": "Külateşi Bombası"
+    },
+    "blacksteel_bow": {
+      "description": "Nadir Karaçelikten dövülmüş yay",
+      "name": "Karaçelik Yay"
+    },
+    "blacksteel_sword": {
+      "description": "Nadir Karaçelikten dövülmüş kılıç",
+      "name": "Karaçelik Kılıç"
+    },
+    "bloodstone_staff": {
+      "description": "Başına Kantaşı oturtulmuş, karanlık bir enerjiyle nabız gibi atan asa",
+      "name": "Kantaşı Asa"
+    },
+    "compound_bow": {
+      "description": "Kayıp uygarlıktan kalma, son derece isabetli silah",
+      "name": "Makaralı Yay"
+    },
+    "crude_bow": {
+      "description": "Her zorlukta güvenebileceğin basit yay",
+      "name": "Kaba Yay"
+    },
+    "ember_bomb": {
+      "description": "Kızgın çekirdeğiyle yoğun ısı yayan güçlü bomba",
+      "name": "Kor Bombası"
+    },
+    "frostglass_sword": {
+      "description": "Ayazcamdan dövülmüş, soğuk bir güç yayan kılıç",
+      "name": "Ayazcam Kılıç"
+    },
+    "huntsman_bow": {
+      "description": "Dengeli ve isabetli, geliştirilmiş yay",
+      "name": "Avcı Yayı"
+    },
+    "iron_sword": {
+      "description": "Savaş becerini artıran sağlam demir kılıç",
+      "name": "Demir Kılıç"
+    },
+    "long_bow": {
+      "description": "Menzili ve isabeti yüksek, üstün yay",
+      "name": "Uzun Yay"
+    },
+    "manhunter_bow": {
+      "description": "İnsan avcısının yayı. Kirişi insan avlamak için gerilmiş.",
+      "name": "İnsan Avcısı Yayı"
+    },
+    "master_bow": {
+      "description": "Yayların en üstünü; gücü ve isabetiyle eşsiz",
+      "name": "Usta Yayı"
+    },
+    "nightshade_bow": {
+      "description": "Kara ağaçtan yapılmış yay; okları zehir taşır",
+      "name": "Gecegölgesi Yayı"
+    },
+    "nordic_war_axe": {
+      "description": "Viking bir demirci ustasının dövdüğü efsanevi savaş baltası",
+      "name": "Kuzeyli Savaş Baltası"
+    },
+    "obsidian_sword": {
+      "description": "Volkan camından dövülmüş, ustura gibi keskin kılıç",
+      "name": "Obsidyen Kılıç"
+    },
+    "steel_sword": {
+      "description": "Dengesi kusursuz, ince işçilikli çelik kılıç",
+      "name": "Çelik Kılıç"
+    },
+    "stormglass_halberd": {
+      "description": "Ustalıkla arıtılmış Adamantitten dövülmüş eşsiz teber",
+      "name": "Fırtınacam Teber"
+    },
+    "veinfire_elixir": {
+      "description": "Nadir Damarkökünden damıtılmış simyasal şifa iksiri",
+      "name": "Damarateşi İksiri"
+    },
+    "void_bomb": {
+      "description": "Çevresindeki her şeyi büküyormuş gibi görünen dehşet verici bomba",
+      "name": "Hiçlik Bombası"
+    },
+    "war_bow": {
+      "description": "Kuvvet ve isabet için yapılmış, son derece güçlü yay",
+      "name": "Savaş Yayı"
+    }
+  }
+}

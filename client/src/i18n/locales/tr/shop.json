@@ -1,0 +1,103 @@
+{
+  "additional_preset_slots": {
+    "activationMessage": "Köylü meslekleri için iki ek ön ayar yuvası eklendi.",
+    "description": "Köylü meslekleri için iki ek ön ayar yuvası",
+    "name": "2 Ek Ön Ayar Yuvası"
+  },
+  "additional_construction_queue_slot": {
+    "activationMessage": "İki ek inşaat sırası yuvası eklendi.",
+    "description": "Aynı anda iki inşaat daha yürütebilirsin",
+    "name": "2 Ek İnşaat Sırası Yuvası"
+  },
+  "advanced_bundle": {
+    "activationMessage": "Paketin içeriği satın aldıklarına eklendi!",
+    "name": "Soluk Kral Paketi"
+  },
+  "artifact_bundle": {
+    "activationMessage": "Paketin içeriği satın aldıklarına eklendi!",
+    "name": "Karanlık Eserler Paketi"
+  },
+  "ashen_throne_bundle": {
+    "activationMessage": "Paketin içeriği satın aldıklarına eklendi!",
+    "name": "Külden Taht Paketi"
+  },
+  "basic_survival_bundle": {
+    "activationMessage": "Paketin içeriği satın aldıklarına eklendi!",
+    "name": "Sönen Gezgin Paketi"
+  },
+  "crow_harness": {
+    "activationMessage": "Karga Koşumu aletlerine eklendi! Şimdi koşuma bağlayacak bir karga bulman gerek.",
+    "description": "Haberci kargalar için özel yapılmış koşum. Karga hikâyesini açar. Yeni bir yoldaş kazandırır.",
+    "name": "Karga Koşumu"
+  },
+  "cruel_mode": {
+    "activationMessage": "Acımasız Mod etkinleştirildi! En zorlu sınavla yüzleşmek için yeni bir oyun başlat.",
+    "description": "Daha acımasız bir dünyada yeniden oyna: genişleyen hikâye, daha çok eşya, daha ölümcül düşmanlar ve dahası.",
+    "name": "Acımasız Mod"
+  },
+  "full_game": {
+    "activationMessage": "Tam Oyun açıldı ve etkinleştirildi! Yolculuk artık hiçbir kısıtlama olmadan sürüyor.",
+    "description": "Oyunun tamamını aç ve yolculuğuna devam et.",
+    "name": "Tam Oyun"
+  },
+  "gold_1000": {
+    "activationMessage": "Envanterine 1.000 Altın eklendi.",
+    "description": "Hatırı sayılır miktarda Altın",
+    "name": "1.000 Altın"
+  },
+  "gold_100_free": {
+    "activationMessage": "Hediye 100 Altın envanterine eklendi!",
+    "description": "Soğuk bir dünyada her gün biraz merhamet",
+    "name": "100 Altın Hediye"
+  },
+  "gold_15000": {
+    "activationMessage": "Envanterine 15.000 Altın eklendi.",
+    "description": "Günah sayılacak kadar çok Altın",
+    "name": "15.000 Altın"
+  },
+  "gold_20000": {
+    "activationMessage": "Envanterine 20.000 Altın eklendi.",
+    "description": "Günah sayılacak kadar çok Altın",
+    "name": "20.000 Altın"
+  },
+  "gold_30000": {
+    "activationMessage": "Envanterine 30.000 Altın eklendi.",
+    "description": "Tanrıları öfkelendirecek kadar çok Altın",
+    "name": "30.000 Altın"
+  },
+  "gold_250": {
+    "activationMessage": "Envanterine 1.000 Altın eklendi.",
+    "description": "Hatırı sayılır miktarda Altın",
+    "name": "1.000 Altın"
+  },
+  "gold_2500": {
+    "activationMessage": "Envanterine 2.500 Altın eklendi.",
+    "description": "Azımsanmayacak bir hazine",
+    "name": "2.500 Altın"
+  },
+  "gold_5000": {
+    "activationMessage": "Envanterine 5.000 Altın eklendi.",
+    "description": "Bir servet değerinde Altın",
+    "name": "5.000 Altın"
+  },
+  "great_feast_1": {
+    "activationMessage": "Büyük Şölen başladı!",
+    "description": "30 dakika boyunca:\n• 5 kat Köy Üretimi\n• +%25 Yeni Köylü Şansı",
+    "name": "1 Büyük Şölen"
+  },
+  "great_feast_3": {
+    "activationMessage": "Büyük Şölen başladı!",
+    "description": "30 dakika boyunca:\n• 5 kat Köy Üretimi\n• +%25 Yeni Köylü Şansı",
+    "name": "3 Büyük Şölen"
+  },
+  "skull_lantern": {
+    "activationMessage": "Kafatası Feneri aletlerine eklendi! Ürkütücü ışığı derinliklerde sana yol gösterecek.",
+    "description": "Lanetli kemikten yapılmış, en derin karanlıkları aydınlatır. Kafatası Feneri hikâyesini açar.",
+    "name": "Kafatası Feneri"
+  },
+  "tarnished_compass": {
+    "activationMessage": "Eskimiş Pusula envanterine eklendi! Kadim büyüsü işlerine talih katabilir.",
+    "description": "Kayıp uygarlıktan kalma bir eser; ibresi gizli yerleri gösterir. Pusula hikâyesini açar.",
+    "name": "Eskimiş Pusula"
+  }
+}

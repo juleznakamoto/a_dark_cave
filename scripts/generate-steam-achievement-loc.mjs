@@ -105,6 +105,7 @@ const STEAM_LANGS = [
   ["brazilian", "pt-BR"],
   ["japanese", "ja"],
   ["polish", "pl"],
+  ["turkish", "tr"],
 ];
 
 function escapeVdf(value) {

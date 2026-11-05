@@ -1,0 +1,127 @@
+{
+  "log": {
+    "freezingDeath": {
+      "one": "Bir köylü soğuktan donarak ölüyor.",
+      "other": "{{count}} köylü soğuktan donarak ölüyor."
+    },
+    "madnessDeath": {
+      "one": "Bir köylü deliliğe yenik düşüp canına kıyıyor.",
+      "other": "{{count}} köylü deliliğe yenik düşüp canına kıyıyor.",
+      "rampageOne": "Bir köylü delirip önce bir başkasını, sonra kendini öldürüyor.",
+      "rampageOther": "Bir köylü delirip önce {{others}} kişiyi, sonra kendini öldürüyor."
+    },
+    "madnessLevel": {
+      "increased": "Deliliğe biraz daha gömülüyorsun.",
+      "decreased": "Zihnindeki delilik yatışıyor."
+    },
+    "starvationDeath": {
+      "one": "Bir köylü açlığa yenik düşüyor.",
+      "other": "{{count}} köylü açlıktan ölüyor."
+    },
+    "villagersFreezing": "Köylüler donuyor.",
+    "villagersStarving": "Köylüler açlık çekiyor.",
+    "boostApplied": "Takviye uygulandı.",
+    "investmentComplete": {
+      "success": "{{amount}} Altınlık yatırım sonuçlandı: Başarılı. {{payout}} Altın kazandın.",
+      "successLucky": "{{amount}} Altınlık yatırım sonuçlandı: Kısmet Şansı! {{payout}} Altın kazandın.",
+      "wipeout": "{{amount}} Altınlık yatırım sonuçlandı: Tam kayıp. Yatırdığın {{amount}} Altının hepsini kaybettin.",
+      "failure": "{{amount}} Altınlık yatırım sonuçlandı: Başarısız. {{loss}} Altın kaybettin."
+    },
+    "stranger": {
+      "variant0": "Bir yabancı yaklaşıp köye katılıyor.",
+      "variant1": "Bir yolcu geliyor ve kalmaya karar veriyor.",
+      "variant2": "Bir gezgin çıkagelip topluluğun bir parçası oluyor.",
+      "variant3": "Biri köye gelip yerleşiyor.",
+      "variant4": "Bir yabancı topluluğa katılıyor.",
+      "variant5": "Yeni biri geliyor ve burayı yurt ediniyor.",
+      "multiple0": "{{count}} yabancı köye katılıyor.",
+      "multiple1": "{{count}} yolcu geliyor ve kalmaya karar veriyor.",
+      "multiple2": "{{count}} gezgin gelip topluluğa katılıyor."
+    },
+    "building": {
+      "darkEstate": "Karanlık Malikâne, köyün yakınındaki küçük bir tepede yükseliyor: inzivaya çekilecek bir yer, bir sığınak.",
+      "blacksmith": "Demircinin ocağı canlanıyor. Köyde artık zanaatin kalbi atıyor.",
+      "firstWoodenHut": "İlk Ahşap Kulübe tamamlandı. Bu, büyük bir şeyin başlangıcı olabilir.",
+      "villageGrowthSuggestion": "Köy hızla büyüyor. Belki taş evler daha çok köylüyü barındırabilir.",
+      "cityGrowthMilestone": "Şehir; ticaretin, zanaatin ve daha aydınlık günlerin vaadiyle canlanan kalabalık bir kente dönüştü.",
+      "moonstoneDiscovered": "Çukurun derinliklerinde işçiler Aytaşı damarları buluyor: enerjiyle dolup taşan, ışıl ışıl bir maden.",
+      "foundry": "Dökümhane gürleyerek canlanıyor; ateşin harı ham maddeleri birbirine kaynaştırıyor.",
+      "masterworkFoundry": "Usta İşi Dökümhane tamamlandı: maden işçiliğinde varılan en yüksek ustalığın anıtı. Ateşlerinde Karaçelik dövülebilir. Neredeyse kırılmaz ama üretmesi çok zordur.",
+      "altar": "Ormanın kıyısında bir Sunak yükseliyor. Ormanın derinliklerinde yaşayanı yatıştırmak için dikildi.",
+      "grandHunterLodge": "Ulu Av Köşkü tamamlandı: usta avcıların toplandığı görkemli bir yapı.",
+      "clerksHut": "Kâtip Kulübesi tamamlandı. Bilginler dünyayı incelemek ve zihinlerini bilemek için içeride toplanıyor.",
+      "scriptorium": "Yazıhane tamamlandı: bilginlerin birikimlerini derinleştirdiği bir bilgelik yuvası.",
+      "inkwardenAcademy": "Kitap Bekçileri Akademisi yükseliyor: usta bilginlerin en derin bilgiyi damıttığı görkemli bir salon.",
+      "tannery": "Tabakhane tamamlandı. Zanaatkârlar işe koyulurken havayı işlenen derinin kokusu dolduruyor.",
+      "highTannery": "Yüce Tabakhane inşa edildi: usta zanaatkârların postları en iyi deriye dönüştürdüğü büyük bir atölye.",
+      "longhouse": "İlk Uzun Ev yükseliyor: kalın kalaslardan çatılmış, ferah ve devasa bir ahşap salon.",
+      "furTents": "İlk Kürk Çadırlar köyün kıyısına kuruluyor. Artık daha çok insanın sıcak bir sığınağı var.",
+      "shrine": "Sunağın yanında kutsal bir Mabet yükseliyor. Varlığı, sıkıntılı zihinlere huzur ve dinginlik getiriyor.",
+      "temple": "Görkemli bir Tapınak tamamlandı. Kutsal salonlarında, azap çeken ruhu yatıştıran fısıltılı dualar yankılanıyor.",
+      "sanctum": "Kutsal Mekân, ilahi korumanın kandili gibi yükseliyor. Kutsanmış havası en karanlık düşünceleri ve korkuları dağıtıyor.",
+      "alchemistHall": "Simyacı Salonu tüm heybetiyle yükseliyor. Odaları fokurdayan potalar ve unutulmuş bir zanaatin parıldayan aletleriyle dolu.",
+      "alchemistHallRepaired": "Simyacı Salonu onarıldı. Bombalar yeniden yapılabilir.",
+      "tradePost": "Ormanın yakınına bir Ticaret Noktası kuruldu. Tüccarlar mallarını Altın karşılığında satmaya geliyor.",
+      "grandBazaar": "Ulu Çarşı yükseliyor: uzak diyarlardan gelen tacirlerin mal alıp sattığı uçsuz bucaksız bir pazar yeri.",
+      "merchantsGuild": "Tacirler Loncası kuruldu: bütün ticaret yollarını elinde tutan ve yerleşimine eşi görülmemiş bir zenginlik getiren güçlü bir birlik.",
+      "bastion": "Tabya, taştan bir dağ gibi yükseliyor; duvarları kalın ve sarsılmaz. Aşağıdaki derinliklerde kıpırdanan her neyse, ona karşı bir koruma sözü.",
+      "wizardTower": "Büyücü Kulesi, büyülü bir enerjiyle çıtırdayarak göğe doğru kıvrıla kıvrıla yükseliyor. Büyücü, kadim ciltleri ve esrarengiz eserleriyle birlikte kuleye yerleşiyor.",
+      "fortifiedMoat": "Artık yerleşimi derin bir hendek çeviriyor; suları karanlık ve tehlikeli. Hiçbir düşman onu kolay kolay aşamaz.",
+      "traps": "Köyün çevresine tuzaklar kuruldu. Saldırmaya cüret eden herkesi gizli çukurlar, kapanlar ve sivri kazıklar bekliyor.",
+      "improvedTraps": "Köyün çevresi üstü örtülü çukurlar, yaylı kapanlar ve çelik düzeneklerle güçlendirildi. Saldıranları çok daha ölümcül bir karşılama bekliyor.",
+      "blackMonolith": "Kara Monolit köyün ortasında yükseliyor: kara Adamantitten yapılmış heybetli bir anıt. Yüzeyi ışığı emiyor sanki. Köylüler onun çevresinde saygı ve korkuyla toplanıyor.",
+      "blackEstate": "Kara Malikâne, sis perdesine bürünmüş, tepenin üzerinde yükseliyor.",
+      "chitinPlating": "Tahkimatlar artık Kitin Kaplamayla güçlendirildi. Köyün savunması büyük ölçüde arttı.",
+      "pillarOfClarity": "Berraklık Sütunu yükseliyor: kadim bir güçle uğulduyormuş gibi duran, ışıl ışıl bir dikilitaş. Yakınındakilere dinginlik ve odak veriyor.",
+      "boneTemple": "Kemik Tapınağı, özenle dizilmiş binlerce kemikten yükseliyor: eski tanrılara adanmış bir anıt. Ondan karanlık bir güç yayılıyor; köylüler ona saygı ve korkuyla yaklaşıyor.",
+      "heartfire": "Yürek Ateşi yakıldı. Sıcaklığı ve ışığı köye yeni bir amaç veriyor."
+    },
+    "gameplay": {
+      "forestUnlocked": "Köyü sık, karanlık bir orman çevreliyor. Havada tehlike kokusu var, ama burası odun kesip avlanmak için iyi bir yer de olabilir.",
+      "villageUnlocked": "Mağaranın girişini buluyorsun. Dışarıda bir açıklık uzanıyor. Barınak kurmak için iyi bir yere benziyor.",
+      "villageBegins": "Küçük bir köy şekillenmeye başlıyor. Köylülerin hayatta kalmak için yiyeceğe ve oduna ihtiyacı var."
+    },
+    "crafting": {
+      "emberBombFirst": "Simyacının bilgisi paha biçilmez çıkıyor. Güçlü bir Kor Bombası yapıyorsun. Özü yoğun bir sıcaklıkla ve yıkıcı bir güçle parlıyor.",
+      "ashfireBombFirst": "Gizemli Külateşi Tozunu kullanarak, öteki dünyadan bir ateşle nabız gibi atan olağanüstü bir bomba yapıyorsun. Alevleri bu âleme ait olmayan renklerle yanıyor.",
+      "voidBombFirst": "Külateşi Tozunu Obsidyen ve Kara Barutla birleştirerek dehşet verici güçte bir silah yaratıyorsun. Hiçlik Bombası etrafındaki her şeyi büküp çarpıtıyor gibi; gerçekliğin kendisi bile ondan geri çekiliyor.",
+      "veinfireElixirFirst": "Simyacı, Damarkökü liflerinden ışıldayan bir öz damıtıyor. Artık elinde bir Damarateşi İksiri var: her şeyin kaybedildiği sanılan anda Tabyaya güç verdiği söylenen bir iksir.",
+      "frostglassSword": "Ayazcam görkemli bir kılıca dönüşürken demircinin ocağı uhrevi mavi alevlerle yanıyor. Kılıcın ağzı öteki dünyadan gelen soğuk bir ışıkla parlıyor, muazzam bir güç yayıyor.",
+      "arbalest": "Çizime uyarak özenle süslenmiş bir Arbalet yapıyorsun. Usta bir zanaatkârın elinden çıkmış; mekanizması kusursuz.",
+      "nightshadeBow": "Kapkara ağaçtan bir yay yapıyorsun. Okları düşmanlarına zehir taşıyacak.",
+      "bloodstoneStaff": "Büyücü, gizemli gücünü Kantaşlarına akıtıp onları kadim bir ağaçla kaynaştırıyor. Kantaşı Asa kızıl bir enerjiyle nabız gibi atıyor; güç ve yasak bilgi saçıyor.",
+      "stormglassHalberd": "Fırtınacam Teberi dövüyorsun; ağzı uhrevi bir ışıkla parlıyor. Bu efsanevi silahı kuşanınca kendini çok daha güçlü hissediyorsun.",
+      "ashenGreatshield": "Demirci, göl yaratığının devasa kemiklerini delinmez bir kalkana dönüştürüyor. Külden Büyük Kalkan eşsiz sağlamlıkta bir siper. Adamlarını en ölümcül tehlikelere karşı bile korur."
+    },
+    "sacrifice": {
+      "ringOfClarity": "Kurban adaklarının arasında billur gibi berrak bir yüzük buluyorsun.",
+      "moonBracelet": "Kurban adaklarının arasında beyaz taştan bir bilezik buluyorsun.",
+      "animalsMaxed": "Ormandan Kör Druid çıkagelip konuşuyor: 'Kara Monolit kabul edeceği bütün kanı aldı. Hayvan kurbanı bundan öteye gidemez.'"
+    },
+    "gambler": {
+      "win": "Saplantılı kumarbazdan {{amount}} Altın kazandın.",
+      "lose": "Saplantılı kumarbaza {{amount}} Altın kaybettin.",
+      "forfeit": "Saplantılı kumarbaz, susmanı hükmen yenilgi saydı.",
+      "coinNothing": "Zar aleyhine geldi. Kazancın gitti.",
+      "enraged": "Kayıplarına öfkelenen kumarbaz, kasabadan çıkan yolda bir köylüyle kavgaya tutuştu ve onu öldürdü."
+    },
+    "buttonUpgrade": {
+      "deepens": "{{skill}} konusundaki ustalığın derinleşiyor.",
+      "skills": {
+        "caveExplore": "Mağara Keşfi",
+        "mineStone": "Taş Madenciliği",
+        "mineIron": "Demir Madenciliği",
+        "mineCoal": "Kömür Madenciliği",
+        "mineSulfur": "Kükürt Madenciliği",
+        "mineObsidian": "Obsidyen Madenciliği",
+        "mineAdamant": "Adamantit Madenciliği",
+        "mineMoonstone": "Aytaşı Madenciliği",
+        "hunt": "Avcılık",
+        "chopWood": "Odunculuk",
+        "craftTorches": "Meşale Yapımı",
+        "craftBoneTotems": "Kemik Totemi Yapımı",
+        "craftLeatherTotems": "Deri Totemi Yapımı"
+      }
+    }
+  }
+}

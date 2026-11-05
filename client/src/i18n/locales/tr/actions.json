@@ -1,0 +1,826 @@
+{
+  "animals": {
+    "label": "Hayvanlar"
+  },
+  "banditLair": {
+    "description": "Tüccarın hançerini çalan haydudun peşine düş.",
+    "label": "Haydut İni",
+    "log": {
+      "success": "Adamların haydudun izini derme çatma bir ine kadar sürüyor. Onu alt edip tüccarın hançerini geri alıyorsun; yağmaladıklarının arasına saklanmış 250 Gümüş de buluyorsun.",
+      "failure": "Köylüler tepeleri didik didik ediyor ama haydudu kıstıramıyor. İz kayboluyor, hançer hâlâ haydudun elinde."
+    }
+  },
+  "blackreachCanyon": {
+    "description": "Karga aramak için Karauçurum Kanyonu'na in.",
+    "label": "Karauçurum Kanyonu",
+    "log": {
+      "success": "Karauçurum Kanyonu'nun derinliklerine iniyorsun. Orada, taş bir sütunun tepesinde görkemli, tek gözlü bir karga tünemiş. Elinde koşumla usulca yaklaşıyor ve kuşla bağ kuruyorsun. Tek Gözlü Karga yoldaşlarına katıldı."
+    }
+  },
+  "blastPortal": {
+    "description": "Kadim kapıyı paramparça et, içinde mühürlü ne varsa serbest bırak.",
+    "label": "Kapıyı Patlat",
+    "log": {
+      "complete": "Kor Bombaları parlak bir alev ve ışık çakmasıyla patlıyor. Kadim kapı çatlayıp parçalanıyor. İçeride mühürlü olan her neyse artık serbest."
+    }
+  },
+  "boneTotems": {
+    "label": "Kemik Totemleri"
+  },
+  "buildAdvancedBlacksmith": {
+    "description": "Daha iyi alet ve yöntemlerle çalışan demirci",
+    "label": "Gelişmiş Demirci"
+  },
+  "buildAlchemistHall": {
+    "description": "Simyacının toz ve patlayıcı hazırladığı salon",
+    "label": "Simyacı Salonu"
+  },
+  "buildAltar": {
+    "description": "İbadet ve kurban yeri",
+    "label": "Sunak"
+  },
+  "buildBank": {
+    "description": "Daha büyük yatırımlar yapabileceğin bir banka",
+    "label": "Banka"
+  },
+  "buildBastion": {
+    "description": "Son savunma hattını oluşturan devasa tahkimat",
+    "label": "Tabya"
+  },
+  "buildBlackEstate": {
+    "description": "Kara Kereste ve taştan yükselen, şehre tepeden bakan heybetli malikâne.",
+    "label": "Kara Malikâne"
+  },
+  "buildBlackMonolith": {
+    "description": "Canlı kurbanlar için dikilmiş karanlık anıt",
+    "label": "Kara Monolit"
+  },
+  "buildBlacksmith": {
+    "description": "Temel aletlerle eşya yapan demirci",
+    "label": "Demirci"
+  },
+  "buildBoneTemple": {
+    "description": "Eski tanrılar onuruna kemiklerden örülmüş dehşet verici yapı",
+    "label": "Kemik Tapınağı"
+  },
+  "buildBoneyard": {
+    "description": "Ölülerin toprağa verildiği, köylülerin yasını hafifleten yer.",
+    "label": "Mezarlık"
+  },
+  "buildHerbGarden": {
+    "description": "Türlü işe yarayan bitkilerin özenle yetiştirildiği tarhlar.",
+    "label": "Şifalı Ot Bahçesi"
+  },
+  "buildBottomlessPit": {
+    "description": "En nadir madenlere uzanan, akıl almaz derinlikte çukur",
+    "label": "Dipsiz Çukur"
+  },
+  "buildBuildersLodge": {
+    "description": "Yapı ustalarının köydeki bütün inşaatları düzenlediği han",
+    "label": "Yapı Ustaları Hanı"
+  },
+  "buildBuildersHall": {
+    "description": "Kıdemli yapı ustalarının işleri düzene soktuğu, malzeme fiyatlarını pazarlıkla düşürdüğü salon",
+    "label": "Yapı Ustaları Salonu"
+  },
+  "buildBuildersGuild": {
+    "description": "Köyün bütün inşaat gücünü elinde tutan ustalar loncası",
+    "label": "Yapı Ustaları Loncası"
+  },
+  "buildCabin": {
+    "description": "İçinde avcı aletleri bulunan basit av kulübesi",
+    "label": "Avcı Kulübesi"
+  },
+  "buildChitinPlating": {
+    "description": "Tahkimatları delinmez Kitin Plakalarla güçlendirir",
+    "label": "Kitin Kaplama"
+  },
+  "buildClerksHut": {
+    "description": "Bilginlerin dünyaya dair İçgörü kazanmak için çalıştığı kulübe",
+    "label": "Kâtip Kulübesi"
+  },
+  "buildCoinhouse": {
+    "description": "Küçük yatırımlar yapabileceğin mütevazı bir sarraf dükkânı",
+    "label": "Sarrafhane"
+  },
+  "buildConsecratedPaleCross": {
+    "description": "Ağarmış kemiklerden yükselen heybetli anıt; Kemik Totemi kurbanlarını kat kat güçlendirir.",
+    "label": "Kutsanmış Soluk Haç"
+  },
+  "buildDarkEstate": {
+    "description": "Dünyadan uzakta sığınabileceğin kuytu bir malikâne",
+    "label": "Karanlık Malikâne"
+  },
+  "buildDeepPit": {
+    "description": "Değerli maden damarlarını açığa çıkaran çok derin çukur",
+    "label": "Derin Çukur"
+  },
+  "buildDeepeningPit": {
+    "description": "Toprağın daha derinlerindeki kaynaklara uzanan çukur",
+    "label": "Derinleşen Çukur"
+  },
+  "buildFortifiedMoat": {
+    "description": "Saldırganları yavaşlatıp zayıflatan savunma hendeği",
+    "label": "Tahkimli Hendek"
+  },
+  "buildFortifiedStorehouse": {
+    "description": "Daha çok yük alan, güçlendirilmiş depo binası",
+    "label": "Tahkimli Ambar"
+  },
+  "buildFoundry": {
+    "description": "Çelik üretimine ayrılmış bina",
+    "label": "Dökümhane"
+  },
+  "buildFurTents": {
+    "description": "Gezgin kabilenin kullandığı sıcak kürk barınak",
+    "label": "Kürk Çadır"
+  },
+  "buildGrandArchive": {
+    "description": "Köyün bütün geçmişini saklayan uçsuz bucaksız parşömen mahzeni; her ad, her emek oraya kazınmış",
+    "label": "Ulu Arşiv"
+  },
+  "buildGrandBazaar": {
+    "description": "Daha çok tacir çeken, alabildiğine geniş çarşı",
+    "label": "Ulu Çarşı"
+  },
+  "buildGrandBlacksmith": {
+    "description": "En seçkin işleri çıkarabilen gelişmiş demirci",
+    "label": "Ulu Demirci"
+  },
+  "buildGrandHunterLodge": {
+    "description": "Usta avcılar için eşsiz av köşkü",
+    "label": "Ulu Av Köşkü"
+  },
+  "buildGrandRepository": {
+    "description": "Akıl almaz miktarda yük alan devasa depo",
+    "label": "Ulu Depo"
+  },
+  "buildGreatCabin": {
+    "description": "Avcıların verimini artıran, genişletilmiş av kulübesi",
+    "label": "Büyük Avcı Kulübesi"
+  },
+  "buildGreatVault": {
+    "description": "Muazzam miktarda kaynak saklayabilen eşsiz mahzen",
+    "label": "Büyük Mahzen"
+  },
+  "buildHeartfire": {
+    "description": "İnsana huzur ve güven veren kutsal ateş",
+    "label": "Yürek Ateşi"
+  },
+  "buildHighBastion": {
+    "description": "Temelleri derinlere inen yüksek hisar. Her şey düştüğünde bile ayakta kalsın diye yapıldı.",
+    "label": "Yüksek Tabya"
+  },
+  "buildHighTannery": {
+    "description": "Usta deri zanaatkârları için en seçkin tabakhane",
+    "label": "Yüce Tabakhane"
+  },
+  "buildHungeringMoat": {
+    "description": "Kara suyla dolu dipsiz hendek; içinde aç bir şey, girenleri dibe çekmek için bekliyor.",
+    "label": "Aç Hendek"
+  },
+  "buildImprovedTraps": {
+    "description": "Düzenekleri güçlendirilmiş, çevreyi daha sıkı saran tuzaklar",
+    "label": "Güçlendirilmiş Tuzaklar"
+  },
+  "buildInkwardenAcademy": {
+    "description": "Usta bilginlerin engin Bilgiyi damıttığı ulu akademi",
+    "label": "Kitap Bekçileri Akademisi"
+  },
+  "buildLonghouse": {
+    "description": "Birçok köylüyü barındıran, kuzey usulü devasa ortak salon",
+    "label": "Uzun Ev"
+  },
+  "buildMasterTannery": {
+    "description": "Deri üretimini artıran gelişmiş tabakhane",
+    "label": "Usta Tabakhanesi"
+  },
+  "buildMasterworkFoundry": {
+    "description": "Çelik üretiminde üstün dökümhane",
+    "label": "Usta İşi Dökümhane"
+  },
+  "buildMerchantsGuild": {
+    "description": "En kârlı alışverişleri ve en iyi tacirleri getiren güçlü lonca",
+    "label": "Tacirler Loncası"
+  },
+  "buildPaleCross": {
+    "description": "Ağarmış kemiklerden yükselen heybetli anıt; Kemik Totemi kurbanlarını güçlendirir.",
+    "label": "Soluk Haç"
+  },
+  "buildPalisades": {
+    "description": "Yerleşimi koruyan savunma duvarları",
+    "label": "Kazıklı Çit"
+  },
+  "buildPillarOfClarity": {
+    "description": "Zihinleri karanlıktan arındıran bembeyaz dikilitaş",
+    "label": "Berraklık Sütunu"
+  },
+  "buildPrimeFoundry": {
+    "description": "Daha çok çelik üreten gelişmiş dökümhane",
+    "label": "Seçkin Dökümhane"
+  },
+  "buildQuarry": {
+    "description": "Toplayıcıların çıkardığı taşı artıran taş ocağı",
+    "label": "Taş Ocağı"
+  },
+  "buildRecordsHall": {
+    "description": "Raflarında yıpranmış defterler ve kütükler duran salon. Köyün hafızası burada mürekkeple kayda geçirilir, özenle saklanır",
+    "label": "Kayıtlar Salonu"
+  },
+  "buildSanctum": {
+    "description": "Karanlığa karşı en güçlü korumayı veren ilahi mekân",
+    "label": "Kutsal Mekân"
+  },
+  "buildScribesOffice": {
+    "description": "Yazmanların çalışan her elin kaydını özenle tuttuğu sessiz oda; burada hiçbir emek unutulmaz",
+    "label": "Yazman Odası"
+  },
+  "buildScriptorium": {
+    "description": "Bilginlerin Bilgi biriktirdiği irfan yuvası",
+    "label": "Yazıhane"
+  },
+  "buildShallowPit": {
+    "description": "Maden çıkarmaya yarayan küçük çukur",
+    "label": "Sığ Çukur"
+  },
+  "buildShrine": {
+    "description": "Deliliğe karşı daha güçlü koruma veren kutsal mabet",
+    "label": "Mabet"
+  },
+  "buildStoneHut": {
+    "description": "Rüzgâra, soğuğa çok daha iyi dayanan sağlam taş konut",
+    "label": "Taş Kulübe"
+  },
+  "buildStorehouse": {
+    "description": "Daha çok kaynak alan genişletilmiş depo",
+    "label": "Ambar"
+  },
+  "buildSupplyHut": {
+    "description": "Kaynak saklamak için küçük kulübe",
+    "label": "Erzak Kulübesi"
+  },
+  "buildTannery": {
+    "description": "Kürkün deriye işlendiği atölye",
+    "label": "Tabakhane"
+  },
+  "buildTemple": {
+    "description": "Deliliğe karşı güçlü direnç veren büyük tapınak",
+    "label": "Tapınak"
+  },
+  "buildTimberMill": {
+    "description": "Odunu daha verimli işleyen değirmen",
+    "label": "Kereste Değirmeni"
+  },
+  "buildTradePost": {
+    "description": "Mal satan tacirleri çeken ticaret noktası",
+    "label": "Ticaret Noktası"
+  },
+  "buildTraps": {
+    "description": "Köyün çevresine kurulmuş, bütün saldırganları zayıflatan tuzaklar",
+    "label": "Tuzaklar"
+  },
+  "buildTreasury": {
+    "description": "Çok daha büyük paraları riske atabileceğin bir mahzen",
+    "label": "Hazine"
+  },
+  "buildVillageWarehouse": {
+    "description": "Yüklü miktarda mal alan geniş depo",
+    "label": "Köy Deposu"
+  },
+  "buildWatchtower": {
+    "description": "Tehlikeyi önceden haber veren yüksek kule",
+    "label": "Gözcü Kulesi"
+  },
+  "buildWizardTower": {
+    "description": "Büyücünün gizli ilimler üzerine çalıştığı esrarengiz kule",
+    "label": "Büyücü Kulesi"
+  },
+  "buildWoodenHut": {
+    "description": "Başını sokacak bir yer olan basit ahşap kulübe",
+    "label": "Ahşap Kulübe"
+  },
+  "exploreMountainVillage": {
+    "description": "Dağların tepesindeki köye doğru uzun bir tırmanışa koyul.",
+    "label": "Dağ Köyünü Keşfet"
+  },
+  "canyonBridge": {
+    "description": "Orman kabilesine ulaşmak için kanyonun üzerine köprü kur.",
+    "label": "Kanyon Köprüsü",
+    "log": {
+      "complete": "Kanyon köprüsü tamamlandı. Külhayalet tüccarları artık köyüne ulaşabiliyor; onlara anlaşılan fiyatlardan mal satabilirsin."
+    }
+  },
+  "castleRuins": {
+    "description": "Ormanın derinliklerinde, çoktan ölmüş ölüçağıranın şatosuna baskın düzenle.",
+    "label": "Şato Harabeleri",
+    "log": {
+      "success": "Ölüçağıranın şato harabelerine düzenlenen sefer başarıyla sonuçlanıyor! Harabelerin derinliklerinde kara ipeğe sarılı Kadim Parşömenleri buluyorsun. Parşömenlerdeki şifreli bilgiler, mağaranın derinliklerine kapatılan şeyin nasıl yenileceğini anlatıyor.",
+      "minorFailure": "Ölüçağıranın deneylerinden geriye kalan ucube ölümsüzler seferini pusuya düşürüyor. Sağ kalanlar geri çekilene dek {{count}} köylü ölümsüzlerin elinde can veriyor.",
+      "majorFailure": "Seferin lanetli şato harabelerine girdikten az sonra gizli odalardan düzinelerce ölümsüz yaratık dökülüyor. Ardından gelen umutsuz çarpışmada {{count}} köylü doğaüstü sürünün altında kalıyor. Sağ kalanlar dehşet içinde kaçıyor."
+    }
+  },
+  "chopWood": {
+    "description": "Mağaranın ağzındaki yere düşmüş dalları topla.",
+    "label": "Odun Topla",
+    "descriptionForest": "Kereste için ormanın kıyısındaki ağaçları kes.",
+    "labelForest": "Odun Kes",
+    "log": {
+      "firstVisit": "Mağaranın girişinde etrafa saçılmış odunlar var. İşe yarayabilir."
+    }
+  },
+  "callMerchant": {
+    "label": "Taciri Çağır"
+  },
+  "collapsedTower": {
+    "description": "Yıkılmış kuleyi araştır, orada dönen karanlık işlere son ver.",
+    "label": "Çökmüş Kule",
+    "log": {
+      "success": "Kulenin içinde, sıvı dolu şişeler ve kaba şırıngalar arasında bir ölüçağıranla müritlerini buluyorsun. Karanlık deneyleri için köylülerin kanını topluyormuş. Adamların onun iğrenç işine son veriyor ve kanından bir şişe alıyor. Aletlerinin arasında güçlü Kemik Testeresini de buluyorsun.",
+      "failure": "Seferin Çökmüş Kule'ye varıyor ama kulenin önünde kukuletalı karaltıların saldırısına uğruyor. Aralarında kara cüppeli, uzun boylu bir adam duruyor; ondan tekinsiz bir tehdit yayılıyor. Diğerleri kaçıp kurtulana dek {{count}} köylü ölüyor."
+    }
+  },
+  "craftAdamantAxe": {
+    "label": "Adamantit Balta"
+  },
+  "craftAdamantLantern": {
+    "label": "Adamantit Fener"
+  },
+  "craftAdamantPickaxe": {
+    "label": "Adamantit Kazma"
+  },
+  "craftAdamantSword": {
+    "label": "Adamantit Kılıç"
+  },
+  "craftArbalest": {
+    "label": "Arbalet"
+  },
+  "craftAshenGreatshield": {
+    "label": "Külden Büyük Kalkan"
+  },
+  "craftAshfireBomb": {
+    "label": "Külateşi Bombası"
+  },
+  "craftBlacksteelArmor": {
+    "label": "Karaçelik Zırh"
+  },
+  "craftBlacksteelAxe": {
+    "label": "Karaçelik Balta"
+  },
+  "craftBlacksteelBow": {
+    "label": "Karaçelik Yay"
+  },
+  "craftBlacksteelLantern": {
+    "label": "Karaçelik Fener"
+  },
+  "craftBlacksteelPickaxe": {
+    "label": "Karaçelik Kazma"
+  },
+  "craftBlacksteelSword": {
+    "label": "Karaçelik Kılıç"
+  },
+  "craftBloodstoneStaff": {
+    "label": "Kantaşı Asa"
+  },
+  "craftBoneTotems": {
+    "label": "Kemik Totemleri"
+  },
+  "craftCrudeBow": {
+    "label": "Kaba Yay"
+  },
+  "craftEmberBomb": {
+    "label": "Kor Bombası"
+  },
+  "craftExplorerPack": {
+    "label": "Kaşif Sırt Çantası"
+  },
+  "craftFrostglassSword": {
+    "label": "Ayazcam Kılıç"
+  },
+  "craftFlaskHarness": {
+    "label": "Şişe Kuşağı"
+  },
+  "craftGrenadierBag": {
+    "label": "Bombacı Çantası"
+  },
+  "craftHighpriestRobe": {
+    "label": "Başrahip Cüppesi"
+  },
+  "craftFurCloak": {
+    "label": "Kürk Pelerin"
+  },
+  "craftHunterCloak": {
+    "label": "Avcı Pelerini"
+  },
+  "craftHuntsmanBow": {
+    "label": "Avcı Yayı"
+  },
+  "craftIronAxe": {
+    "label": "Demir Balta"
+  },
+  "craftIronLantern": {
+    "label": "Demir Fener"
+  },
+  "craftIronPickaxe": {
+    "label": "Demir Kazma"
+  },
+  "craftIronSword": {
+    "label": "Demir Kılıç"
+  },
+  "craftLeatherTotems": {
+    "label": "Deri Totemleri"
+  },
+  "craftLoggersGloves": {
+    "label": "Oduncu Eldivenleri"
+  },
+  "craftLongBow": {
+    "label": "Uzun Yay"
+  },
+  "craftMasterBow": {
+    "label": "Usta Yayı"
+  },
+  "craftNightshadeBow": {
+    "label": "Gecegölgesi Yayı"
+  },
+  "craftObsidianAxe": {
+    "label": "Obsidyen Balta"
+  },
+  "craftObsidianLantern": {
+    "label": "Obsidyen Fener"
+  },
+  "craftObsidianPickaxe": {
+    "label": "Obsidyen Kazma"
+  },
+  "craftObsidianSword": {
+    "label": "Obsidyen Kılıç"
+  },
+  "craftSacrificialTunic": {
+    "label": "Kurban Tuniği"
+  },
+  "craftShadowBoots": {
+    "label": "Gölge Çizmeleri"
+  },
+  "craftSkeletonKey": {
+    "label": "Maymuncuk"
+  },
+  "craftSteelAxe": {
+    "label": "Çelik Balta"
+  },
+  "craftSteelLantern": {
+    "label": "Çelik Fener"
+  },
+  "craftSteelPickaxe": {
+    "label": "Çelik Kazma"
+  },
+  "craftSteelSword": {
+    "label": "Çelik Kılıç"
+  },
+  "craftStoneAxe": {
+    "label": "Taş Balta"
+  },
+  "craftStonePickaxe": {
+    "label": "Taş Kazma"
+  },
+  "craftStormglassHalberd": {
+    "label": "Fırtınacam Teber"
+  },
+  "craftTorches": {
+    "label": "Meşaleler"
+  },
+  "craftVeinfireElixir": {
+    "label": "Damarateşi İksiri"
+  },
+  "craftVoidBomb": {
+    "label": "Hiçlik Bombası"
+  },
+  "craftWarBow": {
+    "label": "Savaş Yayı"
+  },
+  "descendFurther": {
+    "description": "Mağaranın alt katlarına inen aşınmış basamaklardan aşağı in.",
+    "label": "Daha Aşağı İn",
+    "log": {
+      "firstVisit": "Fenerin sabit ışığında daha da derine iniyorsun. Birden ayakların, zamanın aşındırdığı, insan eliyle yontulmuş taş basamaklara basıyor."
+    }
+  },
+  "encounterBeyondPortal": {
+    "description": "Kırık kapıdan geçip öte yana adım at.",
+    "label": "Kapının Ötesine Geç"
+  },
+  "exploreCave": {
+    "description": "Meşale ışığında mağarayı ara, bulabildiğin her şeyi topla.",
+    "label": "Mağarayı Keşfet",
+    "log": {
+      "debrisScroll": "Molozların arasında, bu amansız dünyada ayakta kalmanın yollarını anlatan, zamanla yıpranmış bir parşömen buluyorsun.",
+      "torchBag": "Mağarada içinde 25 Meşale olan eski, tozlu bir torba buluyorsun.",
+      "firstVisit": "Meşalenin ışığı mağara duvarlarını aydınlatıyor. Titreyen ışıkta mağaranın derinliklerine uzanan bir yol fark ediyorsun."
+    }
+  },
+  "exploreCitadel": {
+    "description": "Yeraltı şehrinin kalbindeki iç kaleyi araştır.",
+    "label": "İç Kaleyi Keşfet",
+    "log": {
+      "firstVisit": "Şehrin en derin yerinde, karşında devasa bir iç kale yükseliyor. Büyüklüğüne bakılırsa ya muazzam bir güç ya da büyük bir tehlike barındırıyor."
+    }
+  },
+  "exploreRuins": {
+    "description": "Aşağıdaki engin mağarada uyuyan kayıp şehri araştır.",
+    "label": "Harabeleri Keşfet",
+    "log": {
+      "firstVisit": "Merdivenler bittiğinde karşına engin bir mağara açılıyor. Karanlıkta kayıp bir şehrin harabeleri yatıyor; çoktan yok olmuş bir uygarlıktan geriye kalanlar."
+    }
+  },
+  "exploreTemple": {
+    "description": "Unutulmuş harabelerin arasında hâlâ ayakta duran yeraltı tapınağına gir.",
+    "label": "Tapınağı Keşfet",
+    "log": {
+      "firstVisit": "Yeraltı şehrinin harabelerinde ilerledikçe mağaranın zemininden görkemli bir tapınak yükseliyor. Büyük kısmı sağlam duruyor; gölgesi şehrin unutulmuş kalıntılarının üzerine düşüyor."
+    }
+  },
+  "exploreUndergroundLake": {
+    "description": "Yeraltı gölünün kara sularını aşıp ortasındaki küçük adaya geç.",
+    "label": "Yeraltı Gölü",
+    "log": {
+      "complete": "Kafatası Fenerinin ürkütücü ışığında yeraltı gölüne iniyor ve küçük bir sandal yapıyorsun. Karanlık gölün ortasındaki minik adada, çağlardır el değmemiş unutulmuş hazineler gölgede yatıyor."
+    }
+  },
+  "feedFire": {
+    "label": "Ateşi Besle"
+  },
+  "financeExpedition": {
+    "description": "Bilginlerin önderliğinde ormandaki tapınak ve harabelere gidecek seferin masraflarını karşıla",
+    "label": "Sefere Para Ver",
+    "log": {
+      "complete": "Araştırma seferi ormandan dönüyor. Bilginler günlerce yazıtları, aşınmış kalıntıları ve unutulmuş bilgi kırıntılarını kayda geçiriyor."
+    }
+  },
+  "forestCave": {
+    "description": "Avcı kadının kabilesini kurtarmak için mağarayı canavarlardan temizle.",
+    "label": "Orman Mağarası",
+    "log": {
+      "success": "Köylüler mağaraya inerken karanlıktan ardı arkası kesilmeyen sürüler hâlinde vahşi tazılar fırlıyor. Pençeler eti yırtıyor, çeneler kenetleniyor, çığlıklar yankılanıyor. Son canavar da yere serildiğinde köylülerin hepsi hâlâ hayatta; avcı kadının kabilesi kurtuldu.",
+      "failure": "Sefer mağaraya girer girmez azgın bir tazı sürüsünün altında kalıyor. Sağ kalanlar geri çekilmeyi başarana dek {{count}} köylü vahşi çenelerde parçalanıyor."
+    }
+  },
+  "healElderWizard": {
+    "label": "Yaşlı Büyücüyü İyileştir"
+  },
+  "healRestlessKnight": {
+    "label": "Huzursuz Şövalyeyi İyileştir"
+  },
+  "hiddenLibrary": {
+    "description": "Mağaranın derinliklerindeki gizli kütüphaneyi ara.",
+    "label": "Gizli Kütüphane",
+    "log": {
+      "complete": "Manastırdan gelen harita seni mağaranın derinliklerindeki gizli kütüphaneye götürüyor. Orada bir elyazması buluyorsun."
+    }
+  },
+  "hillGrave": {
+    "description": "Kurgana gir, mezar odasında Ayazcam ara.",
+    "label": "Kurgan",
+    "log": {
+      "success": "Seferin kurganın sinsi tuzakları arasında dikkatle yol alıyor. Köylüler kadim düzenekleri etkisiz hâle getirip mezar odasına ulaşıyor. Kralın hazineleri arasında hiçliğin kendisi kadar soğuk, saf Ayazcam buluyorsun.",
+      "failure": "Seferin kurgana giriyor ama ölümcül tuzakları aşacak ustalıktan yoksun. Kralın son savunmaları {{count}} köylünün canını alıyor. Sağ kalanlar yoldaşlarının cesetlerini lanetli mezarda bırakıp dehşet içinde geri çekiliyor."
+    }
+  },
+  "humans": {
+    "label": "İnsanlar"
+  },
+  "hunt": {
+    "description": "Karanlık ormanda hayvanların izini sür.",
+    "label": "Avlan",
+    "log": {
+      "mapFragmentHunt": "Avlanırken çamurda bir şey gözüne çarpıyor. Suyla lekelenmiş bir kâğıt parçası; belki bir haritadan kopmuş."
+    }
+  },
+  "woodenCabin": {
+    "description": "Ormandaki tuhaf kütük kulübeyi araştır.",
+    "label": "Kütük Kulübe",
+    "log": {
+      "success": "Kulübe, sana et satan avcıya ait. Mezbahada çengeller sallanıyor ve hiçbirine geyik asılmamış. Adam insan avlıyormuş; sattığı yiyecek onların etiymiş. Kulübede tüccarın yayını buluyorsun.",
+      "failure": "Kulübeye yaklaşırken kapının karanlığından oklar geliyor. Her ok bir can alıyor. Okların uçları kemikten. Diğerleri kaçana dek {{count}} köylü ölüyor."
+    }
+  },
+  "invest": {
+    "label": "Yatırım Yap"
+  },
+  "tameWolf": {
+    "description": "Ölü alfanın yanında bulduğun kurt yavrusunu evcilleştir.",
+    "label": "Kurdu Evcilleştir",
+    "log": {
+      "complete": "Kurt yavrusunu evcilleştirdin. Boz artık yoldaşlarından biri."
+    }
+  },
+  "layTrap": {
+    "description": "İri bir canavarı yakalamak için dev bir tuzak kur.",
+    "label": "Tuzak Kur",
+    "log": {
+      "trapSuccessNoDeaths": "Dev tuzak kusursuz işliyor! Gözleri kızıl kızıl parlayan, dağ gibi bir kara ayı tuzağa düşüyor. Köylüler doğaüstü canavarı öldürüyor; lanetli kara kürkü de onların ganimeti oluyor.",
+      "trapSuccessWithDeaths_one": "Dev tuzağa kızıl gözleri alev alev yanan, dağ gibi bir kara ayı düşüyor! Canavar sonunda öldürülene dek {{count}} köylü onun doğaüstü pençeleri altında can veriyor. Lanetli kara kürkünü alıyorsun; ağır bedelle kazanılmış bir ganimet.",
+      "trapSuccessWithDeaths_other": "Dev tuzağa kızıl gözleri alev alev yanan, dağ gibi bir kara ayı düşüyor! Canavar sonunda öldürülene dek {{count}} köylü onun doğaüstü pençeleri altında can veriyor. Lanetli kara kürkünü alıyorsun; ağır bedelle kazanılmış bir ganimet.",
+      "trapSuccessHeavy": "Dev tuzağa gözleri kor gibi yanan, dağ gibi bir kara ayı düşüyor. Canavar sonunda alt edilene dek {{count}} köylü onun doğaüstü öfkesine kurban gidiyor. Lanetli kara kürkünü alıyorsun.",
+      "trapFailed": "Dev tuzağı kuruyorsun ama yokladığında yanında yalnızca kocaman pençe izleri buluyorsun. Bu ormanlarda dolaşan her neyse, tuzağına düşmeyecek kadar kurnaz... bu seferlik."
+    }
+  },
+  "leatherTotems": {
+    "label": "Deri Totemleri"
+  },
+  "makeFire": {
+    "label": "Ateş Yak",
+    "log": {
+      "firstVisit": "Ateş usulca çıtırdıyor; mağara duvarlarında gölgeler dans ediyor. Sıcaklığı içini ısıtıyor."
+    }
+  },
+  "lowChamber": {
+    "description": "Çağlardır el değmemiş derin bir odaya halatla in.",
+    "label": "Alt Oda",
+    "log": {
+      "complete": "Takviyeli Halatla alt odaya iniyorsun. Hazinelerin arasında bir taş ustası keskisi buluyorsun; işçiliği efsanelere yakışır."
+    }
+  },
+  "lureLakeCreature": {
+    "description": "Yeraltı gölünün kıyısına yemli bir tuzak kur ve bir şeyin yemi kapmasını bekle.",
+    "label": "Tuzağı Yemle",
+    "log": {
+      "complete": "Yeraltı gölünün kıyısına, yığın yığın etle yemlenmiş devasa bir tuzak kuruyorsun. Saatler geçiyor; sonra kara sular köpürüyor ve dev cüsseli, dokunaçlı bir dehşet derinlerden yükselip sürüne sürüne tuzağa giriyor."
+    }
+  },
+  "mineAdamant": {
+    "label": "Adamantit",
+    "log": {
+      "natharitSilverVein": "Natharit Kazma bir gümüş damarı ortaya çıkarıyor! +{{amount}} {{resource}}"
+    }
+  },
+  "mineMoonstone": {
+    "label": "Aytaşı",
+    "log": {
+      "natharitSilverVein": "Natharit Kazma bir gümüş damarı ortaya çıkarıyor! +{{amount}} {{resource}}"
+    }
+  },
+  "mineCoal": {
+    "label": "Kömür",
+    "log": {
+      "natharitSilverVein": "Natharit Kazma bir gümüş damarı ortaya çıkarıyor! +{{amount}} {{resource}}"
+    }
+  },
+  "mineIron": {
+    "label": "Demir",
+    "log": {
+      "natharitSilverVein": "Natharit Kazma bir gümüş damarı ortaya çıkarıyor! +{{amount}} {{resource}}"
+    }
+  },
+  "mineObsidian": {
+    "label": "Obsidyen",
+    "log": {
+      "natharitSilverVein": "Natharit Kazma bir gümüş damarı ortaya çıkarıyor! +{{amount}} {{resource}}"
+    }
+  },
+  "mineStone": {
+    "label": "Taş",
+    "log": {
+      "natharitSilverVein": "Natharit Kazma bir gümüş damarı ortaya çıkarıyor! +{{amount}} {{resource}}"
+    }
+  },
+  "mineSulfur": {
+    "label": "Kükürt",
+    "log": {
+      "natharitSilverVein": "Natharit Kazma bir gümüş damarı ortaya çıkarıyor! +{{amount}} {{resource}}"
+    }
+  },
+  "mining": {
+    "label": "Madencilik"
+  },
+  "occultistChamber": {
+    "description": "Okültistin haritasını izleyip sırlarının saklı olduğu odayı bul.",
+    "label": "Okültistin Odası",
+    "log": {
+      "complete": "Okültistin haritasını izleyerek hazinelerinin saklı olduğu odayı buluyorsun. Aralarında yasak bilgiler ve kadim sırlarla dolu büyü kitabı da var."
+    }
+  },
+  "provokeAttackWave": {
+    "label": "Saldırı dalgasını kışkırt"
+  },
+  "delayAttackWave": {
+    "label": "Saldırı dalgasını ertele"
+  },
+  "buildRepairAlchemistHall": {
+    "description": "Bombalar yeniden yapılabilsin diye salonu onarır",
+    "label": "Simyacı Salonunu Onar"
+  },
+  "repairBastion": {
+    "label": "Tabyayı Onar"
+  },
+  "repairPalisades": {
+    "label": "Kazıklı Çiti Onar"
+  },
+  "repairWatchtower": {
+    "label": "Gözcü Kulesini Onar"
+  },
+  "risingSmoke": {
+    "description": "Yükselen dumanın izini sürüp eşkıya kampına ulaş.",
+    "label": "Yükselen Duman",
+    "log": {
+      "success": "Seferin bir eşkıya kampı buluyor. Çatışma çetin geçiyor ama kazanan sen oluyorsun. Bir sandıkta {{gold}} Altın buluyorsun.",
+      "successKeyBonus": " Maymuncuğunla gizli bir bölmeyi açıyor ve {{gold}} Altın daha buluyorsun.",
+      "captiveOne": " Kamptan kurtarılan 1 tutsak köye katılmaya karar veriyor.",
+      "captivesOther": " Kamptan kurtarılan {{count}} tutsak köye katılmaya karar veriyor.",
+      "failure": "Seferin bir eşkıya kampına ulaşıyor ama çatışma feci şekilde ters gidiyor. Sağ kalanlar köye kaçana dek {{count}} köylü can veriyor."
+    }
+  },
+  "sellBlacksteelBatch": {
+    "label": "Karaçelik Sat"
+  },
+  "sellLeatherBatch": {
+    "label": "Deri Sat"
+  },
+  "sellSteelBatch": {
+    "label": "Çelik Sat"
+  },
+  "searchMountainLady": {
+    "description": "Dağlı Kadını bulmak için bir sefer gönder.",
+    "label": "Dağlı Kadını Ara"
+  },
+  "steelDelivery": {
+    "description": "Bataklık kabilesine çelik götür.",
+    "label": "Çelik Teslimatı",
+    "log": {
+      "success": "Kervanın söz verilen çeliği Bataklık Kabilesi'ne teslim ediyor. Karşılığında kabile sana bataklık yaratıklarından çıkarılmış Kitin Plakalar veriyor. Bunlarla güçlü tahkimatlar kurabilirsin."
+    }
+  },
+  "sunkenTemple": {
+    "description": "Bataklığı yararak yarısı suya gömülü kadim tapınağa ulaş.",
+    "label": "Batık Tapınak",
+    "log": {
+      "success": "Seferin bataklık sularını yararak yarısı batık kadim tapınağa ulaşıyor. Karanlık sularda pusuya yatmış tehlikelere rağmen köylüler sular altındaki salonlarda dikkatle ilerliyor ve tapınağın en kutsal odasında Kantaşlarını buluyor.",
+      "failure": "Seferin batık tapınağı aramak için bataklığa dalıyor. Bulanık sular tarifsiz dehşetler saklıyor. Kadim büyüden doğmuş iğrenç yaratıklar derinlerden yükseliyor ve sağ kalanlar kaçana dek {{count}} köylüyü suyun altına çekiyor."
+    }
+  },
+  "swampSanctuary": {
+    "description": "Parçalarını birleştirdiğin bataklık haritasında işaretli kayıp kutsal alanı bul.",
+    "label": "Bataklık Kutsal Alanı"
+  },
+  "tradeGoldForAdamant": {
+    "label": "Adamantit Satın Al"
+  },
+  "tradeGoldForAshfireBomb": {
+    "label": "Külateşi Bombası Satın Al"
+  },
+  "tradeGoldForBlacksteel": {
+    "label": "Karaçelik Satın Al"
+  },
+  "tradeGoldForBoneTotems": {
+    "label": "Kemik Totemi Satın Al"
+  },
+  "tradeGoldForEmberBomb": {
+    "label": "Kor Bombası Satın Al"
+  },
+  "tradeGoldForFood": {
+    "label": "Yiyecek Satın Al"
+  },
+  "tradeGoldForIron": {
+    "label": "Demir Satın Al"
+  },
+  "tradeGoldForLeather": {
+    "label": "Deri Satın Al"
+  },
+  "tradeGoldForLeatherTotems": {
+    "label": "Deri Totemi Satın Al"
+  },
+  "tradeGoldForObsidian": {
+    "label": "Obsidyen Satın Al"
+  },
+  "tradeGoldForSteel": {
+    "label": "Çelik Satın Al"
+  },
+  "tradeGoldForStone": {
+    "label": "Taş Satın Al"
+  },
+  "tradeGoldForTorch": {
+    "label": "Meşale Satın Al"
+  },
+  "tradeGoldForVoidBomb": {
+    "label": "Hiçlik Bombası Satın Al"
+  },
+  "tradeGoldForInsightPotion": {
+    "label": "İçgörü İksiri"
+  },
+  "tradeGoldForVeinfireElixir": {
+    "label": "Damarateşi İksiri Satın Al"
+  },
+  "tradeGoldForWood": {
+    "label": "Odun Satın Al"
+  },
+  "tradeSilverForGold": {
+    "label": "Altın Satın Al"
+  },
+  "ventureDeeper": {
+    "description": "Yolu izleyip mağaranın derinlerine, ötedeki mağara salonlarına ilerle.",
+    "label": "Derinlere İlerle",
+    "log": {
+      "tarnishedAmulet": "Mağaranın gölgelerinde bir şey parıldıyor. Bir Eskimiş Muska buluyorsun.",
+      "fangCharm": "Duvardaki bir çatlağa sıkışmış, kara dişlerden yapılma bir tılsım buluyorsun. Dişler, burada yaşaması beklenen hiçbir canlıya ait olamayacak kadar iri.",
+      "silverSack": "İçinde 50 Gümüş olan küçük bir deri kese buluyorsun.",
+      "mapFragment": "Mağaranın zemininde yırtık pırtık bir harita parçası buluyorsun.",
+      "firstVisit": "Yoldan mağaranın derinliklerine indikçe hava soğuyor. Çevrendeki duvarlar doğal olamayacak kadar pürüzsüz, sanki biri yontmuş gibi."
+    }
+  }
+}
