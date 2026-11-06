@@ -98,7 +98,7 @@ export const ProceduralGroundBackground: React.FC = () => {
     const timeLoc = gl.getUniformLocation(program, "u_time");
     const resLoc = gl.getUniformLocation(program, "u_resolution");
 
-    const paintLoop = createCappedPaintLoop(1000 / 24, (time) => {
+    const paintLoop = createCappedPaintLoop(1000 / 20, (time) => {
       const { innerWidth: width, innerHeight: height } = window;
       if (canvas.width !== width || canvas.height !== height) {
         canvas.width = width;

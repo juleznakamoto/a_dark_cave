@@ -585,7 +585,7 @@ export function SmokeShader({
       rendererRef.current.resizeToDisplay(rect.width, rect.height);
     };
 
-    const paintLoop = createCappedPaintLoop(1000 / 12, () => {
+    const paintLoop = createCappedPaintLoop(1000 / 10, () => {
       if (!rendererRef.current) return;
       rendererRef.current.setScale(scaleRef.current);
       rendererRef.current.render();

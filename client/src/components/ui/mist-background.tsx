@@ -169,7 +169,7 @@ const MistBackground: React.FC = () => {
 
     window.addEventListener('mousemove', handleMouseMove);
 
-    const paintLoop = createCappedPaintLoop(1000 / 24, (time) => {
+    const paintLoop = createCappedPaintLoop(1000 / 20, (time) => {
       if (canvas.width !== window.innerWidth || canvas.height !== window.innerHeight) {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;

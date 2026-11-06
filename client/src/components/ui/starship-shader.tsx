@@ -247,7 +247,7 @@ export function StarshipShader({ className, onFatalError }: StarshipShaderProps)
       renderer.resizeToDisplay(width, height);
       rendererRef.current = renderer;
 
-      const paintLoop = createCappedPaintLoop(1000 / 24, (now) => {
+      const paintLoop = createCappedPaintLoop(1000 / 20, (now) => {
         rendererRef.current?.render(now);
       }, {
         isActive: () => isActiveRef.current && rendererRef.current != null,

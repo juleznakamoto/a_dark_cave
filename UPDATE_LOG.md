@@ -4,6 +4,8 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ## Unreleased
 
+## 2026-11-06
+
 ### Added
 
 - You can play the game in Turkish. Thank you to Kuroiteiken.

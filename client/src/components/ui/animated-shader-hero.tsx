@@ -535,7 +535,7 @@ void main(){gl_Position=position;}`;
     }
 
     let isActive = true;
-    const paintLoop = createCappedPaintLoop(1000 / 24, (now) => {
+    const paintLoop = createCappedPaintLoop(1000 / 20, (now) => {
       if (!rendererRef.current || !pointersRef.current) return;
       rendererRef.current.updateMouse(pointersRef.current.first);
       rendererRef.current.updatePointerCount(pointersRef.current.count);

@@ -226,7 +226,7 @@ export function SmokeBackground({
     handleResize();
     window.addEventListener("resize", handleResize);
 
-    const paintLoop = createCappedPaintLoop(1000 / 24, (now) => {
+    const paintLoop = createCappedPaintLoop(1000 / 20, (now) => {
       renderer.render(now);
     });
     paintLoop.start();

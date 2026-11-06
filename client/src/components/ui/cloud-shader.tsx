@@ -268,7 +268,7 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
         rendererRef.current = renderer;
         setVisible(true);
 
-        const paintLoop = createCappedPaintLoop(1000 / 24, (now) => {
+        const paintLoop = createCappedPaintLoop(1000 / 20, (now) => {
           rendererRef.current?.render(now);
         }, {
           isActive: () => !cancelled && isActiveRef.current && rendererRef.current != null,
