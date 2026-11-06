@@ -75,7 +75,7 @@ export const PRESS_FACTS: readonly PressFact[] = [
   {
     label: "Languages",
     value:
-      "English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, Japanese, Polish, Russian.",
+      "English, German, French, Spanish, Italian, Portuguese (Brazil), Simplified Chinese, Japanese, Polish, Russian, Turkish.",
   },
   { label: "Similar to", value: PRESS_COMPS_LINE },
   {
