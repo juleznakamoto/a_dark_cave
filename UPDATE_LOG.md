@@ -11,6 +11,7 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Changed
 
+- Pact choice cards have a little less space between the border and the text.
 - Hovering a build button highlights that building in the side panel when you already have one. An upgrade highlights the building it replaces until the new one is built.
 - Hovering a building on the map highlights its name in the side panel with a fading underline and a dot in the middle. The line stops around the dot and around a letter it would cross. The number after a building name stays plain.
 - Madness visions tend to arrive sooner once you qualify for them.
@@ -24,7 +25,7 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 - The Obsidian Orb button, the huntress and crow bonus lines, and relic and blueprint names in costs and rewards now use your language.
 - Fur tents show how many you have built.
-- On the pact choice screen, you can scroll to the title and Continue when the window is short or zoomed in.
+- On the pact choice screen, you can scroll to the title and Continue when the window is short or zoomed in. The scrollbar stays hidden.
 - The fading line under a damaged fortification's name disappears when you move the pointer away.
 - The ground around the village on the map is clear, so a blood moon shows through it.
 - Hovering Feed Fire highlights Wood in the side panel, and hovering Call Merchant highlights Gold.

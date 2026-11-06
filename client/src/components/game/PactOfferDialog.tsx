@@ -329,7 +329,7 @@ function PactOfferDialogOpen() {
           // Scroll this shell. Centering it with overflow hidden clips the
           // title and Continue on short windows, browser zoom, and Linux
           // display scaling, and the document cannot scroll to them.
-          "fixed inset-0 z-50 h-dvh max-h-dvh overflow-x-hidden overflow-y-auto overscroll-y-contain bg-black",
+          "fixed inset-0 z-50 h-dvh max-h-dvh overflow-x-hidden overflow-y-auto overscroll-y-contain scrollbar-hide bg-black",
           closing && "pact-offer-backdrop-out",
         )}
         style={viewportStyle}
@@ -415,7 +415,7 @@ function PactOfferDialogOpen() {
                     toggle(pactId);
                   }}
                   className={cn(
-                    "pact-offer-card group relative z-0 flex w-[13.5rem] flex-col overflow-visible rounded-lg bg-background p-2.5 text-left shadow-2xl transition-opacity duration-1000 ease-out sm:w-[16rem] sm:p-3",
+                    "pact-offer-card group relative z-0 flex w-[13.5rem] flex-col overflow-visible rounded-lg bg-background p-2 text-left shadow-2xl transition-opacity duration-1000 ease-out sm:w-[16rem] sm:p-2.5",
                     canSelect && "pact-offer-card--open",
                     isShown ? "opacity-100" : "pointer-events-none opacity-0",
                     canSelect ? "cursor-pointer" : "cursor-default",
