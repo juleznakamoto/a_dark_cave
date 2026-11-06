@@ -1,9 +1,14 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeAll, beforeEach } from "vitest";
 import i18n from "./index";
+import { ensureGameplayLocalesLoaded } from "./loadLocaleResources";
 import {
   getDamagedBuildingDisplayName,
   getFellowshipDisplayName,
 } from "./combatLabels";
+
+beforeAll(async () => {
+  await ensureGameplayLocalesLoaded();
+});
 
 describe("getFellowshipDisplayName", () => {
   beforeEach(async () => {
