@@ -30,6 +30,27 @@ describe("getSidePanelModel", () => {
     expect(keys.filter((key) => mined.includes(key))).toEqual(mined);
   });
 
+  it("shows a count for every stackable shelter", () => {
+    const empty = gameStateSchema.parse({}).buildings;
+    const state = baseState({
+      buildings: {
+        ...empty,
+        woodenHut: 2,
+        stoneHut: 3,
+        furTents: 4,
+        longhouse: 5,
+      },
+    });
+    const rows = getSidePanelModel(state).buildingRows;
+    expect(rows.find((row) => row.id === "furTents")).toMatchObject({
+      value: 4,
+      showCount: true,
+    });
+    expect(rows.find((row) => row.id === "woodenHut")?.showCount).toBe(true);
+    expect(rows.find((row) => row.id === "stoneHut")?.showCount).toBe(true);
+    expect(rows.find((row) => row.id === "longhouse")?.showCount).toBe(true);
+  });
+
   it("lists a held resource and skips untouched ones", () => {
     const state = baseState({
       resources: {

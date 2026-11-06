@@ -5,6 +5,7 @@ import {
 } from "@shared/schema";
 import { derivedListEqual } from "@/game/useGameStoreWithoutTickClock";
 import {
+  STACKABLE_HOUSING_IDS,
   shouldExcludeFromBuildingsSection,
   shouldHideBuilding,
 } from "@/game/buildingHierarchy";
@@ -316,8 +317,7 @@ export function getSidePanelModel(state: GameState): SidePanelModel {
       return {
         id: key,
         value,
-        showCount:
-          key === "woodenHut" || key === "stoneHut" || key === "longhouse",
+        showCount: (STACKABLE_HOUSING_IDS as readonly string[]).includes(key),
       };
     })
     .filter((row) => !shouldHideBuilding(row.id, buildings));

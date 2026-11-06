@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -24,6 +24,93 @@ function prefersReducedMotion(): boolean {
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
+}
+
+/** Ignore subpixel rounding from fractional display scale. */
+const VIEWPORT_PIN_SLOP_PX = 4;
+
+type ViewportBox = {
+  offsetTop: number;
+  offsetLeft: number;
+  width: number;
+  height: number;
+};
+
+/**
+ * `inset: 0` and `100dvh` follow the layout viewport. Browser zoom and Linux
+ * display scaling can leave that taller than the window the player can see,
+ * and the document itself does not scroll. Pin the shell to the visual
+ * viewport when the visible window is shorter or shifted.
+ */
+export function pactOfferViewportStyle(
+  visual: ViewportBox | null,
+  layout: { width: number; height: number },
+): CSSProperties | undefined {
+  if (!visual || visual.width <= 0 || visual.height <= 0) return undefined;
+  const widthShort = layout.width - visual.width > VIEWPORT_PIN_SLOP_PX;
+  const heightShort = layout.height - visual.height > VIEWPORT_PIN_SLOP_PX;
+  const shifted =
+    Math.abs(visual.offsetTop) > 0.5 || Math.abs(visual.offsetLeft) > 0.5;
+  if (!widthShort && !heightShort && !shifted) return undefined;
+  return {
+    top: visual.offsetTop,
+    left: visual.offsetLeft,
+    width: visual.width,
+    height: visual.height,
+    maxHeight: visual.height,
+    right: "auto",
+    bottom: "auto",
+  };
+}
+
+function sameViewportStyle(
+  a: CSSProperties | undefined,
+  b: CSSProperties | undefined,
+): boolean {
+  if (a === b) return true;
+  if (!a || !b) return false;
+  return (
+    a.top === b.top &&
+    a.left === b.left &&
+    a.width === b.width &&
+    a.height === b.height &&
+    a.maxHeight === b.maxHeight
+  );
+}
+
+function usePactOfferViewportStyle(): CSSProperties | undefined {
+  const [style, setStyle] = useState<CSSProperties | undefined>();
+
+  useEffect(() => {
+    const sync = () => {
+      const visual = window.visualViewport;
+      const next = pactOfferViewportStyle(
+        visual
+          ? {
+              offsetTop: visual.offsetTop,
+              offsetLeft: visual.offsetLeft,
+              width: visual.width,
+              height: visual.height,
+            }
+          : null,
+        { width: window.innerWidth, height: window.innerHeight },
+      );
+      setStyle((prev) => (sameViewportStyle(prev, next) ? prev : next));
+    };
+
+    sync();
+    const visual = window.visualViewport;
+    visual?.addEventListener("resize", sync);
+    visual?.addEventListener("scroll", sync);
+    window.addEventListener("resize", sync);
+    return () => {
+      visual?.removeEventListener("resize", sync);
+      visual?.removeEventListener("scroll", sync);
+      window.removeEventListener("resize", sync);
+    };
+  }, []);
+
+  return style;
 }
 
 const PACT_EYE_BLINK_MS = 300;
@@ -89,6 +176,7 @@ export default function PactOfferDialog() {
 function PactOfferDialogOpen() {
   const { t } = useUiTranslation();
   const chromeOn = useDestroyedChrome();
+  const viewportStyle = usePactOfferViewportStyle();
   const confirmPacts = useGameStore((s) => s.confirmPacts);
   const chosen = useGameStore((s) => s.chosenPacts);
   const allowance = clampPactChoices(
@@ -238,16 +326,20 @@ function PactOfferDialogOpen() {
       `}</style>
       <div
         className={cn(
-          "fixed inset-0 z-50 overflow-y-auto overscroll-y-contain bg-black p-3 sm:flex sm:items-center sm:justify-center sm:overflow-hidden",
+          // Scroll this shell. Centering it with overflow hidden clips the
+          // title and Continue on short windows, browser zoom, and Linux
+          // display scaling, and the document cannot scroll to them.
+          "fixed inset-0 z-50 h-dvh max-h-dvh overflow-x-hidden overflow-y-auto overscroll-y-contain bg-black",
           closing && "pact-offer-backdrop-out",
         )}
+        style={viewportStyle}
         role="dialog"
         aria-modal="true"
         aria-labelledby="pact-offer-title"
         data-testid="pact-offer-dialog"
       >
-        <div className="flex min-h-full w-full justify-center sm:block sm:min-h-0 sm:w-full sm:max-w-[min(98vw,80rem)]">
-        <div className="m-auto flex w-full max-w-[min(98vw,80rem)] flex-col items-center py-2 sm:m-0 sm:max-w-none">
+        <div className="flex min-h-full w-full justify-center">
+        <div className="m-auto flex w-full max-w-[min(98vw,80rem)] flex-col items-center px-3 py-2">
           <div className="mb-4 flex flex-col items-center gap-1">
             <div
               className={cn(

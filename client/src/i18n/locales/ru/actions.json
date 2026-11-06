@@ -447,6 +447,9 @@
   "craftObsidianLantern": {
     "label": "Обсидиановый фонарь"
   },
+  "craftObsidianOrb": {
+    "label": "Обсидиановая сфера"
+  },
   "craftObsidianPickaxe": {
     "label": "Обсидиановая кирка"
   },

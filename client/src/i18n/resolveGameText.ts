@@ -308,12 +308,32 @@ export function getActionTooltipLine(
   );
 }
 
+type EffectNameCategory =
+  | "tools"
+  | "weapons"
+  | "clothing"
+  | "books"
+  | "fellowship"
+  | "relics"
+  | "blessings"
+  | "buildings";
+
+/** Relic and blessing names are stored under effects.clothing. */
+function effectCatalogCategory(category: EffectNameCategory): string {
+  if (category === "relics" || category === "blessings") return "clothing";
+  return category;
+}
+
 export function getEffectName(
-  category: "tools" | "weapons" | "clothing" | "books" | "fellowship" | "relics" | "blessings" | "buildings",
+  category: EffectNameCategory,
   effectId: string,
   fallback: string,
 ): string {
-  return tWithFallback("effects", `${category}.${effectId}.name`, fallback);
+  return tWithFallback(
+    "effects",
+    `${effectCatalogCategory(category)}.${effectId}.name`,
+    fallback,
+  );
 }
 
 /**
@@ -329,12 +349,16 @@ export function getClothingOrRelicEffectName(effectId: string): string {
 }
 
 export function getEffectDescription(
-  category: "tools" | "weapons" | "clothing" | "books" | "fellowship" | "relics" | "blessings" | "buildings",
+  category: EffectNameCategory,
   effectId: string,
   fallback: string | undefined,
 ): string | undefined {
   if (!fallback) return undefined;
-  return tWithFallback("effects", `${category}.${effectId}.description`, fallback);
+  return tWithFallback(
+    "effects",
+    `${effectCatalogCategory(category)}.${effectId}.description`,
+    fallback,
+  );
 }
 
 export function getShopItemName(itemId: string, fallback: string): string {

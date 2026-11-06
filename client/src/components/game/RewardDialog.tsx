@@ -106,7 +106,13 @@ const effectDisplayName = (
       clothingEffects[id]?.name || fallback,
     );
   }
-  if (kind === "schematic") return fallback;
+  if (kind === "schematic") {
+    return getEffectName(
+      "clothing",
+      id,
+      clothingEffects[id]?.name || fallback,
+    );
+  }
   return getEffectName(
     "clothing",
     id,

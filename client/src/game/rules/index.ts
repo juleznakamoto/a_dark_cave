@@ -14,7 +14,6 @@ import { calculateAdjustedCost } from "./costCalculation";
 import { formatNumber } from "@/lib/utils";
 import { getVillagersInVillage } from "@/game/population";
 import { hasFreeQueueSlot } from "@/game/constructionQueueSlots";
-import { clothingEffects } from "./effects";
 import i18n from "i18next";
 import {
   formatTooltipCostLine,
@@ -773,12 +772,6 @@ export function getActionCostBreakdown(
       return;
     }
 
-    // Player-facing name: use effect catalog for relics so labels match tooltips (e.g. Black Timber).
-    const resourceNameFormatted =
-      resource.startsWith("relics.") && clothingEffects[resourceName]?.name
-        ? clothingEffects[resourceName].name
-        : formatTooltipResourceName(resourceName);
-
     // Handle boolean true values as -1
     const displayCost = adjustedAmount === true ? 1 : adjustedAmount;
 
@@ -797,7 +790,6 @@ export function getActionCostBreakdown(
 
     breakdown.push({
       text: formatTooltipCostLine(displayCost, resourceName, {
-        displayName: resourceNameFormatted,
         available: tooltipHeldAmount(state, resourceName),
       }),
       satisfied,
@@ -886,18 +878,12 @@ export function getEventChoiceCostBreakdown(
         ? resource.split(".").pop()!
         : resource;
 
-      const resourceNameFormatted =
-        resource.startsWith("relics.") && clothingEffects[resourceName]?.name
-          ? clothingEffects[resourceName].name
-          : formatTooltipResourceName(resourceName);
-
       const displayCost = amount as number;
       const satisfied =
         (resources[resourceName as keyof typeof resources] || 0) >= displayCost;
 
       breakdown.push({
         text: formatTooltipCostLine(displayCost, resourceName, {
-          displayName: resourceNameFormatted,
           available: tooltipHeldAmount(state, resourceName),
         }),
         satisfied,

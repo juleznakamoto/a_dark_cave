@@ -6,7 +6,7 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Added
 
-- You can play the game in Turkish.
+- You can play the game in Turkish. Thank you to Kuroiteiken.
 - After you lose an attack wave, you can spend 1000 Insight once to push its return back 10 minutes, and again only after you lose that wave once more.
 
 ### Changed
@@ -22,6 +22,9 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Fixed
 
+- The Obsidian Orb button, the huntress and crow bonus lines, and relic and blueprint names in costs and rewards now use your language.
+- Fur tents show how many you have built.
+- On the pact choice screen, you can scroll to the title and Continue when the window is short or zoomed in.
 - The fading line under a damaged fortification's name disappears when you move the pointer away.
 - The ground around the village on the map is clear, so a blood moon shows through it.
 - Hovering Feed Fire highlights Wood in the side panel, and hovering Call Merchant highlights Gold.

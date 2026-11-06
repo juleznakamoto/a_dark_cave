@@ -20,6 +20,7 @@ import { englishCountFallback, getUiTooltip } from "./tooltipLabels";
 import { resolveEventMessage, resolveEventTitle } from "./eventText";
 import { gameStateSchema } from "@shared/schema";
 import { getActionCostBreakdown } from "@/game/rules/index";
+import { getBonusComposition } from "@/game/rules/bonusComposition";
 
 describe("i18n runtime", () => {
   beforeAll(async () => {
@@ -354,6 +355,65 @@ describe("i18n runtime", () => {
     ).toBe("2 rounds remaining");
   });
 
+  it("translates the obsidian orb button and relic costs", async () => {
+    await i18n.changeLanguage("de");
+    expect(getActionLabel("craftObsidianOrb", "Obsidian Orb")).toBe(
+      "Obsidiankugel",
+    );
+
+    const staff = getActionCostBreakdown(
+      "craftBloodstoneStaff",
+      gameStateSchema.parse({}),
+    );
+    expect(staff.some((row) => row.text.includes("Blutstein"))).toBe(true);
+    expect(staff.some((row) => row.text.includes("Bloodstone"))).toBe(false);
+
+    const plating = getActionCostBreakdown(
+      "buildChitinPlating",
+      gameStateSchema.parse({}),
+    );
+    expect(plating.some((row) => row.text.includes("Chitinplatten"))).toBe(
+      true,
+    );
+
+    const shield = getActionCostBreakdown(
+      "craftAshenGreatshield",
+      gameStateSchema.parse({}),
+    );
+    expect(shield.some((row) => row.text.includes("Knochen der Kreatur"))).toBe(
+      true,
+    );
+
+    await i18n.changeLanguage("ru");
+    expect(getActionLabel("craftObsidianOrb", "Obsidian Orb")).toBe(
+      "Обсидиановая сфера",
+    );
+    const ruStaff = getActionCostBreakdown(
+      "craftBloodstoneStaff",
+      gameStateSchema.parse({}),
+    );
+    expect(ruStaff.some((row) => row.text.includes("Кровавик"))).toBe(true);
+    expect(ruStaff.some((row) => row.text.includes("Bloodstone"))).toBe(false);
+  });
+
+  it("translates huntress and crow bonus lines", async () => {
+    await i18n.changeLanguage("ru");
+    const state = gameStateSchema.parse({
+      huntingSkills: { level: 1 },
+      crowsEyeSkills: { level: 1 },
+    });
+    expect(
+      getBonusComposition("hunt", state).find(
+        (line) => line.sourceId === "huntressTraining",
+      )?.sourceLabel,
+    ).toBe("Обучение охотницы");
+    expect(
+      getBonusComposition("doubleGainChance", state).find(
+        (line) => line.sourceId === "crowsEye",
+      )?.sourceLabel,
+    ).toBe("Вороний глаз");
+  });
+
   it("translates known action labels in German", async () => {
     await i18n.changeLanguage("de");
     const label = getActionLabel(
@@ -442,8 +502,11 @@ describe("i18n runtime", () => {
     expect(getEffectName("clothing", "wooden_figure", "Wooden Figure")).toBe(
       "Holzfigur",
     );
-    expect(getEffectName("relics", "wooden_figure", "Wooden Figure")).toBe(
-      "Wooden Figure",
+    expect(getEffectName("relics", "bloodstone", "Bloodstone")).toBe(
+      "Blutstein",
+    );
+    expect(getEffectName("blessings", "bell_blessing", "Bell Blessing")).toBe(
+      "Glockensegen",
     );
   });
 

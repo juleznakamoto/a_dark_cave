@@ -183,8 +183,8 @@ export function getBuildHoverHighlightId(
   return getBuildingUpgradeHighlightId(buildingKey, buildings);
 }
 
-/** Stackable housing — not chain upgrades; omit "Level" in building tooltips. */
-const STACKABLE_HOUSING_IDS = [
+/** Stackable housing. The side panel shows a count. Tooltips omit a level. */
+export const STACKABLE_HOUSING_IDS = [
   "woodenHut",
   "stoneHut",
   "furTents",

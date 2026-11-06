@@ -1,5 +1,12 @@
-import { tWithFallback, getResourceName, getStatName } from "./resolveGameText";
+import i18n from "i18next";
+import { tWithFallback, getEffectName, getResourceName, getStatName } from "./resolveGameText";
 import type { BuildingTooltipEffect } from "@/game/rules/buildingTooltipEffects";
+import {
+  bookEffects,
+  clothingEffects,
+  toolEffects,
+  weaponEffects,
+} from "@/game/rules/effects";
 import type { GameState } from "@shared/schema";
 import { formatNumber } from "@/lib/utils";
 
@@ -92,12 +99,26 @@ export function formatTooltipVillagerCostLine(
   });
 }
 
+/** Relic, schematic, tool, weapon, or book name when the id is not a resource. */
+function ownedItemName(id: string): string | null {
+  if (toolEffects[id]) return getEffectName("tools", id, toolEffects[id].name);
+  if (weaponEffects[id]) return getEffectName("weapons", id, weaponEffects[id].name);
+  if (bookEffects[id]) return getEffectName("books", id, bookEffects[id].name);
+  if (clothingEffects[id]) {
+    return getEffectName("clothing", id, clothingEffects[id].name);
+  }
+  return null;
+}
+
 export function formatTooltipResourceName(resource: string): string {
   const fallback = resource
     .split("_")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
-  return getResourceName(resource, fallback);
+  if (i18n.exists(`common:resources.${resource}`)) {
+    return getResourceName(resource, fallback);
+  }
+  return ownedItemName(resource) ?? getResourceName(resource, fallback);
 }
 
 export function formatTooltipStatName(stat: string): string {

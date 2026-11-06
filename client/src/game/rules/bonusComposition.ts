@@ -182,7 +182,7 @@ function getActionBonusComposition(
       sourceId: "huntressTraining",
       sourceLabel: tWithFallback(
         "ui",
-        "forest.huntressTraining",
+        "estate.huntressTraining",
         "Huntress Training",
       ),
       percent: huntBonus,
@@ -378,7 +378,7 @@ function getDoubleGainChanceComposition(
     if (upgrade) {
       pushLine(lines, {
         sourceId: "crowsEye",
-        sourceLabel: tWithFallback("ui", "forest.crowsEye", "Crow's Eye"),
+        sourceLabel: tWithFallback("ui", "estate.crowsEye", "Crow's Eye"),
         percent: upgrade.doubleChance,
       });
     }

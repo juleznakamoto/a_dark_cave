@@ -3,7 +3,7 @@
  */
 import { act, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { PactOfferEye } from "./PactOfferDialog";
+import { PactOfferEye, pactOfferViewportStyle } from "./PactOfferDialog";
 
 function eyeMask(): string {
   const eye = document.querySelector("span[aria-hidden='true']");
@@ -66,5 +66,53 @@ describe("PactOfferEye", () => {
       vi.advanceTimersByTime(30_000);
     });
     expect(eyeMask()).toContain("cracked_eye");
+  });
+});
+
+describe("pactOfferViewportStyle", () => {
+  const layout = { width: 1280, height: 800 };
+
+  it("keeps a matching window on the layout viewport", () => {
+    expect(
+      pactOfferViewportStyle(
+        { offsetTop: 0, offsetLeft: 0, width: 1280, height: 800 },
+        layout,
+      ),
+    ).toBeUndefined();
+  });
+
+  it("ignores a few pixels of fractional-scale rounding", () => {
+    expect(
+      pactOfferViewportStyle(
+        { offsetTop: 0, offsetLeft: 0, width: 1278, height: 797 },
+        layout,
+      ),
+    ).toBeUndefined();
+  });
+
+  it("pins the shell when the visible window is shorter than the layout viewport", () => {
+    expect(
+      pactOfferViewportStyle(
+        { offsetTop: 40, offsetLeft: 0, width: 1280, height: 520 },
+        layout,
+      ),
+    ).toMatchObject({
+      top: 40,
+      left: 0,
+      width: 1280,
+      height: 520,
+      maxHeight: 520,
+      bottom: "auto",
+    });
+  });
+
+  it("ignores a missing or empty visual viewport", () => {
+    expect(pactOfferViewportStyle(null, layout)).toBeUndefined();
+    expect(
+      pactOfferViewportStyle(
+        { offsetTop: 0, offsetLeft: 0, width: 0, height: 0 },
+        layout,
+      ),
+    ).toBeUndefined();
   });
 });

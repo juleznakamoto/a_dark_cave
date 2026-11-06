@@ -447,6 +447,9 @@
   "craftObsidianLantern": {
     "label": "Lanterna di ossidiana"
   },
+  "craftObsidianOrb": {
+    "label": "Sfera di ossidiana"
+  },
   "craftObsidianPickaxe": {
     "label": "Piccone di ossidiana"
   },

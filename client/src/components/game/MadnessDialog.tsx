@@ -45,7 +45,7 @@ const effectDisplayName = (
   if (kind === "fellowship") return getEffectName("fellowship", id, fallback);
   if (kind === "relic") return getEffectName("relics", id, fallback);
   if (kind === "blessing") return getEffectName("blessings", id, fallback);
-  if (kind === "schematic") return fallback;
+  if (kind === "schematic") return getEffectName("clothing", id, fallback);
   return getEffectName("clothing", id, fallback);
 };
 
