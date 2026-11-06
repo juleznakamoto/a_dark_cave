@@ -73,6 +73,8 @@ export const STEAM_OVERLAY_REPAINT_MS = 1000 / 60;
 
 type OverlayBrowserWindow = {
   isDestroyed: () => boolean;
+  isMinimized: () => boolean;
+  isVisible: () => boolean;
   webContents: {
     isPainting: () => boolean;
     invalidate: () => void;
@@ -106,6 +108,9 @@ const overlayListenerApps = new WeakSet<SteamOverlayElectron["app"]>();
  */
 export function tickSteamOverlayRepaint(window: OverlayBrowserWindow): boolean {
   if (window.isDestroyed()) return true;
+  // A minimized window still reports visible. Nothing can composite in either case.
+  // Keep the timer so the next shown frame can repaint.
+  if (window.isMinimized() || !window.isVisible()) return false;
   // Same check steamworks.js uses so the overlay keeps compositing.
   if (!window.webContents.isPainting()) {
     window.webContents.invalidate();

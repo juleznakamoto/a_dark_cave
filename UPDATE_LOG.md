@@ -4,6 +4,11 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ## Unreleased
 
+### Changed
+
+- While the Steam game is minimized, it stops redrawing and uses less of the machine.
+- If you play in Turkish, many item, building, and event names have changed, and the writing reads more naturally.
+
 ### Fixed
 
 - Extra workers add about as much as the worker before them when Heartfire, madness, or a storm is changing a job. A job that makes 1 no longer shows an inflated total from those effects stacking.

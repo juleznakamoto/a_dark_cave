@@ -8,6 +8,8 @@ import {
 
 type FakeWindow = {
   isDestroyed: () => boolean;
+  isMinimized: () => boolean;
+  isVisible: () => boolean;
   webContents: {
     isPainting: () => boolean;
     invalidate: () => void;
@@ -17,12 +19,16 @@ type FakeWindow = {
 function fakeWindow(options?: {
   destroyed?: boolean;
   painting?: boolean;
+  minimized?: boolean;
+  hidden?: boolean;
 }): { window: FakeWindow; invalidate: ReturnType<typeof vi.fn> } {
   const invalidate = vi.fn();
   return {
     invalidate,
     window: {
       isDestroyed: () => options?.destroyed === true,
+      isMinimized: () => options?.minimized === true,
+      isVisible: () => options?.hidden !== true,
       webContents: {
         isPainting: () => options?.painting === true,
         invalidate,
@@ -103,6 +109,25 @@ describe("Steam overlay hooks", () => {
   it("stops the repaint hook after the window is destroyed", () => {
     const { window, invalidate } = fakeWindow({ destroyed: true });
     expect(tickSteamOverlayRepaint(window)).toBe(true);
+    expect(invalidate).not.toHaveBeenCalled();
+  });
+
+  it("skips a minimized window and repaints again once it is shown", () => {
+    let minimized = true;
+    const { window, invalidate } = fakeWindow();
+    window.isMinimized = () => minimized;
+
+    expect(tickSteamOverlayRepaint(window)).toBe(false);
+    expect(invalidate).not.toHaveBeenCalled();
+
+    minimized = false;
+    expect(tickSteamOverlayRepaint(window)).toBe(false);
+    expect(invalidate).toHaveBeenCalledOnce();
+  });
+
+  it("skips a hidden window and keeps the hook running", () => {
+    const { window, invalidate } = fakeWindow({ hidden: true });
+    expect(tickSteamOverlayRepaint(window)).toBe(false);
     expect(invalidate).not.toHaveBeenCalled();
   });
 });
