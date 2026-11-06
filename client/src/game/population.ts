@@ -242,6 +242,22 @@ function noteComposition(
   composition.push({ resource, sourceId, amount: delta });
 }
 
+/** Drop binary dust without changing a real tenth or hundredth. */
+function tidyProductionAmount(amount: number): number {
+  return Math.round(amount * 1e6) / 1e6;
+}
+
+/**
+ * Round a positive cycle total up to a whole item.
+ * A value that is already a whole item, within float error, stays that item.
+ */
+function roundProductionUp(amount: number): number {
+  const tidied = tidyProductionAmount(amount);
+  const nearest = Math.round(tidied);
+  if (Math.abs(tidied - nearest) <= 1e-6) return nearest;
+  return Math.ceil(tidied);
+}
+
 function replaceCompositionResource(
   composition: JobProductionCompositionLine[] | undefined,
   resource: string,
@@ -332,8 +348,12 @@ export const getPopulationProduction = (
     next: (current: number) => number,
   ) => {
     const before = prod.totalAmount;
-    prod.totalAmount = next(before);
-    note(prod.resource, sourceId, prod.totalAmount - before);
+    prod.totalAmount = tidyProductionAmount(next(before));
+    note(
+      prod.resource,
+      sourceId,
+      tidyProductionAmount(prod.totalAmount - before),
+    );
   };
 
   for (const prod of baseProduction) {
@@ -432,14 +452,14 @@ export const getPopulationProduction = (
     greatFeastState?.isActive && greatFeastState.endTime > Date.now();
   const isFeast = feastState?.isActive && feastState.endTime > Date.now();
 
-  // Apply curse multiplier if active (0.5x, rounded up) - temporary, inactive during sleep
+  // Apply curse multiplier if active (0.5x) - temporary, inactive during sleep
   const curseState = state.curseState;
   const isCursed = !excludeTemporary && curseState?.isActive && curseState.endTime > Date.now();
   if (isCursed) {
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
       if (prod.totalAmount > 0) {
-        scale(prod, "witchsCurse", (n) => Math.ceil(n * 0.5));
+        scale(prod, "witchsCurse", (n) => n * 0.5);
       }
     });
   }
@@ -454,7 +474,7 @@ export const getPopulationProduction = (
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
       if (prod.totalAmount > 0) {
-        scale(prod, "frostfall", (n) => Math.ceil(n * 0.75));
+        scale(prod, "frostfall", (n) => n * 0.75);
       }
     });
   }
@@ -466,7 +486,7 @@ export const getPopulationProduction = (
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
       if (prod.totalAmount > 0) {
-        scale(prod, "chokingFog", (n) => Math.ceil(n * 0.75));
+        scale(prod, "chokingFog", (n) => n * 0.75);
       }
     });
   }
@@ -481,7 +501,7 @@ export const getPopulationProduction = (
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
       if (prod.totalAmount > 0) {
-        scale(prod, "villagerDisgust", (n) => Math.ceil(n * 0.75));
+        scale(prod, "villagerDisgust", (n) => n * 0.75);
       }
     });
   }
@@ -496,7 +516,7 @@ export const getPopulationProduction = (
     baseProduction.forEach((prod) => {
       // Only reduce positive production (not consumption)
       if (prod.totalAmount > 0) {
-        scale(prod, "madness", (n) => Math.ceil(n * madnessMultiplier));
+        scale(prod, "madness", (n) => n * madnessMultiplier);
       }
     });
   }
@@ -512,7 +532,7 @@ export const getPopulationProduction = (
     miningBoostState.endTime > Date.now()
   ) {
     baseProduction.forEach((prod) => {
-      scale(prod, "miningBoost", (n) => Math.ceil(n * 2));
+      scale(prod, "miningBoost", (n) => n * 2);
     });
   }
 
@@ -525,7 +545,7 @@ export const getPopulationProduction = (
   ) {
     baseProduction.forEach((prod) => {
       if (prod.resource === "food" && prod.totalAmount > 0) {
-        scale(prod, "staringDeer", (n) => Math.ceil(n * 2));
+        scale(prod, "staringDeer", (n) => n * 2);
       }
     });
   }
@@ -540,7 +560,7 @@ export const getPopulationProduction = (
   ) {
     baseProduction.forEach((prod) => {
       if (prod.totalAmount > 0) {
-        scale(prod, "forestFear", (n) => Math.ceil(n * 0.75));
+        scale(prod, "forestFear", (n) => n * 0.75);
       }
     });
   }
@@ -628,13 +648,11 @@ export const getPopulationProduction = (
       const greatFeastMultiplier =
         greatFeastState.productionMultiplier ?? 5;
       baseProduction.forEach((prod) => {
-        scale(prod, "greatVillageFeast", (n) =>
-          Math.ceil(n * greatFeastMultiplier),
-        );
+        scale(prod, "greatVillageFeast", (n) => n * greatFeastMultiplier);
       });
     } else if (isFeast) {
       baseProduction.forEach((prod) => {
-        scale(prod, "villageFeast", (n) => Math.ceil(n * 2.0));
+        scale(prod, "villageFeast", (n) => n * 2);
       });
     }
 
@@ -646,14 +664,13 @@ export const getPopulationProduction = (
     ) {
       baseProduction.forEach((prod) => {
         if (prod.totalAmount > 0) {
-          // +10% with integer amounts: ceil(n * 1.1) === floor((11n + 9) / 10); avoids float error (e.g. 50 * 1.1).
-          scale(prod, "solsticeGathering", (n) => Math.floor((n * 11 + 9) / 10));
+          scale(prod, "solsticeGathering", (n) => n * 1.1);
         }
       });
     }
   }
 
-  // Heartfire multiplier — temporary, inactive during sleep
+  // Heartfire multiplier, temporary, inactive during sleep
   const heartfireLevel = state.heartfireState?.level || 0;
   if (!excludeTemporary && heartfireLevel > 0) {
     const ebonGrace = Boolean(state.blessings?.ebon_grace);
@@ -663,20 +680,20 @@ export const getPopulationProduction = (
       // Only apply to positive production (don't increase consumption)
       if (prod.totalAmount <= 0) return;
       const before = prod.totalAmount;
-      const final = Math.ceil(before * (1 + heartfireLevel * perLevel));
+      const at = (rate: number) =>
+        tidyProductionAmount(before * (1 + heartfireLevel * rate));
       let rate = HEARTFIRE_BASE_PRODUCTION_PER_LEVEL;
-      let cursor = Math.ceil(before * (1 + heartfireLevel * rate));
-      note(prod.resource, "heartfire", cursor - before);
+      let cursor = at(rate);
+      note(prod.resource, "heartfire", tidyProductionAmount(cursor - before));
       if (ebonGrace) {
         rate += HEARTFIRE_BASE_PRODUCTION_PER_LEVEL;
-        const next = blazesmith
-          ? Math.ceil(before * (1 + heartfireLevel * rate))
-          : final;
-        note(prod.resource, "ebon_grace", next - cursor);
+        const next = blazesmith ? at(rate) : at(perLevel);
+        note(prod.resource, "ebon_grace", tidyProductionAmount(next - cursor));
         cursor = next;
       }
+      const final = at(perLevel);
       if (blazesmith) {
-        note(prod.resource, "blazesmith", final - cursor);
+        note(prod.resource, "blazesmith", tidyProductionAmount(final - cursor));
       }
       prod.totalAmount = final;
     });
@@ -689,7 +706,7 @@ export const getPopulationProduction = (
     baseProduction.forEach((prod) => {
       if (prod.totalAmount > 0) {
         scale(prod, "book_of_chainmaster", (n) =>
-          Math.floor((n * (100 + bonusPercent) + 99) / 100),
+          (n * (100 + bonusPercent)) / 100,
         );
       }
     });
@@ -722,6 +739,30 @@ export const getPopulationProduction = (
     baseProduction.forEach((prod) => {
       scale(prod, "devMode", (n) => n * 9);
     });
+  }
+
+  // Percent effects multiply the real total. Round a positive total up once,
+  // so a later bonus cannot copy an earlier round-up.
+  for (const prod of baseProduction) {
+    prod.totalAmount =
+      prod.totalAmount > 0
+        ? roundProductionUp(prod.totalAmount)
+        : tidyProductionAmount(prod.totalAmount);
+    if (!composition) continue;
+    let lastIndex = -1;
+    for (let i = 0; i < composition.length; i++) {
+      if (composition[i].resource === prod.resource) lastIndex = i;
+    }
+    if (lastIndex < 0) continue;
+    let others = 0;
+    for (let i = 0; i < composition.length; i++) {
+      if (i !== lastIndex && composition[i].resource === prod.resource) {
+        others += composition[i].amount;
+      }
+    }
+    const closed = tidyProductionAmount(prod.totalAmount - others);
+    if (closed === 0) composition.splice(lastIndex, 1);
+    else composition[lastIndex].amount = closed;
   }
 
   if (canCache && state) {

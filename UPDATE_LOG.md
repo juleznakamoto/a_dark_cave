@@ -4,6 +4,10 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ## Unreleased
 
+### Fixed
+
+- Extra workers add about as much as the worker before them when Heartfire, madness, or a storm is changing a job. A job that makes 1 no longer shows an inflated total from those effects stacking.
+
 ## 2026-11-06
 
 ### Added
