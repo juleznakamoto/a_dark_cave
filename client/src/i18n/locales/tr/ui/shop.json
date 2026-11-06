@@ -49,7 +49,7 @@
     "purchaseSuccessful": "Satın alma tamamlandı.",
     "purchaseSuccess": "Satın Alma Başarılı",
     "purchaseAddedSingle": "{{name}} satın aldıklarına eklendi. Etkinleştirmek için Satın Alınanlar sekmesine bak.",
-    "purchaseAddedBundle": "{{name}} ile gelenler satın aldıklarına eklendi. Etkinleştirmek için Satın Alınanlar sekmesine bak.",
+    "purchaseAddedBundle": "{{name}} içeriği satın aldıklarına eklendi. Etkinleştirmek için Satın Alınanlar sekmesine bak.",
     "freeGoldAdded": "{{amount}} Altın kaynaklarına eklendi!",
     "freeGoldClaimedLog": "{{amount}} Altın aldın. Geceyi atlatırsan yarın yine gel.",
     "freeGoldCooldownLog_one": "{{hours}} saat sonra yeniden ücretsiz Altın alabilirsin.",

@@ -81,7 +81,7 @@
       "description": "20 Kor Bombası yap"
     },
     "3-veinfireElixir": {
-      "label": "İksir Ustası",
+      "label": "Damarateşi İksircisi",
       "description": "10 Damarateşi İksiri yap"
     },
     "4-feedFire": {
@@ -210,7 +210,7 @@
     },
     "3-0": {
       "label": "Tüccarlar",
-      "description": "Ticaret Noktasını tüm geliştirmeleriyle inşa et"
+      "description": "Pazar Yerini tüm geliştirmeleriyle inşa et"
     },
     "3-1": {
       "label": "Erzakçılar",

@@ -7,7 +7,7 @@
     "label": "Haydut İni",
     "log": {
       "success": "Adamların haydudun izini derme çatma bir ine kadar sürüyor. Onu alt edip tüccarın hançerini geri alıyorsun; yağmaladıklarının arasına saklanmış 250 Gümüş de buluyorsun.",
-      "failure": "Köylüler tepeleri didik didik ediyor ama haydudu kıstıramıyor. İz kayboluyor, hançer hâlâ haydudun elinde."
+      "failure": "Köylüler tepeleri karış karış arıyor ama haydudu kıstıramıyor. İz kayboluyor, hançer hâlâ haydudun elinde."
     }
   },
   "blackreachCanyon": {
@@ -60,7 +60,7 @@
     "label": "Demirci"
   },
   "buildBoneTemple": {
-    "description": "Eski tanrılar onuruna kemiklerden örülmüş dehşet verici yapı",
+    "description": "Eski tanrıların onuruna kemiklerden örülmüş dehşet verici yapı",
     "label": "Kemik Tapınağı"
   },
   "buildBoneyard": {
@@ -77,7 +77,7 @@
   },
   "buildBuildersLodge": {
     "description": "Yapı ustalarının köydeki bütün inşaatları düzenlediği han",
-    "label": "Yapı Ustaları Hanı"
+    "label": "Yapı Ustaları Ocağı"
   },
   "buildBuildersHall": {
     "description": "Kıdemli yapı ustalarının işleri düzene soktuğu, malzeme fiyatlarını pazarlıkla düşürdüğü salon",
@@ -152,7 +152,7 @@
     "label": "Ulu Av Köşkü"
   },
   "buildGrandRepository": {
-    "description": "Akıl almaz miktarda yük alan devasa depo",
+    "description": "Olağanüstü miktarda yük alan devasa depo",
     "label": "Ulu Depo"
   },
   "buildGreatCabin": {
@@ -224,7 +224,7 @@
     "label": "Taş Ocağı"
   },
   "buildRecordsHall": {
-    "description": "Raflarında yıpranmış defterler ve kütükler duran salon. Köyün hafızası burada mürekkeple kayda geçirilir, özenle saklanır",
+    "description": "Raflarında yıpranmış defterler ve kütükler duran salon; köyün hafızası burada mürekkeple kayda geçirilir, özenle saklanır",
     "label": "Kayıtlar Salonu"
   },
   "buildSanctum": {
@@ -272,8 +272,8 @@
     "label": "Kereste Değirmeni"
   },
   "buildTradePost": {
-    "description": "Mal satan tacirleri çeken ticaret noktası",
-    "label": "Ticaret Noktası"
+    "description": "Mal satan tacirleri köye çeken pazar yeri",
+    "label": "Pazar Yeri"
   },
   "buildTraps": {
     "description": "Köyün çevresine kurulmuş, bütün saldırganları zayıflatan tuzaklar",
@@ -301,7 +301,7 @@
   },
   "exploreMountainVillage": {
     "description": "Dağların tepesindeki köye doğru uzun bir tırmanışa koyul.",
-    "label": "Dağ Köyünü Keşfet"
+    "label": "Dağ Köyü'nü Keşfet"
   },
   "canyonBridge": {
     "description": "Orman kabilesine ulaşmak için kanyonun üzerine köprü kur.",
@@ -320,7 +320,7 @@
     }
   },
   "chopWood": {
-    "description": "Mağaranın ağzındaki yere düşmüş dalları topla.",
+    "description": "Mağara ağzının çevresinde yere düşmüş dalları topla.",
     "label": "Odun Topla",
     "descriptionForest": "Kereste için ormanın kıyısındaki ağaçları kes.",
     "labelForest": "Odun Kes",
@@ -391,13 +391,13 @@
     "label": "Kor Bombası"
   },
   "craftExplorerPack": {
-    "label": "Kaşif Sırt Çantası"
+    "label": "Kâşif Sırt Çantası"
   },
   "craftFrostglassSword": {
-    "label": "Ayazcam Kılıç"
+    "label": "Ayaz Kılıcı"
   },
   "craftFlaskHarness": {
-    "label": "Şişe Kuşağı"
+    "label": "İksir Kemeri"
   },
   "craftGrenadierBag": {
     "label": "Bombacı Çantası"
@@ -484,7 +484,7 @@
     "label": "Taş Kazma"
   },
   "craftStormglassHalberd": {
-    "label": "Fırtınacam Teber"
+    "label": "Fırtına Teberi"
   },
   "craftTorches": {
     "label": "Meşaleler"
@@ -499,7 +499,7 @@
     "label": "Savaş Yayı"
   },
   "descendFurther": {
-    "description": "Mağaranın alt katlarına inen aşınmış basamaklardan aşağı in.",
+    "description": "Mağaranın alt katlarına uzanan aşınmış basamaklardan aşağı in.",
     "label": "Daha Aşağı İn",
     "log": {
       "firstVisit": "Fenerin sabit ışığında daha da derine iniyorsun. Birden ayakların, zamanın aşındırdığı, insan eliyle yontulmuş taş basamaklara basıyor."
@@ -514,7 +514,7 @@
     "label": "Mağarayı Keşfet",
     "log": {
       "debrisScroll": "Molozların arasında, bu amansız dünyada ayakta kalmanın yollarını anlatan, zamanla yıpranmış bir parşömen buluyorsun.",
-      "torchBag": "Mağarada içinde 25 Meşale olan eski, tozlu bir torba buluyorsun.",
+      "torchBag": "Mağarada, içinde 25 Meşale olan eski, tozlu bir torba buluyorsun.",
       "firstVisit": "Meşalenin ışığı mağara duvarlarını aydınlatıyor. Titreyen ışıkta mağaranın derinliklerine uzanan bir yol fark ediyorsun."
     }
   },
@@ -543,7 +543,7 @@
     "description": "Yeraltı gölünün kara sularını aşıp ortasındaki küçük adaya geç.",
     "label": "Yeraltı Gölü",
     "log": {
-      "complete": "Kafatası Fenerinin ürkütücü ışığında yeraltı gölüne iniyor ve küçük bir sandal yapıyorsun. Karanlık gölün ortasındaki minik adada, çağlardır el değmemiş unutulmuş hazineler gölgede yatıyor."
+      "complete": "Kafatası Fenerinin ürkütücü ışığında yeraltı gölüne iniyor ve küçük bir sandal yapıyorsun. Karanlık gölün ortasındaki minik adada, çağlardır el değmemiş, unutulmuş hazineler gölgede yatıyor."
     }
   },
   "feedFire": {
@@ -561,7 +561,7 @@
     "label": "Orman Mağarası",
     "log": {
       "success": "Köylüler mağaraya inerken karanlıktan ardı arkası kesilmeyen sürüler hâlinde vahşi tazılar fırlıyor. Pençeler eti yırtıyor, çeneler kenetleniyor, çığlıklar yankılanıyor. Son canavar da yere serildiğinde köylülerin hepsi hâlâ hayatta; avcı kadının kabilesi kurtuldu.",
-      "failure": "Sefer mağaraya girer girmez azgın bir tazı sürüsünün altında kalıyor. Sağ kalanlar geri çekilmeyi başarana dek {{count}} köylü vahşi çenelerde parçalanıyor."
+      "failure": "Sefer mağaraya girer girmez azgın bir tazı sürüsünün altında kalıyor. Sağ kalanlar geri çekilmeyi başarana dek {{count}} köylü vahşi çeneler arasında paramparça oluyor."
     }
   },
   "healElderWizard": {
@@ -578,10 +578,10 @@
     }
   },
   "hillGrave": {
-    "description": "Kurgana gir, mezar odasında Ayazcam ara.",
+    "description": "Kurgana gir, mezar odasında Ayaz Camı ara.",
     "label": "Kurgan",
     "log": {
-      "success": "Seferin kurganın sinsi tuzakları arasında dikkatle yol alıyor. Köylüler kadim düzenekleri etkisiz hâle getirip mezar odasına ulaşıyor. Kralın hazineleri arasında hiçliğin kendisi kadar soğuk, saf Ayazcam buluyorsun.",
+      "success": "Seferin kurganın sinsi tuzakları arasında dikkatle yol alıyor. Köylüler kadim düzenekleri etkisiz hâle getirip mezar odasına ulaşıyor. Kralın hazineleri arasında hiçliğin kendisi kadar soğuk, saf Ayaz Camı buluyorsun.",
       "failure": "Seferin kurgana giriyor ama ölümcül tuzakları aşacak ustalıktan yoksun. Kralın son savunmaları {{count}} köylünün canını alıyor. Sağ kalanlar yoldaşlarının cesetlerini lanetli mezarda bırakıp dehşet içinde geri çekiliyor."
     }
   },
@@ -600,7 +600,7 @@
     "label": "Kütük Kulübe",
     "log": {
       "success": "Kulübe, sana et satan avcıya ait. Mezbahada çengeller sallanıyor ve hiçbirine geyik asılmamış. Adam insan avlıyormuş; sattığı yiyecek onların etiymiş. Kulübede tüccarın yayını buluyorsun.",
-      "failure": "Kulübeye yaklaşırken kapının karanlığından oklar geliyor. Her ok bir can alıyor. Okların uçları kemikten. Diğerleri kaçana dek {{count}} köylü ölüyor."
+      "failure": "Kulübeye yaklaşırken kapının karanlığından oklar fırlıyor. Her ok bir can alıyor. Okların uçları kemikten. Diğerleri kaçana dek {{count}} köylü ölüyor."
     }
   },
   "invest": {
@@ -618,9 +618,9 @@
     "label": "Tuzak Kur",
     "log": {
       "trapSuccessNoDeaths": "Dev tuzak kusursuz işliyor! Gözleri kızıl kızıl parlayan, dağ gibi bir kara ayı tuzağa düşüyor. Köylüler doğaüstü canavarı öldürüyor; lanetli kara kürkü de onların ganimeti oluyor.",
-      "trapSuccessWithDeaths_one": "Dev tuzağa kızıl gözleri alev alev yanan, dağ gibi bir kara ayı düşüyor! Canavar sonunda öldürülene dek {{count}} köylü onun doğaüstü pençeleri altında can veriyor. Lanetli kara kürkünü alıyorsun; ağır bedelle kazanılmış bir ganimet.",
-      "trapSuccessWithDeaths_other": "Dev tuzağa kızıl gözleri alev alev yanan, dağ gibi bir kara ayı düşüyor! Canavar sonunda öldürülene dek {{count}} köylü onun doğaüstü pençeleri altında can veriyor. Lanetli kara kürkünü alıyorsun; ağır bedelle kazanılmış bir ganimet.",
-      "trapSuccessHeavy": "Dev tuzağa gözleri kor gibi yanan, dağ gibi bir kara ayı düşüyor. Canavar sonunda alt edilene dek {{count}} köylü onun doğaüstü öfkesine kurban gidiyor. Lanetli kara kürkünü alıyorsun.",
+      "trapSuccessWithDeaths_one": "Dev tuzağa kızıl gözleri alev alev yanan, dağ gibi bir kara ayı düşüyor! Canavar sonunda öldürülene dek {{count}} köylü doğaüstü pençelerinin altında can veriyor. Lanetli kara kürkünü alıyorsun; ağır bedelle kazanılmış bir ganimet.",
+      "trapSuccessWithDeaths_other": "Dev tuzağa kızıl gözleri alev alev yanan, dağ gibi bir kara ayı düşüyor! Canavar sonunda öldürülene dek {{count}} köylü doğaüstü pençelerinin altında can veriyor. Lanetli kara kürkünü alıyorsun; ağır bedelle kazanılmış bir ganimet.",
+      "trapSuccessHeavy": "Dev tuzağa gözleri kor gibi yanan, dağ gibi bir kara ayı düşüyor. Canavar sonunda alt edilene dek {{count}} köylü doğaüstü öfkesine kurban gidiyor. Lanetli kara kürkünü alıyorsun.",
       "trapFailed": "Dev tuzağı kuruyorsun ama yokladığında yanında yalnızca kocaman pençe izleri buluyorsun. Bu ormanlarda dolaşan her neyse, tuzağına düşmeyecek kadar kurnaz... bu seferlik."
     }
   },
@@ -637,7 +637,7 @@
     "description": "Çağlardır el değmemiş derin bir odaya halatla in.",
     "label": "Alt Oda",
     "log": {
-      "complete": "Takviyeli Halatla alt odaya iniyorsun. Hazinelerin arasında bir taş ustası keskisi buluyorsun; işçiliği efsanelere yakışır."
+      "complete": "Sağlam Halatla alt odaya iniyorsun. Hazinelerin arasında Taş Ustasının Keskisini buluyorsun; işçiliği efsanelere yakışır."
     }
   },
   "lureLakeCreature": {
@@ -700,7 +700,7 @@
     }
   },
   "provokeAttackWave": {
-    "label": "Saldırı dalgasını kışkırt"
+    "label": "Düşmanı kışkırt"
   },
   "delayAttackWave": {
     "label": "Saldırı dalgasını ertele"
@@ -726,7 +726,7 @@
       "successKeyBonus": " Maymuncuğunla gizli bir bölmeyi açıyor ve {{gold}} Altın daha buluyorsun.",
       "captiveOne": " Kamptan kurtarılan 1 tutsak köye katılmaya karar veriyor.",
       "captivesOther": " Kamptan kurtarılan {{count}} tutsak köye katılmaya karar veriyor.",
-      "failure": "Seferin bir eşkıya kampına ulaşıyor ama çatışma feci şekilde ters gidiyor. Sağ kalanlar köye kaçana dek {{count}} köylü can veriyor."
+      "failure": "Seferin bir eşkıya kampına ulaşıyor ama çatışma felakete dönüyor. Sağ kalanlar köye kaçana dek {{count}} köylü can veriyor."
     }
   },
   "sellBlacksteelBatch": {
@@ -819,11 +819,11 @@
     "description": "Yolu izleyip mağaranın derinlerine, ötedeki mağara salonlarına ilerle.",
     "label": "Derinlere İlerle",
     "log": {
-      "tarnishedAmulet": "Mağaranın gölgelerinde bir şey parıldıyor. Bir Eskimiş Muska buluyorsun.",
+      "tarnishedAmulet": "Mağaranın gölgelerinde bir şey parıldıyor. Bir Kararmış Muska buluyorsun.",
       "fangCharm": "Duvardaki bir çatlağa sıkışmış, kara dişlerden yapılma bir tılsım buluyorsun. Dişler, burada yaşaması beklenen hiçbir canlıya ait olamayacak kadar iri.",
       "silverSack": "İçinde 50 Gümüş olan küçük bir deri kese buluyorsun.",
       "mapFragment": "Mağaranın zemininde yırtık pırtık bir harita parçası buluyorsun.",
-      "firstVisit": "Yoldan mağaranın derinliklerine indikçe hava soğuyor. Çevrendeki duvarlar doğal olamayacak kadar pürüzsüz, sanki biri yontmuş gibi."
+      "firstVisit": "Yolu izleyip mağaranın derinliklerine indikçe hava soğuyor. Çevrendeki duvarlar doğal olamayacak kadar pürüzsüz, sanki biri yontmuş gibi."
     }
   }
 }

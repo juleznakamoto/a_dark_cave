@@ -32,11 +32,11 @@
     },
     "ashen_embrace": {
       "description": "Madencilik becerin artar",
-      "name": "Külden Kucak"
+      "name": "Külün Kucağı"
     },
     "ashen_embrace_enhanced": {
       "description": "Madencilik becerin büyük ölçüde artar",
-      "name": "Külden Derin Kucak"
+      "name": "Külün Derin Kucağı"
     },
     "bell_blessing": {
       "description": "Ön kolunda gizemli bir çan izi. Uykuda kazandığın Odak Puanlarını ikiye katlar.",
@@ -124,7 +124,7 @@
     },
     "explorer_pack": {
       "description": "Omuzlardaki yükü hafifleten, özenle yapılmış deri sırt çantası",
-      "name": "Kaşif Sırt Çantası"
+      "name": "Kâşif Sırt Çantası"
     },
     "fang_charm": {
       "description": "Devasa bir yaratığın kara dişlerinden dizilmiş kordon",
@@ -136,7 +136,7 @@
     },
     "fishers_hand": {
       "description": "Kıyı balıkçılarından öğrenilmiş, balık tuzağı kurmanın kadim yolları",
-      "name": "Balıkçı Eli"
+      "name": "Balıkçının Eli"
     },
     "flames_touch": {
       "description": "İmalat bedelleri azalır",
@@ -160,7 +160,7 @@
     },
     "frostglass": {
       "description": "Soğuk yayan billur madde",
-      "name": "Ayazcam"
+      "name": "Ayaz Camı"
     },
     "keen_builder": {
       "description": "İnşaat bedelleri azalır",
@@ -171,8 +171,8 @@
       "name": "Talih Yüzüğü"
     },
     "flask_harness": {
-      "description": "Fazladan Damarateşi İksiri taşımak için yastıklı yuvaları olan deri kuşak",
-      "name": "Şişe Kuşağı"
+      "description": "Fazladan Damarateşi İksiri taşımak için yastıklı bölmeleri olan deri kemer",
+      "name": "İksir Kemeri"
     },
     "grenadier_bag": {
       "description": "Daha çok patlayıcı taşımak için güçlendirilmiş deri çanta",
@@ -184,7 +184,7 @@
     },
     "hollow_king_scepter": {
       "description": "Kayıp kralın asası; güç ve delilik saçar. Madencilikte %5 ihtimalle kazanç ikiye katlanır.",
-      "name": "Kof Kral Asası"
+      "name": "Ruhsuz Kral Asası"
     },
     "fur_cloak": {
       "description": "Her adımı yumuşatan kalın kürk pelerin",
@@ -207,7 +207,7 @@
       "name": "Oduncu Eldivenleri"
     },
     "lycan_blood": {
-      "description": "Alfa bir kurtadamdan alınmış bir şişe koyu kan. Etkileri bilinmiyor.",
+      "description": "Sürü başı bir kurtadamdan alınmış bir şişe koyu kan. Etkileri bilinmiyor.",
       "name": "Kurtadam Kanı"
     },
     "map_fragment": {
@@ -299,7 +299,7 @@
       "name": "Gölge Çizmeleri"
     },
     "shadow_flute": {
-      "description": "Gölgeleri doğaya aykırı biçimde kımıldatan kemik kaval",
+      "description": "Gölgeleri tekinsiz biçimde kıpırdatan kemik kaval",
       "name": "Gölge Kavalı"
     },
     "sharp_aim": {
@@ -320,7 +320,7 @@
     },
     "stormglass_halberd_schematic": {
       "description": "Heybetli bir teberin çizimi",
-      "name": "Fırtınacam Teber"
+      "name": "Fırtına Teberi"
     },
     "superior_bombs": {
       "description": "Simyacı bombaları geliştirdi; artık daha çok hasar veriyorlar",
@@ -336,11 +336,11 @@
     },
     "tarnished_amulet": {
       "description": "Uğur getiren, yıllanmış muska",
-      "name": "Eskimiş Muska"
+      "name": "Kararmış Muska"
     },
     "tarnished_compass": {
       "description": "Yol arayanlar için kadim bir kalıntı.",
-      "name": "Eskimiş Pusula"
+      "name": "Kararmış Pusula"
     },
     "trail_sense": {
       "description": "Avcıların daha çok yiyecek getirir",
@@ -373,7 +373,7 @@
       "name": "Düşkün Başkeşiş"
     },
     "elder_wizard": {
-      "description": "Son günlerini yaşayan yaşlı büyücü. Büyülü ateş sanatlarında çok uzun zaman önce ustalaşmış.",
+      "description": "Son günlerini yaşayan yaşlı büyücü. Ateş büyüsünde çok uzun zaman önce ustalaşmış.",
       "name": "Yaşlı Büyücü"
     },
     "one_eyed_crow": {
@@ -386,7 +386,7 @@
     },
     "the_hound": {
       "description": "Zehirlenmiş bir dağ köyünden sağ kurtulan, iri kaslı, yüzü biçimsizleşmiş adam.",
-      "name": "Hoyrat Tazı"
+      "name": "Azılı Tazı"
     },
     "grey_one": {
       "description": "Öldürülen alfanın yanından alınıp evcilleştirilmiş kurt yavrusu.",
@@ -480,14 +480,14 @@
     },
     "reinforced_rope": {
       "description": "Mağaranın daha derin odalarına inmeye yarayan sağlam halat",
-      "name": "Takviyeli Halat"
+      "name": "Sağlam Halat"
     },
     "skeleton_key": {
       "description": "Her kilidi açtığı söylenen gizemli anahtar",
       "name": "Maymuncuk"
     },
     "skull_lantern": {
-      "description": "Lanetli kemikten yapılmış, en derin karanlıkları aydınlatır",
+      "description": "Lanetli kemikten yapılmış, en derin karanlıkları aydınlatan fener",
       "name": "Kafatası Feneri"
     },
     "steel_axe": {
@@ -565,8 +565,8 @@
       "name": "Kor Bombası"
     },
     "frostglass_sword": {
-      "description": "Ayazcamdan dövülmüş, soğuk bir güç yayan kılıç",
-      "name": "Ayazcam Kılıç"
+      "description": "Ayaz Camından dövülmüş, soğuk bir güç yayan kılıç",
+      "name": "Ayaz Kılıcı"
     },
     "huntsman_bow": {
       "description": "Dengeli ve isabetli, geliştirilmiş yay",
@@ -606,7 +606,7 @@
     },
     "stormglass_halberd": {
       "description": "Ustalıkla arıtılmış Adamantitten dövülmüş eşsiz teber",
-      "name": "Fırtınacam Teber"
+      "name": "Fırtına Teberi"
     },
     "veinfire_elixir": {
       "description": "Nadir Damarkökünden damıtılmış simyasal şifa iksiri",

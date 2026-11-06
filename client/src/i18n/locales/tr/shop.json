@@ -46,7 +46,7 @@
     "name": "1.000 Altın"
   },
   "gold_100_free": {
-    "activationMessage": "Hediye 100 Altın envanterine eklendi!",
+    "activationMessage": "100 Altın hediyen envanterine eklendi!",
     "description": "Soğuk bir dünyada her gün biraz merhamet",
     "name": "100 Altın Hediye"
   },
@@ -92,12 +92,12 @@
   },
   "skull_lantern": {
     "activationMessage": "Kafatası Feneri aletlerine eklendi! Ürkütücü ışığı derinliklerde sana yol gösterecek.",
-    "description": "Lanetli kemikten yapılmış, en derin karanlıkları aydınlatır. Kafatası Feneri hikâyesini açar.",
+    "description": "Lanetli kemikten yapılmış, en derin karanlıkları aydınlatan fener. Kafatası Feneri hikâyesini açar.",
     "name": "Kafatası Feneri"
   },
   "tarnished_compass": {
-    "activationMessage": "Eskimiş Pusula envanterine eklendi! Kadim büyüsü işlerine talih katabilir.",
+    "activationMessage": "Kararmış Pusula envanterine eklendi! Kadim büyüsü işlerine talih katabilir.",
     "description": "Kayıp uygarlıktan kalma bir eser; ibresi gizli yerleri gösterir. Pusula hikâyesini açar.",
-    "name": "Eskimiş Pusula"
+    "name": "Kararmış Pusula"
   }
 }

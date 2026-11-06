@@ -72,7 +72,7 @@
         "label": "Devam Et"
       }
     },
-    "message": "Kapının ardındaki mağara geçitleri nihayet temiz görünüyor. Görünüşe göre Soluk Yaratıklar artık yok; hepsini kılıçtan geçirdin. Artık kapının ötesine geçebilirsin.",
+    "message": "Kapının ardındaki mağara geçitleri nihayet temizlenmiş görünüyor. Anlaşılan Soluk Yaratıkların hepsini öldürdün. Artık kapının ötesine geçebilirsin.",
     "title": "Kapının Ötesi"
   },
   "blackenedMirror": {
@@ -108,7 +108,7 @@
       "outcome2": "Gece çöktüğünde kulübelerde inlemeler yankılanıyor. Hastalar karanlıkta titreyerek yatıyor, birkaçı bir daha kalkmıyor."
     },
     "message": "Ambardan ekşi bir koku yayılıyor. Yiyeceklerin bir kısmı çürümüş. Ya çürüyen kısmı yemeyi göze alacaksın ya da atacaksın.",
-    "title": "Kara Çürüklük"
+    "title": "Kara Küf"
   },
   "blacksmithHammerChoice": {
     "choices": {
@@ -123,11 +123,11 @@
       "outcome0": "Kadim çekici kavrıyor, ağırlığını ve dengesini elinde tartıyorsun. Üzerinden çağlar geçmiş, ama hâlâ eşsiz bir demirci işi.",
       "outcome1": "Devin ebedî uykusuna saygı duyup çekici olduğu yerde bırakıyorsun."
     },
-    "message": "Ormanın derinliklerinde, kocaman bir demirci ocağı olan taş bir yapının yıkıntısını buluyorsun. İçeride bir deve ait olduğu anlaşılan iskelet kalıntıları var, yanında da görkemli bir Demirci Çekici. Alacak mısın?",
+    "message": "Ormanın derinliklerinde, kocaman bir demirci ocağı olan taş bir yapının yıkıntısını buluyorsun. İçeride bir devin olduğu anlaşılan iskelet kalıntıları var, yanında da görkemli bir Demirci Çekici. Alacak mısın?",
     "title": "Devin Demirhanesi"
   },
   "blindDruidBlessing": {
-    "message": "Ormandan Kör Druid çıkageliyor. Mabede yaklaşıp onaylarcasına başını sallıyor. 'Orman tanrıları bağlılığından hoşnut. Seni kutsuyorlar.'",
+    "message": "Ormandan kör bir druid çıkageliyor. Mabede yaklaşıp onaylarcasına başını sallıyor. 'Orman tanrıları bağlılığından hoşnut. Seni kutsuyorlar.'",
     "title": "Kör Druid"
   },
   "bloodDrainedVillagers": {
@@ -152,8 +152,8 @@
       }
     },
     "log": {
-      "outcome0": "Köyün içinde çamurlu ayak izlerini takip ediyorsun. İzler seni cinayet yerlerinin her birine, birer birer götürüyor. Hepsi senin çizmelerinin izi. Yavaş yavaş, dehşetle anlıyorsun: Katil sendin. Yüzüğün açlığı seni ele geçirmişti. Köylüler gerçeği öğrenince {{deaths}} kişi kaçıp gidiyor; böylesine lanetli bir yaratığın yanında kalmak istemiyorlar.",
-      "outcome1": "Titreyen ellerle baltanı kaldırıyorsun. Balta inerken yüzük zonkluyor. Kemik parçalanıyor, korkunç bir acı kolunu yırtarcasına sarıyor. Kopan parmağı yerden aldığında, etine derinlemesine gömülmüş, dokunaçları andıran ince kara iplikler görüyorsun."
+      "outcome0": "Köyün içinde çamurlu ayak izlerini takip ediyorsun. İzler seni sırayla bütün cinayet yerlerine götürüyor. Hepsi senin çizmelerinin izi. Yavaş yavaş, dehşetle anlıyorsun: Katil sendin. Yüzüğün açlığı seni ele geçirmişti. Köylüler gerçeği öğrenince {{deaths}} kişi kaçıp gidiyor; böylesine lanetli bir yaratığın yanında kalmak istemiyorlar.",
+      "outcome1": "Titreyen ellerle baltanı kaldırıyorsun. Balta inerken yüzük zonkluyor. Kemik parçalanıyor, korkunç bir acı kolunu yırtarcasına sarıyor. Kopan parmağı yerden aldığında, etinin derinlerine gömülmüş, dokunaçları andıran ince kara iplikler görüyorsun."
     },
     "message": "Şafak sökerken uyanıyorsun; giysilerin taze kana bulanmış. Kan senin değil. Malikâneye bir köylü geliyor, yüzü dehşetten bembeyaz. 'Sekiz kişi ölmüş,' diye fısıldıyor. 'Gece paramparça edilmişler.' Parmağındaki yüzük dayanılmaz bir acıyla zonkluyor.",
     "title": "Kanlı Uyanış"
@@ -169,7 +169,7 @@
     },
     "log": {
       "outcome0": "Kızıl rengine rağmen kuyudan içiyorsun. Su soğuk ve tatsız; biraz sonra birden yeniden berrak görünüyor. Aklın sana oyun oynamış gibi.",
-      "outcome1": "Kana kana içiyorsun. Ağzına koyu, ılık bir bakır tadı doluyor. O gece kızıl bir suda boğulduğunu görüyorsun ve uyandığında o tat hâlâ dilinde.",
+      "outcome1": "Kana kana içiyorsun. Ağzına koyu, ılık bir bakır tadı doluyor. O gece rüyanda kızıl bir suda boğulduğunu görüyorsun; uyandığında o tat hâlâ dilinde.",
       "outcome2": "İçmeyi reddediyorsun, ama köylüler taslarını doldurup duruyor. Sana gülümsüyorlar, dudakları kıpkırmızı, sanki ortada bir tuhaflık yokmuş gibi."
     },
     "message": "Köyün suyu üç gündür kızıl akıyor. Köylüler bunu fark etmişe benzemiyor, hiçbir şey olmamış gibi içiyorlar. Sen bakır ve demir kokusu alıyorsun, onlarsa tadının tertemiz kaynak suyu gibi olduğunu söylüyor.",
@@ -188,12 +188,12 @@
     "log": {
       "outcome0": "Köylüler kurtadamlara kurban ediliyor. Kanlı Ay solarken köye huzur dönüyor. En azından şimdilik.",
       "outcome1": "Kurtadamlar saldırıyor ama savunma hattın dayanıyor. Sürünün başı yere seriliyor; leşinden hâlâ sıcak, güçle kaynayan Kurtadam Kanı topluyorsun.",
-      "outcome2": "Kurtadamlar savunmanı yarıp yerleşimi basıyor! Kanlı Ay soluyor, ama tehlike geçmiş değil.",
+      "outcome2": "Kurtadamlar savunmanı yarıp yerleşimi basıyor! Kanlı Ay solup gidiyor, ama tehlike geçmiş değil.",
       "outcome3": "Kurtadamlar saldırıyor ama savunma hattın dayanıyor. Sürünün başı yere seriliyor; leşinden hâlâ sıcak, güçle kaynayan Kurtadam Kanı topluyorsun.",
-      "outcome4": "Kurtadamlar savunmanı yarıp yerleşimi basıyor! Kanlı Ay soluyor, ama tehlike geçmiş değil."
+      "outcome4": "Kurtadamlar savunmanı yarıp yerleşimi basıyor! Kanlı Ay solup gidiyor, ama tehlike geçmiş değil."
     },
     "message": {
-      "default": "Ay kan kırmızısına dönüyor. Yaşlılar kurtadamlardan söz ediyor. Kadim paktlar, canavarları yatıştırmak için {{sacrificeAmount}} köylünün kurban edilmesini istiyor. Reddedersen açlıklarını kendi bildikleri yoldan doyururlar."
+      "default": "Ay kan kırmızısına dönüyor. Yaşlılar kurtadamlardan söz ediyor. Kadim ahitler, canavarları yatıştırmak için {{sacrificeAmount}} köylünün kurban edilmesini istiyor. Reddedersen açlıklarını kendi bildikleri yoldan doyururlar."
     },
     "title": "Kanlı Ay"
   },
@@ -212,7 +212,7 @@
     "log": {
       "outcome0": "Kemeri beline takıyorsun. Zihninin kıyısında belli belirsiz bir fısıltı kıvrılıyor gibi.",
       "outcome1": "Kemeri asılı olduğu yerde bırakıyorsun. Hangi kan sinmişse sinsin, o geçmişi yanında taşımak istemiyorsun.",
-      "outcome2": "Adamlarından biri, sen durduramadan kemeri beline takıyor. Gülüyor, sonra kemer sıkılaşınca nefesi kesiliyor. Elleri deriyi çekiştiriyor ama kemer bir milim bile gevşemiyor. Yanına koştuğunda iş işten geçmiş."
+      "outcome2": "Adamlarından biri, sen durduramadan kemeri beline takıyor. Gülüyor, sonra kemer daralınca nefesi kesiliyor. Elleri deriyi çekiştiriyor ama kemer bir milim bile gevşemiyor. Yanına koştuğunda iş işten geçmiş."
     },
     "message": "Mağara duvarındaki paslı bir çiviye asılı, eski kan lekeleriyle kararmış kalın bir deri kemer buluyorsun. Alacak mısın?",
     "title": "Kan Lekeli Kemer"
@@ -275,7 +275,7 @@
   "theHunter": {
     "title": "Avcı",
     "message": {
-      "level1": "Köyün kıyısında uzun boylu bir adam beliriyor. Yürürken hiç ses çıkarmıyor. Avcı olduğunu, ok uçları için kemiğe ihtiyacı olduğunu söylüyor. Kemiğin demirden daha emin öldürdüğünü söylüyor. Takas edecek eti var. {{foodReward}} Yiyecek teklif ediyor.",
+      "level1": "Köyün kıyısında uzun boylu bir adam beliriyor. Yürürken hiç ses çıkarmıyor. Avcı olduğunu, ok uçları için kemiğe ihtiyacı olduğunu söylüyor. Kemik, demirden daha emin öldürürmüş. Takas edecek eti var. {{foodReward}} Yiyecek teklif ediyor.",
       "level1Repeat": "Avcı yine geliyor, önceki kadar sessiz. Ok uçları için hâlâ kemik istiyor. Et önceden parçalanmış, yanında hiç post getirmemiş. {{foodReward}} Yiyecek teklif ediyor.",
       "level2": "Avcı yeni bir bohçayla dönüyor; et yüzülmüş, parçalara ayrılmış. Takas için bolca eti var. Pek çok ok ucu yontması gerektiğini söylüyor. {{foodReward}} Yiyecek teklif ediyor.",
       "level2Repeat": "Avcı, geçen sefer durduğu yerde duruyor. Yağsız et getirmiş. Hâlâ daha çok ok ucuna ihtiyacı olduğunu söylüyor. {{foodReward}} Yiyecek teklif ediyor.",
@@ -283,8 +283,8 @@
       "level3Repeat": "Sessiz avcı yine beliriyor. Taze et getirmiş, hem de yığınla. {{foodReward}} Yiyecek teklif ediyor.",
       "level4": "Avcı geri dönüyor. Ölümcül ok uçları için daha çok kemik gerektiğini söylüyor. Getirdiği et solgun ve yağsız, üzerinde tek tutam kıl yok. {{foodReward}} Yiyecek teklif ediyor.",
       "level4Repeat": "Avcı yine geliyor, sırtında yığınla et. Ok uçları için hâlâ kemik istiyor. {{foodReward}} Yiyecek teklif ediyor.",
-      "level5": "Avcı beliriyor ve yere kocaman bir et bohçası bırakıyor. Et hâlâ sıcak. Epey meşgul olduğunu, daha yapacak çok işi olduğunu söylüyor. Ama daha çok kemiğe ihtiyacı var. {{foodReward}} Yiyecek teklif ediyor.",
-      "level5Repeat": "Avcı köyün kıyısında bekliyor. Getirdiği et temiz kokuyor, ama çok fazla. Gereğinden çok fazla. Ok uçları için hâlâ kemik istiyor. {{foodReward}} Yiyecek teklif ediyor."
+      "level5": "Avcı beliriyor ve yere kocaman bir et bohçası bırakıyor. Et hâlâ sıcak. Boş durmadığını, daha yapacak çok işi olduğunu söylüyor. Ama daha çok kemiğe ihtiyacı var. {{foodReward}} Yiyecek teklif ediyor.",
+      "level5Repeat": "Avcı köyün kıyısında bekliyor. Getirdiği et temiz kokuyor, ama bu kadarı çok fazla. Ok uçları için hâlâ kemik istiyor. {{foodReward}} Yiyecek teklif ediyor."
     },
     "choices": {
       "giveBones": {
@@ -298,7 +298,7 @@
     "log": {
       "outcome1": "Tek söz etmeden kemikleri alıyor, eti bırakıyor. Sonra gözden kayboluyor.",
       "outcome2": "Reddediyorsun. Başını bir kez sallıyor ve geldiği gibi sessizce gidiyor.",
-      "outcome3": "Cevap vermiyorsun. Bir süre bekliyor, sonra tek ses çıkarmadan gidiyor."
+      "outcome3": "Cevap vermiyorsun. Bir süre bekliyor, sonra çıt çıkarmadan gidiyor."
     }
   },
   "theHunterCabin": {
@@ -414,9 +414,9 @@
       }
     },
     "log": {
-      "outcome0": "Mağarada içinde 25 Meşale olan eski, tozlu bir torba buluyorsun."
+      "outcome0": "Mağarada eski, tozlu bir torba buluyorsun. İçinde 25 Meşale var."
     },
-    "message": "Mağarada içinde 25 Meşale olan eski, tozlu bir torba buluyorsun.",
+    "message": "Mağarada eski, tozlu bir torba buluyorsun. İçinde 25 Meşale var.",
     "title": "Tozlu Torba"
   },
   "boneTempleProposal": {
@@ -437,7 +437,7 @@
         "label": "Devam Et"
       }
     },
-    "message": "Köylülerden bir heyet karşına çıkıyor: 'Çoğumuz öldü. Ölülerimizi gömecek düzgün bir yer gerek. Artık huzur içinde yatsınlar.'",
+    "message": "Köylülerden bir heyet karşına çıkıyor: 'Aramızdan çok kişi öldü. Ölülerimizi gömecek düzgün bir yer gerek. Artık huzur içinde yatsınlar.'",
     "title": "Ölüleri Gömmek"
   },
   "cannibalRaid": {
@@ -484,14 +484,14 @@
       }
     },
     "log": {
-      "fallback": "Koleksiyoncu omuz silkip orman sisinin içinde süzülüp gidiyor. Belki yine gelirim, diye mırıldanıyor.",
+      "fallback": "Koleksiyoncu omuz silkiyor, orman sisine karışıp gidiyor. Belki yine gelirim, diye mırıldanıyor.",
       "fallbackLast": "Koleksiyoncu tek söz etmeden gidiyor. Onu bir daha görmeyeceğini seziyorsun.",
       "learnOutcome": "Koleksiyoncuya parasını ödüyorsun, o da kitaptan alçak sesle okuyor. Kitap, kendine Zincir Efendisi diyen, çoktan ölmüş bir köle tüccarına aitmiş. Adam kölelerini zincir damgasıyla dağlarmış. Öğrendiklerin zihnine ağır bir yük gibi çöküyor.",
       "sellOutcome": "Koleksiyoncu altınları sayıp kitabı alıyor. 'Kendine Zincir Efendisi diyen bir köle tüccarına aitti,' diyor. 'Kölelerini zincir damgasıyla dağlardı.'"
     },
     "message": {
-      "lastChance": "Gezgin Koleksiyoncu yine çıkageliyor. Gözü Deri Ciltli Kitap üzerinde. 'Bu son teklifim,' diyor sessizce. 'Ya {{sellGold}} Altın karşılığında onu bana satarsın ya da {{teachCost}} Altın ödersin, ben de içinde yazanları sana öğretirim.'",
-      "offer": "Gezgin Koleksiyoncu çıkageliyor, bakışları Deri Ciltli Kitap üzerinde oyalanıyor. 'O kitabı {{sellGold}} Altın karşılığında alırım,' diyor, 'ya da {{teachCost}} Altın karşılığında sırlarını sana öğretebilirim.'"
+      "lastChance": "Gezgin Koleksiyoncu yine çıkageliyor. Gözü Deri Ciltli Kitapta. 'Bu son teklifim,' diyor sessizce. 'Ya kitabı {{sellGold}} Altına bana satarsın ya da {{teachCost}} Altın ödersin, ben de içinde yazanları sana öğretirim.'",
+      "offer": "Gezgin Koleksiyoncu çıkageliyor, bakışları Deri Ciltli Kitapta oyalanıyor. 'O kitabı {{sellGold}} Altına alırım,' diyor, 'ya da {{teachCost}} Altın karşılığında sırlarını sana öğretebilirim.'"
     },
     "title": "Koleksiyoncunun Teklifi"
   },
@@ -502,9 +502,9 @@
       }
     },
     "log": {
-      "outcome0": "Pusulanın peşinden ormanın derinliklerine gidiyor ve toprağın altından olağanüstü sağlam yapılmış küçük bir sandık çıkarıyorsun. Açamıyorsun, o yüzden sırtlanıp yanında götürüyorsun."
+      "outcome0": "Pusulanın peşinden ormanın derinliklerine gidiyor ve toprağın altından olağanüstü sağlam yapılmış küçük bir sandık çıkarıyorsun. Açamıyorsun, o yüzden yanına alıp geri dönüyorsun."
     },
-    "message": "Gece tuhaf bir sesle uyanıyorsun. Eskimiş Pusula karanlıkta kıpır kıpır; ibresi deli gibi dönüyor. Pusulayı eline aldığında ibre duruyor ve kararlılıkla tek bir yönü gösteriyor.",
+    "message": "Gece tuhaf bir sesle uyanıyorsun. Kararmış Pusulanın ibresi karanlıkta deli gibi dönüyor. Pusulayı eline aldığında ibre duruyor ve şaşmadan tek bir yönü gösteriyor.",
     "title": "Kıpırdayan İbre"
   },
   "creatureInHut": {
@@ -519,9 +519,9 @@
     "log": {
       "outcome0": "Kulübeyi ateşe veriyorsun. Alevler yaratığı yutuyor. Sonra yıkıntıları ararken döşeme tahtalarının altına saklanmış, içinde 250 Altın olan küçük bir sandık buluyorsun.",
       "outcome1": "Kulübeyi ateşe veriyorsun. Alevler, içeride uyuyan iki köylü dâhil her şeyi yutuyor. Sabah geriye yalnızca kül kalıyor, bir de havada asılı duran, asla yanmaması gereken bir şeyin kokusu.",
-      "outcome2": "Arkanı dönüp gördüğünü unutmaya çalışıyorsun. Ama yaratık rüyalarında seni ziyaret ediyor. Taş taşa sürtünür gibi bir sesle adını fısıldıyor ve sana toprağın altında yatanları gösteriyor."
+      "outcome2": "Arkanı dönüp gördüğünü unutmaya çalışıyorsun. Ama yaratık rüyalarına geliyor. Taş taşa sürtünür gibi bir sesle adını fısıldıyor ve sana toprağın altında yatanları gösteriyor."
     },
-    "message": "Ahşap kulübelerden birinin çatlaklarından, orada olmaması gereken bir şey görüyorsun. Karanlıkta, insan olamayacak kadar uzun ve ince, kara bir şekil kıpırdıyor. Sana doğru döndüğünde, sönmekte olan yıldızlar gibi parlayan gözler görüyorsun.",
+    "message": "Ahşap kulübelerden birinin çatlaklarından, orada olmaması gereken bir şey gözüne ilişiyor. Karanlıkta, insan olamayacak kadar uzun ve ince, kara bir şekil kıpırdıyor. Sana doğru döndüğünde, sönmekte olan yıldızlar gibi parlayan gözler görüyorsun.",
     "title": "Kulübedeki Şey"
   },
   "cthulhuFigure": {
@@ -690,7 +690,7 @@
         "label": "Devam Et"
       }
     },
-    "message": "'Direniş, Kafatası Aygıtlarına karşı çıkınca dağın derinliklerine sürüldü ve kapının ardında mühürlendi. Geri dönecek yolları olmadığından hep daha derine kazdılar. Yalnızlığın ve karanlığın içinde zihinleri aşındı; delirip yozlaştılar.'",
+    "message": "'Direnişçiler Kafatası Aygıtlarına karşı çıkınca dağın derinliklerine sürüldü ve kapının ardında mühürlendi. Geri dönecek yolları olmadığından hep daha derine kazdılar. Yalnızlığın ve karanlığın içinde zihinleri aşındı; delirip yozlaştılar.'",
     "title": "Sürgünler"
   },
   "cube14b": {
@@ -699,7 +699,7 @@
         "label": "Devam Et"
       }
     },
-    "message": "'Bir gün toprağın derinliklerinde, bilinmeyen bir cevherden oluşmuş bir monolite rastladılar. Ondan kapıyı yok edecek bir patlayıcı yaptılar. Ama bomba kapıda gedik açamadı. Onun yerine bütün gezegeni saran bir elektrik dalgası saldı; bütün aygıtları yok etti ve uygarlığın sonunu getirdi.'",
+    "message": "'Bir gün toprağın derinliklerinde, bilinmeyen bir cevherden oluşmuş bir monolite rastladılar. Ondan kapıyı yok edecek bir patlayıcı yaptılar. Ama bomba kapıda gedik açamadı. Bunun yerine gezegeni baştan başa saran bir elektrik dalgası saldı; bütün aygıtları yok edip uygarlığın sonunu getirdi.'",
     "title": "Bilinmeyen Cevher"
   },
   "cube14c": {
@@ -726,7 +726,7 @@
         "label": "Kapat"
       }
     },
-    "message": "Yaratıkların sana neden saldırmadığını ancak şimdi anlıyorsun: Seni kendilerinden biri bildiler. Kapıdan geçip kaybolan adam sensin.",
+    "message": "Yaratıkların sana neden saldırmadığını ancak şimdi anlıyorsun: Seni tanıdılar. Sen de onlardansın. Kapıdan geçip kaybolan adam sensin.",
     "title": "Tanınma"
   },
   "cube15b": {
@@ -772,7 +772,7 @@
       }
     },
     "log": {
-      "outcome0": "Köylü, karanlık gerçekten habersiz, aceleyle uzaklaşıyor. Yüzük iyi beslendi."
+      "outcome0": "Köylü, karanlık gerçekten habersiz, aceleyle uzaklaşıyor. Yüzük doyasıya beslendi."
     },
     "message": "Benzi atmış bir köylü, korkudan soluk soluğa yanına koşuyor. 'Paralı askerlerin kampı... herkes ölmüş. Gece birbirlerini öldürmüşler. Cesetlerin arasında biraz gümüş bulduk.'",
     "title": "Katliam"
@@ -791,7 +791,7 @@
       "outcome1": "Avcılar geyikleri yere seremeden kurtlar onları buluyor. Avcılardan biri geri dönmüyor.",
       "outcome2": "Avcılara köyün yakınında kalmalarını emrediyorsun. Geyik sürüsü yoluna devam ediyor, kurtlar da hiç ortaya çıkmıyor."
     },
-    "message": "Avcılar ormanda büyük bir geyik sürüsü gördüklerini söylüyor, ama orası bir kurt ininin yakınında. Avlanmaları için onları oraya gönderecek misin?",
+    "message": "Avcılar ormanda büyük bir geyik sürüsü gördüklerini söylüyor, ama orası bir kurt ininin yakınında. Onları ava gönderecek misin?",
     "title": "Geyik Sürüsü"
   },
   "desperateAmputation": {
@@ -801,7 +801,7 @@
       }
     },
     "log": {
-      "outcome0": "Titreyen ellerle baltanı kaldırıyorsun. Balta inerken yüzük zonkluyor. Kemik parçalanıyor, korkunç bir acı kolunu yırtarcasına sarıyor. Kopan parmağı yerden aldığında, etine derinlemesine gömülmüş, dokunaçları andıran ince kara iplikler görüyorsun."
+      "outcome0": "Titreyen ellerle baltanı kaldırıyorsun. Balta inerken yüzük zonkluyor. Kemik parçalanıyor, korkunç bir acı kolunu yırtarcasına sarıyor. Kopan parmağı yerden aldığında, etinin derinlerine gömülmüş, dokunaçları andıran ince kara iplikler görüyorsun."
     },
     "message": "Yaşanan dehşetin ardından lanetli yüzüğü çıkarmayı bir kez daha deniyorsun. Ama yüzük yerinden kımıldamıyor, sanki bedeninin bir parçası olmuş. Ondan kurtulmanın artık tek bir yolu var.",
     "title": "Kaçış Yok"
@@ -815,7 +815,7 @@
     "log": {
       "outcome0": "Teklifini tek söz etmeden kabul edip işine geri dönüyor. Gözlerinde, inancının yıkılışını görmüş bir adamın sessiz azabı var. Bir zamanlar erdem vaaz ederdi, ta ki büyük bir günah işlediği güne dek. Düşkün Başkeşiş artık yoldaşlarından biri."
     },
-    "message": "Köylüler, bir deri bir kemik kalmış, yırtık pırtık cüppeli bir adamın taş kulübelerin duvarlarını sessizce onardığını söylüyor. Konuşmadan, dinlenmeden, hiçbir şey istemeden çalışıyor. Yanına gidildiğinde yalnızca ödemesi gereken çok kefaret olduğunu söylüyor.",
+    "message": "Köylüler, bir deri bir kemik kalmış, yırtık pırtık cüppeli bir adamın taş kulübelerin duvarlarını sessizce onardığını anlatıyor. Konuşmadan, dinlenmeden, hiçbir şey istemeden çalışıyor. Yanına gidildiğinde yalnızca ödemesi gereken çok kefaret olduğunu söylüyor.",
     "title": "Sessiz Duvarcı"
   },
   "doNothing": {
@@ -840,7 +840,7 @@
       "outcome0": "Hepsini acımadan kılıçtan geçiriyorsun. Düşerlerken çığlıkları mağaralarda yankılanıyor.",
       "outcome1": "Silahlarını indirip onları anlamaya çalışıyorsun. El kol işaretleriyle ve kırık dökük kelimelerle tarihlerinden parçalar anlatıyorlar. Duydukların karşısında dilin tutuluyor."
     },
-    "message": "Paramparça olan kapının ötesindeki derinliklerde sana saldırmayan yaratıklar buluyorsun. Biçimleri belli belirsiz insana benziyor; karanlıkta geçen kuşaklar onları çarpıtmış. Kırık dökük kelimelerle, el kol işaretleriyle dertlerini anlatmaya çalışıyorlar.",
+    "message": "Parçalanan kapının ötesindeki derinliklerde, sana saldırmayan birkaç yaratıkla karşılaşıyorsun. Biçimleri belli belirsiz insana benziyor; karanlıkta geçen kuşaklar onları çarpıtmış. Kırık dökük kelimelerle, el kol işaretleriyle dertlerini anlatmaya çalışıyorlar.",
     "title": "Derinlerde Yaşayanlar"
   },
   "establishTradeProposal": {
@@ -873,11 +873,11 @@
         "label": "250 Altın öde"
       },
       "sendAway": {
-        "label": "Onu gönder"
+        "label": "Geri çevir"
       }
     },
     "log": {
-      "outcome1": "Bilgin, içinde gölgeler dönen koyu kızıl bir karışım hazırlıyor ve sana bununla yıkanmanı söylüyor. Yıkanıp çıktığında kendini daha güçlü, ama bir yandan da lekelenmiş hissediyorsun.",
+      "outcome1": "Bilgin koyu kızıl, bulanık bir karışım hazırlıyor ve içinde yıkanmanı söylüyor. Yıkanıp çıktığında kendini daha güçlü, ama bir yandan da lekelenmiş hissediyorsun.",
       "outcome2": "Bilgini geri çeviriyorsun. Hayal kırıklığıyla iç çekip gidiyor, ama yeniden gelebileceğini seziyorsun.",
       "outcome3": "Kararsızlığına içerleyen bilgin çekip gidiyor."
     },
@@ -913,16 +913,16 @@
         "label": "20 köylü ver"
       },
       "sendAway": {
-        "label": "Onu gönder"
+        "label": "Geri çevir"
       }
     },
     "log": {
       "outcome0": "Kadına istediğini ödüyorsun, o da Obsidyen Kürenin sırrını sana açıyor.",
       "outcome1": "Yirmi köylüyü zincire vurup sürükleyerek götürüyorlar. Kadın bilgiyi paylaşıyor, ama yapılanlar bütün köyün midesini bulandırıyor.",
-      "outcome2": "Onu geri gönderiyorsun. Hazır olduğunda yeniden gelebileceğini söylüyor.",
-      "outcome3": "Vakit doluyor. Kadın, hazır olduğunda yeniden gelebileceğini söyleyip gidiyor."
+      "outcome2": "Kadını geri gönderiyorsun. Sen hazır olduğunda yeniden gelebileceğini söylüyor.",
+      "outcome3": "Vakit doluyor. Kadın, sen hazır olduğunda yeniden gelebileceğini söyleyip gidiyor."
     },
-    "message": "Göz alıcı süslere bezenmiş, Doğulu görünüşlü bir kadın iki iri yarı hizmetkârıyla çıkageliyor. Altın ya da köylü karşılığında, güçlü bir Obsidyen Küre yapmanın sırrını öğretmeyi teklif ediyor.",
+    "message": "Göz alıcı takılarla bezenmiş, Doğulu görünüşlü bir kadın iki iri yarı hizmetkârıyla çıkageliyor. Altın ya da köylü karşılığında, güçlü bir Obsidyen Küre yapmanın sırrını öğretmeyi teklif ediyor.",
     "title": "Obsidyen Küre"
   },
   "facesInWalls": {
@@ -1032,7 +1032,7 @@
     "title": "Köy Yaşlısı"
   },
   "firstWave": {
-    "message": "Sonunda serbest kalan soluk suretler mağaradan çıkıyor. Kor gibi yanan gözleri karanlığı yararak şehre doğru yürüyorlar.",
+    "message": "Sonunda serbest kalan soluk suretler mağaradan çıkıyor. Kor gibi yanan gözleriyle karanlığı yararak şehre doğru yürüyorlar.",
     "title": "İlk Dalga"
   },
   "forestFear": {
@@ -1053,7 +1053,7 @@
     "log": {
       "outcome0": "Yabani kadının gözleri umutla parlıyor. 'Tek umudumuz sensin,' diyor. 'Canavarların mağarası ormanın derinliklerinde. Tanrılar seni korusun.'"
     },
-    "message": "Ormandan yabani bir kadın çıkıyor; solgun bedeni kabile işaretleri ve yara izleriyle kaplı. 'Ormanda yaşayan bir kabiledenim,' diyor telaşla. 'Ormanın içinde, bir mağarada barınan vahşi canavarlar bize durmadan saldırıyor. Soyumuz tükenmek üzere. Ne olur, hayatta kalmamıza yardım et.'",
+    "message": "Ormandan yabani bir kadın çıkıyor; solgun bedeni kabile işaretleri ve yara izleriyle kaplı. 'Ormanda yaşayan bir kabiledenim,' diyor telaşla. 'Ormandaki bir mağarada barınan vahşi canavarlar bize durmadan saldırıyor. Soyumuz tükenmek üzere. Ne olur, hayatta kalmamıza yardım et.'",
     "title": "Çaresiz Bir Yakarış"
   },
   "fourthWave": {
@@ -1070,9 +1070,9 @@
       }
     },
     "log": {
-      "outcome0": "Tipi bütün hışmıyla bastırıyor. Köylüler soğukta hayatta kalmaya çabalarken bütün üretim neredeyse duruyor.",
+      "outcome0": "Tipi olanca hışmıyla bastırıyor. Köylüler soğukta hayatta kalmaya çabalarken bütün üretim neredeyse duruyor.",
       "outcome2": "Biriktirilen yakacak odun ve yiyecek sayesinde köylüler tipiyi zarar görmeden atlatıyor.",
-      "outcome3": "Tipi bütün hışmıyla bastırıyor. Köylüler soğukta hayatta kalmaya çabalarken bütün üretim neredeyse duruyor."
+      "outcome3": "Tipi olanca hışmıyla bastırıyor. Köylüler soğukta hayatta kalmaya çabalarken bütün üretim neredeyse duruyor."
     },
     "message": "Buz gibi rüzgârlar köyün içinde uluyor. Yaşlılar uyarıyor: korkunç bir tipi yaklaşıyor. Hazırlık yapılmazsa bedeli ağır olacak.",
     "title": "Zemheri"
@@ -1119,7 +1119,7 @@
     "log": {
       "outcome0": "Yüzüğü avucuna alıyorsun. Dokunuşu yumuşak, hafifçe ılık ve davetkâr."
     },
-    "message": "Bir sabah, mağara girişinin yanındaki bir ağaç kütüğünün üstünde bir yüzük buluyorsun; sanki biri onu oraya senin için bırakmış.",
+    "message": "Bir sabah, mağara girişinin yanındaki ağaç kütüğünün üstünde bir yüzük buluyorsun; sanki biri oraya senin için bırakmış.",
     "title": "Beklenmedik Bir Hediye"
   },
   "hiddenLake": {
@@ -1137,7 +1137,7 @@
       "outcome2": "Köylülere gölden uzak durmalarını emrediyorsun. Bazıları kaçan fırsatlar yüzünden homurdansa da sözünü dinliyor. Gölün sırları suyun altında saklı kalıyor.",
       "outcome3": "Göle yaklaşmayı yasaklıyorsun, ama yaratığı gördüğünü söyleyen köylü kendini tutamıyor. Bir gece gizlice çıkıp gidiyor ve bir daha dönmüyor. Şafakta su kıyısında yalnızca giysileri duruyor.",
       "lakeDrownOne": "Yaratık bir kâbus gibi yükseliyor; güzelliği ölümcül niyetini örtüyor. Doğaüstü bir güçle köylülerden birini suyun altına çekiyor. Ötekiler dehşet içinde kaçarken geride yalnızca sudaki halkalar ve boğuk çığlıklar kalıyor.",
-      "lakeDrownMany": "Yaratık bir kâbus gibi yükseliyor; güzelliği ölümcül niyetini örtüyor. Doğaüstü bir güçle köylüleri suyun altına çekiyor. Geri kalanlar dehşet içinde kaçarken geride yalnızca sudaki halkalar ve boğuk çığlıklar kalıyor."
+      "lakeDrownMany": "Yaratık bir kâbus gibi yükseliyor; güzelliği ölümcül niyetini örtüyor. Doğaüstü bir güçle köylüleri suyun altına çekiyor. Ötekiler dehşet içinde kaçarken geride yalnızca sudaki halkalar ve boğuk çığlıklar kalıyor."
     },
     "message": {
       "firstTime": "Ormanda odun toplayan köylüler, ağaçların arasına gizlenmiş bir göl buluyor. Köylülerden biri, sudan bir anlığına kadına benzer bir siluetin yükseldiğini gördüğüne yemin ediyor; bakışları güzelmiş, ama hiç de insana benzemiyormuş. Ne yapacaksın?",
@@ -1158,12 +1158,12 @@
       }
     },
     "log": {
-      "outcome0": "Kof Kral Asasını kavrıyorsun ve içinden muazzam bir gücün aktığını hissediyorsun. Zihnine kadim bilgiler doluyor; onlarla birlikte kralın, deliliğe sürüklendiği son günlerinin anıları da.",
+      "outcome0": "Ruhsuz Kral Asasını kavrıyorsun ve içinden muazzam bir gücün aktığını hissediyorsun. Zihnine kadim bilgiler doluyor; onlarla birlikte kralın, deliliğe sürüklendiği son günlerinin anıları da.",
       "outcome1": "Ölü kralın asasını ait olduğu yerde bırakmaya karar veriyorsun. Arkanı döndüğünde, boş taht odasında yankılanan, hayal kırıklığı dolu belli belirsiz bir fısıltı duyduğuna yemin edebilirsin.",
       "outcome2": "Sen kararsızlık içinde donup kalmışken adamların sabrı tükeniyor, gözlerini hırs bürüyor. Biri asaya uzanıyor, sonra bir başkası. Çok geçmeden vahşice boğuşmaya başlıyorlar. Kanlı arbedede yoldaşlarından {{actualDeaths}} kişi ölüyor; kanları çağların tozuna karışıyor."
     },
     "message": "İç kalenin taht odasında obsidyenden görkemli bir asa buluyorsun. Bu kayıp şehrin kralına ait olmalı. Ondan karanlık bir bilgi yayılıyor. Asayı alacak mısın?",
-    "title": "Kof Kral Asası"
+    "title": "Ruhsuz Kral Asası"
   },
   "humanSacrificeDemand": {
     "message": "Köylüler, gözleri bomboş, monolitin çevresinde toplanıyor. 'Hayvanlar yetmiyor,' diye fısıldıyorlar hep bir ağızdan. 'Karanlık daha fazlasını istiyor. İnsan ruhlarına aç.' Gözlerini sana dikmiş, en büyük kurbanı vermek için emrini bekliyorlar.",
@@ -1195,7 +1195,7 @@
       "outcome0": "Adamlar mızraklarını kıvranan bedenine saplarken yaratığın son, şiddetli çırpınışları mağarayı sarsıyor. Demirci yaratığın devasa kemiklerini süzüp bunlardan heybetli bir büyük kalkan dövebileceğini söylüyor.",
       "outcome1": "Tuzağı açıp geri çekiliyorsun. Yaratık seni bir an süzüyor, sonra derinlere dalıyor. Yeniden yüzeye çıktığında küçük, çürümüş bir sandık tükürüyor. İçinde parıl parıl altın sikkeler var. Ardından kara derinliklerde kayboluyor; geride yalnızca sudaki halkalar kalıyor."
     },
-    "message": "Devasa yaratık tuzakta kıvranıyor; dokunaçları çelik parmaklıklara çarpıp duruyor. Kadim gözleri seni süzüyor; bakışında akla benzer bir şey var. Ne yapacaksın?",
+    "message": "Devasa yaratık tuzakta kıvranıyor; dokunaçları çelik parmaklıklara çarpıp duruyor. Kadim gözleri seni süzüyor, bakışlarında zekâya benzer bir şey var. Ne yapacaksın?",
     "title": "Yaratığın Kaderi"
   },
   "ladyFromTheMountains": {
@@ -1209,7 +1209,7 @@
     },
     "log": {
       "sendAwayOutcome": "Onu geri çeviriyorsun. Gülümsüyor, ama bu fazla sakin bir gülümseme. 'Sen de bu köydeki her can da buna pişman olacaksınız,' diyor ve arkasını dönüp gidiyor.",
-      "welcomeOutcome": "Kızıl saçlı kadını buyur ediyorsun. Usulca teşekkür ediyor, hem şifa veren hem zarar veren bitkilerden söz ediyor. Bir Şifalı Ot Bahçesi kurmaya yardım etmeyi teklif ediyor. Köylüler onu tetikte, gözlerini ayırmadan izliyor."
+      "welcomeOutcome": "Kızıl saçlı kadını buyur ediyorsun. Usulca teşekkür ediyor, hem şifa veren hem zarar veren bitkilerden söz ediyor. Bir Şifalı Ot Bahçesi kurmaya yardım etmeyi teklif ediyor. Köylüler gözlerini ondan ayırmıyor."
     },
     "message": "Güzel, kızıl saçlı bir kadın çıkageliyor. Dağlardaki köyünün kıtlıktan yok olduğunu söylüyor ve burada kalıp kalamayacağını soruyor. Bitkileri ve etkilerini çok iyi bildiğini iddia ediyor.",
     "title": "Dağlı Kadın"
@@ -1220,7 +1220,7 @@
         "label": "Kalmasına izin ver"
       },
       "sendHimAway": {
-        "label": "Onu gönder"
+        "label": "Geri çevir"
       }
     },
     "log": {
@@ -1256,7 +1256,7 @@
         "label": "Kitabı sakla"
       }
     },
-    "message": "Sefer ekibin, ormandaki bir harabede deri ciltli eski bir kitap buluyor. Kapağına bir zincir simgesi dağlanmış. Sayfaları okuyamadığın yazılarla dolu.",
+    "message": "Sefer ekibin ormandaki bir harabede deri ciltli eski bir kitap buluyor. Kapağına bir zincir simgesi dağlanmış. Sayfaları okuyamadığın yazılarla dolu.",
     "title": "Deri Ciltli Kitap"
   },
   "leatherHarnessGratefulReturn": {
@@ -1275,7 +1275,7 @@
     "choices": {
       "helpWithLeather": {
         "cost": "100 deri",
-        "label": "Ona yardım et"
+        "label": "Yardım et"
       },
       "refuseLeather": {
         "label": "Yardım etme"
@@ -1283,9 +1283,9 @@
     },
     "log": {
       "outcome1": "Deriyi ona veriyorsun. Gözleri parlıyor, minnetle gülümseyerek alıyor. 'Sağ ol. Tam da ihtiyacım olan buydu.' Derileri göğsüne bastırıp aceleyle uzaklaşıyor.",
-      "outcome2": "Geri çeviriyorsun. Kadın başını sallıyor; yüzünden bir hayal kırıklığı geçiyor. Tek söz etmeden köye dönüyor."
+      "outcome2": "İsteğini geri çeviriyorsun. Kadın başını sallıyor; yüzünden bir hayal kırıklığı geçiyor. Tek söz etmeden köye dönüyor."
     },
-    "message": "Köyden bir kadın yanına geliyor; yanakları hafifçe kızarmış. Konuşmadan önce duraksıyor, gözlerini yere indiriyor: 'Bana biraz deri ayırabilir misin diye düşünüyordum. Deriden bir koşum yapmak istiyorum da.'",
+    "message": "Köyden bir kadın yanına geliyor; yanakları hafifçe kızarmış. Konuşmadan önce duraksıyor, gözlerini yere indiriyor: 'Acaba bana biraz deri ayırabilir misin? Deriden bir koşum yapmak istiyorum da.'",
     "title": "Köylü Bir Kadın"
   },
   "manFromTheMountains": {
@@ -1315,7 +1315,7 @@
     },
     "log": {
       "outcome0": "Yabancıya barınak veriyorsun. Şafak söktüğünde adam ortada yok. Geriye yalnızca cübbesi kalmış; içinde insan derisiyle ciltlenmiş bir kitap duruyor. Sayfaları yasak bilgiler fısıldıyor.",
-      "outcome1": "Yabancıyı içeri almıyorsun. Hiç bilinmedik bir dilde lanetler haykırarak çekip gidiyor. Şafaktan önce, sanki onun çığlıkları çağırmış gibi barbar bir kabile saldırıyor ve {{actualDeaths}} köylüyü öldürüyor. Sabah yerde, insan derisiyle ciltlenmiş bir kitap buluyorsun."
+      "outcome1": "Yabancıyı içeri almıyorsun. Hiç bilinmedik bir dilde lanetler haykırarak çekip gidiyor. Şafaktan önce, sanki çığlıkları çağırmış gibi barbar bir kabile saldırıyor ve {{actualDeaths}} köylüyü öldürüyor. Sabah yerde, insan derisiyle ciltlenmiş bir kitap buluyorsun."
     },
     "message": "Akşam vakti cübbeli biri ıssız topraklardan çıkıp yaklaşıyor. Yabancı bir dilde mırıldanırken gözlerinde delilik yanıyor; el kol hareketleri sert ve tekinsiz. Köylüler tedirgin oluyor. Bu bedevinin geceyi burada geçirmesine izin verecek misin?",
     "title": "Deli Bedevi"
@@ -1369,7 +1369,7 @@
       }
     },
     "log": {
-      "outcome0": "Altını teslim ediyorsun. Paralı asker yüzünde zalim bir gülümsemeyle paraları ağır ağır sayıyor. 'Seninle iş yapmak keyifliydi,' deyip ortadan kayboluyor.",
+      "outcome0": "Altını teslim ediyorsun. Paralı asker yüzünde zalim bir gülümsemeyle paraları ağır ağır sayıyor. 'Anlaştığımıza sevindim,' deyip ortadan kayboluyor.",
       "outcome1": "Paralı asker adamlarına saldırı işareti veriyor. Çarpışma çetin geçiyor, ama köylüler üstün geliyor. Paralı askerler silahlarını ve yaralılarını geride bırakıp ormana kaçıyor.",
       "outcome2": "Paralı asker adamlarına saldırı işareti veriyor. Bütün çabana rağmen onlara karşı koyamıyorsun. {{deaths}} köylü can verdikten sonra, döktükleri kandan hoşnut kalan paralı askerler sonunda çekiliyor.",
       "outcome3": "Kilitli bir sandıkta sakladığın Doyumsuz Yüzüğü ona uzatıyorsun. Paralı asker yüzüğü ilgiyle inceleyip kendi parmağına geçiriyor. 'Güzel yüzük,' diyor, 'ama yetmez. Yarın altını almaya yine geleceğim.'"
@@ -1393,7 +1393,7 @@
     "log": {
       "outcome0": "Öfkeden ellerin titreye titreye altını ödüyorsun. Paralı asker kahkahayı basıyor. 'Akıllıca. Seni bir daha rahatsız etmem... herhalde.' Adamlarıyla birlikte ormanda gözden kayboluyor.",
       "outcome1": "Ödemeyi reddediyorsun. Paralı askerler saldırıyor, ama bu kez hazırlıklısın. Kıyasıya bir çarpışmanın ardından ölülerini geride bırakıp ıssız topraklara dağılıyorlar.",
-      "outcome2": "Kafa tutmanın bedeli ağır oluyor. Paralı askerler köyü talan ediyor, {{deaths}} kişiyi öldürüyor ve yol açtıkları yıkıma gülerek sonunda çekip gidiyor.",
+      "outcome2": "Kafa tutmanın bedelini ağır ödüyorsun. Paralı askerler köyü talan ediyor, {{deaths}} kişiyi öldürüyor ve yol açtıkları yıkıma gülerek sonunda çekip gidiyor.",
       "outcome3": "Kilitli bir sandıkta sakladığın Doyumsuz Yüzüğü ona uzatıyorsun. Paralı asker yüzüğü ilgiyle inceleyip kendi parmağına geçiriyor. 'Güzel yüzük,' diyor, 'ama yetmez. Yarın altını almaya yine geleceğim.'"
     },
     "message": "Paralı asker geri döndü, bu kez yanında daha çok adam var. 'Zor zamanlar,' diyor sırıtarak. 'Fiyat arttı. 200 Altın, yoksa işler karışır.'",
@@ -1408,20 +1408,20 @@
     "log": {
       "outcome0": "Tacirle vedalaşıyorsun. Şapkasına dokunarak selam veriyor ve önündeki yol hakkında bir şeyler mırıldanıyor."
     },
-    "message": "Yılların yıprattığı bir tacir çıkageliyor; arabası mallarla tıka basa dolu. Gözlerinde açgözlü bir parıltıyla mırıldanıyor: 'Bende satılık nadide mallar var.'",
+    "message": "Yılların yıprattığı bir tacir çıkageliyor; arabası mallarla tıka basa dolu. Gözlerinde açgözlü bir parıltıyla mırıldanıyor: 'Satılık nadide eşyalarım var.'",
     "title": "Seyyar Tacir",
     "toolTrades": {
       "trade_nightshade_bow_schematic": {
         "label": "Gecegölgesi Yayı Çizimi",
-        "message": "Gecegölgesi Yayı çizimini satın alıyorsun. Tacir karanlık bir sırıtışla konuşuyor: 'Bu yayın tasarımı zalimcedir. Okları düşmanlarını zehirler.'"
+        "message": "Gecegölgesi Yayı çizimini satın alıyorsun. Tacir sinsi sinsi sırıtıyor: 'Acımasız bir tasarım bu. Okları düşmanlarını zehirler.'"
       },
       "trade_skull_lantern": {
         "label": "Kafatası Feneri",
         "message": "Kafatası Fenerini satın alıyorsun. Lanetli kemikten yapılmış bu fenerin ürkütücü ışığı, en derin karanlıklarda sana yol gösterecek."
       },
       "trade_tarnished_compass": {
-        "label": "Eskimiş Pusula",
-        "message": "Eskimiş Pusulayı satın alıyorsun. Kayıp uygarlıktan kalma bu eserin ibresi gizli yerleri gösteriyor."
+        "label": "Kararmış Pusula",
+        "message": "Kararmış Pusulayı satın alıyorsun. Kayıp uygarlıktan kalma bu eserin ibresi gizli yerleri gösteriyor."
       },
       "trade_rootseeker_charm": {
         "label": "Kökarayan Tılsım",
@@ -1437,7 +1437,7 @@
       },
       "trade_crow_harness": {
         "label": "Karga Koşumu",
-        "message": "Karga Koşumunu satın alıyorsun. Haberci kargalar için özel olarak yapılmış bir koşum bu."
+        "message": "Karga Koşumunu satın alıyorsun. Haberci kargalar için özel yapılmış bir koşum bu."
       },
       "trade_clarity_elixir": {
         "label": "Berraklık İksiri",
@@ -1448,7 +1448,7 @@
         "message": "Bir şişe Damarateşi İksiri satın alıyorsun."
       },
       "trade_book_of_trials": {
-        "message": "Sınavlar Kitabını satın alıyorsun. Tacir anlamlı anlamlı gülümsüyor: 'Yolculuğunun izini sürmek isteyenler için bir rehber.'",
+        "message": "Sınavlar Kitabını satın alıyorsun. Tacir anlamlı anlamlı gülümsüyor: 'Yolculuklarının izini sürmek isteyenler için bir rehber.'",
         "label": "Sınavlar Kitabı"
       },
       "trade_book_of_absolution": {
@@ -1456,8 +1456,8 @@
         "label": "Arınma Kitabı"
       },
       "trade_reinforced_rope": {
-        "message": "Takviyeli Halatı satın alıyorsun. Bu halat muazzam bir yüke dayanır, seni mağaranın en derin odalarına bile ulaştırır.",
-        "label": "Takviyeli Halat"
+        "message": "Sağlam Halatı satın alıyorsun. Bu halat muazzam bir yüke dayanır, seni mağaranın en derin odalarına bile ulaştırır.",
+        "label": "Sağlam Halat"
       },
       "trade_occultist_map": {
         "message": "Okültistin Haritasını satın alırken tacir fısıldıyor: 'Yaşlı bir okültist sırlarını mağaranın derinliklerindeki bir odaya saklamış. Bu harita sana yol gösterecek.'",
@@ -1476,8 +1476,8 @@
         "label": "Makaralı Yay"
       },
       "trade_stormglass_halberd_schematic": {
-        "message": "Fırtınacam Teber çizimini satın alıyorsun. Tacir solmuş planları açıyor: 'Bu tasarımla müthiş güçlü bir teber dövebilirsin.'",
-        "label": "Fırtınacam Teber Çizimi"
+        "message": "Fırtına Teberi çizimini satın alıyorsun. Tacir solmuş planları açıyor: 'Bu tasarımla müthiş güçlü bir teber dövebilirsin.'",
+        "label": "Fırtına Teberi Çizimi"
       },
       "trade_natharit_pickaxe": {
         "message": "Natharit Kazmayı satın alıyorsun. Tacir sağlam aleti eline tutuşturuyor: 'Ne olduğu bilinmeyen bir maddeden yapılmış, son derece dayanıklı bir kazma. Eşi benzeri yoktur.'",
@@ -1506,9 +1506,9 @@
       }
     },
     "log": {
-      "outcome": "Adam seni ormanın derinliklerine götürüyor. Köylüler tuzaklara düşüyor. Birden kızıl saçlı kadın beliriyor ve ikisi birlikte adamlarının üstüne çullanıyor. Sağ kalanlar iki saldırganı da öldürene dek {{deaths}} köylü ölüyor. Adamın cesedinin üstünde bir dağ köyünün haritasını buluyorlar."
+      "outcome": "Adam seni ormanın derinliklerine götürüyor. Köylüler tuzaklara düşüyor. Birden kızıl saçlı kadın beliriyor ve ikisi birlikte senin adamlarının üstüne çullanıyor. Sağ kalanlar iki saldırganı da öldürene dek {{deaths}} köylü ölüyor. Adamın cesedinin üstünde bir dağ köyünün haritasını buluyorlar."
     },
-    "message": "Adam seni ormanın derinliklerine götürüyor. Köylüler tuzaklara düşüyor. Birden kızıl saçlı kadın beliriyor ve ikisi birlikte adamlarının üstüne çullanıyor. Sağ kalanlar iki saldırganı da öldürene dek {{deaths}} köylü ölüyor. Adamın cesedinin üstünde bir dağ köyünün haritasını buluyorlar.",
+    "message": "Adam seni ormanın derinliklerine götürüyor. Köylüler tuzaklara düşüyor. Birden kızıl saçlı kadın beliriyor ve ikisi birlikte senin adamlarının üstüne çullanıyor. Sağ kalanlar iki saldırganı da öldürene dek {{deaths}} köylü ölüyor. Adamın cesedinin üstünde bir dağ köyünün haritasını buluyorlar.",
     "title": "Pusu"
   },
   "monasteryMonk": {
@@ -1528,10 +1528,10 @@
     "log": {
       "outcome0": "Keşişin teklifini geri çeviriyorsun. Saygıyla eğiliyor ve dağlara dönmek üzere yola koyuluyor.",
       "outcome2": "Keşiş adağını ağırbaşlı bir baş selamıyla kabul ediyor ve bir maymuncuğun ayrıntılı çizimlerini önüne seriyor. “Bu anahtarın her kilidi açtığı söylenir,” diyor ve yola çıkıyor.",
-      "outcome4": "Altını görünce keşişin gözleri irileşiyor. 'Bu, manastırın çok işine yarar,' diyerek bir maymuncuğun ayrıntılı çizimlerini çıkarıyor. “Bu anahtarın her kilidi açtığı söylenir,” diyor ve yola çıkıyor.",
+      "outcome4": "Altını görünce keşişin gözleri irileşiyor. 'Bu, manastırın çok işine yarar,' diyor ve bir maymuncuğun ayrıntılı çizimlerini çıkarıyor. “Bu anahtarın her kilidi açtığı söylenir,” deyip yola çıkıyor.",
       "outcome5": "Keşişin teklifini geri çeviriyorsun. Saygıyla eğiliyor ve dağlara dönmek üzere yola koyuluyor."
     },
-    "message": "Dağdaki bir manastırdan gelen bir keşiş köye uğruyor. 'Esrarengiz bir sandık bulduğunu duydum,' diyor usulca. 'Manastır onu nasıl açacağını bilir. Bir adak sun, sırrı seninle paylaşayım.'",
+    "message": "Dağdaki bir manastırdan gelen bir keşiş köye uğruyor. 'Esrarengiz bir sandık bulduğunu duydum,' diyor usulca. 'Manastırımız onu açmanın yolunu bilir. Bir adak sun, sırrı seninle paylaşayım.'",
     "title": "Dağ Keşişi"
   },
   "monasteryResponse": {
@@ -1545,15 +1545,15 @@
       }
     },
     "log": {
-      "outcome0": "Karar vermekte fazla oyalandın. Keşişlerin teklifi geçerliliğini yitirdi.",
+      "outcome0": "Karar vermekte fazla oyalandın. Keşişlerin teklifi suya düştü.",
       "outcome2": "Keşişlere haritanın parasını ödüyorsun. Harita, mağaranın derinliklerindeki Gizli Kütüphane'nin yerini gösteriyor.",
       "outcome3": "Keşişlerin teklifini geri çeviriyorsun. Fırsat kaçtı."
     },
-    "message": "Tek gözlü karga Dağ Manastırı'ndan mühürlü bir parşömenle dönüyor. Keşişler, mağaranın derinliklerindeki gizli bir kütüphaneye giden haritayı sana satmayı teklif ediyor. Karşılığında 250 Altın istiyorlar.",
+    "message": "Tek gözlü karga Dağ Manastırı'ndan mühürlü bir parşömenle dönüyor. Keşişler, mağaranın derinliklerindeki gizli bir kütüphanenin haritasını sana satmayı teklif ediyor. Karşılığında 250 Altın istiyorlar.",
     "title": "Dağ Manastırı'ndan Haber"
   },
   "monolithDemand": {
-    "message": "Köylüler köyün ortasına bir monolit dikilmesi için diretiyor: zihinlerine sızan karanlığı yatıştıracak bir anıt. Hayvan kurbanlarıyla huzura kavuşmayı umuyorlar.",
+    "message": "Köylüler köyün ortasına bir monolit dikilmesinde diretiyor: zihinlerine sızan karanlığı yatıştıracak bir anıt. Hayvan kurbanlarıyla huzura kavuşmayı umuyorlar.",
     "title": "Monolit Talebi"
   },
   "mysteriousBell": {
@@ -1609,8 +1609,8 @@
       },
       "refuseStay": {
         "label": {
-          "woman": "Onu geri çevir",
-          "man": "Onu geri çevir"
+          "woman": "Geri çevir",
+          "man": "Geri çevir"
         }
       }
     }
@@ -1677,13 +1677,13 @@
     "log": {
       "outcome0": "Orman tanrıları kurbanı kabul ediyor. Karaltılar kayboluyor; köylülerin kurban edildiği sunakta geriye bir Abanoz Yüzük kalıyor. Ormana huzur geri dönüyor.",
       "outcome1": "Orman kurbanı kabul ediyor. Karaltılar kayboluyor; köylülerin kurban edildiği sunakta geriye bir Abanoz Yüzük kalıyor. Ama kurbanın dehşeti {{actualAdditionalDeaths}} köylüyü kendi canına kıymaya sürüklüyor.",
-      "outcome2": "Masum canları kurban etmeyi reddetmen nedense orman tanrılarının hoşuna gidiyor. Karaltılar kayboluyor ve hediye olarak bırakılmış bir Abanoz Yüzük buluyorsun.",
+      "outcome2": "Masum canları kurban etmeyi reddetmen nedense orman tanrılarının hoşuna gidiyor. Karaltılar kayboluyor ve geride sana bırakılmış bir hediye buluyorsun: bir Abanoz Yüzük.",
       "outcome3": "Kurbanı reddediyorsun. Orman şimdilik sessiz. Ama tehdit sürüyor.",
       "outcome5": "Kararsızlığın köylüleri öfkelendiriyor. Başsız kalmaktan bıkan {{actualDepartures}} köylü, eşyalarını toplayıp tiksinti içinde köyü terk ediyor.",
       "outcome4_one": "Kurbanı reddediyorsun. Gece {{actualDisappearances}} köylü, yalnızca kendisinin duyabildiği bir sese kapılıp uyurgezer gibi ormana yürüyor. Onu bir daha gören olmuyor.",
       "outcome4_other": "Kurbanı reddediyorsun. Gece {{actualDisappearances}} köylü, yalnızca kendilerinin duyabildiği bir sese kapılıp uyurgezer gibi ormana yürüyor. Onları bir daha gören olmuyor."
     },
-    "message": "Avdan dönen köylüler ormanda tekinsiz karaltılar gördüklerini anlatıyor. Dehşet içindeler. Köyün yaşlılarına göre orman tanrıları kurban olarak dört köylü istiyor.",
+    "message": "Avdan dönen köylüler ormanda tekinsiz karaltılar gördüklerini anlatıyor. Dehşet içindeler. Köyün yaşlılarına göre orman tanrıları dört köylünün kurban edilmesini istiyor.",
     "title": "Orman Tanrılarına Adak"
   },
   "paleCrossCrucifixion": {
@@ -1696,7 +1696,7 @@
       },
       "holdFuneral": {
         "cost": "1000 yiyecek",
-        "label": "Cenaze kaldır"
+        "label": "Cenazeyi kaldır"
       },
       "investigateKillers": {
         "label": "Soruştur"
@@ -1722,7 +1722,7 @@
     },
     "log": {
       "outcome0": "Druid başını eğiyor. 'Öyleyse dikilsin.'",
-      "outcome1": "'Belki bu bilgelikti. Belki de korku,' diyor druid, sonra ormana çekilip gidiyor."
+      "outcome1": "'Belki bu bilgelikti. Belki de korkuydu,' diyor druid, sonra ormana çekilip gidiyor."
     },
     "message": "Kör druid geri dönüyor. Süt beyazı gözleri Kemik Totemlerine dönük: 'Tanrılara çok şey sundun. Bağlılığını kanıtlamak için onlara bir simge dik.'",
     "title": "Soluk Haç"
@@ -1775,7 +1775,7 @@
       }
     },
     "log": {
-      "attack": "Adam öfkeleniyor. Bir köylüye saldırıp onu öldürüyor, sonra kaçıp gidiyor.",
+      "attack": "Adam öfkeleniyor. Bir köylüye saldırıp öldürüyor, sonra kaçıp gidiyor.",
       "thanks": "'Sağ ol. Çok sağ ol,' diyor ve kürkleri alıp aceleyle uzaklaşıyor."
     },
     "message": "Üstü başı paramparça genç bir adam çıkageliyor. 'Köyün dışında kamp kurdum. Ailemin bu soğuğu atlatması için kürk lazım. Şimdi ödeyemem ama sonra öderim.'",
@@ -1790,7 +1790,7 @@
     "log": {
       "repay": "Kürklerin karşılığında {{silverReward}} Gümüş bırakıp gidiyor."
     },
-    "message": "Kürk isteyen baba geri dönüyor; üstündeki paçavralar gitmiş. Ağır bir kese uzatıyor. 'Ailem soğuğu atlattı. Ödeyeceğim demiştim. İşte, {{silverReward}} Gümüş.'",
+    "message": "Kürk isteyen baba geri dönüyor; bu kez üstünde paçavralar yok. Ağır bir kese uzatıyor. 'Ailem soğuğu atlattı. Ödeyeceğim demiştim. İşte, {{silverReward}} Gümüş.'",
     "title": "Babanın Dönüşü"
   },
   "redMaskChoice": {
@@ -1804,7 +1804,7 @@
     },
     "log": {
       "outcome0": "Kıpkırmızı deri maskeyi yerden alıyorsun. Eline sıcak geliyor.",
-      "outcome1": "Kuzgunun hediyesini fazla esrarlı buluyorsun. Uzaklaşırken kuzgunun gaklaması ağaçların arasında yankılanıyor."
+      "outcome1": "Kuzgunun bu hediyesi sana fazla esrarengiz geliyor. Uzaklaşırken kuzgunun gaklaması ağaçların arasında yankılanıyor."
     },
     "message": "Avlanırken, kırık bir ağacın üstünden sana bakan, tuhaf derecede iri, kara bir kuzgun görüyorsun. Yaklaşınca birden gaklamaya başlıyor; sanki tek bir kelimeyi tekrar tekrar söylüyor. Sonra uçup gidiyor. Ağacın dibinde koyu kırmızı deriden bir maske duruyor. Alacak mısın?",
     "title": "Kuzgunun Hediyesi"
@@ -1831,8 +1831,8 @@
     },
     "title": "Huzursuz Şövalye",
     "message": {
-      "firstTime": "Yıpranmış zırhlı bir şövalye köye geliyor. 'Dünyada çok şey gördüm,' diyor cansız bir sesle. 'Biraz altın verirsen yolculuklarımda gördüklerimi anlatırım.'",
-      "repeat": "Yıpranmış zırhlı şövalye yine köye geliyor. 'Dünyada çok şey gördüm,' diyor cansız bir sesle. 'Biraz altın verirsen yolculuklarımda gördüklerimi anlatırım.'"
+      "firstTime": "Zırhı yıpranmış bir şövalye köye geliyor. 'Dünyada çok şey gördüm,' diyor cansız bir sesle. 'Biraz altın verirsen yolculuklarımda gördüklerimi anlatırım.'",
+      "repeat": "Zırhı yıpranmış şövalye yine köye geliyor. 'Dünyada çok şey gördüm,' diyor cansız bir sesle. 'Biraz altın verirsen yolculuklarımda gördüklerimi anlatırım.'"
     }
   },
   "restlessKnightBurden": {
@@ -1846,7 +1846,7 @@
     },
     "log": {
       "outcome0": "Reddediyorsun. Yüzü geriliyor; kısaca başını sallıyor ve tek kelime etmiyor. Yük yine yalnızca onun omuzlarında kalıyor.",
-      "outcome1": "Çöldeki Kafatası Aygıtı koleksiyoncusunu anlatıyor. Adam, aygıtları kafalarına yerleştirmek için insanları yakalamış; acımadan ve boş yere. Şövalye, yüzlerce ölüyle dolu bir çukur bulmuş.",
+      "outcome1": "Çöldeki Kafatası Aygıtı koleksiyoncusunu anlatıyor. Adam, insanları yakalayıp kafalarına bu aygıtları yerleştirmiş; acımadan ve hiçbir sonuç alamadan. Şövalye yüzlerce ölüyle dolu bir hendek bulmuş.",
       "outcome2": "Reddediyorsun. Yüzü geriliyor; kısaca başını sallıyor ve tek kelime etmiyor. Yük yine yalnızca onun omuzlarında kalıyor."
     },
     "message": "Huzursuz şövalye yanına geliyor. 'Hiç anlatmadığım bir şey var,' diyor. 'Kimse bu yükü taşımasın istedim. Ama sen bilmek isteyebilirsin.'",
@@ -1871,9 +1871,9 @@
     },
     "log": {
       "outcome0": "Şövalye bekledi ama cevap vermedin. 'Belki başka bir zaman,' diyor ve yoluna devam ediyor.",
-      "outcome2": "Şövalye anlatıyor: 'Okyanus kıyısında, yarısını dalgaların yuttuğu ölü bir şehir buldum. Yıkıntılarının arasında koca koca metal gemiler yatıyor; paslı gövdeleri hâlâ zamana direniyor. Kadim insanlar bir zamanlar bu devlerle denizlere hükmedermiş. Şimdi hepsi kuma oturmuş, sessizce yatıyor.'",
-      "outcome4": "Karnı doyan şövalye anlatmaya başlıyor: 'Okyanus kıyısında, yarısını dalgaların yuttuğu ölü bir şehir buldum. Yıkıntılarının arasında koca koca metal gemiler yatıyor; paslı gövdeleri hâlâ zamana direniyor. Kadim insanlar bir zamanlar bu devlerle denizlere hükmedermiş. Şimdi hepsi kuma oturmuş, sessizce yatıyor.'",
-      "outcome5": "Sözlerin şövalyeye dokunuyor. Anlatmaya başlıyor: 'Okyanus kıyısında, yarısını dalgaların yuttuğu ölü bir şehir buldum. Yıkıntılarının arasında koca koca metal gemiler yatıyor; paslı gövdeleri hâlâ zamana direniyor. Kadim insanlar bir zamanlar bu devlerle denizlere hükmedermiş. Şimdi hepsi kuma oturmuş, sessizce yatıyor.'",
+      "outcome2": "Şövalye anlatıyor: 'Okyanus kıyısında, yarısını dalgaların yuttuğu ölü bir şehir buldum. Yıkıntılarının arasında koca koca metal gemiler yatıyor; paslı gövdeleri hâlâ zamana direniyor. Kadim insanlar bir zamanlar bu devlerle denizlere hükmedermiş. Şimdi hepsi kuma oturmuş, sessiz sedasız bekliyor.'",
+      "outcome4": "Karnı doyan şövalye anlatmaya başlıyor: 'Okyanus kıyısında, yarısını dalgaların yuttuğu ölü bir şehir buldum. Yıkıntılarının arasında koca koca metal gemiler yatıyor; paslı gövdeleri hâlâ zamana direniyor. Kadim insanlar bir zamanlar bu devlerle denizlere hükmedermiş. Şimdi hepsi kuma oturmuş, sessiz sedasız bekliyor.'",
+      "outcome5": "Sözlerin şövalyeye dokunuyor. Anlatmaya başlıyor: 'Okyanus kıyısında, yarısını dalgaların yuttuğu ölü bir şehir buldum. Yıkıntılarının arasında koca koca metal gemiler yatıyor; paslı gövdeleri hâlâ zamana direniyor. Kadim insanlar bir zamanlar bu devlerle denizlere hükmedermiş. Şimdi hepsi kuma oturmuş, sessiz sedasız bekliyor.'",
       "outcome6": "Şövalye dinliyor ama ikna olmuyor. 'Sözlerin samimi, ama bu bilgi çok değerli. Belki başka bir zaman.' Bulduklarını anlatmadan gidiyor.",
       "outcome7": "Teklifini geri çeviriyorsun. Şövalye ağırbaşlı bir tavırla başını sallıyor. 'Peki. Kıyının sırları şimdilik bende kalsın,' diyor ve uzaklaşıyor."
     },
@@ -1900,23 +1900,23 @@
     "log": {
       "outcome0": "Şövalye bekledi ama cevap vermedin. 'Belki başka bir zaman,' diyor ve yoluna devam ediyor.",
       "outcome2": "Şövalye memnuniyetle başını sallıyor. 'Adil bir bedel. Halkını canım pahasına koruyacağım.' Yıpranmış miğferini çıkarıyor; altından yara izleriyle dolu ama kararlı bir yüz beliriyor. Huzursuz şövalye yoldaşlarına katıldı.",
-      "outcome4": "Şövalye gümüşü ciddiyetle eğilerek alıyor. 'Halkını canım pahasına koruyacağım.' Yıpranmış miğferini çıkarıyor; altından yara izleriyle dolu ama kararlı bir yüz beliriyor. Huzursuz şövalye yoldaşlarına katıldı.",
+      "outcome4": "Şövalye gümüşü alıp ağırbaşlı bir tavırla eğiliyor. 'Halkını canım pahasına koruyacağım.' Yıpranmış miğferini çıkarıyor; altından yara izleriyle dolu ama kararlı bir yüz beliriyor. Huzursuz şövalye yoldaşlarına katıldı.",
       "outcome5": "'Amacın soylu görünüyor.' Şövalyenin gözleri parlıyor. 'Seninle omuz omuza durmak benim için onurdur.' Yıpranmış miğferini çıkarıyor; altından yara izleriyle dolu ama kararlı bir yüz beliriyor. Huzursuz şövalye yoldaşlarına katıldı.",
       "outcome6": "Şövalye dinliyor ama başını iki yana sallıyor. 'Lafla savaşçının karnı doymaz. O hâlde şimdilik yoluma devam edeyim,' diyor, sonra dönüp gidiyor.",
       "outcome7": "Teklifini geri çeviriyorsun. Şövalye anlayışla başını sallıyor. 'Kararına saygı duyarım. O hâlde şimdilik yoluma devam edeyim,' diyor, sonra dönüp gidiyor."
     },
-    "message": "Şövalye geri dönüyor. 'Ta güneydeki uçsuz bucaksız bir çöle gittim. Orada kendini kadim insanların kayıp teknolojisini bulmaya adamış bir adamla tanıştım. Bana bir zamanlar kafatasına yerleştirilen, duyuları doğanın sınırlarının ötesine taşıyan aygıtlar gösterdi.' Bir an duraksıyor. 'Yeterince dolaştım. Tecrübeli bir kılıç işine yarar. Kabul edersen kılıcımı hizmetine sunarım.'",
+    "message": "Şövalye geri dönüyor. 'Ta güneydeki uçsuz bucaksız bir çöle gittim. Orada kendini kadim insanların kayıp teknolojisini bulmaya adamış bir adamla tanıştım. Bana bir zamanlar kafatasına yerleştirilen, duyuları doğanın sınırlarının ötesine taşıyan aygıtlar gösterdi.' Bir an duraksıyor. 'Yeterince dolaştım. Tecrübeli bir kılıç işine yarar. Kabul edersen savaşta sana hizmet ederim.'",
     "title": "Şövalyenin Son Yolculuğu"
   },
   "restlessKnightMountains": {
     "choices": {
       "payFood": {
         "cost": "2500 yiyecek",
-        "label": "2500 Yiyecek Öde"
+        "label": "2500 Yiyecek öde"
       },
       "payGold": {
         "cost": "50 altın",
-        "label": "50 Altın Öde"
+        "label": "50 Altın öde"
       },
       "refuse": {
         "label": "Reddet"
@@ -1935,7 +1935,7 @@
     "title": "Karanlıktaki Sesler",
     "message": {
       "original": "Pelerinli karaltı solgun ay ışığında malikâneye geri dönüyor. Sesi yankılanıyor: 'Sabah dört ayakla yürür, öğlen iki ayakla, akşam üç ayakla.'",
-      "variant": "Pelerinli karaltı solgun ay ışığında malikâneye geri dönüyor. Sesi yankılanıyor: 'Canını yakamaz, ama ardında yara izi bırakır.'"
+      "variant": "Pelerinli karaltı solgun ay ışığında malikâneye geri dönüyor. Sesi yankılanıyor: 'Canını yakamaz ama sende yara izi bırakır.'"
     },
     "choices": {
       "answerEarth": {
@@ -1963,7 +1963,7 @@
     "title": "Karanlıktaki Sesler",
     "message": {
       "original": "Pelerinli karaltı solgun ay ışığında malikâneye geri dönüyor. Sesi yankılanıyor: 'Sabah dört ayakla yürür, öğlen iki ayakla, akşam üç ayakla.'",
-      "variant": "Pelerinli karaltı solgun ay ışığında malikâneye geri dönüyor. Sesi yankılanıyor: 'Canını yakamaz, ama ardında yara izi bırakır.'"
+      "variant": "Pelerinli karaltı solgun ay ışığında malikâneye geri dönüyor. Sesi yankılanıyor: 'Canını yakamaz ama sende yara izi bırakır.'"
     },
     "choices": {
       "answerNightmares": {
@@ -2018,7 +2018,7 @@
     "title": "Gece Ziyaretçisi",
     "message": {
       "original": "Esrarengiz karaltı yine malikânede beliriyor. Alçak sesle fısıldıyor: 'Her şeyi yutar; kemikleri toza çevirir, kralları öldürür, dağları aşındırır, kasabaları siler.'",
-      "variant": "Esrarengiz karaltı yine malikânede beliriyor. Alçak sesle fısıldıyor: 'Parmakları var ama ne eti var, ne tüyü, ne pulu, ne kemiği.'"
+      "variant": "Esrarengiz karaltı yine malikânede beliriyor. Alçak sesle fısıldıyor: 'Parmakları var ama ne eti var ne tüyü ne pulu ne kemiği.'"
     },
     "choices": {
       "answerMan": {
@@ -2046,7 +2046,7 @@
     "title": "Gece Ziyaretçisi",
     "message": {
       "original": "Esrarengiz karaltı yine malikânede beliriyor. Alçak sesle fısıldıyor: 'Her şeyi yutar; kemikleri toza çevirir, kralları öldürür, dağları aşındırır, kasabaları siler.'",
-      "variant": "Esrarengiz karaltı yine malikânede beliriyor. Alçak sesle fısıldıyor: 'Parmakları var ama ne eti var, ne tüyü, ne pulu, ne kemiği.'"
+      "variant": "Esrarengiz karaltı yine malikânede beliriyor. Alçak sesle fısıldıyor: 'Parmakları var ama ne eti var ne tüyü ne pulu ne kemiği.'"
     },
     "choices": {
       "answerFin": {
@@ -2100,8 +2100,8 @@
   "riddleOfEternal": {
     "title": "Bilinmeyen Konuk",
     "message": {
-      "original": "Geceleri gelen karaltı malikânede bir kez daha beliriyor. Sesi geceye yayılıyor: 'Gözlerin açıkken oradayım, gözlerin kapalıyken de oradayım.'",
-      "variant": "Geceleri gelen karaltı malikânede bir kez daha beliriyor. Sesi geceye yayılıyor: 'Yoksulda vardır, zenginin ihtiyacıdır. Yersen ölürsün.'"
+      "original": "Geceleri gelen karaltı malikânede bir kez daha beliriyor. Sesi karanlığa yayılıyor: 'Gözlerin açıkken oradayım, gözlerin kapalıyken de oradayım.'",
+      "variant": "Geceleri gelen karaltı malikânede bir kez daha beliriyor. Sesi karanlığa yayılıyor: 'Yoksulda vardır, zenginin ihtiyacıdır. Yersen ölürsün.'"
     },
     "choices": {
       "answerLight": {
@@ -2128,8 +2128,8 @@
   "riddleOfEternal_variant": {
     "title": "Bilinmeyen Konuk",
     "message": {
-      "original": "Geceleri gelen karaltı malikânede bir kez daha beliriyor. Sesi geceye yayılıyor: 'Gözlerin açıkken oradayım, gözlerin kapalıyken de oradayım.'",
-      "variant": "Geceleri gelen karaltı malikânede bir kez daha beliriyor. Sesi geceye yayılıyor: 'Yoksulda vardır, zenginin ihtiyacıdır. Yersen ölürsün.'"
+      "original": "Geceleri gelen karaltı malikânede bir kez daha beliriyor. Sesi karanlığa yayılıyor: 'Gözlerin açıkken oradayım, gözlerin kapalıyken de oradayım.'",
+      "variant": "Geceleri gelen karaltı malikânede bir kez daha beliriyor. Sesi karanlığa yayılıyor: 'Yoksulda vardır, zenginin ihtiyacıdır. Yersen ölürsün.'"
     },
     "choices": {
       "answerPoison": {
@@ -2156,7 +2156,7 @@
   "riddleOfEternal_alt": {
     "title": "Bilinmeyen Konuk",
     "message": {
-      "original": "Geceleri gelen karaltı malikânede bir kez daha beliriyor. Sesi geceye yayılıyor: 'Her kılıçtan yara alır, ama bir kez bile iyileşmez.'"
+      "original": "Geceleri gelen karaltı malikânede bir kez daha beliriyor. Sesi karanlığa yayılıyor: 'Her kılıçtan yara alır, ama bir kez bile iyileşmez.'"
     },
     "choices": {
       "answerFlesh": {
@@ -2277,8 +2277,8 @@
     },
     "log": {
       "outcome0": "Yüzüğü parmağına geçiriyorsun. Yüzükten hiç durmadan su damlıyor.",
-      "outcome1": "Tehlikenin çok büyük olduğuna karar veriyorsun. Arkanı dönerken, derin bir suya bir şey düşmüş gibi hafif bir ses duyuyorsun; oysa yakınlarda hiç su yok.",
-      "outcome2": "Tereddüdün ölümcül oluyor. Adamlarından biri esrarengiz yüzüğe dayanamayıp onu yerden alıyor. O anda ağzından, dinmek bilmeyen bir sel gibi su boşalmaya başlıyor. Kupkuru toprağın üstünde boğulup gidiyor."
+      "outcome1": "Bu riske girmemeye karar veriyorsun. Arkanı dönerken, sanki derin bir suya bir şey düşmüş gibi hafif bir şıpırtı duyuyorsun; oysa yakınlarda hiç su yok.",
+      "outcome2": "Tereddüdün can alıyor. Adamlarından biri esrarengiz yüzüğe dayanamayıp yerden alıyor. O anda ağzından, dinmek bilmeyen bir sel gibi su boşalmaya başlıyor. Kupkuru toprağın üstünde boğulup gidiyor."
     },
     "message": "Unutulmuş şehrin derinliklerinde, durmadan su damlayan tuhaf bir yüzük buluyorsun. Yanına alacak mısın?",
     "title": "Boğulmuşların Yüzüğü"
@@ -2289,7 +2289,7 @@
         "label": "Devam Et"
       }
     },
-    "message": "Köylüler yanına geliyor. Ormanda kapkalın bir duman sütununun yükseldiğini görmüşler. Birinin gidip neyin yandığına bakması gerek.",
+    "message": "Köylüler yanına geliyor. Ormanda kalın bir duman sütununun yükseldiğini görmüşler. Birinin gidip neyin yandığına bakması gerek.",
     "title": "Yükselen Duman"
   },
   "sanctumDedication": {
@@ -2306,7 +2306,7 @@
       "dedicate_dagon": "Dagon'un Kutsaması her zamankinden güçlü akıyor.",
       "dedicate_flame": "İlk Alev her zamankinden parlak yanıyor.",
       "dedicate_raven": "Kuzgunun Damgası daha da güçleniyor.",
-      "dedicate_ash": "Külden Kucak eskisinden de güçlü.",
+      "dedicate_ash": "Külün Kucağı eskisinden de güçlü.",
       "dedicate_unknown": ""
     },
     "message": "Kör druid beliriyor. 'Kutsal Mekân tamamlandı,' diyor; sesinde kadim bir bilgeliğin ağırlığı var. 'Şimdi karar vermelisin: ya seçtiğin yola bağlılığını derinleştirirsin ya da bütün tanrıları ve lütuflarını kucaklarsın. Seçimini iyi yap.'",
@@ -2327,7 +2327,7 @@
         "label": "Devam Et"
       }
     },
-    "message": "Genç bilgin seni yine arayıp buluyor; koltuğunun altında notları ve aynı elle çizilmiş harita var. 'Unutulmuş tapınaklarda bilgiden fazlası olabilir,' diyor. 'Belki gizli hazineler. O tapınakları yapanların geride bıraktığı şeyler.'",
+    "message": "Genç bilgin seni yine arayıp buluyor; koltuğunun altında yine notları ve o elle çizilmiş harita var. 'Unutulmuş tapınaklarda bilgiden fazlası olabilir,' diyor. 'Belki gizli hazineler. O tapınakları yapanların geride bıraktığı şeyler.'",
     "title": "Genç Bilgin Geri Döndü"
   },
   "secondWave": {
@@ -2369,10 +2369,10 @@
     },
     "log": {
       "outcome0": "Kıpırdayan gölgelere, hareketsiz kalana dek gözünü dikiyorsun. Belki de bir şey yoktu. En azından kendine öyle söylüyorsun.",
-      "outcome1": "Gölgeler sana doğru eğiliyor. Gözünün kenarında şekiller bir araya gelip beliriyor ve bir şey, kuru yaprak hışırtısını andıran bir sesle adını fısıldıyor.",
+      "outcome1": "Gölgeler sana doğru eğiliyor. Gözünün ucunda şekiller bir araya gelip beliriyor ve bir şey, kuru yaprak hışırtısını andıran bir sesle adını fısıldıyor.",
       "outcome2": "Bakışlarını kaçırıyorsun ama o tekinsiz his peşini bırakmıyor. Bakmayı bıraktıktan çok sonra bile gölgelerin kıpırdadığını gözünün ucuyla görüyorsun."
     },
-    "message": "Köydeki gölgeler olmaması gerektiği gibi hareket ediyor. Fazla uzuyor, olmayacak açılarla kıvrılıyor, bazen de sahiplerinden bağımsız kıpırdıyor gibiler.",
+    "message": "Köydeki gölgelerin hareketlerinde bir terslik var. Fazla uzuyor, olmayacak açılarla kıvrılıyor, bazen de sahiplerinden bağımsız kıpırdıyor gibiler.",
     "title": "Kıpırdayan Gölgeler"
   },
   "shoreFishermenResponse": {
@@ -2390,8 +2390,8 @@
       "outcome2": "Balıkçılar, balık tuzağı yapmanın bütün inceliklerini seninle paylaşıyor.",
       "outcome3": "Balıkçıların teklifini geri çeviriyorsun. Fırsat kaçtı."
     },
-    "message": "Tek gözlü karga, Kıyı Balıkçılarının hediyesi kuru balıklarla dönüyor. Balıkçılar, 250 Altın karşılığında sana sağlam balık tuzakları yapmanın sırlarını öğretmeyi teklif ediyor.",
-    "title": "Kıyı Balıkçılarından Haber"
+    "message": "Tek gözlü karga, Kıyı Balıkçıları'nın hediyesi kuru balıklarla dönüyor. Balıkçılar, 250 Altın karşılığında sana sağlam balık tuzakları yapmanın sırlarını öğretmeyi teklif ediyor.",
+    "title": "Kıyı Balıkçıları'ndan Haber"
   },
   "sixthWave": {
     "message": "Mağaranın ağzı yeni bir soluk beden seli kusuyor. Bir sonraki saldırı için toplanırlarken kemik mızrakları yağmur gibi takırdıyor.",
@@ -2408,10 +2408,10 @@
     },
     "log": {
       "outcome0": "Derinin altındaki kıpırtı dinene dek kımıldamadan duruyorsun. Tenin yine senin. Şimdilik.",
-      "outcome1": "Sakinleşmeye çalışıyorsun ama his giderek artıyor. Gözlerin bulanıyor ve yere yığılıyorsun. Ateşli rüyalarında kadim şeyler gerçek adını fısıldıyor. Uyandığında kıpırtı dinmiş, ama hatırası hâlâ seninle.",
+      "outcome1": "Sakinleşmeye çalışıyorsun ama his giderek artıyor. Gözlerin bulanıyor ve yere yığılıyorsun. Ateşli rüyalarında kadim şeyler gerçek adını fısıldıyor. Uyandığında kıpırtı dinmiş ama hatırası aklından çıkmıyor.",
       "outcome2": "Derini çılgınca tırmalıyor, kanatıyorsun. Köylüler seni durdurmak için koşup kollarını tutuyor. Gözü dönmüş bir öfkeyle etrafına saldırıyor, bitkin düşüp yığılmadan önce {{killedVillagers}} köylüyü öldürüyorsun. Uyandığında kıpırtı dinmiş, ama ellerin kan içinde."
     },
-    "message": "Tenin karıncalanmaya başlıyor, hem de kelimenin tam anlamıyla. Derinin hemen altında kıpırdayan şekiller görebiliyorsun; sanki desenler çiziyorlar. Köylüler, kollarını kanatana dek kaşıyışını büyük bir endişeyle izliyor.",
+    "message": "Tenin karıncalanmaya başlıyor, hem de kelimenin tam anlamıyla. Derinin hemen altında kıpırdayan şekiller görüyorsun; sanki desenler çiziyorlar. Köylüler, kollarını kanatana dek kaşıdığını büyük bir endişeyle izliyor.",
     "title": "Karıncalanan Ten"
   },
   "slaveTrader": {
@@ -2429,14 +2429,14 @@
     "log": {
       "outcome0": "Köylülerden ikisini teslim ediyorsun. Tüccar önüne bir torba çelik fırlatıp yeni tutsaklarıyla birlikte arabasını sürüp gidiyor. Geride kalan köylüler yaptığını görünce tiksintiyle köyü terk ediyor.",
       "outcome1": "Adamların köle tüccarına saldırıyor! Dövüş kıyasıya geçiyor ama zafer senin. Tutsakları kurtarıyor, tüccarın çeliğine el koyuyorsun. Özgürlüğüne kavuşan köleler köyüne katılıyor.",
-      "outcome2": "Adamların köle tüccarına saldırıyor ama adam hazırlıklı! Vahşice karşılık veriyor. Çatışmada {{actualDeaths}} köylü can veriyor. Tüccar tutsaklarıyla birlikte kaçıyor, geride ölümden başka bir şey bırakmıyor.",
+      "outcome2": "Adamların köle tüccarına saldırıyor ama tüccar hazırlıklı! Vahşice karşılık veriyor. Çatışmada {{actualDeaths}} köylü can veriyor. Sonunda tutsaklarıyla birlikte kaçıp gidiyor; geride ölümden başka bir şey bırakmıyor.",
       "outcome3": "Köle tüccarının alçakça teklifini reddediyorsun. Tiksintiyle yere tükürüp tutsaklarıyla birlikte uzaklaşıyor."
     },
-    "message": "İki atın çektiği bir arabayla bir adam köye yaklaşıyor. Arabadaki demir kafeste üç zavallı köle var. Tüccar kötü kötü sırıtıyor: 'Köylülerinden ikisi için sana 100 Çelik veririm. Ne dersin?'",
+    "message": "İki atın çektiği arabasıyla bir adam köye yaklaşıyor. Arabadaki demir kafeste üç zavallı köle var. Tüccar kötü kötü sırıtıyor: 'Köylülerinden ikisi için sana 100 Çelik veririm. Ne dersin?'",
     "title": "Köle Tüccarı"
   },
   "goodDreams": {
-    "message": "Rüyanda köyü huzur içinde gördün. Herkes gülümsüyordu; bir kez olsun korkacak hiçbir şey yoktu. Gece daha uzun sürmüş gibi, dinlenmiş uyandın.",
+    "message": "Rüyanda köyü huzur içinde gördün. Herkes gülümsüyordu; bir kez olsun korkacak hiçbir şey yoktu. Dinlenmiş uyandın; sanki gece daha uzun sürmüştü.",
     "title": "İyi Rüyalar"
   },
   "badDreams": {
@@ -2459,9 +2459,9 @@
     },
     "log": {
       "outcome2": "Ateşler yanıyor ve bir süreliğine kahkahalar karanlığı yırtıyor. Şafak söktüğünde konukların çoğu hâlâ ayrılmamış; kalmayı düşünüyorlar.",
-      "outcome3": "Geri çeviriyorsun. Gece neşesiz, sıcaklıksız, kahkahasız geçiyor."
+      "outcome3": "Geri çeviriyorsun. Gece neşeden, sıcaklıktan, kahkahadan yoksun geçiyor."
     },
-    "message": "Köylüler yılın en uzun gecesini anmak için bir şenlik yapmayı öneriyor. Ateşler yakılacak, yemekler hazırlanacak, oyunlar oynanacak. Işığı görüp gelen yolcular da olabilir.",
+    "message": "Köylüler yılın en uzun gecesini kutlamak için bir şenlik yapmayı öneriyor. Ateşler yakılacak, yemekler hazırlanacak, oyunlar oynanacak. Işığı görüp gelen yolcular da olabilir.",
     "title": "Gündönümü Şenliği"
   },
   "staringDeer": {
@@ -2484,7 +2484,7 @@
       }
     },
     "log": {
-      "outcome0": "Kara gövde direniyor ama halkın sonunda onu deviriyor. Lanetli Kara Kereste artık senin.",
+      "outcome0": "Kara gövde direniyor ama halkın sonunda deviriyor. Lanetli Kara Kereste artık senin.",
       "outcome2": "Sunudan kan ve duman yükseliyor. Köyün üstüne soğuk bir lütuf çöküyor."
     },
     "message": "Seferdeki adamların unutulmuş Bataklık Kutsal Alanına ulaşıyor. Yıkık dökük kalıntılar, kapkara gövdeli devasa bir ağacı çevreliyor. Ne yapacaksın?",
@@ -2500,11 +2500,11 @@
       }
     },
     "log": {
-      "outcome0": "Bataklık Kabilesinin teklifini kabul ediyor, çelik teslimatını bataklığa göndermeye hazırlanıyorsun.",
-      "outcome1": "Bataklık Kabilesinin teklifini geri çeviriyorsun. Fırsat kaçtı."
+      "outcome0": "Bataklık Kabilesi'nin teklifini kabul ediyor, çelik teslimatını bataklığa göndermeye hazırlanıyorsun.",
+      "outcome1": "Bataklık Kabilesi'nin teklifini geri çeviriyorsun. Fırsat kaçtı."
     },
-    "message": "Tek gözlü karga, Bataklık Kabilesinden ufalanmaya yüz tutmuş bir mektupla dönüyor. Kabile, köylerine teslim edilecek 1000 Çelik karşılığında güçlü Kitin Plakalar teklif ediyor.",
-    "title": "Bataklık Kabilesinden Haber"
+    "message": "Tek gözlü karga, Bataklık Kabilesi'nden ufalanmaya yüz tutmuş bir mektupla dönüyor. Kabile, köylerine teslim edilecek 1000 Çelik karşılığında güçlü Kitin Plakalar teklif ediyor.",
+    "title": "Bataklık Kabilesi'nden Haber"
   },
   "templeDedication": {
     "choices": {
@@ -2524,8 +2524,8 @@
     "log": {
       "outcome0": "Tapınağı, derinliklerin kadim ve gizemli tanrısı Dagon'a adıyorsun.",
       "outcome1": "Tapınağı, ateşin ve yeniden doğuşun kadim yolu İlk Alevin Yoluna adıyorsun.",
-      "outcome2": "Tapınağı, gölgelerde yaşayan gizemli bir tarikat olan Kuzgunsoylular Kültüne adıyorsun.",
-      "outcome3": "Tapınağı, ağırbaşlı ve ateşe ant içmiş bir kardeşlik olan Külgetiren Tarikatına adıyorsun."
+      "outcome2": "Tapınağı, gölgelerde yaşayan gizemli bir tarikat olan Kuzgunsoylular Kültü'ne adıyorsun.",
+      "outcome3": "Tapınağı, ağırbaşlı ve ateşe ant içmiş bir kardeşlik olan Külgetiren Tarikatı'na adıyorsun."
     },
     "message": "Tapınak yapıldıktan kısa süre sonra kör druid çıkageliyor. Konuşurken süt beyazı gözleri sanki ruhunun içini görüyor: 'Tapınak bir tanrıya adanmalı. Seçimini iyi yap.'",
     "title": "Kör Druid Geri Dönüyor"
@@ -2539,7 +2539,7 @@
     "title": "Elebaşı Dalgası"
   },
   "secondBossWave": {
-    "message": "Bir soluk canavar ordusu, şehre son bir saldırı yapmak için surların önünde toplanıyor.",
+    "message": "Soluk canavarlardan oluşan bir ordu, şehre son kez saldırmak için surların önünde toplanıyor.",
     "title": "Son Elebaşı Dalgası"
   },
   "postCompletionWave": {
@@ -2553,10 +2553,10 @@
       }
     },
     "log": {
-      "outcome": "Kabul ediyorsun. Zehirden bitap düşmüş ama hâlâ nefes alan Hoyrat Tazı yoldaşlarına katılıyor."
+      "outcome": "Kabul ediyorsun. Zehirden bitap düşmüş ama hâlâ nefes alan Azılı Tazı yoldaşlarına katılıyor."
     },
-    "message": "Seferdeki adamların, zehirlenip ölmüş insanlarla dolu bir dağ köyü buluyor. Cesetlerin arasında ölmek üzere olan bir adam yatıyor: kaslı ama şekli şemali bozulmuş, zar zor konuşabiliyor. Ona sadece Hoyrat Tazı dediklerini söylüyor. Zehre kıl payı da olsa dayanmış gibi görünüyor. Sana katılmak istiyor.",
-    "title": "Hoyrat Tazı"
+    "message": "Seferdeki adamların, zehirlenip ölmüş insanlarla dolu bir dağ köyü buluyor. Cesetlerin arasında ölmek üzere olan bir adam yatıyor: kaslı ama şekli şemali bozulmuş, zar zor konuşabiliyor. Ona sadece Azılı Tazı dediklerini söylüyor. Zehre kıl payı da olsa dayanmış gibi görünüyor. Sana katılmak istiyor.",
+    "title": "Azılı Tazı"
   },
   "theDamned": {
     "choices": {
@@ -2573,7 +2573,7 @@
       "outcome2": "Onları geri çeviriyorsun. Köylüler kararından hoşnut değil; köyün üstüne acı bir huzursuzluk çöküyor.",
       "outcome3": "Onları kabul ediyorsun ama köyde yeni gelenlere yer yok."
     },
-    "message": "Bir grup genç kadın ve erkek, soğuktan ve açlıktan yarı ölü hâlde ormandan sendeleyerek çıkıyor. Orman tanrılarına kurban edilmek üzere ormana bırakılmışlar, ama bir şekilde hayatta kalmışlar. Onları köye alacak mısın?",
+    "message": "Bir grup genç kadın ve erkek, soğuktan ve açlıktan yarı ölü hâlde ormandan sendeleyerek çıkıyor. Orman tanrılarına kurban edilsinler diye oraya bırakılmışlar ama bir şekilde hayatta kalmışlar. Onları köye alacak mısın?",
     "title": "Lanetliler"
   },
   "thirdWave": {
@@ -2591,7 +2591,7 @@
       }
     },
     "log": {
-      "outcome1": "Arama ekibi kızı sağ salim buluyor. Kız, yerlere gümüş takıların ve sikkelerin saçıldığı küçük bir mağara keşfetmiş, sessizce onların arasında oynuyormuş.",
+      "outcome1": "Arama ekibi kızı sağ salim buluyor. Kız, yerlere gümüş takıların ve sikkelerin saçıldığı küçük bir mağara keşfetmiş, sessizce aralarında oynuyormuş.",
       "outcome2": "Geri çeviriyorsun. Tüccar üzgün üzgün başını sallıyor ve kızını tek başına aramaya gidiyor.",
       "outcome3": "Geri çeviriyorsun. Tüccar üzgün üzgün başını sallıyor ve kızını tek başına aramaya gidiyor."
     },
@@ -2611,7 +2611,7 @@
       "outcome0": "Teklifi geri çeviriyorsun. Tüccar bir kez daha teşekkür ediyor ve sessizce yoluna gidiyor.",
       "outcome1": "Teklifi geri çeviriyorsun. Tüccar bir kez daha teşekkür ediyor ve sessizce yoluna gidiyor."
     },
-    "message": "Tüccar geri dönüyor, gözleri rahatlama ve minnetle dolu. İyiliğine karşılık, bir sonraki alışverişinde sana cömert bir indirim yapacağına söz veriyor.",
+    "message": "Tüccar geri dönüyor; gözlerinden rahatlama ve minnet okunuyor. İyiliğine karşılık bir sonraki alışverişinde sana cömert bir indirim yapacağına söz veriyor.",
     "title": "Tüccarın Minneti"
   },
   "traders_son": {
@@ -2667,7 +2667,7 @@
       }
     },
     "log": {
-      "outcome0": "Araştırmayı kabul ediyorsun, ama aşağı inmeden önce gerekli hazırlıkları yapman gerek."
+      "outcome0": "Araştırmaya razı oluyorsun, ama göle inmeden önce hazırlık yapman gerek."
     },
     "message": "Son mağara seferinden dönen iki adam, yeraltında bir göl gördüklerini söylüyor. Karanlık o kadar yoğunmuş ki doğru dürüst bir şey seçememişler. Belki Kafatası Feneri o kara suları aydınlatabilir.",
     "title": "Yeraltı Gölü"
@@ -2691,14 +2691,14 @@
       "outcome2": "Gezgin kısaca başını sallıyor ve işe koyulmak için maden ocağına doğru yürüyor.",
       "outcome4": "Gezgin kısaca başını sallıyor ve işe koyulmak için maden ocağına doğru yürüyor."
     },
-    "message": "Üstü başı yırtık bir adam köye yaklaşıyor, elleri yılların ağır işinden nasır tutmuş. 'Bir maden kasabasından geliyorum,' diyor kaba bir sesle. 'Senin için çalışırım, madenlerinden daha çok verim alırsın.'",
+    "message": "Üstü başı yırtık bir adam köye yaklaşıyor, elleri yılların ağır işinden nasır tutmuş. 'Bir maden kasabasından geliyorum,' diyor boğuk bir sesle. 'Senin için çalışırım, madenlerinden daha çok verim alırsın.'",
     "title": "Adsız Gezgin"
   },
   "veiledSeer": {
     "choices": {
       "accept": {
         "cost": "50 altın",
-        "label": "Kabul Et"
+        "label": "Kabul et"
       },
       "decline": {
         "label": "Reddet"
@@ -2735,7 +2735,7 @@
     },
     "log": {
       "outcome0": "Yapı ustası bir süre bekliyor, ama sonunda omuz silkiyor ve bildiklerini de yanında götürerek ıssız topraklarda kayboluyor.",
-      "outcome2": "Yapı ustasına parasını ödüyorsun. Usta da köylülere Uzun Ev yapmanın kadim Kuzey yöntemlerini öğretiyor.",
+      "outcome2": "Yapı ustasına parasını ödüyorsun. Usta da köylülere kuzeyin kadim yöntemleriyle Uzun Ev yapmayı öğretiyor.",
       "outcome3": "Adamların ustayı alt edip bildiklerini anlatmaya zorluyor. Usta istemeye istemeye Uzun Ev yapımının sırlarını sana öğretiyor.",
       "outcome4": "Yapı ustası sanılandan güçlü çıkıyor! Kıyasıya direniyor, {{actualCasualties}} adamını öldürüp ıssız topraklara kaçıyor.",
       "outcome5": "Yapı ustasının teklifini reddedip onu yoluna gönderiyorsun. Adam omuz silkiyor ve bildiklerini de yanında götürerek ıssız topraklarda kayboluyor."
@@ -2752,7 +2752,7 @@
         "label": "Devam Et"
       }
     },
-    "message": "Köy yaşlısı geri dönüyor, yüzünden ciddiyet okunuyor. 'Vakit geldi,' diyor. 'Uzun ve amansız bir yolda ilk adımlarını attın. Önünde olanlar daha derin, daha karanlık ve daha zorlu. Şimdi karar ver: bu yolculuğa devam edecek misin?'",
+    "message": "Köy yaşlısı geri dönüyor, yüzünden ciddiyet okunuyor. 'Vakit geldi,' diyor. 'Uzun ve amansız bir yolda ilk adımlarını attın. Bundan sonrası daha derin, daha karanlık ve daha zorlu. Şimdi karar ver: bu yolculuğa devam edecek misin?'",
     "title": "Vakit Geldi"
   },
   "villageElderNotice": {
@@ -2775,10 +2775,10 @@
     },
     "log": {
       "outcome0": "En yakındaki köylüyü yakalayıp sarsıyorsun. Köylü bir kez gözlerini kırpıp kendine geliyor, ama işine dönmeden önce 'Geliyor' diye fısıldıyor. Diğerleri de yavaş yavaş kendine gelip işe dönüyor.",
-      "outcome1": "Köylülerden birine dokunduğun anda toz olup dağılıyor. Ötekiler daldıkları hâlden sıyrılıyor, çığlık çığlığa göğü gösteriyor. Bir anlığına sen de görüyorsun: yukarıdan bakan devasa, aç bir şey.",
+      "outcome1": "Köylülerden birine dokunduğun anda toz olup dağılıyor. Ötekiler irkilip kendine geliyor, çığlık çığlığa göğü gösteriyor. Bir anlığına sen de görüyorsun: yukarıdan izleyen devasa, aç bir şey.",
       "outcome2": "Başını kaldırıp göğe bakıyorsun ve birden onu görüyorsun: bulutların arasında duran, devasa ve imkânsız bir şey. Aklın gördüğünü kabul etmiyor, ama o görüntü hafızana sonsuza dek kazınıyor."
     },
-    "message": "Bütün köylüler işi gücü bırakmış, kımıldamadan boş göğe bakıyor. Saatlerce böyle kalıyorlar. Gözlerini bile kırpmıyorlar, yüzlerinden kapkara gözyaşları süzülüyor. Baktıkları yere bakınca sıradan bulutlardan başka bir şey görmüyorsun, ama bir şeylerin fena hâlde ters gittiğini hissediyorsun.",
+    "message": "Bütün köylüler işi gücü bırakmış, kımıldamadan boş göğe bakıyor. Saatlerce böyle kalıyorlar. Gözlerini bile kırpmıyorlar, yüzlerinden kapkara gözyaşları süzülüyor. Baktıkları yöne dönünce sıradan bulutlardan başka bir şey görmüyorsun, ama bir şeylerin fena hâlde ters gittiğini hissediyorsun.",
     "title": "Göğe Dikilen Gözler"
   },
   "villagerStares": {
@@ -2791,9 +2791,9 @@
       }
     },
     "log": {
-      "outcome0": "Köylünün karşısına dikiliyorsun. O kara gözlü gülümsemesiyle sana dönüyor ve aklını allak bullak eden bir şey fısıldıyor. O sözler günlerce kafanda yankılanıyor.",
+      "outcome0": "Köylünün karşısına dikiliyorsun. Sana dönüyor, kapkara gözleriyle gülümseyip aklını allak bullak eden bir şey fısıldıyor. O sözler günlerce kafanda yankılanıyor.",
       "outcome1": "Yaklaştıkça köylünün gülümsemesi olmayacak kadar genişliyor. Sonra yere yığılıyor, gözlerinden ve ağzından kara bir sıvı boşanıyor. Saatlerdir ölü olduğunu anlıyorsun.",
-      "outcome2": "Köylüden uzak duruyorsun, ama nereye gitsen o boş bakışların peşinden geldiğini hissediyorsun. Uyumak zorlaşıyor. Birkaç gece sonra köylüyü yatağında ölü buluyorlar. Giysileri kapkara, leş gibi kokan bir balçıkla sırılsıklam olmuş."
+      "outcome2": "Köylüden uzak duruyorsun, ama nereye gitsen o boş bakışları üzerinde hissediyorsun. Uyumak zorlaşıyor. Birkaç gece sonra köylüyü yatağında ölü buluyorlar. Giysileri kapkara, leş gibi kokan bir balçıkla sırılsıklam olmuş."
     },
     "message": "Köylülerden biri saatlerce boşluğa bakar oldu. Yaklaştığında gözlerinin simsiyah olduğunu görüyorsun. Onu izlediğini fark edince gülümsüyor.",
     "title": "Boş Bakışlar"
@@ -2815,13 +2815,13 @@
       "whisper1": "Kukuletanın altından alçak bir uğultu sızıyor. 'Büyük patlama, kayıp uygarlığın eserlerinin çoğunu yok etti. Geriye kalan birkaç parça da dört bir yana dağılmış, zor bulunur,' diye mırıldanıyor.",
       "whisper2": "Koleksiyoncunun ağzından belli belirsiz bir soluk çıkıyor. 'Yolculuklarımda kayıp uygarlık hakkında çok şey öğrendim. Büyük patlamadan önce bu dünyada büyü yoktu. Büyü o an doğdu,' diye fısıldıyor ve uzaklaşıyor.",
       "whisperGeneric": "Koleksiyoncu bir kez başını sallıyor ve sessizce uzaklaşıyor.",
-      "leatherboundLearnOutcome": "Deri Ciltli Kitap için parayı ödüyorsun. Koleksiyoncu kitabı açıp alçak sesle okuyor. Kitap, kendine Zincir Efendisi diyen ve çoktan ölmüş bir köle tüccarına aitmiş. Adam kölelerini zincir işaretiyle damgalarmış. Öğrendiklerin zihnine ağır bir yük gibi çöküyor."
+      "leatherboundLearnOutcome": "Deri Ciltli Kitabın parasını ödüyorsun. Koleksiyoncu kitabı açıp alçak sesle okuyor. Kitap, kendine Zincir Efendisi diyen ve çoktan ölmüş bir köle tüccarına aitmiş. Adam kölelerini zincir işaretiyle damgalarmış. Öğrendiklerin zihnine ağır bir yük gibi çöküyor."
     },
     "title": "Gezgin Koleksiyoncu",
     "message": {
-      "visit0": "Yırtık pırtık bir cüppeye bürünmüş bir karaltı yaklaşıyor. Topladıkların ilgisini çekmiş gibi. 'Eşyalarının arasında değerli bir şey seziyorum,' diye mırıldanıyor. 'Birini almama izin ver.'",
-      "visit0_both": "Yırtık pırtık bir cüppeye bürünmüş bir karaltı yaklaşıyor. 'Eşyalarının arasında değerli bir şey seziyorum,' diye mırıldanıyor. 'Birini bana sat ya da başkalarının geride bıraktıklarından al.'",
-      "visit0_buy": "Yırtık pırtık bir cüppeye bürünmüş bir karaltı yaklaşıyor, yanında atılmış kalıntılarla dolu bir heybe. 'Başkalarının istemediklerini toplarım,' diye mırıldanıyor. 'Bunlardan hangisini istersen senin olabilir.'",
+      "visit0": "Yırtık pırtık cüppelere bürünmüş bir karaltı yaklaşıyor. Topladıkların ilgisini çekmiş gibi. 'Eşyalarının arasında değerli bir şey seziyorum,' diye mırıldanıyor. 'Birini almama izin ver.'",
+      "visit0_both": "Yırtık pırtık cüppelere bürünmüş bir karaltı yaklaşıyor. 'Eşyalarının arasında değerli bir şey seziyorum,' diye mırıldanıyor. 'Birini bana sat ya da başkalarının geride bıraktıklarından al.'",
+      "visit0_buy": "Yırtık pırtık cüppelere bürünmüş bir karaltı yaklaşıyor. Yanında, bir kenara atılmış kalıntılarla dolu bir heybe taşıyor. 'Başkalarının istemediklerini toplarım,' diye mırıldanıyor. 'Bunlardan hangisini istersen senin olabilir.'",
       "visit1": "Cüppeli adam yine geliyor, adımları yerde hiç ses çıkarmıyor. 'Daha çok eser, daha çok sır,' diye fısıldıyor. 'İzin ver, yine birini alayım.'",
       "visit1_both": "Cüppeli adam yine geliyor, önceki gibi sessiz. 'Bana bir tane daha sat,' diye fısıldıyor, 'ya da bulduklarımdan birini al. Ama yalnızca bir tane.'",
       "visit1_buy": "Cüppeli adam unutulmuş kalıntılarla geri dönüyor. 'Başkalarının bir zamanlar istemediklerini ben sakladım,' diye fısıldıyor. 'Hangisini istersen senin olabilir.'"
@@ -2847,7 +2847,7 @@
       "outcome4": "Ateş ustası gümüşünü alıyor ve sana Hiçlik Bombası yapmanın karanlık sanatını öğretmeye başlıyor. 'Bu gücü akıllıca kullan,' diye uyarıyor ve gölgelerin arasında kayboluyor.",
       "outcome5": "Ateş ustasının teklifini geri çeviriyorsun. Adam manalı manalı başını sallıyor: 'Belki de böyle bir güce henüz hazır değilsin.' Sonra gecenin içinde kayboluyor."
     },
-    "message": "Lekeli bir cüppe giymiş, kukuletalı biri köyüne geliyor. 'Ateş ustasıyım,' diyor yankılanan bir sesle. 'Sana gerçekliğin kendisini yırtan, müthiş güçte bir bomba yapmayı öğretebilirim. Ama bilginin bir bedeli vardır.'",
+    "message": "Lekeli bir cüppe giymiş, kukuletalı biri köye geliyor. 'Ateş ustasıyım,' diyor yankılanan bir sesle. 'Sana gerçekliği bile yırtacak kadar güçlü bir bomba yapmayı öğretebilirim. Ama bilginin bir bedeli vardır.'",
     "title": "Gezgin Ateş Ustası"
   },
   "wanderingTribe": {
@@ -2863,14 +2863,14 @@
       "outcome0": "Göçebelere kucak açıp yardım ediyorsun. Onlar da karşılığında halkına Kürk Çadır kurmayı öğretiyor.",
       "outcome1": "Yardım etmeyi reddediyorsun. Kabilenin reisi saygıyla başını eğiyor ve halkını yeniden ıssız topraklara götürüyor."
     },
-    "message": "Küçük bir göçebe kabilesi köye yaklaşıyor. Reisleri söze giriyor: 'Uzak yollardan geldik, yurt diyebileceğimiz bir yer arıyoruz. Yerleşmemize yardım edersen halkına Kürk Çadır kurmayı öğretiriz.'",
+    "message": "Küçük bir göçebe kabilesi köye yaklaşıyor. Reisleri şöyle diyor: 'Uzak yollardan geldik, yurt diyebileceğimiz bir yer arıyoruz. Yerleşmemize yardım edersen halkına Kürk Çadır kurmayı öğretiriz.'",
     "title": "Gezgin Kabile"
   },
   "whispererInTheDark": {
     "title": "Karanlıkta Fısıldayan",
     "message": {
-      "original": "Malikânenin kapısı çalınıyor. Dışarıda, gölgelerin içinde, koyu bir cüppeye bürünmüş, yüzü kukuletanın altında kaybolmuş bir karaltı duruyor. Fısıldıyor: 'Sesi yok, ağlar; kanadı yok, çırpınır; dişi yok, ısırır; ağzı yok, mırıldanır.'",
-      "variant": "Malikânenin kapısı çalınıyor. Dışarıda, gölgelerin içinde, koyu bir cüppeye bürünmüş, yüzü kukuletanın altında kaybolmuş bir karaltı duruyor. Fısıldıyor: 'Hanımların arzusudur; karanlıkta büyür, solgun bir ışıkla parlar.'"
+      "original": "Malikânenin kapısı çalınıyor. Dışarıda, gölgelerin içinde, koyu bir cüppeye bürünmüş, yüzü kukuletanın altında kaybolmuş bir karaltı duruyor. Fısıldıyor: 'Sesi yok, ağlar; kanadı yok, uçar; dişi yok, ısırır; ağzı yok, mırıldanır.'",
+      "variant": "Malikânenin kapısı çalınıyor. Dışarıda, gölgelerin içinde, koyu bir cüppeye bürünmüş, yüzü kukuletanın altında kaybolmuş bir karaltı duruyor. Fısıldıyor: 'Hanımların arzusudur; karanlıkta büyür, soluk bir ışıkla parlar.'"
     },
     "choices": {
       "answerFire": {
@@ -2897,8 +2897,8 @@
   "whispererInTheDark_variant": {
     "title": "Karanlıkta Fısıldayan",
     "message": {
-      "original": "Malikânenin kapısı çalınıyor. Dışarıda, gölgelerin içinde, koyu bir cüppeye bürünmüş, yüzü kukuletanın altında kaybolmuş bir karaltı duruyor. Fısıldıyor: 'Sesi yok, ağlar; kanadı yok, çırpınır; dişi yok, ısırır; ağzı yok, mırıldanır.'",
-      "variant": "Malikânenin kapısı çalınıyor. Dışarıda, gölgelerin içinde, koyu bir cüppeye bürünmüş, yüzü kukuletanın altında kaybolmuş bir karaltı duruyor. Fısıldıyor: 'Hanımların arzusudur; karanlıkta büyür, solgun bir ışıkla parlar.'"
+      "original": "Malikânenin kapısı çalınıyor. Dışarıda, gölgelerin içinde, koyu bir cüppeye bürünmüş, yüzü kukuletanın altında kaybolmuş bir karaltı duruyor. Fısıldıyor: 'Sesi yok, ağlar; kanadı yok, uçar; dişi yok, ısırır; ağzı yok, mırıldanır.'",
+      "variant": "Malikânenin kapısı çalınıyor. Dışarıda, gölgelerin içinde, koyu bir cüppeye bürünmüş, yüzü kukuletanın altında kaybolmuş bir karaltı duruyor. Fısıldıyor: 'Hanımların arzusudur; karanlıkta büyür, soluk bir ışıkla parlar.'"
     },
     "choices": {
       "answerSilver": {
@@ -2956,7 +2956,7 @@
       }
     },
     "log": {
-      "outcome0": "Karaltı karanlığa karışırken içini belli belirsiz bir mutluluk dalgası kaplıyor. Sessiz ve kısacık bir his bu, daha güzel günlerden yarım yamalak hatırlanan bir anı gibi."
+      "outcome0": "Karaltı karanlığa karışırken içini belli belirsiz bir mutluluk dalgası kaplıyor. Sessiz ve kısacık bir his bu, daha güzel günlerden kalma, yarı unutulmuş bir anı gibi."
     },
     "message": "Pelerinli karaltı yeniden beliriyor. Gözden kaybolmadan önce fısıltısı son bir kez soğuk gecenin içinde süzülüyor: 'Bilgeliğin tartıldı ve layık görüldü. Gölgeler yolunu korusun, talih adının peşini bırakmasın.'",
     "title": "Fısıldayanın Hediyesi"
@@ -2976,7 +2976,7 @@
       "outcome0": "Kulak kabartıyorsun. Sesler gitgide netleşiyor, sonra akşam olunca birden kesiliyor.",
       "outcome1": "Onları duymamaya çalışıyorsun, ama fısıltılar peşini bırakmıyor. Ancak hava karardıktan sonra diniyorlar, yine de aklından çıkmıyorlar."
     },
-    "message": "Rüzgârda belli belirsiz fısıltılar duyuyorsun. Tanıdığın hiçbir dile benzemiyorlar, ama nasılsa ne dediklerini anlıyorsun. Toprağın altına gömülü kadim şeylerden söz ediyorlar.",
+    "message": "Rüzgârda belli belirsiz fısıltılar duyuyorsun. Tanıdığın hiçbir dile benzemiyorlar, ama her nasılsa ne dediklerini anlıyorsun. Toprağın altına gömülü kadim şeylerden söz ediyorlar.",
     "title": "Fısıldayan Sesler"
   },
   "whispersBeneathHut": {
@@ -2989,7 +2989,7 @@
       }
     },
     "log": {
-      "outcome0": "Döşeme tahtalarını kaldırıyorsun ve belli belirsiz fısıldayan tuhaf bir muska buluyorsun.",
+      "outcome0": "Döşeme tahtalarını kaldırınca tuhaf bir muska buluyorsun. Muska usulca fısıldıyor.",
       "outcome1": "Kulübeye dokunmamaya karar veriyorsun. Sabaha doğru fısıltılar diniyor, ama havada bir ürperti kalıyor."
     },
     "message": "Geceleri kulübelerden birinin döşemesinin altından belli belirsiz fısıltılar yükseliyor gibi. Köylüler tedirgin. Araştıracak mısın?",
@@ -3002,7 +3002,7 @@
       }
     },
     "log": {
-      "outcome0": "Kan yeminini kabul ediyorsun. Avcı kadın senin avucunu kesip kendi avucuna bastırıyor ve yemin kanla mühürleniyor. 'Kabilemde bana Külhayalet Avcısı derler,' diyor. 'Avcılarına yabanın yollarını öğreteceğim.' Külhayalet Avcısı yoldaşlarının arasına katıldı."
+      "outcome0": "Kan yeminini kabul ediyorsun. Avcı kadın senin avucunu kesip kendi avucuna bastırıyor ve yemin kanla mühürleniyor. 'Kabilemde bana Külhayalet Avcısı derler,' diyor. 'Avcılarına yabanın yollarını öğreteceğim.' Külhayalet Avcısı yoldaşlarına katıldı."
     },
     "message": "Yabani avcı kadın ormandan dönüyor. 'Kabilemi yok olmaktan kurtardın,' diyor ve kemik bıçağıyla avucunu kesiyor. Kan toprağa damlıyor. 'Halkımın eski töresince sana kan yemini ediyorum. Sana sonsuza dek borçlu kalacağım.'",
     "title": "Kan Yemini"
@@ -3016,7 +3016,7 @@
     "log": {
       "outcome0": "Avcı kadın saygıyla başını eğiyor. Artık Külhayalet Avcısı'nı ormana ava gönderebilirsin."
     },
-    "message": "Külhayalet Avcısı ormanın kıyısında bekliyor. 'Bırak bu ormanda avlanayım,' diyor sessizce. 'Köy aç kalmaz.'",
+    "message": "Külhayalet Avcısı ormanın kıyısında bekliyor. 'Bırak bu ormanda avlanayım,' diyor usulca. 'Köy aç kalmaz.'",
     "title": "Köy İçin Et"
   },
   "witchsCurse": {
@@ -3044,7 +3044,7 @@
       "outcome6": "Eski metinlerden öğrendiğin kadim kudret sözlerini söylüyorsun. Cadı korkuyla geri çekilip kaçıyor. Laneti daha tutmadan bozuluyor.",
       "outcome7": "Tehditlerin cadıyı yalnızca öfkelendiriyor. Gülüp kara büyüyle seni lanetliyor. O gidince köylüler halsizleşmeye başlıyor, sanki görünmez bir güç dermanlarını emmiş gibi."
     },
-    "message": "Yırtık pırtık cüppeler içinde, iki büklüm yaşlı bir kadın kapıya dayanıyor. Sesi kin dolu: 'Bana 50 Altın öde, yoksa seni uğursuzlukla lanetlerim.'",
+    "message": "Yırtık pırtık cüppeler içinde, iki büklüm yaşlı bir kadın kapıya dayanıyor. Sesi kin dolu: 'Bana 50 Altın öde, yoksa sana lanet okurum, uğursuzluk yakanı bırakmaz.'",
     "title": "Cadının Laneti"
   },
   "wizardArrives": {
@@ -3053,7 +3053,7 @@
         "label": "Devam Et"
       }
     },
-    "message": "Ufak tefek, yaşlı bir adam yerleşime yaklaşıyor. Uzun, kır bir sakalı ve yıpranmış gri bir paltosu var. Gözleri kadim bir bilgelik ve güçle parlıyor. 'Ben bir büyücüyüm,' diyor. Sesinde gizemli bir kudret yankılanıyor. 'Bana bir kule yap, ben de sana ölümlülerin aklının almayacağı güçlerle yardım edeyim.'",
+    "message": "Ufak tefek, yaşlı bir adam yerleşime yaklaşıyor. Uzun, kır bir sakalı ve yıpranmış gri bir paltosu var. Gözleri kadim bir bilgelik ve güçle parlıyor. 'Ben büyücüyüm,' diyor. Sesinde gizemli bir kudret yankılanıyor. 'Bana bir kule yap, ben de sana ölümlülerin aklının almayacağı güçlerle yardım edeyim.'",
     "title": "Büyücü"
   },
   "wizardBloodstone": {
@@ -3071,7 +3071,7 @@
         "label": "Devam Et"
       }
     },
-    "message": "Büyücü, Batık Tapınak'tan getirdiğin Kantaşı parçalarını inceliyor. 'Bu taşlarla ihtiyacımız olan her şey elimizde. Artık Kantaşı Asa yapılabilir. Ayazcam Kılıç da yanımızda olunca aşağıda pusuya yatmış karanlığa karşı koyabileceğiz.'",
+    "message": "Büyücü, Batık Tapınak'tan getirdiğin Kantaşı parçalarını inceliyor. 'Bu taşlarla ihtiyacımız olan her şey elimizde. Artık Kantaşı Asa yapılabilir. Ayaz Kılıcı da yanımızda olunca aşağıda pusuya yatmış karanlığa karşı koyabileceğiz.'",
     "title": "Kantaşı Asa"
   },
   "wizardDecryptsScrolls": {
@@ -3080,7 +3080,7 @@
         "label": "Devam Et"
       }
     },
-    "message": "Büyücü kulesinden çıkıyor. 'Kadim parşömenlerin şifresini çözdüm,' diyor. 'Aşağıdaki yaratıkları ancak çok güçlü silahlarla öldürebiliriz: Ayazcam bir kılıç ve tepesine Kantaşı oturtulmuş bir asa. Ormanın derinliklerinde kadim bir kralın mezarı var. Hazineleri arasında aradığımız Ayazcam olabilir.'",
+    "message": "Büyücü kulesinden çıkıyor. 'Kadim parşömenlerin şifresini çözdüm,' diyor. 'Aşağıdaki yaratıkları ancak çok güçlü silahlarla öldürebiliriz: Ayaz Camından bir kılıç ve tepesine Kantaşı oturtulmuş bir asa. Ormanın derinliklerinde kadim bir kralın mezarı var. Hazineleri arasında aradığımız Ayaz Camı olabilir.'",
     "title": "Kadim Bilgi"
   },
   "wizardFrostglassSword": {
@@ -3089,8 +3089,8 @@
         "label": "Devam Et"
       }
     },
-    "message": "Büyücü Ayazcam parçasını inceliyor, yüzeyinde soğuk bir ışık oynaşıyor. 'Buldun demek. Artık Ayazcam Kılıç dövülebilir.'",
-    "title": "Ayazcam Kılıç"
+    "message": "Büyücü Ayaz Camı parçasını inceliyor, yüzeyinde soğuk bir ışık oynaşıyor. 'Buldun demek. Artık Ayaz Kılıcı dövülebilir.'",
+    "title": "Ayaz Kılıcı"
   },
   "wizardNecromancerCastle": {
     "choices": {
@@ -3098,7 +3098,7 @@
         "label": "Devam Et"
       }
     },
-    "message": "Büyücü seni kulesine çağırıyor: 'Uzaklarda, ıssız toprakların içinde bir şato olduğunu öğrendim. Uzun zaman önce ölmüş bir ölüçağırana aitmiş. Duvarlarının ardında, mağaranın derinliklerinde yaşayan şeyi nasıl yenebileceğimizi anlatan kadim parşömenler var.'",
+    "message": "Büyücü seni kulesine çağırıyor: 'Issız toprakların ta içlerinde bir şato olduğunu öğrendim. Uzun zaman önce ölmüş bir ölüçağırana aitmiş. Duvarlarının ardında, mağaranın derinliklerinde yaşayan şeyi nasıl yenebileceğimizi anlatan kadim parşömenler var.'",
     "title": "Ölüçağıranın Şatosu"
   },
   "wizardOffer": {
@@ -3113,12 +3113,12 @@
     },
     "log": {
       "outcome0": "Kararsızlığın büyücünün canını sıkıyor. Başını iki yana sallıyor. 'O hâlde kulemde kalacağım. Belki ihtiyaç daha da büyüdüğünde yollarımız yeniden kesişir,' diyor ve çekip gidiyor.",
-      "outcome2": "Büyücü memnuniyetle başını sallıyor. 'Hizmetlerim için adil bir bedel. Halkını büyü ateşiyle koruyacağım.' Yıpranmış kukuletasını indiriyor, sönmekte olan bir güçle parlayan kadim gözleri ortaya çıkıyor. Yaşlı Büyücü yoldaşlarının arasına katıldı.",
+      "outcome2": "Büyücü memnuniyetle başını sallıyor. 'Hizmetlerim için adil bir bedel. Halkını büyü ateşiyle koruyacağım.' Yıpranmış kukuletasını indiriyor, sönmekte olan bir güçle parlayan kadim gözleri ortaya çıkıyor. Yaşlı Büyücü yoldaşlarına katıldı.",
       "outcome3": "Büyücünün teklifini geri çeviriyorsun. Anlayışla başını sallıyor. 'O hâlde kulemde kalacağım. Belki ihtiyaç daha da büyüdüğünde yollarımız yeniden kesişir,' diyor ve çekip gidiyor."
     },
     "message": {
-      "firstVisit": "Yaşlı büyücü yanına geliyor. 'Uzun yaşadım, çok şey gördüm,' diyor yorgun bir sesle. 'Karşı karşıya olduğun tehlike çok büyük. Adil bir bedel karşılığında, derinliklerden çıkan düşmanlara karşı seninle birlikte savaşırım.'",
-      "repeat": "Yaşlı büyücü yine yanına geliyor. 'Derinliklerden gelen düşmanlara karşı seninle savaşma teklifim hâlâ geçerli. Adil bir bedel karşılığında yanında olurum.'"
+      "firstVisit": "Yaşlı büyücü yanına geliyor. 'Uzun yaşadım, çok şey gördüm,' diyor yorgun bir sesle. 'Üstüne gelen tehlike çok büyük. Adil bir bedel karşılığında, derinliklerden çıkan düşmanlara karşı seninle birlikte savaşırım.'",
+      "repeat": "Yaşlı büyücü yine yanına geliyor. 'Derinliklerden gelen düşmanlara karşı yanında savaşma teklifim hâlâ geçerli. Adil bir bedel karşılığında sana katılırım.'"
     },
     "title": "Büyücünün Teklifi"
   },
@@ -3171,7 +3171,7 @@
       "hide_manyDeaths": "Kurtlar dışarıda dolanırken köylüler kulübelerinde büzülüp bekliyor. Birkaç köylü kulübesinden sürüklenip götürülüyor, çığlıkları gece boyunca yankılanıyor.",
       "hide_manyDeaths_food": "Kurtlar dışarıda dolanırken köylüler kulübelerinde büzülüp bekliyor. Birkaç köylü kulübesinden sürüklenip götürülüyor, çığlıkları gece boyunca yankılanıyor. Kurtlar şafakla birlikte kaybolmadan önce erzakını talan ediyor."
     },
-    "message": "Gece yarısına doğru karanlığın içinden kurtlar çıkıyor, gözleri tekinsiz bir açlıkla parlıyor. Köyün çevresinde dönerken ulumalarından kin akıyor.",
+    "message": "Gece yarısına doğru karanlığın içinden kurtlar çıkıyor, gözleri tekinsiz bir açlıkla parlıyor. Köyün çevresinde dolanırken ulumaları kin dolu.",
     "title": "Kurt Saldırısı"
   },
   "crossingPathsAgain": {
@@ -3188,7 +3188,7 @@
     },
     "log": {
       "help": "Onu köye getirip yaralarını sarıyorsun. Yaptıklarından pişman olduğunu söylüyor. Sana baltasını ve kestiği {{woodReward}} odunu veriyor.",
-      "kill": "Onu kendi ellerinle öldürüp o güçlü baltasını alıyorsun. Köylüler bundan hoşnut değil.",
+      "kill": "Onu kendi ellerinle öldürüp o heybetli baltasını alıyorsun. Köylüler bundan hoşnut değil.",
       "leave": "Onu ölüme terk ediyorsun, ama baltasını yanına alıyorsun."
     },
     "message": "Avcılar ormandan dönüyor. Ağaçların altında yaralı, iri yarı bir adam bulmuşlar: oduncu. Bir şey ona saldırmış. Ağır yaralı, uzun süre dayanamayacak.",
@@ -3276,11 +3276,11 @@
       }
     },
     "log": {
-      "outcome0": "Kuyuyu inceliyorsun, ama olağandışı hiçbir şey göremiyorsun. Bir ışık oyunu olmalı, ya da hayal gördün. İçindeki huzursuzluk geçmiyor, ama biraz daha iyi hissediyorsun.",
-      "outcome1": "Kuyunun ağzına eğiliyorsun. Yansıman sana olması gerekenden fazla dişle sırıtıyor ve köyün kurulduğu bu toprakta bir zamanlar neler yapıldığına dair sırlar fısıldıyor. Geri çekiliyorsun, ama öğrendiklerin zihninde yanmaya devam ediyor.",
+      "outcome0": "Kuyuyu inceliyorsun, ama olağandışı hiçbir şey göremiyorsun. Ya bir ışık oyunuydu ya da hayal gördün. Huzursuzluğun tam geçmiyor, ama biraz rahatlıyorsun.",
+      "outcome1": "Kuyunun ağzına eğiliyorsun. Yansıman sana olması gerekenden fazla dişle sırıtıyor ve köyün bugün durduğu yerde bir zamanlar neler inşa edildiğine dair sırlar fısıldıyor. Geri çekiliyorsun, ama öğrendiklerin zihninde yanmaya devam ediyor.",
       "outcome2": "Kuyuyu tahtalarla kapatıp o murdar suya yaklaşmayı herkese yasaklıyorsun. Yeni bir kuyu kazmak çok uzun sürüyor ve köylülerden {{thirstDeaths}} kişi susuzluktan ölüyor."
     },
-    "message": "Köy kuyusunun yüzeyinde gerçeğe uymayan yansımalar beliriyor. Kendini görüyorsun, ama daha yaşlısın. Gözlerin oyuk, ağzın karanlıkla dolu.",
+    "message": "Köy kuyusunun suyunda gerçeğe uymayan yansımalar beliriyor. Kendini görüyorsun, ama yaşlanmışsın. Gözlerin çukura kaçmış, ağzın karanlıkla dolu.",
     "title": "Çarpık Yansımalar"
   },
   "wrongVillagers": {
@@ -3295,7 +3295,7 @@
     "log": {
       "outcome0": "Yabancılarla konuşuyorsun. Barınak istemeye korkan gezginler olduklarını, bu yüzden boş bir kulübeye öylece yerleştiklerini itiraf ediyorlar. Köyde kalıp çalışmalarına izin veriyorsun.",
       "outcome1": "Üstlerine gidince gülüp köyü soymaya gelmiş hırsızlar olduklarını itiraf ediyorlar. Seni alt edip 250 Gümüş kapıyor ve ormanda kayboluyorlar.",
-      "outcome2": "Mesafeni koruyup onları uzaktan izliyorsun. Birkaç gün sonra sanki hiç orada olmamışlar gibi ortadan kayboluyorlar. Kim olduklarına dair hiçbir fikrin yok."
+      "outcome2": "Mesafeni koruyup onları uzaktan izliyorsun. Birkaç gün sonra, sanki hiç var olmamışlar gibi ortadan kayboluyorlar. Kim olduklarını hâlâ bilmiyorsun."
     },
     "message": "Köylüleri sayıyorsun ve olması gerekenden üç kişi fazla çıkıyor. Halkının arasına yabancılar karışmış. Sanki buralıymış gibi çalışıp yemek yiyorlar.",
     "title": "Fazladan Köylüler"
@@ -3314,10 +3314,10 @@
     },
     "log": {
       "outcome0": "Genç kadını köyden sürüyorsun. Ona hak veren {{actualLeavers}} köylüyü de peşinden gelmeye ikna ediyor; birlikte köyünü sonsuza dek terk ediyorlar.",
-      "outcome1": "Kara Monolit önünde kurban kesildikten kısa süre sonra, dehşete düşen {{actualLeavers}} köylü eşyalarını toplayıp tiksinti içinde köyü terk ediyor.",
-      "outcome2": "İnsan kurban etme âdetine son vermeyi kabul ediyorsun. Kadın bir öneride bulunuyor: Kara Monolit yıkılsın, yerine halkın zihnindeki karanlığı temizleyecek bembeyaz bir dikilitaş dikilsin."
+      "outcome1": "Kara Monolit önündeki kurbandan kısa süre sonra, dehşete düşen {{actualLeavers}} köylü eşyalarını toplayıp tiksinti içinde köyü terk ediyor.",
+      "outcome2": "İnsan kurban etme âdetine son vermeyi kabul ediyorsun. Kadın şunu öneriyor: Kara Monolit yıkılsın, yerine halkın zihnindeki karanlığı arındıracak bembeyaz bir dikilitaş yükselsin."
     },
-    "message": "Genç bir kadın yanına geliyor, gözyaşları yanaklarından süzülüyor. 'Annemle babamı o lanet monolite kurban ettiler,' diye haykırıyor. 'Bu barbarlık artık son bulmalı!'",
+    "message": "Genç bir kadın yanına geliyor, gözyaşları yanaklarından süzülüyor. 'Annemle babamı o lanet monolite kurban ettiler,' diye haykırıyor. 'Bu vahşet artık bitsin!'",
     "title": "Genç Kadının Yakarışı"
   },
   "wanderersLantern": {
