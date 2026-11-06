@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { describe, it, expect, afterEach } from "vitest";
+import { describe, it, expect, afterEach, vi } from "vitest";
 import {
   getTabVisibleEpoch,
   initTabVisibilityClass,
@@ -43,5 +43,31 @@ describe("tabVisibility", () => {
     expect(calls.at(-1)).toBe(false);
 
     unsubscribe();
+  });
+
+  it("flags the document while the window is in the background", () => {
+    initTabVisibilityClass();
+    const root = document.documentElement;
+    const hasFocus = vi.spyOn(document, "hasFocus");
+
+    hasFocus.mockReturnValue(false);
+    window.dispatchEvent(new Event("blur"));
+    expect(root.hasAttribute("data-window-inactive")).toBe(true);
+
+    hasFocus.mockReturnValue(true);
+    window.dispatchEvent(new Event("focus"));
+    expect(root.hasAttribute("data-window-inactive")).toBe(false);
+
+    hasFocus.mockRestore();
+  });
+
+  it("stays active when focus moves into an iframe on the page", () => {
+    initTabVisibilityClass();
+    const hasFocus = vi.spyOn(document, "hasFocus").mockReturnValue(true);
+
+    window.dispatchEvent(new Event("blur"));
+    expect(document.documentElement.hasAttribute("data-window-inactive")).toBe(false);
+
+    hasFocus.mockRestore();
   });
 });

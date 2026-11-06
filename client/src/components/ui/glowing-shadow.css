@@ -507,3 +507,24 @@
     --adc-gs-hue: 360;
   }
 }
+
+/*
+ * These animations drive registered custom properties, which Chromium
+ * recalculates and repaints on the main thread every frame. Hold them while
+ * nobody is watching: a hidden tab, or a window in the background (the used
+ * construction queue slot glows for most of a session).
+ */
+html[data-tab-hidden] .adc-gs,
+html[data-tab-hidden] .adc-gs *,
+html[data-tab-hidden] .adc-gs::before,
+html[data-tab-hidden] .adc-gs::after,
+html[data-tab-hidden] .adc-gs *::before,
+html[data-tab-hidden] .adc-gs *::after,
+html[data-window-inactive] .adc-gs,
+html[data-window-inactive] .adc-gs *,
+html[data-window-inactive] .adc-gs::before,
+html[data-window-inactive] .adc-gs::after,
+html[data-window-inactive] .adc-gs *::before,
+html[data-window-inactive] .adc-gs *::after {
+  animation-play-state: paused;
+}

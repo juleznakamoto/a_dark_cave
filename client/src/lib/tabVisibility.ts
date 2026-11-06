@@ -1,4 +1,6 @@
 const TAB_HIDDEN_ATTR = "data-tab-hidden";
+/** Window shown but not focused (alt-tabbed, game on a second monitor). */
+const WINDOW_INACTIVE_ATTR = "data-window-inactive";
 
 /** Test-only: `null` reads live `document.hidden`. */
 let hiddenOverride: boolean | null = null;
@@ -65,16 +67,32 @@ function syncTabVisibilityFromDocument() {
   notifyTabHiddenListeners();
 }
 
-/** Sync a document-level flag so CSS can pause decorative animations while the tab is hidden. */
+/**
+ * `hasFocus()` stays true while focus is inside an iframe on the page, so
+ * clicking into an embedded widget does not count as leaving the game.
+ */
+function syncWindowActivityFromDocument() {
+  const inactive =
+    typeof document.hasFocus === "function" && !document.hasFocus();
+  document.documentElement.toggleAttribute(WINDOW_INACTIVE_ATTR, inactive);
+}
+
+/**
+ * Sync document-level flags so CSS can pause decorative animations while the
+ * tab is hidden or the window is in the background.
+ */
 export function initTabVisibilityClass(): void {
   if (stopTabVisibilitySync) return;
 
   syncTabVisibilityFromDocument();
+  syncWindowActivityFromDocument();
   document.addEventListener("visibilitychange", syncTabVisibilityFromDocument);
   // `visibilitychange` is sometimes skipped on Windows/Chrome (alt-tab, overlay,
   // bfcache). Focus/pageshow still fire, and resyncing unsticks force-closed tooltips.
   window.addEventListener("pageshow", syncTabVisibilityFromDocument);
   window.addEventListener("focus", syncTabVisibilityFromDocument);
+  window.addEventListener("focus", syncWindowActivityFromDocument);
+  window.addEventListener("blur", syncWindowActivityFromDocument);
 
   stopTabVisibilitySync = () => {
     document.removeEventListener(
@@ -83,6 +101,8 @@ export function initTabVisibilityClass(): void {
     );
     window.removeEventListener("pageshow", syncTabVisibilityFromDocument);
     window.removeEventListener("focus", syncTabVisibilityFromDocument);
+    window.removeEventListener("focus", syncWindowActivityFromDocument);
+    window.removeEventListener("blur", syncWindowActivityFromDocument);
     stopTabVisibilitySync = null;
   };
 }

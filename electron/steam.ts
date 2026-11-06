@@ -71,8 +71,18 @@ export const STEAM_OVERLAY_CHROMIUM_SWITCHES = [
 /** Same cadence steamworks.js uses so the overlay can composite. */
 export const STEAM_OVERLAY_REPAINT_MS = 1000 / 60;
 
+/**
+ * Forced repaint interval while the window is visible but not focused.
+ * Shift+Tab only opens the overlay on the focused window, so a background
+ * window only needs enough frames for overlay notifications to show.
+ */
+export const STEAM_OVERLAY_BACKGROUND_REPAINT_MS = 250;
+
 type OverlayBrowserWindow = {
   isDestroyed: () => boolean;
+  isMinimized: () => boolean;
+  isVisible: () => boolean;
+  isFocused: () => boolean;
   webContents: {
     isPainting: () => boolean;
     invalidate: () => void;
@@ -100,12 +110,31 @@ const overlayRepaintTimers = new WeakMap<
 /** Apps that already have the overlay's `browser-window-created` listener. */
 const overlayListenerApps = new WeakSet<SteamOverlayElectron["app"]>();
 
+/** Last forced repaint of a window while it was not focused. */
+const lastBackgroundRepaint = new WeakMap<OverlayBrowserWindow, number>();
+
 /**
  * One overlay repaint tick. Returns true when the interval should stop
  * (the window is gone).
+ *
+ * `isPainting()` only reports offscreen rendering, so on a normal window
+ * every tick forces a full repaint. That is needed while the player can
+ * open the overlay, but not for a window nobody is looking at.
  */
-export function tickSteamOverlayRepaint(window: OverlayBrowserWindow): boolean {
+export function tickSteamOverlayRepaint(
+  window: OverlayBrowserWindow,
+  now: number = Date.now(),
+): boolean {
   if (window.isDestroyed()) return true;
+  // Nothing can composite over a minimized or hidden window.
+  if (window.isMinimized() || !window.isVisible()) return false;
+  if (!window.isFocused()) {
+    const last = lastBackgroundRepaint.get(window);
+    if (last !== undefined && now - last < STEAM_OVERLAY_BACKGROUND_REPAINT_MS) {
+      return false;
+    }
+    lastBackgroundRepaint.set(window, now);
+  }
   // Same check steamworks.js uses so the overlay keeps compositing.
   if (!window.webContents.isPainting()) {
     window.webContents.invalidate();

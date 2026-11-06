@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
+  STEAM_OVERLAY_BACKGROUND_REPAINT_MS,
   STEAM_OVERLAY_CHROMIUM_SWITCHES,
   STEAM_OVERLAY_REPAINT_MS,
   applySteamOverlayHooks,
@@ -8,6 +9,9 @@ import {
 
 type FakeWindow = {
   isDestroyed: () => boolean;
+  isMinimized: () => boolean;
+  isVisible: () => boolean;
+  isFocused: () => boolean;
   webContents: {
     isPainting: () => boolean;
     invalidate: () => void;
@@ -17,12 +21,18 @@ type FakeWindow = {
 function fakeWindow(options?: {
   destroyed?: boolean;
   painting?: boolean;
+  minimized?: boolean;
+  hidden?: boolean;
+  unfocused?: boolean;
 }): { window: FakeWindow; invalidate: ReturnType<typeof vi.fn> } {
   const invalidate = vi.fn();
   return {
     invalidate,
     window: {
       isDestroyed: () => options?.destroyed === true,
+      isMinimized: () => options?.minimized === true,
+      isVisible: () => options?.hidden !== true,
+      isFocused: () => options?.unfocused !== true,
       webContents: {
         isPainting: () => options?.painting === true,
         invalidate,
@@ -104,5 +114,43 @@ describe("Steam overlay hooks", () => {
     const { window, invalidate } = fakeWindow({ destroyed: true });
     expect(tickSteamOverlayRepaint(window)).toBe(true);
     expect(invalidate).not.toHaveBeenCalled();
+  });
+
+  it("skips a minimized window but keeps the hook running", () => {
+    const { window, invalidate } = fakeWindow({ minimized: true });
+    expect(tickSteamOverlayRepaint(window)).toBe(false);
+    expect(invalidate).not.toHaveBeenCalled();
+  });
+
+  it("skips a hidden window but keeps the hook running", () => {
+    const { window, invalidate } = fakeWindow({ hidden: true });
+    expect(tickSteamOverlayRepaint(window)).toBe(false);
+    expect(invalidate).not.toHaveBeenCalled();
+  });
+
+  it("repaints an unfocused window at the background rate", () => {
+    const { window, invalidate } = fakeWindow({ unfocused: true });
+    tickSteamOverlayRepaint(window, 1000);
+    tickSteamOverlayRepaint(window, 1000 + STEAM_OVERLAY_REPAINT_MS);
+    tickSteamOverlayRepaint(window, 1000 + STEAM_OVERLAY_BACKGROUND_REPAINT_MS - 1);
+    expect(invalidate).toHaveBeenCalledOnce();
+
+    tickSteamOverlayRepaint(window, 1000 + STEAM_OVERLAY_BACKGROUND_REPAINT_MS);
+    expect(invalidate).toHaveBeenCalledTimes(2);
+  });
+
+  it("returns to every tick once the window is focused again", () => {
+    let focused = false;
+    const { window, invalidate } = fakeWindow();
+    window.isFocused = () => focused;
+
+    tickSteamOverlayRepaint(window, 1000);
+    tickSteamOverlayRepaint(window, 1010);
+    expect(invalidate).toHaveBeenCalledOnce();
+
+    focused = true;
+    tickSteamOverlayRepaint(window, 1020);
+    tickSteamOverlayRepaint(window, 1030);
+    expect(invalidate).toHaveBeenCalledTimes(3);
   });
 });
