@@ -30,6 +30,34 @@ export function getAbandonedCartSuccessChance(state: GameState): number {
   return abandonedCartSuccess.success_chance(state);
 }
 
+/**
+ * Cruel mode: 40% + 1% per Strength, with no extra cruel penalty.
+ * Outside cruel mode the rescue always works.
+ */
+const slaveTraderFreeSuccess = defineSuccessChance({
+  base: (state) =>
+    state.cruelMode ? CRUEL_MODE.slaveTrader.freeSlavesSuccess.base : 1,
+  stats: (state) =>
+    state.cruelMode
+      ? [
+          {
+            type: "strength",
+            multiplier: CRUEL_MODE.slaveTrader.freeSlavesSuccess.perStrength,
+          },
+        ]
+      : [],
+  cmMultiplier: 0,
+  relevantStats: ["strength"],
+});
+
+/** Refusing the mirror lets the wandering collector offer it later. */
+function refuseBlackenedMirror(state: GameState) {
+  return {
+    ...collectorItemRejectedStoryPatch(state, "blackened_mirror"),
+    _logMessageKey: "outcome1",
+  };
+}
+
 /** Death outcomes only draw from unassigned villagers at the forest edge. */
 function paleFigureFreeVillagers(state: GameState): number {
   return state.villagers?.free ?? 0;
@@ -222,14 +250,14 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "refuseMirror",
-        effect: (state: GameState) => {
-          return {
-            ...collectorItemRejectedStoryPatch(state, "blackened_mirror"),
-            _logMessageKey: "outcome1",
-          };
-        },
+        effect: refuseBlackenedMirror,
       },
     ],
+    // Letting the timer run out counts as refusing, like the other timed tabs.
+    fallbackChoice: {
+      id: "refuseMirror",
+      effect: refuseBlackenedMirror,
+    },
   },
 
   cthulhuFigure: {
@@ -1171,6 +1199,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             stats: { ...state.stats, ...(tradeResult.stats || {}) },
           };
           const leaveResult = killVillagers(stateAfterTrade, remainingPopulation);
+          const statsAfterLeave = leaveResult.stats || stateAfterTrade.stats;
 
           return {
             ...leaveResult,
@@ -1178,10 +1207,11 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.resources,
               steel: state.resources.steel + 100,
             },
+            // stats.madness is recalculated from its sources, so this has to
+            // land in madnessFromEvents, as freeSlaves already does.
             stats: {
-              ...(leaveResult.stats || stateAfterTrade.stats),
-              madness:
-                (leaveResult.stats?.madness ?? stateAfterTrade.stats.madness) + 1,
+              ...statsAfterLeave,
+              madnessFromEvents: (statsAfterLeave.madnessFromEvents || 0) + 1,
             },
             story: {
               ...state.story,
@@ -1196,30 +1226,57 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "freeSlaves",
-        relevant_stats: ["strength"],
-        success_chance: () => 1,
+        ...slaveTraderFreeSuccess,
         effect: (state: GameState) => {
-          const { patch } = addFreeVillagersWithinCap(state, 3);
+          const successChance = slaveTraderFreeSuccess.success_chance(state);
+          if (!state.cruelMode || Math.random() < successChance) {
+            const { patch } = addFreeVillagersWithinCap(state, 3);
+
+            return {
+              ...patch,
+              resources: {
+                ...state.resources,
+                steel: state.resources.steel + 100,
+              },
+              stats: {
+                ...state.stats,
+                madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
+              },
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  ...(patch.story?.seen),
+                  slaveTraderEvent: true,
+                },
+              },
+              _logMessageKey: "outcome1",
+            };
+          }
+
+          const deaths =
+            Math.floor(Math.random() * CRUEL_MODE.slaveTrader.failDeaths.randMax) +
+            CRUEL_MODE.slaveTrader.failDeaths.base +
+            cruelModeScale(state) * CRUEL_MODE.slaveTrader.failDeaths.whenCruel;
+          const deathResult = killVillagers(state, deaths);
+          const actualDeaths = deathResult.villagersKilled || 0;
+          const statsAfter = deathResult.stats || state.stats;
 
           return {
-            ...patch,
-            resources: {
-              ...state.resources,
-              steel: state.resources.steel + 100,
-            },
+            ...deathResult,
             stats: {
-              ...state.stats,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) - 1,
+              ...statsAfter,
+              madnessFromEvents: (statsAfter.madnessFromEvents || 0) - 1,
             },
             story: {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                ...(patch.story?.seen),
                 slaveTraderEvent: true,
               },
             },
-            _logMessageKey: "outcome1",
+            _logMessageKey: "outcome2",
+            _logMessageVars: { actualDeaths },
           };
         },
       },

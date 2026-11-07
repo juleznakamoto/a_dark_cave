@@ -3,6 +3,7 @@ import { gameStateSchema } from "@shared/schema";
 import i18n from "@/i18n";
 import { ensureGameplayLocalesLoaded } from "@/i18n/loadLocaleResources";
 import { choiceEvents } from "./eventsChoices";
+import { getTotalStrength } from "./effectsCalculation";
 import { resolveEventLogMessage } from "@/i18n/resolveGameText";
 
 function baseState() {
@@ -75,7 +76,7 @@ describe("slaveTrader freeSlaves", () => {
     expect(result.story?.seen?.slaveTraderEvent).toBe(true);
   });
 
-  it("always succeeds even when roll would have failed", () => {
+  it("always succeeds outside cruel mode even when the roll would have failed", () => {
     vi.spyOn(Math, "random").mockReturnValue(0.99);
     const choice = choiceEvents.slaveTrader.choices!.find(
       (c) => c.id === "freeSlaves",
@@ -103,10 +104,59 @@ describe("slaveTrader freeSlaves", () => {
     expect(result.stats?.madnessFromEvents).toBe(-20);
   });
 
-  it("reports 100% success chance", () => {
+  it("reports 100% success chance outside cruel mode", () => {
     const choice = choiceEvents.slaveTrader.choices!.find(
       (c) => c.id === "freeSlaves",
     )!;
     expect(choice.success_chance!(baseState())).toBe(1);
+  });
+
+  it("is 40% plus 1% per strength in cruel mode", () => {
+    const choice = choiceEvents.slaveTrader.choices!.find(
+      (c) => c.id === "freeSlaves",
+    )!;
+    const cruel = { ...baseState(), cruelMode: true };
+    const strong = {
+      ...cruel,
+      weapons: { ...cruel.weapons, manhunter_bow: true },
+    };
+
+    expect(choice.success_chance!(cruel)).toBeCloseTo(
+      0.4 + getTotalStrength(cruel) * 0.01,
+    );
+    expect(getTotalStrength(strong)).toBe(getTotalStrength(cruel) + 4);
+    expect(choice.success_chance!(strong)).toBeCloseTo(
+      0.4 + getTotalStrength(strong) * 0.01,
+    );
+    expect(choice.success_chance!(strong)).toBeGreaterThan(
+      choice.success_chance!(cruel),
+    );
+  });
+
+  it("can lose the fight in cruel mode", () => {
+    vi.spyOn(Math, "random").mockReturnValue(0.99);
+    const choice = choiceEvents.slaveTrader.choices!.find(
+      (c) => c.id === "freeSlaves",
+    )!;
+    const result = choice.effect({ ...baseState(), cruelMode: true });
+
+    expect(result._logMessageKey).toBe("outcome2");
+    expect(result._logMessageVars).toEqual({ actualDeaths: 3 });
+    expect(result.resources?.steel).toBeUndefined();
+    expect(result.villagers?.free).toBe(2);
+    expect(result.stats?.madnessFromEvents).toBe(1);
+    expect(result.story?.seen?.slaveTraderEvent).toBe(true);
+  });
+});
+
+describe("slaveTrader sellVillagers", () => {
+  it("adds 1 to event madness", () => {
+    const choice = choiceEvents.slaveTrader.choices!.find(
+      (c) => c.id === "sellVillagers",
+    )!;
+    const result = choice.effect(baseState());
+
+    expect(result._logMessageKey).toBe("outcome0");
+    expect(result.stats?.madnessFromEvents).toBe(3);
   });
 });

@@ -479,7 +479,7 @@ export const getPopulationProduction = (
     });
   }
 
-  // Apply fog penalty if active (0.5x, same as curse) - temporary, inactive during sleep
+  // Apply fog penalty if active (-25% production) - temporary, inactive during sleep
   const fogState = state.fogState;
   const isFog = !excludeTemporary && fogState?.isActive && fogState.endTime > Date.now();
   if (isFog) {
@@ -1015,12 +1015,13 @@ export function getMaxPopulation(state: GameState): number {
   const longhouseCapacity = (state.buildings.longhouse || 0) * 8;
   const furTentsCapacity = (state.buildings.furTents || 0) * 4;
 
-  // Temple dedication bonuses
+  // Temple dedication bonuses. Deepening keeps flames_touch set, so the
+  // enhanced blessing has to be checked first.
   let templeBonus = 0;
-  if (state.blessings?.flames_touch) {
-    templeBonus = 4;
-  } else if (state.blessings?.flames_touch_enhanced) {
+  if (state.blessings?.flames_touch_enhanced) {
     templeBonus = 8;
+  } else if (state.blessings?.flames_touch) {
+    templeBonus = 4;
   }
 
   const blackEstateCapacity = (state.buildings.blackEstate || 0) * 10;

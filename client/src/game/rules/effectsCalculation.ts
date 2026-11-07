@@ -239,11 +239,13 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
     }
   });
 
-  // Check blessing effects (blessings are also in clothingEffects)
-  Object.entries(state.blessings || {}).forEach(([key, value]) => {
-    if (value && clothingEffects[key]) {
-      activeEffects.push(clothingEffects[key]);
-    }
+  // Check blessing effects (blessings are also in clothingEffects).
+  // Deepening keeps flames_touch set, so the enhanced blessing replaces it.
+  const blessings = state.blessings;
+  Object.entries(blessings || {}).forEach(([key, value]) => {
+    if (!value || !clothingEffects[key]) return;
+    if (key === "flames_touch" && blessings?.flames_touch_enhanced) return;
+    activeEffects.push(clothingEffects[key]);
   });
 
   // Check tool effects
@@ -1307,9 +1309,6 @@ export const calculateTotalEffects = (state: GameState) => {
     effects.statBonuses.knowledge +=
       enchant.baseKnowledge + enchant.enchantKnowledge;
   });
-
-  // Add relic effects directly to statBonuses
-  if (state.relics.ravens_orb) effects.statBonuses.knowledge += 6;
 
   // Blessing effects
   if (state.blessings?.dagons_gift) {

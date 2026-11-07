@@ -278,7 +278,8 @@ export const CRUEL_MODE = {
   },
 
   slaveTrader: {
-    freeSlavesSuccess: { base: 0.5, perStrength: 0.01, whenCruel: 0.1 },
+    /** Cruel mode only. 40% + 1% per Strength. The usual cruel penalty stays off. */
+    freeSlavesSuccess: { base: 0.4, perStrength: 0.01 },
     failDeaths: { randMax: 2, base: 1, whenCruel: 1 },
   },
 
