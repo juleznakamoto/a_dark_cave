@@ -56,31 +56,37 @@ export function mergeHighlightLineHoles(
   return merged;
 }
 
-/** Fade at both ends, a gap for the dot, and a gap around each descending letter. */
+/**
+ * Fade at both ends, a gap around each descending letter, and (by default) a
+ * gap for the center dot. `centerGap: false` is the new-item dotted line.
+ */
 export function buildHighlightLineGradient(
   width: number,
   fontSize: number,
   holes: HighlightLineHole[],
+  options?: { color?: string; centerGap?: boolean },
 ): string {
+  const color = options?.color ?? "currentColor";
   const fade = Math.min(fontSize * 0.2, width * 0.1);
-  const merged = mergeHighlightLineHoles(
-    [...holes, { start: width / 2 - DOT_GAP_PX, end: width / 2 + DOT_GAP_PX }],
-    width,
-  );
+  const withCenter =
+    options?.centerGap === false
+      ? holes
+      : [...holes, { start: width / 2 - DOT_GAP_PX, end: width / 2 + DOT_GAP_PX }];
+  const merged = mergeHighlightLineHoles(withCenter, width);
   const px = (value: number) => `${Math.round(value * 10) / 10}px`;
-  const stops = [`transparent 0px`, `currentColor ${px(fade)}`];
+  const stops = [`transparent 0px`, `${color} ${px(fade)}`];
   let drawnTo = fade;
   for (const hole of merged) {
     const start = Math.max(hole.start, drawnTo);
     const end = Math.max(hole.end, start);
-    if (start > drawnTo) stops.push(`currentColor ${px(start)}`);
+    if (start > drawnTo) stops.push(`${color} ${px(start)}`);
     stops.push(`transparent ${px(start)}`);
     stops.push(`transparent ${px(end)}`);
-    stops.push(`currentColor ${px(end)}`);
+    stops.push(`${color} ${px(end)}`);
     drawnTo = end;
   }
   const fadeStart = Math.max(drawnTo, width - fade);
-  stops.push(`currentColor ${px(fadeStart)}`);
+  stops.push(`${color} ${px(fadeStart)}`);
   stops.push(`transparent ${px(width)}`);
   return `linear-gradient(to right, ${stops.join(", ")})`;
 }
@@ -97,11 +103,11 @@ function lineTarget(highlight: HTMLElement): HTMLElement {
 
 let measureCanvas: HTMLCanvasElement | null = null;
 
-/** Paint the highlight line for one highlighted name. Returns the element that received it. */
-export function paintSidePanelHighlightLine(
-  highlight: HTMLElement,
-): HTMLElement | null {
-  const target = lineTarget(highlight);
+function measureLine(target: HTMLElement): {
+  width: number;
+  fontSize: number;
+  holes: HighlightLineHole[];
+} | null {
   const text = target.textContent ?? "";
   const width = target.getBoundingClientRect().width;
   if (width <= 0 || text.length === 0) return null;
@@ -123,13 +129,46 @@ export function paintSidePanelHighlightLine(
     };
   });
   const scale = measuredWidth > 0 ? width / measuredWidth : 1;
-  target.style.backgroundImage = buildHighlightLineGradient(
+  return {
     width,
     fontSize,
-    holes.map((hole) => ({
+    holes: holes.map((hole) => ({
       start: hole.start * scale,
       end: hole.end * scale,
     })),
+  };
+}
+
+/** Paint the highlight line for one highlighted name. Returns the element that received it. */
+export function paintSidePanelHighlightLine(
+  highlight: HTMLElement,
+): HTMLElement | null {
+  const target = lineTarget(highlight);
+  const measured = measureLine(target);
+  if (!measured) return null;
+  target.style.backgroundImage = buildHighlightLineGradient(
+    measured.width,
+    measured.fontSize,
+    measured.holes,
+  );
+  return target;
+}
+
+const NEW_ITEM_LINE_MASK = "--side-panel-new-item-mask";
+
+/** Mask for the red dotted line: faded ends, and a gap where a letter would cross it. */
+export function paintSidePanelNewItemLine(
+  line: HTMLElement,
+): HTMLElement | null {
+  const target = lineTarget(line);
+  const measured = measureLine(target);
+  if (!measured) return null;
+  target.style.setProperty(
+    NEW_ITEM_LINE_MASK,
+    buildHighlightLineGradient(measured.width, measured.fontSize, measured.holes, {
+      color: "#000",
+      centerGap: false,
+    }),
   );
   return target;
 }
@@ -154,5 +193,25 @@ export function syncSidePanelHighlightLines(
       const target = paintSidePanelHighlightLine(highlight);
       if (target) painted.push(target);
     });
+  return painted;
+}
+
+/**
+ * Same lifetime as the dotted underline. The mask is an inline custom property,
+ * so a name that loses the class keeps the holes until this clears them.
+ */
+export function syncSidePanelNewItemLines(
+  root: ParentNode | null,
+  previous: readonly HTMLElement[],
+): HTMLElement[] {
+  for (const node of previous) {
+    node.style.removeProperty(NEW_ITEM_LINE_MASK);
+  }
+  if (!root) return [];
+  const painted: HTMLElement[] = [];
+  root.querySelectorAll<HTMLElement>(".side-panel-new-item-line").forEach((line) => {
+    const target = paintSidePanelNewItemLine(line);
+    if (target) painted.push(target);
+  });
   return painted;
 }

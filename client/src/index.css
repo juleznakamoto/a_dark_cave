@@ -1450,6 +1450,38 @@ html.adc-text-large .side-panel-item-list {
   pointer-events: none;
 }
 
+/* New side-panel item: red dots under the name only. Same lifetime as the glow.
+   --side-panel-new-item-mask fades both ends and opens a gap where a letter
+   would cross the line, measured the same way as the hover underline.
+   The count, glyph, and damage mark stay plain. No extra row height. */
+.side-panel-new-item-line:not(:has(> .side-panel-name)),
+.side-panel-new-item-line>.side-panel-name {
+  position: relative;
+}
+
+.side-panel-new-item-line:not(:has(> .side-panel-name))::before,
+.side-panel-new-item-line>.side-panel-name::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background-image: radial-gradient(circle, theme("colors.red.700") 1px, transparent 1px);
+  background-size: 6px 2px;
+  background-repeat: repeat-x;
+  background-position: bottom;
+  pointer-events: none;
+  -webkit-mask-image: var(--side-panel-new-item-mask);
+  mask-image: var(--side-panel-new-item-mask);
+}
+
+/* The white highlight line replaces the dots until the highlight leaves. */
+.side-panel-highlight-line.side-panel-new-item-line:not(:has(> .side-panel-name))::before,
+.side-panel-highlight-line.side-panel-new-item-line>.side-panel-name::before {
+  content: none;
+}
+
 .game-panel-header-indicator-glyph--md {
   font-size: calc(12px * var(--adc-indicator-scale, 1));
 }

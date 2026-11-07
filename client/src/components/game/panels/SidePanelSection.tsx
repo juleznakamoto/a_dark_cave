@@ -18,7 +18,10 @@ import {
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import ResourceChangeNotification from "./ResourceChangeNotification";
-import { syncSidePanelHighlightLines } from "./sidePanelHighlightLine";
+import {
+  syncSidePanelHighlightLines,
+  syncSidePanelNewItemLines,
+} from "./sidePanelHighlightLine";
 import { SidePanelSectionIcon } from "./SidePanelSectionIcon";
 import { useGameStore } from "@/game/state";
 import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
@@ -299,6 +302,8 @@ export function useSidePanelActiveTooltipHoverId(): string | null {
 const RESOURCE_ROW_TEXT_CLASS = "text-xs leading-tight";
 /** Bright side-panel names. The line fades at both ends. Counts and coin glyphs stay plain. */
 const HIGHLIGHTED_WORD_CLASS = "side-panel-highlight-line";
+/** Red dotted underline. Same items, and the same window, as the new-item glow. */
+const NEW_ITEM_LINE_CLASS = "side-panel-new-item-line";
 /** Third column: production rate and change popup share one right-aligned slot. */
 const RESOURCE_DELTA_SLOT_CLASS =
   "block w-full min-w-[3rem] text-right font-mono tabular-nums whitespace-nowrap";
@@ -869,6 +874,14 @@ export default function SidePanelSection({
     return () => clearTimeout(timeout);
   }, [pulseCandidateKey, newItemPulseStartedAt, hoveredTooltips, pulseNow]);
 
+  const paintedNewItemLinesRef = useRef<HTMLElement[]>([]);
+  useLayoutEffect(() => {
+    paintedNewItemLinesRef.current = syncSidePanelNewItemLines(
+      rootRef.current,
+      paintedNewItemLinesRef.current,
+    );
+  }, [pulseCandidateKey, pulseNow, hoveredTooltips, highlightLineSig]);
+
   const [maxAnimatedItems, setMaxAnimatedItems] = useState<Set<string>>(
     new Set(),
   );
@@ -1211,6 +1224,13 @@ export default function SidePanelSection({
         ? item.label.replace(" ↓", "")
         : null;
 
+    const nameMarkClass = cn(
+      isHighlighted && HIGHLIGHTED_WORD_CLASS,
+      newItemPulseClass && NEW_ITEM_LINE_CLASS,
+    );
+    const markedName = (name: React.ReactNode) =>
+      nameMarkClass ? <span className={nameMarkClass}>{name}</span> : name;
+
     const labelContent = (
       <span
         className={cn(
@@ -1238,19 +1258,11 @@ export default function SidePanelSection({
         )}
         {damagedFortificationName !== null ? (
           <>
-            {isHighlighted ? (
-              <span className={HIGHLIGHTED_WORD_CLASS}>
-                {damagedFortificationName}
-              </span>
-            ) : (
-              damagedFortificationName
-            )}
+            {markedName(damagedFortificationName)}
             <span className="text-red-800 ml-1">↓</span>
           </>
-        ) : isHighlighted ? (
-          <span className={HIGHLIGHTED_WORD_CLASS}>{item.label}</span>
         ) : (
-          item.label
+          markedName(item.label)
         )}
       </span>
     );

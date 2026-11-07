@@ -63,6 +63,9 @@ describe("SidePanelSection new-item glow", () => {
   it("stops the glow after the same window as the event log", async () => {
     renderAxe();
     expect(axeLabel().className).toContain("new-item-pulse-text");
+    expect(axeLabel().querySelector(".side-panel-new-item-line")?.textContent).toBe(
+      AXE,
+    );
     const startedAt = useGameStore.getState().newItemPulseStartedAt.stone_axe;
     expect(typeof startedAt).toBe("number");
 
@@ -71,6 +74,7 @@ describe("SidePanelSection new-item glow", () => {
     });
 
     expect(axeLabel().className).not.toContain("new-item-pulse-text");
+    expect(axeLabel().querySelector(".side-panel-new-item-line")).toBeNull();
     expect(useGameStore.getState().newItemPulseStartedAt.stone_axe).toBe(
       startedAt,
     );
@@ -84,6 +88,39 @@ describe("SidePanelSection new-item glow", () => {
     });
     renderAxe();
     expect(axeLabel().className).not.toContain("new-item-pulse-text");
+    expect(axeLabel().querySelector(".side-panel-new-item-line")).toBeNull();
+  });
+
+  it("puts the dotted line under the name and leaves the count plain", () => {
+    render(
+      <SidePanelSection
+        title="Buildings"
+        sectionId="buildings"
+        items={[
+          {
+            id: "woodenHut",
+            label: (
+              <>
+                <span className="side-panel-name">Wooden Hut</span>
+                <span className="text-muted-foreground"> (8)</span>
+              </>
+            ),
+            value: 8,
+            tooltip: true,
+          },
+        ]}
+      />,
+    );
+
+    const line = document.querySelector(".side-panel-new-item-line");
+    const count = Array.from(document.querySelectorAll("span")).find(
+      (node) => node.textContent === " (8)",
+    );
+    expect(line?.querySelector(".side-panel-name")?.textContent).toBe(
+      "Wooden Hut",
+    );
+    expect(count?.className).not.toContain("side-panel-new-item-line");
+    expect(count?.parentElement).toBe(line);
   });
 
   it("does not restart the clock once it has been recorded", () => {

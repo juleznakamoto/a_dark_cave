@@ -6,21 +6,20 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Added
 
-- While the Steam game is paused, your play time fades in beside the pause button and fades out when you resume.
+- New items in the side panel have a red dotted line now so they are easier to see.
+- While the game is paused, your play time is now shown beside the pause button.
 
 ### Changed
 
-- The hotkey hint fades in when you pause and fades out when you resume.
-- After you win the game once, you can provoke an attack wave as soon as its countdown starts.
-- Superior Bombs makes a thrown bomb half as likely to blow back on you.
-- An achievement category's icon glows, and gives off sparks in that category's color, while you still have a reward to claim there.
-- While the Steam game is minimized, it stops redrawing and uses less of the machine.
-- If you play in Turkish, many item, building, and event names have changed, and the writing reads more naturally.
+- After you win the game once, you can provoke an attack wave immeditaly instead of having to wait for 5 minutes.
+- Superior Bombs blessing now makes a thrown bomb half as likely to blow back on you (5% -> 2.5%).
+- An achievement category's icon glows, and gives off sparks while you still have a reward to claim there.
+- While the game is minimized, it now uses less computation (Thanks to Kuroiteiken).
+- Turkish localization has been improved (Thanks to Kuroiteiken).
 
 ### Fixed
 
-- Highlighting a name in the side panel no longer shifts the rows under it.
-- Extra workers add about as much as the worker before them when Heartfire, madness, or a storm is changing a job. A job that makes 1 no longer shows an inflated total from those effects stacking.
+- Calculation of workers output while having multiple positive and negative production effects has been fixed.
 
 ## 2026-11-06
 
