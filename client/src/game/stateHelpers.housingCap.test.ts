@@ -154,3 +154,25 @@ describe("reconcileInFlightExecutionsOnLoad ghost expedition", () => {
     expect(reconciled.villagers?.free).toBe(5);
   });
 });
+
+describe("getMaxPopulation temple blessing", () => {
+  it("adds 4 housing with Flame's Touch", () => {
+    const state = housingState({
+      buildings: { woodenHut: 3 },
+      blessings: { flames_touch: true } as GameState["blessings"],
+    });
+    expect(getMaxPopulation(state)).toBe(6 + 4);
+  });
+
+  it("adds 8 housing once the blessing is deepened", () => {
+    // Deepening keeps flames_touch set next to flames_touch_enhanced.
+    const state = housingState({
+      buildings: { woodenHut: 3 },
+      blessings: {
+        flames_touch: true,
+        flames_touch_enhanced: true,
+      } as GameState["blessings"],
+    });
+    expect(getMaxPopulation(state)).toBe(6 + 8);
+  });
+});

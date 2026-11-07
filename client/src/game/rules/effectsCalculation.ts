@@ -1308,9 +1308,6 @@ export const calculateTotalEffects = (state: GameState) => {
       enchant.baseKnowledge + enchant.enchantKnowledge;
   });
 
-  // Add relic effects directly to statBonuses
-  if (state.relics.ravens_orb) effects.statBonuses.knowledge += 6;
-
   // Blessing effects
   if (state.blessings?.dagons_gift) {
     effects.resource_multiplier.hunt =

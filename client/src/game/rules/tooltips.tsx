@@ -1068,7 +1068,7 @@ export const fogTooltip: TooltipConfig = {
           </div>
           <div>
             {getUiTooltip("productionBonus", "Production Bonus: {{value}}", {
-              value: "-50%",
+              value: "-25%",
             })}
           </div>
           <div>{formatEffectRemaining(remainingMs)}</div>

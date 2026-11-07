@@ -110,3 +110,17 @@ describe("slaveTrader freeSlaves", () => {
     expect(choice.success_chance!(baseState())).toBe(1);
   });
 });
+
+describe("slaveTrader sellVillagers", () => {
+  it("adds 1 to event madness", () => {
+    // stats.madness is recalculated from its sources, so the +1 has to land
+    // in madnessFromEvents to last.
+    const choice = choiceEvents.slaveTrader.choices!.find(
+      (c) => c.id === "sellVillagers",
+    )!;
+    const result = choice.effect(baseState());
+
+    expect(result._logMessageKey).toBe("outcome0");
+    expect(result.stats?.madnessFromEvents).toBe(3);
+  });
+});

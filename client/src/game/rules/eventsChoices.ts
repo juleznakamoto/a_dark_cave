@@ -30,6 +30,14 @@ export function getAbandonedCartSuccessChance(state: GameState): number {
   return abandonedCartSuccess.success_chance(state);
 }
 
+/** Refusing the mirror lets the wandering collector offer it later. */
+function refuseBlackenedMirror(state: GameState) {
+  return {
+    ...collectorItemRejectedStoryPatch(state, "blackened_mirror"),
+    _logMessageKey: "outcome1",
+  };
+}
+
 /** Death outcomes only draw from unassigned villagers at the forest edge. */
 function paleFigureFreeVillagers(state: GameState): number {
   return state.villagers?.free ?? 0;
@@ -222,14 +230,14 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "refuseMirror",
-        effect: (state: GameState) => {
-          return {
-            ...collectorItemRejectedStoryPatch(state, "blackened_mirror"),
-            _logMessageKey: "outcome1",
-          };
-        },
+        effect: refuseBlackenedMirror,
       },
     ],
+    // Like the other timed tabs, letting the timer run out counts as refusing.
+    fallbackChoice: {
+      id: "refuseMirror",
+      effect: refuseBlackenedMirror,
+    },
   },
 
   cthulhuFigure: {
@@ -1171,6 +1179,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             stats: { ...state.stats, ...(tradeResult.stats || {}) },
           };
           const leaveResult = killVillagers(stateAfterTrade, remainingPopulation);
+          const statsAfterLeave = leaveResult.stats || stateAfterTrade.stats;
 
           return {
             ...leaveResult,
@@ -1178,10 +1187,11 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.resources,
               steel: state.resources.steel + 100,
             },
+            // stats.madness is recalculated from its sources, so event
+            // madness has to go into madnessFromEvents (as freeSlaves does).
             stats: {
-              ...(leaveResult.stats || stateAfterTrade.stats),
-              madness:
-                (leaveResult.stats?.madness ?? stateAfterTrade.stats.madness) + 1,
+              ...statsAfterLeave,
+              madnessFromEvents: (statsAfterLeave.madnessFromEvents || 0) + 1,
             },
             story: {
               ...state.story,
