@@ -4,6 +4,15 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ## Unreleased
 
+### Changed
+
+- While you sleep, the village cycle ring sits beside the Sleeping title, fills smoothly, and its tooltip shows your sleep production and the next cycle.
+- The cycle ring on the village panel fills more smoothly.
+
+### Fixed
+
+- While you sleep, steel, leather, and insight add up across cycles, only whole units go into your stores, and a gain shows a decimal only while it is still under 1.
+
 ## 2026-11-07
 
 ### Added

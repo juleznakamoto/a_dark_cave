@@ -3,7 +3,9 @@ import type { GameState } from "@shared/schema";
 import {
   capSleepGainDeltasToStorageRoom,
   getSleepTotalGainDisplay,
-  roundSleepCycleRates,
+  sleepWholeUnits,
+  splitSleepDecimal,
+  tidySleepAmount,
 } from "./sleepGainDisplay";
 
 function stateWithStorage(storageBuilding?: string): GameState {
@@ -21,24 +23,61 @@ function stateWithStorage(storageBuilding?: string): GameState {
   return { buildings, clothing: {} } as GameState;
 }
 
-describe("roundSleepCycleRates", () => {
-  it("rounds half-up so a 0.6 food rate pays 1 per cycle", () => {
-    expect(roundSleepCycleRates({ food: 0.6, wood: 5.4, bones: 0.4 })).toEqual({
-      food: 1,
-      wood: 5,
+describe("sleep whole units", () => {
+  it("banks a 0.2 rate until the fifth cycle", () => {
+    const rate = tidySleepAmount(1 * 0.2);
+    expect(rate).toBe(0.2);
+    expect(sleepWholeUnits(rate)).toBe(0);
+    expect(sleepWholeUnits(tidySleepAmount(rate * 4))).toBe(0);
+    expect(sleepWholeUnits(tidySleepAmount(rate * 5))).toBe(1);
+  });
+
+  it("does not turn 0.6 into a whole unit", () => {
+    expect(sleepWholeUnits(0.6)).toBe(0);
+    expect(sleepWholeUnits(1.2)).toBe(1);
+  });
+
+  it("truncates costs toward zero so a fraction is not charged yet", () => {
+    expect(sleepWholeUnits(-0.4)).toBe(0);
+    expect(sleepWholeUnits(-1)).toBe(-1);
+    expect(sleepWholeUnits(-1.2)).toBe(-1);
+  });
+
+  it("stays on hundredths when 0.2 is added repeatedly", () => {
+    let total = 0;
+    for (let i = 0; i < 960; i++) total = tidySleepAmount(total + 0.2);
+    expect(total).toBe(192);
+    expect(sleepWholeUnits(total)).toBe(192);
+  });
+});
+
+describe("splitSleepDecimal", () => {
+  it("uses one decimal when the hundredth is zero", () => {
+    expect(splitSleepDecimal(0.2)).toEqual({
+      negative: false,
+      whole: 0,
+      fraction: ".2",
+    });
+    expect(splitSleepDecimal(19)).toEqual({
+      negative: false,
+      whole: 19,
+      fraction: ".0",
+    });
+    expect(splitSleepDecimal(-1.4)).toEqual({
+      negative: true,
+      whole: 1,
+      fraction: ".4",
     });
   });
 
-  it("rounds 0.5 to 1 and drops exact zeros", () => {
-    expect(roundSleepCycleRates({ food: 0.5, stone: 0, fur: -0.4 })).toEqual({
-      food: 1,
+  it("keeps the second decimal for a 5% intensity step", () => {
+    expect(splitSleepDecimal(0.25)).toMatchObject({
+      whole: 0,
+      fraction: ".25",
     });
-  });
-
-  it("keeps whole-number consumption", () => {
-    expect(roundSleepCycleRates({ food: -0.6, wood: -2 })).toEqual({
-      food: -1,
-      wood: -2,
+    expect(splitSleepDecimal(1.05)).toMatchObject({
+      whole: 1,
+      fraction: ".05",
     });
   });
 });
@@ -67,6 +106,13 @@ describe("sleep total gain vs storage max", () => {
   it("preserves negative totals (net loss)", () => {
     const state = stateWithStorage();
     expect(getSleepTotalGainDisplay("wood", -25, 500, state)).toBe(-25);
+    expect(getSleepTotalGainDisplay("wood", -1.2, 500, state)).toBe(-1.2);
+  });
+
+  it("keeps a fractional gain under the storage room", () => {
+    const state = stateWithStorage();
+    expect(getSleepTotalGainDisplay("wood", 9.6, 490, state)).toBe(9.6);
+    expect(getSleepTotalGainDisplay("wood", 10.4, 490, state)).toBe(10);
   });
 
   it("caps accumulated deltas so wake payout cannot exceed room", () => {

@@ -34,8 +34,9 @@ export function capSleepGainDeltasToStorageRoom(
 ): Record<string, number> {
   const capped: Record<string, number> = { ...deltas };
   for (const resource of Object.keys(capped)) {
-    const delta = capped[resource];
-    if (delta === undefined || !(delta > 0)) continue;
+    const delta = tidySleepAmount(capped[resource] ?? 0);
+    capped[resource] = delta;
+    if (!(delta > 0)) continue;
     if (!isResourceLimited(resource, gameState as GameState)) continue;
     const cap = getSleepResourceStorageCap(resource, gameState);
     const initial = initialResources[resource] || 0;
@@ -48,33 +49,55 @@ export function capSleepGainDeltasToStorageRoom(
 }
 
 /**
- * Sleep pays whole units only. 0.5 rounds to 1 so the rate column and each
- * 15s cycle stay in sync (no fractional bank).
+ * Snap to hundredths. Sleep intensity steps by 5%, so a cycle rate lands on
+ * 0.05. Snapping also keeps a repeated 0.2 from drifting off 1.
  */
-export function roundSleepCycleRates(
-  rates: Record<string, number>,
-): Record<string, number> {
-  const rounded: Record<string, number> = {};
-  for (const [resource, amount] of Object.entries(rates)) {
-    const whole = Math.round(amount);
-    if (whole !== 0) {
-      rounded[resource] = whole;
-    }
-  }
-  return rounded;
+export function tidySleepAmount(amount: number): number {
+  if (!Number.isFinite(amount)) return 0;
+  return Math.round(amount * 100) / 100;
 }
 
-/** Total-gain column: never count overflow past storage room. */
+/**
+ * Whole units that count toward stores. The fraction stays banked until it
+ * reaches 1 in either direction.
+ */
+export function sleepWholeUnits(amount: number): number {
+  const whole = Math.trunc(tidySleepAmount(amount));
+  return whole === 0 ? 0 : whole;
+}
+
+export type SleepDecimalParts = {
+  negative: boolean;
+  whole: number;
+  /** Includes the dot, e.g. ".2", ".25", or ".0". */
+  fraction: string;
+};
+
+/** Split a sleep amount so the fractional part can render apart from the whole units. */
+export function splitSleepDecimal(amount: number): SleepDecimalParts {
+  const tidied = tidySleepAmount(amount);
+  const negative = tidied < 0;
+  const abs = Math.abs(tidied);
+  const whole = Math.trunc(abs);
+  const hundredths = Math.round((abs - whole) * 100);
+  const fraction =
+    hundredths % 10 === 0
+      ? `.${hundredths / 10}`
+      : `.${String(hundredths).padStart(2, "0")}`;
+  return { negative, whole, fraction };
+}
+
+/** Total-gain column: never count overflow past storage room. Keeps the fraction. */
 export function getSleepTotalGainDisplay(
   resource: string,
   accumulatedDelta: number,
   initialAmount: number,
   gameState: SleepStorageState,
 ): number {
-  const total = Math.floor(accumulatedDelta);
+  const total = tidySleepAmount(accumulatedDelta);
   if (!isResourceLimited(resource, gameState as GameState)) return total;
   if (total <= 0) return total;
   const cap = getSleepResourceStorageCap(resource, gameState);
-  const maxGain = Math.max(0, Math.floor(cap - initialAmount));
+  const maxGain = Math.max(0, tidySleepAmount(cap - initialAmount));
   return Math.min(total, maxGain);
 }

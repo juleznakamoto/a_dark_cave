@@ -8,19 +8,27 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { CircularProgress } from "@/components/ui/circular-progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
-  GAME_INFO_GLYPH_CLASS,
-  GAME_INFO_TRIGGER_CLASS,
+  GAME_PANEL_HEADER_INDICATOR_CLASS,
+  GAME_PANEL_HEADER_INDICATOR_INNER_CLASS,
+  GAME_PANEL_HEADER_INDICATOR_SIZE_PX,
+  GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS,
 } from "@/components/game/gameChrome";
+import { headerIndicatorIcon } from "@/game/headerIndicatorIcons";
 import { useShallow } from "zustand/react/shallow";
 import { useGameStore } from "@/game/state";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
 import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
-import { capitalizeWords, cn } from "@/lib/utils";
+import { capitalizeWords, cn, formatNumber } from "@/lib/utils";
 import { getTotalPopulationEffects } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
-import { resetProductionCycle, resolveSleepDialogInit } from "@/game/loop";
+import {
+  CYCLE_RING_FRAME_MS,
+  resetProductionCycle,
+  resolveSleepDialogInit,
+} from "@/game/loop";
 import { logger } from "@/lib/logger";
 import { BOMB_RESOURCES, constrainResourceAmount } from "@/game/resourceLimits";
 import { gameStateSchema, type GameState } from "@shared/schema";
@@ -71,7 +79,9 @@ import {
   capSleepGainDeltasToStorageRoom,
   getSleepTotalGainDisplay,
   isSleepResourceAtStorageMax,
-  roundSleepCycleRates,
+  sleepWholeUnits,
+  splitSleepDecimal,
+  tidySleepAmount,
 } from "@/game/sleepGainDisplay";
 
 /** Match live play: soft storage cap during sleep (preserve event overcap, no further gains). */
@@ -100,9 +110,9 @@ function clampSimulatedResourcesToStorage(
 const SLEEP_PRODUCTION_OPTIONS = { excludeTemporaryBonuses: true };
 
 /**
- * Sleep production per 15s cycle (dialog rate column + tick payout).
+ * Exact sleep production per 15s cycle (not rounded).
  * Same net math as the village side panel, with temp bonuses excluded and sleep
- * intensity applied, then rounded to whole units so display and each cycle match.
+ * intensity applied. Fractions bank until they reach a whole unit.
  */
 function getProductionPerInterval(
   state: any,
@@ -118,16 +128,19 @@ function getProductionPerInterval(
   );
   const productionPerInterval: Record<string, number> = {};
   for (const [resource, amount] of Object.entries(effects)) {
-    if (amount !== 0) {
-      productionPerInterval[resource] = amount * multiplier;
-    }
+    if (amount === 0) continue;
+    const rate = tidySleepAmount(amount * multiplier);
+    if (rate !== 0) productionPerInterval[resource] = rate;
   }
   const insight = getPassiveInsightPerCycle(state);
   if (insight > 0) {
-    productionPerInterval.insight =
-      (productionPerInterval.insight || 0) + insight * multiplier;
+    const rate = tidySleepAmount(
+      (productionPerInterval.insight || 0) + insight * multiplier,
+    );
+    if (rate !== 0) productionPerInterval.insight = rate;
+    else delete productionPerInterval.insight;
   }
-  return roundSleepCycleRates(productionPerInterval);
+  return productionPerInterval;
 }
 
 /** Apply one sleep production interval onto absolute resource amounts. */
@@ -139,9 +152,108 @@ function applySleepProductionInterval(
   const rates = getProductionPerInterval(state, multiplier);
   const before: Record<string, number> = { ...resources };
   for (const [resource, rate] of Object.entries(rates)) {
-    resources[resource] = (resources[resource] || 0) + rate;
+    resources[resource] = tidySleepAmount((resources[resource] || 0) + rate);
   }
   clampSimulatedResourcesToStorage(resources, state as GameState, before);
+}
+
+/** Same 15s production cycle and 8 Hz clock as the village ring. */
+const SLEEP_CYCLE_MS = 15_000;
+
+function sleepCycleProgress(startTime: number, now: number, active: boolean): number {
+  if (!active || startTime <= 0) return 0;
+  const into = Math.max(0, now - startTime) % SLEEP_CYCLE_MS;
+  return Math.min((into / SLEEP_CYCLE_MS) * 100, 100);
+}
+
+/**
+ * Cycle ring for the sleep dialog. Ticks on its own so the resource table
+ * stays on the once-a-second clock.
+ */
+function SleepCycleIndicator({
+  startTime,
+  active,
+  percent,
+}: {
+  startTime: number;
+  active: boolean;
+  percent: number;
+}) {
+  const { t } = useUiTranslation();
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    if (!active || startTime <= 0) return;
+    const id = setInterval(() => setNow(Date.now()), CYCLE_RING_FRAME_MS);
+    return () => clearInterval(id);
+  }, [active, startTime]);
+
+  const progress = sleepCycleProgress(startTime, now, active);
+  const secondsRemaining = active
+    ? Math.max(0, Math.ceil(((100 - progress) / 100) * (SLEEP_CYCLE_MS / 1000)))
+    : 0;
+  const cycleIcon = headerIndicatorIcon("cycle");
+
+  return (
+    <TooltipWrapper
+      tooltip={
+        <div className="text-xs">
+          <div className="font-semibold">{t("village.cycle")}</div>
+          {active && (
+            <div>
+              {t("village.nextCycleIn", {
+                seconds: secondsRemaining,
+              })}
+            </div>
+          )}
+          <div className="border-t border-gray-600 my-1" />
+          <div>
+            {t("idleMode.villageProduction", {
+              percent,
+              defaultValue: "Village production: {{percent}}%",
+            })}
+          </div>
+          <div className="border-t border-gray-600 my-1" />
+          <div className="text-gray-400/70">
+            {t("idleMode.villageProductionTooltip", {
+              defaultValue:
+                "Temporary production bonuses not active while sleeping",
+            })}
+          </div>
+        </div>
+      }
+      tooltipId="idle-mode-village-production"
+      disabled
+      side="bottom"
+      tooltipContentClassName="max-w-xs"
+      tooltipTriggerClassName={GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS}
+      className={GAME_PANEL_HEADER_INDICATOR_CLASS}
+    >
+      <div
+        className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}
+        role="img"
+        aria-label={t("idleMode.villageProductionInfoAriaLabel", {
+          defaultValue: "Village production details",
+        })}
+      >
+        <CircularProgress
+          value={progress}
+          size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
+          fill
+          strokeWidth={2}
+          className={cycleIcon.ringClassName}
+        />
+        <span className={cycleIcon.glyphClassName}>{cycleIcon.symbol}</span>
+      </div>
+    </TooltipWrapper>
+  );
+}
+
+/** Rate column. The whole number and the decimal share one color. */
+function formatSleepRate(amount: number): string {
+  const parts = splitSleepDecimal(amount);
+  const sign = parts.negative ? "-" : "+";
+  return `${sign}${formatNumber(parts.whole)}${parts.fraction}`;
 }
 
 export default function IdleModeDialog() {
@@ -445,11 +557,13 @@ function IdleModeDialogOpen() {
       useGameStore.setState(timerPatch as Partial<typeof currentGameState>);
     }
 
-    // Apply accumulated resources to the game state
+    // Apply whole units only. The fraction stays uncollected.
     Object.entries(accumulatedResources).forEach(([resource, amount]) => {
+      const whole = sleepWholeUnits(amount);
+      if (whole === 0) return;
       useGameStore.getState().updateResource(
         resource as keyof typeof state.resources,
-        Math.floor(amount),
+        whole,
       );
     });
 
@@ -499,10 +613,14 @@ function IdleModeDialogOpen() {
 
     if (Object.keys(accumulatedResources).length > 0) {
       const resourcesList = Object.entries(accumulatedResources)
-        .filter(([_, amount]) => Math.floor(amount) !== 0)
+        .map(([resource, amount]) => {
+          const whole = sleepWholeUnits(amount);
+          return { resource, whole };
+        })
+        .filter(({ whole }) => whole !== 0)
         .map(
-          ([resource, amount]) =>
-            `${getResourceName(resource, capitalizeWords(resource))}: ${Math.floor(amount) > 0 ? "+" : ""}${Math.floor(amount)}`,
+          ({ resource, whole }) =>
+            `${getResourceName(resource, capitalizeWords(resource))}: ${whole > 0 ? "+" : ""}${whole}`,
         )
         .join(", ");
 
@@ -617,8 +735,8 @@ function IdleModeDialogOpen() {
     if (BOMB_RESOURCES.includes(r as (typeof BOMB_RESOURCES)[number])) {
       return false;
     }
-    const rate = productionPerInterval[r] ?? 0;
-    const total = Math.floor(accumulatedResources[r] || 0);
+    const rate = tidySleepAmount(productionPerInterval[r] ?? 0);
+    const total = tidySleepAmount(accumulatedResources[r] || 0);
     return rate !== 0 || total !== 0;
   });
   const displayResources = [
@@ -650,7 +768,14 @@ function IdleModeDialogOpen() {
         hideOverlay={true}
       >
         <DialogHeader>
-          <DialogTitle className="pr-0">{t("idleMode.sleeping")}</DialogTitle>
+          <div className="game-panel-produce-effects flex items-center gap-1.5">
+            <DialogTitle className="pr-0">{t("idleMode.sleeping")}</DialogTitle>
+            <SleepCycleIndicator
+              startTime={startTime}
+              active={isActive}
+              percent={villageProductionPercent}
+            />
+          </div>
           <DialogDescription className="py-1 space-y-2 text-xs">
             {isTimeUp ? (
               <span className="pt-2">{t("idleMode.awake")}</span>
@@ -669,57 +794,12 @@ function IdleModeDialogOpen() {
         </DialogHeader>
 
         <div className="pb-1.5 border-border text-xs space-y-0.5">
-          <div className="text-muted-foreground pb-1 flex items-center gap-1">
-            <span>
-              {t("idleMode.villageProduction", {
-                percent: villageProductionPercent,
-                defaultValue: "Village production: {{percent}}%",
-              })}
-            </span>
-            <TooltipWrapper
-              tooltip={
-                <p className="text-xs">
-                  {t("idleMode.villageProductionTooltip", {
-                    defaultValue:
-                      "Temporary production bonuses not active while sleeping",
-                  })}
-                </p>
-              }
-              tooltipId="idle-mode-village-production-info"
-              disabled
-              tooltipContentClassName="max-w-xs"
-              className={GAME_INFO_TRIGGER_CLASS}
-            >
-              <span
-                className={GAME_INFO_GLYPH_CLASS}
-                aria-label={t("idleMode.villageProductionInfoAriaLabel", {
-                  defaultValue: "Village production details",
-                })}
-              >
-                🛈
-              </span>
-            </TooltipWrapper>
-          </div>
           {displayResources.map((resource) => {
             const isFocus = resource === "Focus";
             const resourceLabel = isFocus
               ? t("estate.focus")
               : getResourceName(resource, capitalizeWords(resource));
-            const currentAmount = isFocus
-              ? focusPoints
-              : Math.floor(
-                (initialResources[resource] || 0) +
-                (accumulatedResources[resource] || 0),
-              );
-            const isAtStorageMax =
-              !isFocus &&
-              isSleepResourceAtStorageMax(resource, currentAmount, state);
-            // Whole numbers only (same as village panel); intensity can yield fractions internally
-            const productionRate = isFocus
-              ? null
-              : Math.round(productionPerInterval[resource] ?? 0);
-            // Last column: stop counting once storage is full (no overflow gains)
-            const totalSinceStart = isFocus
+            const exactGain = isFocus
               ? focusPoints
               : getSleepTotalGainDisplay(
                 resource,
@@ -727,6 +807,20 @@ function IdleModeDialogOpen() {
                 initialResources[resource] || 0,
                 state,
               );
+            const settledGain = isFocus ? focusPoints : sleepWholeUnits(exactGain);
+            const currentAmount = isFocus
+              ? focusPoints
+              : (initialResources[resource] || 0) + settledGain;
+            const gainParts = isFocus ? null : splitSleepDecimal(exactGain);
+            // Decimal only while the first whole unit is still banking.
+            const showGainFraction =
+              gainParts != null && exactGain !== 0 && Math.abs(exactGain) < 1;
+            const isAtStorageMax =
+              !isFocus &&
+              isSleepResourceAtStorageMax(resource, currentAmount, state);
+            const productionRate = isFocus
+              ? null
+              : tidySleepAmount(productionPerInterval[resource] ?? 0);
             // Match side-panel resource numbers: mono + tabular + text-xs
             const numberCellClass =
               "text-right font-mono tabular-nums whitespace-nowrap leading-none flex items-center justify-end min-w-0";
@@ -775,27 +869,31 @@ function IdleModeDialogOpen() {
                 >
                   {!isFocus && (
                     <span className="font-mono tabular-nums">
-                      {(productionRate ?? 0) > 0 ? "+" : ""}
-                      {productionRate}
+                      {formatSleepRate(productionRate ?? 0)}
                     </span>
                   )}
                 </div>
                 <div
                   className={cn(
                     numberCellClass,
-                    totalSinceStart > 0 && "text-green-600",
-                    totalSinceStart < 0 && "text-red-600",
-                    totalSinceStart === 0 && "text-gray-300",
+                    exactGain > 0 && "text-green-600",
+                    exactGain < 0 && "text-red-600",
+                    exactGain === 0 && "text-gray-300",
                   )}
                 >
                   <span className="font-mono tabular-nums">
-                    {totalSinceStart >= 0 ? "+" : "-"}
+                    {exactGain >= 0 ? "+" : "-"}
                   </span>
                   <AnimatedCounter
-                    value={Math.abs(totalSinceStart)}
+                    value={gainParts ? gainParts.whole : Math.abs(focusPoints)}
                     align="end"
                     className="font-mono"
                   />
+                  {showGainFraction && gainParts && (
+                    <span className="font-mono tabular-nums text-muted-foreground">
+                      {gainParts.fraction}
+                    </span>
+                  )}
                 </div>
               </div>
             );

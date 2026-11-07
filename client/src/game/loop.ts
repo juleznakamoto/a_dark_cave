@@ -167,6 +167,8 @@ const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 
 const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minute in milliseconds
 const TARGET_FPS = 4;
 const FRAME_DURATION = 1000 / TARGET_FPS; // 250ms per frame at 4 FPS
+/** Village and sleep cycle rings. Separate from the 4 Hz simulation tick. */
+export const CYCLE_RING_FRAME_MS = 125;
 const SESSION_CHECK_INTERVAL = 5 * 60 * 1000; // Check session every 5 minutes
 
 type AttackWaveTimerMap = GameState["attackWaveTimers"];
@@ -292,6 +294,7 @@ let lastAutoSave = 0;
 let lastProduction = 0;
 let productionPauseStartedAt: number | null = null;
 let loopProgressTimeoutId: NodeJS.Timeout | null = null;
+let cycleProgressInterval: NodeJS.Timeout | null = null;
 let lastRenderTime = 0;
 let lastUserActivity = 0;
 let inactivityCheckInterval: NodeJS.Timeout | null = null;
@@ -396,6 +399,45 @@ export function resolveSleepDialogInit(session: {
   startTime?: number;
 } | null | undefined): "resume" | "startFresh" {
   return (session?.startTime ?? 0) > 0 ? "resume" : "startFresh";
+}
+
+/** Village cycle ring only. Eight writes a second, and only while that tab is open. */
+function publishVillageCycleProgress(now = performance.now()): void {
+  if (!gameLoopRunning || isGameTabHidden()) return;
+  // Hold the full ring for a moment when a cycle completes.
+  if (loopProgressTimeoutId) return;
+  const state = useGameStore.getState();
+  if (state.activeTab !== "village") return;
+  if (
+    state.isPaused ||
+    state.idleModeState?.isActive ||
+    isModalDialogOpen(state) ||
+    isDemoPlayFrozen(state) ||
+    productionPauseStartedAt !== null
+  ) {
+    return;
+  }
+  const elapsed = now - lastProduction;
+  const loopProgress =
+    elapsed >= PRODUCTION_INTERVAL
+      ? 100
+      : Math.min((elapsed / PRODUCTION_INTERVAL) * 100, 100);
+  if (state.loopProgress === loopProgress) return;
+  useGameStore.setState({ loopProgress });
+}
+
+function startVillageCycleProgressClock(): void {
+  if (cycleProgressInterval) clearInterval(cycleProgressInterval);
+  cycleProgressInterval = setInterval(
+    () => publishVillageCycleProgress(),
+    CYCLE_RING_FRAME_MS,
+  );
+}
+
+function stopVillageCycleProgressClock(): void {
+  if (!cycleProgressInterval) return;
+  clearInterval(cycleProgressInterval);
+  cycleProgressInterval = null;
 }
 
 function clearIdleModeDisplayTimeout(): void {
@@ -613,8 +655,9 @@ export function startGameLoop() {
       tickAccumulator += deltaTime;
     }
 
-    // One Zustand write for the 4 Hz clocks. Separate playTime / loopProgress /
+    // One Zustand write for the 4 Hz clocks. Separate playTime /
     // attackWaveTimers setStates were notifying every subscriber 2–3× per frame.
+    // The village cycle ring has its own 8 Hz clock.
     const currentState = useGameStore.getState();
     const shouldAdvancePlayTime =
       !state.isPaused &&
@@ -625,7 +668,6 @@ export function startGameLoop() {
       playTime?: number;
       lifetimePlayTimeMs?: number;
       attackWaveTimers?: AttackWaveTimerMap;
-      loopProgress?: number;
     } = {};
     if (shouldAdvancePlayTime) {
       clockPatch.playTime = currentState.playTime + deltaTime;
@@ -639,17 +681,6 @@ export function startGameLoop() {
       );
       if (waveTimers) {
         clockPatch.attackWaveTimers = waveTimers;
-      }
-      // Village cycle bar is the only loopProgress subscriber. Skip writes
-      // on other tabs so Bastion/Estate sessions do not churn the store at 4 Hz.
-      if (currentState.activeTab === "village") {
-        clockPatch.loopProgress =
-          timestamp - lastProduction >= PRODUCTION_INTERVAL
-            ? 100
-            : Math.min(
-              ((timestamp - lastProduction) / PRODUCTION_INTERVAL) * 100,
-              100,
-            );
       }
     }
     if (Object.keys(clockPatch).length > 0) {
@@ -723,10 +754,12 @@ export function startGameLoop() {
       if (timestamp - lastProduction >= PRODUCTION_INTERVAL) {
         lastProduction = timestamp;
 
-        // Reset to 0 after a brief moment to ensure 100% is visible
+        // Hold 100% for a moment, then the 8 Hz clock takes over from 0.
         if (useGameStore.getState().activeTab === "village") {
+          useGameStore.setState({ loopProgress: 100 });
           if (loopProgressTimeoutId) clearTimeout(loopProgressTimeoutId);
           loopProgressTimeoutId = setTimeout(() => {
+            loopProgressTimeoutId = null;
             useGameStore.setState({ loopProgress: 0 });
           }, 50);
         }
@@ -755,6 +788,7 @@ export function startGameLoop() {
   }
 
   pumpGameTick = tick;
+  startVillageCycleProgressClock();
   scheduleGameTick(FRAME_DURATION);
 }
 
@@ -898,6 +932,7 @@ export function stopGameLoop() {
     clearTimeout(loopProgressTimeoutId);
     loopProgressTimeoutId = null;
   }
+  stopVillageCycleProgressClock();
   productionPauseStartedAt = null;
 
   // Clean up inactivity checker
