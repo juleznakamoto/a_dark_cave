@@ -112,6 +112,7 @@
     "ebonGraceHeartfire": "Verdoppelt den Produktionsbonus des Herzfeuers",
     "superiorBombsBaseDamage": "+20 Grundschaden für Bomben",
     "superiorBombsKnowledgeDamage": "+1 Schaden pro 5 Wissen",
+    "superiorBombsBlowback": "Chance, dass eine Bombe zurückschlägt, halbiert (2,5%)",
     "unlocksVillage": "Schaltet Dorf frei",
     "unlocksForest": "Schaltet Wald frei",
     "unlocksBasicAchievements": "Schaltet einfache Erfolge frei",

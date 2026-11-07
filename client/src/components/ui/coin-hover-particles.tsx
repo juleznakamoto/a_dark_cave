@@ -11,6 +11,7 @@ import React, {
 import { BubblyButtonGlobalPortal } from "@/components/ui/bubbly-button";
 import {
   generateParticleData,
+  getBubbleRemoveDelayMs,
   GOLD_COIN_PARTICLE_CONFIG,
   SILVER_COIN_PARTICLE_CONFIG,
   type BubbleWithParticles,
@@ -28,8 +29,11 @@ export function useCoinHoverParticles(
   options?: {
     zIndex?: number;
     enabled?: boolean;
-    /** Milliseconds between burst emissions while hovered (default 350). */
-    emitIntervalMs?: number;
+    /**
+     * Milliseconds between bursts while hovered (default 350).
+     * A function is called when the next burst is scheduled, not on every render.
+     */
+    emitIntervalMs?: number | (() => number);
     /**
      * Burst origin: center of this element (viewport coords). When omitted, the hook
      * uses an internal ref—`CoinHoverParticleSurface` attaches it to the hover target.
@@ -37,23 +41,39 @@ export function useCoinHoverParticles(
      * ref on the glyph only.
      */
     particleOriginRef?: React.RefObject<HTMLSpanElement | null>;
-    /** Overrides gold/silver presets (e.g. shop glyph color). */
-    particleConfig?: Partial<ParticleConfig>;
+    /**
+     * Overrides gold/silver presets (e.g. shop glyph color).
+     * A function is called when a burst fires, not on every render.
+     */
+    particleConfig?: Partial<ParticleConfig> | (() => Partial<ParticleConfig>);
+    /**
+     * When false, the burst stays in the parent stacking context instead of
+     * `document.body`. Use this when sparks should sit just above a local icon.
+     */
+    portaled?: boolean;
   },
 ) {
   const zIndex = options?.zIndex ?? 50;
   const enabled = options?.enabled !== false;
-  const emitIntervalMs =
-    options?.emitIntervalMs ?? COIN_HOVER_EMIT_INTERVAL_MS;
 
   const [bubbles, setBubbles] = useState<BubbleWithParticles[]>([]);
   const bubbleIdCounter = useRef(0);
-  const emitIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const emitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hoverActiveRef = useRef(false);
   const forcedEmitRef = useRef(false);
   const internalOriginRef = useRef<HTMLSpanElement | null>(null);
   const originRef = options?.particleOriginRef ?? internalOriginRef;
-  const particleConfig = options?.particleConfig;
+  // Hold the latest getter. Spawn calls it; the ring chart does not.
+  const particleConfigRef = useRef(options?.particleConfig);
+  particleConfigRef.current = options?.particleConfig;
+  const emitIntervalMsRef = useRef(options?.emitIntervalMs);
+  emitIntervalMsRef.current = options?.emitIntervalMs;
+
+  const nextEmitDelayMs = useCallback(() => {
+    const value = emitIntervalMsRef.current;
+    if (typeof value === "function") return value();
+    return value ?? COIN_HOVER_EMIT_INTERVAL_MS;
+  }, []);
 
   const spawnParticles = useCallback(() => {
     if (!enabled) return;
@@ -65,8 +85,9 @@ export function useCoinHoverParticles(
     const x = rect.left + rect.width / 2;
     const y = rect.top + rect.height / 2;
 
+    const configured = particleConfigRef.current;
     const config =
-      particleConfig ??
+      (typeof configured === "function" ? configured() : configured) ??
       (resource === "gold"
         ? GOLD_COIN_PARTICLE_CONFIG
         : SILVER_COIN_PARTICLE_CONFIG);
@@ -76,26 +97,32 @@ export function useCoinHoverParticles(
     setBubbles((prev) => [...prev, { id, x, y, particles }]);
     setTimeout(() => {
       setBubbles((prev) => prev.filter((b) => b.id !== id));
-    }, COIN_HOVER_BUBBLE_REMOVE_DELAY_MS);
-  }, [enabled, resource, originRef, particleConfig]);
+    }, getBubbleRemoveDelayMs(config));
+  }, [enabled, resource, originRef]);
 
   const syncEmitInterval = useCallback(() => {
     const shouldEmit =
       enabled && (hoverActiveRef.current || forcedEmitRef.current);
 
     if (shouldEmit) {
-      if (!emitIntervalRef.current) {
+      if (!emitTimerRef.current) {
         spawnParticles();
-        emitIntervalRef.current = setInterval(spawnParticles, emitIntervalMs);
+        const queueNext = () => {
+          emitTimerRef.current = setTimeout(() => {
+            spawnParticles();
+            queueNext();
+          }, nextEmitDelayMs());
+        };
+        queueNext();
       }
       return;
     }
 
-    if (emitIntervalRef.current) {
-      clearInterval(emitIntervalRef.current);
-      emitIntervalRef.current = null;
+    if (emitTimerRef.current) {
+      clearTimeout(emitTimerRef.current);
+      emitTimerRef.current = null;
     }
-  }, [enabled, spawnParticles, emitIntervalMs]);
+  }, [enabled, spawnParticles, nextEmitDelayMs]);
 
   const onMouseEnter = useCallback(() => {
     if (!enabled) return;
@@ -121,15 +148,19 @@ export function useCoinHoverParticles(
     return () => {
       hoverActiveRef.current = false;
       forcedEmitRef.current = false;
-      if (emitIntervalRef.current) {
-        clearInterval(emitIntervalRef.current);
-        emitIntervalRef.current = null;
+      if (emitTimerRef.current) {
+        clearTimeout(emitTimerRef.current);
+        emitTimerRef.current = null;
       }
     };
   }, []);
 
   const portal = (
-    <BubblyButtonGlobalPortal bubbles={bubbles} zIndex={zIndex} />
+    <BubblyButtonGlobalPortal
+      bubbles={bubbles}
+      zIndex={zIndex}
+      portaled={options?.portaled}
+    />
   );
 
   return {

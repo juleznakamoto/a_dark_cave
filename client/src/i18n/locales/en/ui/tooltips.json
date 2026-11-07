@@ -112,6 +112,7 @@
     "ebonGraceHeartfire": "Doubles production bonus from Heartfire",
     "superiorBombsBaseDamage": "+20 base bomb damage",
     "superiorBombsKnowledgeDamage": "+1 damage per 5 Knowledge",
+    "superiorBombsBlowback": "Blowback chance halved (2.5%)",
     "unlocksVillage": "Unlocks Village",
     "unlocksForest": "Unlocks Forest",
     "unlocksBasicAchievements": "Unlocks basic achievements",

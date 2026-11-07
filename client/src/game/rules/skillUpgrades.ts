@@ -206,6 +206,12 @@ export const BOMB_BASE_DAMAGE_BY_ID = {
 /** Extra base damage from the Superior Bombs blessing. */
 export const SUPERIOR_BOMBS_BASE_DAMAGE = 20;
 
+/** Chance a thrown bomb also damages bastion integrity. */
+export const BOMB_BACKFIRE_CHANCE = 0.05;
+
+/** Superior Bombs halves that chance. */
+export const SUPERIOR_BOMBS_BACKFIRE_CHANCE = 0.025;
+
 const BOMB_CRAFT_ACTION_IDS = new Set([
   "craftEmberBomb",
   "craftAshfireBomb",
@@ -237,6 +243,15 @@ export function bombKnowledgeDamageBonus(
   const steps = Math.floor(totalKnowledge / 5);
   const perStep = superiorBombsActive(state) ? 3 : 2;
   return steps * perStep;
+}
+
+/** Chance a thrown bomb also damages bastion integrity. */
+export function bombBackfireChance(
+  state?: { blessings?: { superior_bombs?: boolean } } | null,
+): number {
+  return superiorBombsActive(state)
+    ? SUPERIOR_BOMBS_BACKFIRE_CHANCE
+    : BOMB_BACKFIRE_CHANCE;
 }
 
 /** True while the wrecked hall blocks crafting ember, ashfire, and void bombs. */

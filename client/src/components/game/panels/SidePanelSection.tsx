@@ -1276,7 +1276,7 @@ export default function SidePanelSection({
       isMaxAnimated && !isCriticalZeroResource && "text-yellow-600 font-bold",
       showVillageMaxCapacityHighlight && "text-yellow-500",
       isMadness && madnessClasses,
-      isHighlighted && !isCriticalZeroResource && "font-bold !text-gray-100",
+      isHighlighted && !isCriticalZeroResource && "!text-gray-100",
       isCriticalZeroResource && "resource-critical-blink font-bold",
     );
 

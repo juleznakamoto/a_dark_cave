@@ -18,6 +18,8 @@ import {
   TAB_ICON_SIZE_CLASS,
 } from "@/components/game/gameChrome";
 import { DemoRow, DemoSection } from "@/pages/animations-demo/DemoSection";
+import { ACHIEVEMENT_RING_ICONS } from "@/achievements/achievementRingIcons";
+import { COMPLETE_ICON_COLOR } from "@/achievements/achievementColors";
 
 const REWARDS_GLYPH = "\u2B26";
 
@@ -127,6 +129,19 @@ export function CooldownWashSection() {
 }
 
 function hoverGlyphForPreset(preset: HoverParticleDemoPreset): React.ReactNode {
+  const achievement = ACHIEVEMENT_RING_ICONS.find(
+    (icon) => preset.id === `achievement-${icon.id}`,
+  );
+  if (achievement) {
+    return (
+      <span
+        className="font-noto-symbols-2 text-lg"
+        style={{ color: COMPLETE_ICON_COLOR[achievement.id] }}
+      >
+        {achievement.config.centerSymbol}
+      </span>
+    );
+  }
   switch (preset.id) {
     case "traderTab":
       return (

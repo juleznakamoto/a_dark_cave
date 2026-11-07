@@ -20,6 +20,7 @@ import {
 import {
   BLOODFLAME_SPHERE_UPGRADES,
   BOMB_BASE_DAMAGE_BY_ID,
+  bombBackfireChance,
   bombDisplayedBaseDamage,
   bombKnowledgeDamageBonus,
   CRUSHING_STRIKE_UPGRADES,
@@ -756,8 +757,9 @@ export default function CombatDialog({
       setWasCriticalStrike(false);
       showEnemyDamage(finalDamage);
 
-      // 5% chance for bomb to backfire: hurt player with 100% of its damage
-      const backfire = Math.random() < 0.05;
+      // Blowback: the bomb also hits bastion integrity for its full damage.
+      // 5%, or 2.5% with Superior Bombs.
+      const backfire = Math.random() < bombBackfireChance(gameState);
       if (backfire) {
         const newIntegrityValue = Math.max(0, currentIntegrity - finalDamage);
         setCurrentIntegrity(newIntegrityValue);

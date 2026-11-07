@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { getUnclaimedAchievementIds } from "@/achievements";
 import { isAchievementsGameTabUnlocked } from "@/achievements/configs/overall";
 import {
   isBastionTabVisible,
@@ -141,6 +142,16 @@ describe("dev save catalog", () => {
     expect(boneyardCrossCount(state)).toBe(10);
     expect(state.tools.iron_lantern).toBe(true);
     expect(state.tools.steel_axe).toBe(false);
+    expect(state.books.book_of_trials).toBe(true);
+    expect(state.weapons.arbalest).toBe(true);
+    expect(state.weapons.nightshade_bow).toBe(true);
+    expect(state.weapons.stormglass_halberd).toBe(true);
+    expect(state.story.seen.clarityElixirsUsed).toBe(5);
+    applyDevSaveToStore("bastion");
+    const unclaimed = getUnclaimedAchievementIds(true, true);
+    for (const prefix of ["basic", "building", "item", "action"] as const) {
+      expect(unclaimed.some((id) => id.startsWith(`${prefix}-`))).toBe(true);
+    }
     expect(state.resources.ember_bomb).toBeGreaterThan(0);
   });
 });

@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { memo, useCallback, useEffect, useRef, type CSSProperties, type RefObject } from "react";
 import type { GameState } from "@shared/schema";
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
@@ -19,6 +19,11 @@ import {
 } from "./achievementColors";
 import { isCategoryFullyComplete } from "./achievementProgress";
 import { achievementRingSymbolPaddingTop } from "./achievementRingIcons";
+import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
+import {
+  ACHIEVEMENT_CATEGORY_PARTICLE_EMIT_INTERVAL_MS,
+  getAchievementCategoryParticleConfig,
+} from "@/components/ui/bubbly-button.particles";
 
 interface Props {
   config: AchievementChartConfig;
@@ -30,9 +35,50 @@ interface Props {
   size?: number;
   /** Extra styles for the center glyph (e.g. scaled `paddingTop` nudge on large charts). */
   centerSymbolStyle?: CSSProperties;
+  /**
+   * Coin-style sparks in the category color, from the center glyph.
+   * On while that category still has a reward to claim.
+   */
+  emitParticles?: boolean;
 }
 
 const BASE_SIZE = 58;
+
+/**
+ * Continuous coin burst. Memoized so ring redraws skip it.
+ * Settings are read when a burst fires, not on those redraws.
+ */
+const AchievementCategoryParticleBurst = memo(function AchievementCategoryParticleBurst({
+  categoryId,
+  originRef,
+}: {
+  categoryId: AchievementChartConfig["idPrefix"];
+  originRef: RefObject<HTMLSpanElement | null>;
+}) {
+  const particleConfig = useCallback(
+    () => getAchievementCategoryParticleConfig(categoryId),
+    [categoryId],
+  );
+  const emitIntervalMs = useCallback(
+    () => ACHIEVEMENT_CATEGORY_PARTICLE_EMIT_INTERVAL_MS,
+    [],
+  );
+  const { setForcedEmit, portal } = useCoinHoverParticles("gold", {
+    particleOriginRef: originRef,
+    particleConfig,
+    // Above the ring and center glyph, still inside this chart's layer.
+    zIndex: 1,
+    portaled: false,
+    emitIntervalMs,
+  });
+
+  useEffect(() => {
+    setForcedEmit(true);
+    return () => setForcedEmit(false);
+  }, [setForcedEmit]);
+
+  return portal;
+});
 
 /** Compact label-free ring chart for tab triggers. */
 export default function AchievementMiniRingChart({
@@ -42,6 +88,7 @@ export default function AchievementMiniRingChart({
   centerSymbolClassName,
   size = BASE_SIZE,
   centerSymbolStyle,
+  emitParticles = false,
 }: Props) {
   // Full store subscription — ring fill uses many slices (buildings, tools,
   // story, meta wins, …); getState() + a sleeper-only selector left charts stale.
@@ -78,10 +125,11 @@ export default function AchievementMiniRingChart({
 
   const ringOpacity = isActive ? 1 : 0.9;
   const iconOpacity = isActive ? 1 : 0.5;
+  const glyphRef = useRef<HTMLSpanElement>(null);
 
   return (
     <div
-      className="relative flex items-center justify-center shrink-0 overflow-visible p-1 pointer-events-none select-none"
+      className="relative z-0 flex items-center justify-center shrink-0 overflow-visible p-1 pointer-events-none select-none"
       style={{ width: size, height: size, minWidth: size }}
     >
       <ResponsiveContainer width="100%" height="100%" style={{ opacity: ringOpacity }}>
@@ -174,6 +222,7 @@ export default function AchievementMiniRingChart({
         </PieChart>
       </ResponsiveContainer>
       <span
+        ref={glyphRef}
         className={cn(
           "absolute inset-0 flex items-center justify-center font-noto-symbols-2 font-medium",
           !centerIconColor && "text-foreground",
@@ -189,6 +238,12 @@ export default function AchievementMiniRingChart({
       >
         {config.centerSymbol}
       </span>
+      {emitParticles ? (
+        <AchievementCategoryParticleBurst
+          categoryId={editionConfig.idPrefix}
+          originRef={glyphRef}
+        />
+      ) : null}
     </div>
   );
 }

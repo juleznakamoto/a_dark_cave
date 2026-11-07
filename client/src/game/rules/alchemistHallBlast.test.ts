@@ -11,6 +11,7 @@ import "@/game/rules";
 import { canExecuteAction, shouldShowAction } from "./index";
 import { gameEvents } from "./events";
 import {
+  bombBackfireChance,
   bombDisplayedBaseDamage,
   bombKnowledgeDamageBonus,
   SUPERIOR_BOMBS_BASE_DAMAGE,
@@ -84,6 +85,8 @@ describe("alchemist hall blast", () => {
     expect(bombDisplayedBaseDamage(60, blessed)).toBe(80);
     expect(bombKnowledgeDamageBonus(10)).toBe(4);
     expect(bombKnowledgeDamageBonus(10, blessed)).toBe(6);
+    expect(bombBackfireChance()).toBe(0.05);
+    expect(bombBackfireChance(blessed)).toBe(0.025);
   });
 
   it("blocks bomb crafting until the hall is repaired at half the build cost", () => {

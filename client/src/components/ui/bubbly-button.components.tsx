@@ -276,54 +276,53 @@ function BubblyButtonGlobalPortalContent({
 }) {
   return (
     <div className="fixed inset-0 pointer-events-none" style={{ zIndex }}>
-      <AnimatePresence>
-        {bubbles.map((bubble) => (
-          <div key={bubble.id}>
-            {bubble.particles.map((particle, i) => {
-              const rotate = particle.rotateDeg ?? 0;
-              return (
-                <motion.div
-                  key={`${bubble.id}-${i}`}
-                  className={cn(
-                    "fixed",
-                    !particle.clipPath && "rounded-full",
-                  )}
-                  style={{
-                    width: `${particle.size}px`,
-                    height: `${particle.size}px`,
-                    backgroundColor: particle.color,
-                    left: bubble.x - particle.size / 2,
-                    top: bubble.y - particle.size / 2,
-                    ...(particle.clipPath
-                      ? { clipPath: particle.clipPath }
-                      : null),
-                    willChange: "transform",
-                  }}
-                  initial={{
-                    opacity: 1,
-                    scale: 1,
-                    x: particle.startX,
-                    y: particle.startY,
-                    rotate,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    scale: 0,
-                    x: particle.endX,
-                    y: particle.endY,
-                    rotate,
-                  }}
-                  exit={{ opacity: 0.8 }}
-                  transition={{
-                    duration: particle.duration,
-                    ease: [0, 0, 0.5, 1],
-                  }}
-                />
-              );
-            })}
-          </div>
-        ))}
-      </AnimatePresence>
+      {/* No exit animation. A continuous burst re-renders on every emission,
+          and AnimatePresence then keeps finished sparks in the DOM. */}
+      {bubbles.map((bubble) => (
+        <div key={bubble.id}>
+          {bubble.particles.map((particle, i) => {
+            const rotate = particle.rotateDeg ?? 0;
+            return (
+              <motion.div
+                key={`${bubble.id}-${i}`}
+                className={cn(
+                  "fixed",
+                  !particle.clipPath && "rounded-full",
+                )}
+                style={{
+                  width: `${particle.size}px`,
+                  height: `${particle.size}px`,
+                  backgroundColor: particle.color,
+                  left: bubble.x - particle.size / 2,
+                  top: bubble.y - particle.size / 2,
+                  ...(particle.clipPath
+                    ? { clipPath: particle.clipPath }
+                    : null),
+                  willChange: "transform",
+                }}
+                initial={{
+                  opacity: 1,
+                  scale: 1,
+                  x: particle.startX,
+                  y: particle.startY,
+                  rotate,
+                }}
+                animate={{
+                  opacity: 1,
+                  scale: 0,
+                  x: particle.endX,
+                  y: particle.endY,
+                  rotate,
+                }}
+                transition={{
+                  duration: particle.duration,
+                  ease: [0, 0, 0.5, 1],
+                }}
+              />
+            );
+          })}
+        </div>
+      ))}
     </div>
   );
 }

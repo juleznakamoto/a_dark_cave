@@ -185,6 +185,32 @@ describe("attack waves expansion", () => {
     expect(getProvokeAttackWaveExecutionUpdates(state)).toBeNull();
   });
 
+  it("lets a player who already won provoke a first approach immediately", () => {
+    const state = {
+      hasWonAnyGame: true,
+      story: { seen: { portalBlasted: true }, merchantPurchases: 0 },
+      buildings: { bastion: 1 },
+      weapons: {},
+      resources: { food: 1000 },
+      attackWaveTimers: {
+        firstWave: {
+          startTime: Date.now(),
+          duration: ATTACK_WAVE_INITIAL_DURATION_MS,
+          defeated: false,
+          provoked: false,
+          elapsedTime: 0,
+        },
+      },
+    } as GameState;
+
+    expect(canProvokeAttackWave(state)).toBe(true);
+    const updates = getProvokeAttackWaveExecutionUpdates(state);
+    expect(updates?.attackWaveTimers?.firstWave?.provoked).toBe(true);
+    expect(updates?.attackWaveTimers?.firstWave?.elapsedTime).toBe(
+      ATTACK_WAVE_INITIAL_DURATION_MS,
+    );
+  });
+
   it("lets provoke skip the rest of a first approach after 5 minutes", () => {
     const state = {
       story: { seen: { portalBlasted: true }, merchantPurchases: 0 },

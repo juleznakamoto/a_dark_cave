@@ -19,6 +19,8 @@ import {
   basicChartConfig,
   isBasicAchievementTabUnlocked,
   isOverallAchievementCategoryEnabled,
+  getUnclaimedAchievementIds,
+  hasAnyOverallAchievementReached,
   isOverallAchievementTabUnlocked,
   overallChartConfig,
 } from "@/achievements";
@@ -46,7 +48,10 @@ import type { AchievementChartConfig } from "@/achievements";
 import { getAchievementSegmentWeight } from "@/achievements/achievementTypes";
 import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
-import { NEW_ITEM_PULSE_COLORED_CLASS } from "@/hooks/useNewItemPulseTooltip";
+import {
+  NEW_ITEM_PULSE_CLASS,
+  NEW_ITEM_PULSE_COLORED_CLASS,
+} from "@/hooks/useNewItemPulseTooltip";
 import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
 import {
   chromeRuleColorStyle,
@@ -441,6 +446,7 @@ function TabTriggerWithTooltipWhenLocked({
   isActive,
   disabled,
   hideProgress,
+  pulseCenter,
   lockedTooltip,
   chartUnavailable,
 }: {
@@ -449,6 +455,8 @@ function TabTriggerWithTooltipWhenLocked({
   isActive: boolean;
   disabled: boolean;
   hideProgress?: boolean;
+  /** Center glyph glows while this category still has a reward to claim. */
+  pulseCenter?: boolean;
   lockedTooltip: string;
   chartUnavailable: string;
 }) {
@@ -467,6 +475,8 @@ function TabTriggerWithTooltipWhenLocked({
           config={config}
           isActive={isActive}
           hideProgress={hideProgress ?? disabled}
+          centerSymbolClassName={pulseCenter ? NEW_ITEM_PULSE_CLASS : undefined}
+          emitParticles={pulseCenter}
         />
       </ChartErrorBoundary>
     </TabsTrigger>
@@ -520,6 +530,19 @@ export default function AchievementsPanel() {
   }
   const lockedTooltip = t("achievements.notUnlocked");
   const chartUnavailable = t("achievements.chartUnavailable");
+  // Same gate as the Claim buttons: Basics need the notes or the book,
+  // the other rings need the book. Epic rewards are never claimed.
+  const unclaimedAchievementIds = getUnclaimedAchievementIds(
+    basicUnlocked,
+    bookOfTrials,
+  );
+  const categoryHasUnclaimed = (prefix: AchievementChartConfig["idPrefix"]) =>
+    unclaimedAchievementIds.some((id) => id.startsWith(`${prefix}-`));
+  // Epic rewards are never claimed. A dev save still plays that glow once an
+  // epic achievement is complete, so the category animation can be checked.
+  const devSaveShowsEpicGlow =
+    !!(gameState as GameState & { activeDevSaveId?: string | null })
+      .activeDevSaveId && hasAnyOverallAchievementReached(gameState);
   return (
     <div className="mt-0 flex h-full flex-col min-h-0 overflow-hidden w-full pr-2">
       <Tabs
@@ -536,6 +559,7 @@ export default function AchievementsPanel() {
             isActive={effectiveTab === "basic"}
             disabled={!basicTabEnabled}
             hideProgress={!basicUnlocked}
+            pulseCenter={categoryHasUnclaimed("basic")}
             lockedTooltip={lockedTooltip}
             chartUnavailable={chartUnavailable}
           />
@@ -545,6 +569,7 @@ export default function AchievementsPanel() {
             isActive={effectiveTab === "building"}
             disabled={!bookTabsEnabled}
             hideProgress={!bookOfTrials}
+            pulseCenter={categoryHasUnclaimed("building")}
             lockedTooltip={lockedTooltip}
             chartUnavailable={chartUnavailable}
           />
@@ -554,6 +579,7 @@ export default function AchievementsPanel() {
             isActive={effectiveTab === "item"}
             disabled={!bookTabsEnabled}
             hideProgress={!bookOfTrials}
+            pulseCenter={categoryHasUnclaimed("item")}
             lockedTooltip={lockedTooltip}
             chartUnavailable={chartUnavailable}
           />
@@ -563,6 +589,7 @@ export default function AchievementsPanel() {
             isActive={effectiveTab === "action"}
             disabled={!bookTabsEnabled}
             hideProgress={!bookOfTrials}
+            pulseCenter={categoryHasUnclaimed("action")}
             lockedTooltip={lockedTooltip}
             chartUnavailable={chartUnavailable}
           />
@@ -573,6 +600,7 @@ export default function AchievementsPanel() {
               isActive={effectiveTab === "overall"}
               disabled={!overallTabEnabled}
               hideProgress={!overallUnlocked}
+              pulseCenter={devSaveShowsEpicGlow}
               lockedTooltip={lockedTooltip}
               chartUnavailable={chartUnavailable}
             />

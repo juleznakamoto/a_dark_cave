@@ -220,6 +220,14 @@ function withBastionProgress(base: GameState): GameState {
         ...base.weapons,
         iron_sword: true,
         ashen_dagger: true,
+        // One full Items achievement (Schematics) so that category icon animates.
+        arbalest: true,
+        nightshade_bow: true,
+        stormglass_halberd: true,
+      },
+      books: {
+        ...base.books,
+        book_of_trials: true,
       },
       clothing: {
         ...base.clothing,
@@ -295,6 +303,8 @@ function withBastionProgress(base: GameState): GameState {
           boneyardUnlocked: true,
           // 500 deaths since the yard was raised: 10 points of burial madness, 10 crosses.
           boneyardDeathBaseline: 0,
+          // Mental Clarity is full, so the Actions icon animates.
+          clarityElixirsUsed: 5,
         },
       },
       stats: {

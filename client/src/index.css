@@ -2892,6 +2892,19 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   opacity: 0;
 }
 
+/* Pause hotkey hint and Steam play-time. Opacity utilities drive the fade. */
+.pause-ui-fade {
+  transition-property: opacity;
+  transition-duration: 1000ms;
+  transition-timing-function: ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pause-ui-fade {
+    transition-duration: 0ms;
+  }
+}
+
 @keyframes blood-moon-smoke-fade-in {
   from {
     opacity: 0;

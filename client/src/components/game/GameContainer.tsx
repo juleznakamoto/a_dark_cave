@@ -88,6 +88,7 @@ import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { getUnclaimedAchievementIds } from "@/achievements";
 import { getVisibleHotkeyTabs, isEditableKeyboardTarget, isGamePauseHotkey } from "./tabHotkeys";
 import TabHotkeyCallout from "./TabHotkeyCallout";
+import { useFadePresence } from "@/hooks/useFadePresence";
 import { isTraderShopUnlocked } from "@/game/stateHelpers";
 import {
   achievementTabPulseIds,
@@ -1169,10 +1170,14 @@ export default function GameContainer() {
 
   // Pause hint covers whatever tabs are on screen, including Cave alone.
   const showPauseHotkeyHints =
-    isPaused && visibleHotkeyTabs.length > 0 && !pauseHotkeyHintsDismissed;
-  const showVillageHotkeyBox = villageHotkeyTutorialOpen && !isPaused;
-  const showTabHotkeyOverlay =
-    (showPauseHotkeyHints || showVillageHotkeyBox) && !useLimelightNav;
+    isPaused &&
+    visibleHotkeyTabs.length > 0 &&
+    !pauseHotkeyHintsDismissed &&
+    !useLimelightNav;
+  const pauseHotkeyFade = useFadePresence(showPauseHotkeyHints);
+  // Wait until the pause hint has faded out before the village tutorial returns.
+  const showVillageHotkeyBox =
+    villageHotkeyTutorialOpen && !isPaused && !pauseHotkeyFade.mounted;
 
   useEffect(() => {
     if (!flags.gameStarted) return;
@@ -1335,29 +1340,33 @@ export default function GameContainer() {
             />
           )}
 
-          {showTabHotkeyOverlay && (
+          {showVillageHotkeyBox && (
             <TabHotkeyCallout
               tabRowRef={tabButtonRowRef}
               tabs={visibleHotkeyTabs}
-              testId={
-                showVillageHotkeyBox
-                  ? "village-hotkey-tutorial-box"
-                  : "pause-hotkey-callout-box"
-              }
-              dismissTestId={
-                showVillageHotkeyBox
-                  ? "village-hotkey-tutorial-dismiss"
-                  : "pause-hotkey-dismiss"
-              }
+              testId="village-hotkey-tutorial-box"
+              dismissTestId="village-hotkey-tutorial-dismiss"
               dismissLabel={t("villageHotkeyTutorial.dismiss", {
                 ns: "ui",
                 defaultValue: "Dismiss",
               })}
-              onDismiss={
-                showVillageHotkeyBox
-                  ? closeVillageHotkeyTutorial
-                  : dismissPauseHotkeyHints
-              }
+              onDismiss={closeVillageHotkeyTutorial}
+            >
+              {pauseHotkeyHintContent}
+            </TabHotkeyCallout>
+          )}
+          {pauseHotkeyFade.mounted && (
+            <TabHotkeyCallout
+              tabRowRef={tabButtonRowRef}
+              tabs={visibleHotkeyTabs}
+              testId="pause-hotkey-callout-box"
+              dismissTestId="pause-hotkey-dismiss"
+              dismissLabel={t("villageHotkeyTutorial.dismiss", {
+                ns: "ui",
+                defaultValue: "Dismiss",
+              })}
+              onDismiss={dismissPauseHotkeyHints}
+              boxClassName={`pause-ui-fade ${pauseHotkeyFade.visible ? "opacity-100" : "pointer-events-none opacity-0"}`}
             >
               {pauseHotkeyHintContent}
             </TabHotkeyCallout>

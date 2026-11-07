@@ -1365,6 +1365,12 @@ export function renderItemTooltip(
               "+1 damage per 5 Knowledge",
             )}
           </div>
+          <div>
+            {getUiTooltip(
+              "superiorBombsBlowback",
+              "Blowback chance halved (2.5%)",
+            )}
+          </div>
         </>
       )}
       {showEffects && hasActionBonusEffects && effect.bonuses?.actionBonuses &&

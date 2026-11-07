@@ -112,6 +112,7 @@
     "ebonGraceHeartfire": "Yürek Ateşinin üretim bonusunu ikiye katlar",
     "superiorBombsBaseDamage": "+20 temel bomba hasarı",
     "superiorBombsKnowledgeDamage": "Her 5 Bilgi için +1 hasar",
+    "superiorBombsBlowback": "Bombanın sana geri tepme ihtimali yarıya iner (%2,5)",
     "unlocksVillage": "Köyü açar",
     "unlocksForest": "Ormanı açar",
     "unlocksBasicAchievements": "Temel başarımları açar",

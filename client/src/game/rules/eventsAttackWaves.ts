@@ -101,7 +101,9 @@ const ATTACK_WAVE_BOSS_ENEMY_NAME = "Pale Beasts";
 
 /** First approach. Provoke can skip the rest once half of this wait has passed. */
 export const ATTACK_WAVE_INITIAL_DURATION_MS = 10 * 60 * 1000;
-/** First approach: provoke unlocks after this much of the wait has elapsed. */
+/** First approach: provoke unlocks after this much of the wait has elapsed.
+ *  Skipped when the player has already won a game (`hasWonAnyGame`).
+ */
 export const ATTACK_WAVE_INITIAL_PROVOKE_AFTER_MS =
   ATTACK_WAVE_INITIAL_DURATION_MS / 2;
 /** Rematch after a loss. Provoke can skip the time still left. */

@@ -69,6 +69,7 @@ export function getProvokeAttackWaveFoodCost(state: GameState): number {
 /**
  * True when the active wave can be provoked.
  * A chart wave's first approach unlocks provoke after 5 of the 10 minutes.
+ * A player who has already won a game can provoke that first approach immediately.
  * Provoke also skips a rematch countdown, or starts an endless post-completion wave.
  */
 export function canProvokeAttackWave(state: GameState): boolean {
@@ -89,6 +90,9 @@ export function canProvokeAttackWave(state: GameState): boolean {
     return false;
   }
   if (!isAttackWaveRematchTimer(timer)) {
+    if (state.hasWonAnyGame) {
+      return true;
+    }
     return elapsed >= ATTACK_WAVE_INITIAL_PROVOKE_AFTER_MS;
   }
   return true;

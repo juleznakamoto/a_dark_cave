@@ -11,6 +11,7 @@ import {
 } from "@/components/game/gameChrome";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import AchievementMiniRingChart from "@/achievements/AchievementMiniRingChart";
+import { NEW_ITEM_PULSE_CLASS } from "@/hooks/useNewItemPulseTooltip";
 import {
   ACHIEVEMENT_RING_ICONS,
   ACHIEVEMENT_RING_SHARE_SIZE,
@@ -134,6 +135,8 @@ function AchievementRingCell({
           isActive
           hideProgress
           size={size}
+          centerSymbolClassName={NEW_ITEM_PULSE_CLASS}
+          emitParticles
         />
         <CenterCross />
       </div>

@@ -112,6 +112,7 @@
     "ebonGraceHeartfire": "Удваивает производственный бонус Сердечного огня",
     "superiorBombsBaseDamage": "+20 к базовому урону бомб",
     "superiorBombsKnowledgeDamage": "+1 урона за каждые 5 Знания",
+    "superiorBombsBlowback": "Шанс, что бомба ударит по вам, вдвое ниже (2,5%)",
     "unlocksVillage": "Разблокирует деревню",
     "unlocksForest": "Разблокирует лес",
     "unlocksBasicAchievements": "Открывает базовые достижения",

@@ -9,6 +9,7 @@ import {
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { Z_INDEX } from "@/lib/z-index";
+import { cn } from "@/lib/utils";
 
 const DESKTOP_MIN_PX = 768;
 
@@ -97,6 +98,8 @@ type TabHotkeyCalloutProps = {
   dismissTestId: string;
   dismissLabel: string;
   onDismiss: () => void;
+  /** Extra classes on the bordered box (pause fade). */
+  boxClassName?: string;
   children: ReactNode;
 };
 
@@ -111,6 +114,7 @@ export default function TabHotkeyCallout({
   dismissTestId,
   dismissLabel,
   onDismiss,
+  boxClassName,
   children,
 }: TabHotkeyCalloutProps) {
   const [layout, setLayout] = useState<CalloutLayout | null>(null);
@@ -151,7 +155,10 @@ export default function TabHotkeyCallout({
       style={{ zIndex: Z_INDEX.tabHotkeyOverlay }}
     >
       <div
-        className="pointer-events-auto absolute w-max max-w-[calc(100vw-1rem)] -translate-x-1/2 rounded border border-red-500 bg-neutral-950 px-5 pb-2 pt-1.5"
+        className={cn(
+          "pointer-events-auto absolute w-max max-w-[calc(100vw-1rem)] -translate-x-1/2 rounded border border-red-500 bg-neutral-950 px-5 pb-2 pt-1.5",
+          boxClassName,
+        )}
         style={{ top: layout.top, left: layout.centerX }}
         data-testid={testId}
       >

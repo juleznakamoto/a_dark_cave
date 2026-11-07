@@ -1,3 +1,4 @@
+import { COMPLETE_ICON_COLOR } from "@/achievements/achievementColors";
 import { tailwindToHex } from "@/lib/tailwindColors";
 
 /** Full configuration for particle animation - all params optional with defaults */
@@ -430,6 +431,36 @@ export function getShopGlyphHoverParticleConfig(
   };
 }
 
+/**
+ * Sparks on an achievement category icon while a reward there is unclaimed.
+ * Color is the category color. Edit the numbers here.
+ * `count`: sparks per burst. `size*`: diameter in px. `distance*`: travel in px.
+ * `duration*`: seconds each spark stays on screen.
+ */
+export const ACHIEVEMENT_CATEGORY_PARTICLE_CONFIG: Partial<ParticleConfig> = {
+  count: 1,
+  sizeMin: 3,
+  sizeMax: 6,
+  distanceMin: 10,
+  distanceMax: 30,
+  durationMin: 1.5,
+  durationMax: 2,
+};
+
+/** Milliseconds between bursts while that category still has a reward to claim. */
+export const ACHIEVEMENT_CATEGORY_PARTICLE_EMIT_INTERVAL_MS = 350;
+
+/** Category-colored burst using `ACHIEVEMENT_CATEGORY_PARTICLE_CONFIG`. */
+export function getAchievementCategoryParticleConfig(
+  categoryId: string,
+): Partial<ParticleConfig> {
+  const hex = COMPLETE_ICON_COLOR[categoryId] ?? COMPLETE_ICON_COLOR.basic;
+  return {
+    ...ACHIEVEMENT_CATEGORY_PARTICLE_CONFIG,
+    colors: shopGlyphHoverParticleColors(hex),
+  };
+}
+
 // Insight orb - slower, slightly larger cold-blue sparks (BuildingActionBadge palette)
 export const INSIGHT_PARTICLE_CONFIG: Partial<ParticleConfig> = {
   colors: [
@@ -796,5 +827,30 @@ export const HOVER_PARTICLE_DEMO_PRESETS: HoverParticleDemoPreset[] = [
     id: "shopGlyph",
     label: "Shop glyph",
     getConfig: () => getShopGlyphHoverParticleConfig("text-emerald-600"),
+  },
+  {
+    id: "achievement-basic",
+    label: "Achievement basics",
+    getConfig: () => getAchievementCategoryParticleConfig("basic"),
+  },
+  {
+    id: "achievement-building",
+    label: "Achievement buildings",
+    getConfig: () => getAchievementCategoryParticleConfig("building"),
+  },
+  {
+    id: "achievement-item",
+    label: "Achievement items",
+    getConfig: () => getAchievementCategoryParticleConfig("item"),
+  },
+  {
+    id: "achievement-action",
+    label: "Achievement actions",
+    getConfig: () => getAchievementCategoryParticleConfig("action"),
+  },
+  {
+    id: "achievement-overall",
+    label: "Achievement epic",
+    getConfig: () => getAchievementCategoryParticleConfig("overall"),
   },
 ];

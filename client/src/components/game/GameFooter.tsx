@@ -10,6 +10,7 @@ import {
   steamStoreUrl,
 } from "@/lib/gameFooterSocialLinks";
 import { useState, useEffect, useRef, useCallback, cloneElement, type ReactNode } from "react";
+import { useFadePresence } from "@/hooks/useFadePresence";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { tWithFallback } from "@/i18n/resolveGameText";
@@ -19,7 +20,8 @@ import {
   useSteamDemoActive,
   useSteamEditionActive,
 } from "@/hooks/useSteamEditionActive";
-import { isGalaxyEdition } from "@/lib/edition";
+import { isGalaxyEdition, isSteamDesktopEditionActive } from "@/lib/edition";
+import { formatDurationMs } from "@/lib/utils";
 import {
   handleDonateHeartAnimationEnd,
   pumpDonateHeart,
@@ -216,6 +218,11 @@ export default function GameFooter() {
   const referralCount = useGameStore((s) => s.referralCount ?? 0);
   const isPaused = useGameStore((s) => s.isPaused);
   const togglePause = useGameStore((s) => s.togglePause);
+  // Null while playing, so playTime ticks do not re-render the footer.
+  const pausedPlayTimeMs = useGameStore((s) => {
+    if (!s.isPaused || !isSteamDesktopEditionActive(s.devGameMode)) return null;
+    return s.playTime ?? 0;
+  });
   const idleModeDialogOpen = useGameStore((s) => s.idleModeDialog.isOpen);
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const donateHeartRef = useRef<HTMLSpanElement>(null);
@@ -277,6 +284,13 @@ export default function GameFooter() {
   const socialLinkClass = `group ${FOOTER_CONTROL_BTN} flex items-center justify-center gap-1`;
   const socialIconClass = `${FOOTER_CONTROL_SVG_ICON_HOVER}${isPaused ? " !opacity-100" : ""}`;
   const showPauseSleepCallout = isPaused || idleModeDialogOpen;
+  const pausedPlayTimeFade = useFadePresence(pausedPlayTimeMs !== null);
+  const pausedPlayTimeTextRef = useRef("00:00:00");
+  if (pausedPlayTimeMs !== null) {
+    pausedPlayTimeTextRef.current = formatDurationMs(pausedPlayTimeMs);
+  }
+  const pausedPlayTimeText = pausedPlayTimeTextRef.current;
+  const pausedPlayTimeName = t("footer.playTime", { defaultValue: "Play time" });
   const feedbackButton = (
     <Button
       variant="ghost"
@@ -333,6 +347,23 @@ export default function GameFooter() {
                 className={isPaused ? undefined : FOOTER_CONTROL_ICON}
               />
             </Button>
+            {pausedPlayTimeFade.mounted && (
+              <TooltipWrapper
+                tooltip={pausedPlayTimeName}
+                tooltipId="footer-paused-play-time"
+                side="top"
+                className={`inline-flex items-center ${pausedPlayTimeFade.visible ? "" : "pointer-events-none"}`}
+                tooltipTriggerClassName="inline-flex items-center"
+              >
+                <span
+                  className={`pause-ui-fade ml-1 select-none whitespace-nowrap text-xs tabular-nums leading-none text-neutral-300 ${pausedPlayTimeFade.visible ? "opacity-100" : "opacity-0"}`}
+                  data-testid="footer-paused-play-time"
+                  aria-label={`${pausedPlayTimeName} ${pausedPlayTimeText}`}
+                >
+                  {pausedPlayTimeText}
+                </span>
+              </TooltipWrapper>
+            )}
 
             {/* Shop is web-only (Stripe). Donate is web + Galaxy (external tip jar).
                 Footer Trader is only for paying players who do not yet have the tab. */}
