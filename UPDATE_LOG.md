@@ -4,6 +4,8 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ## Unreleased
 
+## 2026-11-07
+
 ### Added
 
 - New items in the side panel have a red dotted line now so they are easier to see.
@@ -11,7 +13,7 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Changed
 
-- After you win the game once, you can provoke an attack wave immeditaly instead of having to wait for 5 minutes.
+- After you win the game once, you can provoke an attack wave immediately instead of having to wait for 5 minutes.
 - Superior Bombs blessing now makes a thrown bomb half as likely to blow back on you (5% -> 2.5%).
 - An achievement category's icon glows, and gives off sparks while you still have a reward to claim there.
 - While the game is minimized, it now uses less computation (Thanks to Kuroiteiken).
