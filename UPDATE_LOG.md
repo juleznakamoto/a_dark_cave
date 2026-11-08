@@ -6,6 +6,7 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Changed
 
+- When you play on Linux through Steam, the game uses a 200% scale.
 - In Cruel Mode, trying to free the slave trader's captives can fail. Your chance to win is 40%, plus 1% for each point of Strength.
 - While you sleep, the village cycle ring sits beside the Sleeping title, fills smoothly, and its tooltip shows your sleep production and the next cycle.
 - The cycle ring on the village panel fills more smoothly.
