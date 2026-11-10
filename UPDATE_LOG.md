@@ -4,20 +4,23 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ## Unreleased
 
+## 2026-11-10
+
 ### Changed
 
-- When you play on Linux through Steam, the game uses a 200% scale.
-- In Cruel Mode, trying to free the slave trader's captives can fail. Your chance to win is 40%, plus 1% for each point of Strength.
-- While you sleep, the village cycle ring sits beside the Sleeping title, fills smoothly, and its tooltip shows your sleep production and the next cycle.
+- Fix Linux scaling issues when using Proton.
+- In Cruel Mode, trying to free the slave trader's captives can now fail.
+- Updated Sleep dialog UI.
 - The cycle ring on the village panel fills more smoothly.
 
 ### Fixed
 
-- Deepening the First Flame gives you 8 housing and a 15% crafting discount.
-- Raven's Orb gives 5 Knowledge.
-- Selling two villagers to the slave trader raises your Madness.
-- Letting the Blackened Mirror's time run out counts as refusing the offer.
-- Choking Fog shows a 25% production cut.
+- Effects of some events/items in code where not matching displayed effects:
+    - Deepening the First Flame gives you 8 housing and a 15% crafting discount.
+    - Raven's Orb gives 5 Knowledge.
+    - Selling two villagers to the slave trader raises your Madness.
+    - Letting the Blackened Mirror's time run out counts as refusing the offer.
+    - Choking Fog shows a 25% production cut.
 - While you sleep, steel, leather, and insight add up across cycles, only whole units go into your stores, and a gain shows a decimal only while it is still under 1.
 
 ## 2026-11-07
