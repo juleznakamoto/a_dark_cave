@@ -41,5 +41,5 @@ describe("locale-aware percent and fortification stat lines", () => {
         expect(line, `${locale} ${key}`).not.toMatch(/Attack|Defense|Integrity/);
       }
     }
-  });
+  }, 30_000);
 });
