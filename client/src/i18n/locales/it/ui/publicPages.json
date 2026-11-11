@@ -21,7 +21,7 @@
       },
       "like": {
         "q": "A quali giochi somiglia?",
-        "a": "Se ti piacciono A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13 o KEROS-9, è pensato per quel gusto. Non è affiliato a quei giochi."
+        "a": "Se ti piacciono A Dark Room, Kittens Game, The Ensign, Universal Paperclips, Candy Box, Level 13 o KEROS-9, è pensato per chi ama quel genere. Non è affiliato a quei giochi."
       },
       "phone": {
         "q": "Posso giocare sul telefono?",
@@ -62,7 +62,7 @@
     },
     "about": {
       "intro1": "Ho fatto questo gioco perché molti anni fa ho giocato ad A Dark Room, che mi ha ispirato a creare un giorno un gioco mio. Quel giorno è arrivato.",
-      "intro2": "Ti svegli all'ingresso di una caverna buia. Niente memoria. Niente possessi. Accendi un fuoco, poi raccogli un po' di legna, fabbrichi una torcia, costruisci il tuo primo riparo. Arrivano degli sconosciuti. L'insediamento cresce. Inizi a esplorare cosa c'è in fondo alla caverna. Il passato della tua civiltà. Il tuo passato. Questo è A Dark Cave: un gioco incrementale testuale su sopravvivere, costruire e scoprire cosa c'è davvero là sotto, e forse dove stiamo andando come umanità.",
+      "intro2": "Ti svegli all'ingresso di una caverna buia. Niente memoria. Niente averi. Accendi un fuoco, poi raccogli un po' di legna, fabbrichi una torcia, costruisci il tuo primo riparo. Arrivano degli sconosciuti. L'insediamento cresce. Inizi a esplorare cosa c'è in fondo alla caverna. Il passato della tua civiltà. Il tuo passato. Questo è A Dark Cave: un gioco incrementale testuale su sopravvivere, costruire e scoprire cosa c'è davvero là sotto, e forse dove stiamo andando come umanità.",
       "intro3": "È gratis nel browser: <site>a-dark-cave.com</site>. Per sostenere il gioco ci sono acquisti del tutto opzionali. C'è una <demo>demo Steam</demo> se preferisci giocare così. La versione Steam completa è uscita il 27 ottobre 2026.",
       "howHeading": "Come si gioca",
       "how1": "Parti da zero. Sblocchi poco a poco oggetti, edifici, abilità, lavori, membri della compagnia e molto altro. Si dipana una storia ricca di dettagli sul passato di una civiltà vissuta prima di noi. Più scendi nella caverna, più impari. Ma cresce anche il pericolo.",
@@ -70,11 +70,11 @@
       "likedHeading": "Se ti piacevano i vecchi giochi incrementali",
       "liked1": "Di solito si arriva qui da A Dark Room, Kittens Game, Universal Paperclips, Candy Box e giochi simili. Troverai alcune meccaniche di quei giochi anche in A Dark Cave. A Dark Cave ha una grafica minimalista, ma ho realizzato a mano le animazioni, aggiunto tanti suoni e l'ho reso giocabile su desktop e mobile, per adattarlo al modo in cui giochiamo oggi.",
       "whoHeading": "Per chi è",
-      "who1": "È per chi ama i giochi che partono semplici e diventano più complessi di proposito. Non perché un tutorial ti rovescia addosso venti sistemi al primo minuto, ma perché il successivo te lo sei guadagnato.",
+      "who1": "È per chi ama i giochi che partono semplici e diventano più complessi di proposito. Non perché un tutorial ti abbia rovesciato addosso venti sistemi al primo minuto, ma perché il successivo te lo sei guadagnato.",
       "who2": "Se vuoi una grafica appariscente, sei nel gioco sbagliato. Gran parte del gioco è testo, con qualche animazione (si spera) gratificante in mezzo. Ho dedicato molto tempo a una storia interessante, profondamente legata alla nostra storia e al nostro futuro.",
       "platformsHeading": "Piattaforme",
       "platforms1": "Gioca nel browser su desktop o cellulare. Non c'è un'app su App Store o Google Play. I progressi si salvano sul dispositivo. Puoi creare un account se vuoi un salvataggio cloud.",
-      "platforms2": "<steam>Steam</steam> (Windows) è un gioco a pagamento con una <demo>demo gratuita</demo>. Il gioco nel browser resta gratis.",
+      "platforms2": "La versione <steam>Steam</steam> (Windows) è a pagamento, con una <demo>demo gratuita</demo>. Il gioco nel browser resta gratis.",
       "platforms3": "Il gioco è in inglese, tedesco, francese, spagnolo, italiano, portoghese (Brasile), cinese semplificato, giapponese, polacco, russo e turco.",
       "meHeading": "Chi sono",
       "me1": "Sono Julian Bauer. Ho creato A Dark Cave da solo. Se qualcosa non funziona, o vuoi semplicemente contattarmi, scrivi a <email>support@a-dark-cave.com</email>.",

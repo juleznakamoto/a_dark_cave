@@ -2,15 +2,15 @@
   "action": {
     "0-chopWood": {
       "label": "Bûcheron",
-      "description": "Améliorez Ramasser du bois au niveau 10"
+      "description": "Améliorez l'abattage du bois au niveau 10"
     },
     "0-craftTorches": {
       "label": "Fabricant de torches",
-      "description": "Améliorez Torches au niveau 10"
+      "description": "Améliorez la fabrication de torches au niveau 10"
     },
     "0-exploreCave": {
       "label": "Explorateur de grottes",
-      "description": "Améliorez Explorer la grotte au niveau 10"
+      "description": "Améliorez l'exploration de la grotte au niveau 10"
     },
     "0-gamblerWins": {
       "label": "Parieur aguerri",
@@ -18,35 +18,35 @@
     },
     "0-hunt": {
       "label": "Chasseur",
-      "description": "Améliorez Chasser au niveau 10"
+      "description": "Améliorez la chasse au niveau 10"
     },
     "1-mineAdamant": {
       "label": "Mineur d'adamant",
-      "description": "Améliorez Adamant au niveau 10"
+      "description": "Améliorez l'extraction d'adamant au niveau 10"
     },
     "1-mineCoal": {
       "label": "Mineur de charbon",
-      "description": "Améliorez Charbon au niveau 10"
+      "description": "Améliorez l'extraction de charbon au niveau 10"
     },
     "1-mineIron": {
       "label": "Mineur de fer",
-      "description": "Améliorez Fer au niveau 10"
+      "description": "Améliorez l'extraction de fer au niveau 10"
     },
     "1-mineMoonstone": {
       "label": "Mineur de pierre de lune",
-      "description": "Améliorez Pierre de lune au niveau 10"
+      "description": "Améliorez l'extraction de pierre de lune au niveau 10"
     },
     "1-mineObsidian": {
       "label": "Mineur d'obsidienne",
-      "description": "Améliorez Obsidienne au niveau 10"
+      "description": "Améliorez l'extraction d'obsidienne au niveau 10"
     },
     "1-mineStone": {
       "label": "Mineur de pierre",
-      "description": "Améliorez Pierre au niveau 10"
+      "description": "Améliorez l'extraction de pierre au niveau 10"
     },
     "1-mineSulfur": {
       "label": "Mineur de soufre",
-      "description": "Améliorez Soufre au niveau 10"
+      "description": "Améliorez l'extraction de soufre au niveau 10"
     },
     "2-animals": {
       "label": "Sacrificateur d'animaux",
@@ -58,11 +58,11 @@
     },
     "2-craftBoneTotems": {
       "label": "Artisan de totems d'os",
-      "description": "Améliorez Totems d'os au niveau 10"
+      "description": "Améliorez la fabrication de totems d'os au niveau 10"
     },
     "2-craftLeatherTotems": {
       "label": "Artisan de totems de cuir",
-      "description": "Améliorez Totems de cuir au niveau 10"
+      "description": "Améliorez la fabrication de totems de cuir au niveau 10"
     },
     "2-leatherTotems": {
       "label": "Sacrificateur de cuir",
@@ -109,7 +109,7 @@
       "description": "Effectuez 100 achats chez le marchand"
     },
     "4-pileOfDead": {
-      "label": "Tas de morts",
+      "label": "Charnier",
       "description": "Perdez 250 villageois au total"
     },
     "4-solsticeGatherings": {
@@ -260,7 +260,7 @@
     },
     "2-schematic_weapons": {
       "label": "Schémas",
-      "description": "Fabriquez trois armes de schéma"
+      "description": "Fabriquez trois armes à partir de schémas"
     },
     "3-ancient_books": {
       "label": "Sagesse ancienne",
@@ -281,7 +281,7 @@
   },
   "overall": {
     "0-achievementMaxer": {
-      "label": "Maximiseur de succès",
+      "label": "Chasseur de succès",
       "description": "Terminez chaque succès non épique"
     },
     "0-caveVeteran": {
@@ -290,18 +290,18 @@
     },
     "0-endurant": {
       "label": "Infatigable",
-      "description": "Jouez 30 heures sur toutes les parties"
+      "description": "Jouez 30 heures au total, toutes parties confondues"
     },
     "0-finalPact": {
       "label": "Le pacte final",
       "description": "Gagnez une partie avec les 5 pactes actifs"
     },
     "0-resourceMaxer": {
-      "label": "Maximiseur de ressources",
+      "label": "Réserves pleines",
       "description": "Atteignez la capacité du Grand coffre avec chaque ressource limitée"
     },
     "0-upgradeMaxer": {
-      "label": "Maximiseur d'améliorations",
+      "label": "Perfectionniste",
       "description": "Maximisez chaque amélioration de l'onglet Domaine"
     },
     "0-speedrunner": {

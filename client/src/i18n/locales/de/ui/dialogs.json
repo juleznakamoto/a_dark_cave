@@ -1,12 +1,12 @@
 {
   "event": {
     "fallbackTitle": "Ereignis",
-    "knowledgeTimeBonus": "+{{seconds}}s Entscheidungszeit durch Wissen{{maxSuffix}}",
+    "knowledgeTimeBonus": "+{{seconds}} s Entscheidungszeit durch Wissen{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (max.)",
-    "successChance": "Erfolgschance: {{percent}}%",
-    "successChanceBase": "Basis: {{percent}}%",
-    "successChanceStatLine": "{{statValue}} {{statName}} * {{percentPerPoint}}% = {{contribution}}%",
-    "successChanceCruel": "Grausamer Modus: {{percent}}%",
+    "successChance": "Erfolgschance: {{percent}} %",
+    "successChanceBase": "Basis: {{percent}} %",
+    "successChanceStatLine": "{{statValue}} {{statName}} * {{percentPerPoint}} % = {{contribution}} %",
+    "successChanceCruel": "Grausamer Modus: {{percent}} %",
     "influencedBy": "Beeinflusst durch:"
   },
   "reward": {
@@ -18,8 +18,8 @@
     "change": "{{sign}} {{amount}} Wahnsinn"
   },
   "insightPotion": {
-    "title": "Einsicht-Elixier",
-    "message": "Du trinkst das Einsicht-Elixier. Verständnis erblüht in deinem Geist."
+    "title": "Einsichtselixier",
+    "message": "Du trinkst das Einsichtselixier. Verständnis erblüht in deinem Geist."
   },
   "insightIntro": {
     "title": "Einsicht",
@@ -154,9 +154,9 @@
     "rulesAriaLabel": "Würfelspielregeln",
     "rulesTurns": "Du würfelst abwechselnd mit dem Glücksspieler.",
     "rulesTotals": "Die Würfe jedes Spielers werden addiert.",
-    "rulesGoal": "Das Ziel ist auf 15 gesetzt.",
+    "rulesGoal": "Das Ziel liegt bei 15.",
     "rulesWinLose": "Erreicht ein Spieler das Ziel genau, gewinnt er. Überschreitet er es, verliert er.",
-    "rulesStand": "Hat der Spieler am Zug mehr Punkte als der Gegner, kann er wählen, nicht zu würfeln.",
+    "rulesStand": "Hat der Spieler am Zug mehr Punkte als der Gegner, darf er auf seinen Wurf verzichten.",
     "tutorialIntro": "Um dir das Spiel beizubringen, bietet der Glücksspieler an, {{count}} Mal ohne Einsatz zu spielen.",
     "boneDiceIntro": "Setze deinen Einsatz. Mit Knochenwürfeln kannst du zweimal gegen den Glücksspieler antreten.",
     "placeBet": "Setze deinen Einsatz.",
@@ -169,8 +169,8 @@
     "gambler": "Glücksspieler",
     "roll": "Würfeln",
     "noRoll": "Nicht würfeln",
-    "youWin": "Du gewinnst",
-    "youLose": "Du verlierst",
+    "youWin": "Du hast gewonnen",
+    "youLose": "Du hast verloren",
     "practiceOutcome": "Übungsrunde. Kein Gold gewonnen oder verloren.",
     "goldWon": "+{{amount}} Gold",
     "goldLost": "-{{amount}} Gold",
@@ -178,7 +178,7 @@
     "practiceLoseRemaining": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Noch {{remaining}} von {{total}} Übungsspielen übrig.",
     "practiceWinComplete": "Du hast die Übungsrunde gewonnen (kein Gold im Einsatz). Übung abgeschlossen. Du kannst jetzt Gold setzen.",
     "practiceLoseComplete": "Du hast die Übungsrunde verloren (kein Gold im Einsatz). Übung abgeschlossen. Du kannst jetzt Gold setzen.",
-    "coinOffer": "Er dreht den Würfel im Feuerschein, und das Grinsen wird schmal. „Doppelt, oder nichts“, haucht er. „Eins bis vier verdoppelt dein Gold. Fünf oder sechs, und ich behalte es.“",
+    "coinOffer": "Er dreht den Würfel im Feuerschein, und das Grinsen wird schmal. „Doppelt oder nichts“, haucht er. „Eins bis vier verdoppelt dein Gold. Fünf oder sechs, und ich behalte es.“",
     "coinAccept": "Würfeln",
     "coinDecline": "Gewinn behalten",
     "coinNothing": "Nichts",
@@ -237,7 +237,7 @@
     "discountFromKnowledge": "{{percent}} % durch Wissen{{max}}",
     "knowledgeMax": " (max.)",
     "discountFromRing": "5 % durch Ring des Gehorsams",
-    "discountFromPact": "20 % durch Listiger Händler",
+    "discountFromPact": "20 % durch „Listiger Händler“",
     "prolongForInsight": "Zeit um {{minutes}} Min. verlängern"
   },
   "share": {

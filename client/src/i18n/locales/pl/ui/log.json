@@ -41,9 +41,9 @@
     "building": {
       "darkEstate": "Mroczna posiadłość stoi na małym wzgórzu koło wioski i daje samotność oraz schronienie.",
       "blacksmith": "Kuźnia kowala budzi się do życia. Serce rzemiosła bije teraz w wiosce.",
-      "firstWoodenHut": "Pierwsza drewniana chata stoi gotowa, to może być początek czegoś wielkiego.",
-      "villageGrowthSuggestion": "Wioska rośnie szybko. Może kamienne domy schroniłyby więcej wieśniaków.",
-      "cityGrowthMilestone": "Miasto urosło do tętniącej metropolii, pełnej handlu, rzemiosła i obietnicy jaśniejszych dni.",
+      "firstWoodenHut": "Pierwsza drewniana chata stoi gotowa. To może być początek czegoś wielkiego.",
+      "villageGrowthSuggestion": "Wioska rośnie szybko. Może kamienne chaty pomieściłyby więcej wieśniaków.",
+      "cityGrowthMilestone": "Miasto rozrosło się w tętniącą życiem metropolię, pełną handlu, rzemiosła i obietnicy jaśniejszych dni.",
       "moonstoneDiscovered": "Głęboko w wyrobisku robotnicy odkrywają żyły kamienia księżycowego, świecącego minerału pełnego energii.",
       "foundry": "Odlewnia ryczy, gdy ogień i żar spajają surowe materiały.",
       "masterworkFoundry": "Mistrzowska odlewnia stoi gotowa, pomnik najwyższego kunsztu hutniczego. W jej ogniu można kuć czarnostal, niemal niezniszczalną, ale bardzo trudną w produkcji.",
@@ -55,7 +55,7 @@
       "tannery": "Garbarnia jest gotowa. Zapach wyprawianej skóry wypełnia powietrze, gdy rzemieślnicy biorą się do pracy.",
       "highTannery": "Wzniesiono Wysoką garbarnię, wielki warsztat, w którym wprawni rzemieślnicy zamieniają skóry w najprzedniejszą skórę.",
       "longhouse": "Wznosi się pierwszy długi dom, ogromna drewniana hala z grubymi belkami i mnóstwem miejsca.",
-      "furTents": "Na skraju wioski stawiają pierwsze futrzane namioty, dając więcej ludziom ciepłe schronienie.",
+      "furTents": "Na skraju wioski stają pierwsze futrzane namioty, dając ciepłe schronienie kolejnym ludziom.",
       "shrine": "Obok ołtarza wznosi się święta kapliczka. Jej obecność przynosi spokój i skupienie niespokojnym umysłom.",
       "temple": "Wspaniała świątynia stoi gotowa. W jej świętych halach echo szeptanych modlitw koi udręczoną duszę.",
       "sanctum": "Sanktuarium wznosi się jak latarnia boskiej ochrony. Jego błogosławiona aura odpędza najciemniejsze myśli i lęki.",
@@ -65,7 +65,7 @@
       "grandBazaar": "Wznosi się Wielki bazar, rozległy rynek, na którym kupcy z dalekich krain schodzą się na handel.",
       "merchantsGuild": "Gildia handlarzy stoi gotowa, potężna organizacja, która kontroluje wszystkie szlaki handlowe i przynosi osadzie niespotykany majątek.",
       "bastion": "Bastion wznosi się jak góra z kamienia, mury grube i nieustępliwe. Obietnica ochrony przed tym, co porusza się w głębinach.",
-      "wizardTower": "Wieża czarodzieja wije się w niebo, trzaskając magiczną energią. Czarodziej wprowadza się ze zbiorem starych tomów i tajemniczych artefaktów.",
+      "wizardTower": "Wieża czarodzieja pnie się spiralą ku niebu, trzeszcząc od magicznej energii. Czarodziej wprowadza się ze zbiorem starych tomów i tajemniczych artefaktów.",
       "fortifiedMoat": "Głęboka fosa otacza teraz osadę, woda ciemna i zdradliwa. Żaden wróg nie przekroczy jej łatwo.",
       "traps": "Wokół wioski rozstawiono pułapki. Ukryte doły, sidła i zaostrzone paliki czekają na każdego, kto odważy się zaatakować.",
       "improvedTraps": "Obwód wioski wzmocniono przykrytymi dołami, sprężynowymi sidłami i stalowymi mechanizmami. Napastników czeka o wiele groźniejsze powitanie.",
@@ -88,7 +88,7 @@
       "veinfireElixirFirst": "Alchemik destyluje świecącą esencję z włókien żyłokorzenia. Trzymasz teraz Eliksir żyłognia, miksturę, która ma wzmacniać bastion, gdy wszystko wydaje się stracone.",
       "frostglassSword": "Kuźnia kowala płonie eterycznym błękitnym ogniem, gdy mrozoszkło przybiera kształt wspaniałego miecza. Ostrze lśni nieziemskim zimnym światłem i promieniuje ogromną mocą.",
       "arbalest": "Według schematu tworzysz misternie zdobiony arbalet. Mechanika jest bez zarzutu, zaprojektowana przez mistrza rzemiosła.",
-      "nightshadeBow": "Wytwarzasz łuk z wilczej jagody. Jego strzały poniosą truciznę w twoich wrogów.",
+      "nightshadeBow": "Wytwarzasz łuk z ciemnego drewna. Jego strzały poniosą truciznę w twoich wrogów.",
       "bloodstoneStaff": "Czarodziej kieruje magiczną moc w krwawe kamienie i spaja je ze starym drewnem. Kostur krwawego kamienia pulsuje szkarłatną energią, promieniując siłą i zakazaną wiedzą.",
       "stormglassHalberd": "Kujesz Halabardę z burzoszkła, jej ostrze lśni eterycznym światłem. Czujesz się wyraźnie silniejszy, dzierżąc tę legendarną broń.",
       "ashenGreatshield": "Kowal wykuwa z potężnych kości stworzenia z jeziora nieprzebijalną tarczę. Popiołowa wielka tarcza to bastion niezrównanej siły, zdolny chronić twoje oddziały nawet przed najgroźniejszymi zagrożeniami."
@@ -96,7 +96,7 @@
     "sacrifice": {
       "ringOfClarity": "Wśród ofiar odkrywasz krystalicznie czysty pierścień.",
       "moonBracelet": "Wśród ofiar odkrywasz bransoletę z białego kamienia.",
-      "animalsMaxed": "Pojawia się ślepy druid z lasu: „Czarny monolit wziął już całą krew, jaką przyjmie. Ofiar ze zwierząt nie da się pójść dalej.”"
+      "animalsMaxed": "Pojawia się ślepy druid z lasu: „Czarny monolit wziął już całą krew, jaką przyjmie. Ofiary ze zwierząt nic więcej już nie dadzą.”"
     },
     "gambler": {
       "win": "Wygrałeś {{amount}} złota od opętanego hazardzisty.",

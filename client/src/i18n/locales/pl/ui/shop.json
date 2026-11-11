@@ -25,7 +25,7 @@
     "firstPurchaseInsightBannerBeforeItch": "Jako gracz itch.io dostajesz",
     "firstPurchaseInsightBannerBeforeBored": "Jako gracz Bored.com dostajesz",
     "firstPurchaseInsightBannerBeforeIncrementalDb": "Jako gracz Incremental DB dostajesz",
-    "firstPurchaseInsightBannerInsight": "Wgląd",
+    "firstPurchaseInsightBannerInsight": "wglądu",
     "firstPurchaseInsightBannerAfter": "za darmo przy pierwszym zakupie",
     "firstPurchaseInsightCheckoutFree": "za darmo",
     "firstPurchaseInsightGranted": "Prezent za pierwszy zakup: +{{amount}} {{glyph}} wglądu",
@@ -83,7 +83,7 @@
     "greatFeast": {
       "forMinutes": "Przez {{minutes}} min:",
       "villageProduction": "5× produkcja wioski",
-      "newVillagerChance": "+25 % szansy na nowego wieśniaka"
+      "newVillagerChance": "+25% szansy na nowego wieśniaka"
     },
     "alreadyClaimedItemLog": "Już odebrano {{name}}.",
     "claimFailedLog": "Nie udało się odebrać {{name}}. Spróbuj ponownie.",

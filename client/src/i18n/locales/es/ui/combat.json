@@ -41,8 +41,8 @@
     "noCasualties": "Ningún aldeano murió.",
     "oneCasualty": "1 aldeano murió.",
     "manyCasualties": "{{count}} aldeanos murieron.",
-    "fellowInjured": "{{name}} resultó herido.",
-    "buildingDamaged": "{{name}} resultó dañado.",
+    "fellowInjured": "{{name}} sufrió heridas.",
+    "buildingDamaged": "{{name}} sufrió daños.",
     "silverClaimed": "Obtienes {{amount}} de plata.",
     "goldClaimed": "Obtienes {{amount}} de oro."
   },
@@ -89,7 +89,7 @@
     "palisades4": "Muro reforzado",
     "palisadesFallback": "Empalizadas",
     "watchtowerFallback": "Torre de vigilancia",
-    "damaged": "(dañado)",
+    "damaged": "(con daños)",
     "attack": "+{{value}} Ataque",
     "defense": "+{{value}} Defensa",
     "integrity": "+{{value}} Integridad"

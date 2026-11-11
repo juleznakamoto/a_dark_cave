@@ -183,7 +183,7 @@
       "name": "Robe de grand prêtre"
     },
     "hollow_king_scepter": {
-      "description": "Sceptre du roi perdu, irradiant pouvoir et folie. Les actions de minage ont 5 % de chances de doubler les récompenses.",
+      "description": "Sceptre du roi perdu, irradiant pouvoir et folie. Les actions de minage ont 5 % de chance de doubler les récompenses.",
       "name": "Sceptre du Roi creux"
     },
     "fur_cloak": {
@@ -323,11 +323,11 @@
       "name": "Hallebarde de verre-tempête"
     },
     "superior_bombs": {
-      "description": "Les bombes infligent plus de dégâts",
+      "description": "L'alchimiste a amélioré les bombes : elles infligent plus de dégâts",
       "name": "Bombes supérieures"
     },
     "survivors_last_words": {
-      "description": "La bénédiction finale d'un étranger mourant",
+      "description": "L'ultime bénédiction d'un étranger mourant",
       "name": "Dernières paroles du survivant"
     },
     "survivors_notes": {
@@ -403,7 +403,7 @@
       "name": "Lanterne d'adamant"
     },
     "adamant_pickaxe": {
-      "description": "Sommet des outils de minage, inflexible et précise",
+      "description": "Summum des outils de minage, inflexible et précis",
       "name": "Pioche d'adamant"
     },
     "blacksmith_hammer": {
@@ -511,7 +511,7 @@
       "name": "Pioche de pierre"
     },
     "wanderers_lantern": {
-      "description": "Elle accorde à celui qui la porte un peu de chance, et la possibilité de voir ce que l'obscurité cacherait.",
+      "description": "Elle accorde à celui qui la porte un peu de chance, et l'occasion de remarquer ce que l'obscurité voudrait cacher.",
       "name": "Lanterne du vagabond"
     },
     "woodcutter_axe": {
@@ -525,7 +525,7 @@
       "name": "Épée d'adamant"
     },
     "arbalest": {
-      "description": "Arbalète méticuleusement ouvragée, conçue par un ingénieur brillant",
+      "description": "Arbalète méticuleusement ouvragée, conçue par un brillant ingénieur",
       "name": "Arbalète"
     },
     "ashen_dagger": {
@@ -581,7 +581,7 @@
       "name": "Arc long"
     },
     "manhunter_bow": {
-      "description": "Arc du chasseur d'hommes, cordé pour chasser les gens",
+      "description": "Arc du chasseur d'hommes, cordé pour la chasse à l'homme.",
       "name": "Arc du chasseur d'hommes"
     },
     "master_bow": {

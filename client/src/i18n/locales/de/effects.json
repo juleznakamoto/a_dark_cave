@@ -1,7 +1,7 @@
 {
   "books": {
     "book_of_ascension": {
-      "description": "Buch über die Erhebung des Selbst. Ermöglicht es, dich durch Übung in Aufgaben zu verbessern.",
+      "description": "Buch über die Erhebung des Selbst. Ermöglicht es dir, dich durch Übung bei Aufgaben zu verbessern.",
       "name": "Buch des Aufstiegs"
     },
     "book_of_absolution": {
@@ -32,11 +32,11 @@
     },
     "ashen_embrace": {
       "description": "Deine Bergbaufähigkeit ist verbessert",
-      "name": "Aschene Umarmung"
+      "name": "Umarmung der Asche"
     },
     "ashen_embrace_enhanced": {
       "description": "Deine Bergbaufähigkeit ist stark verbessert",
-      "name": "Tiefe aschene Umarmung"
+      "name": "Tiefe Umarmung der Asche"
     },
     "bell_blessing": {
       "description": "Rätselhaftes Glockenzeichen auf deinem Unterarm. Verdoppelt im Schlaf erhaltene Fokuspunkte.",
@@ -132,7 +132,7 @@
     },
     "feeding_ring": {
       "description": "Ring, der eines Morgens erschien und scheinbar mit deinem Finger verwachsen ist",
-      "name": "Fütternder Ring"
+      "name": "Zehrender Ring"
     },
     "fishers_hand": {
       "description": "Alte Techniken der Küstenfischer zum Bau von Fischfallen",
@@ -171,8 +171,8 @@
       "name": "Ring des Glücks"
     },
     "flask_harness": {
-      "description": "Ledergeschirr mit gepolsterten Halterungen für zusätzliche Aderfeuer-Elixiere",
-      "name": "Flaschengeschirr"
+      "description": "Ledergurt mit gepolsterten Halterungen für zusätzliche Aderfeuer-Elixiere",
+      "name": "Flaschengurt"
     },
     "grenadier_bag": {
       "description": "Verstärkte Ledertasche zum Tragen weiterer Sprengstoffe",
@@ -344,7 +344,7 @@
     },
     "trail_sense": {
       "description": "Deine Jäger bringen mehr Nahrung zurück",
-      "name": "Pfadsinn"
+      "name": "Spürsinn"
     },
     "unnamed_book": {
       "description": "In Menschenhaut gebundenes Buch voller verbotenem Wissen",
@@ -530,11 +530,11 @@
     },
     "ashen_dagger": {
       "description": "Dolch aus Vulkanasche, übergeben vom Aschenbringer",
-      "name": "Aschener Dolch"
+      "name": "Aschendolch"
     },
     "ashen_greatshield": {
       "description": "Massiver Schild, geschmiedet aus den Knochen der Kreatur des unterirdischen Sees",
-      "name": "Aschener Großschild"
+      "name": "Aschengroßschild"
     },
     "ashfire_bomb": {
       "description": "Verheerende Bombe, die mit jenseitigem Feuer glüht",

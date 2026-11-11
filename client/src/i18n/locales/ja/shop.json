@@ -31,12 +31,12 @@
     "name": "鴉のハーネス"
   },
   "cruel_mode": {
-    "activationMessage": "残酷モードを発動した。新しいゲームを始め、究極の試練に臨め。",
+    "activationMessage": "残酷モードを有効にした。新しいゲームを始め、究極の試練に臨め。",
     "description": "より残酷な世界でもう一度遊ぶ。物語が広がり、品物が増え、敵はより凶悪になり、ほかにも多くの要素が加わる。",
     "name": "残酷モード"
   },
   "full_game": {
-    "activationMessage": "製品版を解放し、発動した。旅に制限はなくなった。",
+    "activationMessage": "製品版を解放した。旅はもう制限なく続く。",
     "description": "製品版を解放し、旅を続ける。",
     "name": "製品版"
   },
@@ -47,7 +47,7 @@
   },
   "gold_100_free": {
     "activationMessage": "100金貨を贈り物として所持品に加えた！",
-    "description": "寒い世界における日々の慈悲",
+    "description": "冷たい世界に差す、日々の慈悲",
     "name": "100金貨の贈り物"
   },
   "gold_15000": {
@@ -82,12 +82,12 @@
   },
   "great_feast_1": {
     "activationMessage": "大宴会が始まった！",
-    "description": "30分間：\n• 村の生産が5倍\n• 新しい村人の確率が+25 %",
+    "description": "30分間：\n• 村の生産が5倍\n• 新しい村人の確率が+25%",
     "name": "大宴会1回"
   },
   "great_feast_3": {
     "activationMessage": "大宴会が始まった！",
-    "description": "30分間：\n• 村の生産が5倍\n• 新しい村人の確率が+25 %",
+    "description": "30分間：\n• 村の生産が5倍\n• 新しい村人の確率が+25%",
     "name": "大宴会3回"
   },
   "skull_lantern": {

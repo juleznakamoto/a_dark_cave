@@ -102,7 +102,7 @@
     },
     "4-mentalClarity": {
       "label": "心智清明",
-      "description": "使用5瓶清晰灵药"
+      "description": "使用5瓶澄明灵药"
     },
     "4-merchantPurchases": {
       "label": "交易好手",
@@ -289,7 +289,7 @@
       "description": "赢得3局游戏"
     },
     "0-endurant": {
-      "label": "持久者",
+      "label": "持之以恒",
       "description": "在所有游戏中累计游玩30小时"
     },
     "0-finalPact": {

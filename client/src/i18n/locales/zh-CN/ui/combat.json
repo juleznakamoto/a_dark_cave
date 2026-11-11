@@ -56,7 +56,7 @@
     "soon": "即将",
     "provoke": "挑衅",
     "delay": "推迟",
-    "delayTooltip": "将这波进攻再推迟{{minutes}}分钟。",
+    "delayTooltip": "将这波进攻再推迟 {{minutes}} 分钟。",
     "postCompletion": "第{{waveNumber}}波",
     "waves": {
       "firstWave": "第一波",

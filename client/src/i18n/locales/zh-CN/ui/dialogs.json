@@ -31,39 +31,39 @@
   },
   "pactOffer": {
     "title": "选择你的契约",
-    "grant": "每次游玩获得一次契约选择（残酷模式为两次）。",
+    "grant": "每局游戏可选择一项契约（残酷模式下为两项）。",
     "available": "可用 {{count}}",
     "continue": "继续",
     "madness": "+3 疯狂",
     "cards": {
       "blazesmith": {
         "name": "烈焰铁匠",
-        "boon": "炸弹制作成本少50%",
+        "boon": "炸弹制作成本降低 50%",
         "boon2": "心火生产加成翻倍",
         "quote": "“炼金术士的实验越界了。”"
       },
       "full_larders": {
         "name": "满仓",
-        "boon": "空闲村民产出+2食物",
-        "boon2": "猎人产出+5食物",
+        "boon": "空闲村民产出 +2 食物",
+        "boon2": "猎人产出 +5 食物",
         "quote": "“女猎手提出由她来狩猎。”"
       },
       "sturdy_hands": {
         "name": "结实双手",
-        "boon": "采集者产出+5木材",
-        "boon2": "采集者产出+5石头",
+        "boon": "采集者产出 +5 木材",
+        "boon2": "采集者产出 +5 石头",
         "quote": "“商人的货车上，货物比应有的多。”"
       },
       "cunning_trader": {
         "name": "狡诈商人",
-        "boon": "旅行商人20%折扣",
-        "boon2": "贸易站20%折扣",
-        "quote": "“近来的梦似乎有些不对劲。”"
+        "boon": "旅行商人处享 20% 折扣",
+        "boon2": "贸易站享 20% 折扣",
+        "quote": "“近来的梦境有些古怪。”"
       },
       "avid_apprentices": {
         "name": "热忱学徒",
-        "boon": "学者产出+1洞见",
-        "boon2": "行动的掌握快20%提升",
+        "boon": "学者产出 +1 洞见",
+        "boon2": "行动掌握速度提升 20%",
         "quote": "“赌徒似乎有些不对劲。”"
       }
     }
@@ -157,7 +157,7 @@
     "rulesGoal": "目标设为 15 点。",
     "rulesWinLose": "恰好达到目标则胜，超过则负。",
     "rulesStand": "若当前玩家点数领先，可选择不再掷骰。",
-    "tutorialIntro": "为教你规则，赌徒提议免费玩 {{count}} 局。",
+    "tutorialIntro": "为了让你熟悉规则，赌徒提议先不下注陪你玩 {{count}} 局。",
     "boneDiceIntro": "请下注。拥有骨骰可与赌徒对战两次。",
     "placeBet": "请下注。",
     "gamesRemaining": "剩余 {{remaining}}/{{total}} 局。",
@@ -178,7 +178,7 @@
     "practiceLoseRemaining": "你输掉了练习局（不涉及黄金）。剩余 {{remaining}}/{{total}} 局练习。",
     "practiceWinComplete": "你赢得了练习局（不涉及黄金）。练习完成，现在可以下注黄金。",
     "practiceLoseComplete": "你输掉了练习局（不涉及黄金）。练习完成，现在可以下注黄金。",
-    "coinOffer": "他把骰子转到火光里，笑容渐渐收紧。“翻倍，或者一无所有。”他低声说。“一到四，你的黄金翻倍。五或六，我留下。”",
+    "coinOffer": "他把骰子转到火光下，笑容收敛了几分。“要么翻倍，要么全输，”他低声说，“掷出一到四，你的黄金翻倍；五或六，归我。”",
     "coinAccept": "掷骰",
     "coinDecline": "收下赢金",
     "coinNothing": "一无所获",
@@ -191,9 +191,9 @@
     "rank": "#",
     "player": "玩家",
     "completionTime": "完成时间",
-    "noEntries": "暂无条目",
+    "noEntries": "暂无记录",
     "lastUpdated": "最后更新：{{time}}",
-    "recentCompletionsNote": "仅显示最近6个月内的通关记录。",
+    "recentCompletionsNote": "仅显示最近 6 个月内的通关记录。",
     "username": "用户名：",
     "notSet": "未设置",
     "currentPlaytime": "当前游戏时长：",
@@ -242,10 +242,10 @@
   },
   "share": {
     "title": "查看进度",
-    "resources": "资源：{{percent}} %",
-    "achievements": "成就：{{percent}} %",
+    "resources": "资源：{{percent}}%",
+    "achievements": "成就：{{percent}}%",
     "killedCreatures": "击杀生物",
-    "highestAttackWave": "最高攻击波次",
+    "highestAttackWave": "最高进攻波次",
     "cruelMode": "残酷模式",
     "on": "开",
     "off": "关",
@@ -270,7 +270,7 @@
     "email": "邮箱"
   },
   "galaxy": {
-    "title": "试玩到此为止",
+    "title": "试玩版到此结束",
     "description": "请将完整版加入 Steam 愿望单，以便在发布后继续旅程。",
     "storeHeaderLink": "加入愿望单",
     "wishlistButton": "加入 Steam 愿望单",

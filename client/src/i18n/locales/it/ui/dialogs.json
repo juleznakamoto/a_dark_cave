@@ -52,7 +52,7 @@
         "name": "Mani salde",
         "boon": "I raccoglitori producono +5 Legna",
         "boon2": "I raccoglitori producono +5 Pietra",
-        "quote": "«Il carro del mercante è troppo pieno.»"
+        "quote": "«Il carro del mercante contiene più di quanto dovrebbe.»"
       },
       "cunning_trader": {
         "name": "Mercante astuto",
@@ -61,7 +61,7 @@
         "quote": "«I sogni sono strani, ultimamente.»"
       },
       "avid_apprentices": {
-        "name": "Apprendista avido",
+        "name": "Apprendista zelante",
         "boon": "Gli studiosi producono +1 Intuizione",
         "boon2": "La maestria nelle azioni migliora il 20% più in fretta",
         "quote": "«C'è qualcosa che non va nello scommettitore.»"
@@ -110,7 +110,7 @@
     }
   },
   "referral": {
-    "invitedLog": "Hai invitato qualcuno di nuovo in questo mondo! +{{amount}} oro"
+    "invitedLog": "Hai portato un nuovo arrivato in questo mondo! +{{amount}} oro"
   },
   "invite": {
     "button": "Invita",
@@ -143,7 +143,7 @@
       "time": "Per quanto tempo dura l'investimento.",
       "success": "Probabilità di un investimento riuscito.",
       "profit": "Il profitto che ottieni in caso di successo.",
-      "lucky": "Probabilità in caso di successo di moltiplicare il tuo profitto per {{multiplier}}.",
+      "lucky": "Probabilità, in caso di successo, di moltiplicare il profitto per {{multiplier}}.",
       "loss": "L'oro che perdi in caso di fallimento.",
       "wait": "Dopo ogni investimento, servono 15 minuti perché appaiano nuove offerte."
     }
@@ -158,12 +158,12 @@
     "rulesWinLose": "Se un giocatore raggiunge esattamente l'obiettivo, vince. Se lo supera, perde.",
     "rulesStand": "Se il giocatore di turno ha più punti totali dell'avversario, può scegliere di non lanciare.",
     "tutorialIntro": "Per aiutarti a imparare il gioco, lo scommettitore propone di giocare {{count}} volte senza puntata.",
-    "boneDiceIntro": "Piazza la tua puntata. Possedere i Dadi d'osso ti permette di giocare due volte contro lo scommettitore.",
-    "placeBet": "Piazza la tua puntata.",
+    "boneDiceIntro": "Fai la tua puntata. Possedere i Dadi d'osso ti permette di giocare due volte contro lo scommettitore.",
+    "placeBet": "Fai la tua puntata.",
     "gamesRemaining": "{{remaining}} di {{total}} partite rimanenti.",
     "requiresLuck": "Richiede {{luck}} Fortuna per sbloccarsi",
     "bet": "Puntata:",
-    "practiceBet": "Pratica (0 oro)",
+    "practiceBet": "Prova (0 oro)",
     "goal": "Obiettivo:",
     "you": "Tu",
     "gambler": "Scommettitore",
@@ -171,13 +171,13 @@
     "noRoll": "Non lanciare",
     "youWin": "Hai vinto",
     "youLose": "Hai perso",
-    "practiceOutcome": "Round di pratica. Nessun oro vinto o perso.",
+    "practiceOutcome": "Round di prova. Nessun oro vinto o perso.",
     "goldWon": "+{{amount}} oro",
     "goldLost": "-{{amount}} oro",
-    "practiceWinRemaining": "Hai vinto il round di pratica (nessun oro in gioco). {{remaining}} di {{total}} partite di pratica rimanenti.",
-    "practiceLoseRemaining": "Hai perso il round di pratica (nessun oro in gioco). {{remaining}} di {{total}} partite di pratica rimanenti.",
-    "practiceWinComplete": "Hai vinto il round di pratica (nessun oro in gioco). Pratica completata. Puoi piazzare una puntata in oro.",
-    "practiceLoseComplete": "Hai perso il round di pratica (nessun oro in gioco). Pratica completata. Puoi piazzare una puntata in oro.",
+    "practiceWinRemaining": "Hai vinto il round di prova (nessun oro in gioco). {{remaining}} di {{total}} partite di prova rimanenti.",
+    "practiceLoseRemaining": "Hai perso il round di prova (nessun oro in gioco). {{remaining}} di {{total}} partite di prova rimanenti.",
+    "practiceWinComplete": "Hai vinto il round di prova (nessun oro in gioco). Partite di prova concluse. Ora puoi puntare dell'oro.",
+    "practiceLoseComplete": "Hai perso il round di prova (nessun oro in gioco). Partite di prova concluse. Ora puoi puntare dell'oro.",
     "coinOffer": "Gira il dado alla luce del fuoco, e il sorriso si assottiglia. «Il doppio, o niente», sussurra. «Da uno a quattro il tuo oro raddoppia. Cinque o sei, e me lo tengo.»",
     "coinAccept": "Lancia il dado",
     "coinDecline": "Tieni la vincita",
@@ -225,7 +225,7 @@
     "close": "Chiudi",
     "previous": "Cubo precedente",
     "next": "Cubo successivo",
-    "completionLog": "Hai completato questo viaggio. Continua qui o inizia una nuova partita. Magari in modalità crudele, se hai il coraggio."
+    "completionLog": "Hai completato questo viaggio. Continua qui o inizia una nuova partita. Magari in Modalità crudele, se hai il coraggio."
   },
   "timedEvent": {
     "buy": "Compra",
@@ -234,9 +234,9 @@
     "sellFor": "Vendi per {{amount}} oro",
     "sayGoodbye": "Saluta",
     "discount": "{{percent}}% di sconto",
-    "discountFromKnowledge": "{{percent}}% dalla conoscenza{{max}}",
+    "discountFromKnowledge": "{{percent}}% dalla Conoscenza{{max}}",
     "knowledgeMax": " (max.)",
-    "discountFromRing": "5% dall'anello dell'obbedienza",
+    "discountFromRing": "5% dall'Anello dell'obbedienza",
     "discountFromPact": "20% dal Mercante astuto",
     "prolongForInsight": "Estendi il tempo di {{minutes}} min"
   },
@@ -247,8 +247,8 @@
     "killedCreatures": "Creature uccise",
     "highestAttackWave": "Ondata d'attacco più alta",
     "cruelMode": "Modalità crudele",
-    "on": "Attivo",
-    "off": "Disattivo",
+    "on": "Attiva",
+    "off": "Non attiva",
     "playTime": "Tempo di gioco",
     "playForFreeAt": "Gioca gratis su",
     "save": "Salva",
@@ -262,7 +262,7 @@
   },
   "feedback": {
     "title": "Feedback",
-    "message": "Hai trovato bug o problemi di traduzione, o hai suggerimenti? Mi farebbe piacere sentirti.",
+    "message": "Hai trovato bug o problemi di traduzione, o hai suggerimenti? Mi farebbe piacere sentire la tua opinione.",
     "openForm": "Lascia un feedback",
     "contactVia": "Puoi anche contattarmi tramite:",
     "reddit": "Reddit",

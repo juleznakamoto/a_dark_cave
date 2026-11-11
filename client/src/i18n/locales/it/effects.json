@@ -171,8 +171,8 @@
       "name": "Anello della fortuna"
     },
     "flask_harness": {
-      "description": "Imbracatura di cuoio con scomparti imbottiti per elisir di venafuoco aggiuntivi",
-      "name": "Imbracatura per fiaschi"
+      "description": "Imbragatura di cuoio con scomparti imbottiti per elisir di venafuoco aggiuntivi",
+      "name": "Imbragatura per fiaschi"
     },
     "grenadier_bag": {
       "description": "Borsa di cuoio rinforzata per trasportare più esplosivi",
@@ -248,7 +248,7 @@
     },
     "ravenfeather_mantle": {
       "description": "Mistico mantello intessuto di scintillanti piume di corvo",
-      "name": "Mantello di piuma di corvo"
+      "name": "Mantello di piume di corvo"
     },
     "ravens_mark": {
       "description": "I forestieri si avvicinano al villaggio più spesso",
@@ -295,7 +295,7 @@
       "name": "Baule sigillato"
     },
     "shadow_boots": {
-      "description": "Muoviti su ogni terreno velocemente come un'ombra",
+      "description": "Muoviti su qualsiasi terreno, rapido come un'ombra",
       "name": "Stivali d'ombra"
     },
     "shadow_flute": {
@@ -323,7 +323,7 @@
       "name": "Alabarda di vetrotempesta"
     },
     "superior_bombs": {
-      "description": "Le bombe infliggono più danni",
+      "description": "L'alchimista ha migliorato le bombe, che ora infliggono più danni",
       "name": "Bombe superiori"
     },
     "survivors_last_words": {
@@ -451,7 +451,7 @@
       "name": "Piccone di ferro"
     },
     "mastermason_chisel": {
-      "description": "Strumento squisitamente fabbricato di un maestro costruttore dimenticato da tempo",
+      "description": "Strumento di squisita fattura appartenuto a un maestro costruttore dimenticato da tempo",
       "name": "Scalpello del maestro muratore"
     },
     "natharit_pickaxe": {
@@ -491,7 +491,7 @@
       "name": "Lanterna di teschio"
     },
     "steel_axe": {
-      "description": "Ascia finemente fabbricata forgiata in acciaio temprato",
+      "description": "Ascia di fine fattura, forgiata in acciaio temprato",
       "name": "Ascia d'acciaio"
     },
     "steel_lantern": {
@@ -525,7 +525,7 @@
       "name": "Spada d'adamante"
     },
     "arbalest": {
-      "description": "Balestra meticolosamente fabbricata progettata da un brillante ingegnere",
+      "description": "Balestra costruita con cura meticolosa, progettata da un brillante ingegnere",
       "name": "Balestra"
     },
     "ashen_dagger": {
@@ -601,7 +601,7 @@
       "name": "Spada di ossidiana"
     },
     "steel_sword": {
-      "description": "Lama d'acciaio finemente fabbricata con un bilanciamento superiore",
+      "description": "Lama d'acciaio di fine fattura, dal bilanciamento superiore",
       "name": "Spada d'acciaio"
     },
     "stormglass_halberd": {

@@ -33,7 +33,7 @@
       "variant2": "Ein Wanderer erscheint und wird Teil der Gemeinschaft.",
       "variant3": "Jemand nähert sich dem Dorf und lässt sich nieder.",
       "variant4": "Ein Fremder schließt sich der Gemeinschaft an.",
-      "variant5": "Ein Neuankömmling kommt an und richtet sich ein.",
+      "variant5": "Ein Neuankömmling trifft ein und fühlt sich bald wie zu Hause.",
       "multiple0": "{{count}} Fremde treten dem Dorf bei.",
       "multiple1": "{{count}} Reisende kommen an und beschließen zu bleiben.",
       "multiple2": "{{count}} Wanderer kommen an und lassen sich nieder."
@@ -45,7 +45,7 @@
       "villageGrowthSuggestion": "Das Dorf wächst schnell. Vielleicht könnten Steinhäuser mehr Dorfbewohner beherbergen.",
       "cityGrowthMilestone": "Die Stadt ist zu einer pulsierenden Metropole gewachsen, erfüllt von Handel, Industrie und der Hoffnung auf bessere Tage.",
       "moonstoneDiscovered": "Tief in der Grube entdecken Arbeiter Mondsteinvorkommen, ein leuchtendes Mineral voller Energie.",
-      "foundry": "Die Gießerei erwacht zum Leben, um mithilfe von Feuer und Hitze Erze zu verschmelzen.",
+      "foundry": "Die Gießerei erwacht dröhnend zum Leben, während Feuer und Hitze die Rohstoffe verschmelzen.",
       "masterworkFoundry": "Die Meistergießerei ist fertiggestellt, ein Denkmal höchster metallurgischer Kunst. In ihren Flammen kann Schwarzstahl geschmiedet werden, nahezu unzerstörbar, aber sehr schwer herzustellen.",
       "altar": "Am Waldrand erhebt sich ein Altar, errichtet, um zu besänftigen, was darin wohnt.",
       "grandHunterLodge": "Die Meisterjägerhütte ist fertiggestellt, ein prächtiges Bauwerk, in dem sich Meisterjäger versammeln.",
@@ -83,15 +83,15 @@
     },
     "crafting": {
       "emberBombFirst": "Das Wissen des Alchemisten erweist sich als unschätzbar. Du stellst eine mächtige Glutbombe her, deren Kern vor intensiver Hitze und zerstörerischem Potenzial glüht.",
-      "ashfireBombFirst": "Mit dem mystischen Aschfeuerstaub stellst du eine außergewöhnliche Bombe her, die von anderweltlichem Feuer pulsiert. Ihre Flammen brennen in Farben, die nicht von dieser Welt stammen.",
+      "ashfireBombFirst": "Mit dem mystischen Aschfeuerstaub stellst du eine außergewöhnliche Bombe her, die von jenseitigem Feuer pulsiert. Ihre Flammen brennen in Farben, die nicht von dieser Welt stammen.",
       "voidBombFirst": "Indem du Aschfeuerstaub mit Obsidian und Schwarzpulver kombinierst, erschaffst du eine Waffe von erschreckender Macht. Die Leerenbombe scheint den Raum um sich herum zu verzerren, die Realität selbst weicht ihrer Präsenz aus.",
       "veinfireElixirFirst": "Der Alchemist destilliert leuchtende Essenz aus Aderwurzelfasern. Du hältst nun ein Aderfeuer-Elixier in Händen, einen Trank, von dem man munkelt, er stärke die Bastion, wenn alles verloren scheint.",
-      "frostglassSword": "Die Schmiede brennt mit ätherischen blauen Flammen, während das Frostglas zu einem prächtigen Schwert geformt wird. Die Klinge leuchtet mit anderweltlichem kaltem Licht und strahlt immense Macht aus.",
-      "arbalest": "Dem Schema folgend stellst du eine sorgfältig verzierte Arbalest her. Ihre Mechanik ist makellos, entworfen von einem Meisterhandwerker.",
+      "frostglassSword": "Die Schmiede brennt mit ätherischen blauen Flammen, während das Frostglas zu einem prächtigen Schwert geformt wird. Die Klinge leuchtet in kaltem, jenseitigem Licht und strahlt immense Macht aus.",
+      "arbalest": "Dem Bauplan folgend stellst du eine sorgfältig verzierte Arbalest her. Ihre Mechanik ist makellos, entworfen von einem Meisterhandwerker.",
       "nightshadeBow": "Du fertigst einen Bogen aus dunklem Holz. Seine Pfeile werden Gift in deine Feinde tragen.",
-      "bloodstoneStaff": "Der Zauberer kanalisiert seine arkane Kraft in die Blutsteine, verschmilzt sie mit uraltem Holz. Der Blutsteinstab pulsiert mit blutroter Energie und strahlt Stärke und verbotenes Wissen aus.",
+      "bloodstoneStaff": "Der Zauberer kanalisiert seine arkane Kraft in die Blutsteine und verschmilzt sie mit uraltem Holz. Der Blutsteinstab pulsiert mit blutroter Energie und strahlt Stärke und verbotenes Wissen aus.",
       "stormglassHalberd": "Du schmiedest die Sturmglas-Hellebarde, deren Klinge mit ätherischem Licht glänzt. Du fühlst dich deutlich stärker, wenn du diese legendäre Waffe führst.",
-      "ashenGreatshield": "Der Schmied verarbeitet die massiven Knochen der Seekreatur zu einem undurchdringlichen Schild. Der Aschene Großschild ist ein Bollwerk von unerreichter Stärke, das deine Streitkräfte selbst vor den tödlichsten Bedrohungen schützen kann."
+      "ashenGreatshield": "Der Schmied verarbeitet die massiven Knochen der Seekreatur zu einem undurchdringlichen Schild. Der Aschengroßschild ist ein Bollwerk von unerreichter Stärke, das deine Streitkräfte selbst vor den tödlichsten Bedrohungen schützen kann."
     },
     "sacrifice": {
       "ringOfClarity": "Unter den Opfergaben entdeckst du einen kristallklaren Ring.",
@@ -116,7 +116,7 @@
         "mineObsidian": "Obsidianabbau",
         "mineAdamant": "Adamantabbau",
         "mineMoonstone": "Mondsteinabbau",
-        "hunt": "Jagen",
+        "hunt": "Jagd",
         "chopWood": "Holzschlag",
         "craftTorches": "Fackelherstellung",
         "craftBoneTotems": "Knochentotemherstellung",

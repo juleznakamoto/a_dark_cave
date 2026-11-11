@@ -231,11 +231,11 @@
       "name": "Arco de Beladona"
     },
     "obsidian_orb": {
-      "description": "Poderosa orbe de vidro vulcânico que concede força mental",
+      "description": "Poderoso orbe de vidro vulcânico que concede força mental",
       "name": "Orbe de Obsidiana"
     },
     "obsidian_orb_schematic": {
-      "description": "Esquema para fabricar uma poderosa orbe de obsidiana",
+      "description": "Esquema para fabricar um poderoso orbe de obsidiana",
       "name": "Orbe de Obsidiana"
     },
     "occultist_grimoire": {
@@ -267,7 +267,7 @@
       "name": "Amuleto Buscador de Raízes"
     },
     "ravens_orb": {
-      "description": "Orbe escura abençoada pelos corvos com conhecimento ancestral",
+      "description": "Orbe escuro abençoado pelos corvos com conhecimento ancestral",
       "name": "Orbe do Corvo"
     },
     "red_mask": {
@@ -323,7 +323,7 @@
       "name": "Alabarda de Vidro-Tempestade"
     },
     "superior_bombs": {
-      "description": "As bombas causam mais dano",
+      "description": "O alquimista aprimorou as bombas para que causem mais dano",
       "name": "Bombas Superiores"
     },
     "survivors_last_words": {
@@ -385,11 +385,11 @@
       "name": "Cavaleiro Inquieto"
     },
     "the_hound": {
-      "description": "Sobrevivente musculoso e desfigurado de um vilarejo na montanha envenenada.",
+      "description": "Sobrevivente musculoso e desfigurado de um vilarejo envenenado nas montanhas.",
       "name": "Cão Bruto"
     },
     "grey_one": {
-      "description": "Filhote de lobo levado de junto do alfa abatido e domesticado.",
+      "description": "Filhote de lobo recolhido ao lado do alfa abatido e domesticado.",
       "name": "O Cinzento"
     }
   },
@@ -424,7 +424,7 @@
     },
     "bone_saw": {
       "description": "A ferramenta do necromante, estranhamente eficiente no abate",
-      "name": "Serra de Osso"
+      "name": "Serra de Ossos"
     },
     "crow_harness": {
       "description": "Arreio especialmente fabricado para capturar corvos. Pode ser usado para capturar um corvo no Cânion de Alcance Negro.",
@@ -581,7 +581,7 @@
       "name": "Arco Longo"
     },
     "manhunter_bow": {
-      "description": "Arco do caçador de homens, encordoado para caçar pessoas",
+      "description": "Arco do caçador de homens, encordoado para caçar pessoas.",
       "name": "Arco do Caçador de Homens"
     },
     "master_bow": {

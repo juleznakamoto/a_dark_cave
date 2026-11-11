@@ -76,11 +76,11 @@ describe("sleep dreams", () => {
       de: ["Gute Träume", "Schlechte Träume", "Aktionen dauern 2 s länger"],
       fr: ["Beaux rêves", "Mauvais rêves", "Les actions prennent 2 s de plus"],
       es: ["Buenos sueños", "Malos sueños", "Las acciones tardan 2 s más"],
-      it: ["Sogni belli", "Brutti sogni", "Le azioni richiedono 2s in più"],
-      "pt-BR": ["Bons sonhos", "Pesadelos", "As ações levam 2s a mais"],
+      it: ["Bei sogni", "Brutti sogni", "Le azioni richiedono 2s in più"],
+      "pt-BR": ["Bons Sonhos", "Pesadelos", "As ações levam 2s a mais"],
       "zh-CN": ["美梦", "噩梦", "行动耗时增加 2 秒"],
       ja: ["良い夢", "悪夢", "行動に2秒余分にかかる"],
-      pl: ["Dobre sny", "Złe sny", "Akcje trwają o 2s dłużej"],
+      pl: ["Dobre sny", "Złe sny", "Akcje trwają o 2 s dłużej"],
       ru: ["Добрые сны", "Дурные сны", "Действия занимают на 2 с больше"],
     } as const;
 

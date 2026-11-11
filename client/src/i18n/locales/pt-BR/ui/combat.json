@@ -56,7 +56,7 @@
     "soon": "em breve",
     "provoke": "Provocar",
     "delay": "Atrasar",
-    "delayTooltip": "Empurra esta onda mais {{minutes}} minutos para trás.",
+    "delayTooltip": "Adia esta onda por mais {{minutes}} minutos.",
     "postCompletion": "Onda {{waveNumber}}",
     "waves": {
       "firstWave": "Primeira Onda",
@@ -75,7 +75,7 @@
   },
   "fortifications": {
     "bastion": "Bastião",
-    "bastion2": "Bastião alto",
+    "bastion2": "Bastião Alto",
     "fortifiedMoat": "Fosso Fortificado",
     "fortifiedMoat2": "Fosso Faminto",
     "chitinPlating": "Blindagem de Quitina",

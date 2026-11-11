@@ -6,7 +6,7 @@
     "description": "Traquez le bandit qui a volé la dague du marchand.",
     "label": "Repaire de bandits",
     "log": {
-      "success": "Votre groupe traque le bandit jusqu'à un repaire délabré. Vous le maîtrisez, récupérez la dague du marchand et trouvez 250 argent cachés dans son butin.",
+      "success": "Votre groupe traque le bandit jusqu'à un repaire délabré. Vous le maîtrisez, récupérez la dague du marchand et trouvez 250 pièces d'argent cachées dans son butin.",
       "failure": "Les villageois fouillent les collines mais ne parviennent pas à acculer le bandit. La piste se perd, et la dague est toujours entre ses mains."
     }
   },
@@ -80,7 +80,7 @@
     "label": "Loge des bâtisseurs"
   },
   "buildBuildersHall": {
-    "description": "Une halle où des bâtisseurs chevronnés rationalisent les projets et négocient de meilleurs prix des matériaux",
+    "description": "Une halle où des bâtisseurs chevronnés rationalisent les projets et négocient de meilleurs prix pour les matériaux",
     "label": "Halle des bâtisseurs"
   },
   "buildBuildersGuild": {
@@ -236,7 +236,7 @@
     "label": "Bureau du scribe"
   },
   "buildScriptorium": {
-    "description": "Carrefour de sagesse où les érudits rassemblent du savoir",
+    "description": "Foyer de sagesse où les érudits rassemblent du savoir",
     "label": "Scriptorium"
   },
   "buildShallowPit": {
@@ -500,7 +500,7 @@
   },
   "descendFurther": {
     "description": "Descendez les marches usées menant aux niveaux inférieurs de la grotte.",
-    "label": "Descendre davantage",
+    "label": "Descendre plus bas",
     "log": {
       "firstVisit": "La lanterne projette une lueur stable tandis que vous descendez encore plus bas. Soudain, vos pieds touchent des marches de pierre taillées par la main de l'homme, usées par le temps."
     }
@@ -522,7 +522,7 @@
     "description": "Fouillez la citadelle au cœur de la cité souterraine.",
     "label": "Explorer la citadelle",
     "log": {
-      "firstVisit": "Dans la partie la plus profonde de la ville, une citadelle massive s'élève devant vous. Sa taille suggère qu'elle abrite quelque chose de grande puissance, ou de grand danger."
+      "firstVisit": "Au plus profond de la cité, une citadelle massive s'élève devant vous. Sa taille laisse penser qu'elle abrite quelque chose d'une grande puissance, ou d'un grand danger."
     }
   },
   "exploreRuins": {
@@ -536,7 +536,7 @@
     "description": "Entrez dans le temple souterrain encore debout parmi les ruines oubliées.",
     "label": "Explorer le temple",
     "log": {
-      "firstVisit": "En vous enfonçant plus profondément dans les ruines de la cité souterraine, un grand temple émerge du sol de la caverne, pour l'essentiel intact, son ombre s'étendant sur les vestiges oubliés de la ville."
+      "firstVisit": "Alors que vous vous enfoncez plus profondément dans les ruines de la cité souterraine, un grand temple émerge du sol de la caverne, presque intact, son ombre s'étendant sur les vestiges oubliés de la cité."
     }
   },
   "exploreUndergroundLake": {
@@ -550,7 +550,7 @@
     "label": "Alimenter le feu"
   },
   "financeExpedition": {
-    "description": "Financer une expédition menée par des érudits vers les temples et ruines de la forêt",
+    "description": "Financez une expédition menée par des érudits vers les temples et les ruines de la forêt",
     "label": "Financer l'expédition",
     "log": {
       "complete": "L'expédition de recherche revient de la forêt. Les érudits passent des jours à cataloguer inscriptions, reliques usées et fragments de savoir oublié."
@@ -592,7 +592,7 @@
     "description": "Pistez des animaux à travers la forêt sombre.",
     "label": "Chasser",
     "log": {
-      "mapFragmentHunt": "En chassant, quelque chose attire votre regard dans la boue. Un morceau taché d'eau, peut-être une partie d'une carte."
+      "mapFragmentHunt": "Pendant que vous chassez, quelque chose attire votre regard dans la boue. Un lambeau taché d'eau, peut-être un morceau de carte."
     }
   },
   "woodenCabin": {
@@ -600,7 +600,7 @@
     "label": "Cabane de bois",
     "log": {
       "success": "La cabane appartient au chasseur qui vous a vendu de la viande. L'abattoir est garni de crochets, et aucun n'a porté de cerf. Il chassait des gens, et la nourriture qu'il échangeait était leur chair. Dans la cabane, vous trouvez l'arc du marchand.",
-      "failure": "Alors que vous approchez de la cabane, des flèches viennent de l'obscurité de la porte. Chaque tir tue. Les pointes sont en os. {{count}} villageois meurent avant que les autres ne fuient."
+      "failure": "Alors que vous approchez de la cabane, des flèches jaillissent de l'obscurité de l'embrasure. Chaque tir est mortel. Les pointes sont en os. {{count}} villageois meurent avant que les autres ne s'enfuient."
     }
   },
   "invest": {
@@ -617,10 +617,10 @@
     "description": "Posez un collet géant pour capturer une grande bête.",
     "label": "Poser un piège",
     "log": {
-      "trapSuccessNoDeaths": "Le piège géant fonctionne à la perfection ! Un énorme ours noir aux yeux rouges brillants est pris. Les villageois abattent la bête surnaturelle et revendiquent sa fourrure noire maudite comme trophée.",
-      "trapSuccessWithDeaths_one": "Le piège géant capture un colossal ours noir aux yeux rouges ardents ! {{count}} villageois tombe sous ses griffes surnaturelles avant que la bête ne soit enfin abattue. Vous revendiquez sa fourrure noire maudite comme un trophée durement gagné.",
-      "trapSuccessWithDeaths_other": "Le piège géant capture un colossal ours noir aux yeux rouges ardents ! {{count}} villageois tombent sous ses griffes surnaturelles avant que la bête ne soit enfin abattue. Vous revendiquez sa fourrure noire maudite comme un trophée durement gagné.",
-      "trapSuccessHeavy": "Le piège géant capture un colossal ours noir aux yeux pareils à des braises ardentes. {{count}} villageois tombent sous sa fureur surnaturelle avant que la bête ne soit enfin maîtrisée. Vous revendiquez sa fourrure noire maudite.",
+      "trapSuccessNoDeaths": "Le piège géant fonctionne à la perfection ! Un énorme ours noir aux yeux rouges brillants est pris. Les villageois abattent la bête surnaturelle et emportent sa fourrure noire maudite en guise de trophée.",
+      "trapSuccessWithDeaths_one": "Le piège géant capture un colossal ours noir aux yeux rouges ardents ! {{count}} villageois tombe sous ses griffes surnaturelles avant que la bête ne soit enfin abattue. Vous emportez sa fourrure noire maudite, un trophée durement gagné.",
+      "trapSuccessWithDeaths_other": "Le piège géant capture un colossal ours noir aux yeux rouges ardents ! {{count}} villageois tombent sous ses griffes surnaturelles avant que la bête ne soit enfin abattue. Vous emportez sa fourrure noire maudite, un trophée durement gagné.",
+      "trapSuccessHeavy": "Le piège géant capture un colossal ours noir aux yeux pareils à des braises ardentes. {{count}} villageois tombent sous sa fureur surnaturelle avant que la bête ne soit enfin maîtrisée. Vous emportez sa fourrure noire maudite.",
       "trapFailed": "Le piège géant est posé, mais lorsque vous revenez le vérifier, vous ne trouvez à côté que d'énormes traces de griffes. Ce qui rôde dans ces forêts est trop rusé pour votre piège… cette fois."
     }
   },

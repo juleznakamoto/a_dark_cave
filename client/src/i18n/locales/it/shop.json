@@ -5,7 +5,7 @@
     "name": "2 slot preset aggiuntivi"
   },
   "additional_construction_queue_slot": {
-    "activationMessage": "Sono stati aggiunti due slot coda di costruzione aggiuntivi.",
+    "activationMessage": "Sono stati aggiunti due slot alla coda di costruzione.",
     "description": "Altri due slot di costruzione parallela",
     "name": "2 slot coda di costruzione aggiuntivi"
   },

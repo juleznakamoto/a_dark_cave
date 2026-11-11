@@ -281,7 +281,7 @@
   },
   "overall": {
     "0-achievementMaxer": {
-      "label": "Maximizador de logros",
+      "label": "Cazador de logros",
       "description": "Completa todos los logros no épicos"
     },
     "0-caveVeteran": {
@@ -294,15 +294,15 @@
     },
     "0-finalPact": {
       "label": "El pacto final",
-      "description": "Gana una partida con los 5 pactos activos"
+      "description": "Termina una partida con los 5 pactos activos"
     },
     "0-resourceMaxer": {
-      "label": "Maximizador de recursos",
+      "label": "Acaparador",
       "description": "Alcanza la capacidad de la Gran bóveda con cada recurso limitado"
     },
     "0-upgradeMaxer": {
-      "label": "Maximizador de mejoras",
-      "description": "Maximiza cada mejora de la pestaña Hacienda"
+      "label": "Perfeccionista",
+      "description": "Maximiza cada mejora de la pestaña Finca"
     },
     "0-speedrunner": {
       "label": "Velocista",

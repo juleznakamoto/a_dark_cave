@@ -9,8 +9,8 @@
     "deactivate": "Desactivar"
   },
   "status": {
-    "loading": "Cargando...",
-    "processing": "Procesando...",
+    "loading": "Cargando…",
+    "processing": "Procesando…",
     "free": "Gratis",
     "error": "Error",
     "success": "¡Éxito!",

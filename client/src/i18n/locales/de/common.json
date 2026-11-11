@@ -9,8 +9,8 @@
     "deactivate": "Deaktivieren"
   },
   "status": {
-    "loading": "Wird geladen...",
-    "processing": "Wird verarbeitet...",
+    "loading": "Wird geladen…",
+    "processing": "Wird verarbeitet…",
     "free": "Kostenlos",
     "error": "Fehler",
     "success": "Erfolg!",

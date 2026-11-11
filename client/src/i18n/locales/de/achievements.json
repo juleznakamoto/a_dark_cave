@@ -109,7 +109,7 @@
       "description": "Tätige 100 Händlerkäufe"
     },
     "4-pileOfDead": {
-      "label": "Totenhaufen",
+      "label": "Leichenberg",
       "description": "Verliere insgesamt 250 Dorfbewohner"
     },
     "4-solsticeGatherings": {
@@ -201,7 +201,7 @@
       "description": "Baue die Gießerei und alle Ausbauten"
     },
     "1-3": {
-      "label": "Gerber",
+      "label": "Lederer",
       "description": "Baue die Gerberei und alle Ausbauten"
     },
     "2-0": {
@@ -272,7 +272,7 @@
     },
     "4-blacksteel_equipment": {
       "label": "Dunkle Kriegsausrüstung",
-      "description": "Stelle alle drei Schwarzstahl-Kriegsausrüstungen her"
+      "description": "Stelle alle drei Kriegsgegenstände aus Schwarzstahl her"
     },
     "4-blacksteel_tools": {
       "label": "Dunkle Werkzeuge",
@@ -290,7 +290,7 @@
     },
     "0-endurant": {
       "label": "Ausdauernd",
-      "description": "Spiele über alle Spiele hinweg 30 Stunden"
+      "description": "Spiele insgesamt 30 Stunden über alle Durchgänge hinweg"
     },
     "0-finalPact": {
       "label": "Der letzte Pakt",

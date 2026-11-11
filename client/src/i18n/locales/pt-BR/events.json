@@ -51,8 +51,8 @@
     "log": {
       "outcome0": "Quando a fumaça se dissipa, o salão está em ruínas. Não dá para fabricar bombas até o reparo."
     },
-    "message": "Uma explosão violenta rasga a vila. Logo depois, o alquimista sai cambaleando da fumaça, sorrindo. “Consegui! Um jeito melhor de fazer bombas!” O sorriso vacila. “O salão está em ruínas. Vai precisar de reparos.”",
-    "title": "Os experimentos do alquimista"
+    "message": "Uma explosão violenta rasga o vilarejo. Logo depois, o alquimista sai cambaleando da fumaça, sorrindo. “Consegui! Um jeito melhor de fazer bombas!” O sorriso vacila. “O salão está em ruínas. Vai precisar de reparos.”",
+    "title": "Os Experimentos do Alquimista"
   },
   "ashwraithCanyonTradeOffer": {
     "choices": {
@@ -72,7 +72,7 @@
         "label": "Continuar"
       }
     },
-    "message": "As passagens da caverna atrás do portão parecem finalmente livres. Aparentemente você matou as criaturas pálidas. Finalmente pode se aventurar além do portão.",
+    "message": "As passagens da caverna atrás do portão enfim parecem livres. Ao que tudo indica, você matou as criaturas pálidas. Agora pode finalmente se aventurar além do portão.",
     "title": "Além do Portão"
   },
   "blackenedMirror": {
@@ -89,7 +89,7 @@
       "outcome0": "Você compra o espelho. Sua superfície escura oferece vislumbres do seu próprio futuro, empurrando sua sanidade para o limite.",
       "outcome1": "Você recusa a oferta do comerciante. O espelho desaparece na noite junto com ele."
     },
-    "message": "Um comerciante errante oferece um espelho alto e rachado, emoldurado em ferro negro. Ele irradia uma aura fria e antinatural. O homem afirma que pode mostrar vislumbres do futuro.",
+    "message": "Um comerciante errante oferece um espelho alto e rachado, emoldurado em ferro negro. Ele irradia uma aura fria e antinatural. O homem afirma que o espelho mostra vislumbres do futuro.",
     "title": "O Espelho Enegrecido"
   },
   "blackRot": {
@@ -107,8 +107,8 @@
       "outcome1": "Os aldeões se forçam a engolir a comida estragada. Contra todas as chances, ninguém adoece.",
       "outcome2": "Ao anoitecer as cabanas ecoam com gemidos. Os doentes tremem no escuro, e alguns não se levantam de novo."
     },
-    "message": "Um cheiro azedo sai do armazém. Parte da comida apodreceu. Arriscar comer o que estragou, ou jogar fora.",
-    "title": "A podridão negra"
+    "message": "Um cheiro azedo sai do armazém. Parte da comida apodreceu. Arriscar comer a parte estragada ou jogá-la fora?",
+    "title": "A Podridão Negra"
   },
   "blacksmithHammerChoice": {
     "choices": {
@@ -127,7 +127,7 @@
     "title": "A Forja do Gigante"
   },
   "blindDruidBlessing": {
-    "message": "Um druida cego emerge da floresta. Ele se aproxima do santuário e acena com aprovação. “Os deuses da floresta estão satisfeitos com sua devoção, eles lhe concedem sua bênção.”",
+    "message": "Um druida cego emerge da floresta. Ele se aproxima do santuário e assente com aprovação. “Os deuses da floresta estão satisfeitos com sua devoção e lhe concedem sua bênção.”",
     "title": "O Druida Cego"
   },
   "bloodDrainedVillagers": {
@@ -169,7 +169,7 @@
     },
     "log": {
       "outcome0": "Você bebe do poço apesar do tom avermelhado. A água é fria, sem sabor e, após alguns instantes, subitamente parece limpa de novo. Sua mente parece tê-lo enganado.",
-      "outcome1": "Você bebe profundamente. O gosto de cobre inunda sua boca, espesso e quente. Naquela noite você sonha que se afoga em água vermelha, e acorda com o gosto ainda na língua.",
+      "outcome1": "Você bebe a grandes goles. O gosto de cobre inunda sua boca, espesso e quente. Naquela noite você sonha que se afoga em água vermelha, e acorda com o gosto ainda na língua.",
       "outcome2": "Você se recusa a beber, mas os aldeões continuam enchendo seus copos. Seus lábios se tingem de vermelho enquanto sorriem para você, como se nada estivesse errado."
     },
     "message": "A água do vilarejo corre vermelha por três dias. Os aldeões parecem não perceber, bebendo-a como se nada tivesse mudado. Você sente cheiro de cobre e ferro, mas eles afirmam que tem gosto de água pura de nascente.",
@@ -227,8 +227,8 @@
       }
     },
     "log": {
-      "outcome0": "Os aldeões derrotam o exército de ossos! Ossos e silêncio cobrem o campo de batalha. Você arranca a Coroa do Devorador de seus restos e drena um frasco de seu sangue pálido e viscoso.",
-      "outcome1": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha o vilarejo. As criaturas esqueléticas acabam marchando para longe, seu propósito não cumprido.",
+      "outcome0": "Os aldeões derrotam o exército de ossos! Ossos e silêncio cobrem o campo de batalha. Você arranca a Coroa do Devorador de seus restos e colhe um frasco de seu sangue pálido e viscoso.",
+      "outcome1": "Os aldeões se escondem aterrorizados enquanto o exército de ossos vasculha o vilarejo. As criaturas esqueléticas acabam marchando para longe, sem cumprir seu propósito.",
       "defend_noDeaths": "Os aldeões lutam desesperadamente contra o exército de ossos. Os aldeões sobrevivem à investida.",
       "defend_noDeaths_hut": "Os aldeões lutam desesperadamente contra o exército de ossos. Os aldeões sobrevivem à investida. As criaturas esqueléticas despedaçam uma das cabanas, reduzindo-a a escombros.",
       "defend_noDeaths_steel": "Os aldeões lutam desesperadamente contra o exército de ossos. Os aldeões sobrevivem à investida. O exército de ossos saqueia os estoques antes de partir.",
@@ -284,7 +284,7 @@
       "level4": "O caçador volta. Diz que precisa de mais ossos para suas pontas de flecha mortais. Oferece carne pálida e magra, sem pelo algum. Oferece {{foodReward}} de comida.",
       "level4Repeat": "O caçador vem outra vez, com muita carne. Ainda precisa de osso para as pontas de flecha. Oferece {{foodReward}} de comida.",
       "level5": "O caçador aparece e pousa um grande fardo de carne. Ainda está quente. Diz que andou ocupado e que ainda tem muito trabalho. Mas precisa de mais osso. Oferece {{foodReward}} de comida.",
-      "level5Repeat": "O caçador espera na beira do vilarejo. A carne que oferece tem cheiro de limpa, e há demais. Ainda quer osso para as pontas de flecha. Oferece {{foodReward}} de comida."
+      "level5Repeat": "O caçador espera na beira do vilarejo. A carne que ele oferece tem um cheiro limpo, e é carne demais. Ainda quer osso para as pontas de flecha. Oferece {{foodReward}} de comida."
     },
     "choices": {
       "giveBones": {
@@ -417,7 +417,7 @@
       "outcome0": "Você encontra uma bolsa velha e empoeirada com 25 Tochas na caverna."
     },
     "message": "Você encontra uma bolsa velha e empoeirada com 25 Tochas na caverna.",
-    "title": "Bolsa empoeirada"
+    "title": "Bolsa Empoeirada"
   },
   "boneTempleProposal": {
     "choices": {
@@ -426,9 +426,9 @@
       }
     },
     "log": {
-      "outcome0": "Você aceita a sabedoria da anciã. Os aldeões acenam em aprovação silenciosa. O caminho para construir o monumento supremo aos deuses agora está aberto."
+      "outcome0": "Você aceita a sabedoria da anciã. Os aldeões assentem em silenciosa aprovação. O caminho para construir o monumento supremo aos deuses agora está aberto."
     },
-    "message": "Uma anciã de olhos turvos se aproxima de você: “Devemos pôr fim ao derramamento de sangue humano”, declara ela. “Os deuses antigos exigem um grande monumento em sua honra. Só então os deuses nos concederão seu favor contínuo.”",
+    "message": "Uma anciã de olhos turvos se aproxima de você: “Devemos pôr fim ao derramamento de sangue humano”, declara ela. “Os deuses antigos exigem um grande monumento em sua honra. Só então os deuses continuarão a nos favorecer.”",
     "title": "A Exigência da Anciã"
   },
   "boneyardPlea": {
@@ -452,11 +452,11 @@
     "log": {
       "outcome0": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham o vilarejo. Ao amanhecer, os canibais partiram sem encontrar ninguém.",
       "defeat_noDeaths": "Os canibais sobrepujam suas defesas. Os aldeões conseguem sobreviver, ainda que por pouco.",
-      "defeat_noDeaths_loot": "Os canibais sobrepujam suas defesas. Os aldeões conseguem sobreviver, ainda que por pouco. Os canibais saqueiam seus estoques antes de recuar para a selva.",
+      "defeat_noDeaths_loot": "Os canibais sobrepujam suas defesas. Os aldeões conseguem sobreviver, ainda que por pouco. Os canibais saqueiam seus estoques antes de recuar para a mata.",
       "defeat_oneDeath": "Os canibais sobrepujam suas defesas. Um aldeão é sequestrado pelos canibais.",
-      "defeat_oneDeath_loot": "Os canibais sobrepujam suas defesas. Um aldeão é sequestrado pelos canibais. Os canibais saqueiam seus estoques antes de recuar para a selva.",
+      "defeat_oneDeath_loot": "Os canibais sobrepujam suas defesas. Um aldeão é sequestrado pelos canibais. Os canibais saqueiam seus estoques antes de recuar para a mata.",
       "defeat_manyDeaths": "Os canibais sobrepujam suas defesas. Vários aldeões são mortos ou sequestrados pelos canibais.",
-      "defeat_manyDeaths_loot": "Os canibais sobrepujam suas defesas. Vários aldeões são mortos ou sequestrados pelos canibais. Os canibais saqueiam seus estoques antes de recuar para a selva.",
+      "defeat_manyDeaths_loot": "Os canibais sobrepujam suas defesas. Vários aldeões são mortos ou sequestrados pelos canibais. Os canibais saqueiam seus estoques antes de recuar para a mata.",
       "hide_noDeaths": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham o vilarejo. Ao amanhecer, os canibais partiram sem encontrar ninguém.",
       "hide_noDeaths_loot": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham o vilarejo. Os canibais saqueiam livremente seus estoques e escapulem ao amanhecer sem encontrar ninguém.",
       "hide_oneDeath": "Os aldeões se escondem aterrorizados enquanto os canibais vasculham o vilarejo. Um aldeão é sequestrado.",
@@ -466,7 +466,7 @@
       "victory_one": "Os aldeões repelem os canibais! Um aldeão tomba na batalha, mas a tribo recua em derrota. Entre os corpos, você encontra um colar primitivo feito de ossos humanos.",
       "victory_many": "Os aldeões lutam valentemente e repelem os canibais! Vários aldeões caem na batalha, mas a tribo é forçada a recuar. Entre os corpos, você encontra um colar primitivo feito de ossos humanos."
     },
-    "message": "Tambores de guerra ecoam pela noite enquanto uma tribo de canibais emerge da selva. Eles avançam sobre o vilarejo com armas rudimentares e terríveis intenções.",
+    "message": "Tambores de guerra ecoam pela noite enquanto uma tribo de canibais emerge da mata. Eles avançam sobre o vilarejo com armas rudimentares e terríveis intenções.",
     "title": "Ataque dos Canibais"
   },
   "chainmasterCollector": {
@@ -486,7 +486,7 @@
     "log": {
       "fallback": "O colecionador dá de ombros e desaparece com a névoa da floresta. Ele murmura que talvez retorne.",
       "fallbackLast": "O colecionador parte sem dizer palavra. Você sente que não o verá de novo.",
-      "learnOutcome": "Você paga o colecionador e ele lê o livro em voz baixa. Pertenceu a um traficante de escravos morto há muito que se intitulava Mestre das Correntes. Ele marcava seus escravos com um sinal de corrente. O conhecimento pesa fortemente em sua mente.",
+      "learnOutcome": "Você paga o colecionador e ele lê o livro em voz baixa. Pertenceu a um traficante de escravos morto há muito que se intitulava Mestre das Correntes. Ele marcava seus escravos com um sinal de corrente. O conhecimento pesa muito em sua mente.",
       "sellOutcome": "O colecionador conta o ouro e leva o livro. “Pertenceu a um traficante de escravos que se intitulava Mestre das Correntes”, diz ele. “Ele marcava seus escravos com um sinal de corrente.”"
     },
     "message": {
@@ -555,7 +555,7 @@
         "label": "Fechar"
       }
     },
-    "message": "Certa noite, enquanto você se senta junto ao fogo, o cubo começa a falar de repente: “Há muito tempo, uma grande civilização prosperava neste mundo, mas ela ruiu e seu conhecimento se perdeu ao longo das eras.”",
+    "message": "Certa noite, enquanto você está sentado junto ao fogo, o cubo começa a falar de repente: “Há muito tempo, uma grande civilização prosperava neste mundo, mas ela ruiu e seu conhecimento se perdeu ao longo das eras.”",
     "title": "A Civilização Perdida"
   },
   "cube02": {
@@ -600,7 +600,7 @@
         "label": "Fechar"
       }
     },
-    "message": "A superfície do cubo tremeluz com uma luz pálida. “Pesquisando o arquivo... dados corrompidos... recuperação falhou. Algo de grande importância para a antiga civilização era protegido pelo portão, ou mantido trancado atrás dele.”",
+    "message": "A superfície do cubo tremeluz com uma luz pálida. “Pesquisando o arquivo... dados corrompidos... falha na recuperação. Algo de grande importância para a antiga civilização era protegido pelo portão, ou mantido trancado atrás dele.”",
     "title": "O Conhecimento Perdido"
   },
   "cube06": {
@@ -636,7 +636,7 @@
         "label": "Fechar"
       }
     },
-    "message": "“Com o auxílio dos dispositivos, a civilização prosperou. Começou uma era de paz e progresso sem precedentes, seu conhecimento e habilidade atingindo patamares que jamais seriam revistos.”",
+    "message": "“Com o auxílio dos dispositivos, a civilização prosperou. Começou uma era de paz e progresso sem precedentes, seu conhecimento e habilidade atingindo patamares que jamais voltariam a ser alcançados.”",
     "title": "A Era de Ouro"
   },
   "cubeHesitant": {
@@ -690,7 +690,7 @@
         "label": "Continuar"
       }
     },
-    "message": "“Quando a resistência se opôs aos dispositivos cranianos, ela foi exilada para as profundezas da montanha, selada atrás do portão. Sem caminho de volta, eles cavaram cada vez mais fundo. No isolamento e na escuridão, suas mentes se corroeram e eles mergulharam na loucura e na degeneração.”",
+    "message": "“Quando a resistência se opôs aos dispositivos cranianos, seus membros foram exilados para as profundezas da montanha, selados atrás do portão. Sem caminho de volta, eles cavaram cada vez mais fundo. No isolamento e na escuridão, suas mentes se corroeram e eles mergulharam na loucura e na degeneração.”",
     "title": "Os Exilados"
   },
   "cube14b": {
@@ -789,7 +789,7 @@
     "log": {
       "outcome0": "A caçada é um sucesso. Os caçadores voltam com muita carne. O vilarejo come bem esta noite.",
       "outcome1": "Os lobos os encontram antes que possam derrubar os cervos. Um caçador não retorna.",
-      "outcome2": "Você ordena que os caçadores fiquem por perto. Os cervos seguem adiante, e os lobos permanecem invisíveis."
+      "outcome2": "Você ordena que os caçadores fiquem por perto. Os cervos seguem adiante, e os lobos não dão sinal."
     },
     "message": "Os caçadores relatam ter avistado uma grande manada de cervos na floresta, mas a área fica perto de uma toca de lobos. Você os envia para caçar lá?",
     "title": "A Manada de Cervos"
@@ -895,8 +895,8 @@
       }
     },
     "log": {
-      "outcomeChosen": "Sem outra palavra, a figura parte em silêncio, deixando-lhe uma bênção recém-encontrada.",
-      "outcomeSendAway": "Você recusa a figura. Ela parte sem uma palavra, mas você sente que ela pode voltar.",
+      "outcomeChosen": "Sem dizer mais nada, a figura parte em silêncio, deixando você com uma nova bênção.",
+      "outcomeSendAway": "Você manda a figura embora. Ela parte sem uma palavra, mas você sente que pode voltar.",
       "outcomeFallback": "A figura não espera mais e desliza de volta para a escuridão."
     },
     "message": "Uma figura encapuzada aparece na propriedade, silenciosa, e então sussurra em voz baixa. Ela se oferece para lhe conceder uma bênção.",
@@ -917,13 +917,13 @@
       }
     },
     "log": {
-      "outcome0": "Você paga a mulher, e ela compartilha o segredo da Orbe de Obsidiana.",
+      "outcome0": "Você paga a mulher, e ela compartilha o segredo do Orbe de Obsidiana.",
       "outcome1": "Vinte aldeões são arrastados acorrentados. A mulher compartilha o conhecimento, mas o vilarejo fica enojado com o que foi feito.",
       "outcome2": "Você a manda embora. Ela diz que pode voltar quando você estiver pronto.",
       "outcome3": "O tempo se esgota. Ela parte, dizendo que pode voltar quando você estiver pronto."
     },
-    "message": "Uma mulher ricamente adornada, de aparência oriental, chega com dois atendentes musculosos. Ela se oferece para compartilhar o conhecimento para criar uma poderosa Orbe de Obsidiana em troca de ouro ou aldeões.",
-    "title": "A Orbe de Obsidiana"
+    "message": "Uma mulher ricamente adornada, de aparência oriental, chega com dois criados musculosos. Ela se oferece para compartilhar o conhecimento necessário para criar um poderoso Orbe de Obsidiana em troca de ouro ou aldeões.",
+    "title": "O Orbe de Obsidiana"
   },
   "facesInWalls": {
     "choices": {
@@ -982,7 +982,7 @@
       }
     },
     "log": {
-      "outcome1": "O malabarista põe-se a trabalhar. As mesas se enchem, a música sobe e, por um tempo, o vilarejo esquece suas agruras.",
+      "outcome1": "O malabarista põe-se a trabalhar. As mesas se enchem de comida, a música começa a tocar e, por um tempo, o vilarejo esquece suas agruras.",
       "outcome2": "Você recusa. O malabarista faz uma reverência elaborada que mal esconde a decepção, e parte.",
       "outcome3": "O tempo passa, e o malabarista se afasta. A chance de um grande banquete se esvai."
     }
@@ -1014,7 +1014,7 @@
       }
     },
     "log": {
-      "outcome0": "Você pega o pergaminho antigo das pedras frias. Conhecimento proibido está escrito em seu pergaminho quebradiço."
+      "outcome0": "Você pega o pergaminho antigo das pedras frias. Suas folhas quebradiças guardam conhecimento proibido."
     },
     "message": "Durante a noite, ao passar por uma trilha estreita, algo se move na borda da sua visão, como uma sombra fugindo da luz do fogo. Você o segue, e ali, sobre as pedras frias, jaz um pergaminho antigo.",
     "title": "O Pergaminho Antigo"
@@ -1070,11 +1070,11 @@
       }
     },
     "log": {
-      "outcome0": "A nevasca atinge com força brutal. Toda a produção passa a andar a passos de tartaruga enquanto os aldeões lutam para sobreviver ao frio.",
+      "outcome0": "A nevasca atinge com força brutal. A produção quase para enquanto os aldeões lutam para sobreviver ao frio.",
       "outcome2": "Graças aos estoques de lenha e comida, os aldeões sobrevivem ilesos à nevasca.",
-      "outcome3": "A nevasca atinge com força brutal. Toda a produção passa a andar a passos de tartaruga enquanto os aldeões lutam para sobreviver ao frio."
+      "outcome3": "A nevasca atinge com força brutal. A produção quase para enquanto os aldeões lutam para sobreviver ao frio."
     },
-    "message": "Ventos gélidos uivam pelo vilarejo. Os anciãos advertem que uma terrível nevasca se aproxima. Preparativos precisam ser feitos, ou as consequências serão terríveis.",
+    "message": "Ventos gélidos uivam pelo vilarejo. Os anciãos advertem que uma terrível nevasca se aproxima. Preparativos precisam ser feitos, ou as consequências serão graves.",
     "title": "Queda de Gelo"
   },
   "gambler": {
@@ -1104,11 +1104,11 @@
       }
     },
     "log": {
-      "outcome0": "Você bane o apostador da vila. Ele não voltará.",
+      "outcome0": "Você bane o apostador do vilarejo. Ele não voltará.",
       "outcome1": "Você deixa o apostador ir. Ele pode voltar."
     },
-    "message": "Furioso com as derrotas, o apostador começou uma briga com um aldeão e o matou na estrada de saída da vila. Você o proíbe de voltar?",
-    "title": "A fúria do apostador"
+    "message": "Furioso com as derrotas, o apostador começou uma briga com um aldeão e o matou na estrada que sai do vilarejo. Você o proíbe de voltar?",
+    "title": "A Fúria do Apostador"
   },
   "giftedRingDiscovery": {
     "choices": {
@@ -1117,7 +1117,7 @@
       }
     },
     "log": {
-      "outcome0": "Você segura o anel na mão. Ele parece macio, levemente quente e acolhedor."
+      "outcome0": "Você segura o anel na mão. Ele é suave ao toque, levemente quente e acolhedor."
     },
     "message": "Certa manhã, sobre um toco de árvore ao lado da entrada da caverna, você encontra um anel, como se alguém o tivesse deixado ali para você.",
     "title": "Um Presente Inesperado"
@@ -1140,8 +1140,8 @@
       "lakeDrownMany": "A criatura se ergue como um pesadelo, a beleza mascarando uma intenção mortal. Com força sobrenatural, ela arrasta os aldeões para baixo das águas. Restam apenas ondulações e gritos fracos enquanto os demais fogem aterrorizados."
     },
     "message": {
-      "firstTime": "Enquanto coletavam madeira na floresta, os aldeões descobrem um lago oculto entre as árvores. Um aldeão jura ter visto uma figura semelhante a uma mulher emergir brevemente, seu olhar belo, porém desumano. O que você faz?",
-      "repeat": "Enquanto coletavam madeira na floresta, os aldeões retornam ao lago oculto entre as árvores. Mais uma vez, um aldeão jura ter visto uma figura semelhante a uma mulher emergir brevemente, seu olhar belo, porém desumano. O que você faz?"
+      "firstTime": "Enquanto coletam madeira na floresta, os aldeões descobrem um lago oculto entre as árvores. Um aldeão jura ter visto uma figura semelhante a uma mulher emergir brevemente, seu olhar belo, porém desumano. O que você faz?",
+      "repeat": "Enquanto coletam madeira na floresta, os aldeões retornam ao lago oculto entre as árvores. Mais uma vez, um aldeão jura ter visto uma figura semelhante a uma mulher emergir brevemente, seu olhar belo, porém desumano. O que você faz?"
     },
     "title": "O Lago Escondido"
   },
@@ -1208,7 +1208,7 @@
       }
     },
     "log": {
-      "sendAwayOutcome": "Você a recusa. Ela sorri com calma demais. “Você e cada alma deste vilarejo vão se arrepender”, diz ela, e então se afasta.",
+      "sendAwayOutcome": "Você a manda embora. Ela sorri com calma demais. “Você e cada alma deste vilarejo vão se arrepender”, diz ela, e então se afasta.",
       "welcomeOutcome": "Você recebe a mulher de cabelos ruivos. Ela agradece em voz baixa e fala de plantas que curam e que fazem mal. Oferece ajudar a construir um jardim de ervas. Os aldeões a observam com atenção."
     },
     "message": "Uma bela mulher de cabelos ruivos chega. Diz que seu vilarejo nas montanhas morreu de fome e pede para ficar. Afirma saber muito sobre plantas e seus efeitos.",
@@ -1283,7 +1283,7 @@
     },
     "log": {
       "outcome1": "Você lhe entrega o couro. Ela o recebe com um sorriso grato, os olhos se iluminando. “Obrigada. Era exatamente o que eu precisava.” Ela se apressa, apertando as peles contra o peito.",
-      "outcome2": "Você recusa. Ela acena, a decepção passando pelo rosto, e retorna ao vilarejo sem dizer mais nada."
+      "outcome2": "Você recusa. Ela assente, a decepção passando pelo rosto, e retorna ao vilarejo sem dizer mais nada."
     },
     "message": "Uma mulher do vilarejo se aproxima de você, as bochechas levemente coradas. Ela hesita antes de falar, os olhos baixos: “Eu queria saber se você poderia ceder um pouco de couro. Gostaria de criar um arreio de couro.”",
     "title": "Uma Mulher do Vilarejo"
@@ -1298,7 +1298,7 @@
       }
     },
     "log": {
-      "believeOutcome": "O homem oferece liderar a busca pela mulher. Diz saber onde ela se esconde e que você deveria levar muitos homens.",
+      "believeOutcome": "O homem se oferece para liderar a busca pela mulher. Diz saber onde ela se esconde e que você deveria levar muitos homens.",
       "sendAwayOutcome": "Você manda embora o homem faminto. Ele não discute. Os aldeões observam a beira da floresta enquanto ele some."
     },
     "message": "O homem faminto é trazido até você. Mal consegue falar com clareza e afirma ser o último sobrevivente de um vilarejo na montanha. Diz que o poço deles foi envenenado por uma herbalista de cabelos ruivos.",
@@ -1315,9 +1315,9 @@
     },
     "log": {
       "outcome0": "Você concede abrigo ao estranho. Ao amanhecer, ele desapareceu. Restam apenas suas vestes, e dentro delas jaz um livro encadernado em pele humana. Suas páginas sussurram conhecimento proibido.",
-      "outcome1": "Você recusa a entrada ao estranho. Ele parte gritando maldições numa língua estranha. Antes do amanhecer, uma tribo de bárbaros ataca como que invocada por seus gritos, matando {{actualDeaths}} aldeões. Pela manhã você encontra um livro no chão, encadernado em pele humana."
+      "outcome1": "Você não deixa o estranho entrar. Ele parte gritando maldições numa língua desconhecida. Antes do amanhecer, uma tribo de bárbaros ataca como que invocada por seus gritos, matando {{actualDeaths}} aldeões. Pela manhã você encontra um livro no chão, encadernado em pele humana."
     },
-    "message": "Ao anoitecer, uma figura de túnica se aproxima, vinda da selva. Seus olhos ardem de loucura enquanto ele murmura numa língua estrangeira, com gestos bruscos e perturbadores. Os aldeões ficam inquietos. Você permite que este beduíno passe a noite?",
+    "message": "Ao anoitecer, uma figura de túnica se aproxima, vinda das terras selvagens. Seus olhos ardem de loucura enquanto ele murmura numa língua estrangeira, com gestos bruscos e perturbadores. Os aldeões ficam inquietos. Você permite que este beduíno passe a noite?",
     "title": "O Beduíno Louco"
   },
   "mapFragmentsAssembled": {
@@ -1326,7 +1326,7 @@
         "label": "Continuar"
       }
     },
-    "message": "Você junta os fragmentos do mapa. Eles revelam o mapa para um santuário esquecido nas profundezas do pântano.",
+    "message": "Você une os fragmentos do mapa. Juntos, eles revelam o caminho para um santuário esquecido nas profundezas do pântano.",
     "title": "Um Mapa Revelado"
   },
   "masterArcher": {
@@ -1350,7 +1350,7 @@
       "outcome0": "Sua indecisão frustra o arqueiro. Ele balança a cabeça e parte, levando sua expertise para outro lugar.",
       "outcome2": "O mestre arqueiro aceita o pagamento e começa a treinar seus caçadores imediatamente.",
       "outcome4": "O mestre arqueiro pega o ouro com um aceno e começa a treinar seus caçadores imediatamente.",
-      "outcome5": "O arqueiro acena. “Voltarei se você mudar de ideia”, diz ele, e desaparece na floresta."
+      "outcome5": "O arqueiro assente. “Voltarei se você mudar de ideia”, diz ele, e desaparece na floresta."
     },
     "message": "Um homem com um casaco de couro vermelho-escuro chega com um sorriso confiante e olhos atentos. Ele se oferece para ajudar seus arqueiros, dizendo que pode aprimorar sua pontaria e melhorar suas habilidades de caça. Se você aceitar, ele ficará e começará a trabalhar.",
     "title": "O Mestre Arqueiro"
@@ -1392,8 +1392,8 @@
     },
     "log": {
       "outcome0": "Você paga o ouro, as mãos tremendo de raiva. O mercenário ri. “Escolha inteligente. Não vou incomodá-lo de novo... provavelmente.” Ele some na mata com seus homens.",
-      "outcome1": "Você recusa. Os mercenários atacam, mas desta vez você está preparado. Após uma luta brutal, eles se dispersam pela selva, deixando seus mortos para trás.",
-      "outcome2": "Seu desafio lhe custa caro. Os mercenários devastam o vilarejo, matando {{deaths}} antes de finalmente partirem, rindo da destruição que causaram.",
+      "outcome1": "Você recusa. Os mercenários atacam, mas desta vez você está preparado. Após uma luta brutal, eles se dispersam pela mata, deixando seus mortos para trás.",
+      "outcome2": "Sua rebeldia lhe custa caro. Os mercenários devastam o vilarejo, matando {{deaths}} antes de finalmente partirem, rindo da destruição que causaram.",
       "outcome3": "Você lhe oferece o anel voraz que ainda guardava num baú trancado. O mercenário o examina com interesse, deslizando-o no próprio dedo. “Um belo anel”, diz ele, “mas não é o bastante. Voltarei amanhã para recolher o ouro.”"
     },
     "message": "O mercenário está de volta, e desta vez traz mais homens. “Tempos difíceis”, diz ele com um sorriso. “O preço subiu. 200 de ouro, ou as coisas ficam feias.”",
@@ -1472,7 +1472,7 @@
         "label": "Esquema da Balestra"
       },
       "trade_compound_bow": {
-        "message": "Você compra o arco composto. O mercador acena com aprovação: “Arma de alta precisão da civilização desaparecida. Ela o servirá bem.”",
+        "message": "Você compra o arco composto. O mercador assente com aprovação: “Arma de alta precisão da civilização desaparecida. Ela o servirá bem.”",
         "label": "Arco Composto"
       },
       "trade_stormglass_halberd_schematic": {
@@ -1546,7 +1546,7 @@
     },
     "log": {
       "outcome0": "Você demorou demais para decidir. A oferta dos monges expira.",
-      "outcome2": "Você paga aos monges por seu mapa. Ele revela a localização da Biblioteca Oculta nas profundezas da caverna.",
+      "outcome2": "Você paga os monges pelo mapa. Ele revela a localização da Biblioteca Oculta nas profundezas da caverna.",
       "outcome3": "Você recusa a oferta dos monges. A oportunidade se perde."
     },
     "message": "O corvo caolho retorna do Mosteiro da Montanha com um pergaminho selado. Os monges se oferecem para lhe vender um mapa para uma biblioteca oculta nas profundezas da caverna. Eles pedem 250 de ouro.",
@@ -1554,7 +1554,7 @@
   },
   "monolithDemand": {
     "message": "Os aldeões exigem construir um monólito no centro do vilarejo, um monumento para apaziguar a escuridão que se infiltra em suas mentes. Por meio do sacrifício de animais, eles querem encontrar paz.",
-    "title": "Exigência pelo Monólito"
+    "title": "Clamor pelo Monólito"
   },
   "mysteriousBell": {
     "choices": {
@@ -1570,7 +1570,7 @@
       "outcome0": "No instante em que você ouve o primeiro toque, a escuridão o engole por completo. Você sonha com uma vasta cidade de vidro e aço, repleta de luzes estranhas e pessoas que se movem com um propósito que você não consegue compreender. Quando acorda, o sino desapareceu, mas uma marca em forma de sino queima em seu antebraço.",
       "outcome1": "O risco é grande demais. Naquele mesmo dia, um comerciante chega e oferece 500 de ouro pelo sino. Você aceita imediatamente, aliviado por se livrar do objeto amaldiçoado. O comerciante parte com um sorriso de quem sabe."
     },
-    "message": "Você abre o baú selado com a chave-mestra. Dentro, repousando sobre veludo desbotado, jaz um sino de ouro coberto de gravuras grotescas e símbolos estranhos escritos por sua superfície.",
+    "message": "Você abre o baú selado com a chave-mestra. Dentro, repousando sobre veludo desbotado, jaz um sino de ouro com gravuras grotescas e símbolos estranhos por toda a superfície.",
     "title": "O Sino Misterioso"
   },
   "mysteriousBook": {
@@ -1582,15 +1582,15 @@
     "log": {
       "outcome0": "Dentro há um livro cuja idade você não consegue adivinhar. Sua capa há muito se foi, as páginas estão rasgadas, mas as letras perfeitamente escritas ainda estão nítidas. Ao virar cuidadosamente as páginas, você percebe que ele ensina o lento moldar de si mesmo por meio da repetição."
     },
-    "message": "Numa noite tardia, você ouve uma batida suave na porta da propriedade. Ao abri-la, não há ninguém, apenas algo encadernado em couro marrom-escuro repousando na soleira.",
-    "title": "Uma Batida Silenciosa"
+    "message": "Certa noite, já tarde, você ouve uma batida suave na porta da propriedade. Ao abri-la, não há ninguém, apenas algo encadernado em couro marrom-escuro repousando na soleira.",
+    "title": "Uma Batida Suave"
   },
   "mysteriousWoman": {
     "log": {
       "outcome0_woman": "Você lhe concede abrigo pela noite. De manhã, ela desapareceu sem deixar rastro, deixando sua cama ainda quente e {{silverStolen}} de prata a menos.",
       "outcome0_man": "Você lhe concede abrigo pela noite. De manhã, ele desapareceu sem deixar rastro, deixando sua cama ainda quente e {{silverStolen}} de prata a menos.",
-      "outcome1_woman": "Você recusa educadamente o pedido dela. Ela parece decepcionada, mas acena em compreensão, desaparecendo na névoa noturna sem dizer mais nada.",
-      "outcome1_man": "Você recusa educadamente o pedido dele. Ele parece decepcionado, mas acena em compreensão, desaparecendo na névoa noturna sem dizer mais nada."
+      "outcome1_woman": "Você recusa educadamente o pedido dela. Ela parece decepcionada, mas assente, compreensiva, e desaparece na névoa noturna sem dizer mais nada.",
+      "outcome1_man": "Você recusa educadamente o pedido dele. Ele parece decepcionado, mas assente, compreensivo, e desaparece na névoa noturna sem dizer mais nada."
     },
     "title": {
       "woman": "A Mulher Misteriosa",
@@ -1633,11 +1633,11 @@
     },
     "log": {
       "ignoreForced": "Você ignora a oferta. O viking acaba cuspindo no chão e parte com seu machado de guerra, resmungando sobre sua falta de respeito.",
-      "ignoreNormal": "Você ignora a oferta. O viking acaba acenando e parte com seu machado de guerra.",
+      "ignoreNormal": "Você ignora a oferta. O viking acaba assentindo e parte com seu machado de guerra.",
       "buyForced": "O viking pega o pagamento com um sorriso frio. “Talvez você devesse ter sido mais generoso antes, em vez de me atacar. Teria pagado bem menos pelo machado então”, diz ele antes de partir.",
-      "buyNormal": "Satisfeito com a troca, o viking acena com aprovação e parte.",
+      "buyNormal": "Satisfeito com a troca, o viking assente com aprovação e parte.",
       "declineForced": "Você recusa a oferta. O viking cospe no chão, resmungando maldições enquanto parte com seu machado de guerra. “Você deveria ter me pagado quando teve a chance”, ele rosna.",
-      "declineNormal": "Você recusa a oferta. O viking acena respeitosamente e parte com seu machado de guerra."
+      "declineNormal": "Você recusa a oferta. O viking assente respeitosamente e parte com seu machado de guerra."
     },
     "message": "O construtor viking retorna ao seu vilarejo, carregando um magnífico machado de guerra. “Forjei este Machado de Guerra Nórdico em minha terra natal. Ele será seu... por um preço.”",
     "title": "O Viking Retorna"
@@ -1654,7 +1654,7 @@
     "log": {
       "outcome0": "Você bebe o elixir âmbar. Ele queima ao descer, mas você se sente mais forte do que antes.",
       "outcome1": "Você decide não arriscar e joga o frasco na mata. Ele desaparece na vegetação rasteira.",
-      "outcome2": "Sua hesitação lhe custa. O frasco escorrega dos seus dedos e se espatifa numa rocha, o elixir âmbar escoando para a terra."
+      "outcome2": "Sua hesitação lhe custa caro. O frasco escorrega dos seus dedos e se espatifa numa rocha, o elixir âmbar escoando para a terra."
     },
     "message": "Enquanto corta madeira, você encontra um frasco de elixir âmbar brilhante. O líquido gira hipnoticamente. Você o bebe?",
     "title": "O Elixir Estranho"
@@ -1703,7 +1703,7 @@
       }
     },
     "log": {
-      "outcome0": "Você não dá nenhuma ordem. Boatos se espalham, o medo coalha em repulsa, e o trabalho do vilarejo vacila.",
+      "outcome0": "Você não dá nenhuma ordem. Boatos se espalham, o medo azeda em repulsa, e o trabalho do vilarejo vacila.",
       "outcome2": "Você ordena os ritos funerários e alimenta os enlutados. A dor permanece, mas o vilarejo se estabiliza.",
       "outcome3": "Você descobre um grupo de conspiradores e ordena sua execução. A justiça é rápida, e o medo recua.",
       "outcome4": "Você consagra o corpo à cruz. Os aldeões recuam de repulsa, mas o poder da cruz parece ter crescido."
@@ -1827,7 +1827,7 @@
       "outcome2": "O cavaleiro fala: “Além das montanhas orientais jaz uma cidade morta de gigantescas torres de pedra, quase tocando as nuvens. Janelas vazias encaram a paisagem como incontáveis olhos. A natureza escalou cada parede e encheu as ruas de raízes. Ninguém vive ali há eras.”",
       "outcome3": "Suas palavras intrigam o cavaleiro, que diz: “Além das montanhas orientais jaz uma cidade morta de gigantescas torres de pedra, quase tocando as nuvens. Janelas vazias encaram a paisagem como incontáveis olhos. A natureza escalou cada parede e encheu as ruas de raízes. Ninguém vive ali há eras.”",
       "outcome4": "O cavaleiro escuta suas palavras, mas balança a cabeça. “Suas palavras são sinceras, mas meu conhecimento tem valor. Talvez nossos caminhos se cruzem novamente.” Ele parte sem compartilhar sua história.",
-      "outcome5": "Você recusa a oferta do cavaleiro. Ele acena respeitosamente. “Talvez nossos caminhos se cruzem novamente”, diz ele antes de continuar sua jornada."
+      "outcome5": "Você recusa a oferta do cavaleiro. Ele assente respeitosamente. “Talvez nossos caminhos se cruzem novamente”, diz ele antes de continuar sua jornada."
     },
     "title": "O Cavaleiro Inquieto",
     "message": {
@@ -1875,9 +1875,9 @@
       "outcome4": "Contente com a refeição, o cavaleiro compartilha: “Na costa do oceano encontrei uma cidade morta, em parte reclamada pelas ondas. Entre suas ruínas jazem vastas embarcações de metal, seus cascos enferrujados ainda desafiando o tempo. Os antigos outrora dominavam os mares com esses gigantes, agora encalhados e silenciosos na areia.”",
       "outcome5": "Suas palavras comovem o cavaleiro. Ele fala: “Na costa do oceano encontrei uma cidade morta, em parte reclamada pelas ondas. Entre suas ruínas jazem vastas embarcações de metal, seus cascos enferrujados ainda desafiando o tempo. Os antigos outrora dominavam os mares com esses gigantes, agora encalhados e silenciosos na areia.”",
       "outcome6": "O cavaleiro escuta, mas permanece inabalável. “Suas palavras são sinceras, mas este conhecimento é precioso. Talvez em outra ocasião.” Ele parte sem compartilhar sua descoberta.",
-      "outcome7": "Você recusa a oferta dele. O cavaleiro acena solenemente. “Muito bem. Os segredos da costa permanecerão comigo por ora”, diz ele antes de se afastar."
+      "outcome7": "Você recusa a oferta dele. O cavaleiro assente solenemente. “Muito bem. Os segredos da costa permanecerão comigo por ora”, diz ele antes de se afastar."
     },
-    "message": "O cavaleiro aparece mais uma vez: “Viajei até uma cidade na costa de um oceano”, diz ele. “O que encontrei ali desafia a crença. Compartilharei este conhecimento, por um preço.”",
+    "message": "O cavaleiro aparece mais uma vez: “Viajei até uma cidade na costa de um oceano”, diz ele. “O que encontrei ali é difícil de acreditar. Compartilharei este conhecimento, por um preço.”",
     "title": "Relatos da Costa"
   },
   "restlessKnightDesert": {
@@ -1899,11 +1899,11 @@
     },
     "log": {
       "outcome0": "O cavaleiro esperou, mas você não respondeu. “Talvez em outra ocasião”, diz ele antes de continuar sua jornada.",
-      "outcome2": "O cavaleiro acena com satisfação. “Um preço justo. Defenderei seu povo com minha vida.” Ele remove seu elmo desgastado, revelando um rosto marcado, mas determinado. O cavaleiro inquieto juntou-se à sua irmandade.",
+      "outcome2": "O cavaleiro assente, satisfeito. “Um preço justo. Defenderei seu povo com minha vida.” Ele remove seu elmo desgastado, revelando um rosto marcado, mas determinado. O cavaleiro inquieto juntou-se à sua irmandade.",
       "outcome4": "O cavaleiro aceita a prata com uma reverência solene. “Defenderei seu povo com minha vida.” Ele remove seu elmo desgastado, revelando um rosto marcado, mas determinado. O cavaleiro inquieto juntou-se à sua irmandade.",
       "outcome5": "“Seu propósito parece nobre.” Os olhos do cavaleiro se iluminam. “Eu ficaria honrado em estar ao seu lado.” Ele remove seu elmo desgastado, revelando um rosto marcado, mas determinado. O cavaleiro inquieto juntou-se à sua irmandade.",
       "outcome6": "O cavaleiro escuta, mas balança a cabeça. “Só palavras não sustentam um guerreiro. Então devo seguir minha jornada, por ora”, diz ele, virando-se e partindo.",
-      "outcome7": "Você recusa a oferta dele. O cavaleiro acena com compreensão. “Respeito sua decisão. Então devo seguir minha jornada, por ora”, diz ele, virando-se e partindo."
+      "outcome7": "Você recusa a oferta dele. O cavaleiro assente, compreensivo. “Respeito sua decisão. Então devo seguir minha jornada, por ora”, diz ele, virando-se e partindo."
     },
     "message": "O cavaleiro retorna: “Viajei muito ao sul até um vasto deserto. Lá, conheci um homem dedicado a recuperar a tecnologia perdida dos antigos. Ele me mostrou dispositivos outrora implantados no crânio, que aguçavam os sentidos além dos limites naturais.” Ele faz uma pausa. “Já viajei o bastante. Uma lâmina veterana lhe seria útil. Ofereço meus serviços em combate, se você aceitar.”",
     "title": "A Jornada Final do Cavaleiro"
@@ -1926,7 +1926,7 @@
       "outcome0": "O cavaleiro esperou, mas você não respondeu. “Talvez em outra ocasião”, diz ele antes de continuar sua jornada.",
       "outcome2": "O cavaleiro compartilha sua descoberta: “No alto das montanhas jaz um mosteiro esculpido nos penhascos. Os eruditos que ali se reuniram para estudar o passado falam de uma civilização avançada muito além da nossa compreensão. Contudo, algo levou seu mundo à ruína.”",
       "outcome4": "Grato pela refeição, o cavaleiro compartilha sua descoberta: “No alto das montanhas jaz um mosteiro esculpido nos penhascos. Os eruditos de lá que estudam o passado falam de uma civilização muito além da nossa compreensão. Seu ofício era tão avançado que nos pareceria magia. Contudo, algo levou seu mundo à ruína.”",
-      "outcome5": "Você recusa a oferta dele. O cavaleiro acena. “O conhecimento permanecerá comigo, então”, diz ele, e parte de novo."
+      "outcome5": "Você recusa a oferta dele. O cavaleiro assente. “O conhecimento permanecerá comigo, então”, diz ele, e parte de novo."
     },
     "message": "O cavaleiro retorna, sua armadura riscada e amassada. “Encontrei algo extraordinário nas montanhas”, diz ele. “Eu lhe contarei sobre isso, por um preço.”",
     "title": "Retorno das Montanhas"
@@ -1955,7 +1955,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões dizem ver formas que se movem dentro dela, e muitos têm medo demais de sair das cabanas.",
       "success_second": "A figura dá um leve aceno e desaparece na noite. Ao amanhecer, uma surrada bolsa de couro com ouro jaz onde ela estava."
     }
   },
@@ -1983,7 +1983,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões dizem ver formas que se movem dentro dela, e muitos têm medo demais de sair das cabanas.",
       "success_second": "A figura dá um leve aceno e desaparece na noite. Ao amanhecer, uma surrada bolsa de couro com ouro jaz onde ela estava."
     }
   },
@@ -2010,7 +2010,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões dizem ver formas que se movem dentro dela, e muitos têm medo demais de sair das cabanas.",
       "success_second": "A figura dá um leve aceno e desaparece na noite. Ao amanhecer, uma surrada bolsa de couro com ouro jaz onde ela estava."
     }
   },
@@ -2038,7 +2038,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões dizem ver formas que se movem dentro dela, e muitos têm medo demais de sair das cabanas.",
       "success_third": "A figura inclina a cabeça em silencioso reconhecimento antes de recuar para a penumbra. Quando a manhã chega, uma surrada bolsa de moedas de ouro é encontrada do lado de fora da porta."
     }
   },
@@ -2066,7 +2066,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões dizem ver formas que se movem dentro dela, e muitos têm medo demais de sair das cabanas.",
       "success_third": "A figura inclina a cabeça em silencioso reconhecimento antes de recuar para a penumbra. Quando a manhã chega, uma surrada bolsa de moedas de ouro é encontrada do lado de fora da porta."
     }
   },
@@ -2093,7 +2093,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões dizem ver formas que se movem dentro dela, e muitos têm medo demais de sair das cabanas.",
       "success_third": "A figura inclina a cabeça em silencioso reconhecimento antes de recuar para a penumbra. Quando a manhã chega, uma surrada bolsa de moedas de ouro é encontrada do lado de fora da porta."
     }
   },
@@ -2121,7 +2121,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões dizem ver formas que se movem dentro dela, e muitos têm medo demais de sair das cabanas.",
       "success_fifth": "A figura inclina a cabeça em silenciosa reverência antes de desaparecer completamente. Um grande saco de ouro jaz no chão onde ela estava."
     }
   },
@@ -2149,7 +2149,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões dizem ver formas que se movem dentro dela, e muitos têm medo demais de sair das cabanas.",
       "success_fifth": "A figura inclina a cabeça em silenciosa reverência antes de desaparecer completamente. Um grande saco de ouro jaz no chão onde ela estava."
     }
   },
@@ -2176,7 +2176,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões dizem ver formas que se movem dentro dela, e muitos têm medo demais de sair das cabanas.",
       "success_fifth": "A figura inclina a cabeça em silenciosa reverência antes de desaparecer completamente. Um grande saco de ouro jaz no chão onde ela estava."
     }
   },
@@ -2204,7 +2204,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões dizem ver formas que se movem dentro dela, e muitos têm medo demais de sair das cabanas.",
       "success_fourth": "A figura baixa a cabeça encapuzada por um momento antes de se dissolver nas sombras. Um pequeno saco de ouro permanece no chão frio."
     }
   },
@@ -2232,7 +2232,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões dizem ver formas que se movem dentro dela, e muitos têm medo demais de sair das cabanas.",
       "success_fourth": "A figura baixa a cabeça encapuzada por um momento antes de se dissolver nas sombras. Um pequeno saco de ouro permanece no chão frio."
     }
   },
@@ -2259,7 +2259,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões dizem ver formas que se movem dentro dela, e muitos têm medo demais de sair das cabanas.",
       "success_fourth": "A figura baixa a cabeça encapuzada por um momento antes de se dissolver nas sombras. Um pequeno saco de ouro permanece no chão frio."
     }
   },
@@ -2281,7 +2281,7 @@
       "outcome2": "Sua hesitação se mostra fatal. Um dos seus homens, incapaz de resistir ao anel misterioso, o apanha. Imediatamente, água começa a jorrar de sua boca numa torrente sem fim. Ele se afoga em terra firme."
     },
     "message": "Nas profundezas da cidade esquecida, você encontra um anel estranho que pinga água constantemente. Você fica com ele?",
-    "title": "Anel dos Afogados"
+    "title": "Anel do Afogado"
   },
   "risingSmokeRumor": {
     "choices": {
@@ -2305,7 +2305,7 @@
       "outcome0": "O Sacrário se transforma num nexo de poder divino. Todos os deuses respondem ao seu chamado, e os dons deles agora são seus.",
       "dedicate_dagon": "A Bênção de Dagon flui mais forte do que antes.",
       "dedicate_flame": "A Primeira Chama arde mais intensa do que antes.",
-      "dedicate_raven": "A Marca do Corvo se fortalece mais do que antes.",
+      "dedicate_raven": "A Marca do Corvo fica mais forte do que antes.",
       "dedicate_ash": "O Abraço das Cinzas está mais forte do que antes.",
       "dedicate_unknown": ""
     },
@@ -2353,9 +2353,9 @@
     "log": {
       "outcome0": "Você fica com a flauta de osso. Suas melodias são belas, mas há uma sutil dissonância que rói silenciosamente sua mente.",
       "outcome1": "Você recoloca a flauta no lugar com cuidado. As sombras retornam à sua quietude natural, e a atmosfera opressiva se dissipa.",
-      "outcome2": "Sua hesitação se mostra custosa. As sombras ficam famintas e violentas, contorcendo-se com vida sobrenatural. Elas avançam e devoram {{actualDevoured}} membros da sua irmandade. Seus gritos ecoam brevemente antes de serem engolidos pelo silêncio."
+      "outcome2": "Sua hesitação custa caro. As sombras ficam famintas e violentas, contorcendo-se com vida sobrenatural. Elas avançam e devoram {{actualDevoured}} membros da sua irmandade. Seus gritos ecoam brevemente antes de serem engolidos pelo silêncio."
     },
-    "message": "Nas profundezas da caverna você descobre uma flauta de osso de fatura perturbadora. Enquanto você a toca, as sombras ao seu redor começam a se mover de modos antinaturais, como se dançassem ao som de uma melodia. Você fica com ela?",
+    "message": "Nas profundezas da caverna você descobre uma flauta de osso de feitio perturbador. Enquanto você a toca, as sombras ao seu redor começam a se mover de modos antinaturais, como se dançassem ao som de uma melodia. Você fica com ela?",
     "title": "A Flauta das Sombras"
   },
   "shadowsMove": {
@@ -2372,7 +2372,7 @@
       "outcome1": "As sombras se inclinam em sua direção. Formas se aglutinam na borda da visão, e algo sussurra seu nome com uma voz que lembra folhas secas.",
       "outcome2": "Você desvia o olhar, mas a estranheza o segue. Pelo canto do olho, as sombras continuam se movendo muito depois de você parar de observar."
     },
-    "message": "As sombras no vilarejo parecem se mover de forma errada. Elas se esticam por demais, torcem-se em ângulos impossíveis e, às vezes, parecem se mover independentemente de suas fontes.",
+    "message": "As sombras no vilarejo parecem se mover de forma errada. Elas se esticam demais, torcem-se em ângulos impossíveis e, às vezes, parecem se mover independentemente de suas fontes.",
     "title": "Sombras em Movimento"
   },
   "shoreFishermenResponse": {
@@ -2387,10 +2387,10 @@
     },
     "log": {
       "outcome0": "Você demorou demais para decidir. A oferta dos pescadores expira.",
-      "outcome2": "Os pescadores compartilham com você suas elaboradas técnicas de construir armadilhas para peixes.",
+      "outcome2": "Os pescadores compartilham com você suas técnicas elaboradas de construção de armadilhas para peixes.",
       "outcome3": "Você recusa a oferta dos pescadores. A oportunidade se perde."
     },
-    "message": "O corvo caolho retorna dos Pescadores da Costa com peixe seco como presente. Os pescadores se oferecem para lhe ensinar os segredos de construir poderosas armadilhas para peixes por 250 de ouro.",
+    "message": "O corvo caolho retorna dos Pescadores da Costa trazendo peixe seco de presente. Os pescadores se oferecem para lhe ensinar os segredos de construir poderosas armadilhas para peixes por 250 de ouro.",
     "title": "Mensagem dos Pescadores da Costa"
   },
   "sixthWave": {
@@ -2411,7 +2411,7 @@
       "outcome1": "Você tenta se acalmar, mas a sensação se intensifica. Sua visão embaça e você desmaia. Em seus sonhos febris, coisas antigas sussurram seu verdadeiro nome. Quando você acorda, o rastejamento parou, mas a lembrança persiste.",
       "outcome2": "Você arranha freneticamente sua pele, tirando sangue. Os aldeões correm para detê-lo, agarrando seus braços. Em sua fúria enlouquecida, você ataca violentamente, matando {{killedVillagers}} aldeões antes de desabar de exaustão. Quando você acorda, o rastejamento parou, mas o sangue mancha suas mãos."
     },
-    "message": "Sua pele começa a rastejar — literalmente. Você consegue ver formas se movendo sob a superfície, aparentemente criando padrões. Os aldeões observam você arranhar sulcos sangrentos nos braços com expressões de grande preocupação.",
+    "message": "Algo começa a rastejar sob sua pele — literalmente. Você consegue ver formas se movendo por baixo dela, aparentemente criando padrões. Os aldeões observam você arranhar sulcos sangrentos nos braços com expressões de grande preocupação.",
     "title": "Pele Rastejante"
   },
   "slaveTrader": {
@@ -2436,11 +2436,11 @@
     "title": "O Mercador de Escravos"
   },
   "goodDreams": {
-    "message": "Você sonhou com a vila em paz. Todos sorriem e, por uma vez, não há nada a temer. Você acordou descansado, como se a noite tivesse sido mais longa.",
-    "title": "Bons sonhos"
+    "message": "Você sonhou com o vilarejo em paz. Todos sorriam e, ao menos uma vez, não havia nada a temer. Você acordou descansado, como se a noite tivesse sido mais longa.",
+    "title": "Bons Sonhos"
   },
   "badDreams": {
-    "message": "Você sonhou que a vila ardia enquanto algo antigo e imenso observava de longe, e ninguém ouviu seu chamado. Você acordou, e o pavor não passou.",
+    "message": "Você sonhou que o vilarejo ardia enquanto algo antigo e imenso observava de longe, e ninguém ouviu seu chamado. Você acordou, e o pavor não passou.",
     "title": "Pesadelos"
   },
   "solsticeGathering": {
@@ -2458,7 +2458,7 @@
       }
     },
     "log": {
-      "outcome2": "As fogueiras ardem e os risos rompem a escuridão por um tempo. Ao amanhecer, muitos visitantes permanecem, considerando ficar.",
+      "outcome2": "As fogueiras ardem e os risos rompem a escuridão por um tempo. Ao amanhecer, muitos visitantes ainda estão por ali, pensando em ficar.",
       "outcome3": "Você recusa. A noite passa sem alegria, calor ou risos."
     },
     "message": "Os aldeões propõem uma reunião para marcar a noite mais longa do ano. Fogueiras serão acesas, comida preparada e jogos realizados. Viajantes podem vir, atraídos pela luz.",
@@ -2531,7 +2531,7 @@
     "title": "O Druida Cego Retorna"
   },
   "tenthWave": {
-    "message": "Dos recantos mais profundos da caverna, uma massa inimaginável de criaturas pálidas irrompe. Elas inundam a terra como uma maré viva, enquanto a cidade se prepara para o próximo ataque.",
+    "message": "Dos recantos mais profundos da caverna, uma massa inimaginável de criaturas pálidas irrompe. Elas inundam a terra como uma maré de corpos, enquanto a cidade se prepara para o próximo ataque.",
     "title": "A Décima Onda"
   },
   "firstBossWave": {
@@ -2592,8 +2592,8 @@
     },
     "log": {
       "outcome1": "A equipe de busca encontra a menina ilesa. Ela havia descoberto uma pequena caverna repleta de bugigangas e moedas de prata, e brincava tranquilamente em meio a elas.",
-      "outcome2": "Você recusa. O mercador acena tristemente e parte para procurar sozinho.",
-      "outcome3": "Você recusa. O mercador acena tristemente e parte para procurar sozinho."
+      "outcome2": "Você recusa. O mercador assente com tristeza e parte para procurar sozinho.",
+      "outcome3": "Você recusa. O mercador assente com tristeza e parte para procurar sozinho."
     },
     "message": "Certa noite, o mercador se aproxima de você aflito. Sua filha mais nova desapareceu perto da orla da floresta, e ele implora por sua ajuda.",
     "title": "A Filha do Mercador"
@@ -2623,7 +2623,7 @@
         "label": "Recusar"
       }
     },
-    "message": "O filho do mercador do vilarejo se aproxima de você. Ele usou a valiosa adaga do pai para impressionar uma mulher, mas um bandido próximo o assaltou. Ele pede que você a recupere.",
+    "message": "O filho do mercador do vilarejo se aproxima de você. Ele usou a valiosa adaga do pai para impressionar uma mulher, mas um bandido da região o assaltou. Ele pede que você a recupere.",
     "title": "O Filho do Mercador"
   },
   "traders_son_gratitude": {
@@ -2636,8 +2636,8 @@
       }
     },
     "log": {
-      "outcome0": "Você recusa a oferta. O jovem mercador acena, talvez aliviado por não restar dívida alguma.",
-      "outcome1": "Você recusa a oferta. O jovem mercador acena, talvez aliviado por não restar dívida alguma."
+      "outcome0": "Você recusa a oferta. O jovem mercador assente, talvez aliviado por não restar dívida alguma.",
+      "outcome1": "Você recusa a oferta. O jovem mercador assente, talvez aliviado por não restar dívida alguma."
     },
     "message": "O filho do mercador retorna, segurando a adaga do pai. Ele está cheio de gratidão e lhe oferece um grande desconto na sua próxima compra das mercadorias do pai.",
     "title": "A Gratidão do Filho do Mercador"
@@ -2657,7 +2657,7 @@
         "label": "Preparar-se"
       }
     },
-    "message": "Enquanto explora o lago subterrâneo, você avista uma sombra enorme sob as águas negras, algo vasto e invisível. Talvez uma armadilha pudesse atraí-lo para fora das águas.",
+    "message": "Enquanto explora o lago subterrâneo, você avista uma sombra enorme sob as águas negras, algo vasto e oculto. Talvez uma armadilha pudesse atraí-lo para fora das águas.",
     "title": "Algo nas Profundezas"
   },
   "undergroundLakeDiscovery": {
@@ -2669,7 +2669,7 @@
     "log": {
       "outcome0": "Você concorda em investigar, mas primeiro os preparativos necessários para a descida ao lago precisam ser feitos."
     },
-    "message": "Após a última expedição à caverna, dois homens afirmam ter visto um lago subterrâneo. A escuridão era densa demais para enxergar com clareza. Talvez a lanterna de crânio pudesse revelar aquelas águas escuras.",
+    "message": "Após a última expedição à caverna, dois homens afirmam ter visto um lago subterrâneo. A escuridão era densa demais para enxergar com clareza. Talvez a lanterna de caveira pudesse revelar aquelas águas escuras.",
     "title": "O Lago Subterrâneo"
   },
   "unnamedWanderer": {
@@ -2688,8 +2688,8 @@
     },
     "log": {
       "outcome0": "Você recusa a oferta do andarilho. Ele dá de ombros, ajeita sua mochila gasta e desaparece estrada afora.",
-      "outcome2": "O andarilho dá um breve aceno e segue para a cava de mineração para começar o trabalho.",
-      "outcome4": "O andarilho dá um breve aceno e segue para a cava de mineração para começar o trabalho."
+      "outcome2": "O andarilho dá um breve aceno e segue até o poço de mineração para começar o trabalho.",
+      "outcome4": "O andarilho dá um breve aceno e segue até o poço de mineração para começar o trabalho."
     },
     "message": "Um homem em roupas rasgadas se aproxima do vilarejo, as mãos marcadas por anos de trabalho árduo. “Venho de uma colônia de mineração”, diz ele com voz rouca. “Posso trabalhar para você para melhorar seu rendimento de mineração.”",
     "title": "O Andarilho Sem Nome"
@@ -2706,7 +2706,7 @@
     },
     "log": {
       "outcome1": "O oráculo silencia. Seu olhar se perde além de você. “Grandes desafios o aguardam{{name}}”, diz ele suavemente. “Você acredita que este mundo é seu para moldar. Mas você também é moldado. Quando a verdade final vier à tona, você verá os fios. E, até lá, talvez já seja tarde demais.”",
-      "outcome2": "O oráculo acena. “Adeus, então{{name}}”, diz ele, e desaparece na névoa sem dizer mais nada."
+      "outcome2": "O oráculo assente. “Adeus, então{{name}}”, diz ele, e desaparece na névoa sem dizer mais nada."
     },
     "message": "Uma figura encapuzada aparece ao anoitecer. Seus olhos reluzem sob o véu. “Vislumbrei o que está por vir”, ele rouqueja. “50 de ouro, e eu lhe direi o que o espera.”",
     "title": "O Oráculo Velado"
@@ -2734,11 +2734,11 @@
       }
     },
     "log": {
-      "outcome0": "O construtor espera por um tempo, mas acaba dando de ombros e desaparecendo na selva, levando seu conhecimento consigo.",
+      "outcome0": "O construtor espera por um tempo, mas acaba dando de ombros e desaparecendo na mata, levando seu conhecimento consigo.",
       "outcome2": "Você paga o construtor. Ele ensina aos aldeões as antigas técnicas nórdicas para construir casas compridas.",
       "outcome3": "Seus homens dominam o construtor e o forçam a compartilhar seu conhecimento. A contragosto, ele lhe ensina os segredos da construção de casas compridas.",
-      "outcome4": "O construtor se mostra mais forte do que o esperado! Ele revida ferozmente, matando {{actualCasualties}} homens antes de escapar para a selva.",
-      "outcome5": "Você recusa a oferta do construtor e o manda embora. Ele dá de ombros e desaparece na selva, levando seu conhecimento consigo."
+      "outcome4": "O construtor se mostra mais forte do que o esperado! Ele revida ferozmente, matando {{actualCasualties}} homens antes de escapar para a mata.",
+      "outcome5": "Você recusa a oferta do construtor e o manda embora. Ele dá de ombros e desaparece na mata, levando seu conhecimento consigo."
     },
     "message": "Um dia, um homem forte vestindo grossas peles aparece nos portões. Ele diz que vem do extremo norte e é um construtor habilidoso. Por um pouco de ouro, ele lhe ensinará a construir grandes casas que podem abrigar muitos aldeões.",
     "title": "O Construtor Viking"
@@ -2814,7 +2814,7 @@
       "whisper0": "O colecionador suspira e se vira. “Em minhas viagens, descobri muitas relíquias da antiga civilização. Eles eram muito mais avançados do que nós jamais fomos”, sussurra ele antes de se esvair na escuridão.",
       "whisper1": "Um zumbido grave escapa de sob o capuz. “A grande explosão destruiu a maioria dos artefatos da antiga civilização. O pouco que resta está espalhado e é raro”, murmura ele.",
       "whisper2": "Um leve sopro escapa do colecionador. “Aprendi muito sobre a antiga civilização em minhas jornadas. Antes da grande explosão, não havia magia neste mundo. Ela nasceu naquele instante”, sussurra ele ao partir.",
-      "whisperGeneric": "O colecionador acena uma vez e se afasta.",
+      "whisperGeneric": "O colecionador assente uma vez e se afasta.",
       "leatherboundLearnOutcome": "Você paga pelo livro encadernado em couro. O colecionador o abre e lê em voz baixa. Pertenceu a um escravagista morto há muito que se chamava o Mestre das Correntes. Ele marcava seus escravos com um símbolo de corrente. O conhecimento pesa na sua mente."
     },
     "title": "O Colecionador Errante",
@@ -2845,7 +2845,7 @@
       "outcome0": "O artesão do fogo acaba suspirando: “Talvez você ainda não esteja pronto para tamanho poder.” E desaparece na noite.",
       "outcome2": "O artesão do fogo pega seu ouro e começa a lhe ensinar a sombria arte de criar a bomba do vazio. “Use este poder com sabedoria”, ele adverte antes de se esvair nas sombras.",
       "outcome4": "O artesão do fogo pega sua prata e começa a lhe ensinar a sombria arte de criar a bomba do vazio. “Use este poder com sabedoria”, ele adverte antes de se esvair nas sombras.",
-      "outcome5": "Você recusa a oferta do artesão do fogo. Ele acena, como quem já esperava: “Talvez você ainda não esteja pronto para tamanho poder.” E desaparece na noite."
+      "outcome5": "Você recusa a oferta do artesão do fogo. Ele assente, como quem já esperava: “Talvez você ainda não esteja pronto para tamanho poder.” E desaparece na noite."
     },
     "message": "Uma figura encapuzada em vestes manchadas chega ao seu vilarejo. “Sou um artesão do fogo”, diz ele com voz ecoante. “Posso ensiná-lo a criar uma bomba de extremo poder, que rasga a própria realidade. Mas o conhecimento tem seu preço.”",
     "title": "O Artesão do Fogo Errante"
@@ -2861,7 +2861,7 @@
     },
     "log": {
       "outcome0": "Você acolhe os nômades e oferece apoio. Em troca, eles ensinam seu povo a construir tendas de pele.",
-      "outcome1": "Você recusa ajudar. O líder da tribo acena respeitosamente e conduz seu povo de volta à selva."
+      "outcome1": "Você recusa ajudar. O líder da tribo assente respeitosamente e conduz seu povo de volta à mata."
     },
     "message": "Uma pequena tribo de nômades se aproxima do vilarejo. Seu líder fala: “Viajamos muito e buscamos um lugar para chamar de lar. Ajude-nos a nos estabelecer e ensinaremos seu povo a erguer tendas de pele.”",
     "title": "A Tribo Errante"
@@ -2890,7 +2890,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões dizem ver formas que se movem dentro dela, e muitos têm medo demais de sair das cabanas.",
       "success_first": "A figura acena levemente com a cabeça antes de se esvair na escuridão. Pela manhã, um pequeno saco de ouro repousa na soleira da propriedade."
     }
   },
@@ -2918,7 +2918,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões dizem ver formas que se movem dentro dela, e muitos têm medo demais de sair das cabanas.",
       "success_first": "A figura acena levemente com a cabeça antes de se esvair na escuridão. Pela manhã, um pequeno saco de ouro repousa na soleira da propriedade."
     }
   },
@@ -2945,7 +2945,7 @@
       }
     },
     "log": {
-      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões alegam ver formas mutáveis dentro dela, muitos estão temerosos demais para deixar suas cabanas.",
+      "wrong": "A figura balança a cabeça antes de desaparecer. No dia seguinte, uma densa névoa se infiltra no vilarejo. Os aldeões dizem ver formas que se movem dentro dela, e muitos têm medo demais de sair das cabanas.",
       "success_first": "A figura acena levemente com a cabeça antes de se esvair na escuridão. Pela manhã, um pequeno saco de ouro repousa na soleira da propriedade."
     }
   },
@@ -2976,7 +2976,7 @@
       "outcome0": "Você se esforça para ouvir. As vozes ficam mais claras até que, ao anoitecer, subitamente se vão.",
       "outcome1": "Você tenta bloqueá-las, mas os sussurros persistem. Só se esvaem após o anoitecer, mas continuam na sua memória."
     },
-    "message": "Você ouve leves sussurros no vento, proferindo palavras em nenhuma língua que você reconheça, mas de algum modo você as compreende. Elas falam de coisas antigas soterradas sob a terra.",
+    "message": "Você ouve leves sussurros no vento, numa língua que você não reconhece, mas que de algum modo compreende. Eles falam de coisas antigas soterradas sob a terra.",
     "title": "Vozes Sussurrantes"
   },
   "whispersBeneathHut": {
@@ -3014,10 +3014,10 @@
       }
     },
     "log": {
-      "outcome0": "A caçadora acena respeitosamente. De agora em diante, a Caçadora Espectro de Cinzas pode ser enviada para caçar na floresta."
+      "outcome0": "A caçadora assente respeitosamente. De agora em diante, a Caçadora Espectro de Cinzas pode ser enviada para caçar na floresta."
     },
     "message": "A Caçadora Espectro de Cinzas espera na orla da mata. “Deixe-me caçar nestes bosques”, diz ela baixinho. “O vilarejo não passará fome.”",
-    "title": "Carne para o vilarejo"
+    "title": "Carne para o Vilarejo"
   },
   "witchsCurse": {
     "choices": {
@@ -3062,7 +3062,7 @@
         "label": "Continuar"
       }
     },
-    "message": "O mago retorna de uma jornada à floresta. “Consultei um velho amigo, um mago eremita que habita nas profundezas da mata”, diz ele gravemente. “Ele falou da pedra-de-sangue de que precisamos. Ela jaz no Templo Submerso, um antigo santuário agora meio afogado nos pântanos da floresta.”",
+    "message": "O mago retorna de uma jornada à floresta. “Consultei um velho amigo, um mago eremita que habita nas profundezas da mata”, diz ele, grave. “Ele falou da pedra-de-sangue de que precisamos. Ela jaz no Templo Submerso, um antigo santuário agora meio alagado nos pântanos da floresta.”",
     "title": "O Templo Submerso"
   },
   "wizardBloodstoneStaff": {
@@ -3071,7 +3071,7 @@
         "label": "Continuar"
       }
     },
-    "message": "O mago examina as gemas de pedra-de-sangue que você recuperou do Templo Submerso. “Com estas pedras-de-sangue, agora temos tudo de que precisamos. Agora podemos criar o Cajado de Pedra-de-Sangue. Junto com a Espada de Vidro-de-Gelo, teremos os meios para enfrentar a escuridão que se esconde lá embaixo.”",
+    "message": "O mago examina as gemas de pedra-de-sangue que você recuperou do Templo Submerso. “Com estas pedras-de-sangue, temos tudo de que precisamos. Agora podemos criar o Cajado de Pedra-de-Sangue. Junto com a Espada de Vidro-de-Gelo, teremos os meios para enfrentar a escuridão que se esconde lá embaixo.”",
     "title": "O Cajado de Pedra-de-Sangue"
   },
   "wizardDecryptsScrolls": {
@@ -3098,7 +3098,7 @@
         "label": "Continuar"
       }
     },
-    "message": "O mago o chama à sua torre: “Soube de um castelo nas profundezas da selva, o antigo domínio de um necromante há muito morto. Dentro de suas paredes jazem pergaminhos antigos que falam de como podemos derrotar o que habita as profundezas da caverna.”",
+    "message": "O mago o chama à sua torre: “Soube de um castelo nas profundezas da mata, o antigo domínio de um necromante há muito morto. Dentro de suas paredes jazem pergaminhos antigos que falam de como podemos derrotar o que habita as profundezas da caverna.”",
     "title": "O Castelo do Necromante"
   },
   "wizardOffer": {
@@ -3113,8 +3113,8 @@
     },
     "log": {
       "outcome0": "Sua indecisão frustra o mago. Ele balança a cabeça. “Permanecerei em minha torre, então. Talvez nossos caminhos se cruzem novamente quando a necessidade for maior”, diz ele antes de partir.",
-      "outcome2": "O mago acena com satisfação. “Um preço justo por meus serviços. Defenderei seu povo com fogo arcano.” Ele remove seu capuz desgastado, revelando olhos antigos que brilham com poder esmaecido. O Mago Ancião juntou-se à sua irmandade.",
-      "outcome3": "Você recusa a oferta do mago. Ele acena com compreensão. “Permanecerei em minha torre, então. Talvez nossos caminhos se cruzem novamente quando a necessidade for maior”, diz ele antes de partir."
+      "outcome2": "O mago assente, satisfeito. “Um preço justo por meus serviços. Defenderei seu povo com fogo arcano.” Ele remove seu capuz desgastado, revelando olhos antigos que brilham com poder esmaecido. O Mago Ancião juntou-se à sua irmandade.",
+      "outcome3": "Você recusa a oferta do mago. Ele assente, compreensivo. “Permanecerei em minha torre, então. Talvez nossos caminhos se cruzem novamente quando a necessidade for maior”, diz ele antes de partir."
     },
     "message": {
       "firstVisit": "O velho mago se aproxima de você. “Vivi muito e vi muita coisa”, diz ele com voz cansada. “A ameaça que você enfrenta é terrível. Por um preço justo, eu me juntarei a você na luta contra os inimigos que emergem das profundezas.”",
@@ -3192,7 +3192,7 @@
       "leave": "Você o deixa morrer, mas leva o machado."
     },
     "message": "Os caçadores voltam da floresta. Sob as árvores, encontraram um homem musculoso e ferido: o lenhador. Algo o atacou. Ele está gravemente ferido e não vai durar muito.",
-    "title": "Caminhos que se cruzam de novo"
+    "title": "Caminhos que se Cruzam de Novo"
   },
   "woodcutter": {
     "choices": {
@@ -3233,7 +3233,7 @@
       "successLevel3": "O lenhador pega a comida e se embrenha nas profundezas da floresta. Ele retorna com uma impressionante carga de madeira.",
       "successLevel4": "O lenhador pega a comida e passa a tarde na floresta. Ele retorna com uma enorme pilha de madeira.",
       "successLevel5": "O lenhador pega a comida e, no mesmo dia, entrega um enorme estoque de madeira ao vilarejo.",
-      "attackLose": "Ele revida e mata {{deaths}} aldeões. Ferido, cambaleia para a floresta. Ele não volta com ofertas.",
+      "attackLose": "Ele revida e mata {{deaths}} aldeões. Ferido, cambaleia para a floresta. Ele não voltará com ofertas.",
       "attackWin": "Você o derruba. O machado é seu, e você pega {{gold}} de ouro do cinto dele. O lenhador está morto.",
       "successLevel6": "O lenhador pega a comida e, no mesmo dia, entrega um enorme estoque de madeira ao vilarejo."
     },
@@ -3264,7 +3264,7 @@
       "take": "Você pega o machado do lenhador ao lado do corpo."
     },
     "message": "Caçadores encontram o lenhador sob as árvores. Algo na floresta o atacou e o matou. O machado jaz ao lado dele.",
-    "title": "O que a floresta guardou"
+    "title": "O que a Floresta Guardou"
   },
   "wrongReflections": {
     "choices": {
@@ -3278,7 +3278,7 @@
     "log": {
       "outcome0": "Ao inspecionar, você não vê nada de incomum no poço. Deve ter sido um truque de luz ou sua imaginação. A inquietação persiste, mas você se sente um pouco melhor.",
       "outcome1": "Você se debruça sobre a borda do poço. Seu reflexo lhe sorri de volta com dentes demais e sussurra segredos sobre o que outrora foi construído onde o vilarejo agora se ergue. Você se afasta, mas o conhecimento permanece, ardendo em sua mente.",
-      "outcome2": "Você tapa o poço com tábuas de madeira, proibindo todo acesso à água profana. Construir um novo poço leva tempo demais para terminar, e {{thirstDeaths}} dos aldeões perecem de sede."
+      "outcome2": "Você tapa o poço com tábuas de madeira, proibindo todo acesso à água profana. Cavar um novo poço leva tempo demais, e {{thirstDeaths}} dos aldeões perecem de sede."
     },
     "message": "A superfície do poço do vilarejo mostra reflexos que não correspondem à realidade. Você se vê, mas mais velho, com olhos fundos e uma boca cheia de escuridão.",
     "title": "Reflexos Errados"
@@ -3317,7 +3317,7 @@
       "outcome1": "Pouco depois de o sacrifício ser realizado no Monólito Negro, {{actualLeavers}} aldeões horrorizados fazem as malas e partem enojados.",
       "outcome2": "Você concorda em acabar com a prática do sacrifício humano. A mulher propõe destruir o Monólito Negro e erguer em seu lugar um obelisco de um branco puro, que purifique a escuridão das mentes do povo."
     },
-    "message": "Uma jovem se aproxima de você com lágrimas escorrendo pelo rosto. “Ambos os meus pais foram sacrificados àquele monólito amaldiçoado”, ela chora. “Este comportamento bárbaro tem de parar!”",
+    "message": "Uma jovem se aproxima de você com lágrimas escorrendo pelo rosto. “Ambos os meus pais foram sacrificados àquele monólito amaldiçoado”, diz ela aos prantos. “Este comportamento bárbaro tem de parar!”",
     "title": "A Súplica da Jovem"
   },
   "wanderersLantern": {

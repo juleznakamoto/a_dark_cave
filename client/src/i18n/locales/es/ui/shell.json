@@ -26,7 +26,7 @@
     "medium": "Mediano",
     "large": "Grande",
     "extraLarge": "Muy grande",
-    "double": "200%"
+    "double": "200 %"
   },
   "languageSelector": {
     "label": "Idioma",
@@ -94,8 +94,8 @@
     "leaderboard": "Clasificación",
     "rewards": "Recompensas",
     "deleteAccount": "Eliminar cuenta",
-    "autoSaveSignedIn": "La partida se guarda cada minuto",
-    "autoSaveGuest": "La partida se guarda cada 15 segundos",
+    "autoSaveSignedIn": "La partida se guarda automáticamente cada minuto",
+    "autoSaveGuest": "La partida se guarda automáticamente cada 15 segundos",
     "signUpCloudSave": "Regístrate para guardar en la nube",
     "lastSave": "Último guardado: {{time}}",
     "signedOut": "Sesión cerrada correctamente",
@@ -111,7 +111,7 @@
     "subscribed": "Estás suscrito",
     "unsubscribed": "No estás suscrito",
     "subscribedDesc": "Te enviaremos actualizaciones y ofertas ocasionales por correo electrónico.",
-    "unsubscribedDesc": "No recibirás correos de marketing nuestros.",
+    "unsubscribedDesc": "No te enviaremos correos promocionales.",
     "preferenceUpdateFailed": "No se pudo actualizar la preferencia",
     "enterFullscreen": "Pantalla completa",
     "exitFullscreen": "Salir de pantalla completa"

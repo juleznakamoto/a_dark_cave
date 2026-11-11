@@ -80,7 +80,7 @@
     "label": "Chata budowniczych"
   },
   "buildBuildersHall": {
-    "description": "Sala, w której starsi budowniczowie usprawniają prace i wynegocjowują lepsze ceny materiałów",
+    "description": "Sala, w której starsi budowniczowie usprawniają prace i negocjują lepsze ceny materiałów",
     "label": "Sala budowniczych"
   },
   "buildBuildersGuild": {
@@ -92,7 +92,7 @@
     "label": "Chata myśliwego"
   },
   "buildChitinPlating": {
-    "description": "Umocnienia wzmocnione nieprzebitymi płytami z chityny",
+    "description": "Umocnienia wzmocnione płytami z chityny nie do przebicia",
     "label": "Pancerz z chityny"
   },
   "buildClerksHut": {
@@ -307,7 +307,7 @@
     "description": "Zbuduj most przez kanion, by połączyć się z leśnym plemieniem.",
     "label": "Most przez kanion",
     "log": {
-      "complete": "Most przez kanion stoi gotowy. Handlarze Popiołowych Widm mogą teraz dotrzeć do twojej osady, a ty możesz sprzedawać im towary po ustalonych stawkach."
+      "complete": "Most przez kanion stoi gotowy. Handlarze z plemienia Popiołowego Widma mogą teraz dotrzeć do twojej osady, a ty możesz sprzedawać im towary po ustalonych stawkach."
     }
   },
   "castleRuins": {
@@ -581,7 +581,7 @@
     "description": "Wejdź do kurhanu i szukaj mrozoszkła w komorze grobowej.",
     "label": "Kurhan",
     "log": {
-      "success": "Wyprawa ostrożnie pokonuje zdradliwe pułapki kurhanu. Wieśniacy rozbrajają starożytne mechanizmy i docierają do komory grobowej. Wśród skarbów króla odkrywacie czyste mrozoszkło, zimne jak sama pustka.",
+      "success": "Wyprawa ostrożnie pokonuje zdradliwe pułapki kurhanu. Wieśniacy rozbrajają starożytne mechanizmy i docierają do komory grobowej. Wśród skarbów króla odkrywasz czyste mrozoszkło, zimne jak sama pustka.",
       "failure": "Wyprawa wkracza do kurhanu, lecz brakuje jej wprawy, by ominąć śmiertelne pułapki. {{count}} wieśniaków pada ofiarą ostatnich strażników króla, zanim ocalali uchodzą w zgrozie, zostawiając ciała towarzyszy w przeklętym grobowcu."
     }
   },

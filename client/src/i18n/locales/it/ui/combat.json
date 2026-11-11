@@ -31,7 +31,7 @@
     "critFromLuckMaxSuffix": " (max.)",
     "critFromItems": "{{percent}}% dagli oggetti",
     "critDamage": "+{{percent}}% di danno da colpo critico",
-    "missChance": "{{percent}}% di probabilità di mancare (basata su {{stat}})",
+    "missChance": "{{percent}}% di probabilità di mancare il colpo (basata su {{stat}})",
     "enemies": {
       "paleCreatures": "Creature pallide",
       "paleBeasts": "Bestie pallide"
@@ -56,7 +56,7 @@
     "soon": "presto",
     "provoke": "Provoca",
     "delay": "Ritarda",
-    "delayTooltip": "Spinge questa ondata indietro di altri {{minutes}} minuti.",
+    "delayTooltip": "Rimanda questa ondata di altri {{minutes}} minuti.",
     "postCompletion": "Ondata {{waveNumber}}",
     "waves": {
       "firstWave": "Prima ondata",

@@ -115,7 +115,7 @@ describe("resolveLogPanelMessage", () => {
     const text = resolveLogPanelMessage(
       systemEntry("A newcomer arrives and makes themselves at home."),
     );
-    expect(text).toBe("Ein Neuankömmling kommt an und richtet sich ein.");
+    expect(text).toBe("Ein Neuankömmling trifft ein und fühlt sich bald wie zu Hause.");
   });
 
   it("matches English dark estate build log in German saves", async () => {
@@ -164,7 +164,7 @@ describe("resolveLogPanelMessage", () => {
       ),
     );
     expect(text).toBe(
-      "Die Gießerei erwacht zum Leben, um mithilfe von Feuer und Hitze Erze zu verschmelzen.",
+      "Die Gießerei erwacht dröhnend zum Leben, während Feuer und Hitze die Rohstoffe verschmelzen.",
     );
   });
 

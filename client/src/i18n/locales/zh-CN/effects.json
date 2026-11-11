@@ -215,7 +215,7 @@
       "name": "地图碎片"
     },
     "moon_bracelet": {
-      "description": "由恒久白石制成的精致无重量手环",
+      "description": "轻若无物的精致手环，由恒久不坏的白石制成",
       "name": "月之手环"
     },
     "muttering_amulet": {
@@ -247,7 +247,7 @@
       "name": "奇异灵药"
     },
     "ravenfeather_mantle": {
-      "description": "由闪烁乌鸦羽毛织成的神秘披肩",
+      "description": "由闪烁微光的渡鸦羽毛织成的神秘披肩",
       "name": "鸦羽披肩"
     },
     "ravens_mark": {
@@ -323,7 +323,7 @@
       "name": "风暴晶戟"
     },
     "superior_bombs": {
-      "description": "炸弹造成更多伤害",
+      "description": "炼金术士改良了炸弹，使其造成更多伤害",
       "name": "高级炸弹"
     },
     "survivors_last_words": {
@@ -385,7 +385,7 @@
       "name": "不眠骑士"
     },
     "the_hound": {
-      "description": "来自中毒山村的健壮却毁容的幸存者。",
+      "description": "来自一座遭毒害山村的幸存者，肌肉虬结，面容尽毁。",
       "name": "蛮犬"
     },
     "grey_one": {
@@ -423,7 +423,7 @@
       "name": "黑钢镐"
     },
     "bone_saw": {
-      "description": "死灵法师的工具，屠宰效率不自然地高",
+      "description": "死灵法师的工具，用来屠宰时效率高得反常",
       "name": "骨锯"
     },
     "crow_harness": {
@@ -511,7 +511,7 @@
       "name": "石镐"
     },
     "wanderers_lantern": {
-      "description": "它给佩戴者一点幸运，以及看见黑暗本会藏起之物的可能。",
+      "description": "它赐予佩戴者些许好运，也让人有机会察觉黑暗想要藏起的东西。",
       "name": "流浪者的油灯"
     },
     "woodcutter_axe": {
