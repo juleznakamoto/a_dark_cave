@@ -28,6 +28,24 @@ win:
   icon: build-resources/icon.png
   artifactName: ${productName}-${version}-setup.${ext}
 
+# Native Linux build. Opt-in: the Windows flow above is unchanged.
+#   npm run electron:package:linux        -> release/linux-unpacked
+#   npm run electron:package:demo:linux
+# `dir` is a plain folder for a SteamPipe Linux depot. AppImage needs FUSE and
+# does not fit the Steam Linux Runtime container. Steamworks setup (depot,
+# launch options, Cloud root override): steam/linux-build.md
+linux:
+  target:
+    - dir
+  # Same name for the full game and the demo, so one Steam launch option fits both.
+  executableName: a-dark-cave
+  icon: build-resources/icon.png
+  category: Game
+  # Electron cannot load .ico on Linux; main.ts uses this PNG there.
+  extraResources:
+    - from: build-resources/icon.png
+      to: icon.png
+
 extraResources:
   - from: build-resources/icon.ico
     to: icon.ico
