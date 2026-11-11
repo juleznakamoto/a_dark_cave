@@ -70,6 +70,7 @@
     "defense": "Obrona",
     "integrity": "Wytrzymałość"
   },
+  "percent": "{{value}}%",
   "population": {
     "villager_one": "{{count}} wieśniak",
     "villager_other": "{{count}} wieśniaków",

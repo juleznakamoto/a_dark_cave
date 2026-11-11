@@ -1,7 +1,7 @@
 {
   "event": {
     "fallbackTitle": "Wydarzenie",
-    "knowledgeTimeBonus": "+{{seconds}}s czasu decyzji dzięki Wiedzy{{maxSuffix}}",
+    "knowledgeTimeBonus": "+{{seconds}} s czasu decyzji dzięki Wiedzy{{maxSuffix}}",
     "knowledgeTimeBonusMax": " (maks.)",
     "successChance": "Szansa sukcesu: {{percent}}%",
     "successChanceBase": "Podstawa: {{percent}}%",
@@ -23,7 +23,7 @@
   },
   "insightIntro": {
     "title": "Wgląd",
-    "message": "Podchodzi do ciebie uczona. „Badamy świat, by zdobyć Wgląd” – mówi. „Wgląd odsłania tajemnice świata, a z czasem pozwala nam nagiąć go do naszej woli”."
+    "message": "Podchodzi do ciebie uczona. „Badamy świat, by zdobyć Wgląd” – mówi. „Wgląd odsłania tajemnice świata, a z czasem pozwala nam nagiąć go do naszej woli.”"
   },
   "blessingOffer": {
     "title": "Wybierz błogosławieństwo",
@@ -31,7 +31,7 @@
   },
   "pactOffer": {
     "title": "Wybierz swoje pakty",
-    "grant": "Każda rozgrywka daje jeden wybór paktu (dwa w Trybie okrutnym).",
+    "grant": "Każda rozgrywka daje jeden wybór paktu (dwa w trybie okrutnym).",
     "available": "Dostępne: {{count}}",
     "continue": "Kontynuuj",
     "madness": "+3 szaleństwa",
@@ -46,7 +46,7 @@
         "name": "Pełne spiżarnie",
         "boon": "Wolni wieśniacy dają +2 Żywności",
         "boon2": "Myśliwi dają +5 Żywności",
-        "quote": "„Łowczyni oferuje, że będzie polować.”"
+        "quote": "„Łowczyni proponuje, że będzie polować.”"
       },
       "sturdy_hands": {
         "name": "Krzepkie dłonie",
@@ -63,7 +63,7 @@
       "avid_apprentices": {
         "name": "Gorliwy uczeń",
         "boon": "Uczeni dają +1 Wglądu",
-        "boon2": "Mistrzostwo działań poprawia się o 20% szybciej",
+        "boon2": "Mistrzostwo działań rośnie o 20% szybciej",
         "quote": "„Coś jest nie tak z hazardzistą.”"
       }
     }
@@ -132,8 +132,8 @@
     "infoAriaLabel": "Wyjaśnij inwestycje i tabelę strategii",
     "unlockTooltip": "Odblokowuje się po zbudowaniu: {{building}}",
     "minutes": "{{count}} min",
-    "luckyChanceTop": "Szczęśliwy traf {{percent}} % ({{fromLuck}} % ze Szczęścia)",
-    "luckyChanceLine": "{{percent}} % szczęśliwego trafu: {{gold}}",
+    "luckyChanceTop": "Szczęśliwy traf {{percent}}% ({{fromLuck}}% ze Szczęścia)",
+    "luckyChanceLine": "{{percent}}% szczęśliwego trafu: {{gold}}",
     "headers": {
       "time": "Czas",
       "success": "Sukces",
@@ -159,7 +159,7 @@
     "rulesGoal": "Cel wynosi 15.",
     "rulesWinLose": "Kto trafi w cel dokładnie, wygrywa. Kto go przekroczy, przegrywa.",
     "rulesStand": "Jeśli gracz przy turze ma więcej punktów niż przeciwnik, może nie rzucać.",
-    "tutorialIntro": "Żebyś poznał grę, hazardzista proponuje {{count}} partii bez stawki.",
+    "tutorialIntro": "Żebyś poznał grę, hazardzista proponuje, że zagra z tobą {{count}} razy bez stawki.",
     "boneDiceIntro": "Postaw stawkę. Kości do gry pozwalają zagrać z hazardzistą dwa razy.",
     "placeBet": "Postaw stawkę.",
     "gamesRemaining": "Zostało {{remaining}} z {{total}} gier.",
@@ -180,7 +180,7 @@
     "practiceLoseRemaining": "Przegrałeś rundę treningową (bez stawki). Zostało {{remaining}} z {{total}} gier treningowych.",
     "practiceWinComplete": "Wygrałeś rundę treningową (bez stawki). Trening ukończony. Możesz postawić złoto.",
     "practiceLoseComplete": "Przegrałeś rundę treningową (bez stawki). Trening ukończony. Możesz postawić złoto.",
-    "coinOffer": "Kręci kością w blasku ognia, a uśmiech staje się cienki. „Podwójnie, albo nic”, szepcze. „Od jednego do czterech twoje złoto się podwaja. Pięć albo sześć, i ja je zabieram.”",
+    "coinOffer": "Obraca kość w blasku ognia, a uśmiech mu rzednie. „Podwójnie albo nic” – szepcze. „Od jednego do czterech – twoje złoto się podwaja. Pięć albo sześć – zatrzymuję je.”",
     "coinAccept": "Rzuć kostką",
     "coinDecline": "Zatrzymaj wygraną",
     "coinNothing": "Nic",
@@ -223,7 +223,7 @@
   },
   "cube": {
     "fallbackTitle": "Szeptająca kostka",
-    "fallbackMessage": "Kostka szepcze pradawne sekrety…",
+    "fallbackMessage": "Kostka szepcze pradawne sekrety...",
     "close": "Zamknij",
     "previous": "Poprzednia kostka",
     "next": "Następna kostka",
@@ -244,8 +244,8 @@
   },
   "share": {
     "title": "Zobacz swój postęp",
-    "resources": "Zasoby: {{percent}} %",
-    "achievements": "Osiągnięcia: {{percent}} %",
+    "resources": "Zasoby: {{percent}}%",
+    "achievements": "Osiągnięcia: {{percent}}%",
     "killedCreatures": "Zabite stwory",
     "highestAttackWave": "Najwyższa fala ataku",
     "cruelMode": "Tryb okrutny",

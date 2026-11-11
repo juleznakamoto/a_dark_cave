@@ -38,33 +38,33 @@
     "cards": {
       "blazesmith": {
         "name": "Herrero de la llamarada",
-        "boon": "Fabricar bombas cuesta un 50% menos",
+        "boon": "Fabricar bombas cuesta un 50 % menos",
         "boon2": "Bonificación del Fuego del corazón ×2",
-        "quote": "«Los experimentos del alquimista cruzaron la línea.»"
+        "quote": "«Los experimentos del alquimista cruzaron la línea»"
       },
       "full_larders": {
         "name": "Despensas llenas",
         "boon": "Los aldeanos libres producen +2 Comida",
         "boon2": "Los cazadores producen +5 Comida",
-        "quote": "«La cazadora se ofrece a cazar.»"
+        "quote": "«La cazadora se ofrece a cazar»"
       },
       "sturdy_hands": {
         "name": "Manos firmes",
         "boon": "Los recolectores producen +5 Madera",
         "boon2": "Los recolectores producen +5 Piedra",
-        "quote": "«El carro del mercader carga de más.»"
+        "quote": "«En el carro del mercader cabe más de lo que debería»"
       },
       "cunning_trader": {
         "name": "Mercader astuto",
-        "boon": "20% de descuento con el mercader ambulante",
-        "boon2": "20% de descuento en el puesto comercial",
-        "quote": "«Los sueños andan extraños últimamente.»"
+        "boon": "20 % de descuento con el mercader ambulante",
+        "boon2": "20 % de descuento en el puesto comercial",
+        "quote": "«Los sueños andan extraños últimamente»"
       },
       "avid_apprentices": {
         "name": "Aprendiz ávido",
         "boon": "Los eruditos producen +1 Perspicacia",
-        "boon2": "El dominio de las acciones mejora un 20% más rápido",
-        "quote": "«Algo no va bien con el tahúr.»"
+        "boon2": "El dominio de las acciones mejora un 20 % más rápido",
+        "quote": "«Algo no va bien con el tahúr»"
       }
     }
   },
@@ -81,7 +81,7 @@
     "playlightTitle": "Probar 1 juego",
     "discoverGames": "Probar",
     "inviteTitle": "Invitar a 1 amigo",
-    "inviteDesc": "Puedes invitar hasta {{cap}} amigos. Cada vez, ambos recibiréis {{amount}} de oro ({{count}}/{{cap}} invitados).",
+    "inviteDesc": "Puedes invitar a un máximo de {{cap}} amigos. Cada vez, ambos recibiréis {{amount}} de oro ({{count}}/{{cap}} invitados).",
     "copyInviteLink": "Copiar enlace de invitación",
     "progressComplete": "Has completado todas las tareas. Pronto recibirás tu recompensa.",
     "tasksRemaining_one": "1 tarea restante",
@@ -178,11 +178,11 @@
     "practiceLoseRemaining": "Perdiste la ronda de práctica (sin oro en juego). Quedan {{remaining}} de {{total}} partidas de práctica.",
     "practiceWinComplete": "Ganaste la ronda de práctica (sin oro en juego). Práctica completada. Ya puedes apostar oro.",
     "practiceLoseComplete": "Perdiste la ronda de práctica (sin oro en juego). Práctica completada. Ya puedes apostar oro.",
-    "coinOffer": "Gira el dado a la luz del fuego, y la sonrisa se afina. «El doble, o nada», susurra. «Del uno al cuatro, tu oro se dobla. Cinco o seis, y me lo quedo.»",
+    "coinOffer": "Gira el dado a la luz del fuego y su sonrisa se estrecha. «Doble o nada», susurra. «Del uno al cuatro, tu oro se dobla. Con un cinco o un seis, me lo quedo».",
     "coinAccept": "Tirar el dado",
     "coinDecline": "Quedarme con la ganancia",
     "coinNothing": "Nada",
-    "coinTookWinnings": "Perdiste el lanzamiento. Lo ganado ya no está."
+    "coinTookWinnings": "Perdiste la tirada. Lo ganado se ha esfumado."
   },
   "leaderboard": {
     "title": "Clasificación",
@@ -225,7 +225,7 @@
     "close": "Cerrar",
     "previous": "Cubo anterior",
     "next": "Cubo siguiente",
-    "completionLog": "Has terminado este viaje. Quédate aquí o empieza una nueva partida. Quizá en Modo cruel, si te atreves."
+    "completionLog": "Has terminado este viaje. Quédate aquí o empieza una nueva partida. Quizá en modo cruel, si te atreves."
   },
   "timedEvent": {
     "buy": "Comprar",
@@ -277,6 +277,6 @@
     "feedbackButton": "Comentarios",
     "startNewGameButton": "Empezar partida nueva",
     "continuePlayingButton": "Seguir jugando",
-    "seeWhatsNextButton": "Ver qué viene"
+    "seeWhatsNextButton": "Ver lo que viene"
   }
 }

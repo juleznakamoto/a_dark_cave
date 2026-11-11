@@ -49,11 +49,11 @@
       "description": "「硫黄を採掘」をレベル10まで強化する"
     },
     "2-animals": {
-      "label": "獣の贄",
+      "label": "獣を捧ぐ者",
       "description": "獣を10回生贄に捧げる"
     },
     "2-boneTotems": {
-      "label": "骨の贄",
+      "label": "骨を捧ぐ者",
       "description": "骨のトーテムを20回生贄に捧げる"
     },
     "2-craftBoneTotems": {
@@ -65,7 +65,7 @@
       "description": "「皮革のトーテム」をレベル10まで強化する"
     },
     "2-leatherTotems": {
-      "label": "皮革の贄",
+      "label": "皮革を捧ぐ者",
       "description": "皮革のトーテムを20回生贄に捧げる"
     },
     "3-ashfireBombs": {
@@ -113,7 +113,7 @@
       "description": "村人を合計250人失う"
     },
     "4-solsticeGatherings": {
-      "label": "冬至の祝者",
+      "label": "冬至を祝う者",
       "description": "冬至の集いを10回開く"
     },
     "4-wellRested": {
@@ -289,7 +289,7 @@
       "description": "ゲームに3回勝利する"
     },
     "0-endurant": {
-      "label": "忍耐者",
+      "label": "不屈の者",
       "description": "全プレイを通じて30時間遊ぶ"
     },
     "0-finalPact": {
@@ -305,7 +305,7 @@
       "description": "屋敷タブの強化をすべて最大にする"
     },
     "0-speedrunner": {
-      "label": "最速走者",
+      "label": "韋駄天",
       "detail": "5時間未満",
       "description": "5時間未満でゲームに勝利する"
     },

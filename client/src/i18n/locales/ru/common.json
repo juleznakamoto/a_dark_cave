@@ -70,6 +70,7 @@
     "defense": "Защита",
     "integrity": "Целостность"
   },
+  "percent": "{{value}}%",
   "population": {
     "villager_one": "{{count}} житель",
     "villager_other": "{{count}} жителей",

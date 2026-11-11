@@ -23,7 +23,7 @@
   },
   "insightIntro": {
     "title": "Perspicacité",
-    "message": "Une érudite s'approche de vous. « Nous étudions le monde pour gagner en perspicacité », dit-elle. « La perspicacité révèle les secrets du monde et, avec le temps, nous permet de le plier à notre volonté. »"
+    "message": "Une érudite s'approche de vous. « Nous étudions le monde pour gagner en perspicacité », dit-elle. « La perspicacité révèle les secrets du monde et, avec le temps, nous permet de le plier à notre volonté. »"
   },
   "blessingOffer": {
     "title": "Choisissez une bénédiction",
@@ -38,33 +38,33 @@
     "cards": {
       "blazesmith": {
         "name": "Forgeron de braise",
-        "boon": "Fabriquer des bombes coûte 50 % de moins",
+        "boon": "Fabriquer des bombes coûte 50 % de moins",
         "boon2": "Double le bonus de production du Feu du cœur",
-        "quote": "« Les expériences de l'alchimiste ont franchi la ligne. »"
+        "quote": "« Les expériences de l'alchimiste ont dépassé les bornes. »"
       },
       "full_larders": {
         "name": "Gardes-manger pleins",
         "boon": "Les villageois libres produisent +2 Nourriture",
         "boon2": "Les chasseurs produisent +5 Nourriture",
-        "quote": "« La chasseresse propose de chasser. »"
+        "quote": "« La chasseresse propose de chasser. »"
       },
       "sturdy_hands": {
         "name": "Mains solides",
         "boon": "Les collecteurs produisent +5 Bois",
         "boon2": "Les collecteurs produisent +5 Pierre",
-        "quote": "« La charrette du marchand est trop pleine. »"
+        "quote": "« La charrette du marchand contient plus qu'elle ne devrait. »"
       },
       "cunning_trader": {
         "name": "Marchand rusé",
-        "boon": "20 % de réduction chez le marchand itinérant",
-        "boon2": "20 % de réduction au comptoir commercial",
-        "quote": "« Les rêves sont étranges, ces derniers temps. »"
+        "boon": "20 % de réduction chez le marchand itinérant",
+        "boon2": "20 % de réduction au comptoir commercial",
+        "quote": "« Les rêves sont étranges, ces derniers temps. »"
       },
       "avid_apprentices": {
         "name": "Apprenti avide",
         "boon": "Les érudits produisent +1 Perspicacité",
-        "boon2": "La maîtrise des actions s'améliore 20 % plus vite",
-        "quote": "« Quelque chose ne va pas chez le parieur. »"
+        "boon2": "La maîtrise des actions s'améliore 20 % plus vite",
+        "quote": "« Quelque chose ne va pas chez le parieur. »"
       }
     }
   },
@@ -134,7 +134,7 @@
     "luckyChanceLine": "{{percent}} % Coup de chance : {{gold}}",
     "headers": {
       "time": "Durée",
-      "success": "Succès",
+      "success": "Réussite",
       "profit": "Profit",
       "lucky": "Coup de chance",
       "loss": "Perte"
@@ -178,11 +178,11 @@
     "practiceLoseRemaining": "Vous avez perdu la manche d'entraînement (sans mise d'or). {{remaining}} sur {{total}} parties d'entraînement restantes.",
     "practiceWinComplete": "Vous avez gagné la manche d'entraînement (sans mise d'or). Entraînement terminé – vous pouvez miser de l'or.",
     "practiceLoseComplete": "Vous avez perdu la manche d'entraînement (sans mise d'or). Entraînement terminé – vous pouvez miser de l'or.",
-    "coinOffer": "Il fait tourner le dé à la lueur du feu, et le sourire s'amincit. « Le double, ou rien », souffle-t-il. « De un à quatre, votre or double. Cinq ou six, je le garde. »",
+    "coinOffer": "Il fait tourner le dé à la lueur du feu, et son sourire se fait plus mince. « Quitte ou double », souffle-t-il. « De un à quatre, votre or double. Cinq ou six, je le garde. »",
     "coinAccept": "Lancer le dé",
     "coinDecline": "Garder le gain",
     "coinNothing": "Rien",
-    "coinTookWinnings": "Vous avez perdu le lancer. Les gains sont perdus."
+    "coinTookWinnings": "Vous avez perdu le lancer. Vos gains se sont envolés."
   },
   "leaderboard": {
     "title": "Classement",

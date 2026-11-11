@@ -159,9 +159,9 @@
     "doubleGainChance": "倍増確率"
   },
   "badges": {
-    "priorUpgradeRequired": "失墜した修道院長を強化すると、より多くの行動を割り当てられる",
-    "priorRemove": "クリックで失墜した修道院長を外す",
-    "priorAssign": "クリックで失墜した修道院長を割り当てる",
+    "priorUpgradeRequired": "堕ちた修道院長を強化すると、より多くの行動を割り当てられる",
+    "priorRemove": "クリックで堕ちた修道院長を外す",
+    "priorAssign": "クリックで堕ちた修道院長を割り当てる",
     "huntressRemove": "クリックで灰霊の女狩人を外す",
     "huntressAssign": "クリックで灰霊の女狩人を割り当てる",
     "bonus": "ボーナス：",

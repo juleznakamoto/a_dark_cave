@@ -61,6 +61,7 @@ const BRAND_VALUES = new Set([
   "Reddit",
   "FAQ",
   "Scriptorium",
+  "YouTube",
 ]);
 
 /**
@@ -100,6 +101,12 @@ const IDENTICAL_OK_VALUES = new Set([
   "Privacy",
   "Dev",
   "Prod",
+  "Base",
+  "Code",
+  "Contact",
+  "Echo",
+  "Hunger",
+  "Silence",
   "{{count}} min",
   "Base: {{percent}}%",
   "100+ structures",

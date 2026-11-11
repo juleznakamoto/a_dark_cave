@@ -2,15 +2,15 @@
   "action": {
     "0-chopWood": {
       "label": "Lenhador",
-      "description": "Melhore Coletar Madeira para o nível 10"
+      "description": "Leve o Corte de Madeira ao nível 10"
     },
     "0-craftTorches": {
       "label": "Fabricante de Tochas",
-      "description": "Melhore Tochas para o nível 10"
+      "description": "Leve a Fabricação de Tochas ao nível 10"
     },
     "0-exploreCave": {
       "label": "Explorador de Cavernas",
-      "description": "Melhore Explorar Caverna para o nível 10"
+      "description": "Leve a Exploração de Cavernas ao nível 10"
     },
     "0-gamblerWins": {
       "label": "Apostador Experiente",
@@ -18,35 +18,35 @@
     },
     "0-hunt": {
       "label": "Caçador",
-      "description": "Melhore Caçar para o nível 10"
+      "description": "Leve a Caça ao nível 10"
     },
     "1-mineAdamant": {
       "label": "Minerador de Adamante",
-      "description": "Melhore Adamante para o nível 10"
+      "description": "Leve a Mineração de Adamante ao nível 10"
     },
     "1-mineCoal": {
       "label": "Minerador de Carvão",
-      "description": "Melhore Carvão para o nível 10"
+      "description": "Leve a Mineração de Carvão ao nível 10"
     },
     "1-mineIron": {
       "label": "Minerador de Ferro",
-      "description": "Melhore Ferro para o nível 10"
+      "description": "Leve a Mineração de Ferro ao nível 10"
     },
     "1-mineMoonstone": {
       "label": "Minerador de Pedra-da-Lua",
-      "description": "Melhore Pedra-da-Lua para o nível 10"
+      "description": "Leve a Mineração de Pedra-da-Lua ao nível 10"
     },
     "1-mineObsidian": {
       "label": "Minerador de Obsidiana",
-      "description": "Melhore Obsidiana para o nível 10"
+      "description": "Leve a Mineração de Obsidiana ao nível 10"
     },
     "1-mineStone": {
       "label": "Minerador de Pedra",
-      "description": "Melhore Pedra para o nível 10"
+      "description": "Leve a Mineração de Pedra ao nível 10"
     },
     "1-mineSulfur": {
       "label": "Minerador de Enxofre",
-      "description": "Melhore Enxofre para o nível 10"
+      "description": "Leve a Mineração de Enxofre ao nível 10"
     },
     "2-animals": {
       "label": "Sacrificador de Animais",
@@ -58,11 +58,11 @@
     },
     "2-craftBoneTotems": {
       "label": "Fabricante de Totens de Osso",
-      "description": "Melhore Totens de Osso para o nível 10"
+      "description": "Leve a Fabricação de Totens de Osso ao nível 10"
     },
     "2-craftLeatherTotems": {
       "label": "Fabricante de Totens de Couro",
-      "description": "Melhore Totens de Couro para o nível 10"
+      "description": "Leve a Fabricação de Totens de Couro ao nível 10"
     },
     "2-leatherTotems": {
       "label": "Sacrificador de Couro",
@@ -102,7 +102,7 @@
     },
     "4-mentalClarity": {
       "label": "Clareza Mental",
-      "description": "Use 5 Elixires de Clareza"
+      "description": "Use 5 Elixires da Clareza"
     },
     "4-merchantPurchases": {
       "label": "Negociador",
@@ -236,31 +236,31 @@
   "item": {
     "0-axes": {
       "label": "Machados",
-      "description": "Crie cada machado da pedra ao adamante"
+      "description": "Crie todos os machados, da pedra ao adamante"
     },
     "0-lanterns": {
       "label": "Lanternas",
-      "description": "Crie cada lanterna do ferro ao adamante"
+      "description": "Crie todas as lanternas, do ferro ao adamante"
     },
     "0-pickaxes": {
       "label": "Picaretas",
-      "description": "Crie cada picareta da pedra ao adamante"
+      "description": "Crie todas as picaretas, da pedra ao adamante"
     },
     "1-bows": {
       "label": "Arcos",
-      "description": "Crie cada arco do rudimentar ao mestre"
+      "description": "Crie todos os arcos, do rudimentar ao mestre"
     },
     "1-swords": {
       "label": "Espadas",
-      "description": "Crie cada espada do ferro ao adamante"
+      "description": "Crie todas as espadas, do ferro ao adamante"
     },
     "2-explorer_pack": {
       "label": "Trabalhos em Couro",
-      "description": "Crie todas as sete obras de couro"
+      "description": "Crie todos os sete trabalhos em couro"
     },
     "2-schematic_weapons": {
       "label": "Esquemas",
-      "description": "Crie três armas de esquema"
+      "description": "Crie três armas a partir de esquemas"
     },
     "3-ancient_books": {
       "label": "Sabedoria Antiga",

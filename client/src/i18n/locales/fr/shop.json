@@ -1,7 +1,7 @@
 {
   "additional_preset_slots": {
-    "activationMessage": "Deux emplacements de préréglages de villageois supplémentaires ont été ajoutés.",
-    "description": "Deux emplacements de préréglages de travail des villageois supplémentaires",
+    "activationMessage": "Deux emplacements supplémentaires de préréglage de métiers ont été ajoutés.",
+    "description": "Deux emplacements supplémentaires de préréglage de métiers",
     "name": "2 emplacements de préréglages supplémentaires"
   },
   "additional_construction_queue_slot": {

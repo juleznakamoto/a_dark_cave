@@ -26,7 +26,7 @@
     "medium": "Orta",
     "large": "Büyük",
     "extraLarge": "Çok Büyük",
-    "double": "200%"
+    "double": "%200"
   },
   "languageSelector": {
     "label": "Dil",

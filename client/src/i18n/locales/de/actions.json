@@ -76,8 +76,8 @@
     "label": "Bodenlose Grube"
   },
   "buildBuildersLodge": {
-    "description": "Eine Loge, in der Baumeister die Bauarbeiten im ganzen Dorf koordinieren",
-    "label": "Baumeisterloge"
+    "description": "Eine Bauhütte, in der Baumeister die Bauarbeiten im ganzen Dorf koordinieren",
+    "label": "Bauhütte"
   },
   "buildBuildersHall": {
     "description": "Eine Halle, in der erfahrene Baumeister Projekte straffen und bessere Materialpreise aushandeln",
@@ -148,7 +148,7 @@
     "label": "Großschmiede"
   },
   "buildGrandHunterLodge": {
-    "description": "Prächtigste Jagdhütte für Meisterjäger",
+    "description": "Überragende Jagdhütte für Meisterjäger",
     "label": "Meisterjägerhütte"
   },
   "buildGrandRepository": {
@@ -355,7 +355,7 @@
     "label": "Arbalest"
   },
   "craftAshenGreatshield": {
-    "label": "Aschener Großschild"
+    "label": "Aschengroßschild"
   },
   "craftAshfireBomb": {
     "label": "Aschfeuerbombe"
@@ -397,7 +397,7 @@
     "label": "Frostglasschwert"
   },
   "craftFlaskHarness": {
-    "label": "Flaschengeschirr"
+    "label": "Flaschengurt"
   },
   "craftGrenadierBag": {
     "label": "Grenadierstasche"
@@ -635,9 +635,9 @@
   },
   "lowChamber": {
     "description": "Seile dich in eine tiefe Kammer hinab, die seit Ewigkeiten unberührt ist.",
-    "label": "Niedrige Kammer",
+    "label": "Untere Kammer",
     "log": {
-      "complete": "Mit dem verstärkten Seil steigst du in die niedrige Kammer hinab. Unter den Schätzen findest du den Meißel eines Steinmetzmeisters, ein Werkzeug legendärer Handwerkskunst."
+      "complete": "Mit dem verstärkten Seil steigst du in die untere Kammer hinab. Unter den Schätzen findest du den Meißel eines Steinmetzmeisters, ein Werkzeug legendärer Handwerkskunst."
     }
   },
   "lureLakeCreature": {
@@ -804,7 +804,7 @@
     "label": "Leerenbombe kaufen"
   },
   "tradeGoldForInsightPotion": {
-    "label": "Einsicht-Elixier"
+    "label": "Einsichtselixier"
   },
   "tradeGoldForVeinfireElixir": {
     "label": "Aderfeuer-Elixier kaufen"

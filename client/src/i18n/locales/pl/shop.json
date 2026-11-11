@@ -82,12 +82,12 @@
   },
   "great_feast_1": {
     "activationMessage": "Rozpoczęła się Wielka uczta!",
-    "description": "Przez 30 minut:\n• 5× produkcja wioski\n• +25 % szansy na nowego wieśniaka",
+    "description": "Przez 30 minut:\n• 5× produkcja wioski\n• +25% szansy na nowego wieśniaka",
     "name": "1 Wielka uczta"
   },
   "great_feast_3": {
     "activationMessage": "Rozpoczęła się Wielka uczta!",
-    "description": "Przez 30 minut:\n• 5× produkcja wioski\n• +25 % szansy na nowego wieśniaka",
+    "description": "Przez 30 minut:\n• 5× produkcja wioski\n• +25% szansy na nowego wieśniaka",
     "name": "3 Wielkie uczty"
   },
   "skull_lantern": {

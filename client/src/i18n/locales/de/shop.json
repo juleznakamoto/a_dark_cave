@@ -1,7 +1,7 @@
 {
   "additional_preset_slots": {
     "activationMessage": "Zwei zusätzliche Vorlagen-Slots für Dorfbewohner wurden hinzugefügt.",
-    "description": "Zwei weitere Vorlagen-Slots für Dorfbewohner-Arbeit",
+    "description": "Zwei weitere Job-Vorlagen-Slots für Dorfbewohner",
     "name": "2 zusätzliche Vorlagen-Slots"
   },
   "additional_construction_queue_slot": {
@@ -11,19 +11,19 @@
   },
   "advanced_bundle": {
     "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",
-    "name": "Bleicher-König-Bundle"
+    "name": "Bundle des Bleichen Königs"
   },
   "artifact_bundle": {
     "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",
-    "name": "Dunkle-Artefakte-Bundle"
+    "name": "Bundle der dunklen Artefakte"
   },
   "ashen_throne_bundle": {
     "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",
-    "name": "Aschener-Thron-Bundle"
+    "name": "Bundle des Aschenthrons"
   },
   "basic_survival_bundle": {
     "activationMessage": "Die Bestandteile des Bundles wurden deinen Käufen hinzugefügt!",
-    "name": "Verblassender-Wanderer-Bundle"
+    "name": "Bundle des verblassenden Wanderers"
   },
   "crow_harness": {
     "activationMessage": "Das Krähengeschirr wurde deinen Werkzeugen hinzugefügt! Nun musst du eine Krähe finden, um sie an das Geschirr zu binden.",

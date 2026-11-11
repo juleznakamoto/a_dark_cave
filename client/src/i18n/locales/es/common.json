@@ -9,8 +9,8 @@
     "deactivate": "Desactivar"
   },
   "status": {
-    "loading": "Cargando...",
-    "processing": "Procesando...",
+    "loading": "Cargando…",
+    "processing": "Procesando…",
     "free": "Gratis",
     "error": "Error",
     "success": "¡Éxito!",
@@ -70,6 +70,7 @@
     "defense": "Defensa",
     "integrity": "Integridad"
   },
+  "percent": "{{value}} %",
   "population": {
     "villager_one": "{{count}} aldeano",
     "villager_other": "{{count}} aldeanos"

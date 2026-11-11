@@ -217,7 +217,7 @@
   },
   "buildPrimeFoundry": {
     "description": "Fundición avanzada con producción de acero mejorada",
-    "label": "Fundición principal"
+    "label": "Fundición superior"
   },
   "buildQuarry": {
     "description": "Cantera de piedra que aumenta la producción de piedra de los recolectores",
@@ -314,9 +314,9 @@
     "description": "Asalta el castillo del nigromante muerto hace tiempo, en lo profundo del bosque.",
     "label": "Ruinas del castillo",
     "log": {
-      "success": "¡La expedición a las ruinas del castillo del difunto nigromante resulta exitosa! En lo profundo encuentras los antiguos pergaminos envueltos en seda oscura, que revelan conocimiento críptico sobre cómo derrotar a lo que fue encerrado en las profundidades de la cueva.",
-      "minorFailure": "Tu expedición es emboscada por grotescos experimentos no muertos dejados por el nigromante. {{count}} aldeanos caen ante los no muertos antes de que los supervivientes logren retirarse.",
-      "majorFailure": "Poco después de que tu expedición entre en las malditas ruinas del castillo, decenas de criaturas no muertas brotan de cámaras ocultas. En la desesperada batalla que sigue, {{count}} aldeanos son arrasados por la horda sobrenatural. Los supervivientes huyen aterrorizados."
+      "success": "¡La expedición a las ruinas del castillo del difunto nigromante es todo un éxito! En lo profundo encuentras los antiguos pergaminos envueltos en seda oscura, que revelan conocimiento críptico sobre cómo derrotar a lo que fue encerrado en las profundidades de la cueva.",
+      "minorFailure": "Tu expedición cae en una emboscada de grotescos experimentos no muertos que dejó el nigromante. {{count}} aldeanos caen ante los no muertos antes de que los supervivientes logren retirarse.",
+      "majorFailure": "Poco después de que tu expedición entre en las malditas ruinas del castillo, decenas de criaturas no muertas brotan de cámaras ocultas. En la desesperada batalla que sigue, {{count}} aldeanos sucumben ante la horda sobrenatural. Los supervivientes huyen aterrorizados."
     }
   },
   "chopWood": {
@@ -335,7 +335,7 @@
     "description": "Investiga la torre derrumbada y acaba con la obra oscura que allí se trama.",
     "label": "Torre derrumbada",
     "log": {
-      "success": "Dentro de la torre encuentras a un nigromante y sus seguidores, rodeados de frascos de líquidos y jeringas toscas. Estaba recolectando la sangre de los aldeanos para oscuros experimentos. Tus hombres ponen fin a su vil obra y toman un frasco de su sangre. Entre sus herramientas, encuentras su poderosa sierra de hueso.",
+      "success": "Dentro de la torre encuentras a un nigromante y sus seguidores, rodeados de frascos de líquidos y jeringas toscas. Estaba extrayendo la sangre de los aldeanos para oscuros experimentos. Tus hombres ponen fin a su vil obra y toman un frasco de su sangre. Entre sus herramientas, encuentras su poderosa sierra de hueso.",
       "failure": "Tu expedición llega a la Torre derrumbada, pero unas figuras encapuchadas te atacan en el exterior. Entre ellas se alza un hombre alto con una túnica oscura que irradia un aura de amenaza. {{count}} aldeanos caen antes de que el resto logre ponerse a salvo."
     }
   },
@@ -529,14 +529,14 @@
     "description": "Recorre la ciudad perdida que duerme en la vasta caverna de abajo.",
     "label": "Explorar las ruinas",
     "log": {
-      "firstVisit": "Al final de las escaleras, una vasta caverna se abre ante ti. En la oscuridad yacen las ruinas de una ciudad perdida, los restos de una civilización hace mucho desaparecida."
+      "firstVisit": "Al final de las escaleras, una vasta caverna se abre ante ti. En la oscuridad yacen las ruinas de una ciudad perdida, los restos de una civilización desaparecida hace mucho tiempo."
     }
   },
   "exploreTemple": {
     "description": "Entra en el templo subterráneo que aún se alza entre las ruinas olvidadas.",
     "label": "Explorar el templo",
     "log": {
-      "firstVisit": "A medida que te adentras más en las ruinas de la ciudad subterránea, un gran templo emerge del suelo de la caverna, en su mayoría intacto, su sombra extendiéndose sobre los vestigios olvidados de la ciudad."
+      "firstVisit": "A medida que te adentras más en las ruinas de la ciudad subterránea, un gran templo, casi intacto, emerge del suelo de la caverna y extiende su sombra sobre los vestigios olvidados de la ciudad."
     }
   },
   "exploreUndergroundLake": {
@@ -561,7 +561,7 @@
     "label": "Cueva del bosque",
     "log": {
       "success": "Cuando los aldeanos descienden a la cueva, feroces sabuesos irrumpen de la oscuridad en manadas implacables. Los gritos resuenan mientras las garras desgarran y los dientes muerden. Cuando cae la última bestia, todos los aldeanos siguen con vida y la tribu de la cazadora está a salvo.",
-      "failure": "Cuando la expedición entra en la cueva, es abrumada por una manada de brutales sabuesos. {{count}} aldeanos son destrozados por mandíbulas salvajes antes de que los supervivientes logren retirarse."
+      "failure": "Cuando la expedición entra en la cueva, una manada de brutales sabuesos se abalanza sobre ella. Unas mandíbulas salvajes despedazan a {{count}} aldeanos antes de que los supervivientes logren retirarse."
     }
   },
   "healElderWizard": {

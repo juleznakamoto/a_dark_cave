@@ -51,7 +51,7 @@
     "purchaseAddedSingle": "{{name}}を購入済みに追加しました。購入済みタブで有効にしてください。",
     "purchaseAddedBundle": "{{name}}の内容を購入済みに追加しました。購入済みタブで有効にしてください。",
     "freeGoldAdded": "{{amount}}金貨を資源に加えた！",
-    "freeGoldClaimedLog": "{{amount}}金貨を受け取った。夜を耐えれば、明日また来てほしい。",
+    "freeGoldClaimedLog": "{{amount}}金貨を受け取った。夜を越えられたなら、明日また来るといい。",
     "freeGoldCooldownLog_one": "{{hours}}時間後に、無料金貨を再び受け取れます。",
     "freeGoldCooldownLog_other": "{{hours}}時間後に、無料金貨を再び受け取れます。",
     "freeItemAdded": "{{name}}を購入済みに追加しました。購入済みタブで有効にしてください。",

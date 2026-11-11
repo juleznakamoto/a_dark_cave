@@ -477,6 +477,11 @@ export function getStatName(statKey: string, fallback: string): string {
   return tWithFallback("common", `stats.${statKey}`, fallback);
 }
 
+/** Percent in the active locale's convention ("70%", Turkish "%70", German "70 %"). */
+export function formatPercent(value: number | string): string {
+  return tWithFallback("common", "percent", "{{value}}%", { value });
+}
+
 /** Side-panel population row (ui.village.jobs.* or sidePanel.freeVillagers). */
 export function getVillagerJobName(jobKey: string, fallback: string): string {
   if (jobKey === "free") {

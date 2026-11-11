@@ -26,7 +26,7 @@
     "medium": "Moyen",
     "large": "Grand",
     "extraLarge": "Très grand",
-    "double": "200%"
+    "double": "200 %"
   },
   "languageSelector": {
     "label": "Langue",
@@ -94,7 +94,7 @@
     "leaderboard": "Classement",
     "rewards": "Récompenses",
     "deleteAccount": "Supprimer le compte",
-    "autoSaveSignedIn": "Sauvegarde automatique chaque minute",
+    "autoSaveSignedIn": "Sauvegarde automatique toutes les minutes",
     "autoSaveGuest": "Sauvegarde automatique toutes les 15 secondes",
     "signUpCloudSave": "Inscrivez-vous pour sauvegarder dans le cloud",
     "lastSave": "Dernière sauvegarde : {{time}}",

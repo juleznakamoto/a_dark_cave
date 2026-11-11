@@ -27,7 +27,7 @@
       "name": "Pergaminos antiguos"
     },
     "arbalest_schematic": {
-      "description": "Plano para fabricar una poderosa arbalesta",
+      "description": "Esquema para fabricar una poderosa arbalesta",
       "name": "Arbalesta"
     },
     "ashen_embrace": {
@@ -227,7 +227,7 @@
       "name": "Sangre de nigromante"
     },
     "nightshade_bow_schematic": {
-      "description": "Plano para fabricar un arco venenoso",
+      "description": "Esquema para fabricar un arco venenoso",
       "name": "Arco de belladona"
     },
     "obsidian_orb": {
@@ -235,7 +235,7 @@
       "name": "Orbe de obsidiana"
     },
     "obsidian_orb_schematic": {
-      "description": "Plano para forjar un poderoso orbe de obsidiana",
+      "description": "Esquema para forjar un poderoso orbe de obsidiana",
       "name": "Orbe de obsidiana"
     },
     "occultist_grimoire": {
@@ -311,7 +311,7 @@
       "name": "Manos hábiles"
     },
     "skeleton_key_schematic": {
-      "description": "Plano para fabricar una llave maestra",
+      "description": "Esquema para fabricar una llave maestra",
       "name": "Llave maestra"
     },
     "stonebinders_codex": {
@@ -319,11 +319,11 @@
       "name": "Códice del ligapiedras"
     },
     "stormglass_halberd_schematic": {
-      "description": "Plano para fabricar una alabarda formidable",
+      "description": "Esquema para fabricar una alabarda formidable",
       "name": "Alabarda de cristal de tormenta"
     },
     "superior_bombs": {
-      "description": "Las bombas infligen más daño",
+      "description": "El alquimista ha mejorado las bombas para que inflijan más daño",
       "name": "Bombas superiores"
     },
     "survivors_last_words": {
@@ -389,7 +389,7 @@
       "name": "Sabueso Bruto"
     },
     "grey_one": {
-      "description": "Cachorro de lobo tomado junto al alfa abatido y domesticado.",
+      "description": "Cachorro de lobo hallado junto al alfa abatido y luego domesticado.",
       "name": "El Gris"
     }
   },
@@ -459,7 +459,7 @@
       "name": "Pico de natharit"
     },
     "obsidian_axe": {
-      "description": "Hacha legendaria con filos volcánicos afilados como cuchillas",
+      "description": "Hacha legendaria de filos volcánicos cortantes como cuchillas",
       "name": "Hacha de obsidiana"
     },
     "obsidian_lantern": {

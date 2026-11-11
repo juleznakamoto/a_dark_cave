@@ -96,7 +96,7 @@
     "label": "Corazza di chitina"
   },
   "buildClerksHut": {
-    "description": "Capanna dove gli studiosi studiano per acquisire intuizione sul mondo",
+    "description": "Capanna dove gli studiosi si dedicano allo studio per acquisire intuizione sul mondo",
     "label": "Capanna dello scrivano"
   },
   "buildCoinhouse": {
@@ -316,7 +316,7 @@
     "log": {
       "success": "La spedizione alle rovine del castello del negromante morto si rivela un successo! Nelle loro profondità trovi le antiche pergamene avvolte in seta scura, che rivelano conoscenze criptiche su come sconfiggere ciò che era rinchiuso nelle profondità della caverna.",
       "minorFailure": "La tua spedizione cade in un'imboscata tesa da grotteschi esperimenti non morti lasciati dal negromante. {{count}} abitanti cadono per mano dei non morti prima che i sopravvissuti riescano a ritirarsi.",
-      "majorFailure": "Poco dopo che la tua spedizione entra nelle maledette rovine del castello, decine di creature non morte si riversano da camere nascoste. Nella disperata battaglia che segue, {{count}} abitanti vengono sopraffatti dall'orda soprannaturale. I sopravvissuti fuggono terrorizzati."
+      "majorFailure": "Poco dopo l'ingresso della tua spedizione nelle maledette rovine del castello, decine di creature non morte si riversano da camere nascoste. Nella disperata battaglia che segue, {{count}} abitanti vengono sopraffatti dall'orda soprannaturale. I sopravvissuti fuggono terrorizzati."
     }
   },
   "chopWood": {
@@ -335,7 +335,7 @@
     "description": "Ispeziona la torre crollata e poni fine a qualunque opera oscura vi si compia.",
     "label": "Torre crollata",
     "log": {
-      "success": "Dentro la torre trovi un negromante e i suoi seguaci, circondati da fiale di liquidi e siringhe rozze. Stava raccogliendo il sangue degli abitanti per oscuri esperimenti. I tuoi uomini pongono fine alla sua vile opera e prelevano una fiala del suo sangue. Tra i suoi strumenti, trovi la sua potente sega d'ossa.",
+      "success": "Dentro la torre trovi un negromante e i suoi seguaci, circondati da fiale di liquidi e rozze siringhe. Stava raccogliendo il sangue degli abitanti per oscuri esperimenti. I tuoi uomini pongono fine alla sua vile opera e prelevano una fiala del suo sangue. Tra i suoi strumenti, trovi la sua potente sega d'ossa.",
       "failure": "La tua spedizione raggiunge la Torre crollata, ma viene attaccata da figure incappucciate all'esterno. Tra loro c'è un uomo alto in una veste scura, che emana un'aura minacciosa. {{count}} abitanti cadono prima che gli altri riescano a mettersi in salvo."
     }
   },
@@ -397,7 +397,7 @@
     "label": "Spada di vetro di gelo"
   },
   "craftFlaskHarness": {
-    "label": "Imbracatura per fiaschi"
+    "label": "Imbragatura per fiaschi"
   },
   "craftGrenadierBag": {
     "label": "Borsa del granatiere"
@@ -522,7 +522,7 @@
     "description": "Esplora la cittadella nel cuore della città sotterranea.",
     "label": "Esplora cittadella",
     "log": {
-      "firstVisit": "Nella parte più profonda della città, una massiccia cittadella si erge davanti a te. La sua dimensione suggerisce che custodisca qualcosa di grande potere, o di grande pericolo."
+      "firstVisit": "Nella parte più profonda della città, una massiccia cittadella si erge davanti a te. Le sue dimensioni lasciano intendere che custodisca qualcosa di grande potere, o di grande pericolo."
     }
   },
   "exploreRuins": {
@@ -560,7 +560,7 @@
     "description": "Ripulisci la caverna dalle bestie per salvare la tribù della cacciatrice.",
     "label": "Caverna della foresta",
     "log": {
-      "success": "Mentre gli abitanti scendono nella caverna, segugi selvaggi erompono dall'oscurità in branchi incessanti. Le urla riecheggiano mentre gli artigli lacerano e i denti azzannano. Quando l'ultima bestia cade, ogni abitante vive, e la tribù della cacciatrice è salvata.",
+      "success": "Mentre gli abitanti scendono nella caverna, segugi selvaggi erompono dall'oscurità in branchi incessanti. Le urla riecheggiano mentre gli artigli lacerano e i denti azzannano. Quando l'ultima bestia cade, nessun abitante è morto e la tribù della cacciatrice è salva.",
       "failure": "Mentre la spedizione entra nella caverna viene sopraffatta da un branco di brutali segugi. {{count}} abitanti vengono fatti a pezzi da fauci selvagge prima che i sopravvissuti riescano a ritirarsi."
     }
   },
@@ -582,7 +582,7 @@
     "label": "Tomba della collina",
     "log": {
       "success": "La tua spedizione attraversa con attenzione le insidiose trappole della tomba della collina. Gli abitanti disinnescano gli antichi meccanismi e raggiungono la camera sepolcrale. Tra i tesori del re, scopri vetro di gelo puro, freddo come il vuoto stesso.",
-      "failure": "La tua spedizione entra nella tomba della collina ma manca dell'abilità di superare le sue trappole mortali. {{count}} abitanti cadono per le ultime difese del re prima che i sopravvissuti si ritirino inorriditi, lasciando i corpi dei loro compagni nella tomba maledetta."
+      "failure": "La tua spedizione entra nella tomba della collina ma manca dell'abilità di superare le sue trappole mortali. {{count}} abitanti cadono vittime delle ultime difese del re prima che i sopravvissuti si ritirino inorriditi, lasciando i corpi dei loro compagni nella tomba maledetta."
     }
   },
   "humans": {
@@ -615,13 +615,13 @@
   },
   "layTrap": {
     "description": "Tendi un gigantesco laccio per catturare una grande bestia.",
-    "label": "Disponi trappola",
+    "label": "Tendi trappola",
     "log": {
       "trapSuccessNoDeaths": "La trappola gigante funziona alla perfezione! Un enorme orso nero dagli occhi rossi luminosi viene catturato. Gli abitanti abbattono la bestia soprannaturale e ne reclamano la maledetta pelliccia nera come trofeo.",
-      "trapSuccessWithDeaths_one": "La trappola gigante cattura un colossale orso nero dagli occhi rossi ardenti! {{count}} abitante cade per i suoi artigli soprannaturali prima che la bestia venga infine abbattuta. Reclami la sua maledetta pelliccia nera come trofeo conquistato a caro prezzo.",
-      "trapSuccessWithDeaths_other": "La trappola gigante cattura un colossale orso nero dagli occhi rossi ardenti! {{count}} abitanti cadono per i suoi artigli soprannaturali prima che la bestia venga infine abbattuta. Reclami la sua maledetta pelliccia nera come trofeo conquistato a caro prezzo.",
-      "trapSuccessHeavy": "La trappola gigante cattura un colossale orso nero dagli occhi come carboni ardenti. {{count}} abitanti cadono per la sua furia soprannaturale prima che la bestia venga infine sopraffatta. Reclami la sua maledetta pelliccia nera.",
-      "trapFailed": "La trappola gigante è posizionata, ma al controllo si trovano solo enormi segni di artigli accanto ad essa. Qualunque cosa si aggiri in queste foreste è troppo astuta per la tua trappola… per questa volta."
+      "trapSuccessWithDeaths_one": "La trappola gigante cattura un colossale orso nero dagli occhi rossi ardenti! {{count}} abitante cade sotto i suoi artigli soprannaturali prima che la bestia venga infine abbattuta. Reclami la sua maledetta pelliccia nera come trofeo conquistato a caro prezzo.",
+      "trapSuccessWithDeaths_other": "La trappola gigante cattura un colossale orso nero dagli occhi rossi ardenti! {{count}} abitanti cadono sotto i suoi artigli soprannaturali prima che la bestia venga infine abbattuta. Reclami la sua maledetta pelliccia nera come trofeo conquistato a caro prezzo.",
+      "trapSuccessHeavy": "La trappola gigante cattura un colossale orso nero dagli occhi come carboni ardenti. {{count}} abitanti cadono vittime della sua furia soprannaturale prima che la bestia venga infine sopraffatta. Reclami la sua maledetta pelliccia nera.",
+      "trapFailed": "La trappola gigante è tesa, ma quando la si controlla, accanto ci sono solo enormi segni di artigli. Qualunque cosa si aggiri in queste foreste è troppo astuta per la tua trappola… per questa volta."
     }
   },
   "leatherTotems": {
@@ -637,7 +637,7 @@
     "description": "Calati con la corda in una camera profonda rimasta intatta per secoli.",
     "label": "Camera bassa",
     "log": {
-      "complete": "Usando la corda rinforzata, scendi nella camera bassa. Tra i tesori trovi lo scalpello di un maestro muratore, uno strumento di artigianalità leggendaria."
+      "complete": "Usando la corda rinforzata, scendi nella camera bassa. Tra i tesori trovi lo scalpello di un maestro muratore, uno strumento di fattura leggendaria."
     }
   },
   "lureLakeCreature": {
@@ -706,7 +706,7 @@
     "label": "Ritarda l'ondata di attacco"
   },
   "buildRepairAlchemistHall": {
-    "description": "Ripara la sala così si possono fabbricare di nuovo le bombe",
+    "description": "Ripara la sala per poter fabbricare di nuovo le bombe",
     "label": "Ripara la sala dell'alchimista"
   },
   "repairBastion": {
@@ -753,7 +753,7 @@
     "description": "Guada la palude fino a un antico tempio mezzo sommerso.",
     "label": "Tempio sommerso",
     "log": {
-      "success": "La tua spedizione guada le acque della palude per raggiungere l'antico tempio semisommerso. Nonostante i pericoli in agguato nelle acque scure, gli abitanti navigano con attenzione tra le sale sommerse e trovano le gemme di pietra di sangue nel sancta sanctorum del tempio.",
+      "success": "La tua spedizione guada le acque della palude per raggiungere l'antico tempio semisommerso. Nonostante i pericoli in agguato nelle acque scure, gli abitanti si muovono con cautela tra le sale sommerse e trovano le gemme di pietra di sangue nel sancta sanctorum del tempio.",
       "failure": "La tua spedizione si avventura nella palude, alla ricerca del tempio sommerso. Le acque torbide nascondono orrori indicibili. Creature abominevoli nate da magia antica si sollevano dalle profondità e trascinano {{count}} abitanti sotto la superficie prima che i sopravvissuti fuggano."
     }
   },
@@ -822,7 +822,7 @@
       "tarnishedAmulet": "Nelle ombre della caverna, qualcosa luccica. Trovi un Amuleto annerito.",
       "fangCharm": "Incastrato in una fessura della parete trovi un amuleto di zanne nere. Sono troppo grandi per qualunque cosa debba vivere qui.",
       "silverSack": "Trovi un piccolo sacco di cuoio contenente 50 argento.",
-      "mapFragment": "Sul fondo della caverna trovi un frammento sbrindellato di una mappa.",
+      "mapFragment": "Sul suolo della caverna trovi un frammento sbrindellato di una mappa.",
       "firstVisit": "L'aria si fa più fredda mentre scendi lungo il sentiero più in profondità nella caverna. Le pareti attorno a te sembrano innaturalmente lisce, come se fossero state plasmate da qualcuno."
     }
   }

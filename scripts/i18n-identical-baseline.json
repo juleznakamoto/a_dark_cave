@@ -1,14 +1,24 @@
 {
-  "de": [],
-  "fr": [],
+  "de": [
+    "achievements.overall.0-speedrunner.label",
+    "actions.craftArbalest.label",
+    "effects.clothing.arbalest_schematic.name",
+    "effects.weapons.arbalest.name",
+    "ui.shop.bundles"
+  ],
+  "fr": [
+    "achievements.overall.0-speedrunner.label",
+    "actions.buildSanctum.label"
+  ],
   "es": [],
-  "it": [],
+  "it": [
+    "ui.sidePanel.statEffectMaxPercent",
+    "ui.tooltips.poisonEnchantRound_one"
+  ],
   "pt-BR": [],
   "zh-CN": [],
   "ja": [],
   "pl": [],
   "ru": [],
-  "tr": [
-    "ui.socialPrompt.platforms.youtube.title"
-  ]
+  "tr": []
 }

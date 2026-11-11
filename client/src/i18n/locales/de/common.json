@@ -9,8 +9,8 @@
     "deactivate": "Deaktivieren"
   },
   "status": {
-    "loading": "Wird geladen...",
-    "processing": "Wird verarbeitet...",
+    "loading": "Wird geladen…",
+    "processing": "Wird verarbeitet…",
     "free": "Kostenlos",
     "error": "Fehler",
     "success": "Erfolg!",
@@ -70,6 +70,7 @@
     "defense": "Verteidigung",
     "integrity": "Integrität"
   },
+  "percent": "{{value}} %",
   "population": {
     "villager_one": "{{count}} Dorfbewohner",
     "villager_other": "{{count}} Dorfbewohner"

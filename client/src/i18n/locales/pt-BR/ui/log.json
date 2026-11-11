@@ -44,7 +44,7 @@
       "firstWoodenHut": "A primeira cabana de madeira está pronta. Este pode ser o início de algo grandioso.",
       "villageGrowthSuggestion": "O vilarejo cresce depressa. Talvez casas de pedra possam abrigar mais aldeões.",
       "cityGrowthMilestone": "A cidade se tornou uma metrópole movimentada, repleta de comércio, indústria e a promessa de dias melhores.",
-      "moonstoneDiscovered": "No fundo da cava, os trabalhadores descobrem veios de pedra-da-lua, um mineral luminescente repleto de energia.",
+      "moonstoneDiscovered": "No fundo do poço, os trabalhadores descobrem veios de pedra-da-lua, um mineral luminescente repleto de energia.",
       "foundry": "A fundição ruge ao ganhar vida enquanto o fogo e o calor fundem matérias-primas.",
       "masterworkFoundry": "A Fundição-Mestra está completa, um monumento ao supremo domínio da metalurgia. Em seu fogo, o aço negro pode ser forjado — quase indestrutível, mas dificílimo de produzir.",
       "altar": "Um altar surge à beira da floresta, erguido para apaziguar o que habita lá dentro.",
@@ -102,8 +102,8 @@
       "win": "Você ganhou {{amount}} de ouro do apostador obcecado.",
       "lose": "Você perdeu {{amount}} de ouro para o apostador obcecado.",
       "forfeit": "O apostador obcecado tomou seu silêncio como desistência.",
-      "coinNothing": "O dado caiu contra você. O ganho se foi.",
-      "enraged": "Furioso com as derrotas, o apostador começou uma briga com um aldeão e o matou na estrada de saída da vila."
+      "coinNothing": "O dado caiu contra você. Os ganhos se foram.",
+      "enraged": "Furioso com as derrotas, o apostador começou uma briga com um aldeão e o matou na estrada que sai do vilarejo."
     },
     "buttonUpgrade": {
       "deepens": "Seu domínio de {{skill}} se aprofunda.",

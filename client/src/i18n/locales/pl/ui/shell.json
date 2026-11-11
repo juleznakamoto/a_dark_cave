@@ -7,10 +7,10 @@
     "gameMode": "Tryb gry",
     "gameModeNormal": "Tryb normalny",
     "gameModeSteamGame": "Gra Steam",
-    "gameModeSteamDemo": "Steam Demo",
+    "gameModeSteamDemo": "Demo Steam",
     "gameModeDemoEnd": "Koniec demo",
-    "gameModeSteamEndCruelOn": "Koniec Steam (Tryb okrutny włączony)",
-    "gameModeSteamEndCruelOff": "Koniec Steam (Tryb okrutny wyłączony)",
+    "gameModeSteamEndCruelOn": "Koniec Steam (tryb okrutny włączony)",
+    "gameModeSteamEndCruelOff": "Koniec Steam (tryb okrutny wyłączony)",
     "gameModeCrazyGamesDemo": "Demo CrazyGames",
     "giftCode": "Kod podarunku",
     "giftCodePlaceholder": "Kod",
@@ -49,8 +49,8 @@
   "errorScreen": {
     "message": "Kopiemy głębiej. Wróć wkrótce.",
     "reload": "Przeładuj grę",
-    "repeatMessage": "Ponowne wczytanie nie przywróciło ognia. Możesz usunąć cache i ponownie rozpalić ogień.",
-    "returnToCave": "Usuń cache",
+    "repeatMessage": "Ponowne wczytanie nie przywróciło ognia. Możesz wyczyścić pamięć podręczną i ponownie rozpalić ogień.",
+    "returnToCave": "Wyczyść pamięć podręczną",
     "saveKept": "Ostatniego zapisu nie dało się otworzyć, więc to nowa gra. Stary zapis zostaje na tym urządzeniu.",
     "saveKeptDismiss": "Dalej"
   },
@@ -122,6 +122,6 @@
     "hintSuffix": " żeby przełączać karty"
   },
   "villageHotkeyTutorial": {
-    "dismiss": "Odrzuć"
+    "dismiss": "Zamknij"
   }
 }

@@ -281,7 +281,7 @@
   },
   "overall": {
     "0-achievementMaxer": {
-      "label": "Massimizzatore di obiettivi",
+      "label": "Obiettivi al completo",
       "description": "Completa ogni obiettivo non Epico"
     },
     "0-caveVeteran": {
@@ -290,18 +290,18 @@
     },
     "0-endurant": {
       "label": "Resistente",
-      "description": "Gioca 30 ore in tutte le partite"
+      "description": "Gioca per 30 ore complessive tra tutte le partite"
     },
     "0-finalPact": {
       "label": "Il patto finale",
       "description": "Vinci una partita con tutti e 5 i patti attivi"
     },
     "0-resourceMaxer": {
-      "label": "Massimizzatore di risorse",
+      "label": "Risorse al massimo",
       "description": "Raggiungi la capacità del Grande caveau con ogni risorsa limitata"
     },
     "0-upgradeMaxer": {
-      "label": "Massimizzatore di miglioramenti",
+      "label": "Miglioramenti al massimo",
       "description": "Porta al massimo ogni miglioramento della scheda Tenuta"
     },
     "0-speedrunner": {
@@ -311,7 +311,7 @@
     },
     "0-supporter": {
       "label": "Sostenitore",
-      "description": "Completa il percorso ricompense sostenitore"
+      "description": "Completa il percorso delle ricompense per i sostenitori"
     },
     "0-winCruel": {
       "label": "Vittoria crudele",

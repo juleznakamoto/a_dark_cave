@@ -207,7 +207,7 @@
     "statLuckEffectCrit": "+{{percent}}% de chance de golpe crítico em combate",
     "statLuckEffectGambling": "Aposta máx. de {{amount}} de Ouro no Apostador",
     "statLuckEffectInvest": "+{{percent}}% de chance de sucesso em investimentos",
-    "statStrengthEffectBastion": "+{{value}} ataque do Bastião (½ Força)",
+    "statStrengthEffectBastion": "+{{value}} de ataque do Bastião (½ da Força)",
     "statKnowledgeEffectMerchant": "{{percent}}% de desconto no mercador viajante",
     "statKnowledgeEffectDecisionTime": "+{{seconds}}s de tempo de decisão em eventos cronometrados",
     "statKnowledgeEffectCombatItems": "+{{bombDamage}} de dano de bombas (+2 a cada 5 de Conhecimento), +{{arrowDamage}} de dano de flechas envenenadas (+1 a cada 5 de Conhecimento)",
@@ -225,7 +225,7 @@
     "bastionIntegrityTooltip": "Se a integridade chegar a 0, você perde a batalha",
     "bastionAttackTooltip": "Dano que você causa aos inimigos a cada rodada de combate",
     "bastionAttackFromFortifications": "{{value}} por fortificações",
-    "bastionAttackFromStrength": "{{value}} por Força (50 %)"
+    "bastionAttackFromStrength": "{{value}} por Força (50%)"
   },
   "achievements": {
     "notUnlocked": "Ainda não desbloqueado.",

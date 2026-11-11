@@ -10,7 +10,7 @@
     "gameModeSteamDemo": "Demo Steam",
     "gameModeDemoEnd": "Fine demo",
     "gameModeSteamEndCruelOn": "Fine Steam (Crudele attiva)",
-    "gameModeSteamEndCruelOff": "Fine Steam (Crudele disattiva)",
+    "gameModeSteamEndCruelOff": "Fine Steam (Crudele non attiva)",
     "gameModeCrazyGamesDemo": "Demo CrazyGames",
     "giftCode": "Codice regalo",
     "giftCodePlaceholder": "Codice",
@@ -118,10 +118,10 @@
   },
   "pauseHotkey": {
     "hintPrefix": "Usa ",
-    "hintSelect": " per selezionare scheda o ",
+    "hintSelect": " per selezionare una scheda o ",
     "hintSuffix": " per cambiare scheda"
   },
   "villageHotkeyTutorial": {
-    "dismiss": "Ignora"
+    "dismiss": "Chiudi"
   }
 }

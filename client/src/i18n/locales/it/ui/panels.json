@@ -49,7 +49,7 @@
     "fromBuildings": "{{percent}}% dagli edifici",
     "fromBlessings": "{{percent}}% dalle benedizioni",
     "fromEvents": "{{percent}}% dagli eventi",
-    "fromHeartfire": "{{percent}}% dal fuoco del cuore",
+    "fromHeartfire": "{{percent}}% dal Fuoco del cuore",
     "fromGreatFeast": "{{percent}}% dal grande banchetto",
     "fromAchievements": "{{percent}}% dagli obiettivi",
     "merchantBlocked": "Il mercante non può essere chiamato mentre è attivo un altro evento",
@@ -84,7 +84,7 @@
     "sleepTooltipCurrentProduction": "Produzione attuale:",
     "focusRewardTooltip_one": "Ottieni ricompense 2x sulle azioni per {{count}} minuto",
     "focusRewardTooltip_other": "Ottieni ricompense 2x sulle azioni per {{count}} minuti",
-    "focusPointTooltip": "Guadagna 1 Punto concentrazione per ogni ora di sonno",
+    "focusPointTooltip": "Guadagna 1 punto concentrazione per ogni ora di sonno",
     "sleepLength": "Durata del sonno",
     "sleepLengthDescription": "Max. {{hours}} ore di sonno continuo",
     "sleepIntensity": "Intensità del sonno",
@@ -197,8 +197,8 @@
     "productionBonus": "Bonus di produzione",
     "doubleGainChance": "Probabilità guadagno doppio",
     "statLuckTooltip": "Piega il destino a tuo favore",
-    "statStrengthTooltip": "Aiuta dove le parole raggiungono il loro limite",
-    "statKnowledgeTooltip": "Influenza le situazioni in cui l'astuzia è utile",
+    "statStrengthTooltip": "Aiuta dove le parole non bastano",
+    "statKnowledgeTooltip": "Influenza le situazioni in cui serve l'ingegno",
     "statMadnessTooltip": "Conduce i pensieri su sentieri pericolosi",
     "statEffectNotUnlockedYet": "non ancora sbloccato",
     "statEffectMaxPercent": "{{value}}% max",
@@ -225,7 +225,7 @@
     "bastionIntegrityTooltip": "Se l'integrità raggiunge 0, perdi la battaglia",
     "bastionAttackTooltip": "Danno che infliggi ai nemici ad ogni round di combattimento",
     "bastionAttackFromFortifications": "{{value}} dalle fortificazioni",
-    "bastionAttackFromStrength": "{{value}} dalla forza (50%)"
+    "bastionAttackFromStrength": "{{value}} dalla Forza (50%)"
   },
   "achievements": {
     "notUnlocked": "Non ancora sbloccato.",

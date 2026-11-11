@@ -2,7 +2,7 @@
   "combat": {
     "skillsTitle": "戦闘技能",
     "fight": "戦う",
-    "fighting": "戦闘中...",
+    "fighting": "戦闘中…",
     "startFight": "戦闘開始",
     "roundTitle": "戦闘 - 第{{round}}ラウンド",
     "bossRoundTitle": "ボス戦 - 第{{round}}ラウンド",

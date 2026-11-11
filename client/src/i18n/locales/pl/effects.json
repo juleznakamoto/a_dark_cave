@@ -39,7 +39,7 @@
       "name": "Głęboki popiołowy uścisk"
     },
     "bell_blessing": {
-      "description": "Tajemniczy znak dzwonu na przedramieniu. Podwaja punkty skupienia zdobywane podczas Snu.",
+      "description": "Tajemniczy znak dzwonu na przedramieniu. Podwaja punkty skupienia zdobywane podczas snu.",
       "name": "Błogosławieństwo dzwonu"
     },
     "black_bear_fur": {
@@ -323,7 +323,7 @@
       "name": "Halabarda z burzoszkła"
     },
     "superior_bombs": {
-      "description": "Bomby zadają więcej obrażeń",
+      "description": "Alchemik ulepszył bomby, by zadawały więcej obrażeń",
       "name": "Lepsze bomby"
     },
     "survivors_last_words": {
@@ -339,7 +339,7 @@
       "name": "Zmatowiony amulet"
     },
     "tarnished_compass": {
-      "description": "Starożytna relikwia dla tych, którzy szukają drogi.",
+      "description": "Starożytny relikt dla tych, którzy szukają drogi.",
       "name": "Zmatowiony kompas"
     },
     "trail_sense": {
@@ -581,7 +581,7 @@
       "name": "Długi łuk"
     },
     "manhunter_bow": {
-      "description": "Łuk łowcy ludzi, naciągnięty do polowania na ludzi",
+      "description": "Łuk łowcy ludzi, stworzony do polowań na człowieka.",
       "name": "Łuk łowcy ludzi"
     },
     "master_bow": {

@@ -1,12 +1,12 @@
 {
   "additional_preset_slots": {
-    "activationMessage": "Se han añadido dos espacios de preajuste de trabajos de aldeanos adicionales.",
-    "description": "Dos espacios de preajuste de trabajos de aldeanos más",
+    "activationMessage": "Se han añadido dos espacios más para preajustes de trabajos de los aldeanos.",
+    "description": "Dos espacios más para preajustes de trabajos de los aldeanos",
     "name": "2 espacios de preajuste adicionales"
   },
   "additional_construction_queue_slot": {
-    "activationMessage": "Se han añadido dos espacios de cola de construcción adicionales.",
-    "description": "Dos espacios de construcción paralela más",
+    "activationMessage": "Se han añadido dos espacios más a la cola de construcción.",
+    "description": "Dos espacios más de construcción simultánea",
     "name": "2 espacios de cola de construcción adicionales"
   },
   "advanced_bundle": {

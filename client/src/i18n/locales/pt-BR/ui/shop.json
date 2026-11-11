@@ -40,7 +40,7 @@
     "termsOfService": "Termos",
     "rightOfWithdrawal": "Arrependimento",
     "completePurchaseFor": "Concluir Compra por {{price}}",
-    "paymentFailed": "Pagamento falhou",
+    "paymentFailed": "Falha no pagamento",
     "tooManyPaymentRequests": "Muitas solicitações de pagamento. Tente novamente mais tarde.",
     "cruelModeDeactivatedLog": "Modo Cruel desativado. Novos jogos usarão a dificuldade normal.",
     "notAuthenticated": "Você não está conectado",
@@ -83,7 +83,7 @@
     "greatFeast": {
       "forMinutes": "Por {{minutes}} minutos:",
       "villageProduction": "Produção do vilarejo 5x",
-      "newVillagerChance": "+25 % de chance de novo aldeão"
+      "newVillagerChance": "+25% de chance de novo aldeão"
     },
     "alreadyClaimedItemLog": "Você já resgatou {{name}}.",
     "claimFailedLog": "Falha ao resgatar {{name}}. Tente novamente.",

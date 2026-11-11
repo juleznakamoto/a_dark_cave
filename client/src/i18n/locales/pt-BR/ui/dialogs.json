@@ -37,31 +37,31 @@
     "madness": "+3 de Loucura",
     "cards": {
       "blazesmith": {
-        "name": "Ferreiro da labareda",
+        "name": "Ferreiro da Labareda",
         "boon": "Criar bombas custa 50% menos",
         "boon2": "Dobra o bônus de produção do Fogo do Coração",
         "quote": "“Os experimentos do alquimista passaram do limite.”"
       },
       "full_larders": {
-        "name": "Despensas cheias",
+        "name": "Despensas Cheias",
         "boon": "Aldeões livres produzem +2 de Comida",
         "boon2": "Caçadores produzem +5 de Comida",
         "quote": "“A caçadora se oferece para caçar.”"
       },
       "sturdy_hands": {
-        "name": "Mãos firmes",
+        "name": "Mãos Firmes",
         "boon": "Coletores produzem +5 de Madeira",
         "boon2": "Coletores produzem +5 de Pedra",
         "quote": "“A carroça do mercador carrega mais do que deveria.”"
       },
       "cunning_trader": {
-        "name": "Mercador astuto",
+        "name": "Mercador Astuto",
         "boon": "20% de desconto no mercador viajante",
         "boon2": "20% de desconto no Posto de Comércio",
         "quote": "“Os sonhos andam estranhos ultimamente.”"
       },
       "avid_apprentices": {
-        "name": "Aprendiz ávido",
+        "name": "Aprendiz Ávido",
         "boon": "Os estudiosos produzem +1 de Perspicácia",
         "boon2": "O domínio das ações melhora 20% mais rápido",
         "quote": "“Algo parece errado com o apostador.”"
@@ -130,8 +130,8 @@
     "infoAriaLabel": "Explicar os investimentos e a tabela de estratégia",
     "unlockTooltip": "Desbloqueia com {{building}}",
     "minutes": "{{count}} min",
-    "luckyChanceTop": "Golpe de Sorte {{percent}} % ({{fromLuck}} % por Sorte)",
-    "luckyChanceLine": "{{percent}} % Golpe de Sorte: {{gold}}",
+    "luckyChanceTop": "Golpe de Sorte {{percent}}% ({{fromLuck}}% por Sorte)",
+    "luckyChanceLine": "{{percent}}% Golpe de Sorte: {{gold}}",
     "headers": {
       "time": "Tempo",
       "success": "Sucesso",
@@ -145,7 +145,7 @@
       "profit": "O lucro que você obtém em caso de sucesso.",
       "lucky": "Chance, em caso de sucesso, de multiplicar seu lucro por {{multiplier}}.",
       "loss": "O ouro que você perde em caso de fracasso.",
-      "wait": "Depois de cada investimento, leva 15 minutos para novas ofertas aparecerem."
+      "wait": "Após cada investimento, novas ofertas levam 15 minutos para aparecer."
     }
   },
   "gambler": {
@@ -154,8 +154,8 @@
     "rulesAriaLabel": "Regras do jogo de dados",
     "rulesTurns": "Você e o Apostador se revezam jogando um dado.",
     "rulesTotals": "As jogadas de cada jogador são somadas.",
-    "rulesGoal": "O objetivo é definido como 15.",
-    "rulesWinLose": "Se um jogador atingir o objetivo exatamente, ele vence. Se ultrapassar, ele perde.",
+    "rulesGoal": "O objetivo é chegar a 15.",
+    "rulesWinLose": "Quem atingir o objetivo exatamente vence. Quem passar dele perde.",
     "rulesStand": "Se o jogador da vez tiver mais pontos totais que o oponente, ele pode optar por não jogar.",
     "tutorialIntro": "Para ajudá-lo a aprender o jogo, o Apostador se oferece para jogar {{count}} vezes sem aposta.",
     "boneDiceIntro": "Faça sua aposta. Possuir os Dados de Osso permite jogar duas vezes contra o Apostador.",
@@ -178,7 +178,7 @@
     "practiceLoseRemaining": "Você perdeu a rodada de treino (sem ouro em jogo). {{remaining}} de {{total}} jogos de treino restantes.",
     "practiceWinComplete": "Você venceu a rodada de treino (sem ouro em jogo). Treino concluído. Agora você pode fazer uma aposta em ouro.",
     "practiceLoseComplete": "Você perdeu a rodada de treino (sem ouro em jogo). Treino concluído. Agora você pode fazer uma aposta em ouro.",
-    "coinOffer": "Ele gira o dado à luz do fogo, e o sorriso se estreita. “O dobro, ou nada”, ele sussurra. “De um a quatro, seu ouro dobra. Cinco ou seis, eu fico com ele.”",
+    "coinOffer": "Ele gira o dado à luz do fogo, e o sorriso se estreita. “Dobro ou nada”, ele sussurra. “De um a quatro, seu ouro dobra. Cinco ou seis, eu fico com ele.”",
     "coinAccept": "Jogar o dado",
     "coinDecline": "Ficar com o ganho",
     "coinNothing": "Nada",
@@ -237,13 +237,13 @@
     "discountFromKnowledge": "{{percent}}% por Conhecimento{{max}}",
     "knowledgeMax": " (máx.)",
     "discountFromRing": "5% do Anel da Obediência",
-    "discountFromPact": "20% do Mercador astuto",
+    "discountFromPact": "20% do Mercador Astuto",
     "prolongForInsight": "Estender o tempo em {{minutes}} min"
   },
   "share": {
     "title": "Veja seu progresso",
-    "resources": "Recursos: {{percent}} %",
-    "achievements": "Conquistas: {{percent}} %",
+    "resources": "Recursos: {{percent}}%",
+    "achievements": "Conquistas: {{percent}}%",
     "killedCreatures": "Criaturas mortas",
     "highestAttackWave": "Maior onda de ataque",
     "cruelMode": "Modo Cruel",
@@ -262,7 +262,7 @@
   },
   "feedback": {
     "title": "Feedback",
-    "message": "Encontrou bugs ou problemas de tradução, ou tem sugestões? Adoraria saber.",
+    "message": "Encontrou bugs ou problemas de tradução, ou tem sugestões? Adoraria saber o que você acha.",
     "openForm": "Enviar feedback",
     "contactVia": "Você também pode entrar em contato comigo por:",
     "reddit": "Reddit",

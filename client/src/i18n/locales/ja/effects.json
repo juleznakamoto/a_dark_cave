@@ -19,7 +19,7 @@
   },
   "clothing": {
     "alphas_hide": {
-      "description": "狼の群れの頭領の皮。原初の力が染み込んでいる",
+      "description": "狼の群れの首領の皮。原初の力が染み込んでいる",
       "name": "首領の皮"
     },
     "ancient_scrolls": {
@@ -75,7 +75,7 @@
       "name": "骨喰らいの血"
     },
     "bone_dice": {
-      "description": "骨を削った骰子。柔らかく、落ち着かないほど滑らかに磨かれている。賭博師で、もう1局遊べるようになる。",
+      "description": "骨を削った骰子。柔らかく、落ち着かないほど滑らかに磨かれている。賭博師ともう1局勝負できるようになる。",
       "name": "骨の骰子"
     },
     "bone_necklace": {
@@ -139,11 +139,11 @@
       "name": "漁夫の手"
     },
     "flames_touch": {
-      "description": "製作の消費が減る",
+      "description": "製作費用が減る",
       "name": "炎の感触"
     },
     "flames_touch_enhanced": {
-      "description": "製作の消費が大きく減る",
+      "description": "製作費用が大きく減る",
       "name": "強き炎の感触"
     },
     "forests_grace": {
@@ -151,7 +151,7 @@
       "name": "森の恩寵"
     },
     "brimstone_infusion": {
-      "description": "鋼鍛冶の鋼産出が+1される",
+      "description": "鋼鍛冶の鋼の生産+1",
       "name": "硫黄の注入"
     },
     "fresh_blood": {
@@ -163,7 +163,7 @@
       "name": "霜晶"
     },
     "keen_builder": {
-      "description": "建築の消費が減る",
+      "description": "建設費用が減る",
       "name": "鋭き建築士"
     },
     "gifted_ring": {
@@ -283,7 +283,7 @@
       "name": "溺死者の指輪"
     },
     "ring_of_obedience": {
-      "description": "喜ぶ女が贈った指輪。さらに小さな輪がついている",
+      "description": "喜びに満ちた女から贈られた、小さな輪のついた指輪",
       "name": "服従の指輪"
     },
     "sacrificial_tunic": {
@@ -307,7 +307,7 @@
       "name": "鋭い狙い"
     },
     "skilled_hands": {
-      "description": "製作の消費が減る",
+      "description": "製作費用が減る",
       "name": "熟練の手"
     },
     "skeleton_key_schematic": {
@@ -331,7 +331,7 @@
       "name": "生存者の最期の言葉"
     },
     "survivors_notes": {
-      "description": "とうにここで生きた者が残した、実用の助言で満ちた古い巻物。",
+      "description": "遥か昔にここで生きた者が残した、実用的な助言に満ちた古い巻物。",
       "name": "生存者の覚書"
     },
     "tarnished_amulet": {
@@ -369,7 +369,7 @@
       "name": "灰霊の女狩人"
     },
     "disgraced_prior": {
-      "description": "教団から追放された元修道院長。果てしない労働で贖う。",
+      "description": "教団から追放された元修道院長。果てしない労働で罪を贖う。",
       "name": "堕ちた修道院長"
     },
     "elder_wizard": {
@@ -381,7 +381,7 @@
       "name": "片目の鴉"
     },
     "restless_knight": {
-      "description": "旧世界の残骸を見た、戦いの古参。",
+      "description": "旧世界の名残を見てきた、歴戦の古強者。",
       "name": "眠れぬ騎士"
     },
     "the_hound": {

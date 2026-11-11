@@ -1,13 +1,13 @@
 {
   "additional_preset_slots": {
-    "activationMessage": "Dois espaços de predefinição de trabalho de aldeões adicionais foram adicionados.",
+    "activationMessage": "Foram adicionados mais dois espaços de predefinição de trabalhos dos aldeões.",
     "description": "Mais dois espaços de predefinição de trabalho de aldeões",
     "name": "2 Espaços de Predefinição Adicionais"
   },
   "additional_construction_queue_slot": {
-    "activationMessage": "Dois espaços adicionais na fila de construção foram adicionados.",
-    "description": "Mais dois espaços de construção paralela",
-    "name": "2 Espaços Adicionais na Fila de Construção"
+    "activationMessage": "Foram adicionadas mais duas vagas na fila de construção.",
+    "description": "Mais duas vagas de construção simultânea",
+    "name": "2 Vagas Adicionais na Fila de Construção"
   },
   "advanced_bundle": {
     "activationMessage": "Os componentes do pacote foram adicionados às suas compras!",
@@ -82,17 +82,17 @@
   },
   "great_feast_1": {
     "activationMessage": "Um Grande Banquete começou!",
-    "description": "Por 30 minutos:\n• Produção do vilarejo 5x\n• +25 % de chance de novo aldeão",
+    "description": "Por 30 minutos:\n• Produção do vilarejo 5x\n• +25% de chance de novo aldeão",
     "name": "1 Grande Banquete"
   },
   "great_feast_3": {
     "activationMessage": "Um Grande Banquete começou!",
-    "description": "Por 30 minutos:\n• Produção do vilarejo 5x\n• +25 % de chance de novo aldeão",
+    "description": "Por 30 minutos:\n• Produção do vilarejo 5x\n• +25% de chance de novo aldeão",
     "name": "3 Grandes Banquetes"
   },
   "skull_lantern": {
     "activationMessage": "A Lanterna de Caveira foi adicionada às suas ferramentas! Sua luz sinistra o guiará pelas profundezas.",
-    "description": "Forjada de osso amaldiçoado, iluminando as profundezas mais fundas. Desbloqueia a trama da Lanterna de Caveira.",
+    "description": "Forjada de osso amaldiçoado, ilumina as profundezas mais remotas. Desbloqueia a trama da Lanterna de Caveira.",
     "name": "Lanterna de Caveira"
   },
   "tarnished_compass": {

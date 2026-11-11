@@ -56,7 +56,7 @@
     "freeGoldCooldownLog_other": "Potrai riscattare di nuovo oro gratis tra {{hours}} ore.",
     "freeItemAdded": "{{name}} è stato aggiunto ai tuoi acquisti. Controlla la scheda Acquisti per attivarlo.",
     "tradersGratitudeDiscount": "{{percent}}% di sconto aggiuntivo grazie all'evento «La gratitudine del mercante»",
-    "tradersSonDiscount": "{{percent}}% di sconto aggiuntivo dall'evento «Il figlio del mercante».",
+    "tradersSonDiscount": "{{percent}}% di sconto aggiuntivo grazie all'evento «Il figlio del mercante».",
     "journeyCompleteDiscount": "Sconto speciale per aver completato il gioco",
     "artifactSkullLantern": {
       "unlocksStoryline": "Sblocca la trama della lanterna di teschio",

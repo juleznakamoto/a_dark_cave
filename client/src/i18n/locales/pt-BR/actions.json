@@ -169,7 +169,7 @@
   },
   "buildHighBastion": {
     "description": "Fortaleza imponente com alicerces profundos, erguida para resistir quando todo o resto caiu.",
-    "label": "Bastião alto"
+    "label": "Bastião Alto"
   },
   "buildHighTannery": {
     "description": "Curtume supremo para artesãos especialistas em couro",
@@ -232,7 +232,7 @@
     "label": "Sacrário"
   },
   "buildScribesOffice": {
-    "description": "Uma sala tranquila onde os escribas mantêm um registro cuidadoso de cada mão a trabalhar, para que nenhum labor seja esquecido",
+    "description": "Uma sala tranquila onde os escribas registram com cuidado cada mão que trabalha, para que nenhum esforço seja esquecido",
     "label": "Escritório do Escriba"
   },
   "buildScriptorium": {
@@ -325,7 +325,7 @@
     "descriptionForest": "Derrube árvores na beira da floresta para obter madeira.",
     "labelForest": "Cortar Madeira",
     "log": {
-      "firstVisit": "Um pouco de madeira está espalhada perto da entrada da caverna. Pode ser útil."
+      "firstVisit": "Há madeira espalhada perto da entrada da caverna. Pode ser útil."
     }
   },
   "callMerchant": {
@@ -335,8 +335,8 @@
     "description": "Investigue a torre caída e acabe com o trabalho sombrio que ali se faz.",
     "label": "Torre Desmoronada",
     "log": {
-      "success": "Dentro da torre, você encontra um necromante e seus seguidores, cercados por frascos de líquidos e seringas rudimentares. Ele estava colhendo o sangue dos aldeões para experimentos sombrios. Seus homens põem fim ao trabalho vil dele e tomam um frasco de seu sangue. Entre suas ferramentas, você encontra sua poderosa serra de osso.",
-      "failure": "Sua expedição chega à Torre Desmoronada, mas vocês são atacados por figuras encapuzadas do lado de fora. Um homem alto de manto escuro está entre elas, exalando uma aura de ameaça. {{count}} aldeões caem antes que os demais fujam em segurança."
+      "success": "Dentro da torre, você encontra um necromante e seus seguidores, cercados por frascos de líquidos e seringas rudimentares. Ele estava colhendo o sangue dos aldeões para experimentos sombrios. Seus homens põem fim a esse trabalho vil e levam um frasco do sangue dele. Entre as ferramentas do necromante, você encontra a poderosa serra de ossos.",
+      "failure": "Sua expedição chega à Torre Desmoronada, mas vocês são atacados por figuras encapuzadas do lado de fora. Um homem alto de manto escuro está entre elas, exalando uma aura de ameaça. {{count}} aldeões caem antes que os demais fujam para um lugar seguro."
     }
   },
   "craftAdamantAxe": {
@@ -703,7 +703,7 @@
     "label": "Provocar onda de ataque"
   },
   "delayAttackWave": {
-    "label": "Atrasar a onda de ataque"
+    "label": "Atrasar onda de ataque"
   },
   "buildRepairAlchemistHall": {
     "description": "Repara o salão para que bombas possam ser fabricadas de novo",
@@ -746,7 +746,7 @@
     "description": "Entregue aço à tribo do pântano.",
     "label": "Entrega de Aço",
     "log": {
-      "success": "Sua caravana entrega o aço à Tribo do Pântano conforme prometido. Em troca, a tribo lhe presenteia com Placas de Quitina colhidas de criaturas do pântano. Elas podem ser usadas para construir poderosas fortificações."
+      "success": "Sua caravana entrega o aço à Tribo do Pântano, conforme prometido. Em troca, a tribo presenteia você com Placas de Quitina extraídas de criaturas do pântano. Elas podem ser usadas para construir poderosas fortificações."
     }
   },
   "sunkenTemple": {
@@ -820,7 +820,7 @@
     "label": "Avançar Mais Fundo",
     "log": {
       "tarnishedAmulet": "Nas sombras da caverna, algo reluz. Você encontra um Amuleto Manchado.",
-      "fangCharm": "Encaixado numa fenda da parede, você encontra um amuleto de presas pretas. Elas são grandes demais para qualquer coisa que deveria viver aqui.",
+      "fangCharm": "Encaixado numa fenda da parede, você encontra um amuleto de presas pretas. Elas são grandes demais para qualquer coisa que devesse viver aqui.",
       "silverSack": "Você encontra um pequeno saco de couro contendo 50 de prata.",
       "mapFragment": "No chão da caverna, você encontra um fragmento esfarrapado de um mapa.",
       "firstVisit": "O ar fica mais frio conforme você desce o caminho mais fundo na caverna. As paredes ao seu redor parecem estranhamente lisas, como se moldadas por alguém."
