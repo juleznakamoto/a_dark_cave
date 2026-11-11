@@ -19,11 +19,13 @@ const TEXT_SCALE_LABEL_KEYS: Record<
   | "textScale.medium"
   | "textScale.large"
   | "textScale.extraLarge"
+  | "textScale.double"
 > = {
   small: "textScale.small",
   medium: "textScale.medium",
   large: "textScale.large",
   xLarge: "textScale.extraLarge",
+  xxLarge: "textScale.double",
 };
 
 export default function TextScaleSelector({

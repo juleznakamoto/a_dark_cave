@@ -1,7 +1,7 @@
 /**
  * Chromium page zoom for the Steam shell (Electron `setZoomFactor`).
  *
- * Small / Medium / Large / Extra Large are 100% / 110% / 125% / 150%.
+ * Small / Medium / Large / Extra Large / 200% are 100% / 110% / 125% / 150% / 200%.
  * The website keeps the CSS text delta instead; this map is only applied
  * when the Electron bridge is live.
  *
@@ -24,6 +24,7 @@ export const TEXT_SCALE_ZOOM_FACTOR = {
   medium: 1.1,
   large: 1.25,
   xLarge: 1.5,
+  xxLarge: 2,
 } as const;
 
 export type TextScaleZoomId = keyof typeof TEXT_SCALE_ZOOM_FACTOR;
@@ -33,7 +34,8 @@ export function textScaleZoomFactor(scale: string): number | null {
     scale === "small" ||
     scale === "medium" ||
     scale === "large" ||
-    scale === "xLarge"
+    scale === "xLarge" ||
+    scale === "xxLarge"
   ) {
     return TEXT_SCALE_ZOOM_FACTOR[scale];
   }
@@ -62,7 +64,8 @@ export function textScaleIdFromStorage(
       storedV2 === "small" ||
       storedV2 === "medium" ||
       storedV2 === "large" ||
-      storedV2 === "xLarge"
+      storedV2 === "xLarge" ||
+      storedV2 === "xxLarge"
     ) {
       return storedV2;
     }

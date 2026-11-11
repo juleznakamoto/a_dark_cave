@@ -25,7 +25,8 @@
     "small": "小",
     "medium": "中",
     "large": "大",
-    "extraLarge": "特大"
+    "extraLarge": "特大",
+    "double": "200%"
   },
   "languageSelector": {
     "label": "语言",

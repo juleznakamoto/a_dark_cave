@@ -45,11 +45,11 @@ interface SteamBridge {
   onFullscreenChanged(callback: (isFullscreen: boolean) => void): () => void;
   onLayoutChanged(callback: () => void): () => void;
   /**
-   * Chromium page zoom for Small / Medium / Large / Extra Large
-   * (100% / 110% / 125% / 150%).
+   * Chromium page zoom for Small / Medium / Large / Extra Large / 200%
+   * (100% / 110% / 125% / 150% / 200%).
    * Absent on older shells; the page keeps the CSS text scale then.
    */
-  setTextZoom?(scale: "small" | "medium" | "large" | "xLarge"): Promise<void>;
+  setTextZoom?(scale: "small" | "medium" | "large" | "xLarge" | "xxLarge"): Promise<void>;
 }
 
 interface Window {

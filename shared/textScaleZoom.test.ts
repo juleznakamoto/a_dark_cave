@@ -7,19 +7,22 @@ import {
 } from "./textScaleZoom";
 
 describe("textScaleZoom", () => {
-  it("maps Small / Medium / Large / Extra Large to 100% / 110% / 125% / 150%", () => {
+  it("maps Small / Medium / Large / Extra Large / 200% to 100% / 110% / 125% / 150% / 200%", () => {
     expect(TEXT_SCALE_ZOOM_FACTOR.small).toBe(1);
     expect(TEXT_SCALE_ZOOM_FACTOR.medium).toBe(1.1);
     expect(TEXT_SCALE_ZOOM_FACTOR.large).toBe(1.25);
     expect(TEXT_SCALE_ZOOM_FACTOR.xLarge).toBe(1.5);
+    expect(TEXT_SCALE_ZOOM_FACTOR.xxLarge).toBe(2);
     expect(textScaleZoomFactor("medium")).toBe(1.1);
     expect(textScaleZoomFactor("xLarge")).toBe(1.5);
+    expect(textScaleZoomFactor("xxLarge")).toBe(2);
     expect(textScaleZoomFactor("nope")).toBeNull();
   });
 
   it("reads the current storage id and remaps the legacy key", () => {
     expect(textScaleIdFromStorage("large", "normal", 1280)).toBe("large");
     expect(textScaleIdFromStorage("xLarge", null, 1280)).toBe("xLarge");
+    expect(textScaleIdFromStorage("xxLarge", null, 1280)).toBe("xxLarge");
     expect(textScaleIdFromStorage("extraLarge", null, 1280)).toBe("large");
     expect(textScaleIdFromStorage(null, "extraLarge", 1280)).toBe("large");
     expect(textScaleIdFromStorage(null, "large", 1280)).toBe("medium");

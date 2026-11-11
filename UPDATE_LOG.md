@@ -4,6 +4,14 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ## Unreleased
 
+### Added
+
+- Text size settings include 200%.
+
+### Changed
+
+- On Linux, the window stays a normal size. Pick 200% text size when the writing looks small.
+
 ## 2026-11-10
 
 ### Changed

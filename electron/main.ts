@@ -24,7 +24,6 @@ import {
   resolveSteamCloudSavePath,
   resolveSteamDemoCloudSavePath,
 } from "./paths";
-import { protonForcedDeviceScale } from "./protonDeviceScale";
 import { textScaleZoomFactor } from "../shared/textScaleZoom";
 import {
   WINDOW_STATE_FILE,
@@ -478,7 +477,7 @@ function rememberSteamTextZoom(scale: unknown): void {
   if (factor != null) steamTextZoomFactor = factor;
 }
 
-/** Small / Medium / Large / Extra Large → Chromium zoom 100% / 110% / 125% / 150%. Async IPC only. */
+/** Small / Medium / Large / Extra Large / 200% → Chromium zoom 100% / 110% / 125% / 150% / 200%. Async IPC only. */
 function applySteamTextZoom(
   contents: Electron.WebContents,
   scale: unknown,
@@ -562,21 +561,9 @@ if (!app.requestSingleInstanceLock()) {
   // Steam opens a blank window.
   // Trailer DPI lock must also be set before ready, or Windows 200% scale
   // turns 1920x1080 into a window larger than the panel.
-  // Proton stays at 96 DPI, so the same switch is set to 2 there. A player
-  // launch option is already on the command line and must win.
   if (isTrailerCaptureMode()) {
     app.commandLine.appendSwitch("high-dpi-support", "1");
     app.commandLine.appendSwitch("force-device-scale-factor", "1");
-  } else {
-    const protonScale = protonForcedDeviceScale({
-      platform: process.platform,
-      env: process.env,
-      argv: process.argv,
-      scaleAlreadySet: app.commandLine.hasSwitch("force-device-scale-factor"),
-    });
-    if (protonScale) {
-      app.commandLine.appendSwitch("force-device-scale-factor", protonScale);
-    }
   }
   enableSteamOverlay();
   initSteam(resolveAppId());

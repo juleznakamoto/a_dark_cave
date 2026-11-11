@@ -25,7 +25,8 @@
     "small": "Klein",
     "medium": "Mittel",
     "large": "Groß",
-    "extraLarge": "Sehr groß"
+    "extraLarge": "Sehr groß",
+    "double": "200%"
   },
   "languageSelector": {
     "label": "Sprache",

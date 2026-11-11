@@ -3,6 +3,8 @@ import { describe, expect, it, beforeEach, afterEach } from "vitest";
 import {
   DEFAULT_TEXT_SCALE,
   EXTRA_LARGE_CONTROL_SCALE_FACTOR,
+  DOUBLE_CONTROL_SCALE_FACTOR,
+  DOUBLE_TEXT_DELTA_PX,
   EXTRA_LARGE_TEXT_DELTA_PX,
   LARGE_CONTROL_SCALE_FACTOR,
   LARGE_TEXT_DELTA_PX,
@@ -40,6 +42,7 @@ describe("textScale", () => {
       "adc-text-large",
       "adc-text-xlarge",
       "adc-text-xxlarge",
+      "adc-text-xxxlarge",
     );
     document.documentElement.style.removeProperty("--adc-text-delta");
     document.documentElement.style.removeProperty("--adc-control-scale");
@@ -53,6 +56,7 @@ describe("textScale", () => {
       "adc-text-large",
       "adc-text-xlarge",
       "adc-text-xxlarge",
+      "adc-text-xxxlarge",
     );
     document.documentElement.style.removeProperty("--adc-text-delta");
     document.documentElement.style.removeProperty("--adc-control-scale");
@@ -151,6 +155,9 @@ describe("textScale", () => {
       document.documentElement.classList.contains("adc-text-xxlarge"),
     ).toBe(true);
     expect(
+      document.documentElement.classList.contains("adc-text-xxxlarge"),
+    ).toBe(false);
+    expect(
       document.documentElement.style.getPropertyValue("--adc-text-delta"),
     ).toBe(`${EXTRA_LARGE_TEXT_DELTA_PX}px`);
     expect(
@@ -177,6 +184,15 @@ describe("textScale", () => {
     expect(getControlScaleFactor("xLarge")).toBe(EXTRA_LARGE_CONTROL_SCALE_FACTOR);
     expect(isEnlargedTextScale("xLarge")).toBe(true);
 
+    setTextScale("xxLarge");
+    expect(getStoredTextScale()).toBe("xxLarge");
+    expect(getTextScaleDeltaPx("xxLarge")).toBe(DOUBLE_TEXT_DELTA_PX);
+    expect(getControlScaleFactor("xxLarge")).toBe(DOUBLE_CONTROL_SCALE_FACTOR);
+    expect(isEnlargedTextScale("xxLarge")).toBe(true);
+    expect(
+      document.documentElement.classList.contains("adc-text-xxxlarge"),
+    ).toBe(true);
+
     setTextScale("small");
     expect(getStoredTextScale()).toBe("small");
     expect(isEnlargedTextScale("small")).toBe(false);
@@ -188,6 +204,9 @@ describe("textScale", () => {
     ).toBe(false);
     expect(
       document.documentElement.classList.contains("adc-text-xxlarge"),
+    ).toBe(false);
+    expect(
+      document.documentElement.classList.contains("adc-text-xxxlarge"),
     ).toBe(false);
     expect(
       document.documentElement.style.getPropertyValue("--adc-text-delta"),

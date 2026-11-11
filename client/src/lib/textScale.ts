@@ -12,7 +12,7 @@ export { TEXT_SCALE_STORAGE_KEY, TEXT_SCALE_ZOOM_FACTOR };
 export const TEXT_SCALE_MOBILE_BREAKPOINT_PX =
   SHARED_TEXT_SCALE_MOBILE_BREAKPOINT_PX;
 
-export const TEXT_SCALE_OPTIONS = ["small", "medium", "large", "xLarge"] as const;
+export const TEXT_SCALE_OPTIONS = ["small", "medium", "large", "xLarge", "xxLarge"] as const;
 
 export type TextScale = (typeof TEXT_SCALE_OPTIONS)[number];
 
@@ -48,6 +48,15 @@ export const EXTRA_LARGE_TEXT_DELTA_PX = 6;
  * Same step as Medium and Large: +0.06, short of the full text bump.
  */
 export const EXTRA_LARGE_CONTROL_SCALE_FACTOR = 1.18;
+
+/** Extra pixels added to readable UI text at the 200% size. */
+export const DOUBLE_TEXT_DELTA_PX = 8;
+
+/**
+ * Button chrome at the 200% size. Same +0.06 step as the sizes below it.
+ * The Steam window uses page zoom instead of this factor.
+ */
+export const DOUBLE_CONTROL_SCALE_FACTOR = 1.24;
 
 export const TEXT_SCALE_CHANGE_EVENT = "adc-text-scale-change";
 
@@ -88,10 +97,11 @@ export function normalizeTextScale(
 }
 
 export function isEnlargedTextScale(scale: TextScale): boolean {
-  return scale === "medium" || scale === "large" || scale === "xLarge";
+  return scale !== "small";
 }
 
 export function getTextScaleDeltaPx(scale: TextScale): number {
+  if (scale === "xxLarge") return DOUBLE_TEXT_DELTA_PX;
   if (scale === "xLarge") return EXTRA_LARGE_TEXT_DELTA_PX;
   if (scale === "large") return LARGE_TEXT_DELTA_PX;
   if (scale === "medium") return MEDIUM_TEXT_DELTA_PX;
@@ -99,6 +109,7 @@ export function getTextScaleDeltaPx(scale: TextScale): number {
 }
 
 export function getControlScaleFactor(scale: TextScale): number {
+  if (scale === "xxLarge") return DOUBLE_CONTROL_SCALE_FACTOR;
   if (scale === "xLarge") return EXTRA_LARGE_CONTROL_SCALE_FACTOR;
   if (scale === "large") return LARGE_CONTROL_SCALE_FACTOR;
   if (scale === "medium") return MEDIUM_CONTROL_SCALE_FACTOR;
@@ -161,7 +172,12 @@ function clearManualTextScale(root: HTMLElement): void {
   root.style.setProperty("--adc-text-delta", "0px");
   root.style.removeProperty("--adc-text-scale");
   root.style.setProperty("--adc-control-scale", "1");
-  root.classList.remove("adc-text-large", "adc-text-xlarge", "adc-text-xxlarge");
+  root.classList.remove(
+    "adc-text-large",
+    "adc-text-xlarge",
+    "adc-text-xxlarge",
+    "adc-text-xxxlarge",
+  );
 }
 
 export function applyTextScaleToDocument(scale: TextScale): void {
@@ -169,7 +185,7 @@ export function applyTextScaleToDocument(scale: TextScale): void {
   const root = document.documentElement;
   if (usesChromiumTextZoom()) {
     // Page zoom scales type, chrome, and shaders together. The CSS delta
-    // would stack a second enlargement on top of 110% / 125% / 150%.
+    // would stack a second enlargement on top of 110% / 125% / 150% / 200%.
     clearManualTextScale(root);
     steamSetTextZoom(scale);
   } else {
@@ -182,14 +198,14 @@ export function applyTextScaleToDocument(scale: TextScale): void {
       "--adc-control-scale",
       String(getControlScaleFactor(scale)),
     );
-    // `adc-text-large` = Medium or larger (shared layout breathing room).
-    // `adc-text-xlarge` = Large or Extra Large. `adc-text-xxlarge` = Extra Large only.
+    // `adc-text-large` = Medium or larger. `adc-text-xlarge` = Large or larger.
+    // `adc-text-xxlarge` = Extra Large or 200%. `adc-text-xxxlarge` = 200% only.
+    const atLeastLarge = scale === "large" || scale === "xLarge" || scale === "xxLarge";
+    const atLeastExtraLarge = scale === "xLarge" || scale === "xxLarge";
     root.classList.toggle("adc-text-large", isEnlargedTextScale(scale));
-    root.classList.toggle(
-      "adc-text-xlarge",
-      scale === "large" || scale === "xLarge",
-    );
-    root.classList.toggle("adc-text-xxlarge", scale === "xLarge");
+    root.classList.toggle("adc-text-xlarge", atLeastLarge);
+    root.classList.toggle("adc-text-xxlarge", atLeastExtraLarge);
+    root.classList.toggle("adc-text-xxxlarge", scale === "xxLarge");
   }
   window.dispatchEvent(
     new CustomEvent(TEXT_SCALE_CHANGE_EVENT, { detail: { scale } }),

@@ -1394,9 +1394,9 @@ button.new-item-pulse-text,
 }
 
 /* Produce / Focus circular indicators — 18px Small, 20px Medium, 22px Large,
-   24px Extra Large. Produce rings: 22px / 26px / 30px / 34px.
+   24px Extra Large, 26px at 200%. Produce rings: 22px / 26px / 30px / 34px / 38px.
    `adc-text-large` is on for Medium and up; `adc-text-xlarge` adds Large;
-   `adc-text-xxlarge` adds Extra Large. */
+   `adc-text-xxlarge` adds Extra Large; `adc-text-xxxlarge` adds 200%. */
 .game-panel-header-indicator {
   width: calc(18px * var(--adc-indicator-scale, 1));
   height: calc(18px * var(--adc-indicator-scale, 1));
@@ -1415,6 +1415,11 @@ html.adc-text-xlarge .game-panel-header-indicator {
 html.adc-text-xxlarge .game-panel-header-indicator {
   width: calc(24px * var(--adc-indicator-scale, 1));
   height: calc(24px * var(--adc-indicator-scale, 1));
+}
+
+html.adc-text-xxxlarge .game-panel-header-indicator {
+  width: calc(26px * var(--adc-indicator-scale, 1));
+  height: calc(26px * var(--adc-indicator-scale, 1));
 }
 
 /* Side-panel resource/building rows: slightly more vertical room when enlarged. */
@@ -1547,6 +1552,18 @@ html.adc-text-xxlarge .game-panel-header-indicator-glyph--xs {
   font-size: calc(12px * var(--adc-indicator-scale, 1));
 }
 
+html.adc-text-xxxlarge .game-panel-header-indicator-glyph--md {
+  font-size: calc(20px * var(--adc-indicator-scale, 1));
+}
+
+html.adc-text-xxxlarge .game-panel-header-indicator-glyph--sm {
+  font-size: calc(18px * var(--adc-indicator-scale, 1));
+}
+
+html.adc-text-xxxlarge .game-panel-header-indicator-glyph--xs {
+  font-size: calc(14px * var(--adc-indicator-scale, 1));
+}
+
 /* Tab section title row (Build, Explore, Rest, …). Matches Focus rings. */
 .game-panel-header-indicator-row {
   height: 18px;
@@ -1564,8 +1581,12 @@ html.adc-text-xxlarge .game-panel-header-indicator-row {
   height: 24px;
 }
 
+html.adc-text-xxxlarge .game-panel-header-indicator-row {
+  height: 26px;
+}
+
 /* Produce: title line stays short; effect rings wrap underneath
-   (22px / 26px Medium / 30px Large / 34px Extra Large).
+   (22px / 26px Medium / 30px Large / 34px Extra Large / 38px at 200%).
    Row gap matches the 12px section stack under the rings. */
 .game-panel-produce-header.game-panel-header-indicator-row,
 html.adc-text-large .game-panel-produce-header.game-panel-header-indicator-row {
@@ -1589,6 +1610,10 @@ html.adc-text-xlarge .game-panel-produce-effects {
 
 html.adc-text-xxlarge .game-panel-produce-effects {
   --adc-indicator-scale: calc(34 / 24);
+}
+
+html.adc-text-xxxlarge .game-panel-produce-effects {
+  --adc-indicator-scale: calc(38 / 26);
 }
 
 .game-panel-produce-effects:empty {
