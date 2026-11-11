@@ -70,6 +70,7 @@
     "defense": "Defesa",
     "integrity": "Integridade"
   },
+  "percent": "{{value}}%",
   "population": {
     "villager_one": "{{count}} Aldeão",
     "villager_other": "{{count}} Aldeões"

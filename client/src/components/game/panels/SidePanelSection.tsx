@@ -71,6 +71,7 @@ import {
   shouldShowAbsolveBadge,
 } from "@/game/itemAbsolution";
 import { getUiTooltip } from "@/i18n/tooltipLabels";
+import { formatPercent } from "@/i18n/resolveGameText";
 import { GAME_PANEL_HEADER_BAND } from "@/components/game/gameChrome";
 import { getRedactedWidthCh, RedactedBar } from "@/components/game/RedactedHint";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
@@ -1075,7 +1076,7 @@ export default function SidePanelSection({
     } else if (value < 0) {
       return `${formatNumber(value)}`;
     } else if (value > 0 && value < 1) {
-      return `${Math.round(value * 100)}%`;
+      return formatPercent(Math.round(value * 100));
     }
     return formatNumber(value);
   };

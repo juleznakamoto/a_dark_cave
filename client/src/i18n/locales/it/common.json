@@ -70,6 +70,7 @@
     "defense": "Difesa",
     "integrity": "Integrità"
   },
+  "percent": "{{value}}%",
   "population": {
     "villager_one": "{{count}} abitante",
     "villager_other": "{{count}} abitanti"

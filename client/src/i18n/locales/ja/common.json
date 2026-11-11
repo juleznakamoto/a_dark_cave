@@ -70,6 +70,7 @@
     "defense": "防御",
     "integrity": "耐久"
   },
+  "percent": "{{value}}%",
   "population": {
     "villager_one": "{{count}}人の村人",
     "villager_other": "{{count}}人の村人"

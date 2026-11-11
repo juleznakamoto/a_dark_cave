@@ -34,6 +34,7 @@ import {
   resolveTimedEventCatalogId,
 } from "@/i18n/eventDisplay";
 import { localizeEventChoices, resolveEventChoiceReward } from "@/i18n/eventText";
+import { formatPercent } from "@/i18n/resolveGameText";
 import {
   eventChoiceHasBlockingCost,
   getEventChoiceAffordance,
@@ -479,7 +480,7 @@ function EventDialogOpen({
                 if (hasDefinedSuccessChance(choice.success_chance)) {
                   const percent = getEventChoiceSuccessPercent(choice, gameState);
                   if (percent !== null) {
-                    successPercentage = `${percent}%`;
+                    successPercentage = formatPercent(percent);
                   }
                 }
 
