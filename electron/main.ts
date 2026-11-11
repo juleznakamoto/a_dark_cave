@@ -254,11 +254,15 @@ async function rememberLoopbackPort(port: number): Promise<void> {
   }
 }
 
-/** Windows taskbar / window icon (dev: repo `build-resources/`; packaged: `resources/icon.ico`). */
+/**
+ * Taskbar / window icon (dev: repo `build-resources/`; packaged: `resources/`).
+ * Electron cannot load .ico on Linux, so the Linux build ships and uses the PNG.
+ */
 function resolveWindowIcon(): string | undefined {
+  const file = process.platform === "linux" ? "icon.png" : "icon.ico";
   const candidates = [
-    join(process.resourcesPath ?? "", "icon.ico"),
-    join(app.getAppPath(), "build-resources", "icon.ico"),
+    join(process.resourcesPath ?? "", file),
+    join(app.getAppPath(), "build-resources", file),
   ];
   for (const file of candidates) {
     if (existsSync(file)) return file;

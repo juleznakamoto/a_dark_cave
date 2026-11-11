@@ -37,6 +37,7 @@ function readNumericId(filePath, missingMessage, emptyMessage) {
  * @param {Record<string, string>} options.viteEnv
  * @param {Record<string, string>} [options.electronEnv]
  * @param {string} options.steamAppIdText file contents for the packed steam_appid.txt
+ * @param {Array<"win" | "linux">} [options.platforms] electron-builder targets (default: from argv)
  */
 export function packageSteamEdition({
   edition,
@@ -44,6 +45,7 @@ export function packageSteamEdition({
   viteEnv,
   electronEnv = {},
   steamAppIdText,
+  platforms = builderPlatforms(),
 }) {
   const webDir = `dist/web-steam-${edition}`;
   const electronDir = `dist/electron-steam-${edition}`;
@@ -87,7 +89,23 @@ export function packageSteamEdition({
     ...electronEnv,
     ADC_ELECTRON_OUT_DIR: electronDir,
   });
-  run(`electron-builder --win --config dist/${packConfigName}`);
+  const platformFlags = platforms.map((platform) => `--${platform}`).join(" ");
+  run(`electron-builder ${platformFlags} --config dist/${packConfigName}`);
+}
+
+/**
+ * Platforms to package, from `--win` / `--linux` on the command line.
+ * No flag keeps the old behaviour (Windows only). `--linux` alone builds only
+ * release/linux-unpacked; `--win --linux` builds both from one Vite/Electron build.
+ * @param {string[]} [argv]
+ * @returns {Array<"win" | "linux">}
+ */
+export function builderPlatforms(argv = process.argv.slice(2)) {
+  /** @type {Array<"win" | "linux">} */
+  const picked = [];
+  if (argv.includes("--win")) picked.push("win");
+  if (argv.includes("--linux")) picked.push("linux");
+  return picked.length > 0 ? picked : ["win"];
 }
 
 export function readAppIdFile(filePath, missingMessage, emptyMessage) {
