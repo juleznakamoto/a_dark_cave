@@ -251,6 +251,8 @@
     "off": "Désactivé",
     "playTime": "Temps de jeu",
     "playForFreeAt": "Jouez gratuitement sur",
+    "shareTextSteam": "J'en suis à {{percent}} % dans A Dark Cave.",
+    "shareText": "J'en suis à {{percent}} % dans A Dark Cave. Jouez gratuitement sur {{url}}",
     "save": "Enregistrer",
     "copy": "Copier",
     "copiedTitle": "Copié dans le presse-papiers",

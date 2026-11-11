@@ -251,6 +251,8 @@
     "off": "Off",
     "playTime": "Play time",
     "playForFreeAt": "Play for free at",
+    "shareTextSteam": "I'm {{percent}}% through A Dark Cave.",
+    "shareText": "I'm {{percent}}% through A Dark Cave. Play for free at {{url}}",
     "save": "Save",
     "copy": "Copy",
     "copiedTitle": "Copied to clipboard",

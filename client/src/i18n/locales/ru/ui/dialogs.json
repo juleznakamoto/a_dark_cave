@@ -253,6 +253,8 @@
     "off": "Выкл",
     "playTime": "Время игры",
     "playForFreeAt": "Играйте бесплатно на",
+    "shareTextSteam": "Пройдено {{percent}}% A Dark Cave.",
+    "shareText": "Пройдено {{percent}}% A Dark Cave. Играйте бесплатно на {{url}}",
     "save": "Сохранить",
     "copy": "Копировать",
     "copiedTitle": "Скопировано в буфер обмена",

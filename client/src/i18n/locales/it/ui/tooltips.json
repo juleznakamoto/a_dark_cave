@@ -205,6 +205,7 @@
       "sleepIntensityPercent": "Intensità del sonno +{{percent}}%",
       "maxVillagers": "+{{amount}} abitanti max",
       "resourceLimit": "Limite risorse: {{limit}} (nessun limite su argento, oro e intuizione)",
+      "resourceLimitTier": "Limite risorse: {{limit}}",
       "maxPopulation": "+{{amount}} popolazione max",
       "newVillagerChancePercent": "+{{percent}}% probabilità di nuovo abitante",
       "steelForgerSteel": "Forgiatore d'acciaio: +{{amount}} acciaio",
