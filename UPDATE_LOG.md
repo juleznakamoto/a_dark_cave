@@ -10,6 +10,7 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Changed
 
+- Prime Foundry and Master Tannery add 1, and Masterwork Foundry and High Tannery add 2, in every version of the game.
 - Hovering a resource shows its capacity first, with the number on the right of that line, in yellow when the stack is full.
 - On Linux, the window stays a normal size. Pick 200% text size when the writing looks small.
 
