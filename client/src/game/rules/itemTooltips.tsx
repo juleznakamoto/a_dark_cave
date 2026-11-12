@@ -796,13 +796,13 @@ export function renderItemTooltip(
         <div className="text-xs">
           {atCapacity && (
             <div
-              className="mb-1"
+              className="mb-1 text-yellow-500"
               data-testid="resource-at-capacity"
             >
               {tWithFallback(
                 "ui",
                 "sidePanel.atCapacity",
-                "At capacity ({{limit}})",
+                "At capacity: {{limit}}",
                 { limit: formatNumber(maxHeld) },
               )}
             </div>

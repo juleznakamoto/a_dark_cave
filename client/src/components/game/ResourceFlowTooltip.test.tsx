@@ -25,7 +25,7 @@ describe("ResourceFlowTooltip capacity line", () => {
     });
   });
 
-  it("puts At capacity on the first line when the stack is full", () => {
+  it("puts At capacity on the first line in yellow when the stack is full", () => {
     const cap = getResourceAmountCap("wood", useGameStore.getState());
     expect(cap).not.toBeNull();
     useGameStore.setState({
@@ -33,13 +33,35 @@ describe("ResourceFlowTooltip capacity line", () => {
     });
     render(<ResourceFlowTooltip resourceId="wood" />);
     const line = screen.getByTestId("resource-at-capacity");
-    expect(line).toHaveTextContent(`At capacity (${formatNumber(cap!)})`);
+    expect(line).toHaveAttribute(
+      "aria-label",
+      `At capacity: ${formatNumber(cap!)}`,
+    );
+    expect(line.querySelector("span")?.textContent).toBe("At capacity");
+    const value = screen.getByTestId("resource-capacity-value");
+    expect(value).toHaveTextContent(formatNumber(cap!));
+    expect(value).toHaveClass("text-right");
+    expect(line).toHaveClass("justify-between", "text-yellow-500");
     expect(line.parentElement?.firstElementChild).toBe(line);
+    expect(screen.queryByTestId("resource-flow-divider")).toBeNull();
   });
 
-  it("stays empty when the resource is under the cap and has no production", () => {
+  it("shows Capacity on the first line when the stack is under the cap", () => {
+    const cap = getResourceAmountCap("wood", useGameStore.getState());
+    expect(cap).not.toBeNull();
     const { container } = render(<ResourceFlowTooltip resourceId="wood" />);
-    expect(container).toBeEmptyDOMElement();
+    const line = screen.getByTestId("resource-capacity");
+    expect(line).toHaveAttribute("aria-label", `Capacity: ${formatNumber(cap!)}`);
+    expect(line.querySelector("span")?.textContent).toBe("Capacity");
+    const value = screen.getByTestId("resource-capacity-value");
+    expect(value).toHaveTextContent(formatNumber(cap!));
+    expect(value).toHaveClass("text-right");
+    expect(line).toHaveClass("justify-between");
+    expect(line).not.toHaveClass("text-yellow-500");
+    expect(line.parentElement?.firstElementChild).toBe(line);
+    expect(
+      container.querySelector("[data-testid='resource-flow-divider']"),
+    ).toBeNull();
     expect(screen.queryByTestId("resource-at-capacity")).toBeNull();
   });
 
@@ -83,6 +105,8 @@ describe("ResourceFlowTooltip flow order", () => {
 
     const { container } = render(<ResourceFlowTooltip resourceId="food" />);
     expect(sectionOrder(container)).toEqual([
+      "resource-capacity",
+      "resource-flow-divider",
       ...costs.map(() => "resource-flow-line"),
       "resource-flow-divider",
       ...outputs.map(() => "resource-flow-line"),
@@ -128,6 +152,8 @@ describe("ResourceFlowTooltip flow order", () => {
 
     const { container } = render(<ResourceFlowTooltip resourceId="iron" />);
     expect(sectionOrder(container)).toEqual([
+      "resource-capacity",
+      "resource-flow-divider",
       ...breakdown.map(() => "resource-flow-line"),
       "resource-flow-divider",
       "resource-flow-sum",
@@ -158,6 +184,8 @@ describe("ResourceFlowTooltip flow order", () => {
 
     const { container } = render(<ResourceFlowTooltip resourceId="wood" />);
     expect(sectionOrder(container)).toEqual([
+      "resource-capacity",
+      "resource-flow-divider",
       ...breakdown.map(() => "resource-flow-line"),
       "resource-flow-divider",
       "resource-flow-sum",

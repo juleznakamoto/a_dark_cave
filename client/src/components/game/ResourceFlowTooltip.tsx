@@ -18,7 +18,7 @@ import {
   getResourceAmountCap,
   isResourceAmountAtCap,
 } from "@/game/resourceLimits";
-import { capitalizeWords, formatNumber, formatSignedNumber } from "@/lib/utils";
+import { capitalizeWords, cn, formatNumber, formatSignedNumber } from "@/lib/utils";
 
 function getResourceFlowSourceLabel(sourceId: string): string {
   if (sourceId === VILLAGER_UPKEEP_SOURCE_ID) {
@@ -28,6 +28,12 @@ function getResourceFlowSourceLabel(sourceId: string): string {
     return getEffectName("fellowship", "disgraced_prior", "Disgraced Prior");
   }
   return getVillagerJobName(sourceId, capitalizeWords(sourceId));
+}
+
+/** Drop the trailing colon so the label sits beside a right-aligned number. */
+function capacityLabelFromCopy(copy: string, formattedLimit: string): string {
+  const withoutLimit = formattedLimit ? copy.replace(formattedLimit, "") : copy;
+  return withoutLimit.replace(/[\s:：]+$/u, "").trim();
 }
 
 function ResourceFlowDivider() {
@@ -68,7 +74,7 @@ function ResourceFlowLine({
 
 /**
  * Per-source production and consumption for a side-panel resource row.
- * Order: costs, divider, output, divider, bold sum.
+ * Order: capacity, divider, costs, divider, output, divider, bold sum.
  */
 export default function ResourceFlowTooltip({
   resourceId,
@@ -80,11 +86,13 @@ export default function ResourceFlowTooltip({
     (s) => getResourceProductionBreakdown(s, resourceId),
     derivedListEqual,
   );
-  const capacityLimit = useDerivedGameState((s) => {
+  const capacityLimit = useDerivedGameState((s) =>
+    getResourceAmountCap(resourceId, s),
+  );
+  const atCapacity = useDerivedGameState((s) => {
     const amount =
       (s.resources as Record<string, number | undefined>)[resourceId] ?? 0;
-    if (!isResourceAmountAtCap(resourceId, amount, s)) return null;
-    return getResourceAmountCap(resourceId, s);
+    return isResourceAmountAtCap(resourceId, amount, s);
   });
   if (lines.length === 0 && capacityLimit == null) return null;
 
@@ -92,20 +100,42 @@ export default function ResourceFlowTooltip({
   const outputs = lines.filter((line) => line.amount > 0);
   const sum = Math.round(lines.reduce((total, line) => total + line.amount, 0));
   const formattedSum = formatSignedNumber(sum);
+  const formattedCapacity =
+    capacityLimit != null ? formatNumber(capacityLimit) : "";
+  const capacityCopy =
+    capacityLimit == null
+      ? ""
+      : atCapacity
+        ? t("sidePanel.atCapacity", {
+            limit: formattedCapacity,
+            defaultValue: "At capacity: {{limit}}",
+          })
+        : t("sidePanel.capacity", {
+            limit: formattedCapacity,
+            defaultValue: "Capacity: {{limit}}",
+          });
 
   return (
     <div className="flex min-w-[7rem] flex-col text-xs">
       {capacityLimit != null ? (
         <div
-          className={lines.length > 0 ? "mb-0.5" : undefined}
-          data-testid="resource-at-capacity"
+          data-testid={atCapacity ? "resource-at-capacity" : "resource-capacity"}
+          className={cn(
+            "flex justify-between gap-3",
+            atCapacity && "text-yellow-500",
+          )}
+          aria-label={capacityCopy}
         >
-          {t("sidePanel.atCapacity", {
-            limit: formatNumber(capacityLimit),
-            defaultValue: "At capacity ({{limit}})",
-          })}
+          <span>{capacityLabelFromCopy(capacityCopy, formattedCapacity)}</span>
+          <span
+            className="text-right font-mono tabular-nums"
+            data-testid="resource-capacity-value"
+          >
+            {formattedCapacity}
+          </span>
         </div>
       ) : null}
+      {capacityLimit != null && lines.length > 0 ? <ResourceFlowDivider /> : null}
       {costs.map((line) => (
         <ResourceFlowLine
           key={line.sourceId}

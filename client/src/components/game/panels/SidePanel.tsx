@@ -30,6 +30,7 @@ import {
 import React, { useState, useEffect, useRef } from "react";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { type FortificationBuildingKey } from "@/game/bastionStats";
+import { isResourceLimited } from "@/game/resourceLimits";
 import { bookEffects, fellowshipEffects } from "@/game/rules/effects";
 import {
   getSidePanelModel,
@@ -217,7 +218,7 @@ export default function SidePanel() {
       value: row.value,
       productionDelta:
         row.productionDelta === 0 ? undefined : row.productionDelta,
-      tooltip: row.hasFlow || row.atCapacity ? (
+      tooltip: row.hasFlow || isResourceLimited(row.id, catalogState) ? (
         <ResourceFlowTooltip resourceId={row.id} />
       ) : undefined,
       testId: `resource-${row.id}`,
