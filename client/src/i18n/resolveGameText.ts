@@ -61,6 +61,32 @@ function isResolvedTranslation(
   );
 }
 
+const warnedMissingCatalogKeys = new Set<string>();
+
+/**
+ * Dev only. A key the code asks for that the English catalog does not have means
+ * every locale silently shows the hardcoded English fallback (this is how the
+ * fortification "Attack / Defense / Integrity" lines stayed English everywhere).
+ * Warn once per key, and only once the English bundle for that namespace is
+ * loaded, so a still-loading shard does not cause false alarms.
+ */
+function warnMissingCatalogKey(
+  namespace: string,
+  key: string,
+  options?: TranslateOptions,
+): void {
+  if (import.meta.env.MODE !== "development") return;
+  if (!i18n.hasResourceBundle(DEFAULT_LOCALE, namespace)) return;
+  if (i18n.exists(key, { ...options, lng: DEFAULT_LOCALE, ns: namespace })) return;
+  const fullKey = nsKey(namespace, key);
+  if (warnedMissingCatalogKeys.has(fullKey)) return;
+  warnedMissingCatalogKeys.add(fullKey);
+  // eslint-disable-next-line no-console
+  console.warn(
+    `[i18n] "${fullKey}" is not in the English catalog, so every locale shows the code fallback.`,
+  );
+}
+
 /** Translate with fallback when catalog key is missing (migration-friendly). */
 export function tWithFallback(
   namespace: string,
@@ -93,6 +119,7 @@ export function tWithFallback(
     return translated;
   }
 
+  warnMissingCatalogKey(namespace, key, options);
   return defaultValue;
 }
 

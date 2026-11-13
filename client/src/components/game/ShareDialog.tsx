@@ -689,6 +689,7 @@ export default function ShareDialog() {
           })
           : t("share.shareText", {
             percent,
+            url: SHARE_URL,
             defaultValue: `I'm ${percent}% through A Dark Cave. Play for free at ${SHARE_URL}`,
           }),
       };

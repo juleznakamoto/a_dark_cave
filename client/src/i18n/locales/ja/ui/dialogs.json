@@ -251,6 +251,8 @@
     "off": "オフ",
     "playTime": "プレイ時間",
     "playForFreeAt": "無料プレイはこちら：",
+    "shareTextSteam": "A Dark Caveを{{percent}}%まで進めました。",
+    "shareText": "A Dark Caveを{{percent}}%まで進めました。無料プレイはこちら：{{url}}",
     "save": "保存",
     "copy": "コピー",
     "copiedTitle": "クリップボードにコピーしました",

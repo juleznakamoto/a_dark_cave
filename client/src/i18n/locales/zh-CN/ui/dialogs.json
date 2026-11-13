@@ -251,6 +251,8 @@
     "off": "关",
     "playTime": "游戏时长",
     "playForFreeAt": "免费畅玩：",
+    "shareTextSteam": "我的 A Dark Cave 进度已达 {{percent}}%。",
+    "shareText": "我的 A Dark Cave 进度已达 {{percent}}%。免费畅玩：{{url}}",
     "save": "保存",
     "copy": "复制",
     "copiedTitle": "已复制到剪贴板",

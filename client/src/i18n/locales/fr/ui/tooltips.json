@@ -205,6 +205,7 @@
       "sleepIntensityPercent": "Intensité du sommeil +{{percent}} %",
       "maxVillagers": "+{{amount}} villageois max.",
       "resourceLimit": "Limite de ressources : {{limit}} (pas de limite pour l'argent, l'or et la perspicacité)",
+      "resourceLimitTier": "Limite de ressources : {{limit}}",
       "maxPopulation": "+{{amount}} population max.",
       "newVillagerChancePercent": "+{{percent}} % de chance de nouveau villageois",
       "steelForgerSteel": "Forgeron d'acier : +{{amount}} acier",

@@ -132,7 +132,7 @@ export default function InviteFriendsFloatingButton() {
             type="button"
             className="flex h-4 w-4 items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50 hover:bg-red-900 transition-colors cursor-pointer"
             data-testid="button-invite-friends-dismiss"
-            aria-label={t("invite.dismiss", { defaultValue: "Close" })}
+            aria-label={t("common:buttons.close")}
             onPointerDown={(e) => e.stopPropagation()}
             onClick={(e) => {
               e.stopPropagation();

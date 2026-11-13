@@ -253,6 +253,8 @@
     "off": "Wył.",
     "playTime": "Czas gry",
     "playForFreeAt": "Graj za darmo na",
+    "shareTextSteam": "Mam już za sobą {{percent}}% A Dark Cave.",
+    "shareText": "Mam już za sobą {{percent}}% A Dark Cave. Graj za darmo na {{url}}",
     "save": "Zapisz",
     "copy": "Kopiuj",
     "copiedTitle": "Skopiowano do schowka",

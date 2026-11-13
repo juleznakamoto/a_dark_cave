@@ -251,6 +251,8 @@
     "off": "Kapalı",
     "playTime": "Oyun süresi",
     "playForFreeAt": "Ücretsiz oyna:",
+    "shareTextSteam": "A Dark Cave'de %{{percent}} ilerledim.",
+    "shareText": "A Dark Cave'de %{{percent}} ilerledim. Ücretsiz oyna: {{url}}",
     "save": "Kaydet",
     "copy": "Kopyala",
     "copiedTitle": "Panoya kopyalandı",
