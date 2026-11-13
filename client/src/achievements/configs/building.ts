@@ -19,21 +19,21 @@ export const buildingChartConfig: AchievementChartConfig = {
         segmentId: "0-1",
         maxCount: 10,
         label: "Sturdy Shelter",
-        reward: 250,
+        rewards: { insight: 750 },
         getCount: (state: GameState) => state.buildings.stoneHut || 0,
       },
       {
         segmentId: "0-2",
         maxCount: 5,
         label: "Nordic Shelter",
-        reward: 250,
+        rewards: { insight: 750 },
         getCount: (state: GameState) => state.buildings.longhouse || 0,
       },
       {
         segmentId: "0-3",
         maxCount: 5,
         label: "Nomadic Shelter",
-        reward: 250,
+        rewards: { insight: 750 },
         getCount: (state: GameState) => state.buildings.furTents || 0,
       },
     ],
@@ -43,7 +43,7 @@ export const buildingChartConfig: AchievementChartConfig = {
         segmentId: "1-0",
         maxCount: 3,
         label: "Huntsmen",
-        reward: 250,
+        rewards: { insight: 750 },
         getCount: (state: GameState) => {
           return (
             (state.buildings.cabin || 0) +
@@ -56,7 +56,7 @@ export const buildingChartConfig: AchievementChartConfig = {
         segmentId: "1-1",
         maxCount: 3,
         label: "Forgers",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (state: GameState) => {
           return (
             (state.buildings.blacksmith || 0) +
@@ -69,7 +69,7 @@ export const buildingChartConfig: AchievementChartConfig = {
         segmentId: "1-2",
         maxCount: 3,
         label: "Smelters",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (state: GameState) => {
           return (
             (state.buildings.foundry || 0) +
@@ -82,7 +82,7 @@ export const buildingChartConfig: AchievementChartConfig = {
         segmentId: "1-3",
         maxCount: 3,
         label: "Hideworkers",
-        reward: 250,
+        rewards: { insight: 750 },
         getCount: (state: GameState) => {
           return (
             (state.buildings.tannery || 0) +
@@ -98,7 +98,7 @@ export const buildingChartConfig: AchievementChartConfig = {
         segmentId: "2-0",
         maxCount: 4,
         label: "Miners",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (state: GameState) => {
           return (
             (state.buildings.shallowPit || 0) +
@@ -115,7 +115,7 @@ export const buildingChartConfig: AchievementChartConfig = {
         segmentId: "3-0",
         maxCount: 3,
         label: "Traders",
-        reward: 250,
+        rewards: { insight: 750 },
         getCount: (state: GameState) => {
           return (
             (state.buildings.tradePost || 0) +
@@ -128,7 +128,7 @@ export const buildingChartConfig: AchievementChartConfig = {
         segmentId: "3-1",
         maxCount: 6,
         label: "Provisioners",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (state: GameState) => {
           return (
             (state.buildings.supplyHut || 0) +
@@ -144,7 +144,7 @@ export const buildingChartConfig: AchievementChartConfig = {
         segmentId: "3-2",
         maxCount: 3,
         label: "Scholars",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (state: GameState) => {
           return (
             (state.buildings.clerksHut || 0) +
@@ -157,7 +157,7 @@ export const buildingChartConfig: AchievementChartConfig = {
         segmentId: "3-3",
         maxCount: 4,
         label: "Priests",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (state: GameState) => {
           return (
             (state.buildings.altar || 0) +
@@ -174,14 +174,14 @@ export const buildingChartConfig: AchievementChartConfig = {
         segmentId: "4-0",
         maxCount: 4,
         label: "Keep Walls",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (state: GameState) => state.buildings.palisades || 0,
       },
       {
         segmentId: "4-1",
         maxCount: 4,
         label: "Lookout",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (state: GameState) => state.buildings.watchtower || 0,
       },
     ],

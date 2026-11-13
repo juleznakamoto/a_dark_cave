@@ -50,7 +50,7 @@ export const itemChartConfig: AchievementChartConfig = {
         segmentId: "0-axes",
         maxCount: 5,
         label: "Axes",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (_state: GameState) =>
           getItemCount([
             "stone_axe",
@@ -64,7 +64,7 @@ export const itemChartConfig: AchievementChartConfig = {
         segmentId: "0-pickaxes",
         maxCount: 5,
         label: "Pickaxes",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (_state: GameState) =>
           getItemCount([
             "stone_pickaxe",
@@ -78,7 +78,7 @@ export const itemChartConfig: AchievementChartConfig = {
         segmentId: "0-lanterns",
         maxCount: 4,
         label: "Lanterns",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (_state: GameState) =>
           getItemCount([
             "iron_lantern",
@@ -94,7 +94,7 @@ export const itemChartConfig: AchievementChartConfig = {
         segmentId: "1-swords",
         maxCount: 4,
         label: "Swords",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (_state: GameState) =>
           getItemCount([
             "iron_sword",
@@ -107,7 +107,7 @@ export const itemChartConfig: AchievementChartConfig = {
         segmentId: "1-bows",
         maxCount: 5,
         label: "Bows",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (_state: GameState) =>
           getItemCount([
             "crude_bow",
@@ -124,7 +124,7 @@ export const itemChartConfig: AchievementChartConfig = {
         segmentId: "2-explorer_pack",
         maxCount: 7,
         label: "Leatherworks",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (_state: GameState) =>
           getItemCount([
             "explorer_pack",
@@ -140,7 +140,7 @@ export const itemChartConfig: AchievementChartConfig = {
         segmentId: "2-schematic_weapons",
         maxCount: 3,
         label: "Schematics",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (_state: GameState) =>
           getItemCount(["arbalest", "nightshade_bow", "stormglass_halberd"]),
       },
@@ -151,7 +151,7 @@ export const itemChartConfig: AchievementChartConfig = {
         segmentId: "3-ancient_books",
         maxCount: ANCIENT_WISDOM_BOOKS.length,
         label: "Ancient Wisdom",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (_state: GameState) =>
           getItemCount([...ANCIENT_WISDOM_BOOKS]),
       },
@@ -159,7 +159,7 @@ export const itemChartConfig: AchievementChartConfig = {
         segmentId: "3-fellowship",
         maxCount: FELLOWSHIP_MEMBER_ORDER.length,
         label: "Good Company",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (_state: GameState) =>
           getItemCount([...FELLOWSHIP_MEMBER_ORDER]),
       },
@@ -170,7 +170,7 @@ export const itemChartConfig: AchievementChartConfig = {
         segmentId: "4-blacksteel_tools",
         maxCount: 3,
         label: "Dark Tools",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (_state: GameState) =>
           getItemCount([
             "blacksteel_axe",
@@ -182,7 +182,7 @@ export const itemChartConfig: AchievementChartConfig = {
         segmentId: "4-blacksteel_equipment",
         maxCount: 3,
         label: "Dark War Equipment",
-        reward: 250,
+        rewards: { gold: 100 },
         getCount: (_state: GameState) =>
           getItemCount([
             "blacksteel_sword",
