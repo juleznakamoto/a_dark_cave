@@ -1632,6 +1632,38 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
   height: calc(22px * var(--adc-control-scale, 1));
 }
 
+/* Pact-choice rings left of the Cruel Mode mark.
+   Same 28px row as the header icon buttons so the rings share their midline. */
+.game-header-pact-choices {
+  height: 1.75rem;
+  align-items: center;
+  gap: calc(3.45px * var(--adc-control-scale, 1));
+}
+
+.game-header-pact-choice {
+  width: calc(13.8px * var(--adc-control-scale, 1));
+  height: calc(13.8px * var(--adc-control-scale, 1));
+}
+
+.game-header-pact-choice-fill {
+  width: calc(6.9px * var(--adc-control-scale, 1));
+  height: calc(6.9px * var(--adc-control-scale, 1));
+  background: radial-gradient(circle at 32% 28%, #ffbb83 0%, #ff9f5a 25%, #e11d48 60%, #9f1239 100%);
+  animation: game-header-pact-choice-spin 3s linear infinite;
+}
+
+@keyframes game-header-pact-choice-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .game-header-pact-choice-fill {
+    animation: none;
+  }
+}
+
 /* Start screen only: 20% larger than the header mark. */
 .game-start-cruel-icon {
   width: calc(26.4px * var(--adc-control-scale, 1));

@@ -69,6 +69,7 @@ export function placeCalloutInViewport({
   height,
   viewportWidth,
   viewportHeight,
+  gapPx = CALLOUT_GAP_PX,
 }: {
   side: HoverCalloutSide;
   arrowAlign: HoverCalloutArrowAlign;
@@ -77,8 +78,11 @@ export function placeCalloutInViewport({
   height: number;
   viewportWidth: number;
   viewportHeight: number;
+  /** Space between the trigger and a top or bottom callout. */
+  gapPx?: number;
 }): CalloutPlacementBox {
   const ratio = calloutAlignRatio(arrowAlign);
+  const verticalGap = gapPx;
   const maxWidth = Math.max(0, viewportWidth - CALLOUT_VIEWPORT_PAD_PX * 2);
   const boxWidth = Math.min(width, maxWidth);
   const boxHeight = height;
@@ -92,11 +96,11 @@ export function placeCalloutInViewport({
   switch (side) {
     case "bottom":
       left = anchorX - boxWidth / 2;
-      top = trigger.top + trigger.height + CALLOUT_GAP_PX;
+      top = trigger.top + trigger.height + verticalGap;
       break;
     case "top":
       left = anchorX - boxWidth / 2;
-      top = trigger.top - CALLOUT_GAP_PX - boxHeight;
+      top = trigger.top - verticalGap - boxHeight;
       break;
     case "left":
       left = trigger.left - CALLOUT_SIDE_GAP_PX - boxWidth;

@@ -61,6 +61,8 @@ export interface HoverCalloutTooltipProps {
   portal?: boolean;
   /** `sm` is header chrome. `md` matches footer label size (12px). */
   size?: keyof typeof CALLOUT_SIZE;
+  /** Space between the trigger and a top or bottom callout. Defaults to the shared gap. */
+  gapPx?: number;
 }
 
 /** Playlight-style hover callout with a rotated-square arrow. */
@@ -77,6 +79,7 @@ export function HoverCalloutTooltip({
   onHoverStart,
   portal = false,
   size = "sm",
+  gapPx,
 }: HoverCalloutTooltipProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const calloutRef = useRef<HTMLElement | null>(null);
@@ -152,6 +155,7 @@ export function HoverCalloutTooltip({
         height: calloutSize.height,
         viewportWidth: window.innerWidth,
         viewportHeight: window.innerHeight,
+        gapPx,
       })
       : null;
 

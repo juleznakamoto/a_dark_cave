@@ -6,6 +6,7 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Added
 
+- The header shows five red rings for pact choices. Each choice you have unlocked fills one ring, from left to right.
 - Text size settings include 200%.
 
 ### Changed

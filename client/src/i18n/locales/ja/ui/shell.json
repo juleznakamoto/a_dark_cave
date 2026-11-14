@@ -75,6 +75,7 @@
     "muteSfx": "効果音を消す",
     "unmuteSfx": "効果音を出す",
     "cruelModeActive": "残酷モード発動中",
+    "pactChoicesUnlocked": "契約の選択が解放済み",
     "wishlistOnSteam": "Steamのウィッシュリストに追加",
     "demoProgress": "デモの進捗",
     "demoProgressHint": "デモでは木の小屋は{{count}}軒まで建てられます。",

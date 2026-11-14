@@ -30,7 +30,9 @@ import {
 } from "@/hooks/useSteamEditionActive";
 import { triggerExclusivePromoPingOnce } from "@/lib/exclusivePromoShockwave";
 import { CruelModeHeaderMark } from "@/components/game/CruelModeHeaderMark";
+import { PactChoicesHeaderMark } from "@/components/game/PactChoicesHeaderMark";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
+import { arePactsEnabled } from "@/game/rules/pacts";
 import { DropdownMenuItemWithTooltip } from "@/components/game/DropdownMenuItemWithTooltip";
 import {
   DropdownMenu,
@@ -623,11 +625,28 @@ export function GameHeaderControls() {
     setSettingsDialogOpen,
   } = useProfileMenu();
   const devGameMode = useGameStore((s) => s.devGameMode);
+  const pactChoices = useGameStore((s) => s.pactChoices);
   const steamDesktopEdition = isSteamDesktopEditionActive(devGameMode);
   const progressShareDisabled = steamDesktopEdition;
+  const pactChoicesLabel = t("footer.pactChoicesUnlocked", {
+    defaultValue: "Pact choices unlocked",
+  });
 
   return (
     <div className="flex items-center gap-0.5 shrink-0">
+      {arePactsEnabled() && pactChoices >= 1 && (
+        <HoverCalloutTooltip
+          label={pactChoicesLabel}
+          side="bottom"
+          gapPx={12}
+          className="mr-1"
+        >
+          <PactChoicesHeaderMark
+            count={pactChoices}
+            label={pactChoicesLabel}
+          />
+        </HoverCalloutTooltip>
+      )}
       {cruelMode && (
         <HoverCalloutTooltip
           label={t("footer.cruelModeActive")}

@@ -75,6 +75,7 @@
     "muteSfx": "Выключить звуки",
     "unmuteSfx": "Включить звуки",
     "cruelModeActive": "Жестокий режим активен",
+    "pactChoicesUnlocked": "Выборы пакта открыты",
     "wishlistOnSteam": "Добавить в список желаемого Steam",
     "demoProgress": "Прогресс демо",
     "demoProgressHint": "В демо можно построить деревянные хижины — не более {{count}}.",
