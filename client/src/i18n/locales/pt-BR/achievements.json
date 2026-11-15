@@ -256,27 +256,27 @@
     },
     "2-explorer_pack": {
       "label": "Trabalhos em Couro",
-      "description": "Crie todas as sete obras de couro"
+      "description": "Crie todas as obras de couro"
     },
     "2-schematic_weapons": {
       "label": "Esquemas",
-      "description": "Crie três armas de esquema"
+      "description": "Crie todas as armas de esquema"
     },
     "3-ancient_books": {
       "label": "Sabedoria Antiga",
-      "description": "Colete os quatro livros antigos"
+      "description": "Colete todos os livros antigos"
     },
     "3-fellowship": {
       "label": "Boa Companhia",
-      "description": "Recrute todos os sete companheiros da irmandade"
+      "description": "Reúna todos os membros da irmandade"
     },
     "4-blacksteel_equipment": {
       "label": "Equipamento de Guerra Sombrio",
-      "description": "Crie todos os três itens de guerra de Aço Negro"
+      "description": "Crie todos os itens de guerra de Aço Negro"
     },
     "4-blacksteel_tools": {
       "label": "Ferramentas Sombrias",
-      "description": "Crie todas as três ferramentas de Aço Negro"
+      "description": "Crie todas as ferramentas de Aço Negro"
     }
   },
   "overall": {
@@ -294,7 +294,7 @@
     },
     "0-finalPact": {
       "label": "O Pacto Final",
-      "description": "Vença uma partida com os 5 pactos ativos"
+      "description": "Termine uma partida com todos os pactos ativos"
     },
     "0-resourceMaxer": {
       "label": "Maximizador de Recursos",

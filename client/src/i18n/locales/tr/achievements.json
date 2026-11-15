@@ -256,27 +256,27 @@
     },
     "2-explorer_pack": {
       "label": "Deri İşçiliği",
-      "description": "Yedi deri eşyanın hepsini yap"
+      "description": "Bütün deri eşyaları yap"
     },
     "2-schematic_weapons": {
       "label": "Çizimler",
-      "description": "Çizimlerden üç silah yap"
+      "description": "Çizimlerden bütün silahları yap"
     },
     "3-ancient_books": {
       "label": "Kadim Bilgelik",
-      "description": "Dört kadim kitabın hepsini topla"
+      "description": "Bütün kadim kitapları topla"
     },
     "3-fellowship": {
       "label": "Can Yoldaşları",
-      "description": "Yedi yoldaşın hepsini saflarına kat"
+      "description": "Bütün yoldaşları yanına al"
     },
     "4-blacksteel_equipment": {
       "label": "Kara Savaş Teçhizatı",
-      "description": "Üç Karaçelik savaş eşyasının hepsini yap"
+      "description": "Bütün Karaçelik savaş eşyalarını yap"
     },
     "4-blacksteel_tools": {
       "label": "Kara Aletler",
-      "description": "Üç Karaçelik aletin hepsini yap"
+      "description": "Bütün Karaçelik aletleri yap"
     }
   },
   "overall": {
@@ -294,7 +294,7 @@
     },
     "0-finalPact": {
       "label": "Son Pakt",
-      "description": "5 paktın hepsi etkinken bir oyunu bitir"
+      "description": "Bütün paktlar etkinken bir oyunu bitir"
     },
     "0-resourceMaxer": {
       "label": "Ağzına Kadar Dolu",

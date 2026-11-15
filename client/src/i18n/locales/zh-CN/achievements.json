@@ -256,27 +256,27 @@
     },
     "2-explorer_pack": {
       "label": "皮革工艺",
-      "description": "制作全部七件皮革制品"
+      "description": "制作全部皮革制品"
     },
     "2-schematic_weapons": {
       "label": "蓝图",
-      "description": "制作三件蓝图武器"
+      "description": "制作全部蓝图武器"
     },
     "3-ancient_books": {
       "label": "古老智慧",
-      "description": "收集四本古书"
+      "description": "收集全部古书"
     },
     "3-fellowship": {
       "label": "可靠同伴",
-      "description": "招募全部七位同伴"
+      "description": "集齐全部同伴"
     },
     "4-blacksteel_equipment": {
       "label": "黑暗战具",
-      "description": "制作全部三件黑钢战争装备"
+      "description": "制作全部黑钢战争装备"
     },
     "4-blacksteel_tools": {
       "label": "黑暗工具",
-      "description": "制作全部三件黑钢工具"
+      "description": "制作全部黑钢工具"
     }
   },
   "overall": {
@@ -294,7 +294,7 @@
     },
     "0-finalPact": {
       "label": "最终契约",
-      "description": "在全部5项契约生效时赢得一局"
+      "description": "在全部契约生效时完成一局"
     },
     "0-resourceMaxer": {
       "label": "资源达人",

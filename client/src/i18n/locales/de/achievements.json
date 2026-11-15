@@ -256,27 +256,27 @@
     },
     "2-explorer_pack": {
       "label": "Lederarbeiten",
-      "description": "Stelle alle sieben Lederarbeiten her"
+      "description": "Stelle alle Lederarbeiten her"
     },
     "2-schematic_weapons": {
       "label": "Baupläne",
-      "description": "Stelle drei Bauplan-Waffen her"
+      "description": "Stelle alle Bauplan-Waffen her"
     },
     "3-ancient_books": {
       "label": "Altes Wissen",
-      "description": "Sammle alle vier uralten Bücher"
+      "description": "Sammle alle uralten Bücher"
     },
     "3-fellowship": {
       "label": "Gute Gesellschaft",
-      "description": "Rekrutiere alle sieben Gefährten"
+      "description": "Nimm alle Gefährten auf"
     },
     "4-blacksteel_equipment": {
       "label": "Dunkle Kriegsausrüstung",
-      "description": "Stelle alle drei Schwarzstahl-Kriegsausrüstungen her"
+      "description": "Stelle alle Schwarzstahl-Kriegsausrüstungen her"
     },
     "4-blacksteel_tools": {
       "label": "Dunkle Werkzeuge",
-      "description": "Stelle alle drei Schwarzstahl-Werkzeuge her"
+      "description": "Stelle alle Schwarzstahl-Werkzeuge her"
     }
   },
   "overall": {
@@ -294,7 +294,7 @@
     },
     "0-finalPact": {
       "label": "Der letzte Pakt",
-      "description": "Gewinne ein Spiel mit allen 5 aktiven Pakten"
+      "description": "Beende ein Spiel mit allen Pakten aktiv"
     },
     "0-resourceMaxer": {
       "label": "Ressourcenmaximierer",

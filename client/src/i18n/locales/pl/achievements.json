@@ -256,27 +256,27 @@
     },
     "2-explorer_pack": {
       "label": "Wyroby skórzane",
-      "description": "Wytwórz wszystkie siedem wyrobów skórzanych"
+      "description": "Wytwórz wszystkie wyroby skórzane"
     },
     "2-schematic_weapons": {
       "label": "Schematy",
-      "description": "Wytwórz trzy rodzaje broni ze schematów"
+      "description": "Wytwórz wszystkie rodzaje broni ze schematów"
     },
     "3-ancient_books": {
       "label": "Starożytna mądrość",
-      "description": "Zbierz wszystkie cztery starożytne księgi"
+      "description": "Zbierz wszystkie starożytne księgi"
     },
     "3-fellowship": {
       "label": "Dobre towarzystwo",
-      "description": "Zwerbuj wszystkich siedmiu towarzyszy drużyny"
+      "description": "Zbierz wszystkich towarzyszy drużyny"
     },
     "4-blacksteel_equipment": {
       "label": "Mroczny ekwipunek wojenny",
-      "description": "Wytwórz wszystkie trzy wojenne przedmioty z czarnostali"
+      "description": "Wytwórz wszystkie wojenne przedmioty z czarnostali"
     },
     "4-blacksteel_tools": {
       "label": "Mroczne narzędzia",
-      "description": "Wytwórz wszystkie trzy narzędzia z czarnostali"
+      "description": "Wytwórz wszystkie narzędzia z czarnostali"
     }
   },
   "overall": {
@@ -294,7 +294,7 @@
     },
     "0-finalPact": {
       "label": "Ostatni pakt",
-      "description": "Wygraj grę ze wszystkimi 5 aktywnymi paktami"
+      "description": "Ukończ jedną grę, gdy wszystkie pakty są aktywne"
     },
     "0-resourceMaxer": {
       "label": "Mistrz zasobów",

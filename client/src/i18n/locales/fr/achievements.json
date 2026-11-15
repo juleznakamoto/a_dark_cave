@@ -256,27 +256,27 @@
     },
     "2-explorer_pack": {
       "label": "Travail du cuir",
-      "description": "Fabriquez les sept ouvrages de cuir"
+      "description": "Fabriquez tous les ouvrages de cuir"
     },
     "2-schematic_weapons": {
       "label": "Schémas",
-      "description": "Fabriquez trois armes de schéma"
+      "description": "Fabriquez toutes les armes de schéma"
     },
     "3-ancient_books": {
       "label": "Sagesse ancienne",
-      "description": "Collectionnez les quatre livres anciens"
+      "description": "Collectionnez tous les livres anciens"
     },
     "3-fellowship": {
       "label": "Bonne compagnie",
-      "description": "Recrutez les sept compagnons"
+      "description": "Rassemblez tous les membres de la compagnie"
     },
     "4-blacksteel_equipment": {
       "label": "Équipement de guerre sombre",
-      "description": "Fabriquez les trois équipements de guerre en acier noir"
+      "description": "Fabriquez tous les équipements de guerre en acier noir"
     },
     "4-blacksteel_tools": {
       "label": "Outils sombres",
-      "description": "Fabriquez les trois outils en acier noir"
+      "description": "Fabriquez tous les outils en acier noir"
     }
   },
   "overall": {
@@ -294,7 +294,7 @@
     },
     "0-finalPact": {
       "label": "Le pacte final",
-      "description": "Gagnez une partie avec les 5 pactes actifs"
+      "description": "Terminez une partie avec tous les pactes actifs"
     },
     "0-resourceMaxer": {
       "label": "Maximiseur de ressources",

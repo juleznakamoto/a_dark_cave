@@ -256,27 +256,27 @@
     },
     "2-explorer_pack": {
       "label": "Lavori in cuoio",
-      "description": "Crea tutte e sette le opere in cuoio"
+      "description": "Crea tutte le opere in cuoio"
     },
     "2-schematic_weapons": {
       "label": "Schemi",
-      "description": "Crea tre armi da schema"
+      "description": "Crea tutte le armi da schema"
     },
     "3-ancient_books": {
       "label": "Saggezza antica",
-      "description": "Raccogli tutti e quattro i libri antichi"
+      "description": "Raccogli tutti i libri antichi"
     },
     "3-fellowship": {
       "label": "Buona compagnia",
-      "description": "Recluta tutti e sette i compagni"
+      "description": "Riunisci tutti i membri della compagnia"
     },
     "4-blacksteel_equipment": {
       "label": "Equipaggiamento da guerra oscuro",
-      "description": "Crea tutti e tre gli oggetti di guerra in acciaio nero"
+      "description": "Crea tutti gli oggetti di guerra in acciaio nero"
     },
     "4-blacksteel_tools": {
       "label": "Strumenti oscuri",
-      "description": "Crea tutti e tre gli strumenti in acciaio nero"
+      "description": "Crea tutti gli strumenti in acciaio nero"
     }
   },
   "overall": {
@@ -294,7 +294,7 @@
     },
     "0-finalPact": {
       "label": "Il patto finale",
-      "description": "Vinci una partita con tutti e 5 i patti attivi"
+      "description": "Concludi una partita con tutti i patti attivi"
     },
     "0-resourceMaxer": {
       "label": "Massimizzatore di risorse",

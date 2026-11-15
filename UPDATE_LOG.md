@@ -11,6 +11,7 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Changed
 
+- Achievement descriptions for a full set no longer say how many books, companions, tools, or pacts you need.
 - Later achievements pay 100 gold, and some mid-game ones pay 750 Insight. The earliest ones still pay silver.
 - Prime Foundry and Master Tannery add 1, and Masterwork Foundry and High Tannery add 2, in every version of the game.
 - Hovering a resource shows its capacity first, with the number on the right of that line, in yellow when the stack is full.

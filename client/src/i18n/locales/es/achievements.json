@@ -256,27 +256,27 @@
     },
     "2-explorer_pack": {
       "label": "Talabartería",
-      "description": "Fabrica los siete artículos de talabartería"
+      "description": "Fabrica todos los artículos de talabartería"
     },
     "2-schematic_weapons": {
       "label": "Esquemas",
-      "description": "Fabrica tres armas a partir de esquemas"
+      "description": "Fabrica todas las armas a partir de esquemas"
     },
     "3-ancient_books": {
       "label": "Sabiduría antigua",
-      "description": "Colecciona los cuatro libros antiguos"
+      "description": "Colecciona todos los libros antiguos"
     },
     "3-fellowship": {
       "label": "Buena compañía",
-      "description": "Recluta a los siete compañeros"
+      "description": "Reúne a todos los miembros de la compañía"
     },
     "4-blacksteel_equipment": {
       "label": "Equipo bélico oscuro",
-      "description": "Fabrica las tres piezas de equipo bélico de acero negro"
+      "description": "Fabrica todas las piezas de equipo bélico de acero negro"
     },
     "4-blacksteel_tools": {
       "label": "Herramientas oscuras",
-      "description": "Fabrica las tres herramientas de acero negro"
+      "description": "Fabrica todas las herramientas de acero negro"
     }
   },
   "overall": {
@@ -294,7 +294,7 @@
     },
     "0-finalPact": {
       "label": "El pacto final",
-      "description": "Gana una partida con los 5 pactos activos"
+      "description": "Termina una partida con todos los pactos activos"
     },
     "0-resourceMaxer": {
       "label": "Maximizador de recursos",

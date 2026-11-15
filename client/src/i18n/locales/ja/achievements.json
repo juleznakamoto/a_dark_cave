@@ -256,27 +256,27 @@
     },
     "2-explorer_pack": {
       "label": "皮革細工",
-      "description": "皮革細工を7種すべて作る"
+      "description": "皮革細工をすべて作る"
     },
     "2-schematic_weapons": {
       "label": "設計図",
-      "description": "設計図の武器を3種作る"
+      "description": "設計図の武器をすべて作る"
     },
     "3-ancient_books": {
       "label": "古の知恵",
-      "description": "古書を4冊すべて集める"
+      "description": "古書をすべて集める"
     },
     "3-fellowship": {
       "label": "良き仲間",
-      "description": "仲間を7人すべて迎える"
+      "description": "仲間をすべて迎える"
     },
     "4-blacksteel_equipment": {
       "label": "闇の戦具",
-      "description": "黒鋼の戦具を3種すべて作る"
+      "description": "黒鋼の戦具をすべて作る"
     },
     "4-blacksteel_tools": {
       "label": "闇の道具",
-      "description": "黒鋼の道具を3種すべて作る"
+      "description": "黒鋼の道具をすべて作る"
     }
   },
   "overall": {
@@ -294,7 +294,7 @@
     },
     "0-finalPact": {
       "label": "最後の契約",
-      "description": "5つの契約がすべて有効な状態でゲームに勝利する"
+      "description": "すべての契約が有効な状態でゲームを終える"
     },
     "0-resourceMaxer": {
       "label": "資源の極み",

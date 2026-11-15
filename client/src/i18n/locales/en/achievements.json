@@ -256,27 +256,27 @@
     },
     "2-explorer_pack": {
       "label": "Leatherworks",
-      "description": "Craft all seven leatherworks"
+      "description": "Craft every leatherwork"
     },
     "2-schematic_weapons": {
       "label": "Schematics",
-      "description": "Craft three schematic weapons"
+      "description": "Craft every schematic weapon"
     },
     "3-ancient_books": {
       "label": "Ancient Wisdom",
-      "description": "Collect all four ancient books"
+      "description": "Collect every ancient book"
     },
     "3-fellowship": {
       "label": "Good Company",
-      "description": "Recruit all seven fellowship companions"
+      "description": "Gather every fellowship member"
     },
     "4-blacksteel_equipment": {
       "label": "Dark War Equipment",
-      "description": "Craft all three blacksteel war items"
+      "description": "Craft every blacksteel war item"
     },
     "4-blacksteel_tools": {
       "label": "Dark Tools",
-      "description": "Craft all three blacksteel tools"
+      "description": "Craft every blacksteel tool"
     }
   },
   "overall": {
@@ -294,7 +294,7 @@
     },
     "0-finalPact": {
       "label": "The final pact",
-      "description": "Finish one game with all 5 pacts active"
+      "description": "Finish one game with every pact active"
     },
     "0-resourceMaxer": {
       "label": "Resource Maxer",
