@@ -12,6 +12,7 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Changed
 
+- The Madness tooltip now says that ill events follow those dangerous paths.
 - Achievement descriptions for a full set no longer say how many books, companions, tools, or pacts you need.
 - Later achievements pay 100 gold, and some mid-game ones pay 750 Insight. The earliest ones still pay silver.
 - Prime Foundry and Master Tannery add 1, and Masterwork Foundry and High Tannery add 2, in every version of the game.

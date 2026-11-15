@@ -199,7 +199,7 @@
     "statLuckTooltip": "Beugt das Schicksal zu deinen Gunsten",
     "statStrengthTooltip": "Hilft dort, wo Worte an ihre Grenzen stoßen",
     "statKnowledgeTooltip": "Beeinflusst Dinge, bei denen Klugheit hilft",
-    "statMadnessTooltip": "Führt Gedanken auf gefährliche Pfade",
+    "statMadnessTooltip": "Führt Gedanken auf gefährliche Pfade und zieht schlimme Ereignisse nach sich",
     "statEffectNotUnlockedYet": "Noch nicht freigeschaltet",
     "statEffectMaxPercent": "max. {{value}} %",
     "statEffectMaxGold": "max. {{value}} Gold",

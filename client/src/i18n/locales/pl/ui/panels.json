@@ -223,7 +223,7 @@
     "statLuckTooltip": "Nagina los na twoją korzyść",
     "statStrengthTooltip": "Pomaga tam, gdzie słowa nie wystarczą",
     "statKnowledgeTooltip": "Wpływa tam, gdzie liczy się spryt",
-    "statMadnessTooltip": "Wiedzie myśli na niebezpieczne ścieżki",
+    "statMadnessTooltip": "Wiedzie myśli na niebezpieczne ścieżki, a złe wydarzenia idą za nimi",
     "statEffectNotUnlockedYet": "jeszcze nie odblokowano",
     "statEffectMaxPercent": "maks. {{value}}%",
     "statEffectMaxGold": "maks. {{value}} złota",

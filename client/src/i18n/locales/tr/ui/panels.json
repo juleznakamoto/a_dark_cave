@@ -199,7 +199,7 @@
     "statLuckTooltip": "Kaderi senden yana büker",
     "statStrengthTooltip": "Sözün bittiği yerde işe yarar",
     "statKnowledgeTooltip": "Aklın işe yaradığı her yerde etkili olur",
-    "statMadnessTooltip": "Düşünceleri tehlikeli yollara sürükler",
+    "statMadnessTooltip": "Düşünceleri tehlikeli yollara sürükler, uğursuz olaylar da peşinden gelir",
     "statEffectNotUnlockedYet": "henüz açılmadı",
     "statEffectMaxPercent": "en fazla %{{value}}",
     "statEffectMaxGold": "en fazla {{value}} Altın",

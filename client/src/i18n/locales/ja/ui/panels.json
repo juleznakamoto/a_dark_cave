@@ -199,7 +199,7 @@
     "statLuckTooltip": "運命を味方に傾ける",
     "statStrengthTooltip": "言葉が届かないところで力になる",
     "statKnowledgeTooltip": "知恵がものをいう場面に影響する",
-    "statMadnessTooltip": "思考を危うい道へ導く",
+    "statMadnessTooltip": "思考を危うい道へ導き、不吉な出来事が続く",
     "statEffectNotUnlockedYet": "まだ解放されていない",
     "statEffectMaxPercent": "最大{{value}}%",
     "statEffectMaxGold": "最大{{value}}金貨",

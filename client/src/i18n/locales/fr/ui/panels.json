@@ -199,7 +199,7 @@
     "statLuckTooltip": "Incline la fortune en votre faveur",
     "statStrengthTooltip": "Aide là où les mots atteignent leurs limites",
     "statKnowledgeTooltip": "Utile là où l'ingéniosité compte",
-    "statMadnessTooltip": "Mène les pensées sur des chemins dangereux",
+    "statMadnessTooltip": "Mène les pensées sur des chemins dangereux, et de sombres événements suivent",
     "statEffectNotUnlockedYet": "Pas encore débloqué",
     "statEffectMaxPercent": "{{value}} % max.",
     "statEffectMaxGold": "{{value}} or max.",
