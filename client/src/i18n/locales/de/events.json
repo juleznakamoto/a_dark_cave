@@ -2961,6 +2961,23 @@
     "message": "Die verhüllte Gestalt erscheint erneut. Ein letztes Mal treibt ihr Flüstern durch die kalte Nacht, bevor sie verschwindet: „Deine Weisheit wurde gewogen und für würdig befunden. Mögen Schatten deinen Weg bewachen und Glück deinem Namen folgen.“",
     "title": "Die Gabe des Flüsterers"
   },
+  "watchingChildren": {
+    "choices": {
+      "approach": {
+        "label": "Auf sie zugehen"
+      },
+      "continue": {
+        "label": "Weitergehen"
+      }
+    },
+    "log": {
+      "outcome0": "Steine fliegen aus den Bäumen, doch keiner trifft dich. Du trittst näher. Die Kinder rennen davon. Eines verliert einen Beutel.",
+      "outcome1": "Steine fliegen aus den Bäumen. Einer trifft dich am Kopf, und du verlierst das Bewusstsein. Als du erwachst, sind die Kinder fort, und dein Beutel ebenfalls.",
+      "outcome2": "Du gehst weiter. Die Kinder bleiben, wo sie sind, und hinter dir schließen sich die Bäume."
+    },
+    "message": "An einem Morgen, auf einem Spaziergang, siehst du fünf junge Kinder zwischen den Bäumen stehen. Sie rühren sich nicht. Sie starren dich nur an.",
+    "title": "Starrende Kinder"
+  },
   "whisperingVoices": {
     "choices": {
       "ignore": {

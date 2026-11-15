@@ -6,6 +6,7 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Added
 
+- When your madness is high and you carry more than 100 silver, five children may stare at you from between the trees. Walk on, or approach them.
 - The header shows five red rings for pact choices. Each choice you have unlocked fills one ring, from left to right.
 - Text size settings include 200%.
 

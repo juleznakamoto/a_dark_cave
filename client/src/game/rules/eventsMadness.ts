@@ -11,6 +11,19 @@ const withCruelMadnessBonus = (state: GameState, baseMadnessGain: number): numbe
   baseMadnessGain +
   (state.cruelMode ? CRUEL_MODE.madnessFromEvents.flatBonusWhenCruel : 0);
 
+export const WATCHING_CHILDREN_MIN_MADNESS = 13;
+/** Strictly more than this much silver. */
+export const WATCHING_CHILDREN_SILVER_REQUIRED = 100;
+export const WATCHING_CHILDREN_GOLD = 50;
+export const WATCHING_CHILDREN_SILVER_LOSS = 100;
+export const WATCHING_CHILDREN_MADNESS_GAIN = 1;
+
+/** 20% + 2% per Luck. Cruel mode applies the default -10% penalty. */
+const watchingChildrenApproach = defineSuccessChance({
+  base: 0.2,
+  stats: [{ type: "luck", multiplier: 0.02 }],
+});
+
 export const madnessEvents: Record<string, GameEvent> = {
   whisperingVoices: {
     id: "whisperingVoices",
@@ -53,6 +66,70 @@ export const madnessEvents: Record<string, GameEvent> = {
           },
           _logMessageKey: "outcome1",
         }),
+      },
+    ],
+  },
+
+  watchingChildren: {
+    id: "watchingChildren",
+    condition: (state: GameState) =>
+      getTotalMadness(state) >= WATCHING_CHILDREN_MIN_MADNESS &&
+      (state.resources.silver || 0) > WATCHING_CHILDREN_SILVER_REQUIRED &&
+      !state.events.watchingChildren,
+    timeProbability: 20,
+    priority: 2,
+    repeatable: false,
+    choices: [
+      {
+        id: "continue",
+        effect: (state: GameState) => ({
+          events: {
+            ...state.events,
+            watchingChildren: true,
+          },
+          _logMessageKey: "outcome2",
+        }),
+      },
+      {
+        id: "approach",
+        ...watchingChildrenApproach,
+        effect: (state: GameState) => {
+          const seen = {
+            events: {
+              ...state.events,
+              watchingChildren: true,
+            },
+          };
+
+          if (Math.random() < watchingChildrenApproach.success_chance(state)) {
+            return {
+              ...seen,
+              resources: {
+                ...state.resources,
+                gold: (state.resources.gold || 0) + WATCHING_CHILDREN_GOLD,
+              },
+              _logMessageKey: "outcome0",
+            };
+          }
+
+          return {
+            ...seen,
+            resources: {
+              ...state.resources,
+              silver: Math.max(
+                0,
+                (state.resources.silver || 0) - WATCHING_CHILDREN_SILVER_LOSS,
+              ),
+            },
+            stats: {
+              ...state.stats,
+              madnessFromEvents:
+                (state.stats.madnessFromEvents || 0) +
+                withCruelMadnessBonus(state, WATCHING_CHILDREN_MADNESS_GAIN),
+            },
+            _logMessageKey: "outcome1",
+          };
+        },
       },
     ],
   },

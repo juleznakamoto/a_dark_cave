@@ -2961,6 +2961,23 @@
     "message": "Pelerinli karaltı yeniden beliriyor. Gözden kaybolmadan önce fısıltısı son bir kez soğuk gecenin içinde süzülüyor: 'Bilgeliğin tartıldı ve layık görüldü. Gölgeler yolunu korusun, talih adının peşini bırakmasın.'",
     "title": "Fısıldayanın Hediyesi"
   },
+  "watchingChildren": {
+    "choices": {
+      "approach": {
+        "label": "Yaklaş"
+      },
+      "continue": {
+        "label": "Yürümeye devam et"
+      }
+    },
+    "log": {
+      "outcome0": "Ağaçların arasından taşlar fırlıyor, hiçbiri sana değmiyor. Yaklaşınca çocuklar kaçıyor. Biri bir kese düşürüyor.",
+      "outcome1": "Ağaçların arasından taşlar fırlıyor. Biri kafana çarpıyor ve bayılıyorsun. Ayıldığında çocuklar yok, kesen de.",
+      "outcome2": "Yürümeye devam ediyorsun. Çocuklar yerlerinde kalıyor, ağaçlar arkanda kapanıyor."
+    },
+    "message": "Bir sabah yürüyüşte, ağaçların arasında duran beş küçük çocuk görüyorsun. Kımıldamıyorlar. Sadece sana dik dik bakıyorlar.",
+    "title": "Dik Dik Bakan Çocuklar"
+  },
   "whisperingVoices": {
     "choices": {
       "ignore": {

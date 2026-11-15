@@ -2961,6 +2961,23 @@
     "message": "La figura encapuchada aparece de nuevo. Sus susurros flotan por la noche fría una última vez antes de desvanecerse: «Tu sabiduría ha sido pesada y hallada digna. Que las sombras guarden tu camino y la fortuna siga tu nombre».",
     "title": "El regalo del susurrador"
   },
+  "watchingChildren": {
+    "choices": {
+      "approach": {
+        "label": "Acercarte"
+      },
+      "continue": {
+        "label": "Seguir caminando"
+      }
+    },
+    "log": {
+      "outcome0": "Vuelan piedras desde los árboles, y ninguna te alcanza. Das un paso más. Los niños echan a correr. Uno pierde una bolsa.",
+      "outcome1": "Vuelan piedras desde los árboles. Una te da en la cabeza y pierdes el conocimiento. Al despertar, los niños ya no están, y tu bolsa tampoco.",
+      "outcome2": "Sigues caminando. Los niños se quedan donde están, y los árboles se cierran a tu espalda."
+    },
+    "message": "Una mañana, de paseo, ves a cinco niños pequeños de pie entre los árboles. No se mueven. Solo te miran fijamente.",
+    "title": "Niños que miran fijamente"
+  },
   "whisperingVoices": {
     "choices": {
       "ignore": {

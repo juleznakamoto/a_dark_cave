@@ -2963,6 +2963,23 @@
     "message": "Zakapturzona postać pojawia się znów. Jego szept niesie się przez zimną noc ostatni raz, zanim zniknie: „Twoja mądrość została zważona i uznana za godną. Niech cienie strzegą twojej drogi, a fortuna idzie za twoim imieniem.”",
     "title": "Dar szeptacza"
   },
+  "watchingChildren": {
+    "choices": {
+      "approach": {
+        "label": "Podejdź"
+      },
+      "continue": {
+        "label": "Idź dalej"
+      }
+    },
+    "log": {
+      "outcome0": "Spomiędzy drzew lecą kamienie i żaden cię nie trafia. Podchodzisz bliżej. Dzieci rzucają się do ucieczki. Jedno gubi sakiewkę.",
+      "outcome1": "Spomiędzy drzew lecą kamienie. Jeden trafia cię w głowę i tracisz przytomność. Gdy się budzisz, dzieci już nie ma, a twojej sakiewki też.",
+      "outcome2": "Idziesz dalej. Dzieci zostają na miejscu, a drzewa zamykają się za tobą."
+    },
+    "message": "Pewnego ranka na spacerze widzisz pięcioro małych dzieci stojących między drzewami. Nie ruszają się. Tylko wpatrują się w ciebie.",
+    "title": "Wpatrujące się dzieci"
+  },
   "whisperingVoices": {
     "choices": {
       "ignore": {

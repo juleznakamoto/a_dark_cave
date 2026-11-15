@@ -1648,7 +1648,7 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
 .game-header-pact-choice-fill {
   width: calc(6.9px * var(--adc-control-scale, 1));
   height: calc(6.9px * var(--adc-control-scale, 1));
-  background: radial-gradient(circle at 32% 28%, #ffbb83 0%, #ff9f5a 25%, #e11d48 60%, #9f1239 100%);
+  background: radial-gradient(circle at 32% 28%, #fda359 0%, #fd8c3b 25%, #e11d48 60%, #9f1239 100%);
   animation: game-header-pact-choice-spin 3s linear infinite;
 }
 

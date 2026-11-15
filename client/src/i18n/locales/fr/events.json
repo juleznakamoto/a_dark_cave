@@ -2961,6 +2961,23 @@
     "message": "La silhouette encapuchonnée apparaît de nouveau. Ses murmures glissent une dernière fois dans la nuit froide avant qu'elle ne disparaisse : « Votre sagesse a été pesée et jugée digne. Que les ombres gardent votre chemin, et que la fortune suive votre nom. »",
     "title": "Le don du murmureur"
   },
+  "watchingChildren": {
+    "choices": {
+      "approach": {
+        "label": "Vous approcher"
+      },
+      "continue": {
+        "label": "Continuer votre chemin"
+      }
+    },
+    "log": {
+      "outcome0": "Des pierres jaillissent des arbres, et aucune ne vous touche. Vous avancez. Les enfants s'enfuient. L'un d'eux laisse tomber une bourse.",
+      "outcome1": "Des pierres jaillissent des arbres. L'une vous frappe à la tête, et vous perdez connaissance. Quand vous vous réveillez, les enfants ont disparu, et votre bourse avec eux.",
+      "outcome2": "Vous poursuivez votre chemin. Les enfants restent où ils sont, et les arbres se referment derrière vous."
+    },
+    "message": "Un matin, en marchant, vous voyez cinq jeunes enfants debout entre les arbres. Ils ne bougent pas. Ils se contentent de vous fixer.",
+    "title": "Enfants qui fixent"
+  },
   "whisperingVoices": {
     "choices": {
       "ignore": {

@@ -2961,6 +2961,23 @@
     "message": "La figura incappucciata appare di nuovo. I suoi sussurri si diffondono nella fredda notte un'ultima volta prima che svanisca: «La tua saggezza è stata pesata e trovata degna. Che le ombre custodiscano il tuo cammino, e la fortuna segua il tuo nome.»",
     "title": "Il dono del sussurratore"
   },
+  "watchingChildren": {
+    "choices": {
+      "approach": {
+        "label": "Avvicinarti"
+      },
+      "continue": {
+        "label": "Continuare a camminare"
+      }
+    },
+    "log": {
+      "outcome0": "Dagli alberi volano pietre, e nessuna ti colpisce. Ti avvicini. I bambini scappano. Uno perde una borsa.",
+      "outcome1": "Dagli alberi volano pietre. Una ti colpisce alla testa, e perdi i sensi. Quando ti svegli, i bambini sono spariti, e la tua borsa con loro.",
+      "outcome2": "Prosegui. I bambini restano dove sono, e gli alberi si chiudono alle tue spalle."
+    },
+    "message": "Una mattina, durante una passeggiata, vedi cinque bambini piccoli fermi tra gli alberi. Non si muovono. Ti fissano e basta.",
+    "title": "Bambini che fissano"
+  },
   "whisperingVoices": {
     "choices": {
       "ignore": {

@@ -2961,6 +2961,23 @@
     "message": "The cloaked figure appears again. His whispers drift through the cold night one last time before he vanishes, 'Your wisdom has been weighed and found worthy. May shadows guard your path, and fortune follow your name.'",
     "title": "The Whisperer's Gift"
   },
+  "watchingChildren": {
+    "choices": {
+      "approach": {
+        "label": "Approach them"
+      },
+      "continue": {
+        "label": "Continue walking"
+      }
+    },
+    "log": {
+      "outcome0": "Stones fly from the trees, and none of them hit you. You step closer. The children run. One drops a purse.",
+      "outcome1": "Stones fly from the trees. One hits you in the head, and you lose consciousness. When you wake, the children are gone, and so is your purse.",
+      "outcome2": "You keep walking. The children stay where they are, and the trees close behind you."
+    },
+    "message": "One morning on a walk you see five young children standing between the trees. They do not move. They only stare at you.",
+    "title": "Staring Children"
+  },
   "whisperingVoices": {
     "choices": {
       "ignore": {

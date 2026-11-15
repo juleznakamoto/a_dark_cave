@@ -2961,6 +2961,23 @@
     "message": "A figura encapuzada aparece novamente. Seus sussurros deslizam pela noite fria uma última vez antes de ela desaparecer: “Sua sabedoria foi pesada e considerada digna. Que as sombras guardem seu caminho, e a fortuna siga seu nome.”",
     "title": "O Presente do Sussurrante"
   },
+  "watchingChildren": {
+    "choices": {
+      "approach": {
+        "label": "Aproximar-se"
+      },
+      "continue": {
+        "label": "Continuar andando"
+      }
+    },
+    "log": {
+      "outcome0": "Pedras voam das árvores, e nenhuma acerta você. Você chega mais perto. As crianças correm. Uma deixa cair uma bolsa.",
+      "outcome1": "Pedras voam das árvores. Uma acerta sua cabeça, e você perde os sentidos. Quando acorda, as crianças sumiram, e a sua bolsa também.",
+      "outcome2": "Você segue em frente. As crianças ficam onde estão, e as árvores se fecham atrás de você."
+    },
+    "message": "Numa manhã de caminhada, você vê cinco crianças pequenas paradas entre as árvores. Elas não se mexem. Só encaram você.",
+    "title": "Crianças que encaram"
+  },
   "whisperingVoices": {
     "choices": {
       "ignore": {
