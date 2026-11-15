@@ -259,8 +259,8 @@
       "description": "制作全部皮革制品"
     },
     "2-schematic_weapons": {
-      "label": "蓝图",
-      "description": "制作全部蓝图武器"
+      "label": "图纸",
+      "description": "制作全部图纸武器"
     },
     "3-ancient_books": {
       "label": "古老智慧",
