@@ -209,6 +209,7 @@ function AchievementRowComponent({
   claimButtonClass,
   claimChromeColor,
   claimGlowColor,
+  claimsEnabled,
   forceRedacted,
   catalogActive,
 }: {
@@ -219,6 +220,8 @@ function AchievementRowComponent({
   claimButtonClass: string;
   claimChromeColor: string;
   claimGlowColor: string;
+  /** Full rows keep a claim-height slot so collecting the reward does not pull the lines below upward. */
+  claimsEnabled?: boolean;
   forceRedacted?: boolean;
   catalogActive?: boolean;
 }) {
@@ -290,24 +293,26 @@ function AchievementRowComponent({
             </>
           )}
         </div>
-        {canClaim && (
-          <div className="h-5 flex items-center shrink-0 pr-1">
-            <GameButton
-              variant="outline"
-              size="xs"
-              className={`h-5 px-2 ${claimButtonClass} ${NEW_ITEM_PULSE_COLORED_CLASS}`}
-              style={{
-                ...chromeRuleColorStyle(claimChromeColor),
-                "--new-item-pulse-color": claimGlowColor,
-                color: claimGlowColor,
-              } as CSSProperties}
-              onClick={handleClaim}
-              button_id={`achievement-claim-${row.achievementId}`}
-            >
-              {t("achievements.claim")}
-            </GameButton>
+        {claimsEnabled && row.isFull && !forceRedacted ? (
+          <div className="adc-btn-size-xs flex shrink-0 items-center justify-end pr-1">
+            {canClaim ? (
+              <GameButton
+                variant="outline"
+                size="xs"
+                className={`${claimButtonClass} ${NEW_ITEM_PULSE_COLORED_CLASS}`}
+                style={{
+                  ...chromeRuleColorStyle(claimChromeColor),
+                  "--new-item-pulse-color": claimGlowColor,
+                  color: claimGlowColor,
+                } as CSSProperties}
+                onClick={handleClaim}
+                button_id={`achievement-claim-${row.achievementId}`}
+              >
+                {t("achievements.claim")}
+              </GameButton>
+            ) : null}
           </div>
-        )}
+        ) : null}
       </div>
       {isTitleVisible ? (
         <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2">
@@ -392,6 +397,7 @@ function AchievementTabContent({
     CLAIM_BUTTON_CHROME_COLOR[config.idPrefix] ?? CLAIM_BUTTON_CHROME_COLOR.item;
   const claimGlowColor =
     COMPLETE_ICON_COLOR[config.idPrefix] ?? COMPLETE_ICON_COLOR.item;
+  const claimsEnabled = config.claimable !== false;
   const categoryHeader = t(CATEGORY_HEADER_KEYS[config.idPrefix], {
     defaultValue: CATEGORY_HEADER_DEFAULTS[config.idPrefix],
   });
@@ -427,6 +433,7 @@ function AchievementTabContent({
               claimButtonClass={claimButtonClass}
               claimChromeColor={claimChromeColor}
               claimGlowColor={claimGlowColor}
+              claimsEnabled={claimsEnabled}
               forceRedacted={forceRedacted}
               catalogActive={catalogActive}
             />

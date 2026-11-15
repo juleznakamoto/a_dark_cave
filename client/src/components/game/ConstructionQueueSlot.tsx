@@ -10,7 +10,7 @@ import { GlowingShadow } from "@/components/ui/glowing-shadow";
 export type ConstructionQueueSlotKind = "free" | "used" | "locked" | "plus";
 
 const SLOT_GLYPH_CLASS =
-  "font-noto-symbols-2 text-[12px] translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none";
+  "game-panel-header-slot-glyph font-noto-symbols-2 translate-y-[2px] font-extrabold leading-none text-muted-foreground/45 select-none";
 
 /**
  * Village Build header queue mark.

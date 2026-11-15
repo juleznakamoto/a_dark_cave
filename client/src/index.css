@@ -1383,10 +1383,18 @@ button.new-item-pulse-text,
   height: calc(22px * var(--adc-control-scale, 1));
 }
 
-/* Village header slots (construction queue, job presets, insight unlocks). */
+/* Village header slots (construction queue, job presets, insight unlocks).
+   Grow with the text bump. control-scale alone left the + and × looking stuck
+   while labeled buttons grew. 18px at Small, then +2px per size step. */
 .game-panel-header-slot {
-  width: calc(18px * var(--adc-control-scale, 1));
-  height: calc(18px * var(--adc-control-scale, 1));
+  width: calc(18px + var(--adc-text-delta, 0px));
+  height: calc(18px + var(--adc-text-delta, 0px));
+}
+
+/* + / × / save mark inside those slots. text-[12px] is excluded from text scale. */
+.game-panel-header-slot-glyph {
+  font-size: calc(12px + var(--adc-text-delta, 0px));
+  line-height: 1;
 }
 
 .game-panel-header-slot-row {
@@ -1637,17 +1645,31 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
 .game-header-pact-choices {
   height: 1.75rem;
   align-items: center;
-  gap: calc(3.45px * var(--adc-control-scale, 1));
+  gap: calc(3.105px * var(--adc-control-scale, 1));
 }
 
 .game-header-pact-choice {
-  width: calc(13.8px * var(--adc-control-scale, 1));
-  height: calc(13.8px * var(--adc-control-scale, 1));
+  width: calc(12.42px * var(--adc-control-scale, 1));
+  height: calc(12.42px * var(--adc-control-scale, 1));
+  opacity: 0.6;
+  transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.game-header-pact-choice[data-filled="false"] {
+  opacity: 0.4;
+}
+
+.game-header-pact-choices:hover .game-header-pact-choice {
+  opacity: 1;
+}
+
+.game-header-pact-choices:hover .game-header-pact-choice[data-filled="false"] {
+  opacity: 0.8;
 }
 
 .game-header-pact-choice-fill {
-  width: calc(6.9px * var(--adc-control-scale, 1));
-  height: calc(6.9px * var(--adc-control-scale, 1));
+  width: calc(6.21px * var(--adc-control-scale, 1));
+  height: calc(6.21px * var(--adc-control-scale, 1));
   background: radial-gradient(circle at 32% 28%, #fda359 0%, #fd8c3b 25%, #e11d48 60%, #9f1239 100%);
   animation: game-header-pact-choice-spin 3s linear infinite;
 }
@@ -1699,10 +1721,11 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
 }
 
 /* Village − / + assignment hit targets.
-   Glyph size is on the inner span — Button’s `text-xs` would override font-size on the button itself. */
+   Glyph size is on the inner span — Button’s `text-xs` would override font-size on the button itself.
+   The box stays 2px larger than that glyph. A 20px * control-scale box falls behind the text bump. */
 .villager-count-button {
-  width: calc(20px * var(--adc-control-scale, 1));
-  height: calc(20px * var(--adc-control-scale, 1));
+  width: calc(1.125rem + var(--adc-text-delta, 0px) + 2px);
+  height: calc(1.125rem + var(--adc-text-delta, 0px) + 2px);
 }
 
 .villager-count-button>span {

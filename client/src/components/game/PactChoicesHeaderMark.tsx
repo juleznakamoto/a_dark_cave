@@ -15,7 +15,7 @@ export function PactChoicesHeaderMark({
 
   return (
     <span
-      className="game-header-pact-choices flex shrink-0 cursor-default items-center opacity-60 transition-opacity hover:opacity-100"
+      className="game-header-pact-choices flex shrink-0 cursor-default items-center"
       aria-label={label}
       data-testid="pact-choices-indicator"
       data-pact-choices={filled}

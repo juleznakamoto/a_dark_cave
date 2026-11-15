@@ -89,7 +89,7 @@ function useEstateGoldShopClick(canAfford: boolean) {
   };
 }
 
-/** Header row for estate upgrade bars — reserves Improve button width/height when maxed. */
+/** Header row for estate upgrade bars. The slot keeps the shared button height when maxed. */
 function EstateUpgradeRowHeader({
   title,
   action,
@@ -98,9 +98,9 @@ function EstateUpgradeRowHeader({
   action?: React.ReactNode;
 }) {
   return (
-    <div className="flex h-6 items-center justify-between">
-      <span className="text-xs font-medium text-foreground">{title}</span>
-      <div className="flex h-5 shrink-0 items-center justify-end pb-1">
+    <div className="flex items-center justify-between gap-2">
+      <span className="min-w-0 text-xs font-medium text-foreground">{title}</span>
+      <div className="adc-btn-size-xs flex shrink-0 items-center justify-end">
         {action}
       </div>
     </div>

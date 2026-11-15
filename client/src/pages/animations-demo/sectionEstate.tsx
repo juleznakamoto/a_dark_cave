@@ -28,9 +28,9 @@ export function EstateBarsSection() {
     >
       <SharedProgressShaderHost className="w-full max-w-md" visible={shaderVisible}>
         <div className="space-y-1">
-          <div className="flex h-6 items-center justify-between">
+          <div className="flex items-center justify-between gap-2">
             <span className="text-xs font-medium">Sleep Length</span>
-            <div className="flex h-5 shrink-0 items-center justify-end pb-1">
+            <div className="adc-btn-size-xs flex shrink-0 items-center justify-end">
               {level < maxLevel ? (
                 <ImproveButton
                   onClick={() => setLevel((l) => Math.min(maxLevel, l + 1))}

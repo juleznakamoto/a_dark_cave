@@ -389,7 +389,7 @@ export function ChromeRulesSection() {
             <Button
               variant="outline"
               size="xs"
-              className={`h-5 px-2 ${CLAIM_BUTTON_CLASS.item}`}
+              className={CLAIM_BUTTON_CLASS.item}
               style={chromeOn ? chromeRuleColorStyle(CLAIM_BUTTON_CHROME_COLOR.item) : undefined}
               button_id="chrome-demo-claim"
             >

@@ -2075,8 +2075,8 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       onClick={() => setSelectedFilter(null)}
                       className={
                         selectedFilter === null
-                          ? "h-6 text-xs"
-                          : "h-6 border border-red-500/50 text-xs"
+                          ? "text-xs"
+                          : "border border-red-500/50 text-xs"
                       }
                     >
                       {t("shop.highlights")}
@@ -2090,8 +2090,8 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       onClick={() => setSelectedFilter("gold")}
                       className={
                         selectedFilter === "gold"
-                          ? "h-6 text-xs"
-                          : "h-6 border border-red-500/50 text-xs"
+                          ? "text-xs"
+                          : "border border-red-500/50 text-xs"
                       }
                     >
                       {t("shop.gold")}
@@ -2105,8 +2105,8 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       onClick={() => setSelectedFilter("boosts")}
                       className={
                         selectedFilter === "boosts"
-                          ? "h-6 text-xs"
-                          : "h-6 border border-red-500/50 text-xs"
+                          ? "text-xs"
+                          : "border border-red-500/50 text-xs"
                       }
                     >
                       {t("shop.boosts")}
@@ -2120,8 +2120,8 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                       onClick={() => setSelectedFilter("bundles")}
                       className={
                         selectedFilter === "bundles"
-                          ? "h-6 text-xs"
-                          : "h-6 border border-red-500/50 text-xs"
+                          ? "text-xs"
+                          : "border border-red-500/50 text-xs"
                       }
                     >
                       {t("shop.bundles")}

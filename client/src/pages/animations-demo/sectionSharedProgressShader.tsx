@@ -35,9 +35,9 @@ function EstateStyleShaderBar({
 }) {
   return (
     <div className="w-full space-y-1">
-      <div className="flex h-6 items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <span className="text-xs font-medium text-foreground">{label}</span>
-        <div className="flex h-5 shrink-0 items-center justify-end gap-2 pb-1">
+        <div className="flex shrink-0 items-center justify-end gap-2">
           {level < segments ? (
             <ImproveButton
               onClick={onImprove}

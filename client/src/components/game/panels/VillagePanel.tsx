@@ -2753,8 +2753,8 @@ export default function VillagePanel() {
                                 <span
                                   className={
                                     presetSaveConfirmed
-                                      ? "inline-flex items-center justify-center text-[12px] leading-none text-green-500"
-                                      : "inline-flex items-center justify-center font-noto-symbols-2 text-[12px] leading-none translate-y-0.5"
+                                      ? "game-panel-header-slot-glyph inline-flex items-center justify-center leading-none text-green-500"
+                                      : "game-panel-header-slot-glyph inline-flex items-center justify-center font-noto-symbols-2 leading-none translate-y-0.5"
                                   }
                                 >
                                   {presetSaveConfirmed ? <CheckmarkIcon /> : "🖫"}
