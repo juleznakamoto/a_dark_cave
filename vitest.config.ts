@@ -17,6 +17,9 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, 'client/src'),
       '@shared': path.resolve(__dirname, 'shared'),
+      '@capacitor/filesystem': path.resolve(__dirname, 'client/src/stubs/capacitor/filesystem.ts'),
+      '@capacitor/app': path.resolve(__dirname, 'client/src/stubs/capacitor/app.ts'),
+      '@capacitor/status-bar': path.resolve(__dirname, 'client/src/stubs/capacitor/statusBar.ts'),
     },
   },
 });

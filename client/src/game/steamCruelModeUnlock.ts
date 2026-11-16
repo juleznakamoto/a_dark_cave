@@ -3,6 +3,7 @@ import { STEAM_CRUEL_MODE_UNLOCK } from "@/lib/featureFlags";
 import {
   isCrazyGamesEdition,
   isGalaxyEdition,
+  isIosBuild,
   isItchEdition,
   isSimulatedSteamGameMode,
   isSteamBuild,
@@ -51,8 +52,8 @@ export function markCruelWorldCodeEntered(
 }
 
 /**
- * Steam full game (or a DEV Steam Game / Steam End simulation): the
- * player may start Cruel Mode after a normal-mode finish, or immediately
+ * Steam full game, the iOS app, or a DEV Steam Game / Steam End simulation:
+ * the player may start Cruel Mode after a normal-mode finish, or immediately
  * after entering the CRUELWORLD code in Settings.
  *
  * Gated by {@link STEAM_CRUEL_MODE_UNLOCK}. The Steam demo never offers it.
@@ -72,8 +73,9 @@ export function isSteamCruelModeUnlockAvailable(
   if (!STEAM_CRUEL_MODE_UNLOCK) return false;
   if (isSteamDemoBuild || isSteamDemoRuntime()) return false;
   if (isGalaxyEdition() || isCrazyGamesEdition() || isItchEdition()) return false;
-  const onSteamFull = isSteamFullBuild || isSimulatedSteamGameMode(mode);
-  if (input.cruelWorldCode === true && onSteamFull) return true;
+  const onBuyOnceFull =
+    isSteamFullBuild || isIosBuild || isSimulatedSteamGameMode(mode);
+  if (input.cruelWorldCode === true && onBuyOnceFull) return true;
   if (input.hasWonNormalGame !== true) return false;
-  return onSteamFull;
+  return onBuyOnceFull;
 }

@@ -7,6 +7,8 @@
  * `electron:package:demo`). Everything Steam-specific (no online services, no real-money
  * shop, merchant-sold artifacts, local + Steam Cloud saves)
  * keys off `isSteamBuild`; the demo cap keys off `isSteamDemoBuild` / `isDemoEdition()`.
+ * The iOS App Store build is `VITE_IOS_BUILD=1` (`build:ios`): the same buy-once,
+ * local-only game as Steam full, without Steamworks.
  * Steam partner achievements sync on full and demo
  * ({@link shouldSyncSteamAchievements}); the demo only pushes basic IDs.
  * CrazyGames uses `VITE_CRAZYGAMES=1` (`build:crazygames`) or the `/crazygames` path.
@@ -19,6 +21,9 @@
 import { tryGetBoundGameStore } from "@/game/gameStoreHolder";
 
 export const isSteamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
+
+/** iOS App Store build (`VITE_IOS_BUILD=1`). Buy-once, local save, no login. */
+export const isIosBuild = import.meta.env.VITE_IOS_BUILD === "1";
 
 /** Steam desktop demo build (`VITE_STEAM_DEMO=1` with `VITE_STEAM_BUILD=1`). */
 export const isSteamDemoBuild = import.meta.env.VITE_STEAM_DEMO === "1";
@@ -48,7 +53,7 @@ export function shouldSyncSteamAchievements(): boolean {
 }
 
 /** Convenience inverse for readability at web-only call sites. */
-export const isWebBuild = !isSteamBuild;
+export const isWebBuild = !isSteamBuild && !isIosBuild;
 
 /** CrazyGames HTML5 demo folder (`build:crazygames`). */
 export const isCrazyGamesBuild = import.meta.env.VITE_CRAZYGAMES === "1";
@@ -199,17 +204,25 @@ export function isDemoEndDevMode(): boolean {
   return isDevGameMode("demoEnd");
 }
 
-/** Steam desktop, Galaxy, CrazyGames, or itch — no Supabase cloud saves or online services. */
+/** Steam, iOS, Galaxy, CrazyGames, or itch — no Supabase cloud saves or online services. */
 export function isLocalOnlyEdition(): boolean {
   return (
-    isSteamBuild || isGalaxyEdition() || isCrazyGamesEdition() || isItchEdition()
+    isSteamBuild ||
+    isIosBuild ||
+    isGalaxyEdition() ||
+    isCrazyGamesEdition() ||
+    isItchEdition()
   );
 }
 
-/** Steam desktop, Galaxy, CrazyGames, or itch — buy-once editions (BTP economy; no web MTX paywall). */
+/** Steam, iOS, Galaxy, CrazyGames, or itch — buy-once editions (BTP economy; no web MTX paywall). */
 export function isFullGameUnlockedEdition(): boolean {
   return (
-    isSteamBuild || isGalaxyEdition() || isCrazyGamesEdition() || isItchEdition()
+    isSteamBuild ||
+    isIosBuild ||
+    isGalaxyEdition() ||
+    isCrazyGamesEdition() ||
+    isItchEdition()
   );
 }
 
@@ -271,14 +284,14 @@ export function getDevGameModeOverride(): DevGameMode {
 }
 
 /**
- * Hide the Steam store / wishlist footer link. Steam desktop (and DEV Steam
- * Game / Demo) already are on Steam. Web, Galaxy, CrazyGames, and
- * itch keep the link. Store-free so the lightweight start screen can use it.
+ * Hide the Steam store / wishlist footer link. Steam desktop and the iOS app
+ * (and DEV Steam Game / Demo) already are a paid copy. Web, Galaxy, CrazyGames,
+ * and itch keep the link. Store-free so the lightweight start screen can use it.
  */
 export function shouldHideSteamStoreLink(
   devGameMode: DevGameMode = "normal",
 ): boolean {
-  if (isSteamBuild) return true;
+  if (isSteamBuild || isIosBuild) return true;
   if (isSimulatedSteamGameMode(devGameMode)) return true;
   if (import.meta.env.DEV && !isSteamBuild) {
     return devGameMode === "steamDemo" || devGameMode === "demoEnd";
@@ -302,7 +315,7 @@ function resolveDevGameMode(explicit?: DevGameMode): DevGameMode {
 }
 
 /**
- * Runtime Steam-like edition check — compile-time Steam / CrazyGames / Galaxy /
+ * Runtime buy-once edition check — compile-time Steam / iOS / CrazyGames / Galaxy /
  * itch, DEV Game Mode, or a live account Steam Game simulation. Use for UI
  * and shop-slot behavior; keep `isSteamBuild` for build-time stubs, save
  * backends, and Steam API bridges.
@@ -313,6 +326,7 @@ function resolveDevGameMode(explicit?: DevGameMode): DevGameMode {
 export function isSteamEditionActive(devGameMode?: DevGameMode): boolean {
   if (
     isSteamBuild ||
+    isIosBuild ||
     isGalaxyEdition() ||
     isCrazyGamesEdition() ||
     isItchEdition()

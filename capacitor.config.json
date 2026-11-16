@@ -1,0 +1,10 @@
+{
+  "appId": "com.adarkcave.game",
+  "appName": "A Dark Cave",
+  "webDir": "dist/ios",
+  "backgroundColor": "#0b0b0e",
+  "ios": {
+    "contentInset": "automatic",
+    "backgroundColor": "#0b0b0e"
+  }
+}

@@ -27,10 +27,13 @@ function readDocumentHidden(): boolean {
   return typeof document !== "undefined" && document.hidden === true;
 }
 
-/** True when the game page is backgrounded (browser tab, Steam overlay window, etc.). */
+/** iOS shell sets this when the app is backgrounded but `document.hidden` stays false. */
+let nativeAppBackgrounded = false;
+
+/** True when the game page is backgrounded (browser tab, Steam overlay window, iOS app, etc.). */
 export function isGameTabHidden(): boolean {
   if (hiddenOverride !== null) return hiddenOverride;
-  return readDocumentHidden();
+  return readDocumentHidden() || nativeAppBackgrounded;
 }
 
 /**
@@ -59,10 +62,22 @@ export function setGameTabHiddenForTests(hidden: boolean | null): void {
 let stopTabVisibilitySync: (() => void) | null = null;
 
 function syncTabVisibilityFromDocument() {
-  const hidden = readDocumentHidden();
+  const hidden = isGameTabHidden();
   document.documentElement.toggleAttribute(TAB_HIDDEN_ATTR, hidden);
   noteHiddenTransition(hidden);
   notifyTabHiddenListeners();
+}
+
+/**
+ * iOS reports background via the native app listener. `document.hidden` often
+ * stays false there, so the game loop would keep running. Dispatch
+ * `visibilitychange` so the existing pause and save listeners run.
+ */
+export function setNativeAppBackgrounded(backgrounded: boolean): void {
+  if (nativeAppBackgrounded === backgrounded) return;
+  nativeAppBackgrounded = backgrounded;
+  if (typeof document === "undefined") return;
+  document.dispatchEvent(new Event("visibilitychange"));
 }
 
 /** Sync a document-level flag so CSS can pause decorative animations while the tab is hidden. */

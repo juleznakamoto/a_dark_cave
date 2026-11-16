@@ -15,6 +15,7 @@
     "build:crazygames": "cross-env VITE_CRAZYGAMES=1 vite build",
     "package:crazygames": "node scripts/package-crazygames.mjs",
     "build:itch": "cross-env VITE_ITCH=1 vite build",
+    "build:ios": "cross-env VITE_IOS_BUILD=1 ADC_WEB_OUT_DIR=dist/ios vite build",
     "package:itch": "node scripts/package-itch.mjs",
     "electron:build": "node scripts/build-electron.mjs",
     "electron:start": "electron .",
@@ -55,6 +56,10 @@
     "upload:resend-contacts": "tsx scripts/upload-resend-contact-csv.ts"
   },
   "dependencies": {
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "^8.6.2",
+    "@capacitor/filesystem": "^8.1.5",
+    "@capacitor/status-bar": "^8.0.4",
     "@radix-ui/react-checkbox": "^1.1.5",
     "@radix-ui/react-dialog": "^1.1.7",
     "@radix-ui/react-dropdown-menu": "^2.1.7",
@@ -111,6 +116,8 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.6.2",
+    "@capacitor/ios": "^8.6.2",
     "@replit/vite-plugin-cartographer": "^0.3.0",
     "@replit/vite-plugin-runtime-error-modal": "^0.0.3",
     "@tailwindcss/typography": "^0.5.15",

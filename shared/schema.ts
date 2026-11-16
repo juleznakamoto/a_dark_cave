@@ -57,6 +57,7 @@ export const SIGN_UP_WELCOME_GOLD = 200;
 
 /**
  * Edition that last wrote a save. Used to tell Steam Demo files from full-game files.
+ * `ios` is the App Store app. Those saves stay on the device.
  * `steam-playtest` is retired. It stays so older saves still parse.
  */
 export const SAVE_ORIGIN_EDITIONS = [
@@ -67,6 +68,7 @@ export const SAVE_ORIGIN_EDITIONS = [
   "galaxy",
   "crazygames",
   "itch",
+  "ios",
 ] as const;
 
 export type SaveOriginEdition = (typeof SAVE_ORIGIN_EDITIONS)[number];

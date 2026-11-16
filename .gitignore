@@ -65,6 +65,12 @@ tmp-*
 **/__pycache__/
 *.pyc
 
+# iOS shell. Pods and the copied web bundle are produced on the Mac runner.
+ios/App/Pods/
+ios/App/build/
+ios/DerivedData/
+ios/App/App/public/
+
 # Cursor IDE — local only (MCP keys, rules, hooks, settings)
 .cursor/
 

@@ -26,10 +26,11 @@ function resolveBuildSha(mode: string): string {
 }
 
 const isSteamBuild = process.env.VITE_STEAM_BUILD === "1";
+const isIosBuild = process.env.VITE_IOS_BUILD === "1";
 const isCrazyGamesBuild = process.env.VITE_CRAZYGAMES === "1";
 const isItchBuild = process.env.VITE_ITCH === "1";
-const isRelativeHtmlBuild = isCrazyGamesBuild || isItchBuild;
-const useOfflineStubs = isSteamBuild || isRelativeHtmlBuild;
+const isRelativeHtmlBuild = isCrazyGamesBuild || isItchBuild || isIosBuild;
+const useOfflineStubs = isSteamBuild || isCrazyGamesBuild || isItchBuild || isIosBuild;
 const clientRoot = path.resolve(import.meta.dirname, "client");
 const repoRoot = path.resolve(import.meta.dirname);
 
@@ -99,6 +100,19 @@ export default defineConfig(async ({ mode }) => ({
           "@/lib/stripePaymentReturn": path.resolve(
             clientRoot,
             "src/stubs/steam/stripePaymentReturn.ts",
+          ),
+        }
+        : {}),
+      ...(!isIosBuild
+        ? {
+          "@capacitor/filesystem": path.resolve(
+            clientRoot,
+            "src/stubs/capacitor/filesystem.ts",
+          ),
+          "@capacitor/app": path.resolve(clientRoot, "src/stubs/capacitor/app.ts"),
+          "@capacitor/status-bar": path.resolve(
+            clientRoot,
+            "src/stubs/capacitor/statusBar.ts",
           ),
         }
         : {}),

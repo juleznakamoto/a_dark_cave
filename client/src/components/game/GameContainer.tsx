@@ -159,8 +159,9 @@ function TimedEventTabTitle({ label }: { label: string }) {
   );
 }
 const steamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
+const iosBuild = import.meta.env.VITE_IOS_BUILD === "1";
 const ShareDialog = lazy(() => import("./ShareDialog"));
-const WebOnlyDialogs = steamBuild
+const WebOnlyDialogs = steamBuild || iosBuild
   ? null
   : lazy(() => import("./WebOnlyDialogs"));
 

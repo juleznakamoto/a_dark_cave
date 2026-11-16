@@ -11,9 +11,10 @@ import AppErrorBoundary from "@/components/AppErrorBoundary";
 import { shouldBootGameSurface } from "@/game/startupBootSurface";
 
 const steamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
+const iosBuild = import.meta.env.VITE_IOS_BUILD === "1";
 const crazyGamesBuild = import.meta.env.VITE_CRAZYGAMES === "1";
 const itchBuild = import.meta.env.VITE_ITCH === "1";
-const offlinePortalBuild = steamBuild || crazyGamesBuild || itchBuild;
+const offlinePortalBuild = steamBuild || iosBuild || crazyGamesBuild || itchBuild;
 const hashRoutedPortalBuild = crazyGamesBuild || itchBuild;
 
 function redirectHome() {

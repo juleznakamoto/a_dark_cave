@@ -25,6 +25,7 @@ all game logic lives in the client. **Supabase** handles auth/cloud saves.
 |------|-----------------|
 | `client/` | React SPA: UI, game engine, i18n, assets. Vite root. |
 | `electron/` | Steam desktop shell (main/preload, loopback static server, steamworks.js). |
+| `ios/` | iOS App Store shell (Capacitor / Xcode). Built on a GitHub macOS runner. |
 | `server/` | Express API, Stripe/referral/marketing, Vite middleware, prod static serving. |
 | `shared/` | Zod schemas and other TS shared by client + server. |
 | `supabase/` | SQL migrations + `functions/save-game/` edge function. |
@@ -40,6 +41,7 @@ all game logic lives in the client. **Supabase** handles auth/cloud saves.
 **Root config:** `package.json`, `vite.config.ts` (+ `vite.vendorChunks.ts`),
 `tsconfig.json`, `vitest.config.ts`, `tailwind.config.ts`, `components.json`,
 `drizzle.config.ts`, `electron-builder.yml` (+ `.demo.yml`),
+`capacitor.config.json` (iOS App Store shell),
 `steam_appid.txt` (full **4882240**), `steam_appid_demo.txt` (**4971800**).
 
 **Path aliases:** `@/*` → `client/src/*`, `@shared/*` → `shared/*`, `@assets` → `attached_assets`.
@@ -186,6 +188,7 @@ shared/schema.ts - Zod persisted shape
 | Client/server build | `write-build-meta.mjs` (`__BUILD_SHA__` / `/api/version`) |
 | i18n | `i18n:*` npm scripts (`extract`, `sync`, `verify`, `translate`) |
 | Steam package/upload | `package-steam-*.mjs`, `steam-upload*.ps1`, `build-electron.mjs` |
+| iOS compile / TestFlight | `.github/workflows/ios.yml`, `scripts/ios-testflight-upload.sh` |
 | CrazyGames folder | `package-crazygames.mjs` |
 | itch.io HTML demo folder | `package-itch.mjs` |
 | Press / icons / fonts | `build-press-kit-assets.mjs`, `generate-logo-assets.py` |
@@ -196,9 +199,10 @@ shared/schema.ts - Zod persisted shape
 ## Editions
 
 Same client, switched by build/URL flags in `client/src/lib/edition.ts`.
-Steam/Galaxy/CrazyGames/itch are local-only (no Supabase, Stripe, shop, Playlight,
+Steam, iOS, Galaxy, CrazyGames, and itch are local-only (no Supabase, Stripe, shop, Playlight,
 leaderboard, or marketing). Demo editions cap at 8 wooden huts
 (`client/src/game/demoLimit.ts`) and share demo-end chrome (Steam wishlist).
+The iOS app is the buy-once full game (no demo in v1).
 
 | Edition | How it is selected | Save isolation | Package |
 |---------|--------------------|----------------|---------|
@@ -208,6 +212,9 @@ leaderboard, or marketing). Demo editions cap at 8 wooden huts
 | Galaxy | URL `/galaxy` | `galaxySave` | hosted at `/galaxy` |
 | CrazyGames | `VITE_CRAZYGAMES=1` or `/crazygames` | `crazyGamesSave` + SDK Data + `localStorage` | `package:crazygames` |
 | itch.io demo | `VITE_ITCH=1` or `/itch` | `itchSave` | `package:itch` (`release/a-dark-cave-itch/`) |
+| iOS | `VITE_IOS_BUILD=1` | IndexedDB `iosSave` + `adc-ios-save.dat` in the app sandbox | `build:ios`, then the `ios` GitHub workflow |
+
+**iOS shell:** `ios/`, `capacitor.config.json`. The renderer uses `client/src/lib/iosShell.ts` and `client/src/game/iosSaveAdapter.ts`. Web and Steam alias `@capacitor/*` to stubs. Signing and TestFlight upload run only when the workflow is started with the upload input and the App Store Connect secrets exist. A normal run compiles an unsigned simulator build on `macos-latest` (Swift Package Manager, no CocoaPods).
 
 **Steam shell:** `electron/main.ts`, `preload.ts`, `loopbackServer.ts`, `steam.ts`,
 `paths.ts`. Renderer talks through `client/src/lib/steam.ts`. Steam Vite build

@@ -12,6 +12,8 @@ interface ImportMetaEnv {
   readonly VITE_CRAZYGAMES?: string;
   /** "1" only in the itch.io HTML5 demo folder (`build:itch`). */
   readonly VITE_ITCH?: string;
+  /** "1" only in the iOS App Store build (`build:ios`). */
+  readonly VITE_IOS_BUILD?: string;
 }
 
 interface ImportMeta {

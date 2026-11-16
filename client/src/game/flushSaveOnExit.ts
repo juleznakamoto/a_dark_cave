@@ -65,6 +65,11 @@ function flushLiveGameOnce(): Promise<void> {
   return flushInFlight;
 }
 
+/** iOS background: write the live game. Does not lock later flushes. */
+export function flushLiveGameForBackground(): Promise<void> {
+  return flushLiveGameOnce();
+}
+
 /** True when a started game is in memory and should be written on quit. */
 export function shouldFlushLiveGameOnExit(state: {
   flags?: { gameStarted?: boolean };

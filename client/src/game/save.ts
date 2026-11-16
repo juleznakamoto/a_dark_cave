@@ -29,13 +29,14 @@ import {
 import { tWithFallback } from "@/i18n/resolveGameText";
 import { syncSocialPromoExclusiveRewardPending } from "./socialPromoExclusiveReward";
 import { buildGameState } from "./stateHelpers";
-import { isLocalOnlyEdition, isSteamBuild } from "@/lib/edition";
+import { isLocalOnlyEdition, isIosBuild, isSteamBuild } from "@/lib/edition";
 import { getSaveOriginEdition } from "./saveOrigin";
 import {
   writeSteamCloudSave,
   readSteamCloudSave,
   pickNewerSave,
 } from "./steamSaveAdapter";
+import { readIosSaveFile, writeIosSaveFile, clearIosSaveFile } from "./iosSaveAdapter";
 import { shouldAdoptSteamCloudSave } from "./steamDemoContinue";
 import {
   clearCrazyGamesPersistedData,
@@ -440,8 +441,12 @@ async function putLocalSave(
   if (isSteamBuild) {
     await writeSteamCloudSave(encoded);
   }
+  // iOS build: mirror the same encoded blob into the app sandbox.
+  if (isIosBuild) {
+    await writeIosSaveFile(encoded);
+  }
   await writeCrazyGamesCloudSave(encoded);
-  if (!db && !shouldUseCrazyGamesPersist() && !isSteamBuild) {
+  if (!db && !shouldUseCrazyGamesPersist() && !isSteamBuild && !isIosBuild) {
     throw new Error("No local save backend available");
   }
 }
@@ -467,6 +472,9 @@ async function getLocalSave(
     if (cloud && shouldAdoptSteamCloudSave(local, cloud)) {
       local = pickNewerSave(local, cloud);
     }
+  }
+  if (isIosBuild) {
+    local = pickNewerSave(local, await readIosSaveFile());
   }
   if (shouldUseCrazyGamesPersist()) {
     const crazyGames = await readCrazyGamesSave();
@@ -1344,4 +1352,5 @@ export async function deleteSave(): Promise<void> {
   } catch (error) {
     logger.error("Failed to delete save:", error);
   }
+  await clearIosSaveFile();
 }

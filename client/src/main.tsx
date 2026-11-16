@@ -27,6 +27,7 @@ import { isCrazyGamesBuild } from "./lib/edition";
 import { hasCrazyGamesSdk } from "./lib/crazyGames";
 import { installFlushSaveOnExit } from "./game/flushSaveOnExit";
 import { persistLandingReferralCode } from "./game/referralLanding";
+import { isIosBuild } from "./lib/edition";
 
 bootstrapAfterHardReload();
 installStaleChunkAutoReload();
@@ -37,6 +38,9 @@ installSuppressReplitFragmentWarnings();
 initTextScaleFromStorage();
 initTabVisibilityClass();
 installFlushSaveOnExit();
+if (isIosBuild) {
+  void import("./lib/iosShell").then((mod) => mod.installIosShell());
+}
 
 // Workaround for Google Translate (and similar) mutating text nodes, which
 // leaves React reconciliation pointing at nodes whose real parent has changed.

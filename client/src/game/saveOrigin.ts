@@ -5,6 +5,7 @@ import {
 import {
   isCrazyGamesEdition,
   isGalaxyEdition,
+  isIosBuild,
   isItchEdition,
   isSteamBuild,
   isSteamDemoBuild,
@@ -19,6 +20,7 @@ export { SAVE_ORIGIN_EDITIONS, type SaveOriginEdition };
 export function getSaveOriginEdition(): SaveOriginEdition {
   if (isSteamDemoBuild || isSteamDemoRuntime()) return "steam-demo";
   if (isSteamBuild) return "steam-full";
+  if (isIosBuild) return "ios";
   if (isItchEdition()) return "itch";
   if (isGalaxyEdition()) return "galaxy";
   if (isCrazyGamesEdition()) return "crazygames";

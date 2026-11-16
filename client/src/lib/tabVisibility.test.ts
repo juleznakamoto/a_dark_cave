@@ -7,12 +7,14 @@ import {
   initTabVisibilityClass,
   isGameTabHidden,
   setGameTabHiddenForTests,
+  setNativeAppBackgrounded,
   subscribeGameTabHidden,
 } from "./tabVisibility";
 
 describe("tabVisibility", () => {
   afterEach(() => {
     setGameTabHiddenForTests(null);
+    setNativeAppBackgrounded(false);
   });
 
   it("increments the visible epoch only when going from hidden to visible", () => {
@@ -43,5 +45,16 @@ describe("tabVisibility", () => {
     expect(calls.at(-1)).toBe(false);
 
     unsubscribe();
+  });
+
+  it("treats the iOS app as hidden while document.hidden stays false", () => {
+    initTabVisibilityClass();
+    expect(isGameTabHidden()).toBe(false);
+    setNativeAppBackgrounded(true);
+    expect(isGameTabHidden()).toBe(true);
+    expect(document.documentElement.hasAttribute("data-tab-hidden")).toBe(true);
+    setNativeAppBackgrounded(false);
+    expect(isGameTabHidden()).toBe(false);
+    expect(document.documentElement.hasAttribute("data-tab-hidden")).toBe(false);
   });
 });
