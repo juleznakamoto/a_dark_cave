@@ -1,5 +1,4 @@
 import type { GameState } from "@shared/schema";
-import { getSeenResourceKeys } from "@/game/stateHelpers";
 import type { EventChoiceEffectResult, GameEvent } from "./eventTypes";
 
 export const BRIMSTONE_FLUX_DURATION_MS = 30 * 60 * 1000;
@@ -20,7 +19,11 @@ function hasFoundry(state: GameState): boolean {
 }
 
 function hasSeenSteel(state: GameState): boolean {
-  return getSeenResourceKeys(state).includes("steel");
+  // Same rule as getSeenResourceKeys, inlined so this file stays a leaf.
+  // Importing stateHelpers cycles through population.ts back here and the
+  // game dies on the error screen before it can mount.
+  if ((state.seenResources ?? []).includes("steel")) return true;
+  return (state.resources.steel ?? 0) > 0;
 }
 
 function isAccepted(state: GameState, visit: 1 | 2 | 3): boolean {

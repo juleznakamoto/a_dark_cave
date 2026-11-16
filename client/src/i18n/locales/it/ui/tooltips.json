@@ -53,6 +53,8 @@
     "chokingFog": "Nebbia soffocante",
     "staringDeer": "Cervi che fissano",
     "foodProductionBonus": "Bonus di produzione di cibo: {{value}}",
+    "furProductionBonus": "Bonus di produzione di pelliccia: {{value}}",
+    "bonesProductionBonus": "Bonus di produzione di ossa: {{value}}",
     "forestFear": "Paura della foresta",
     "hunterProduction": "Produzione cacciatori: {{value}}",
     "gathererProduction": "Produzione raccoglitori: {{value}}",

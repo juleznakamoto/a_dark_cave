@@ -117,6 +117,12 @@ interface SegmentedProgressProps {
   /** Shadow class for a filled cell rim. Shared shader host should use the same. */
   rimFilledClassName?: string;
   /**
+   * Estate and attack-wave bars. Rest at 80% opacity and return to full
+   * strength while the pointer is on the bar. Marks the root so the shared
+   * smoke canvas can match (that layer is not a child of this element).
+   */
+  softenUntilHover?: boolean;
+  /**
    * Optional fill layer (e.g. SharedProgressShaderSegment). When set, skips
    * solid `filledClassName` so the custom fill can show through.
    */
@@ -148,6 +154,7 @@ export function SegmentedProgress({
   flashOnFill = false,
   showRim = true,
   rimFilledClassName = "shadow-[0_0_0_1px_theme(colors.orange.600/0.8)]",
+  softenUntilHover = false,
   renderFill,
   "aria-label": ariaLabel,
   "aria-valuenow": ariaValueNow,
@@ -330,7 +337,13 @@ export function SegmentedProgress({
   return (
     <>
       <div
-        className={cn("flex flex-col", compact ? "gap-1" : "gap-8", className)}
+        className={cn(
+          "flex flex-col",
+          compact ? "gap-1" : "gap-8",
+          softenUntilHover && "opacity-80 hover:opacity-100",
+          className,
+        )}
+        {...(softenUntilHover ? { "data-progress-dim": "" } : {})}
       >
         <div className={cn("flex flex-col", compact ? "gap-1" : "gap-3")}>
           {(label || showPercentage) && (

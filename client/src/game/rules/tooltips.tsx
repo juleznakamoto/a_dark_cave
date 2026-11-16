@@ -15,6 +15,10 @@ import {
 } from "./effectsCalculation";
 import { getMadnessProductionMultiplier } from "@/game/population";
 import { getHeartfireProductionPerLevel } from "@/game/rules/pacts";
+import {
+  getHeartfireElapsedMs,
+  HEARTFIRE_LEVEL_DURATION_MS,
+} from "@/game/heartfireClock";
 import { BRIMSTONE_FLUX_STEEL_BONUS } from "./eventsBrimstoneFlux";
 import {
   getMadnessDeathChancePerCycle,
@@ -999,10 +1003,10 @@ export const heartfireTooltip: TooltipConfig = {
     const heartfireState = state.heartfireState;
     if (!heartfireState || heartfireState.level <= 0) return null;
 
-    const now = Date.now();
-    const lastDecrease = heartfireState.lastLevelDecrease || 0;
-    const levelDuration = 90000; // 1.5 minutes per level
-    const remainingMs = Math.max(0, levelDuration - (now - lastDecrease));
+    const remainingMs = Math.max(
+      0,
+      HEARTFIRE_LEVEL_DURATION_MS - getHeartfireElapsedMs(heartfireState),
+    );
 
     const villagerBonus = [0, 1, 2.5, 5, 7.5, 10][heartfireState.level] ?? 0;
     const prodPctPerLevel = Math.round(getHeartfireProductionPerLevel(state) * 100);
@@ -1095,6 +1099,16 @@ export const staringDeerTooltip: TooltipConfig = {
           </div>
           <div>
             {getUiTooltip("foodProductionBonus", "Food Production Bonus: {{value}}", {
+              value: "100%",
+            })}
+          </div>
+          <div>
+            {getUiTooltip("furProductionBonus", "Fur Production Bonus: {{value}}", {
+              value: "100%",
+            })}
+          </div>
+          <div>
+            {getUiTooltip("bonesProductionBonus", "Bones Production Bonus: {{value}}", {
               value: "100%",
             })}
           </div>

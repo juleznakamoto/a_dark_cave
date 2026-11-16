@@ -536,7 +536,7 @@ export const getPopulationProduction = (
     });
   }
 
-  // Staring deer: doubles food production while active - temporary, inactive during sleep
+  // Staring deer: doubles food, fur, and bones while active - temporary, inactive during sleep
   const staringDeerState = state.staringDeerState;
   if (
     !excludeTemporary &&
@@ -544,7 +544,12 @@ export const getPopulationProduction = (
     staringDeerState.endTime > Date.now()
   ) {
     baseProduction.forEach((prod) => {
-      if (prod.resource === "food" && prod.totalAmount > 0) {
+      if (
+        (prod.resource === "food" ||
+          prod.resource === "fur" ||
+          prod.resource === "bones") &&
+        prod.totalAmount > 0
+      ) {
         scale(prod, "staringDeer", (n) => n * 2);
       }
     });

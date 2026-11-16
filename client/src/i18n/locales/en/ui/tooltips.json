@@ -53,6 +53,8 @@
     "chokingFog": "Choking Fog",
     "staringDeer": "Staring Deer",
     "foodProductionBonus": "Food Production Bonus: {{value}}",
+    "furProductionBonus": "Fur Production Bonus: {{value}}",
+    "bonesProductionBonus": "Bones Production Bonus: {{value}}",
     "forestFear": "Forest Fear",
     "hunterProduction": "Hunter Production: {{value}}",
     "gathererProduction": "Gatherer Production: {{value}}",

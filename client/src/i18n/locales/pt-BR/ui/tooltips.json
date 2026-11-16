@@ -53,6 +53,8 @@
     "chokingFog": "Névoa Sufocante",
     "staringDeer": "Cervos Observadores",
     "foodProductionBonus": "Bônus de produção de comida: {{value}}",
+    "furProductionBonus": "Bônus de produção de pele: {{value}}",
+    "bonesProductionBonus": "Bônus de produção de ossos: {{value}}",
     "forestFear": "Medo da Floresta",
     "hunterProduction": "Produção de caçadores: {{value}}",
     "gathererProduction": "Produção de coletores: {{value}}",

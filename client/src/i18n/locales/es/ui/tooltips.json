@@ -53,6 +53,8 @@
     "chokingFog": "Niebla asfixiante",
     "staringDeer": "Ciervos que observan",
     "foodProductionBonus": "Bonificación de producción de comida: {{value}}",
+    "furProductionBonus": "Bonificación de producción de pieles: {{value}}",
+    "bonesProductionBonus": "Bonificación de producción de huesos: {{value}}",
     "forestFear": "Miedo al bosque",
     "hunterProduction": "Producción de cazadores: {{value}}",
     "gathererProduction": "Producción de recolectores: {{value}}",

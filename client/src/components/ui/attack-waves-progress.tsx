@@ -40,6 +40,7 @@ export default function AttackWavesProgressBar({
         emptyClassName={style.emptyClassName}
         segmentClassName={style.segmentClassName}
         rimFilledClassName={style.rimClassName}
+        softenUntilHover
         renderFill={() => (
           <SharedProgressShaderSegment className="absolute inset-0" />
         )}

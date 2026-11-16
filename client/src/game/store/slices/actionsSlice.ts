@@ -231,6 +231,10 @@ import {
   syncTimedEventTabPauseTracking,
   getTimedEventTabEffectiveRemainingMs,
 } from "../timedEventTabSync";
+import {
+  getHeartfireElapsedMs,
+  HEARTFIRE_LEVEL_DURATION_MS,
+} from "@/game/heartfireClock";
 import { StateManager } from "../StateManager";
 import { playActionStartSfx } from "../actionSfx";
 import { maybeScheduleInsightIntroDialog } from "@/game/insightIntro";
@@ -940,15 +944,17 @@ export const createActionsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
       }
 
       let newHeartfireState = state.heartfireState;
-      if (state.heartfireState?.level > 0) {
-        const now = Date.now();
-        const lastDecrease = state.heartfireState.lastLevelDecrease || 0;
-        if (now - lastDecrease >= 90000) { // 1.5 minutes
-          newHeartfireState = {
-            level: state.heartfireState.level - 1,
-            lastLevelDecrease: now,
-          };
-        }
+      if (
+        state.heartfireState?.level > 0 &&
+        (state.heartfireState.pauseStartedAt ?? 0) <= 0 &&
+        getHeartfireElapsedMs(state.heartfireState, now) >=
+          HEARTFIRE_LEVEL_DURATION_MS
+      ) {
+        newHeartfireState = {
+          level: state.heartfireState.level - 1,
+          lastLevelDecrease: now,
+          pauseStartedAt: 0,
+        };
       }
 
       // Nothing actually changed this tick (no active cooldowns, no insight reveal resolved,

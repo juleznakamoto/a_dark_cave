@@ -10,6 +10,7 @@ describe("event module initialization", () => {
     expect(gameEvents.firstWave?.id).toBe("firstWave");
     expect(gameEvents.postCompletionWave?.id).toBe("postCompletionWave");
     expect(gameEvents.wandering_collector?.id).toBe("wandering_collector");
+    expect(gameEvents.brimstoneFlux1?.id).toBe("brimstoneFlux1");
   });
 
   it("registers cave explore actions after the actions.ts ↔ rules/index cycle", () => {

@@ -53,6 +53,8 @@
     "chokingFog": "Dławiąca mgła",
     "staringDeer": "Wpatrujące się jelenie",
     "foodProductionBonus": "Premia do produkcji żywności: {{value}}",
+    "furProductionBonus": "Premia do produkcji futra: {{value}}",
+    "bonesProductionBonus": "Premia do produkcji kości: {{value}}",
     "forestFear": "Coś w lesie",
     "hunterProduction": "Produkcja myśliwych: {{value}}",
     "gathererProduction": "Produkcja zbieraczy: {{value}}",

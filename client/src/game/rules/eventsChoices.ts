@@ -1823,7 +1823,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       !state.relics?.odd_trinket &&
       state.weapons.crude_bow &&
-      state.buildings.woodenHut <= 4,
+      state.buildings.woodenHut >= 4,
     timeProbability: 10,
     priority: 3,
     repeatable: false,

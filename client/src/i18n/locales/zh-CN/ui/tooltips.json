@@ -53,6 +53,8 @@
     "chokingFog": "窒息迷雾",
     "staringDeer": "凝视的鹿",
     "foodProductionBonus": "食物生产加成：{{value}}",
+    "furProductionBonus": "毛皮生产加成：{{value}}",
+    "bonesProductionBonus": "骨头生产加成：{{value}}",
     "forestFear": "林中恐惧",
     "hunterProduction": "猎人生产：{{value}}",
     "gathererProduction": "采集者生产：{{value}}",

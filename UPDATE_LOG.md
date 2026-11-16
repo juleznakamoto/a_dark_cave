@@ -12,6 +12,9 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Changed
 
+- Estate upgrade bars and the attack-wave bar rest a little softer, and turn solid while you hover them. The smoke in the bar under your pointer moves eleven times as fast.
+- The Odd Elixir can appear once you have 4 Wooden Huts and the Crude Bow. Building more huts no longer skips it.
+- While Staring Deer is active, hunting also brings in twice the fur and bones, the same as food.
 - The Madness tooltip now says that ill events follow those dangerous paths.
 - Achievement descriptions for a full set no longer say how many books, companions, tools, or pacts you need.
 - Later achievements pay 100 gold, and some mid-game ones pay 750 Insight. The earliest ones still pay silver.
@@ -21,6 +24,7 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Fixed
 
+- The Great Fire countdown pauses while a dialog is open.
 - Pact choice cards keep each line of writing in its own space at Huge text size, and the cards grow a little wider as the text gets larger.
 - Calling the merchant no longer replaces an event that appears while he is on the way. He arrives after you finish that event.
 - Closing a cube memory or another event no longer brings the same dialog, or the next one, straight back.

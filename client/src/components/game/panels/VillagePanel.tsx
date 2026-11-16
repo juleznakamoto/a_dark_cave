@@ -16,6 +16,10 @@ import {
 import { hasVisibleVillagerBlockingAction } from "@/game/rules/villagerBlockingActions";
 import { BRIMSTONE_FLUX_DURATION_MS } from "@/game/rules/eventsBrimstoneFlux";
 import {
+  getHeartfireElapsedMs,
+  HEARTFIRE_LEVEL_DURATION_MS,
+} from "@/game/heartfireClock";
+import {
   feastTooltip,
   solsticeTooltip,
   curseTooltip,
@@ -2227,13 +2231,12 @@ export default function VillagePanel() {
                           >
                             <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
                               <CircularProgress
-                                value={(() => {
-                                  const now = Date.now();
-                                  const lastDecrease =
-                                    state.heartfireState.lastLevelDecrease || 0;
-                                  const elapsed = now - lastDecrease;
-                                  return Math.min(100, (elapsed / 90000) * 100);
-                                })()}
+                                value={Math.min(
+                                  100,
+                                  (getHeartfireElapsedMs(state.heartfireState) /
+                                    HEARTFIRE_LEVEL_DURATION_MS) *
+                                    100,
+                                )}
                                 size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
                                 fill
                                 strokeWidth={2}

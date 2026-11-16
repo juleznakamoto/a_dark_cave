@@ -53,6 +53,8 @@
     "chokingFog": "Brouillard étouffant",
     "staringDeer": "Cerfs figés",
     "foodProductionBonus": "Bonus de production de nourriture : {{value}}",
+    "furProductionBonus": "Bonus de production de fourrure : {{value}}",
+    "bonesProductionBonus": "Bonus de production d'os : {{value}}",
     "forestFear": "Peur de la forêt",
     "hunterProduction": "Production des chasseurs : {{value}}",
     "gathererProduction": "Production des collecteurs : {{value}}",

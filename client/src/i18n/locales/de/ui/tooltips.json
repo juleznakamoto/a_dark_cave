@@ -53,6 +53,8 @@
     "chokingFog": "Erstickender Nebel",
     "staringDeer": "Starrende Hirsche",
     "foodProductionBonus": "Nahrungsproduktionsbonus: {{value}}",
+    "furProductionBonus": "Fellproduktionsbonus: {{value}}",
+    "bonesProductionBonus": "Knochenproduktionsbonus: {{value}}",
     "forestFear": "Waldangst",
     "hunterProduction": "Jägerproduktion: {{value}}",
     "gathererProduction": "Sammlerproduktion: {{value}}",

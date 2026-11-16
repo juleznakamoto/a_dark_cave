@@ -53,6 +53,8 @@
     "chokingFog": "Boğucu Sis",
     "staringDeer": "Dik Dik Bakan Geyikler",
     "foodProductionBonus": "Yiyecek Üretimi Bonusu: {{value}}",
+    "furProductionBonus": "Kürk Üretimi Bonusu: {{value}}",
+    "bonesProductionBonus": "Kemik Üretimi Bonusu: {{value}}",
     "forestFear": "Orman Korkusu",
     "hunterProduction": "Avcı Üretimi: {{value}}",
     "gathererProduction": "Toplayıcı Üretimi: {{value}}",

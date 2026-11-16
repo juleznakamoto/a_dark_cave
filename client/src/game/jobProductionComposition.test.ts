@@ -89,6 +89,31 @@ describe("getJobProductionComposition", () => {
     expectCompositionMatchesProduction("hunter", 1, state);
   });
 
+  it("doubles hunter food, fur, and bones while staring deer is active", () => {
+    const state = stateOf({
+      staringDeerState: { isActive: true, endTime: Date.now() + 60_000 },
+    });
+    expect(amountsFor("hunter", 1, state, "food")).toEqual([
+      { sourceId: "base", amount: 5 },
+      { sourceId: "staringDeer", amount: 5 },
+    ]);
+    expect(amountsFor("hunter", 1, state, "fur")).toEqual([
+      { sourceId: "base", amount: 1 },
+      { sourceId: "staringDeer", amount: 1 },
+    ]);
+    expect(amountsFor("hunter", 1, state, "bones")).toEqual([
+      { sourceId: "base", amount: 1 },
+      { sourceId: "staringDeer", amount: 1 },
+    ]);
+    expect(amountsFor("tanner", 1, state, "fur")).toEqual([
+      { sourceId: "base", amount: -10 },
+    ]);
+    expect(amountsFor("gatherer", 1, state, "wood")).toEqual([
+      { sourceId: "base", amount: 10 },
+    ]);
+    expectCompositionMatchesProduction("hunter", 1, state);
+  });
+
   it("adds Fisher's Hand food on top of the hunter base yield", () => {
     const state = stateOf({
       blessings: { fishers_hand: true },

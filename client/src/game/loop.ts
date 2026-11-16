@@ -8,6 +8,8 @@ import {
   shouldFreezeTimedEventTabCountdown,
   syncTimedEventTabPauseTracking,
   getTimedEventTabEffectiveRemainingMs,
+  syncHeartfirePauseTracking,
+  installHeartfirePauseWatch,
 } from "./state";
 import { saveGame } from "./save";
 import { shouldAllowPlaytimeOverwrite } from "./saveConflict";
@@ -343,6 +345,7 @@ function handleActivityVisibilityChange() {
   // Freeze or unfreeze the timed-tab countdown on hide/show. The simulation
   // timer is cleared while hidden, so this cannot wait for the next tick.
   syncTimedEventTabPauseTracking();
+  syncHeartfirePauseTracking();
   if (isGameTabHidden()) {
     clearGameLoopTimer();
     return;
@@ -478,6 +481,8 @@ export function startGameLoop() {
   resetPlayTimeAutoPromptHandoff();
 
   useGameStore.setState({ isGameLoopActive: true });
+  installHeartfirePauseWatch();
+  syncHeartfirePauseTracking();
   resetAttackWaveElapsedClock();
   const now = performance.now();
   lastFrameTime = now;
@@ -590,6 +595,7 @@ export function startGameLoop() {
     if (state.timedEventTab.isActive) {
       syncTimedEventTabPauseTracking();
     }
+    syncHeartfirePauseTracking();
 
     // Open the end dialog before the freeze return so the hut-cap tick still shows it.
     processDemoLimit();

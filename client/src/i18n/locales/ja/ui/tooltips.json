@@ -53,6 +53,8 @@
     "chokingFog": "息苦しい霧",
     "staringDeer": "見つめる鹿",
     "foodProductionBonus": "食料生産ボーナス：{{value}}",
+    "furProductionBonus": "毛皮生産ボーナス：{{value}}",
+    "bonesProductionBonus": "骨生産ボーナス：{{value}}",
     "forestFear": "森の恐怖",
     "hunterProduction": "狩人の生産：{{value}}",
     "gathererProduction": "採集者の生産：{{value}}",

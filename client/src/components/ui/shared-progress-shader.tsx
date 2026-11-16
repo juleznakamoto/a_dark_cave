@@ -96,6 +96,7 @@ function buildSharedProgressFragmentShader(source: string): string {
     "uniform vec4 u_cursor;",
     `uniform vec4 u_cursor;
 uniform vec4 u_clipRect; // xy bottom-left, zw size (gl_FragCoord / scissor space)
+uniform float u_segmentOpacity;
 `,
   );
   // u_finish.w is corner radius here — disable the stock grain path that shares it.
@@ -121,10 +122,15 @@ uniform vec4 u_clipRect; // xy bottom-left, zw size (gl_FragCoord / scissor spac
     coverage = 1.0 - smoothstep(0.0, 1.0, dist);
     if (coverage <= 0.002) discard;
   }
-  gl_FragColor = vec4(clamp(col, 0.0, 1.0) * coverage, coverage);
+  float alpha = coverage * u_segmentOpacity;
+  gl_FragColor = vec4(clamp(col, 0.0, 1.0) * alpha, alpha);
 }`,
   );
-  if (!patched.includes("u_clipRect") || !patched.includes("coverage")) {
+  if (
+    !patched.includes("u_clipRect") ||
+    !patched.includes("u_segmentOpacity") ||
+    !patched.includes("coverage")
+  ) {
     throw new Error(
       "Shared progress fragment splice failed — smoke shader source changed?",
     );
@@ -135,6 +141,46 @@ uniform vec4 u_clipRect; // xy bottom-left, zw size (gl_FragCoord / scissor spac
 const SHARED_PROGRESS_FRAGMENT_SHADER = buildSharedProgressFragmentShader(
   SMOKE_FLOW_FRAGMENT_SHADER,
 );
+
+/** Resting strength of estate and attack-wave bars. Hover uses full strength. */
+export const SHARED_PROGRESS_BAR_REST_OPACITY = 0.8;
+
+/**
+ * Smoke is one canvas above every bar, so CSS opacity on a bar does not fade
+ * the fill. Dim only bars marked `data-progress-dim`, and only while the
+ * pointer is off that bar.
+ */
+export function sharedProgressSegmentOpacity(element: HTMLElement): number {
+  const bar = element.closest<HTMLElement>("[data-progress-dim]");
+  if (!bar || bar.matches(":hover")) return 1;
+  return SHARED_PROGRESS_BAR_REST_OPACITY;
+}
+
+/** Resting smoke clock. `seconds` passed to the shader is real time times this. */
+const SHARED_PROGRESS_SHADER_TIME_SCALE = 0.15;
+/** Hovered estate and attack-wave bars. 11 = 1000% faster than the resting clock. */
+const SHARED_PROGRESS_HOVER_TIME_MULTIPLIER = 11;
+/** Ignore a stalled frame so waking the tab does not leap the pattern forward. */
+const SHARED_PROGRESS_HOVER_DT_CAP_SECONDS = 0.1;
+
+/**
+ * Extra seconds added on top of the resting clock while a bar is hovered.
+ * The extra stays after the pointer leaves, so the pattern does not jump.
+ */
+export function nextSharedProgressHoverExtraSeconds(
+  extraSeconds: number,
+  dtSeconds: number,
+  hovered: boolean,
+): number {
+  if (!hovered || dtSeconds <= 0) return extraSeconds;
+  const dt = Math.min(SHARED_PROGRESS_HOVER_DT_CAP_SECONDS, dtSeconds);
+  return (
+    extraSeconds +
+    dt *
+      SHARED_PROGRESS_SHADER_TIME_SCALE *
+      (SHARED_PROGRESS_HOVER_TIME_MULTIPLIER - 1)
+  );
+}
 
 type SegmentRegistration = {
   id: string;
@@ -189,6 +235,7 @@ function syncSegmentRims(
         rim.classList.add(token);
       }
     }
+    rim.style.opacity = String(sharedProgressSegmentOpacity(cell));
     i++;
   }
   while (rimLayer.children.length > i) {
@@ -238,6 +285,7 @@ type SmokeUniforms = {
   space: WebGLUniformLocation;
   cursor: WebGLUniformLocation;
   clipRect: WebGLUniformLocation;
+  segmentOpacity: WebGLUniformLocation;
 };
 
 /**
@@ -251,6 +299,9 @@ class SharedProgressShaderRenderer {
   private buffer: WebGLBuffer;
   private uniforms: SmokeUniforms;
   private startMs = performance.now();
+  private lastFrameMs = performance.now();
+  /** Per bar, so only the hovered bar runs fast and its segments stay in sync. */
+  private hoverExtraSeconds = new WeakMap<HTMLElement, number>();
   private scale: number;
   private colors: Float32Array;
   private colorCount: number;
@@ -339,6 +390,7 @@ class SharedProgressShaderRenderer {
       space: requireUniform("u_space"),
       cursor: requireUniform("u_cursor"),
       clipRect: requireUniform("u_clipRect"),
+      segmentOpacity: requireUniform("u_segmentOpacity"),
     };
 
     gl.useProgram(program);
@@ -353,6 +405,7 @@ class SharedProgressShaderRenderer {
     gl.uniform4f(this.uniforms.space, 0.0, 0.0, 0.0, 0.0);
     gl.uniform4f(this.uniforms.cursor, 0.0, 2.0, 0.65, 0.46);
     gl.uniform4f(this.uniforms.clipRect, 0.0, 0.0, 0.0, 0.0);
+    gl.uniform1f(this.uniforms.segmentOpacity, 1);
     gl.enable(gl.SCISSOR_TEST);
     // Premultiplied source: needed so antialiased corner pixels blend out.
     gl.enable(gl.BLEND);
@@ -411,20 +464,18 @@ class SharedProgressShaderRenderer {
     dpr: number,
   ) {
     const gl = this.gl;
-    const seconds = ((performance.now() - this.startMs) / 1000) * 0.15;
+    const now = performance.now();
+    const dtSeconds = (now - this.lastFrameMs) / 1000;
+    this.lastFrameMs = now;
+    const restSeconds =
+      ((now - this.startMs) / 1000) * SHARED_PROGRESS_SHADER_TIME_SCALE;
+    const boostedBars = new Set<HTMLElement>();
     gl.disable(gl.SCISSOR_TEST);
     gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.enable(gl.SCISSOR_TEST);
     gl.useProgram(this.program);
     gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
-    gl.uniform4f(
-      this.uniforms.scene,
-      this.canvas.width,
-      this.canvas.height,
-      seconds,
-      this.colorCount,
-    );
     gl.uniform4f(this.uniforms.shape, this.scale, 0.85, 0.5, 0.35);
 
     const canvasW = this.canvas.width;
@@ -433,6 +484,26 @@ class SharedProgressShaderRenderer {
     const cornerRadiusPx = SEGMENT_CORNER_RADIUS_CSS_PX * dpr;
 
     for (const { element } of segments) {
+      const bar = element.closest<HTMLElement>("[data-progress-dim]");
+      const hovered = !!bar && bar.matches(":hover");
+      if (bar && hovered && !boostedBars.has(bar)) {
+        const prev = this.hoverExtraSeconds.get(bar) ?? 0;
+        this.hoverExtraSeconds.set(
+          bar,
+          nextSharedProgressHoverExtraSeconds(prev, dtSeconds, true),
+        );
+        boostedBars.add(bar);
+      }
+      const seconds =
+        restSeconds + (bar ? (this.hoverExtraSeconds.get(bar) ?? 0) : 0);
+      gl.uniform4f(
+        this.uniforms.scene,
+        this.canvas.width,
+        this.canvas.height,
+        seconds,
+        this.colorCount,
+      );
+
       const rect = element.getBoundingClientRect();
       if (rect.width < 0.5 || rect.height < 0.5) continue;
 
@@ -486,6 +557,10 @@ class SharedProgressShaderRenderer {
         clip.height,
       );
       gl.uniform4f(this.uniforms.finish, 0.0, 0.0, 0.0, cornerRadiusPx);
+      gl.uniform1f(
+        this.uniforms.segmentOpacity,
+        sharedProgressSegmentOpacity(element),
+      );
       gl.scissor(sx, sy, sw, sh);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     }
@@ -846,7 +921,18 @@ export function SharedProgressShaderHost({
   return (
     <SharedProgressShaderContext.Provider value={api}>
       {/* overflow-visible: segment rims sit 1px outside the bg via box-shadow */}
-      <div ref={hostRef} className={cn("relative overflow-visible", className)}>
+      <div
+        ref={hostRef}
+        className={cn("relative overflow-visible", className)}
+        onPointerOver={() => {
+          const canvas = canvasRef.current;
+          if (canvas) paintRef.current(canvas);
+        }}
+        onPointerOut={() => {
+          const canvas = canvasRef.current;
+          if (canvas) paintRef.current(canvas);
+        }}
+      >
         {/*
           Content wrapper: host className often includes space-y-*, which would
           otherwise margin-shift the absolute canvas / rim layer down the page.
@@ -862,7 +948,7 @@ export function SharedProgressShaderHost({
             <div
               ref={canvasHolderRef}
               aria-hidden
-              className="pointer-events-none absolute inset-0 z-10 !m-0 h-full w-full opacity-90"
+              className="pointer-events-none absolute inset-0 z-10 !m-0 h-full w-full"
             />
             {/* Cell rims above smoke so the grey border is not covered by WebGL. */}
             <div
@@ -935,6 +1021,7 @@ export function EstateStyleProgress({
       filledClassName="bg-red-950/80"
       emptyClassName="bg-neutral-800"
       segmentClassName="h-2"
+      softenUntilHover
       renderFill={() => (
         <SharedProgressShaderSegment className="absolute inset-0" />
       )}

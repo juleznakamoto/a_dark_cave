@@ -399,8 +399,10 @@ export const gameStateSchema = z.object({
     .object({
       level: z.number().default(0),
       lastLevelDecrease: z.number().default(0),
+      /** Set while a blocking dialog freezes the level countdown. 0 while running. */
+      pauseStartedAt: z.number().default(0),
     })
-    .default({ level: 0, lastLevelDecrease: 0 }),
+    .default({ level: 0, lastLevelDecrease: 0, pauseStartedAt: 0 }),
   villagers: z
     .object({
       free: z.number().min(0).default(0),

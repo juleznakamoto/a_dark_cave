@@ -53,6 +53,8 @@
     "chokingFog": "Удушающий туман",
     "staringDeer": "Пристальный взгляд оленей",
     "foodProductionBonus": "Бонус производства пищи: {{value}}",
+    "furProductionBonus": "Бонус производства меха: {{value}}",
+    "bonesProductionBonus": "Бонус производства костей: {{value}}",
     "forestFear": "Страх перед лесом",
     "hunterProduction": "Производство охотников: {{value}}",
     "gathererProduction": "Производство собирателей: {{value}}",

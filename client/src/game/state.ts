@@ -24,5 +24,11 @@ export {
   syncTimedEventTabPauseTracking,
   getTimedEventTabEffectiveRemainingMs,
 } from "./store/timedEventTabSync";
+export {
+  syncHeartfirePauseTracking,
+  installHeartfirePauseWatch,
+  getHeartfireElapsedMs,
+  HEARTFIRE_LEVEL_DURATION_MS,
+} from "./heartfireClock";
 export { StateManager } from "./store/StateManager";
 export { useGameStore } from "./store/createGameStore";
