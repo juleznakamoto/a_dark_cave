@@ -21,6 +21,12 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Fixed
 
+- Pact choice cards keep each line of writing in its own space at Huge text size, and the cards grow a little wider as the text gets larger.
+- Calling the merchant no longer replaces an event that appears while he is on the way. He arrives after you finish that event.
+- Closing a cube memory or another event no longer brings the same dialog, or the next one, straight back.
+- Starting a new game keeps your music and sound volumes.
+- Bastion building tooltips and warehouse capacity lines use your language.
+- The message you share with a progress image is in your language.
 - Claiming an achievement no longer shifts the rows below it.
 - The Improve button, Claim button, shop filters, village job buttons, and build-queue marks grow with text size.
 

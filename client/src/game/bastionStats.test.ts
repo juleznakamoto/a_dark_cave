@@ -77,11 +77,11 @@ describe("high bastion", () => {
     );
     expect(high).toContain("Towering stronghold with deep foundations, built to hold when all else has fallen.");
     expect(high).not.toContain("Massive fortification");
-    expect(high).toContain("20 Attack");
-    expect(high).toContain("80 Integrity");
+    expect(high).toContain("+20 Attack");
+    expect(high).toContain("+80 Integrity");
     expect(high).toContain(">Bastion<");
-    expect(high).toContain("10 Attack");
-    expect(high).toContain("60 Integrity");
+    expect(high).toContain("+10 Attack");
+    expect(high).toContain("+60 Integrity");
 
     useGameStore.setState(fortState({ bastion: 1 }));
     const first = renderToStaticMarkup(
@@ -89,9 +89,9 @@ describe("high bastion", () => {
     );
     expect(first).toContain("Massive fortification serving as the last line of defense");
     expect(first).not.toContain("Towering stronghold");
-    expect(first).not.toContain("20 Attack");
-    expect(first).toContain("10 Attack");
-    expect(first).toContain("60 Integrity");
+    expect(first).not.toContain("+20 Attack");
+    expect(first).toContain("+10 Attack");
+    expect(first).toContain("+60 Integrity");
   });
 });
 
@@ -138,10 +138,10 @@ describe("hungering moat", () => {
       "Bottomless trench of black water, where something hungry waits to drag down all who enter.",
     );
     expect(hungering).not.toContain("Defensive moat slowing");
-    expect(hungering).toContain("5 Attack");
-    expect(hungering).toContain("15 Defense");
+    expect(hungering).toContain("+5 Attack");
+    expect(hungering).toContain("+15 Defense");
     expect(hungering).toContain(">Fortified Moat<");
-    expect(hungering).toContain("10 Defense");
+    expect(hungering).toContain("+10 Defense");
 
     useGameStore.setState(fortState({ fortifiedMoat: 1 }));
     const first = renderToStaticMarkup(
@@ -149,7 +149,7 @@ describe("hungering moat", () => {
     );
     expect(first).toContain("Defensive moat slowing and weakening attackers");
     expect(first).not.toContain("Bottomless trench");
-    expect(first).toContain("10 Defense");
-    expect(first).not.toContain("5 Attack");
+    expect(first).toContain("+10 Defense");
+    expect(first).not.toContain("+5 Attack");
   });
 });

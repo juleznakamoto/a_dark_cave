@@ -256,6 +256,8 @@
     "copiedTitle": "クリップボードにコピーしました",
     "copyErrorTitle": "画像をコピーできませんでした",
     "copyErrorDesc": "クリップボードへのコピー中に問題が発生しました。",
+    "shareTextSteam": "『A Dark Cave』を{{percent}}%進めています。",
+    "shareText": "『A Dark Cave』を{{percent}}%進めています。無料プレイはこちら：{{url}}",
     "share": "共有",
     "errorTitle": "画像を作成できませんでした",
     "errorDesc": "画像の作成中に問題が発生しました。"

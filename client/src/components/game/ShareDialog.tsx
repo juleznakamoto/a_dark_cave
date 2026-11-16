@@ -685,11 +685,13 @@ export default function ShareDialog() {
         text: steamDesktopEditionActive
           ? t("share.shareTextSteam", {
             percent,
-            defaultValue: `I'm ${percent}% through A Dark Cave.`,
+            defaultValue: "I'm {{percent}}% through A Dark Cave.",
           })
           : t("share.shareText", {
             percent,
-            defaultValue: `I'm ${percent}% through A Dark Cave. Play for free at ${SHARE_URL}`,
+            url: SHARE_URL,
+            defaultValue:
+              "I'm {{percent}}% through A Dark Cave. Play for free at {{url}}",
           }),
       };
       if (navigator.canShare?.({ files: [file] })) {

@@ -3,6 +3,7 @@ import {
   StateManager,
   isModalDialogOpen,
   isVisibleModalDialogOpen,
+  isCallMerchantArrivalBlocked,
   shouldKeepBackgroundMusicDuringFreeze,
   shouldFreezeTimedEventTabCountdown,
   syncTimedEventTabPauseTracking,
@@ -727,6 +728,14 @@ export function startGameLoop() {
         }
       }
 
+      // After the roll, so an event that lands on the same second as the
+      // merchant's arrival keeps the dialog or visit. He waits and comes after.
+      try {
+        tryCompleteCallMerchantArrival();
+      } catch (error) {
+        logger.error("[GAME LOOP] merchant arrival failed:", error);
+      }
+
       // Auto-save logic (skip if inactive, recently loaded, or in sleep/idle mode)
       const timeSinceLoad = timestamp - lastGameLoadTime;
       const skipAutoSaveAfterLoad = timeSinceLoad > 0 && timeSinceLoad < 30000; // Skip for 30s after load
@@ -970,6 +979,20 @@ export function flushOverdueExecutionsDuringHandoff(
   flushOverdueActionExecutions();
 }
 
+/**
+ * Open a called merchant whose travel time is up, unless an event is using the slot.
+ * The travel timer stays armed while he waits.
+ */
+export function tryCompleteCallMerchantArrival(now = Date.now()): void {
+  const state = useGameStore.getState();
+  if (isCallMerchantArrivalBlocked(state)) return;
+  const start = state.executionStartTimes?.callMerchant;
+  const durationSec = state.executionDurations?.callMerchant;
+  if (!start || !durationSec) return;
+  if ((now - start) / 1000 < durationSec) return;
+  state.completeActionExecution("callMerchant");
+}
+
 /** Complete in-flight actions whose execution window already elapsed (e.g. after reload). */
 export function flushOverdueActionExecutions(now = Date.now()): void {
   const state = useGameStore.getState();
@@ -986,6 +1009,8 @@ export function flushOverdueActionExecutions(now = Date.now()): void {
   });
 
   for (const actionId of overdue) {
+    // Merchant arrival runs after this frame's event roll. See tryCompleteCallMerchantArrival.
+    if (actionId === "callMerchant") continue;
     completeActionExecution(actionId);
     if (priorInFlightExecutions.has(actionId)) {
       priorInFlightExecutions.delete(actionId);

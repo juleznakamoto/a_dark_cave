@@ -181,10 +181,16 @@ const FORT_STAT_EFFECT_ORDER = [
 
 type FortificationStatKey = (typeof FORT_STAT_EFFECT_ORDER)[number];
 
+const FORTIFICATION_STAT_KEYS: Record<FortificationStatKey, string> = {
+  attackBonus: "fortifications.attack",
+  defenseBonus: "fortifications.defense",
+  integrityBonus: "fortifications.integrity",
+};
+
 const FORTIFICATION_STAT_FALLBACKS: Record<FortificationStatKey, string> = {
-  attackBonus: "{{amount}} Attack",
-  defenseBonus: "{{amount}} Defense",
-  integrityBonus: "{{amount}} Integrity",
+  attackBonus: "+{{value}} Attack",
+  defenseBonus: "+{{value}} Defense",
+  integrityBonus: "+{{value}} Integrity",
 };
 
 type TooltipEffectLine = string | React.ReactNode;
@@ -210,7 +216,12 @@ function formatFortificationStat(
   key: FortificationStatKey,
   amount: number,
 ): string {
-  return getUiTooltip(key, FORTIFICATION_STAT_FALLBACKS[key], { amount });
+  return tWithFallback(
+    "ui",
+    FORTIFICATION_STAT_KEYS[key],
+    FORTIFICATION_STAT_FALLBACKS[key],
+    { value: amount },
+  );
 }
 
 function renderFortificationStatLine(

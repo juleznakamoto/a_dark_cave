@@ -29,6 +29,21 @@ function prefersReducedMotion(): boolean {
 /** Ignore subpixel rounding from fractional display scale. */
 const VIEWPORT_PIN_SLOP_PX = 4;
 
+/**
+ * Small-size slot heights, plus the line growth from Settings → Text size.
+ * A fixed height lets Huge type paint over the next line. min-height still
+ * lets a long quote add lines instead of covering the cost.
+ */
+const PACT_CARD_TITLE_MIN_H =
+  "min-h-[calc(1.5rem+1.25*var(--adc-text-delta,0px))]";
+const PACT_CARD_COPY_MIN_H =
+  "min-h-[calc(2.75rem+2.75*var(--adc-text-delta,0px))]";
+const PACT_CARD_COST_MIN_H =
+  "min-h-[calc(1.5rem+1.375*var(--adc-text-delta,0px))]";
+/** Small stays 13.5rem / 16rem. Larger text sizes widen the card a little. */
+const PACT_CARD_WIDTH =
+  "w-[calc(13.5rem+6*var(--adc-text-delta,0px))] max-w-full sm:w-[calc(16rem+7*var(--adc-text-delta,0px))]";
+
 type ViewportBox = {
   offsetTop: number;
   offsetLeft: number;
@@ -415,7 +430,8 @@ function PactOfferDialogOpen() {
                     toggle(pactId);
                   }}
                   className={cn(
-                    "pact-offer-card group relative z-0 flex w-[13.5rem] flex-col overflow-visible rounded-lg bg-background p-2 text-left shadow-2xl transition-opacity duration-1000 ease-out sm:w-[16rem] sm:p-2.5",
+                    "pact-offer-card group relative z-0 flex flex-col overflow-visible rounded-lg bg-background p-2 text-left shadow-2xl transition-opacity duration-1000 ease-out sm:p-2.5",
+                    PACT_CARD_WIDTH,
                     canSelect && "pact-offer-card--open",
                     isShown ? "opacity-100" : "pointer-events-none opacity-0",
                     canSelect ? "cursor-pointer" : "cursor-default",
@@ -466,29 +482,50 @@ function PactOfferDialogOpen() {
 
                   <h3
                     className={cn(
-                      "mb-1 flex h-6 items-start justify-center text-center text-sm font-semibold leading-tight text-red-500 sm:text-base",
+                      "mb-1 flex items-start justify-center text-center text-sm font-semibold leading-tight text-red-500 sm:text-base",
+                      PACT_CARD_TITLE_MIN_H,
                       isSelected ? "opacity-100" : "opacity-[0.85]",
                     )}
                   >
                     <span className="w-full">{name}</span>
                   </h3>
 
-                  <p className="flex h-[2.75rem] items-center text-center text-xs leading-snug text-white">
+                  <p
+                    className={cn(
+                      "flex items-center text-center text-xs leading-snug text-white",
+                      PACT_CARD_COPY_MIN_H,
+                    )}
+                  >
                     <span className="w-full">{t(`pactOffer.cards.${pactId}.boon`)}</span>
                   </p>
-                  <p className="mt-1 flex h-[2.75rem] items-center text-center text-xs leading-snug text-white">
+                  <p
+                    className={cn(
+                      "mt-1 flex items-center text-center text-xs leading-snug text-white",
+                      PACT_CARD_COPY_MIN_H,
+                    )}
+                  >
                     <span className="w-full">{secondBoon}</span>
                   </p>
-                  <p className="mt-1 flex h-[2.75rem] items-center text-center text-xs italic leading-snug text-muted-foreground">
+                  <p
+                    className={cn(
+                      "mt-1 flex items-center text-center text-xs italic leading-snug text-muted-foreground",
+                      PACT_CARD_COPY_MIN_H,
+                    )}
+                  >
                     <span className="w-full">{t(`pactOffer.cards.${pactId}.quote`)}</span>
                   </p>
 
                   <div
-                    className="my-1.5 h-px w-full shrink-0 bg-red-800/80"
+                    className="mb-1.5 mt-auto h-px w-full shrink-0 bg-red-800/80"
                     aria-hidden="true"
                   />
 
-                  <p className="flex h-6 shrink-0 items-start justify-center text-center text-xs leading-snug text-red-400">
+                  <p
+                    className={cn(
+                      "flex shrink-0 items-start justify-center text-center text-xs leading-snug text-red-400",
+                      PACT_CARD_COST_MIN_H,
+                    )}
+                  >
                     <span className="w-full">
                       {t("pactOffer.madness", { defaultValue: "+3 Madness" })}
                     </span>

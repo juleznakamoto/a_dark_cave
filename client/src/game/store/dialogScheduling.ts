@@ -3,7 +3,12 @@ import { isDemoPlayFrozen } from "@/game/demoLimit";
 import { isGameTabHidden } from "@/lib/tabVisibility";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { madnessEvents } from "@/game/rules/eventsMadness";
-import { snapshotPendingModalEvent, type LogEntry } from "@/game/rules/events";
+import {
+  gameEvents,
+  snapshotPendingModalEvent,
+  type LogEntry,
+} from "@/game/rules/events";
+import type { GameState } from "@shared/schema";
 import type { CombatResultSummary } from "@/game/types";
 import type { GameStore } from "./types";
 
@@ -40,6 +45,19 @@ export function isVisibleModalDialogOpen(state: GameStore): boolean {
 /** True while simulation should freeze (loop, attack-wave timers, random events, etc.). */
 export function isModalDialogOpen(state: GameStore): boolean {
   return isVisibleModalDialogOpen(state) || Boolean(state.dialogHandoffPending);
+}
+
+/**
+ * The called merchant must not open on top of a dialog, a map replay, or
+ * another visit. His travel timer stays armed and he arrives once the slot is free.
+ */
+export function isCallMerchantArrivalBlocked(state: GameStore): boolean {
+  if (isVisibleModalDialogOpen(state) || state.dialogHandoffPending) return true;
+  if (state.villageMapReplaying) return true;
+  const tab = state.timedEventTab;
+  return Boolean(
+    tab?.isActive && !tab.event?.id?.includes("merchant"),
+  );
 }
 
 /**
@@ -152,6 +170,30 @@ export function openEventDialogNow(
  * otherwise polls every {@link DIALOG_DEFER_POLL_MS} and waits {@link DIALOG_HANDOFF_DELAY_MS}
  * after the path is clear before opening (same deferral semantics as reward scheduling).
  */
+/**
+ * A queued copy of a beat the player already resolved should not open again.
+ * Outcome lines and estate rereads are not catalog rolls, so they still show.
+ */
+function shouldDropDeferredEvent(get: () => GameStore, event: LogEntry): boolean {
+  if (event.viewOnly) return false;
+  if (event.id.startsWith("log-message-")) return false;
+  const choices = Array.isArray(event.choices) ? event.choices : [];
+  if (choices.length === 1 && choices[0]?.id === "acknowledge") return false;
+  // Instance ids (`forestTribeHelpRequest-test`) are not catalog ids.
+  // Only a real `eventId` can be checked against the rules.
+  const eventId = event.eventId;
+  if (!eventId) return false;
+  const def = gameEvents[eventId];
+  if (!def) return false;
+  const state = get();
+  if (!def.repeatable && state.triggeredEvents?.[eventId]) return true;
+  try {
+    return !def.condition(state as unknown as GameState);
+  } catch {
+    return false;
+  }
+}
+
 export function scheduleEventDialogWhenClear(
   get: () => GameStore,
   set: GameStoreSetter,
@@ -165,7 +207,10 @@ export function scheduleEventDialogWhenClear(
   scheduleWhenDialogClear(
     get,
     (store) => isVisibleModalDialogOpen(store) || store.villageMapReplaying === true,
-    () => openEventDialogNow(set, event),
+    () => {
+      if (shouldDropDeferredEvent(get, event)) return;
+      openEventDialogNow(set, event);
+    },
     initialDelayMs,
   );
 }

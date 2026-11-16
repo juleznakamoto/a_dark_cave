@@ -350,6 +350,13 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       // Last hosted feedback-form open (so admin can match a Google Form timestamp)
       lastFeedbackOpenedAt: state.lastFeedbackOpenedAt || 0,
       lastFeedbackOpenedSource: state.lastFeedbackOpenedSource || "",
+
+      // Volume and mute stay with the player across new games.
+      musicMuted: state.musicMuted === true,
+      sfxMuted: state.sfxMuted === true,
+      musicVolume:
+        typeof state.musicVolume === "number" ? state.musicVolume : 1,
+      sfxVolume: typeof state.sfxVolume === "number" ? state.sfxVolume : 1,
     };
 
     // Reset everything else to default
@@ -863,10 +870,12 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       });
       const {
         flushOverdueActionExecutions,
+        tryCompleteCallMerchantArrival,
         scheduleSleepDialogRestore,
         clearExpiredTimedEventTab,
       } = await import("@/game/loop");
       flushOverdueActionExecutions();
+      tryCompleteCallMerchantArrival();
       scheduleSleepDialogRestore();
       // Loop may already be running (cloud reconcile). Re-run visit expiry
       // here; startGameLoop() no-ops and would otherwise skip this clear.

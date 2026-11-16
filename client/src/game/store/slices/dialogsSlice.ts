@@ -246,6 +246,13 @@ export const createDialogsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
         isVisibleModalDialogOpen(store) ||
         store.villageMapReplaying
       ) {
+        // A second open of the beat already on screen is a duplicate, not a queue.
+        const showing = store.eventDialog.currentEvent;
+        const showingId = showing
+          ? showing.eventId || showing.id.split("-")[0]
+          : null;
+        const incomingId = currentEvent.eventId || currentEvent.id.split("-")[0];
+        if (eventAlreadyShowing && showingId === incomingId) return;
         scheduleEventDialogWhenClear(get, set, currentEvent, 0);
         return;
       }

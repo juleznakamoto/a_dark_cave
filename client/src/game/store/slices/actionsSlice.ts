@@ -216,6 +216,7 @@ import { defaultGameState } from "../createInitialState";
 import {
   isVisibleModalDialogOpen,
   isModalDialogOpen,
+  isCallMerchantArrivalBlocked,
   scheduleMadnessDialogWhenClear,
   scheduleInsightPotionDialogWhenClear,
   scheduleVillageEffectDialogWhenClear,
@@ -712,6 +713,11 @@ export const createActionsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
     if (isDemoPlayFrozen(state)) return;
     const { executionStartTimes, executionDurations } = state;
     if (!executionStartTimes[actionId] || !executionDurations[actionId]) return;
+
+    // Leave the travel timer armed. The loop retries once the event is gone.
+    if (actionId === "callMerchant" && isCallMerchantArrivalBlocked(state)) {
+      return;
+    }
 
     // Prior starts set abortEligible to false; preserve source for completion SFX.
     const executionSource =

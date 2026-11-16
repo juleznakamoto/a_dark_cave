@@ -256,6 +256,8 @@
     "copiedTitle": "Panoya kopyalandı",
     "copyErrorTitle": "Görsel kopyalanamadı",
     "copyErrorDesc": "Panoya kopyalarken bir sorun çıktı.",
+    "shareTextSteam": "A Dark Cave'de %{{percent}} ilerledim.",
+    "shareText": "A Dark Cave'de %{{percent}} ilerledim. Ücretsiz oyna: {{url}}",
     "share": "Paylaş",
     "errorTitle": "Görsel oluşturulamadı",
     "errorDesc": "Görsel oluşturulurken bir sorun çıktı."

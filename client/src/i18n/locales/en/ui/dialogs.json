@@ -256,6 +256,8 @@
     "copiedTitle": "Copied to clipboard",
     "copyErrorTitle": "Could not copy image",
     "copyErrorDesc": "Something went wrong while copying to the clipboard.",
+    "shareTextSteam": "I'm {{percent}}% through A Dark Cave.",
+    "shareText": "I'm {{percent}}% through A Dark Cave. Play for free at {{url}}",
     "share": "Share",
     "errorTitle": "Could not create image",
     "errorDesc": "Something went wrong while generating the image."

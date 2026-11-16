@@ -256,6 +256,8 @@
     "copiedTitle": "Copié dans le presse-papiers",
     "copyErrorTitle": "Impossible de copier l'image",
     "copyErrorDesc": "Une erreur s'est produite lors de la copie dans le presse-papiers.",
+    "shareTextSteam": "J'en suis à {{percent}} % dans A Dark Cave.",
+    "shareText": "J'en suis à {{percent}} % dans A Dark Cave. Jouez gratuitement sur {{url}}",
     "share": "Partager",
     "errorTitle": "Impossible de créer l'image",
     "errorDesc": "Une erreur s'est produite lors de la génération de l'image."

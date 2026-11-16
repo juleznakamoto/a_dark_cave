@@ -205,6 +205,7 @@
       "sleepIntensityPercent": "睡眠強度+{{percent}}%",
       "maxVillagers": "村人上限+{{amount}}",
       "resourceLimit": "資源上限：{{limit}}（銀貨、金貨、洞察に上限なし）",
+      "resourceLimitTier": "資源上限：{{limit}}",
       "maxPopulation": "人口上限+{{amount}}",
       "newVillagerChancePercent": "新しい村人の確率+{{percent}}%",
       "steelForgerSteel": "鋼鍛冶：鋼+{{amount}}",

@@ -30,6 +30,7 @@ const {
   mockSetLastGameLoadTime,
   mockSaveGame,
   mockFlushOverdueActionExecutions,
+  mockTryCompleteCallMerchantArrival,
   mockScheduleSleepDialogRestore,
   mockClearExpiredTimedEventTab,
 } = vi.hoisted(() => ({
@@ -41,6 +42,7 @@ const {
     cloudSkipped: false,
   }),
   mockFlushOverdueActionExecutions: vi.fn(),
+  mockTryCompleteCallMerchantArrival: vi.fn(),
   mockScheduleSleepDialogRestore: vi.fn(),
   mockClearExpiredTimedEventTab: vi.fn(),
 }));
@@ -54,6 +56,8 @@ vi.mock("@/game/loop", () => ({
   setLastGameLoadTime: (...args: unknown[]) => mockSetLastGameLoadTime(...args),
   flushOverdueActionExecutions: (...args: unknown[]) =>
     mockFlushOverdueActionExecutions(...args),
+  tryCompleteCallMerchantArrival: (...args: unknown[]) =>
+    mockTryCompleteCallMerchantArrival(...args),
   scheduleSleepDialogRestore: (...args: unknown[]) =>
     mockScheduleSleepDialogRestore(...args),
   clearExpiredTimedEventTab: (...args: unknown[]) =>
@@ -1039,6 +1043,26 @@ describe("Timed event tab cleanup on new game", () => {
     );
   });
 
+  it("restartGame keeps music and sound settings", async () => {
+    mockSaveGame.mockClear();
+    useGameStore.setState({
+      musicVolume: 0.35,
+      sfxVolume: 0.2,
+      musicMuted: true,
+      sfxMuted: false,
+      flags: { ...useGameStore.getState().flags, gameStarted: true },
+    });
+
+    await useGameStore.getState().restartGame();
+
+    const state = useGameStore.getState();
+    expect(state.musicVolume).toBe(0.35);
+    expect(state.sfxVolume).toBe(0.2);
+    expect(state.musicMuted).toBe(true);
+    expect(state.sfxMuted).toBe(false);
+    expect(state.flags.gameStarted).toBe(false);
+  });
+
   it("restartGame keeps the pact allowance and the last picks", async () => {
     mockSaveGame.mockClear();
 
@@ -1413,6 +1437,40 @@ describe("deferred dialog scheduling", () => {
     expect(isModalDialogOpen(after)).toBe(true);
   });
 
+  it("does not show a cube memory again after it was closed", () => {
+    const current = useGameStore.getState();
+    useGameStore.setState({
+      relics: { ...current.relics, whispering_cube: true },
+      buildings: { ...current.buildings, woodenHut: 2 },
+      events: { ...current.events, cube01: false },
+    });
+    const entry = buildEventDialogLogEntry(
+      gameEvents.cube01,
+      useGameStore.getState(),
+      { skipSound: true },
+    );
+    useGameStore.getState().setEventDialog(true, entry);
+    useGameStore.getState().setEventDialog(true, {
+      ...entry,
+      id: `${entry.id}-queued`,
+    });
+
+    expect(useGameStore.getState().eventDialog.currentEvent?.eventId).toBe(
+      "cube01",
+    );
+
+    const applied = useGameStore
+      .getState()
+      .applyEventChoice("close", "cube01", entry);
+    expect(applied).toBe(true);
+    useGameStore.getState().setEventDialog(false);
+    vi.advanceTimersByTime(3000 + 200 + 50);
+
+    const after = useGameStore.getState();
+    expect(after.events.cube01).toBe(true);
+    expect(after.eventDialog.isOpen).toBe(false);
+  });
+
   it("queues a second event instead of replacing the open event dialog", () => {
     const firstEvent = {
       id: "boneArmyAttack-test",
@@ -1679,6 +1737,64 @@ describe("callMerchant execution", () => {
     expect(state.timedEventTab.isActive).toBe(true);
     expect(state.timedEventTab.event?.id).toBe("merchant");
     expect(state.story.seen.callMerchantUsageCount).toBe(1);
+  });
+
+  it("waits to arrive while another visit is open", () => {
+    setupCallMerchantState(200);
+    useGameStore.getState().callMerchant();
+    useGameStore.setState({
+      timedEventTab: {
+        isActive: true,
+        event: {
+          id: "gambler",
+          message: "A gambler waits.",
+          timestamp: Date.now(),
+          type: "event",
+        },
+        expiryTime: Date.now() + 60_000,
+      },
+    });
+
+    vi.advanceTimersByTime(5000);
+    useGameStore.getState().completeActionExecution("callMerchant");
+
+    const waiting = useGameStore.getState();
+    expect(waiting.timedEventTab.event?.id).toBe("gambler");
+    expect(waiting.executionStartTimes?.callMerchant).toBeGreaterThan(0);
+    expect(waiting.story.seen.callMerchantUsageCount).toBeUndefined();
+
+    useGameStore.setState({
+      timedEventTab: { isActive: false, event: null, expiryTime: 0 },
+    });
+    useGameStore.getState().completeActionExecution("callMerchant");
+
+    const arrived = useGameStore.getState();
+    expect(arrived.timedEventTab.isActive).toBe(true);
+    expect(arrived.timedEventTab.event?.id).toBe("merchant");
+    expect(arrived.story.seen.callMerchantUsageCount).toBe(1);
+  });
+
+  it("waits to arrive while an event dialog is open", () => {
+    setupCallMerchantState(200);
+    useGameStore.getState().callMerchant();
+    useGameStore.getState().setEventDialog(true, {
+      id: "paleFigure-test",
+      eventId: "paleFigure",
+      message: "A slender figure waits.",
+      timestamp: Date.now(),
+      type: "event",
+      skipSound: true,
+      choices: [{ id: "ignore", label: "Ignore it", effect: () => ({}) }],
+    });
+
+    vi.advanceTimersByTime(5000);
+    useGameStore.getState().completeActionExecution("callMerchant");
+
+    const waiting = useGameStore.getState();
+    expect(waiting.eventDialog.isOpen).toBe(true);
+    expect(waiting.eventDialog.currentEvent?.eventId).toBe("paleFigure");
+    expect(waiting.timedEventTab.isActive).toBe(false);
+    expect(waiting.executionStartTimes?.callMerchant).toBeGreaterThan(0);
   });
 
   it("refunds gold for free when aborting the call", () => {

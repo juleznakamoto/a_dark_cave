@@ -11,6 +11,7 @@ export { createInitialState } from "./store/createInitialState";
 export {
   isVisibleModalDialogOpen,
   isModalDialogOpen,
+  isCallMerchantArrivalBlocked,
   shouldKeepBackgroundMusicDuringFreeze,
   shouldBlockGameHotkeys,
   shouldFreezeTimedEventTabCountdown,

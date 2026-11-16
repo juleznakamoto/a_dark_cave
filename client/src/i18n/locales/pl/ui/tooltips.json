@@ -205,6 +205,7 @@
       "sleepIntensityPercent": "Intensywność snu +{{percent}}%",
       "maxVillagers": "+{{amount}} maks. wieśniaków",
       "resourceLimit": "Limit zasobów: {{limit}} (bez limitu srebra, złota i wglądu)",
+      "resourceLimitTier": "Limit zasobów: {{limit}}",
       "maxPopulation": "+{{amount}} maks. populacji",
       "newVillagerChancePercent": "+{{percent}}% szansy na nowego wieśniaka",
       "steelForgerSteel": "Kowal stali: +{{amount}} stali",

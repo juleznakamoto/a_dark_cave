@@ -256,6 +256,8 @@
     "copiedTitle": "In Zwischenablage kopiert",
     "copyErrorTitle": "Bild konnte nicht kopiert werden",
     "copyErrorDesc": "Beim Kopieren in die Zwischenablage ist etwas schiefgelaufen.",
+    "shareTextSteam": "Ich bin zu {{percent}} % durch A Dark Cave.",
+    "shareText": "Ich bin zu {{percent}} % durch A Dark Cave. Kostenlos spielen unter {{url}}",
     "share": "Teilen",
     "errorTitle": "Bild konnte nicht erstellt werden",
     "errorDesc": "Beim Erstellen des Bildes ist etwas schiefgelaufen."

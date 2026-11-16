@@ -256,6 +256,8 @@
     "copiedTitle": "Copiado al portapapeles",
     "copyErrorTitle": "No se pudo copiar la imagen",
     "copyErrorDesc": "Algo salió mal al copiar al portapapeles.",
+    "shareTextSteam": "Llevo un {{percent}} % de A Dark Cave.",
+    "shareText": "Llevo un {{percent}} % de A Dark Cave. Juega gratis en {{url}}",
     "share": "Compartir",
     "errorTitle": "No se pudo crear la imagen",
     "errorDesc": "Algo salió mal al generar la imagen."

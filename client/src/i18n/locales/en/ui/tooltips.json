@@ -205,6 +205,7 @@
       "sleepIntensityPercent": "Sleep Intensity +{{percent}}%",
       "maxVillagers": "+{{amount}} Max Villagers",
       "resourceLimit": "Resource Limit: {{limit}} (no limit on Silver, Gold & Insight)",
+      "resourceLimitTier": "Resource Limit: {{limit}}",
       "maxPopulation": "+{{amount}} Max Population",
       "newVillagerChancePercent": "+{{percent}}% New Villager Chance",
       "steelForgerSteel": "Steel Forger: +{{amount}} Steel",

@@ -6,6 +6,10 @@ import type {
   GameEvent,
   LogEntry,
 } from "./eventTypes";
+import {
+  ATTACK_WAVE_IDS,
+  POST_COMPLETION_ATTACK_WAVE_ID,
+} from "./attackWaveOrder";
 import { storyEvents } from "./eventsStory";
 import { wanderersLanternEvents } from "./eventsWanderersLantern";
 import { choiceEvents } from "./eventsChoices";
@@ -355,38 +359,23 @@ function isEarliestWaitActive(
   return now - since < waitMs;
 }
 
-/**
- * Average milliseconds between triggers, from `timeProbability` (minutes).
- * Null when the event has no average and fires on the next check once its
- * condition is true. Those still respect the dialog gap.
- */
-function eventMeanIntervalMs(
-  event: GameEvent,
-  state: EventRollState,
-): number | null {
-  if (event.timeProbability == null) return null;
-  const minutes =
-    typeof event.timeProbability === "function"
-      ? event.timeProbability(state)
-      : event.timeProbability;
-  if (!Number.isFinite(minutes) || minutes <= 0) return 0;
-  return minutes * 60 * 1000;
-}
+/** Sieges stay on their own clock. Every other dialog beat waits out the close gap. */
+const dialogGapExemptEventIds = new Set<string>([
+  ...ATTACK_WAVE_IDS,
+  POST_COMPLETION_ATTACK_WAVE_ID,
+]);
 
 /**
- * Dialog spacing holds ordinary random events. It does not hold a beat whose
- * own average wait is already shorter than the gap.
+ * Dialog spacing holds the next random or story dialog, including cube memories
+ * whose own average wait is only a second or two. Attack waves are exempt so a
+ * due siege is not pushed back by the gap.
  */
 function isHeldByEventDialogGap(
   event: GameEvent,
-  state: EventRollState,
   gapActive: boolean,
 ): boolean {
   if (!gapActive || event.showAsTimedTab) return false;
-  const meanMs = eventMeanIntervalMs(event, state);
-  if (meanMs != null && meanMs < GAME_CONSTANTS.EVENT_DIALOG_MIN_GAP_MS) {
-    return false;
-  }
+  if (dialogGapExemptEventIds.has(event.id)) return false;
   return true;
 }
 
@@ -454,9 +443,9 @@ export class EventManager {
         continue;
       }
 
-      // Recent EventDialog close: only block another modal/log event, not timed tabs.
-      // Short-interval beats (cube follow-ups) and setEventDialog follow-ups skip this.
-      if (isHeldByEventDialogGap(event, state, isEventDialogGapActive)) continue;
+      // Recent EventDialog close: hold the next dialog beat, including short cube
+      // memories. Timed tabs, attack waves, and setEventDialog follow-ups skip this.
+      if (isHeldByEventDialogGap(event, isEventDialogGapActive)) continue;
 
       // Check if event is on cooldown (cooldownPercent of its time probability must pass)
       if (event.timeProbability && eventCooldowns[event.id]) {

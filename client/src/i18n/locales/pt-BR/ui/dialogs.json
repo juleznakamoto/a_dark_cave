@@ -256,6 +256,8 @@
     "copiedTitle": "Copiado para a área de transferência",
     "copyErrorTitle": "Não foi possível copiar a imagem",
     "copyErrorDesc": "Algo deu errado ao copiar para a área de transferência.",
+    "shareTextSteam": "Estou em {{percent}} % de A Dark Cave.",
+    "shareText": "Estou em {{percent}} % de A Dark Cave. Jogue de graça em {{url}}",
     "share": "Compartilhar",
     "errorTitle": "Não foi possível criar a imagem",
     "errorDesc": "Algo deu errado ao gerar a imagem."

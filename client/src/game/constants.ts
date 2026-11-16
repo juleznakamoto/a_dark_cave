@@ -20,10 +20,10 @@ export const GAME_CONSTANTS = {
   TIMED_TAB_MIN_GAP_MS: 90_000,
   /**
    * Minimum wall-clock gap after an EventDialog closes before the next random (non-timed-tab)
-   * event can spawn. Beats whose own average wait is shorter than this gap keep that
-   * shorter timing (cube follow-ups, due attack waves). Intentional follow-ups
-   * (choice outcomes, combat, rewards) open via `setEventDialog` / schedulers and
-   * are not blocked by this gap.
+   * event can spawn. Cube memories and other short story beats wait out this gap too,
+   * so closing one does not immediately open the next. Due attack waves stay exempt.
+   * Intentional follow-ups (choice outcomes, combat, rewards) open via `setEventDialog`
+   * / schedulers and are not blocked by this gap.
    */
   EVENT_DIALOG_MIN_GAP_MS: 60_000,
   /** First call costs this much gold; each subsequent call adds `CALL_MERCHANT_GOLD_PER_CALL`. */
