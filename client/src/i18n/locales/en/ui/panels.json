@@ -27,6 +27,7 @@
     "villagers": "Villagers",
     "villagersAvailable": "available",
     "villagersOnMission": "on a mission",
+    "priorActions": "Disgraced Prior Actions",
     "presetApply": "Apply preset {{slot}}",
     "presetEmpty": "Preset {{slot}} is empty: select it, then save your current jobs",
     "presetLocked": "Locked: available for purchase",

@@ -6,6 +6,7 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Changed
 
+- On the village list, the Disgraced Prior row shows how many actions he is assigned to, labeled Disgraced Prior Actions.
 - The line under Tireless Worker names the Disgraced Prior, so you can see the skill is his.
 
 ## 2026-11-16

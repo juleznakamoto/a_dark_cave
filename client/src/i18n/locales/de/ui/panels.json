@@ -27,6 +27,7 @@
     "villagers": "Dorfbewohner",
     "villagersAvailable": "verfügbar",
     "villagersOnMission": "auf Mission",
+    "priorActions": "Aktionen des Gefallenen Priors",
     "presetApply": "Vorlage {{slot}} anwenden",
     "presetEmpty": "Vorlage {{slot}} ist leer: wähle sie aus und speichere dann deine aktuellen Jobs",
     "presetLocked": "Gesperrt: zum Freischalten kaufbar",

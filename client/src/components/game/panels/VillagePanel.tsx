@@ -45,7 +45,6 @@ import {
   resolveActionDescription,
   resolveActionLabel,
 } from "@/i18n/actionLabels";
-import { getEffectName } from "@/i18n/resolveGameText";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
   formatTooltipCostLine,
@@ -71,6 +70,10 @@ import {
   isVillagerFoodUpkeepActive,
   isVillagerWoodUpkeepActive,
 } from "@/game/population";
+import {
+  countPriorSlotsUsed,
+  hasHuntressPriorSlot,
+} from "@/game/rules/pacts";
 import {
   areVillagerCapsEnabled,
   getVillagerCapForJob,
@@ -1189,6 +1192,11 @@ export default function VillagePanel() {
   const priorFoodUpkeep = useGameStore((s) =>
     getDisgracedPriorFoodUpkeepPerCycle(s),
   );
+  const priorAssignedCount = useGameStore((s) =>
+    s.fellowship?.disgraced_prior
+      ? countPriorSlotsUsed(s.priorAssignedActions, hasHuntressPriorSlot(s))
+      : 0,
+  );
   const freeVillagers = villagers.free ?? 0;
 
   const actionUnlock = useActionUnlockOrder();
@@ -1416,7 +1424,7 @@ export default function VillagePanel() {
           className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
           aria-hidden
         />
-        {renderVillagerCount(1)}
+        {renderVillagerCount(priorAssignedCount)}
         <span
           className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
           aria-hidden
@@ -1429,7 +1437,9 @@ export default function VillagePanel() {
       />
       {renderCapUpgradeSlot()}
       <span className={villagerCountLabelClass}>
-        {getEffectName("fellowship", "disgraced_prior", "Disgraced Prior")}{" "}
+        {t("village.priorActions", {
+          defaultValue: "Disgraced Prior Actions",
+        })}{" "}
         <span className={VILLAGER_RESOURCE_HINT_CLASS}>
           <span translate="no" className="notranslate">
             -{priorFoodUpkeep}
@@ -2801,7 +2811,7 @@ export default function VillagePanel() {
                           t(`village.jobs.${job.id}`, { defaultValue: job.label }),
                         ),
                       )}
-                      {priorFoodUpkeep > 0 && renderDisgracedPriorRow()}
+                      {priorAssignedCount > 0 && renderDisgracedPriorRow()}
                     </>
                   )}
                   {catalogActive &&

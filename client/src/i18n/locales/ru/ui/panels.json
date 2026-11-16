@@ -35,6 +35,7 @@
     "villagers": "Жители",
     "villagersAvailable": "доступные",
     "villagersOnMission": "в экспедиции",
+    "priorActions": "Действия падшего приора",
     "presetApply": "Применить пресет {{slot}}",
     "presetEmpty": "Пресет {{slot}} пуст: выберите его, затем сохраните текущие работы",
     "presetLocked": "Заблокировано: доступно для покупки",

@@ -35,6 +35,7 @@
     "villagers": "Wieśniacy",
     "villagersAvailable": "dostępni",
     "villagersOnMission": "na misji",
+    "priorActions": "Akcje Splamionego Przeora",
     "presetApply": "Zastosuj zestaw {{slot}}",
     "presetEmpty": "Zestaw {{slot}} jest pusty: wybierz go, potem zapisz bieżące prace",
     "presetLocked": "Zablokowane: do kupienia",

@@ -27,6 +27,7 @@
     "villagers": "Villageois",
     "villagersAvailable": "disponibles",
     "villagersOnMission": "en mission",
+    "priorActions": "Actions du prieur déchu",
     "presetApply": "Appliquer le préréglage {{slot}}",
     "presetEmpty": "Le préréglage {{slot}} est vide : sélectionnez-le, puis enregistrez vos tâches actuelles",
     "presetLocked": "Verrouillé : disponible à l'achat",

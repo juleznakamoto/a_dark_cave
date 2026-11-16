@@ -27,6 +27,7 @@
     "villagers": "Aldeanos",
     "villagersAvailable": "disponibles",
     "villagersOnMission": "en misión",
+    "priorActions": "Acciones del prior deshonrado",
     "presetApply": "Aplicar preajuste {{slot}}",
     "presetEmpty": "El preajuste {{slot}} está vacío: selecciónalo y guarda tus trabajos actuales",
     "presetLocked": "Bloqueado: disponible para comprar",

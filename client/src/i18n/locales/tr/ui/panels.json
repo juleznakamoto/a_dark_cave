@@ -27,6 +27,7 @@
     "villagers": "Köylüler",
     "villagersAvailable": "boşta",
     "villagersOnMission": "görevde",
+    "priorActions": "Düşkün Başkeşiş eylemleri",
     "presetApply": "{{slot}}. ön ayarı uygula",
     "presetEmpty": "{{slot}}. ön ayar boş: önce seç, sonra şu anki meslek dağılımını kaydet",
     "presetLocked": "Kilitli: satın alınabilir",

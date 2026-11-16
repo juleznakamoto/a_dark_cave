@@ -27,6 +27,7 @@
     "villagers": "村人",
     "villagersAvailable": "空き",
     "villagersOnMission": "任務中",
+    "priorActions": "堕ちた修道院長の行動",
     "presetApply": "プリセット{{slot}}を適用",
     "presetEmpty": "プリセット{{slot}}は空です。選んでから、今の仕事を保存してください",
     "presetLocked": "ロック中：購入で解放できます",
