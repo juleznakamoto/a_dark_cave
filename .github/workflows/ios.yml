@@ -1,6 +1,9 @@
 name: iOS
 
 on:
+  push:
+    branches:
+      - ios-app
   workflow_dispatch:
     inputs:
       upload:
@@ -45,7 +48,7 @@ jobs:
 
   testflight:
     needs: compile
-    if: ${{ inputs.upload }}
+    if: ${{ inputs.upload == true }}
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
