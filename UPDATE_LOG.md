@@ -4,6 +4,12 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ## Unreleased
 
+### Changed
+
+- The line under Tireless Worker names the Disgraced Prior, so you can see the skill is his.
+
+## 2026-11-16
+
 ### Added
 
 - When your madness is high and you carry more than 100 silver, five children may stare at you from between the trees. Walk on, or approach them.
@@ -21,6 +27,10 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 - Prime Foundry and Master Tannery add 1, and Masterwork Foundry and High Tannery add 2, in every version of the game.
 - Hovering a resource shows its capacity first, with the number on the right of that line, in yellow when the stack is full.
 - On Linux, the window stays a normal size. Pick Huge when the writing looks small.
+- Fix Linux scaling issues when using Proton.
+- In Cruel Mode, trying to free the slave trader's captives can now fail.
+- Updated Sleep dialog UI.
+- The cycle ring on the village panel fills more smoothly.
 
 ### Fixed
 
@@ -33,18 +43,6 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 - The message you share with a progress image is in your language.
 - Claiming an achievement no longer shifts the rows below it.
 - The Improve button, Claim button, shop filters, village job buttons, and build-queue marks grow with text size.
-
-## 2026-11-10
-
-### Changed
-
-- Fix Linux scaling issues when using Proton.
-- In Cruel Mode, trying to free the slave trader's captives can now fail.
-- Updated Sleep dialog UI.
-- The cycle ring on the village panel fills more smoothly.
-
-### Fixed
-
 - Effects of some events/items in code where not matching displayed effects:
     - Deepening the First Flame gives you 8 housing and a 15% crafting discount.
     - Raven's Orb gives 5 Knowledge.

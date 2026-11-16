@@ -199,6 +199,30 @@ const ESTATE_SKILL_TITLE_KEYS: Record<DemoEndEstateSkillId, string> = {
   chainmaster: "estate.chainmaster",
 };
 
+function getDisgracedPriorSkillDescription(
+  level: number,
+  t: (key: string, options?: Record<string, string | number | boolean | undefined>) => string,
+): string {
+  const cur = DISGRACED_PRIOR_UPGRADES[level] ?? DISGRACED_PRIOR_UPGRADES[0];
+  const name = getEffectName("fellowship", "disgraced_prior", "Disgraced Prior");
+  const upkeepText = t("estate.priorUpkeepShort", {
+    amount: DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
+  });
+  const bonusPercent = (cur.rewardMultiplier - 1) * 100;
+  return bonusPercent > 0
+    ? t("estate.priorSummaryBonus", {
+      name,
+      actions: cur.maxActions,
+      bonus: bonusPercent,
+      upkeep: upkeepText,
+    })
+    : t("estate.priorSummaryNoBonus", {
+      name,
+      count: cur.maxActions,
+      upkeep: upkeepText,
+    });
+}
+
 function getEstateSkillLevelZeroDescription(
   id: DemoEndEstateSkillId,
   t: (key: string, options?: Record<string, string | number | boolean | undefined>) => string,
@@ -248,23 +272,8 @@ function getEstateSkillLevelZeroDescription(
       });
     case "greyOne":
       return getGreyOneEffectLines(GREY_ONE_UPGRADES[0]).join(", ");
-    case "disgracedPrior": {
-      const cur = DISGRACED_PRIOR_UPGRADES[0];
-      const upkeepText = t("estate.priorUpkeepShort", {
-        amount: DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
-      });
-      const bonusPercent = (cur.rewardMultiplier - 1) * 100;
-      return bonusPercent > 0
-        ? t("estate.priorSummaryBonus", {
-          actions: cur.maxActions,
-          bonus: bonusPercent,
-          upkeep: upkeepText,
-        })
-        : t("estate.priorSummaryNoBonus", {
-          count: cur.maxActions,
-          upkeep: upkeepText,
-        });
-    }
+    case "disgracedPrior":
+      return getDisgracedPriorSkillDescription(0, t);
     case "chainmaster":
       return t("estate.chainmasterSummary", {
         percent: Math.round(CHAINMASTER_UPGRADES[0].productionBonus * 100),
@@ -1279,21 +1288,7 @@ export default function EstatePanel({
                         ? <div>{t("estate.priorConcurrentAction", { count: actionDelta })}</div>
                         : <div>{t("estate.priorActionBonus", { percent: bonusPercent })}</div>
                     ) : <div>{t("estate.maxLevel")}</div>;
-                    const curBonusPercent = (cur.rewardMultiplier - 1) * 100;
-                    const upkeepText = t("estate.priorUpkeepShort", {
-                      amount: DISGRACED_PRIOR_FOOD_PER_ASSIGNED_ACTION_PER_CYCLE,
-                    });
-                    const description =
-                      curBonusPercent > 0
-                        ? t("estate.priorSummaryBonus", {
-                          actions: cur.maxActions,
-                          bonus: curBonusPercent,
-                          upkeep: upkeepText,
-                        })
-                        : t("estate.priorSummaryNoBonus", {
-                          count: cur.maxActions,
-                          upkeep: upkeepText,
-                        });
+                    const description = getDisgracedPriorSkillDescription(lvl, t);
                     return (
                       <SkillUpgradeRow
                         title={t("estate.tirelessWorker")}

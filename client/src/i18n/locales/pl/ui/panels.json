@@ -140,9 +140,9 @@
     "priorConcurrentAction_other": "+{{count}} równoległych akcji",
     "priorActionBonus": "+{{percent}}% premii do przypisanych akcji",
     "priorUpkeepShort": "Koszt {{amount}} żywności na akcję na cykl",
-    "priorSummaryBonus": "{{actions}} akcji, +{{bonus}}% premii, {{upkeep}}",
-    "priorSummaryNoBonus_one": "{{count}} równoległa akcja, {{upkeep}}",
-    "priorSummaryNoBonus_other": "{{count}} równoległych akcji, {{upkeep}}",
+    "priorSummaryBonus": "{{name}}: {{actions}} akcji, +{{bonus}}% premii, {{upkeep}}",
+    "priorSummaryNoBonus_one": "{{name}}: {{count}} równoległa akcja, {{upkeep}}",
+    "priorSummaryNoBonus_other": "{{name}}: {{count}} równoległych akcji, {{upkeep}}",
     "chainmaster": "Mistrz Łańcuchów",
     "chainmasterProductionBonus": "+{{percent}}% produkcji wieśniaków",
     "chainmasterDisgustDuration": "Wstręt wieśniaków: {{minutes}} min",
@@ -161,8 +161,8 @@
     "feralHowlSummary_many": "{{success}}% sukcesu, -{{reduction}}% obr. wroga przez {{rounds}} rund, +{{crit}}% obr. kryt.",
     "priorConcurrentAction_few": "+{{count}} równoległe akcje",
     "priorConcurrentAction_many": "+{{count}} równoległych akcji",
-    "priorSummaryNoBonus_few": "{{count}} równoległe akcje, {{upkeep}}",
-    "priorSummaryNoBonus_many": "{{count}} równoległych akcji, {{upkeep}}"
+    "priorSummaryNoBonus_few": "{{name}}: {{count}} równoległe akcje, {{upkeep}}",
+    "priorSummaryNoBonus_many": "{{name}}: {{count}} równoległych akcji, {{upkeep}}"
   },
   "bonuses": {
     "caveExplore": "Eksploracja jaskini",

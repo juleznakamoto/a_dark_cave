@@ -140,9 +140,9 @@
     "priorConcurrentAction_other": "+{{count}} одновременных действий",
     "priorActionBonus": "+{{percent}}% бонус к назначенным действиям",
     "priorUpkeepShort": "Стоит {{amount}} еды за действие за цикл",
-    "priorSummaryBonus": "Действия: {{actions}}, +{{bonus}}% бонус, {{upkeep}}",
-    "priorSummaryNoBonus_one": "{{count}} одновременное действие, {{upkeep}}",
-    "priorSummaryNoBonus_other": "{{count}} одновременных действий, {{upkeep}}",
+    "priorSummaryBonus": "{{name}}: действия {{actions}}, +{{bonus}}% бонус, {{upkeep}}",
+    "priorSummaryNoBonus_one": "{{name}}: {{count}} одновременное действие, {{upkeep}}",
+    "priorSummaryNoBonus_other": "{{name}}: {{count}} одновременных действий, {{upkeep}}",
     "chainmaster": "Властелин цепей",
     "chainmasterProductionBonus": "+{{percent}}% к производству жителей",
     "chainmasterDisgustDuration": "Отвращение жителей: {{minutes}} мин",
@@ -161,8 +161,8 @@
     "feralHowlSummary_many": "{{success}}% успеха, -{{reduction}}% урона врага на {{rounds}} раундов, +{{crit}}% крит. урона",
     "priorConcurrentAction_few": "+{{count}} одновременных действия",
     "priorConcurrentAction_many": "+{{count}} одновременных действий",
-    "priorSummaryNoBonus_few": "{{count}} одновременных действия, {{upkeep}}",
-    "priorSummaryNoBonus_many": "{{count}} одновременных действий, {{upkeep}}"
+    "priorSummaryNoBonus_few": "{{name}}: {{count}} одновременных действия, {{upkeep}}",
+    "priorSummaryNoBonus_many": "{{name}}: {{count}} одновременных действий, {{upkeep}}"
   },
   "bonuses": {
     "caveExplore": "Исследование пещеры",
