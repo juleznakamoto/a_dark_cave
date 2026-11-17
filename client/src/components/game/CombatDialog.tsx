@@ -1223,7 +1223,7 @@ export default function CombatDialog({
           ) : (
             // Combat interface
             <>
-              <div className={cn("relative -m-6 p-6 min-h-full", combatResult && "pointer-events-none")}>
+              <div className={cn("relative -m-4 p-4 md:-m-6 md:p-6 min-h-full", combatResult && "pointer-events-none")}>
                 <DialogHeader>
                   <DialogTitle className="pr-0 text-lg font-semibold">
                     {currentEnemy?.isBoss

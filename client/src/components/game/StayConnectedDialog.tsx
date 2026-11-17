@@ -50,7 +50,7 @@ export default function StayConnectedDialog() {
   return (
     <Dialog open={open} onOpenChange={(next) => !next && setOpen(false)}>
       <DialogContent
-        className="[--adc-dialog-max-w:20rem] gap-3 py-4 px-5"
+        className="[--adc-dialog-max-w:20rem] gap-3"
         layerZIndex={70}
       >
         <DialogHeader className="pb-0">

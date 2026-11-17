@@ -1769,14 +1769,14 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
 }
 
 /* Side gap between a dialog and the screen. 95vw leaves 2.5vw each side.
-   Phones (same 768px cutoff as useIsMobile) double that gap to 5vw. */
+   Phones (same 768px cutoff as useIsMobile) use 85vw so dialogs read a bit smaller. */
 :root {
   --adc-dialog-viewport-w: 95vw;
 }
 
 @media (max-width: 767px) {
   :root {
-    --adc-dialog-viewport-w: 90vw;
+    --adc-dialog-viewport-w: 85vw;
   }
 }
 

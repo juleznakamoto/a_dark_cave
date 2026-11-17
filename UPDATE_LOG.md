@@ -10,6 +10,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- Settings and Stay Connected use the same padding inside as other dialogs.
 - When you point at a resource in the side list, or press it on a phone, its amount turns bold.
 - While paused, the time beside Pause tells you it is the play time of this playthrough.
 - The language you have selected is shown in red.
@@ -25,6 +26,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 #### Changed
 
 - On a phone, the header sits closer to the left and right edges of the screen.
+- On a phone, dialogs have a bit less space inside between the frame and the text.
 - On a phone, dialogs sit farther in from the left and right edges of the screen.
 - On a phone, language, ambience, and sound on the start screen sit in the upper left.
 - On a phone, the language list on the start screen is larger.

@@ -449,7 +449,7 @@ export default function SettingsDialog({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
         ref={setMenuPortalContainer}
-        className="[--adc-dialog-max-w:24rem] gap-3 py-4 px-5"
+        className="[--adc-dialog-max-w:24rem] gap-3"
         layerZIndex={70}
       >
         <DialogHeader className="pb-0">

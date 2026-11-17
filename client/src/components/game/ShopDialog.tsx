@@ -1924,7 +1924,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
             className={cn(
               showSecurePurchasePrompt
                 ? "[--adc-dialog-max-w:28rem] max-h-[80vh] z-[70] gap-2"
-                : "[--adc-dialog-max-w:56rem] flex max-h-[82vh] min-h-0 flex-col gap-3 overflow-visible z-[70] p-6",
+                : "[--adc-dialog-max-w:56rem] flex max-h-[82vh] min-h-0 flex-col gap-3 overflow-visible z-[70]",
               isPaymentMode && "hidden",
             )}
             style={
@@ -2739,7 +2739,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
         <Dialog open={true} onOpenChange={handlePaymentDialogOpenChange}>
           <DialogContent
             data-checkout-dialog
-            className="flex max-h-[min(80dvh,80vh)] flex-col overflow-visible z-[80] gap-2 p-4 sm:p-6 [--adc-dialog-max-w:28rem] [&>button]:hidden"
+            className="flex max-h-[min(80dvh,80vh)] flex-col overflow-visible z-[80] gap-2 [--adc-dialog-max-w:28rem] [&>button]:hidden"
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
