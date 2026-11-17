@@ -1794,6 +1794,7 @@ export default function VillagePanel() {
                               <TooltipWrapper
                                 key={queueTooltipId}
                                 tooltipId={queueTooltipId}
+                                disabled
                                 tooltip={
                                   <div className="text-xs">
                                     {isBuildingLocked
@@ -2619,6 +2620,7 @@ export default function VillagePanel() {
                                 <TooltipWrapper
                                   key={`preset-slot-${slot}`}
                                   tooltipId={presetTooltipId}
+                                  disabled
                                   tooltip={
                                     <div className="text-xs">
                                       {t("village.slotBuildingNeededToUnlock", {
@@ -2653,6 +2655,7 @@ export default function VillagePanel() {
                                 <TooltipWrapper
                                   key={`preset-slot-${slot}`}
                                   tooltipId={presetTooltipId}
+                                  disabled
                                   tooltip={
                                     <div className="text-xs">
                                       {insightUnlockCost !== null
@@ -2698,6 +2701,7 @@ export default function VillagePanel() {
                               <TooltipWrapper
                                 key={`preset-slot-${slot}`}
                                 tooltipId={presetTooltipId}
+                                openOnTap
                                 tooltip={
                                   <div className="text-xs">{tooltipText}</div>
                                 }

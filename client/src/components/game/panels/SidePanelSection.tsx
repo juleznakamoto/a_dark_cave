@@ -1353,7 +1353,13 @@ export default function SidePanelSection({
             "inline-flex w-full items-baseline justify-end",
           )}
         >
-          <span>{displayValue}</span>
+          <span
+            className={cn(
+              isResourcesSection && isHighlighted && "font-bold",
+            )}
+          >
+            {displayValue}
+          </span>
           {showCapacitySlot ? (
             <ResourceCapacityMark
               show={showCapacityMark}

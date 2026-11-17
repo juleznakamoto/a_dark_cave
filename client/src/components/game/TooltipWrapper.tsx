@@ -48,6 +48,12 @@ export interface TooltipWrapperProps {
    * tap/press. Set false only for non-button triggers that rely on wrapper onClick.
    */
   preferNativeClick?: boolean;
+  /**
+   * On a phone, a short tap opens the tooltip and still runs the control's click.
+   * A later tap runs the click again and leaves the tip up. Long-press still
+   * shows the tip without running the click. Do not combine with `disabled`.
+   */
+  openOnTap?: boolean;
   onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
   onClick?: (e?: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => void;
@@ -57,6 +63,8 @@ export interface TooltipWrapperProps {
  * Wrapper component that adds consistent tooltip behavior to any element
  * - Desktop: tooltip on hover. A mouse press is a normal click.
  * - Touch: long-press opens the tooltip and does not run the action. A short tap clicks.
+ * - `disabled`: a short tap on a phone opens the tooltip. Use for marks with no click.
+ * - `openOnTap`: a short tap on a phone opens the tooltip and still runs the click.
  * - Long-press tooltips stay open until user clicks/taps elsewhere
  * - Only one tooltip open at a time globally
  */
@@ -73,6 +81,7 @@ export function TooltipWrapper({
   align,
   open,
   preferNativeClick = true,
+  openOnTap = false,
   onMouseEnter,
   onMouseLeave,
   onClick,
@@ -199,6 +208,12 @@ export function TooltipWrapper({
         // Don't show tooltip if action was just executed
         if (actionExecutedRef.current) return;
 
+        // Preset slots: the tap still clicks, and the tip opens with it.
+        if (openOnTap && globalTooltip.isMobile) {
+          e.stopPropagation();
+          globalTooltip.setOpenTooltip(finalTooltipId);
+        }
+
         // Only show tooltip if element is disabled
         if (disabled) {
           e.stopPropagation();
@@ -247,6 +262,7 @@ export function TooltipWrapper({
           wrappedOnClick,
           e,
           preferNativeClick,
+          openOnTap,
         );
       }}
       onTouchStart={(e) => {
@@ -277,6 +293,7 @@ export function TooltipWrapper({
           wrappedOnClick,
           e,
           preferNativeClick,
+          openOnTap,
         );
       }}
       onMouseEnter={handleMouseEnter}

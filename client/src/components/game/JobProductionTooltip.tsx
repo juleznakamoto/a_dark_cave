@@ -105,6 +105,7 @@ export function JobProductionHover({
   return (
     <TooltipWrapper
       tooltipId={villageJobProductionTooltipId(jobId)}
+      disabled
       className={className}
       tooltipTriggerClassName="inline-block max-w-full text-left"
       align="center"

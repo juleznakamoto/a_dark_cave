@@ -290,7 +290,9 @@ export default function GameFooter() {
     pausedPlayTimeTextRef.current = formatDurationMs(pausedPlayTimeMs);
   }
   const pausedPlayTimeText = pausedPlayTimeTextRef.current;
-  const pausedPlayTimeName = t("footer.playTime", { defaultValue: "Play time" });
+  const pausedPlayTimeName = t("footer.playTime", {
+    defaultValue: "Play time of this playthrough",
+  });
   const feedbackButton = (
     <Button
       variant="ghost"

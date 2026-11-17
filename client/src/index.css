@@ -1243,6 +1243,31 @@ button.new-item-pulse-text,
   contain: paint;
 }
 
+/* iOS WebKit leaves this pulse at full white. The tab button is inside an
+   overflow-x scroller, and paint containment freezes its opacity. Composite
+   the pulse instead so the village map is still not repainted every frame. */
+@supports (-webkit-touch-callout: none) {
+  .game-location-tab {
+    -webkit-appearance: none;
+    appearance: none;
+    border: 0;
+  }
+
+  .tab-blink-new,
+  .tab-fade-in,
+  .timer-tab-pulse,
+  .timer-tab-pulse-green,
+  .timer-tab-pulse-red,
+  button.new-item-pulse-text,
+  .new-item-pulse-redacted {
+    contain: none;
+    -webkit-appearance: none;
+    appearance: none;
+    transform: translateZ(0);
+    will-change: opacity;
+  }
+}
+
 .village-map-overlay {
   isolation: isolate;
   will-change: transform;
@@ -1743,6 +1768,18 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
   column-gap: calc(0.125rem + 0.35 * var(--adc-text-delta, 0px));
 }
 
+/* Side gap between a dialog and the screen. 95vw leaves 2.5vw each side.
+   Phones (same 768px cutoff as useIsMobile) double that gap to 5vw. */
+:root {
+  --adc-dialog-viewport-w: 95vw;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --adc-dialog-viewport-w: 90vw;
+  }
+}
+
 /* Open click lock: controls look disabled so a swallowed click is not surprising. */
 .adc-dialog-open-click-lock :is(button, [role="button"], a[href]) {
   opacity: 0.5;
@@ -2227,8 +2264,26 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
   }
 }
 
+/* Tab buttons. WebKit will not fill in the button's own color when only the
+   midpoint is set, so the label stays white. `inherit` is that color. */
+@keyframes new-item-pulse-text-button {
+
+  0%,
+  100% {
+    color: inherit;
+  }
+
+  50% {
+    color: #fff;
+  }
+}
+
 .new-item-pulse-text {
   animation: new-item-pulse-text 1s ease-in-out infinite;
+}
+
+button.new-item-pulse-text {
+  animation-name: new-item-pulse-text-button;
 }
 
 /* Unread event-log lines. Read color (foreground at 50%) to white, half the speed (2s vs 1s).
@@ -2960,8 +3015,9 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   animation: timer-symbol-pulse 1s ease-in-out infinite;
 }
 
-/* Color only. A shadow on a tab repaints the village map for as long as it flashes. */
-@keyframes timer-tab-pulse-event {
+/* Color only. A shadow on a tab repaints the village map for as long as it flashes.
+   Literal colors: a variable in the keyframe stays white on iOS. */
+@keyframes timer-tab-pulse-event-green {
 
   0%,
   38%,
@@ -2973,20 +3029,34 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   42%,
   50%,
   58% {
-    color: var(--timed-tab-pulse-color) !important;
+    color: rgb(34 197 94) !important;
+  }
+}
+
+@keyframes timer-tab-pulse-event-red {
+
+  0%,
+  38%,
+  62%,
+  100% {
+    color: rgb(255 255 255) !important;
+  }
+
+  42%,
+  50%,
+  58% {
+    color: rgb(239 68 68) !important;
   }
 }
 
 .timer-tab-pulse-green {
-  --timed-tab-pulse-color: rgb(34 197 94);
   opacity: 1 !important;
-  animation: timer-tab-pulse-event 1.2s ease-in-out infinite;
+  animation: timer-tab-pulse-event-green 1.2s ease-in-out infinite;
 }
 
 .timer-tab-pulse-red {
-  --timed-tab-pulse-color: rgb(239 68 68);
   opacity: 1 !important;
-  animation: timer-tab-pulse-event 1.2s ease-in-out infinite;
+  animation: timer-tab-pulse-event-red 1.2s ease-in-out infinite;
 }
 
 @keyframes overlay-fade-in {

@@ -110,6 +110,10 @@ describe("SidePanelSection highlight underline", () => {
     );
 
     expect(word("Wood")).toBeTruthy();
+    const amount = Array.from(document.querySelectorAll("span")).find(
+      (node) => node.textContent === "4",
+    );
+    expect(amount?.className).toContain("font-bold");
   });
 
   it("leaves the building count plain", () => {

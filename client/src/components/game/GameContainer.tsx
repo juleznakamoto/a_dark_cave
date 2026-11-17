@@ -1280,7 +1280,7 @@ export default function GameContainer() {
     ? "opacity-100 text-foreground"
     : "opacity-100";
   const tabButtonClass =
-    `${GAME_PANEL_HEADER_BAND} shrink-0 bg-transparent font-medium tracking-wide outline-none focus:outline-none focus-visible:outline-none`;
+    `${GAME_PANEL_HEADER_BAND} game-location-tab shrink-0 bg-transparent font-medium tracking-wide outline-none focus:outline-none focus-visible:outline-none`;
   const tabUnlockClassName = (tabId: TabUnlockBlinkId, isActive: boolean) =>
     getTabUnlockAttentionClass({
       isAnimating: animatingTabs.has(tabId),

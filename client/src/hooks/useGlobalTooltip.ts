@@ -509,6 +509,7 @@ export function useGlobalTooltip() {
     onClick: () => void,
     e: React.MouseEvent,
     preferNativeClick = true,
+    openOnTap = false,
   ) => {
     const sawHoverTooltip = globalTooltipManager.consumeHoverTooltipPress(id);
     const wasPressing = globalTooltipManager.isPressing(id);
@@ -525,6 +526,13 @@ export function useGlobalTooltip() {
         e.preventDefault();
         e.stopPropagation();
         globalTooltipManager.suppressNextClick(id);
+        return;
+      }
+
+      // A phone tap opened this tip and the control still has a click (preset
+      // slots). Leave the tip up so the compatibility mouseup does not swallow
+      // that click, or the next tap.
+      if (openOnTap && globalTooltipManager.isMobile()) {
         return;
       }
 
@@ -592,6 +600,7 @@ export function useGlobalTooltip() {
     onClick: () => void,
     e: React.TouchEvent,
     preferNativeClick = true,
+    openOnTap = false,
   ) => {
     // Capture state before clearing (clearPressTimer removes from pressingIds)
     const wasPressing = globalTooltipManager.isPressing(id);
@@ -608,6 +617,12 @@ export function useGlobalTooltip() {
         if (e.cancelable) e.preventDefault();
         e.stopPropagation();
         globalTooltipManager.suppressNextClick(id);
+        return;
+      }
+
+      // A phone tap opened this tip and the control still has a click (preset
+      // slots). Leave the tip up and let this tap run the click again.
+      if (openOnTap && globalTooltipManager.isMobile()) {
         return;
       }
 

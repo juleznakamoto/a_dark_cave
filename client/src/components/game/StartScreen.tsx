@@ -186,6 +186,7 @@ function StartAudioControl({
   buttonTestId,
   buttonLabel,
   iconName,
+  sliderPositionClassName = "bottom-full pb-1",
   onToggle,
   onVolumeChange,
 }: {
@@ -196,6 +197,8 @@ function StartAudioControl({
   buttonTestId: string;
   buttonLabel: string;
   iconName: "music" | "musicMuted" | "sound" | "soundMuted";
+  /** Opens upward in the footer, downward when the buttons sit at the top. */
+  sliderPositionClassName?: string;
   onToggle: () => void;
   onVolumeChange: (volume: number) => void;
 }) {
@@ -241,7 +244,7 @@ function StartAudioControl({
       {fineHover && (
         <div
           className={
-            "absolute bottom-full left-1/2 z-20 -translate-x-1/2 pb-1 transition-opacity duration-150 " +
+            `absolute left-1/2 z-20 -translate-x-1/2 transition-opacity duration-150 ${sliderPositionClassName} ` +
             (holdOpen
               ? "pointer-events-auto opacity-100 delay-0"
               : "pointer-events-none opacity-0 delay-0 [@media(hover:hover)_and_(pointer:fine)]:group-hover/vol:pointer-events-auto [@media(hover:hover)_and_(pointer:fine)]:group-hover/vol:opacity-100 [@media(hover:hover)_and_(pointer:fine)]:group-hover/vol:delay-200 group-has-[:focus-visible]/vol:pointer-events-auto group-has-[:focus-visible]/vol:opacity-100 group-has-[:focus-visible]/vol:delay-0")
@@ -405,6 +408,10 @@ export default function StartScreen({
   // Galaxy and Normal/web keep Steam / Reddit / Contact.
   // iOS App Store (and DEV Game Mode → iOS) drops the web promo and site links.
   const iosEditionActive = isIosEditionActive();
+  // Phone (and the iOS app at any width): these sit top-left, so the slider drops down.
+  const startAudioSliderPositionClass = iosEditionActive
+    ? "top-full pt-1"
+    : "top-full pt-1 md:top-auto md:bottom-full md:pt-0 md:pb-1";
   const hideWebStartLinks = steamEditionActive || iosEditionActive;
   const hideStartScreenSocialLinks =
     steamDesktopEditionActive || iosEditionActive;
@@ -1360,7 +1367,9 @@ export default function StartScreen({
       </main>
 
       <nav
-        className={`absolute bottom-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 ${START_FOOTER_TEXT} text-muted-foreground`}
+        className={`absolute bottom-4 left-4 right-4 z-10 flex flex-wrap items-center gap-x-3 gap-y-1.5 ${START_FOOTER_TEXT} text-muted-foreground ${
+          iosEditionActive ? "justify-end" : "justify-end md:justify-between"
+        }`}
         style={
           iosEditionActive
             ? {
@@ -1372,7 +1381,21 @@ export default function StartScreen({
         }
         aria-label="Site links"
       >
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+        <div
+          className={
+            iosEditionActive
+              ? "fixed z-20 flex flex-wrap items-center gap-x-2 gap-y-1.5"
+              : "fixed top-4 left-4 z-20 flex flex-wrap items-center gap-x-2 gap-y-1.5 md:static md:top-auto md:left-auto md:z-auto"
+          }
+          style={
+            iosEditionActive
+              ? {
+                  top: "calc(1rem + env(safe-area-inset-top, 0px))",
+                  left: "calc(1rem + env(safe-area-inset-left, 0px))",
+                }
+              : undefined
+          }
+        >
           {LanguageSelectorCmp ? (
             <LanguageSelectorCmp
               key={startMenuEpoch}
@@ -1406,6 +1429,7 @@ export default function StartScreen({
               musicMuted ? t("footer.unmuteMusic") : t("footer.muteMusic")
             }
             iconName={musicMuted ? "musicMuted" : "music"}
+            sliderPositionClassName={startAudioSliderPositionClass}
             onToggle={toggleMusic}
             onVolumeChange={changeMusicVolume}
           />
@@ -1417,6 +1441,7 @@ export default function StartScreen({
             buttonTestId="button-start-toggle-sfx"
             buttonLabel={sfxMuted ? t("footer.unmuteSfx") : t("footer.muteSfx")}
             iconName={sfxMuted ? "soundMuted" : "sound"}
+            sliderPositionClassName={startAudioSliderPositionClass}
             onToggle={toggleSfx}
             onVolumeChange={changeSfxVolume}
           />

@@ -10,7 +10,9 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
-- The language you have selected is underlined, the same way a highlighted name is in the side panel.
+- When you point at a resource in the side list, or press it on a phone, its amount turns bold.
+- While paused, the time beside Pause tells you it is the play time of this playthrough.
+- The language you have selected is shown in red.
 - On the village list, the Disgraced Prior row shows how many actions he is assigned to, labeled Disgraced Prior Actions.
 - The line under Tireless Worker names the Disgraced Prior, so you can see the skill is his.
 
@@ -22,6 +24,9 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- On a phone, the header sits closer to the left and right edges of the screen.
+- On a phone, dialogs sit farther in from the left and right edges of the screen.
+- On a phone, language, ambience, and sound on the start screen sit in the upper left.
 - On a phone, the language list on the start screen is larger.
 - When you share from the iOS app, the message says you are currently playing A Dark Cave, followed by the App Store link.
 - The iOS start screen no longer shows The Hustle logo, or the social, FAQ, About, Press, and legal links.
@@ -34,6 +39,10 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- On a phone, tapping a villager job or the play time beside Pause shows what it means.
+- A newly unlocked tab pulses brighter and dimmer again, instead of staying solid white.
+- On a phone, tapping a construction queue slot or a villager preset slot shows what it does.
+- The first time you open the app, it uses your iPhone's language.
 - Sound plays on iPhone, including while the silent switch is on.
 - In Settings, the music and sound sliders no longer show a red dot at the right end of the track.
 - On a phone, the resources an action needs light up only while that action's tip is open.

@@ -129,6 +129,100 @@ describe("TooltipWrapper - mobile long-press vs action", () => {
     expect(onLeave).toHaveBeenCalledTimes(1);
   });
 
+  it("opens an informational slot tooltip on a short tap", async () => {
+    render(
+      <TooltipWrapper
+        tooltip="Construction queue slot 1: available"
+        tooltipId="queue-slot-1"
+        disabled
+      >
+        <span data-testid="queue-slot-1">slot</span>
+      </TooltipWrapper>,
+    );
+
+    const wrapper = screen
+      .getByTestId("queue-slot-1")
+      .closest("[data-tooltip-trigger-id]")!;
+
+    await act(async () => {
+      fireEvent.touchStart(wrapper);
+      fireEvent.touchEnd(wrapper);
+    });
+
+    expect(getTooltipOpenProp("queue-slot-1")).toBe(true);
+  });
+
+  it("opens a preset slot tooltip on a short tap and still runs the click", async () => {
+    const onAction = vi.fn();
+    render(
+      <TooltipWrapper
+        tooltip="Apply preset 1"
+        tooltipId="preset-slot-1"
+        openOnTap
+      >
+        <button type="button" data-testid="preset-slot-1" onClick={onAction}>
+          1
+        </button>
+      </TooltipWrapper>,
+    );
+
+    const button = screen.getByTestId("preset-slot-1");
+    const wrapper = button.closest("[data-tooltip-trigger-id]")!;
+
+    const tap = () => {
+      fireEvent.touchStart(wrapper);
+      fireEvent.touchEnd(wrapper);
+      fireEvent.mouseUp(wrapper);
+      fireEvent.click(button);
+    };
+
+    await act(async () => {
+      tap();
+    });
+
+    expect(onAction).toHaveBeenCalledTimes(1);
+    expect(getTooltipOpenProp("preset-slot-1")).toBe(true);
+
+    await act(async () => {
+      tap();
+    });
+
+    expect(onAction).toHaveBeenCalledTimes(2);
+    expect(getTooltipOpenProp("preset-slot-1")).toBe(true);
+  });
+
+  it("does not apply a preset slot when the tap is a long press", async () => {
+    const onAction = vi.fn();
+    render(
+      <TooltipWrapper
+        tooltip="Apply preset 1"
+        tooltipId="preset-slot-hold"
+        openOnTap
+      >
+        <button type="button" data-testid="preset-slot-hold" onClick={onAction}>
+          1
+        </button>
+      </TooltipWrapper>,
+    );
+
+    const button = screen.getByTestId("preset-slot-hold");
+    const wrapper = button.closest("[data-tooltip-trigger-id]")!;
+
+    await act(async () => {
+      fireEvent.touchStart(wrapper);
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(250);
+    });
+    await act(async () => {
+      fireEvent.touchEnd(wrapper);
+      fireEvent.click(button);
+    });
+
+    expect(onAction).not.toHaveBeenCalled();
+    expect(getTooltipOpenProp("preset-slot-hold")).toBe(true);
+  });
+
   it("executes the button on a short tap (synthesized click)", async () => {
     const onAction = vi.fn();
     render(<MakeWoodButton onAction={onAction} />);

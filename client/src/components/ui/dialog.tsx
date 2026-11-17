@@ -180,8 +180,8 @@ const DialogContent = React.forwardRef<
             ? {}
             : {
               boxSizing: "border-box",
-              width: "min(95vw, var(--adc-dialog-max-w, 32rem))",
-              maxWidth: "min(95vw, var(--adc-dialog-max-w, 32rem))",
+              width: "min(var(--adc-dialog-viewport-w, 95vw), var(--adc-dialog-max-w, 32rem))",
+              maxWidth: "min(var(--adc-dialog-viewport-w, 95vw), var(--adc-dialog-max-w, 32rem))",
             }),
           ...(layerZIndex != null ? { zIndex: layerZIndex } : {}),
           ...(chromeOn ? destroyedChromeMaskStyle(chromeSeed) : {}),
