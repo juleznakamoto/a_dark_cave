@@ -43,7 +43,16 @@ mkdir -p "$APP_DIR/build"
 printf '%s' "$IOS_DISTRIBUTION_CERT_P12_BASE64" | base64 -D > "$CERT_PATH"
 printf '%s' "$IOS_PROVISIONING_PROFILE_BASE64" | base64 -D > "$PROFILE_PATH"
 
-security import "$CERT_PATH" -k "$HOME/Library/Keychains/login.keychain-db" -P "$IOS_DISTRIBUTION_CERT_PASSWORD" -T /usr/bin/codesign -T /usr/bin/security
+# The runner login keychain rejects OpenSSL 3 p12 files and is locked for
+# unattended import. A temporary keychain accepts a legacy p12.
+KEYCHAIN_PATH="$APP_DIR/build/signing.keychain-db"
+KEYCHAIN_PASS="$(openssl rand -hex 16)"
+security create-keychain -p "$KEYCHAIN_PASS" "$KEYCHAIN_PATH"
+security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+security unlock-keychain -p "$KEYCHAIN_PASS" "$KEYCHAIN_PATH"
+security import "$CERT_PATH" -k "$KEYCHAIN_PATH" -P "$IOS_DISTRIBUTION_CERT_PASSWORD" -f pkcs12 -T /usr/bin/codesign -T /usr/bin/security
+security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASS" "$KEYCHAIN_PATH"
+security list-keychains -d user -s "$KEYCHAIN_PATH"
 rm -f "$CERT_PATH"
 
 mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
@@ -82,8 +91,10 @@ xcodebuild \
   -destination "generic/platform=iOS" \
   -archivePath "$APP_DIR/build/App.xcarchive" \
   CODE_SIGN_STYLE=Manual \
+  CODE_SIGN_IDENTITY="Apple Distribution" \
   DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
   PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME" \
+  OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN_PATH" \
   archive
 
 xcodebuild \
