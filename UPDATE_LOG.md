@@ -25,6 +25,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- On a phone, language, ambience, and sound on the start screen are a bit larger.
 - On a phone, the header sits closer to the left and right edges of the screen.
 - On a phone, dialogs have a bit less space inside between the frame and the text.
 - On a phone, dialogs sit farther in from the left and right edges of the screen.
@@ -41,6 +42,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- Locking the phone no longer makes a short beep when the music stops.
 - On a phone, tapping a villager job or the play time beside Pause shows what it means.
 - A newly unlocked tab pulses brighter and dimmer again, instead of staying solid white.
 - On a phone, tapping a construction queue slot or a villager preset slot shows what it does.

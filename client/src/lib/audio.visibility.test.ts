@@ -6,6 +6,7 @@ import { setNativeAppBackgrounded } from "./tabVisibility";
 
 describe("audio context while the page is hidden", () => {
   const originalCtx = Howler.ctx;
+  const originalMasterGain = Howler.masterGain;
   let hidden = false;
 
   afterEach(() => {
@@ -16,16 +17,19 @@ describe("audio context while the page is hidden", () => {
       get: () => false,
     });
     Howler.ctx = originalCtx;
+    Howler.masterGain = originalMasterGain;
+    vi.useRealTimers();
     vi.restoreAllMocks();
   });
 
-  function installContext() {
+  function installContext(options?: { withMasterGain?: boolean }) {
     Object.defineProperty(document, "hidden", {
       configurable: true,
       get: () => hidden,
     });
     const ctx = {
       state: "running" as AudioContextState,
+      currentTime: 0,
       suspend: vi.fn().mockImplementation(() => {
         ctx.state = "suspended";
         return Promise.resolve();
@@ -36,6 +40,23 @@ describe("audio context while the page is hidden", () => {
       }),
     };
     Howler.ctx = ctx as unknown as AudioContext;
+
+    if (options?.withMasterGain) {
+      const gain = {
+        value: 1,
+        cancelScheduledValues: vi.fn(),
+        setValueAtTime: vi.fn((v: number) => {
+          gain.value = v;
+        }),
+        exponentialRampToValueAtTime: vi.fn((v: number) => {
+          gain.value = v;
+        }),
+      };
+      Howler.masterGain = { gain } as unknown as GainNode;
+    } else {
+      Howler.masterGain = null as unknown as GainNode;
+    }
+
     return ctx;
   }
 
@@ -77,6 +98,51 @@ describe("audio context while the page is hidden", () => {
     setNativeAppBackgrounded(false);
 
     expect(ctx.resume).toHaveBeenCalledOnce();
+  });
+
+  it("fades the master gain before suspending so a lock-screen cut does not click", async () => {
+    vi.useFakeTimers();
+    const ctx = installContext({ withMasterGain: true });
+    const gain = Howler.masterGain.gain;
+
+    hidden = true;
+    document.dispatchEvent(new Event("visibilitychange"));
+    await Promise.resolve();
+
+    expect(gain.cancelScheduledValues).toHaveBeenCalled();
+    expect(gain.exponentialRampToValueAtTime).toHaveBeenCalled();
+    expect(ctx.suspend).not.toHaveBeenCalled();
+
+    await vi.advanceTimersByTimeAsync(50);
+    await Promise.resolve();
+
+    expect(ctx.suspend).toHaveBeenCalledOnce();
+
+    hidden = false;
+    document.dispatchEvent(new Event("visibilitychange"));
+
+    expect(ctx.resume).toHaveBeenCalledOnce();
+    expect(gain.exponentialRampToValueAtTime).toHaveBeenCalledTimes(2);
+  });
+
+  it("cancels a pending hide-suspend when the page shows during the fade", async () => {
+    vi.useFakeTimers();
+    const ctx = installContext({ withMasterGain: true });
+    const gain = Howler.masterGain.gain;
+
+    hidden = true;
+    document.dispatchEvent(new Event("visibilitychange"));
+    await Promise.resolve();
+
+    hidden = false;
+    document.dispatchEvent(new Event("visibilitychange"));
+
+    await vi.advanceTimersByTimeAsync(50);
+    await Promise.resolve();
+
+    expect(ctx.suspend).not.toHaveBeenCalled();
+    // Hide faded out, show faded back in; context never left running.
+    expect(gain.exponentialRampToValueAtTime).toHaveBeenCalledTimes(2);
   });
 
   it("resumes an interrupted context", () => {

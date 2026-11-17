@@ -66,6 +66,13 @@ export class AudioManager {
   private visibilityEpoch = 0;
   private visibilityBound = false;
   private iosGestureBound = false;
+  /** Pending suspend after the hide fade; cleared if the page shows again first. */
+  private hideFadeTimer: ReturnType<typeof setTimeout> | null = null;
+  /**
+   * Short master-gain ramp before AudioContext.suspend(). Cutting mid-waveform
+   * (especially on iOS lock screen) makes a click / beep.
+   */
+  private static readonly HIDE_FADE_SECONDS = 0.04;
   /** Hunt preview is loading; ignore extra slider events until it can play. */
   private sfxPreviewPending = false;
   /**
@@ -214,27 +221,108 @@ export class AudioManager {
 
   /**
    * Drop the audio thread while the tab is in the background. Howl keeps its
-   * playing flags; resume continues the same loops.
+   * playing flags; resume continues the same loops. Fade the master gain first
+   * so suspend does not click.
    */
   private suspendForHiddenPage(): void {
     const ctx = Howler.ctx;
     if (!ctx || ctx.state !== "running") return;
+    if (this.suspendedForHide && this.hideFadeTimer === null) return;
     const epoch = ++this.visibilityEpoch;
     this.suspendedForHide = true;
-    void ctx.suspend().then(() => {
-      if (epoch !== this.visibilityEpoch || this.audioPageHidden()) return;
-      this.resumeAfterVisiblePage();
-    }).catch(() => {
-      if (epoch === this.visibilityEpoch) this.suspendedForHide = false;
-    });
+    this.clearHideFadeTimer();
+
+    const fadeMs = this.fadeMasterGainForHide(ctx);
+    const runSuspend = () => {
+      this.hideFadeTimer = null;
+      if (epoch !== this.visibilityEpoch || !this.audioPageHidden()) return;
+      void ctx
+        .suspend()
+        .then(() => {
+          if (epoch !== this.visibilityEpoch || this.audioPageHidden()) return;
+          this.resumeAfterVisiblePage();
+        })
+        .catch(() => {
+          // Gain is already near silent; keep suspendedForHide so show restores it.
+        });
+    };
+
+    if (fadeMs <= 0) {
+      runSuspend();
+      return;
+    }
+    this.hideFadeTimer = setTimeout(runSuspend, fadeMs);
+  }
+
+  /** Ramp Howler's master gain to near silence. Returns ms to wait before suspend. */
+  private fadeMasterGainForHide(ctx: AudioContext): number {
+    const param = Howler.masterGain?.gain;
+    if (!param) return 0;
+    const fadeSeconds = AudioManager.HIDE_FADE_SECONDS;
+    const now = ctx.currentTime;
+    const current =
+      typeof param.value === "number" && Number.isFinite(param.value)
+        ? param.value
+        : Howler.volume();
+    if (!(current > 0.0001)) return 0;
+    try {
+      param.cancelScheduledValues(now);
+      param.setValueAtTime(current, now);
+      // exponentialRampToValueAtTime cannot target 0
+      param.exponentialRampToValueAtTime(0.0001, now + fadeSeconds);
+    } catch {
+      try {
+        param.setValueAtTime(0, now);
+      } catch {
+        // No AudioParam control; suspend immediately.
+      }
+      return 0;
+    }
+    return Math.ceil(fadeSeconds * 1000) + 5;
+  }
+
+  /** Put the master gain back after a hide fade (Howler's _volume is unchanged). */
+  private restoreMasterGainAfterShow(): void {
+    const ctx = Howler.ctx;
+    const param = Howler.masterGain?.gain;
+    if (!ctx || !param) return;
+    const target = Howler.volume();
+    const now = ctx.currentTime;
+    try {
+      param.cancelScheduledValues(now);
+      if (!(target > 0)) {
+        param.setValueAtTime(0, now);
+        return;
+      }
+      const from =
+        typeof param.value === "number" && param.value > 0.0001
+          ? param.value
+          : 0.0001;
+      param.setValueAtTime(from, now);
+      param.exponentialRampToValueAtTime(target, now + AudioManager.HIDE_FADE_SECONDS);
+    } catch {
+      try {
+        Howler.volume(target);
+      } catch {
+        // Ignore restore failures; next play call still works.
+      }
+    }
+  }
+
+  private clearHideFadeTimer(): void {
+    if (this.hideFadeTimer === null) return;
+    clearTimeout(this.hideFadeTimer);
+    this.hideFadeTimer = null;
   }
 
   private resumeAfterVisiblePage(): void {
     if (!this.suspendedForHide) return;
     if (this.audioPageHidden()) return;
+    this.clearHideFadeTimer();
     this.suspendedForHide = false;
     this.visibilityEpoch += 1;
     this.resumeAudioContext();
+    this.restoreMasterGainAfterShow();
   }
 
   /** Resolves when Howl has finished loading (or failed); does not hang forever. */

@@ -354,7 +354,7 @@ function PactOfferDialogOpen() {
         data-testid="pact-offer-dialog"
       >
         <div className="flex min-h-full w-full justify-center">
-        <div className="m-auto flex w-full max-w-[min(98vw,80rem)] flex-col items-center px-3 py-2">
+        <div className="m-auto flex w-full max-w-[min(98vw,80rem)] flex-col items-center px-3 pt-2 pb-4">
           <div className="mb-4 flex flex-col items-center gap-1">
             <div
               className={cn(

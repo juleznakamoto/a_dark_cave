@@ -74,10 +74,11 @@ const START_FOOTER_SOCIAL_LINK = `${START_FOOTER_LINK_BASE} ${START_FOOTER_TEXT}
 /** Privacy and imprint stay small on desktop. */
 const START_FOOTER_LEGAL_LINK = `${START_FOOTER_LINK_BASE} opacity-40 hover:opacity-100 text-2xs md:text-xs`;
 const START_FOOTER_GLYPH = "w-3.5 h-3.5 shrink-0 md:w-4 md:h-4";
-/** Icon controls (language / music / sfx): same color/opacity as social text links; kill ghost Button accent hover. */
-const START_FOOTER_ICON_BTN = `${START_FOOTER_SOCIAL_LINK} shrink-0 p-0 w-7 h-7 md:w-8 md:h-8 justify-center bg-transparent ${GAME_CHROME_NO_BG_HOVER} shadow-none`;
+/** Icon controls (language / music / sfx): same color/opacity as social text links; kill ghost Button accent hover.
+ * Phone / iOS upper-left chrome is 15% larger than the old w-7 / size-4 hit targets. */
+const START_FOOTER_ICON_BTN = `${START_FOOTER_SOCIAL_LINK} shrink-0 p-0 w-[calc(1.75rem*1.15)] h-[calc(1.75rem*1.15)] md:w-8 md:h-8 justify-center bg-transparent ${GAME_CHROME_NO_BG_HOVER} shadow-none`;
 /** `md:!size-5` beats the shared button rule that forces every svg to 16px on hover. */
-const START_FOOTER_ICON = "size-4 shrink-0 md:!size-5";
+const START_FOOTER_ICON = "size-[calc(1rem*1.15)] shrink-0 md:!size-5";
 const START_FULLSCREEN_BTN = `group shrink-0 p-0 w-7 h-7 flex items-center justify-center ${GAME_CHROME_NO_BG_HOVER}`;
 
 const MAKE_FIRE_BUTTON_CLASS =
@@ -285,7 +286,7 @@ function StartVolumeSlider({
   };
 
   return (
-    <div className="relative h-16 w-7 md:h-[4.5rem] md:w-8">
+    <div className="relative h-16 w-[calc(1.75rem*1.15)] md:h-[4.5rem] md:w-8">
       <input
         type="range"
         min={0}
