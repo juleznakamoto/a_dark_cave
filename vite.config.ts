@@ -114,6 +114,10 @@ export default defineConfig(async ({ mode }) => ({
             clientRoot,
             "src/stubs/capacitor/statusBar.ts",
           ),
+          "@capacitor-community/media": path.resolve(
+            clientRoot,
+            "src/stubs/capacitor/media.ts",
+          ),
         }
         : {}),
     },

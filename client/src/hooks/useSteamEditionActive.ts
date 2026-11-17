@@ -2,6 +2,7 @@ import { useGameStore } from "@/game/state";
 import {
   isCrazyGamesEdition,
   isGalaxyEdition,
+  isIosEditionActive,
   isItchEdition,
   isSteamBuild,
   isSteamDemoRuntime,
@@ -10,6 +11,7 @@ import {
   type DevGameMode,
 } from "@/lib/edition";
 import { DEMO_WOODEN_HUT_LIMIT } from "@/game/demoLimit";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 function isDevSteamMode(devGameMode: DevGameMode): boolean {
   if (isSteamBuild || devGameMode === "ios") return false;
@@ -25,6 +27,22 @@ function isDevCappedDemoMode(devGameMode: DevGameMode): boolean {
       devGameMode === "demoEnd" ||
       devGameMode === "crazyGamesDemo")
   );
+}
+
+/** iOS App Store build, or DEV Settings → iOS. */
+export function useIosEditionActive(): boolean {
+  const devGameMode = useGameStore((s) => s.devGameMode);
+  return isIosEditionActive(devGameMode);
+}
+
+/**
+ * Phone layout, and the iOS app at any width.
+ * Hides the footer and moves pause and feedback into the header.
+ */
+export function useMobileGameChrome(): boolean {
+  const isMobile = useIsMobile();
+  const iosEdition = useIosEditionActive();
+  return isMobile || iosEdition;
 }
 
 /** Reactive offline-demo edition flag for React components (Steam, Galaxy, CrazyGames, DEV Game Mode). */

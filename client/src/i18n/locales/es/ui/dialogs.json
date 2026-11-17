@@ -258,9 +258,13 @@
     "copyErrorDesc": "Algo salió mal al copiar al portapapeles.",
     "shareTextSteam": "Llevo un {{percent}} % de A Dark Cave.",
     "shareText": "Llevo un {{percent}} % de A Dark Cave. Juega gratis en {{url}}",
+    "shareTextIos": "Llevo un {{percent}} % de A Dark Cave. {{url}}",
     "share": "Compartir",
     "errorTitle": "No se pudo crear la imagen",
-    "errorDesc": "Algo salió mal al generar la imagen."
+    "errorDesc": "Algo salió mal al generar la imagen.",
+    "savedTitle": "Imagen guardada",
+    "shareUnavailableTitle": "Compartir no está disponible",
+    "shareUnavailableDesc": "Guarda o copia la tarjeta."
   },
   "feedback": {
     "title": "Comentarios",

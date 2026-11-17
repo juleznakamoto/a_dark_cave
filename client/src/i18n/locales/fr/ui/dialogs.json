@@ -258,9 +258,13 @@
     "copyErrorDesc": "Une erreur s'est produite lors de la copie dans le presse-papiers.",
     "shareTextSteam": "J'en suis à {{percent}} % dans A Dark Cave.",
     "shareText": "J'en suis à {{percent}} % dans A Dark Cave. Jouez gratuitement sur {{url}}",
+    "shareTextIos": "J'en suis à {{percent}} % dans A Dark Cave. {{url}}",
     "share": "Partager",
     "errorTitle": "Impossible de créer l'image",
-    "errorDesc": "Une erreur s'est produite lors de la génération de l'image."
+    "errorDesc": "Une erreur s'est produite lors de la génération de l'image.",
+    "savedTitle": "Image enregistrée",
+    "shareUnavailableTitle": "Le partage n'est pas disponible",
+    "shareUnavailableDesc": "Enregistrez ou copiez la carte."
   },
   "feedback": {
     "title": "Commentaires",

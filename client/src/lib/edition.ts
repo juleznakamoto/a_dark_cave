@@ -230,33 +230,98 @@ export function isFullGameUnlockedEdition(): boolean {
 }
 
 const DEV_GAME_MODE_STORAGE_KEY = "adc-dev-game-mode";
+/** DEV Settings → Game Mode. Survives refresh next to `?devSave=`. */
+const DEV_GAME_MODE_QUERY_KEY = "gameMode";
 
 /** Dev-only Game Mode override synced from the game store Settings dropdown. */
 let devGameModeOverride: DevGameMode = "normal";
 let didHydrateDevGameMode = false;
 
-function readStoredDevGameMode(): DevGameMode {
-  if (!import.meta.env.DEV || typeof sessionStorage === "undefined") {
-    return "normal";
+function isDevGameModeValue(value: string | null): value is DevGameMode {
+  return (
+    typeof value === "string" &&
+    (DEV_GAME_MODE_OPTIONS as readonly string[]).includes(value)
+  );
+}
+
+function readDevGameModeFromSearch(search: string): DevGameMode | null {
+  try {
+    const raw = new URLSearchParams(search).get(DEV_GAME_MODE_QUERY_KEY);
+    return isDevGameModeValue(raw) ? raw : null;
+  } catch {
+    return null;
+  }
+}
+
+function readDevGameModeFromUrl(): DevGameMode | null {
+  if (!import.meta.env.DEV || isSteamBuild || typeof window === "undefined") {
+    return null;
+  }
+  const search = window.location?.search;
+  if (typeof search !== "string") return null;
+  return readDevGameModeFromSearch(search);
+}
+
+function readDevGameModeFromSession(): DevGameMode | null {
+  if (!import.meta.env.DEV || isSteamBuild || typeof sessionStorage === "undefined") {
+    return null;
   }
   try {
     const raw = sessionStorage.getItem(DEV_GAME_MODE_STORAGE_KEY);
-    if (
-      typeof raw === "string" &&
-      (DEV_GAME_MODE_OPTIONS as readonly string[]).includes(raw)
-    ) {
-      return raw as DevGameMode;
-    }
+    return isDevGameModeValue(raw) ? raw : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeDevGameModeSession(mode: DevGameMode): void {
+  if (!import.meta.env.DEV || typeof sessionStorage === "undefined") return;
+  try {
+    sessionStorage.setItem(DEV_GAME_MODE_STORAGE_KEY, mode);
   } catch {
     // private mode / quota
   }
-  return "normal";
+}
+
+/** Keep `?gameMode=` in the address bar. Normal omits the param. */
+export function syncDevGameModeQueryParam(mode: DevGameMode): void {
+  if (!import.meta.env.DEV || isSteamBuild || typeof window === "undefined") return;
+  const href = window.location?.href;
+  if (!href || typeof window.history?.replaceState !== "function") return;
+  try {
+    const url = new URL(href);
+    if (mode === "normal") url.searchParams.delete(DEV_GAME_MODE_QUERY_KEY);
+    else url.searchParams.set(DEV_GAME_MODE_QUERY_KEY, mode);
+    const next = `${url.pathname}${url.search}${url.hash}`;
+    const current = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    if (next !== current) window.history.replaceState({}, "", next);
+  } catch {
+    // Private mode / non-browser: ignore.
+  }
+}
+
+/**
+ * Settings choice that must survive a refresh: the URL, then this tab's
+ * session. Null when neither has been set, so a save header can still apply.
+ */
+export function getExplicitDevGameMode(): DevGameMode | null {
+  if (!import.meta.env.DEV || isSteamBuild) return null;
+  return readDevGameModeFromUrl() ?? readDevGameModeFromSession();
 }
 
 function hydrateDevGameModeOverride(): DevGameMode {
   if (!didHydrateDevGameMode) {
     didHydrateDevGameMode = true;
-    devGameModeOverride = readStoredDevGameMode();
+    const fromUrl = readDevGameModeFromUrl();
+    if (fromUrl) {
+      devGameModeOverride = fromUrl;
+      writeDevGameModeSession(fromUrl);
+    } else {
+      devGameModeOverride = readDevGameModeFromSession() ?? "normal";
+      if (devGameModeOverride !== "normal") {
+        syncDevGameModeQueryParam(devGameModeOverride);
+      }
+    }
   }
   return devGameModeOverride;
 }
@@ -266,11 +331,8 @@ export function setDevGameModeOverride(mode: DevGameMode): void {
   if (import.meta.env.DEV) {
     didHydrateDevGameMode = true;
     devGameModeOverride = mode;
-    try {
-      sessionStorage.setItem(DEV_GAME_MODE_STORAGE_KEY, mode);
-    } catch {
-      // private mode / quota
-    }
+    writeDevGameModeSession(mode);
+    syncDevGameModeQueryParam(mode);
   }
 }
 
@@ -341,6 +403,13 @@ export function isSteamEditionActive(devGameMode?: DevGameMode): boolean {
   const mode = resolveDevGameMode(devGameMode);
   if (isSimulatedSteamGameMode(mode)) return true;
   return import.meta.env.DEV && !isSteamBuild && mode !== "normal";
+}
+
+/** iOS App Store build, or DEV Settings → iOS. */
+export function isIosEditionActive(devGameMode?: DevGameMode): boolean {
+  if (isIosBuild) return true;
+  if (!import.meta.env.DEV || isSteamBuild) return false;
+  return resolveDevGameMode(devGameMode) === "ios";
 }
 
 /**

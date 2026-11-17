@@ -35,4 +35,64 @@ describe("village map hover", () => {
     fireEvent.pointerLeave(huts[0]);
     expect(view.container.querySelector("[data-building].is-hovered")).toBeNull();
   });
+
+  it("keeps a touch selection after the finger lifts", () => {
+    const view = render(
+      <VillageMap
+        build={applyGrowth(stageForPreset("camp"))}
+        tuning={DEFAULT_TUNING}
+        overrides={{}}
+        pathOverrides={{}}
+        highlightId={null}
+        readOnly
+        onOverride={ignore}
+        onPathOverride={ignore}
+        onActiveLabel={ignore}
+      />,
+    );
+
+    const huts = view.container.querySelectorAll("[data-building='woodenHut']");
+    fireEvent.pointerEnter(huts[0], { pointerType: "touch" });
+    fireEvent.pointerLeave(huts[0], { pointerType: "touch" });
+    fireEvent.pointerLeave(huts[0], { pointerType: "mouse" });
+
+    expect(view.container.querySelectorAll("[data-building='woodenHut'].is-hovered")).toHaveLength(
+      huts.length,
+    );
+  });
+
+  it("clears a touch selection when the map tab closes", () => {
+    const view = render(
+      <VillageMap
+        build={applyGrowth(stageForPreset("camp"))}
+        tuning={DEFAULT_TUNING}
+        overrides={{}}
+        pathOverrides={{}}
+        highlightId={null}
+        readOnly
+        onOverride={ignore}
+        onPathOverride={ignore}
+        onActiveLabel={ignore}
+      />,
+    );
+
+    const huts = view.container.querySelectorAll("[data-building='woodenHut']");
+    fireEvent.pointerEnter(huts[0], { pointerType: "touch" });
+    view.rerender(
+      <VillageMap
+        build={applyGrowth(stageForPreset("camp"))}
+        tuning={DEFAULT_TUNING}
+        overrides={{}}
+        pathOverrides={{}}
+        highlightId={null}
+        readOnly
+        releaseBuildingHover
+        onOverride={ignore}
+        onPathOverride={ignore}
+        onActiveLabel={ignore}
+      />,
+    );
+
+    expect(view.container.querySelector("[data-building].is-hovered")).toBeNull();
+  });
 });

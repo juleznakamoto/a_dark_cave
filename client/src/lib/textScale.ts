@@ -1,3 +1,4 @@
+import { isIosBuild, isIosEditionActive } from "@/lib/edition";
 import { hasChromiumTextZoom, steamSetTextZoom } from "@/lib/steam";
 import {
   LEGACY_TEXT_SCALE_STORAGE_KEY,
@@ -217,7 +218,50 @@ export function setTextScale(scale: TextScale): void {
   applyTextScaleToDocument(scale);
 }
 
+/** Previous size while DEV Game Mode iOS forces 100%. Session-only. */
+const TEXT_SCALE_BEFORE_IOS_KEY = "adc-text-scale-before-ios";
+
+/**
+ * iOS only offers the 100% size (`small`). Apply it and remember the previous
+ * size so leaving DEV Game Mode iOS can put that size back.
+ */
+export function lockTextScaleForIos(): void {
+  if (!isIosBuild && import.meta.env.DEV && typeof sessionStorage !== "undefined") {
+    try {
+      if (!sessionStorage.getItem(TEXT_SCALE_BEFORE_IOS_KEY)) {
+        const current = getStoredTextScale();
+        if (current !== "small") {
+          sessionStorage.setItem(TEXT_SCALE_BEFORE_IOS_KEY, current);
+        }
+      }
+    } catch {
+      /* private mode */
+    }
+  }
+  setTextScale("small");
+}
+
+/** Restore the size from before DEV Game Mode iOS. No-op on the real iOS app. */
+export function unlockTextScaleFromIos(): void {
+  if (isIosBuild || !import.meta.env.DEV || typeof sessionStorage === "undefined") {
+    return;
+  }
+  let stashed: string | null = null;
+  try {
+    stashed = sessionStorage.getItem(TEXT_SCALE_BEFORE_IOS_KEY);
+    sessionStorage.removeItem(TEXT_SCALE_BEFORE_IOS_KEY);
+  } catch {
+    return;
+  }
+  if (stashed && isTextScale(stashed)) setTextScale(stashed);
+}
+
 export function initTextScaleFromStorage(): TextScale {
+  if (isIosEditionActive()) {
+    lockTextScaleForIos();
+    return "small";
+  }
+  unlockTextScaleFromIos();
   const scale = getStoredTextScale();
   applyTextScaleToDocument(scale);
   return scale;

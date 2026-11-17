@@ -13,6 +13,10 @@ import {
   type DevGameMode,
 } from "@/lib/edition";
 import { resolveDevMode } from "@/game/devMultipliers";
+import {
+  lockTextScaleForIos,
+  unlockTextScaleFromIos,
+} from "@/lib/textScale";
 import { isDemoPlayFrozen } from "@/game/demoLimit";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import {
@@ -436,9 +440,15 @@ export const createUiSlice: GameStoreCreator<Partial<GameStore>> = (set, get) =>
     set({ settingsDialogOpen: isOpen });
   },
 
+  setStayConnectedDialogOpen: (isOpen: boolean) => {
+    set({ stayConnectedDialogOpen: isOpen });
+  },
+
   setDevGameMode: (mode: DevGameMode) => {
     if (!import.meta.env.DEV || isSteamBuild) return;
     setDevGameModeOverride(mode);
+    if (mode === "ios") lockTextScaleForIos();
+    else unlockTextScaleFromIos();
     if (mode !== "normal") {
       set({
         devGameMode: mode,

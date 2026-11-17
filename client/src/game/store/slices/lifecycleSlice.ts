@@ -379,6 +379,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       restartGamePreferCruelMode: false,
       deleteAccountDialogOpen: false,
       settingsDialogOpen: false,
+      stayConnectedDialogOpen: false,
       resourceChangeEvents: [],
 
       // Recalculate derived state

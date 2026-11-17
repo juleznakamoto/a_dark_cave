@@ -260,9 +260,13 @@
     "copyErrorDesc": "При копировании в буфер обмена что-то пошло не так.",
     "shareTextSteam": "Мой прогресс в A Dark Cave: {{percent}} %.",
     "shareText": "Мой прогресс в A Dark Cave: {{percent}} %. Играйте бесплатно на {{url}}",
+    "shareTextIos": "Мой прогресс в A Dark Cave: {{percent}} %. {{url}}",
     "share": "Поделиться",
     "errorTitle": "Не удалось создать изображение",
-    "errorDesc": "При создании изображения что-то пошло не так."
+    "errorDesc": "При создании изображения что-то пошло не так.",
+    "savedTitle": "Изображение сохранено",
+    "shareUnavailableTitle": "Поделиться нельзя",
+    "shareUnavailableDesc": "Сохраните или скопируйте карточку."
   },
   "feedback": {
     "title": "Обратная связь",

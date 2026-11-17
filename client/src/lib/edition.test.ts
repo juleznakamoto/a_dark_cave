@@ -91,10 +91,61 @@ describe("CrazyGames edition", () => {
     edition.setDevGameModeOverride("normal");
   });
 
+  it("keeps Game Mode in the gameMode query param across a reload", async () => {
+    const storage = new Map<string, string>();
+    let href = "http://localhost:5000/?devSave=village";
+    const location = {
+      get href() {
+        return href;
+      },
+      get pathname() {
+        return new URL(href).pathname;
+      },
+      get search() {
+        return new URL(href).search;
+      },
+      get hash() {
+        return new URL(href).hash;
+      },
+    };
+    vi.stubGlobal("window", {
+      location,
+      history: {
+        replaceState: (_state: unknown, _title: unknown, next: string) => {
+          href = new URL(next, href).href;
+        },
+      },
+    });
+    vi.stubGlobal("sessionStorage", {
+      getItem: (key: string) => storage.get(key) ?? null,
+      setItem: (key: string, value: string) => {
+        storage.set(key, value);
+      },
+      removeItem: (key: string) => {
+        storage.delete(key);
+      },
+    });
+
+    const edition = await loadEdition();
+    edition.setDevGameModeOverride("ios");
+    expect(location.search).toContain("gameMode=ios");
+    expect(location.search).toContain("devSave=village");
+
+    vi.resetModules();
+    const reloaded = await loadEdition();
+    expect(reloaded.getDevGameModeOverride()).toBe("ios");
+
+    reloaded.setDevGameModeOverride("normal");
+    expect(location.search).not.toContain("gameMode");
+    expect(location.search).toContain("devSave=village");
+  });
+
   it("treats DEV iOS as the buy-once app without Steam desktop chrome", async () => {
     const edition = await loadEdition();
     edition.setDevGameModeOverride("ios");
     expect(edition.isSteamEditionActive("ios")).toBe(true);
+    expect(edition.isIosEditionActive("ios")).toBe(true);
+    expect(edition.isIosEditionActive("normal")).toBe(false);
     expect(edition.isDemoEdition()).toBe(false);
     const { getSaveOriginEdition } = await import("@/game/saveOrigin");
     expect(getSaveOriginEdition()).toBe("ios");

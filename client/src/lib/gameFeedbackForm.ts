@@ -13,7 +13,12 @@
 export const GAME_FEEDBACK_FORM_BASE_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSfQzag01E3Vne2ieXdB_s1gL5vZxtmRDX-O0Fsxhrojt9BVAQ/viewform" as const;
 
-export type GameFeedbackFormSource = "footer" | "end" | "dialog" | "demoEnd";
+export type GameFeedbackFormSource =
+  | "footer"
+  | "menu"
+  | "end"
+  | "dialog"
+  | "demoEnd";
 
 let pendingFeedbackFormSource: GameFeedbackFormSource = "dialog";
 

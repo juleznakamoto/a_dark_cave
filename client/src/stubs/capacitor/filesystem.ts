@@ -1,5 +1,9 @@
 /** Web / Steam builds never call these. The iOS build uses the real plugin. */
-export const Directory = { Data: "DATA" } as const;
+export const Directory = {
+  Data: "DATA",
+  Documents: "DOCUMENTS",
+  Cache: "CACHE",
+} as const;
 export const Encoding = { UTF8: "utf8" } as const;
 
 export const Filesystem = {

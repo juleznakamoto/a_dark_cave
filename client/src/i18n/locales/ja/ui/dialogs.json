@@ -258,9 +258,13 @@
     "copyErrorDesc": "クリップボードへのコピー中に問題が発生しました。",
     "shareTextSteam": "『A Dark Cave』を{{percent}}%進めています。",
     "shareText": "『A Dark Cave』を{{percent}}%進めています。無料プレイはこちら：{{url}}",
+    "shareTextIos": "『A Dark Cave』を{{percent}}%進めています。{{url}}",
     "share": "共有",
     "errorTitle": "画像を作成できませんでした",
-    "errorDesc": "画像の作成中に問題が発生しました。"
+    "errorDesc": "画像の作成中に問題が発生しました。",
+    "savedTitle": "画像を保存しました",
+    "shareUnavailableTitle": "共有できません",
+    "shareUnavailableDesc": "カードを保存するか、コピーしてください。"
   },
   "feedback": {
     "title": "フィードバック",

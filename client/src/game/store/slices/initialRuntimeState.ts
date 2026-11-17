@@ -74,6 +74,7 @@ export const initialRuntimeState: Partial<GameStore> = {
   deleteAccountDialogOpen: false,
   settingsDialogOpen: false,
   feedbackDialogOpen: false,
+  stayConnectedDialogOpen: false,
   feedbackPromptShown: false,
   villageHotkeyTutorialShown: false,
   sleepUpgrades: {

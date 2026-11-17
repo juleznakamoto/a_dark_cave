@@ -19,9 +19,11 @@ import {
   getStoredTextScale,
   getTextScaleDeltaPx,
   isEnlargedTextScale,
+  lockTextScaleForIos,
   normalizeTextScale,
   setStoredTextScale,
   setTextScale,
+  unlockTextScaleFromIos,
 } from "./textScale";
 
 function stubInnerWidth(width: number) {
@@ -37,6 +39,7 @@ describe("textScale", () => {
 
   beforeEach(() => {
     localStorage.clear();
+    sessionStorage.clear();
     stubInnerWidth(1024);
     document.documentElement.classList.remove(
       "adc-text-large",
@@ -214,6 +217,24 @@ describe("textScale", () => {
     expect(
       document.documentElement.style.getPropertyValue("--adc-control-scale"),
     ).toBe("1");
+  });
+
+  it("locks iOS to the 100% size and restores the previous size", () => {
+    setTextScale("large");
+    lockTextScaleForIos();
+    expect(getStoredTextScale()).toBe("small");
+    expect(
+      document.documentElement.style.getPropertyValue("--adc-text-delta"),
+    ).toBe("0px");
+    expect(
+      document.documentElement.style.getPropertyValue("--adc-control-scale"),
+    ).toBe("1");
+
+    unlockTextScaleFromIos();
+    expect(getStoredTextScale()).toBe("large");
+    expect(
+      document.documentElement.style.getPropertyValue("--adc-text-delta"),
+    ).toBe(`${LARGE_TEXT_DELTA_PX}px`);
   });
 
   it("uses Chromium zoom in the Steam shell and leaves the CSS bumps off", () => {

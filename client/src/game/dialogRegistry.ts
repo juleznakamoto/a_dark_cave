@@ -137,6 +137,13 @@ export const GAME_DIALOG_REGISTRY: readonly DialogRegistryEntry[] = [
     resetOnLoad: false,
   },
   {
+    id: "stayConnected",
+    storeKey: "stayConnectedDialogOpen",
+    kind: "boolean",
+    blocking: true,
+    resetOnLoad: false,
+  },
+  {
     id: "socialPrompt",
     storeKey: "socialPromptDialogOpen",
     kind: "boolean",

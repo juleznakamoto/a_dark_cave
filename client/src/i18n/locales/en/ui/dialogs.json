@@ -258,9 +258,13 @@
     "copyErrorDesc": "Something went wrong while copying to the clipboard.",
     "shareTextSteam": "I'm {{percent}}% through A Dark Cave.",
     "shareText": "I'm {{percent}}% through A Dark Cave. Play for free at {{url}}",
+    "shareTextIos": "I'm {{percent}}% through A Dark Cave. {{url}}",
     "share": "Share",
     "errorTitle": "Could not create image",
-    "errorDesc": "Something went wrong while generating the image."
+    "errorDesc": "Something went wrong while generating the image.",
+    "savedTitle": "Image saved",
+    "shareUnavailableTitle": "Sharing is not available",
+    "shareUnavailableDesc": "Save or copy the card instead."
   },
   "feedback": {
     "title": "Feedback",

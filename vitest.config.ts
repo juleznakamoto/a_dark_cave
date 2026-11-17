@@ -20,6 +20,7 @@ export default defineConfig({
       '@capacitor/filesystem': path.resolve(__dirname, 'client/src/stubs/capacitor/filesystem.ts'),
       '@capacitor/app': path.resolve(__dirname, 'client/src/stubs/capacitor/app.ts'),
       '@capacitor/status-bar': path.resolve(__dirname, 'client/src/stubs/capacitor/statusBar.ts'),
+      '@capacitor-community/media': path.resolve(__dirname, 'client/src/stubs/capacitor/media.ts'),
     },
   },
 });

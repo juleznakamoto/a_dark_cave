@@ -26,8 +26,12 @@ import {
 } from "@/lib/edition";
 import {
   useCrazyGamesEditionActive,
+  useIosEditionActive,
+  useMobileGameChrome,
   useSteamEditionActive,
 } from "@/hooks/useSteamEditionActive";
+import { openGameFeedbackForm } from "@/lib/gameFeedbackForm";
+import StayConnectedDialog from "./StayConnectedDialog";
 import { triggerExclusivePromoPingOnce } from "@/lib/exclusivePromoShockwave";
 import { CruelModeHeaderMark } from "@/components/game/CruelModeHeaderMark";
 import { PactChoicesHeaderMark } from "@/components/game/PactChoicesHeaderMark";
@@ -504,6 +508,7 @@ function ProfileMenuDialogs() {
           />
         </>
       )}
+      <StayConnectedDialog />
       <RestartGameDialog
         isOpen={restartGameDialogOpen}
         onClose={() => setRestartGameDialogOpen(false)}
@@ -625,6 +630,11 @@ export function GameHeaderControls() {
     setSettingsDialogOpen,
   } = useProfileMenu();
   const devGameMode = useGameStore((s) => s.devGameMode);
+  const setStayConnectedDialogOpen = useGameStore(
+    (s) => s.setStayConnectedDialogOpen,
+  );
+  const mobileGameChrome = useMobileGameChrome();
+  const iosEditionActive = useIosEditionActive();
   const pactChoices = useGameStore((s) => s.pactChoices);
   const steamDesktopEdition = isSteamDesktopEditionActive(devGameMode);
   const progressShareDisabled = steamDesktopEdition;
@@ -822,6 +832,40 @@ export function GameHeaderControls() {
                   {t("profile.quitGame")}
                 </span>
               </DropdownMenuItem>
+            </>
+          )}
+          {mobileGameChrome && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  setAccountDropdownOpen(false);
+                  openGameFeedbackForm("menu");
+                }}
+              >
+                <span className="flex items-center gap-1.5">
+                  <GameUiIcon name="feedback" />
+                  {t("footer.feedback", { defaultValue: "Feedback" })}
+                </span>
+              </DropdownMenuItem>
+              {!iosEditionActive && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setAccountDropdownOpen(false);
+                      setStayConnectedDialogOpen(true);
+                    }}
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <GameUiIcon name="network" />
+                      {t("profile.stayConnected", {
+                        defaultValue: "Stay Connected",
+                      })}
+                    </span>
+                  </DropdownMenuItem>
+                </>
+              )}
             </>
           )}
         </DropdownMenuContent>

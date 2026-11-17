@@ -260,9 +260,13 @@
     "copyErrorDesc": "Coś poszło nie tak przy kopiowaniu do schowka.",
     "shareTextSteam": "Mam {{percent}} % postępu w A Dark Cave.",
     "shareText": "Mam {{percent}} % postępu w A Dark Cave. Graj za darmo na {{url}}",
+    "shareTextIos": "Mam {{percent}} % postępu w A Dark Cave. {{url}}",
     "share": "Udostępnij",
     "errorTitle": "Nie udało się utworzyć obrazu",
-    "errorDesc": "Coś poszło nie tak przy tworzeniu obrazu."
+    "errorDesc": "Coś poszło nie tak przy tworzeniu obrazu.",
+    "savedTitle": "Obraz zapisany",
+    "shareUnavailableTitle": "Udostępnianie jest niedostępne",
+    "shareUnavailableDesc": "Zapisz albo skopiuj kartę."
   },
   "feedback": {
     "title": "Opinia",

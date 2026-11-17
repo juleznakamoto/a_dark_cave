@@ -307,6 +307,7 @@ export default function VillageMapOverlay() {
           onPathOverride={ignoreMapEdit}
           onActiveLabel={ignoreMapEdit}
           onHoverBuilding={onHoverBuilding}
+          releaseBuildingHover={!open}
           readOnly
           heartfireLevel={heartfireLevel}
           boneyardCrosses={boneyardCrosses}

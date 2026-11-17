@@ -120,6 +120,7 @@ import {
   useCrazyGamesEditionActive,
   useHideSteamStoreLink,
   useSteamDesktopEditionActive,
+  useMobileGameChrome,
   useSteamEditionActive,
 } from "@/hooks/useSteamEditionActive";
 import { isDemoEdition } from "@/lib/edition";
@@ -168,6 +169,8 @@ const WebOnlyDialogs = steamBuild || iosBuild
 export default function GameContainer() {
   const { t } = useUiTranslation();
   const steamEditionActive = useSteamEditionActive();
+  const mobileGameChrome = useMobileGameChrome();
+  const footerInset = mobileGameChrome ? "0px" : GAME_FOOTER_INSET;
   const steamDesktopEditionActive = useSteamDesktopEditionActive();
   const crazyGamesEditionActive = useCrazyGamesEditionActive();
   const hideSteamStoreLink = useHideSteamStoreLink();
@@ -1318,7 +1321,7 @@ export default function GameContainer() {
               className="pointer-events-none absolute inset-x-0 z-0 blood-moon-smoke-fade-in"
               style={{
                 top: GAME_HEADER_INSET,
-                bottom: GAME_FOOTER_INSET,
+                bottom: footerInset,
                 animationDuration: `${BLOOD_MOON_OVERLAY_FADE_MS}ms`,
               }}
               aria-hidden
@@ -1335,7 +1338,7 @@ export default function GameContainer() {
               className="fixed inset-0 bg-black/30 pointer-events-auto overlay-fade-in"
               style={{
                 top: GAME_HEADER_INSET,
-                bottom: GAME_FOOTER_INSET,
+                bottom: footerInset,
                 zIndex: Z_INDEX.sleepFog,
               }}
             />
@@ -1729,7 +1732,7 @@ export default function GameContainer() {
               className="fixed inset-0 pointer-events-auto"
               style={{
                 top: GAME_HEADER_INSET,
-                bottom: GAME_FOOTER_INSET,
+                bottom: footerInset,
                 zIndex: Z_INDEX.sleepFog,
               }}
             >
@@ -1737,10 +1740,13 @@ export default function GameContainer() {
             </div>
           )}
 
-          {/* Footer - above pause overlay so hover tooltips stay visible when paused */}
-          <div className="relative z-50 flex-shrink-0 pointer-events-auto">
-            <GameFooter />
-          </div>
+          {/* Footer - above pause overlay so hover tooltips stay visible when paused.
+              Phones and the iOS app move pause, feedback, and socials into the header. */}
+          {!mobileGameChrome && (
+            <div className="relative z-50 flex-shrink-0 pointer-events-auto">
+              <GameFooter />
+            </div>
+          )}
 
           {/* Event Dialog */}
           <EventDialog

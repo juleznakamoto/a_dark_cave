@@ -258,9 +258,13 @@
     "copyErrorDesc": "Si è verificato un errore durante la copia negli appunti.",
     "shareTextSteam": "Sono al {{percent}}% di A Dark Cave.",
     "shareText": "Sono al {{percent}}% di A Dark Cave. Gioca gratis su {{url}}",
+    "shareTextIos": "Sono al {{percent}}% di A Dark Cave. {{url}}",
     "share": "Condividi",
     "errorTitle": "Impossibile creare l'immagine",
-    "errorDesc": "Si è verificato un errore durante la generazione dell'immagine."
+    "errorDesc": "Si è verificato un errore durante la generazione dell'immagine.",
+    "savedTitle": "Immagine salvata",
+    "shareUnavailableTitle": "La condivisione non è disponibile",
+    "shareUnavailableDesc": "Salva o copia la scheda."
   },
   "feedback": {
     "title": "Feedback",

@@ -1,5 +1,6 @@
 import type { StartScreenPreferences } from "@/components/game/StartScreen";
 import {
+  getExplicitDevGameMode,
   isCrazyGamesEdition,
   isGalaxyEdition,
   isItchEdition,
@@ -50,9 +51,14 @@ export function peekStartScreenResolution(): Extract<
   const header = peekStartupSaveHeader();
   return createStartResolution(
     preferencesFromHeader(header),
-    header?.devGameMode ?? "normal",
+    visitDevGameMode(header?.devGameMode),
     header,
   );
+}
+
+/** URL and session win over the save header, which only updates on the next autosave. */
+function visitDevGameMode(headerMode: DevGameMode | undefined): DevGameMode {
+  return getExplicitDevGameMode() ?? headerMode ?? "normal";
 }
 
 function preferencesFromHeader(
@@ -196,7 +202,7 @@ export async function resolveStartupVisit(
 
   return createStartResolution(
     preferencesFromHeader(header),
-    header?.devGameMode ?? "normal",
+    visitDevGameMode(header?.devGameMode),
     header,
   );
 }

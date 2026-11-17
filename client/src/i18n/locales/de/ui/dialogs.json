@@ -258,9 +258,13 @@
     "copyErrorDesc": "Beim Kopieren in die Zwischenablage ist etwas schiefgelaufen.",
     "shareTextSteam": "Ich bin zu {{percent}} % durch A Dark Cave.",
     "shareText": "Ich bin zu {{percent}} % durch A Dark Cave. Kostenlos spielen unter {{url}}",
+    "shareTextIos": "Ich bin zu {{percent}} % durch A Dark Cave. {{url}}",
     "share": "Teilen",
     "errorTitle": "Bild konnte nicht erstellt werden",
-    "errorDesc": "Beim Erstellen des Bildes ist etwas schiefgelaufen."
+    "errorDesc": "Beim Erstellen des Bildes ist etwas schiefgelaufen.",
+    "savedTitle": "Bild gespeichert",
+    "shareUnavailableTitle": "Teilen ist hier nicht möglich",
+    "shareUnavailableDesc": "Speichere die Karte oder kopiere sie."
   },
   "feedback": {
     "title": "Feedback",

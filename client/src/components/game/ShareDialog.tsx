@@ -39,8 +39,17 @@ import { capitalizeWords, cn, formatNumber } from "@/lib/utils";
 import { logger } from "@/lib/logger";
 import { getShareFontEmbedCss } from "@/lib/shareImageFonts";
 import { useToast } from "@/hooks/use-toast";
-import { useSteamDesktopEditionActive } from "@/hooks/useSteamEditionActive";
+import {
+  useIosEditionActive,
+  useSteamDesktopEditionActive,
+} from "@/hooks/useSteamEditionActive";
+import { APP_STORE_URL } from "@/lib/appStore";
 import { isSteamDesktopEditionActive } from "@/lib/edition";
+import {
+  copyShareCard,
+  saveShareCard,
+  shareShareCard,
+} from "@/components/game/shareCardActions";
 import { gameStateSchema, type GameState } from "@shared/schema";
 import {
   highestAttackWaveNumber,
@@ -54,8 +63,6 @@ const PREVIEW_MAX_WIDTH = 360;
 const CARD_BG = "#0b0b0e";
 const SHARE_URL = "https://a-dark-cave.com";
 const SHARE_URL_IMAGE = "a-dark-cave.com";
-
-const SHARE_FILE_NAME = "a-dark-cave.png";
 /** Keep in sync with `.adc-share-card-enter` / `.adc-share-actions-enter` in index.css. */
 const SHARE_CARD_ENTRANCE_DURATION_MS = 500;
 /** Extra pause after the card lands before action buttons appear. */
@@ -318,6 +325,7 @@ function ShareCard({
   playTimeLabel,
   playTimeMs,
   playForFreeAtLabel,
+  playForFreeAtDetail,
 }: {
   cardRef: React.RefObject<HTMLDivElement>;
   resources: Record<string, number>;
@@ -337,6 +345,8 @@ function ShareCard({
   playTimeLabel: string;
   playTimeMs: number;
   playForFreeAtLabel?: string;
+  /** Second line under the call to action. The website on web, the store on iOS. */
+  playForFreeAtDetail?: string;
 }) {
   const { precious, others } = getVisibleResourceKeys(resources, seenResources);
   const hasPreciousSpacer = precious.length > 0 && others.length > 0;
@@ -455,7 +465,9 @@ function ShareCard({
             }}
           >
             <div style={{ whiteSpace: "nowrap" }}>{playForFreeAtLabel}</div>
-            <div style={{ whiteSpace: "nowrap" }}>{SHARE_URL_IMAGE}</div>
+            {playForFreeAtDetail ? (
+              <div style={{ whiteSpace: "nowrap" }}>{playForFreeAtDetail}</div>
+            ) : null}
           </div>
         ) : null}
         <div
@@ -498,6 +510,7 @@ export default function ShareDialog() {
   const { t } = useUiTranslation();
   const { toast } = useToast();
   const steamDesktopEditionActive = useSteamDesktopEditionActive();
+  const iosEditionActive = useIosEditionActive();
   const devGameMode = useGameStore((s) => s.devGameMode);
   /** Steam desktop / demo (and DEV Steam modes). Web portals keep share. */
   const progressShareDisabled = isSteamDesktopEditionActive(devGameMode);
@@ -661,59 +674,69 @@ export default function ShareDialog() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional open-only prefetch
   }, [open]);
 
-  const downloadBlob = (blob: Blob) => {
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = SHARE_FILE_NAME;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
+  const shareMessage = () => {
+    if (iosEditionActive) {
+      return t("share.shareTextIos", {
+        percent,
+        url: APP_STORE_URL,
+        defaultValue: "I'm {{percent}}% through A Dark Cave. {{url}}",
+      });
+    }
+    if (steamDesktopEditionActive) {
+      return t("share.shareTextSteam", {
+        percent,
+        defaultValue: "I'm {{percent}}% through A Dark Cave.",
+      });
+    }
+    return t("share.shareText", {
+      percent,
+      url: SHARE_URL,
+      defaultValue: "I'm {{percent}}% through A Dark Cave. Play for free at {{url}}",
+    });
   };
 
-  const handleShare = async () => {
+  const shareLink = () => {
+    if (iosEditionActive) return APP_STORE_URL || undefined;
+    if (steamDesktopEditionActive) return undefined;
+    return SHARE_URL;
+  };
+
+  const handleShare = () => {
+    if (actionLockRef.current) return;
+    const blob = cachedBlobRef.current;
+    if (!blob) {
+      void getShareBlob().then((next) => {
+        if (next) void runShare(next);
+      });
+      return;
+    }
+    void runShare(blob);
+  };
+
+  const runShare = (blob: Blob) => {
     if (actionLockRef.current) return;
     actionLockRef.current = true;
-    try {
-      const blob = await getShareBlob();
-      if (!blob) throw new Error("Failed to render share image");
-      const file = new File([blob], SHARE_FILE_NAME, { type: "image/png" });
-      const shareData: ShareData = {
-        files: [file],
-        title: "A Dark Cave",
-        text: steamDesktopEditionActive
-          ? t("share.shareTextSteam", {
-            percent,
-            defaultValue: "I'm {{percent}}% through A Dark Cave.",
-          })
-          : t("share.shareText", {
-            percent,
-            url: SHARE_URL,
-            defaultValue:
-              "I'm {{percent}}% through A Dark Cave. Play for free at {{url}}",
+    // Share must start in the tap. Awaiting the render first makes iOS ignore it.
+    void shareShareCard(blob, shareMessage(), shareLink())
+      .catch((error: unknown) => {
+        if (error instanceof Error && error.name === "AbortError") return;
+        logger.error("Failed to share progress image", error);
+        const unavailable = error instanceof Error && error.message === "Share is not available";
+        toast({
+          title: t(unavailable ? "share.shareUnavailableTitle" : "share.errorTitle", {
+            defaultValue: unavailable ? "Sharing is not available" : "Could not create image",
           }),
-      };
-      if (navigator.canShare?.({ files: [file] })) {
-        await navigator.share(shareData);
-      } else {
-        downloadBlob(blob);
-      }
-    } catch (error) {
-      if ((error as Error)?.name === "AbortError") return;
-      logger.error("Failed to share progress image", error);
-      toast({
-        title: t("share.errorTitle", {
-          defaultValue: "Could not create image",
-        }),
-        description: t("share.errorDesc", {
-          defaultValue: "Something went wrong while generating the image.",
-        }),
-        variant: "destructive",
+          description: t(unavailable ? "share.shareUnavailableDesc" : "share.errorDesc", {
+            defaultValue: unavailable
+              ? "Save or copy the card instead."
+              : "Something went wrong while generating the image.",
+          }),
+          variant: "destructive",
+        });
+      })
+      .finally(() => {
+        actionLockRef.current = false;
       });
-    } finally {
-      actionLockRef.current = false;
-    }
   };
 
   const handleCopyInviteLink = async () => {
@@ -741,64 +764,73 @@ export default function ShareDialog() {
     }
   };
 
-  const handleDownload = async () => {
+  const handleDownload = () => {
     if (actionLockRef.current) return;
-    actionLockRef.current = true;
-    try {
-      const blob = await getShareBlob();
-      if (!blob) throw new Error("Failed to render share image");
-      downloadBlob(blob);
-    } catch (error) {
-      logger.error("Failed to download progress image", error);
-      toast({
-        title: t("share.errorTitle", {
-          defaultValue: "Could not create image",
-        }),
-        description: t("share.errorDesc", {
-          defaultValue: "Something went wrong while generating the image.",
-        }),
-        variant: "destructive",
+    const blob = cachedBlobRef.current;
+    if (!blob) {
+      void getShareBlob().then((next) => {
+        if (next) void runDownload(next);
       });
-    } finally {
-      actionLockRef.current = false;
+      return;
     }
+    void runDownload(blob);
   };
 
-  const handleCopyImage = async () => {
+  const runDownload = (blob: Blob) => {
     if (actionLockRef.current) return;
     actionLockRef.current = true;
-    try {
-      const blob = await getShareBlob();
-      if (!blob) throw new Error("Failed to render share image");
-      if (!navigator.clipboard?.write || typeof ClipboardItem === "undefined") {
-        throw new Error("Clipboard image copy not supported");
-      }
-      const type = blob.type || "image/png";
-      await navigator.clipboard.write([
-        new ClipboardItem({
-          // Safari requires a Promise-valued ClipboardItem in some versions.
-          [type]: Promise.resolve(blob),
-        }),
-      ]);
-      toast({
-        title: t("share.copiedTitle", {
-          defaultValue: "Copied to clipboard",
-        }),
+    void saveShareCard(blob)
+      .then(() => {
+        toast({
+          title: t("share.savedTitle", { defaultValue: "Image saved" }),
+        });
+      })
+      .catch((error: unknown) => {
+        logger.error("Failed to download progress image", error);
+        toast({
+          title: t("share.errorTitle", {
+            defaultValue: "Could not create image",
+          }),
+          description: t("share.errorDesc", {
+            defaultValue: "Something went wrong while generating the image.",
+          }),
+          variant: "destructive",
+        });
+      })
+      .finally(() => {
+        actionLockRef.current = false;
       });
-    } catch (error) {
-      logger.error("Failed to copy progress image", error);
-      toast({
-        title: t("share.copyErrorTitle", {
-          defaultValue: "Could not copy image",
-        }),
-        description: t("share.copyErrorDesc", {
-          defaultValue: "Something went wrong while copying to the clipboard.",
-        }),
-        variant: "destructive",
+  };
+
+  const handleCopyImage = () => {
+    if (actionLockRef.current) return;
+    actionLockRef.current = true;
+    const pending = cachedBlobRef.current
+      ? Promise.resolve(cachedBlobRef.current)
+      : getShareBlob();
+    void copyShareCard(pending)
+      .then(() => {
+        toast({
+          title: t("share.copiedTitle", {
+            defaultValue: "Copied to clipboard",
+          }),
+        });
+      })
+      .catch((error: unknown) => {
+        logger.error("Failed to copy progress image", error);
+        toast({
+          title: t("share.copyErrorTitle", {
+            defaultValue: "Could not copy image",
+          }),
+          description: t("share.copyErrorDesc", {
+            defaultValue: "Something went wrong while copying to the clipboard.",
+          }),
+          variant: "destructive",
+        });
+      })
+      .finally(() => {
+        actionLockRef.current = false;
       });
-    } finally {
-      actionLockRef.current = false;
-    }
   };
 
   if (progressShareDisabled) return null;
@@ -908,11 +940,16 @@ export default function ShareDialog() {
                   })}
                   playTimeMs={playTimeMs}
                   playForFreeAtLabel={
-                    steamDesktopEditionActive
+                    iosEditionActive || steamDesktopEditionActive
                       ? undefined
                       : t("share.playForFreeAt", {
                         defaultValue: "Play for free at",
                       })
+                  }
+                  playForFreeAtDetail={
+                    iosEditionActive || steamDesktopEditionActive
+                      ? undefined
+                      : SHARE_URL_IMAGE
                   }
                 />
               </div>
@@ -932,7 +969,7 @@ export default function ShareDialog() {
             actionsReady && "is-ready",
           )}
         >
-          {!steamDesktopEditionActive && (
+          {!steamDesktopEditionActive && !iosEditionActive && (
             <TooltipWrapper
               tooltip={<InviteFriendsTooltip count={referralCount} />}
               tooltipId="share-dialog-invite"

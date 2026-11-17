@@ -258,9 +258,13 @@
     "copyErrorDesc": "Panoya kopyalarken bir sorun çıktı.",
     "shareTextSteam": "A Dark Cave'de %{{percent}} ilerledim.",
     "shareText": "A Dark Cave'de %{{percent}} ilerledim. Ücretsiz oyna: {{url}}",
+    "shareTextIos": "A Dark Cave'de %{{percent}} ilerledim. {{url}}",
     "share": "Paylaş",
     "errorTitle": "Görsel oluşturulamadı",
-    "errorDesc": "Görsel oluşturulurken bir sorun çıktı."
+    "errorDesc": "Görsel oluşturulurken bir sorun çıktı.",
+    "savedTitle": "Görsel kaydedildi",
+    "shareUnavailableTitle": "Paylaşım kullanılamıyor",
+    "shareUnavailableDesc": "Kartı kaydet ya da kopyala."
   },
   "feedback": {
     "title": "Geri Bildirim",

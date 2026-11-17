@@ -133,6 +133,8 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
   deleteAccountDialogOpen: boolean;
   settingsDialogOpen: boolean;
   feedbackDialogOpen: boolean;
+  /** Phone / iOS menu: social links. Runtime-only. */
+  stayConnectedDialogOpen: boolean;
   /** Persisted: one-time feedback dialog at 135m play time has been shown or skipped. */
   feedbackPromptShown: boolean;
   /** Persisted: village tab hotkey tutorial (boxed overlay) was dismissed or timed out. */
@@ -457,6 +459,7 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
     options?: { preferCruelMode?: boolean },
   ) => void;
   setSettingsDialogOpen: (isOpen: boolean) => void;
+  setStayConnectedDialogOpen: (isOpen: boolean) => void;
   setDevGameMode: (mode: DevGameMode) => void;
   setDeleteAccountDialogOpen: (isOpen: boolean) => void;
   setVillageMapOverride: (id: string, point: { x: number; y: number } | null) => void;

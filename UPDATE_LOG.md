@@ -6,6 +6,11 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 
 ### Changed
 
+- In the iOS app, Save stores the progress card in your photos, and Copy puts that image on the clipboard so you can paste it. Share opens the share sheet.
+- On a phone, a building you tap on the map stays marked until you leave the Map tab.
+- On a phone, and in the iOS app, the bottom bar is gone. Pause is at the top left, and your play time shows beside it while the game is paused. Feedback is in the menu. On a phone, Stay Connected sits under Feedback.
+- In the iOS app, the progress card has no store line. Share includes the App Store link. The invite link is not there.
+- The iOS app has no text size setting. Text stays at the normal size.
 - On the village list, the Disgraced Prior row shows how many actions he is assigned to, labeled Disgraced Prior Actions.
 - The line under Tireless Worker names the Disgraced Prior, so you can see the skill is his.
 

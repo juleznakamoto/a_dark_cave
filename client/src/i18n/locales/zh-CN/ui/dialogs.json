@@ -258,9 +258,13 @@
     "copyErrorDesc": "复制到剪贴板时出现问题。",
     "shareTextSteam": "我在 A Dark Cave 的进度是 {{percent}}%。",
     "shareText": "我在 A Dark Cave 的进度是 {{percent}}%。免费畅玩：{{url}}",
+    "shareTextIos": "我在 A Dark Cave 的进度是 {{percent}}%。{{url}}",
     "share": "分享",
     "errorTitle": "无法创建图片",
-    "errorDesc": "生成图片时出现问题。"
+    "errorDesc": "生成图片时出现问题。",
+    "savedTitle": "图片已保存",
+    "shareUnavailableTitle": "无法分享",
+    "shareUnavailableDesc": "请改为保存或复制卡片。"
   },
   "feedback": {
     "title": "反馈",

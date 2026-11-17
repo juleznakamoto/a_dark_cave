@@ -328,6 +328,16 @@ function applyBuildingHighlight(svg: SVGSVGElement | null, highlightId: string |
   }
 }
 
+const TOUCH_HOVER_STICK_MS = 800;
+
+/** Phones keep a tap selected. A finger also sends a mouse leave a moment later. */
+function stickyMapPointer(event: { pointerType?: string }, stickUntil: number): boolean {
+  if (event.pointerType === "touch") return true;
+  if (Date.now() < stickUntil) return true;
+  if (typeof window.matchMedia !== "function") return false;
+  return window.matchMedia("(hover: none), (pointer: coarse)").matches;
+}
+
 /** Hover lights every mark of that building. :hover alone only reaches the one under the pointer. */
 function applyBuildingHover(svg: SVGSVGElement | null, buildingId: string | null) {
   if (!svg) return;
@@ -368,6 +378,10 @@ type VillageMapProps = {
   onPathOverride: (id: string, point: Point | null) => void;
   onActiveLabel: (label: string | null) => void;
   onHoverBuilding?: (buildingId: string | null) => void;
+  /**
+   * Drop a sticky touch selection. The game sets this while the Map tab is closed.
+   */
+  releaseBuildingHover?: boolean;
   reveal?: VillageMapReveal | null;
   /** Bumps to replay the same reveal. The game leaves this at 0. */
   revealEpoch?: number;
@@ -408,6 +422,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
   onPathOverride,
   onActiveLabel,
   onHoverBuilding,
+  releaseBuildingHover = false,
   reveal = null,
   revealEpoch = 0,
   readOnly = false,
@@ -435,11 +450,36 @@ const VillageMapSvg = memo(function VillageMapSvg({
   const pendingTreeRef = useRef<Point | null>(null);
   const draggingSlotRef = useRef<string | null>(null);
   const hoveredBuildingRef = useRef<string | null>(null);
+  const touchStickUntilRef = useRef(0);
   const setHoveredBuilding = (buildingId: string | null) => {
     if (hoveredBuildingRef.current === buildingId) return;
     hoveredBuildingRef.current = buildingId;
     applyBuildingHover(svgRef.current, buildingId);
   };
+  const showBuildingHover = (
+    buildingId: string,
+    event: { pointerType?: string },
+    label?: string,
+  ) => {
+    if (releaseBuildingHover) return;
+    if (event.pointerType === "touch") {
+      touchStickUntilRef.current = Date.now() + TOUCH_HOVER_STICK_MS;
+    }
+    setHoveredBuilding(buildingId);
+    if (label !== undefined) onActiveLabel(label);
+    onHoverBuilding?.(buildingId);
+  };
+  const hideBuildingHover = (event: { pointerType?: string }) => {
+    if (stickyMapPointer(event, touchStickUntilRef.current)) return;
+    setHoveredBuilding(null);
+    onActiveLabel(null);
+    onHoverBuilding?.(null);
+  };
+  useEffect(() => {
+    if (!releaseBuildingHover) return;
+    touchStickUntilRef.current = 0;
+    setHoveredBuilding(null);
+  }, [releaseBuildingHover]);
   const pathNodesRef = useRef<Map<string, { ribbon: Element | null; hit: Element | null }> | null>(null);
   pathNodesRef.current = null;
   const treeWobbleId = `tree-wobble-${useId().replace(/:/g, "")}`;
@@ -979,13 +1019,11 @@ const VillageMapSvg = memo(function VillageMapSvg({
     onPlaceTree(snapToPixel(toSvg(event)));
   };
 
-  const onPalisadeEnter = () => {
-    setHoveredBuilding("palisades");
-    onHoverBuilding?.("palisades");
+  const onPalisadeEnter = (event: ReactPointerEvent<SVGGElement>) => {
+    showBuildingHover("palisades", event);
   };
-  const onPalisadeLeave = () => {
-    setHoveredBuilding(null);
-    onHoverBuilding?.(null);
+  const onPalisadeLeave = (event: ReactPointerEvent<SVGGElement>) => {
+    hideBuildingHover(event);
   };
   const innerInk = VILLAGE_INK_GAP;
   const outerInk = PALISADE_BORDER;
@@ -1272,14 +1310,8 @@ const VillageMapSvg = memo(function VillageMapSvg({
             <g
               data-building="fortifiedMoat"
               style={{ cursor: "default" }}
-              onPointerEnter={() => {
-                setHoveredBuilding("fortifiedMoat");
-                onHoverBuilding?.("fortifiedMoat");
-              }}
-              onPointerLeave={() => {
-                setHoveredBuilding(null);
-                onHoverBuilding?.(null);
-              }}
+              onPointerEnter={(event) => showBuildingHover("fortifiedMoat", event)}
+              onPointerLeave={(event) => hideBuildingHover(event)}
             >
               <defs>
                 <clipPath id={moatClipId}>
@@ -1410,16 +1442,8 @@ const VillageMapSvg = memo(function VillageMapSvg({
                 key={`drawbridge-${slot.id}`}
                 data-building={slot.buildingId}
                 transform={`translate(${slot.x} ${slot.y})`}
-                onPointerEnter={() => {
-                  setHoveredBuilding(slot.buildingId);
-                  onActiveLabel(slot.label);
-                  onHoverBuilding?.(slot.buildingId);
-                }}
-                onPointerLeave={() => {
-                  setHoveredBuilding(null);
-                  onActiveLabel(null);
-                  onHoverBuilding?.(null);
-                }}
+                onPointerEnter={(event) => showBuildingHover(slot.buildingId, event, slot.label)}
+                onPointerLeave={(event) => hideBuildingHover(event)}
               >
                 <MapBorderExtraContext.Provider value={fading ? MAP_HIGHLIGHT_BORDER : 0}>
                   <g transform={markRotation(slot.buildingId, slot)} className={fadeClassName} style={fadeStyle}>
@@ -1584,16 +1608,8 @@ const VillageMapSvg = memo(function VillageMapSvg({
                       onOverride(slot.id, null);
                     }
                 }
-                onPointerEnter={() => {
-                  setHoveredBuilding(slot.buildingId);
-                  onActiveLabel(slot.label);
-                  onHoverBuilding?.(slot.buildingId);
-                }}
-                onPointerLeave={() => {
-                  setHoveredBuilding(null);
-                  onActiveLabel(null);
-                  onHoverBuilding?.(null);
-                }}
+                onPointerEnter={(event) => showBuildingHover(slot.buildingId, event, slot.label)}
+                onPointerLeave={(event) => hideBuildingHover(event)}
               >
                 {onHoverBuilding ? null : <title>{slot.label}</title>}
                 {reveal?.fadeOutTier[slot.id] != null ? (
@@ -1653,14 +1669,8 @@ const VillageMapSvg = memo(function VillageMapSvg({
             <g
               data-building="traps"
               style={{ cursor: "default" }}
-              onPointerEnter={() => {
-                setHoveredBuilding("traps");
-                onHoverBuilding?.("traps");
-              }}
-              onPointerLeave={() => {
-                setHoveredBuilding(null);
-                onHoverBuilding?.(null);
-              }}
+              onPointerEnter={(event) => showBuildingHover("traps", event)}
+              onPointerLeave={(event) => hideBuildingHover(event)}
             >
               {traps.map((trap, index) => (
                 <g

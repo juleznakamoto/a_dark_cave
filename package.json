@@ -56,6 +56,7 @@
     "upload:resend-contacts": "tsx scripts/upload-resend-contact-csv.ts"
   },
   "dependencies": {
+    "@capacitor-community/media": "^9.1.0",
     "@capacitor/app": "^8.1.2",
     "@capacitor/core": "^8.6.2",
     "@capacitor/filesystem": "^8.1.5",

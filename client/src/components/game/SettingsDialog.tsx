@@ -21,7 +21,10 @@ import {
   type DevSaveId,
 } from "@/game/devSaveIds";
 import { applyDevSaveToStore } from "@/game/devSaves";
-import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
+import {
+  useIosEditionActive,
+  useSteamEditionActive,
+} from "@/hooks/useSteamEditionActive";
 import { Input } from "@/components/ui/input";
 import {
   hasWanderersLanternCode,
@@ -434,6 +437,7 @@ export default function SettingsDialog({
   }, [isOpen]);
 
   const steamEditionActive = useSteamEditionActive();
+  const iosEditionActive = useIosEditionActive();
   const { isFullscreen, toggleFullscreen, available: fullscreenAvailable } =
     useFullscreen();
   const showAccountSettings = !steamEditionActive && !!currentUser;
@@ -478,18 +482,20 @@ export default function SettingsDialog({
                 onVolumeChange={changeSfxVolume}
               />
             </div>
-            <div className={ROW}>
-              <span className={ICON_SLOT}>
-                <TextScaleSettingsIcon />
-              </span>
-              <span className="flex-1 text-sm">{t("textScale.label")}</span>
-              <TextScaleSelector
-                inDialog
-                menuPortalContainer={menuPortalContainer}
-                menuAlign="end"
-                buttonClassName="group -mr-2 flex items-center gap-1 rounded-md px-2 py-1 text-sm hover:bg-muted/40 transition-colors"
-              />
-            </div>
+            {!iosEditionActive && (
+              <div className={ROW}>
+                <span className={ICON_SLOT}>
+                  <TextScaleSettingsIcon />
+                </span>
+                <span className="flex-1 text-sm">{t("textScale.label")}</span>
+                <TextScaleSelector
+                  inDialog
+                  menuPortalContainer={menuPortalContainer}
+                  menuAlign="end"
+                  buttonClassName="group -mr-2 flex items-center gap-1 rounded-md px-2 py-1 text-sm hover:bg-muted/40 transition-colors"
+                />
+              </div>
+            )}
             <div className={ROW}>
               <span className={ICON_SLOT}>
                 <GameUiIcon name="language" sizeClassName="w-5 h-5" />
