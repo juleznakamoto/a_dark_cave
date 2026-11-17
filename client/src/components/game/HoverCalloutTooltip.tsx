@@ -32,18 +32,21 @@ const CALLOUT_SIZE = {
   md: "px-2.5 py-1.5",
 } as const;
 
+/** Match `useGlobalTooltip` mobile long-press delay. */
+const TOUCH_HOLD_MS = 250;
+
 /** Touch taps synthesize mouseenter; only fine pointers should drive hover tooltips. */
 function isHoverCapablePointer(pointerType: string): boolean {
   return pointerType === "mouse" || pointerType === "pen";
 }
 
-/** A finger that slides farther than this is a scroll, not a tap. */
+/** A finger that slides farther than this is a scroll, not a hold. */
 const TOUCH_PRESS_SLOP_PX = 10;
 
 const INTERACTIVE_PRESS_SELECTOR =
   "button, a, input, select, textarea, [role='button'], [role='menuitem']";
 
-/** Presses on real controls keep their own action. Informational marks toggle the callout. */
+/** Presses on real controls keep their own action. Informational marks use hold-to-show. */
 function isInteractivePressTarget(target: EventTarget | null): boolean {
   return (
     target instanceof Element &&
@@ -103,8 +106,11 @@ export function HoverCalloutTooltip({
     y: number;
     pointerId: number;
   } | null>(null);
-  /** Pointerup already toggled; the click that follows must not toggle again. */
-  const toggledForGestureRef = useRef(false);
+  const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  /** Hold already opened the callout; release must keep it pinned and ignore the click. */
+  const openedByHoldRef = useRef(false);
+  /** Pointerup already handled this gesture; the click that follows must not dismiss. */
+  const swallowClickRef = useRef(false);
   const [isHovered, setIsHovered] = useState(false);
   const [touchPinned, setTouchPinned] = useState(false);
   const [triggerRect, setTriggerRect] = useState<DOMRect | null>(null);
@@ -119,13 +125,33 @@ export function HoverCalloutTooltip({
     ? Z_INDEX.hoverCalloutUnderModal
     : Z_INDEX.hoverCallout;
 
+  const clearHoldTimer = useCallback(() => {
+    if (holdTimerRef.current !== null) {
+      clearTimeout(holdTimerRef.current);
+      holdTimerRef.current = null;
+    }
+  }, []);
+
+  const clearTouchPress = useCallback(() => {
+    clearHoldTimer();
+    touchPressRef.current = null;
+    openedByHoldRef.current = false;
+  }, [clearHoldTimer]);
+
+  useEffect(() => {
+    return () => {
+      clearHoldTimer();
+    };
+  }, [clearHoldTimer]);
+
   useEffect(() => {
     return subscribeGameTabHidden(() => {
       if (!isGameTabHidden()) return;
+      clearTouchPress();
       setIsHovered(false);
       setTouchPinned(false);
     });
-  }, []);
+  }, [clearTouchPress]);
 
   useEffect(() => {
     if (!touchPinned) return;
@@ -229,46 +255,59 @@ export function HoverCalloutTooltip({
     }
   };
 
-  const clearTouchPress = () => {
-    touchPressRef.current = null;
-  };
-
   const armTouchPress = (e: PointerEvent<HTMLDivElement>) => {
     if (!hoverEnabled || isHoverCapablePointer(e.pointerType)) return;
     if (isInteractivePressTarget(e.target)) return;
+    clearHoldTimer();
     touchPressRef.current = {
       x: e.clientX,
       y: e.clientY,
       pointerId: e.pointerId,
     };
-    toggledForGestureRef.current = false;
+    openedByHoldRef.current = false;
+    swallowClickRef.current = false;
+    holdTimerRef.current = setTimeout(() => {
+      holdTimerRef.current = null;
+      if (!touchPressRef.current) return;
+      openedByHoldRef.current = true;
+      setTouchPinned(true);
+    }, TOUCH_HOLD_MS);
   };
 
-  const toggleTouchPress = (x: number, y: number, pointerId?: number) => {
+  const trackTouchPress = (e: PointerEvent<HTMLDivElement>) => {
     const start = touchPressRef.current;
-    if (!start) return;
-    if (pointerId !== undefined && start.pointerId !== pointerId) return;
-    touchPressRef.current = null;
-    const dx = x - start.x;
-    const dy = y - start.y;
-    if (dx * dx + dy * dy > TOUCH_PRESS_SLOP_PX * TOUCH_PRESS_SLOP_PX) return;
-    toggledForGestureRef.current = true;
-    setTouchPinned((open) => !open);
+    if (!start || start.pointerId !== e.pointerId) return;
+    const dx = e.clientX - start.x;
+    const dy = e.clientY - start.y;
+    if (dx * dx + dy * dy <= TOUCH_PRESS_SLOP_PX * TOUCH_PRESS_SLOP_PX) return;
+    clearTouchPress();
   };
 
   const finishTouchPress = (e: PointerEvent<HTMLDivElement>) => {
     if (isHoverCapablePointer(e.pointerType)) return;
-    toggleTouchPress(e.clientX, e.clientY, e.pointerId);
+    const start = touchPressRef.current;
+    if (!start || start.pointerId !== e.pointerId) {
+      clearHoldTimer();
+      return;
+    }
+    clearHoldTimer();
+    touchPressRef.current = null;
+    if (openedByHoldRef.current) {
+      // Keep pinned after long-press, same as useGlobalTooltip.
+      swallowClickRef.current = true;
+      openedByHoldRef.current = false;
+      return;
+    }
+    // Short tap: do not open. Resources also need a hold.
   };
 
   const finishTouchClick = (e: MouseEvent<HTMLDivElement>) => {
-    if (toggledForGestureRef.current) {
-      toggledForGestureRef.current = false;
-      clearTouchPress();
+    if (swallowClickRef.current) {
+      swallowClickRef.current = false;
+      e.preventDefault();
+      e.stopPropagation();
       return;
     }
-    // Older iOS builds deliver click without a pointerup on a non-button.
-    toggleTouchPress(e.clientX, e.clientY);
   };
 
   const setCalloutNode = (node: HTMLElement | null) => {
@@ -343,6 +382,7 @@ export function HoverCalloutTooltip({
       onPointerEnter={showHoverTooltip}
       onPointerLeave={hideHoverTooltip}
       onPointerDown={armTouchPress}
+      onPointerMove={trackTouchPress}
       onPointerUp={finishTouchPress}
       onPointerCancel={clearTouchPress}
       onClick={finishTouchClick}

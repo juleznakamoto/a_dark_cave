@@ -19,6 +19,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- On a phone, pact choice and cruel mode marks in the header show their tip while you press and hold, like other tooltips.
 - On the start screen, a sentence that wraps onto a second line still dissolves when you light the fire.
 
 ### iOS

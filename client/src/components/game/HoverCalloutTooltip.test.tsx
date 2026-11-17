@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { HoverCalloutTooltip } from "./HoverCalloutTooltip";
 import { isModalDialogOpen, useGameStore } from "@/game/state";
 import { Z_INDEX } from "@/lib/z-index";
@@ -57,79 +57,118 @@ function calloutHost(label: string): HTMLElement {
   return host;
 }
 
-function press(
+function pointerDown(
   target: Element,
   pointerType: string,
   point: { x: number; y: number } = { x: 8, y: 8 },
+  pointerId = 1,
 ) {
   fireEvent.pointerDown(target, {
     pointerType,
-    pointerId: 1,
-    clientX: point.x,
-    clientY: point.y,
-  });
-  fireEvent.pointerUp(target, {
-    pointerType,
-    pointerId: 1,
+    pointerId,
     clientX: point.x,
     clientY: point.y,
   });
 }
 
+function pointerUp(
+  target: Element,
+  pointerType: string,
+  point: { x: number; y: number } = { x: 8, y: 8 },
+  pointerId = 1,
+) {
+  fireEvent.pointerUp(target, {
+    pointerType,
+    pointerId,
+    clientX: point.x,
+    clientY: point.y,
+  });
+}
+
+function shortPress(
+  target: Element,
+  pointerType: string,
+  point: { x: number; y: number } = { x: 8, y: 8 },
+) {
+  pointerDown(target, pointerType, point);
+  pointerUp(target, pointerType, point);
+}
+
+async function longPress(
+  target: Element,
+  pointerType: string,
+  point: { x: number; y: number } = { x: 8, y: 8 },
+) {
+  pointerDown(target, pointerType, point);
+  await act(async () => {
+    vi.advanceTimersByTime(250);
+  });
+  pointerUp(target, pointerType, point);
+}
+
 describe("HoverCalloutTooltip touch press", () => {
-  afterEach(() => {
-    cleanup();
+  beforeEach(() => {
+    vi.useFakeTimers();
   });
 
-  it("shows the callout when a finger taps an informational mark", () => {
+  afterEach(() => {
+    cleanup();
+    vi.useRealTimers();
+  });
+
+  it("shows the callout during a long press and keeps it open after release", async () => {
     render(
       <HoverCalloutTooltip label="Pact choices unlocked">
         <span>rings</span>
       </HoverCalloutTooltip>,
     );
 
+    const rings = screen.getByText("rings");
     expect(calloutHost("Pact choices unlocked")).toHaveClass("opacity-0");
-    press(screen.getByText("rings"), "touch");
+
+    pointerDown(rings, "touch");
+    expect(calloutHost("Pact choices unlocked")).toHaveClass("opacity-0");
+
+    await act(async () => {
+      vi.advanceTimersByTime(250);
+    });
     expect(calloutHost("Pact choices unlocked")).toHaveClass("opacity-100");
     expect(calloutHost("Pact choices unlocked")).toHaveAttribute(
       "aria-hidden",
       "false",
     );
-  });
 
-  it("hides the callout on a second tap and on a tap outside", () => {
-    render(
-      <HoverCalloutTooltip label="Pact choices unlocked">
-        <span>rings</span>
-      </HoverCalloutTooltip>,
-    );
-
-    const rings = screen.getByText("rings");
-    press(rings, "touch");
-    expect(calloutHost("Pact choices unlocked")).toHaveClass("opacity-100");
-
-    press(rings, "touch");
-    expect(calloutHost("Pact choices unlocked")).toHaveClass("opacity-0");
-
-    press(rings, "touch");
-    fireEvent.pointerDown(document.body, { pointerType: "touch", bubbles: true });
-    expect(calloutHost("Pact choices unlocked")).toHaveClass("opacity-0");
-  });
-
-  it("does not toggle twice when the tap also synthesizes a click", () => {
-    render(
-      <HoverCalloutTooltip label="Pact choices unlocked">
-        <span>rings</span>
-      </HoverCalloutTooltip>,
-    );
-
-    const rings = screen.getByText("rings");
-    press(rings, "touch");
+    pointerUp(rings, "touch");
     fireEvent.click(rings);
     expect(calloutHost("Pact choices unlocked")).toHaveClass("opacity-100");
   });
 
-  it("ignores a finger slide and a touch hover", () => {
+  it("does not open on a short tap", () => {
+    render(
+      <HoverCalloutTooltip label="Pact choices unlocked">
+        <span>rings</span>
+      </HoverCalloutTooltip>,
+    );
+
+    shortPress(screen.getByText("rings"), "touch");
+    expect(calloutHost("Pact choices unlocked")).toHaveClass("opacity-0");
+  });
+
+  it("hides the callout on a tap outside", async () => {
+    render(
+      <HoverCalloutTooltip label="Pact choices unlocked">
+        <span>rings</span>
+      </HoverCalloutTooltip>,
+    );
+
+    await longPress(screen.getByText("rings"), "touch");
+    expect(calloutHost("Pact choices unlocked")).toHaveClass("opacity-100");
+
+    fireEvent.pointerDown(document.body, { pointerType: "touch", bubbles: true });
+    expect(calloutHost("Pact choices unlocked")).toHaveClass("opacity-0");
+  });
+
+  it("ignores a finger slide and a touch hover", async () => {
     render(
       <HoverCalloutTooltip label="Pact choices unlocked">
         <span>rings</span>
@@ -146,6 +185,15 @@ describe("HoverCalloutTooltip touch press", () => {
       clientX: 0,
       clientY: 0,
     });
+    fireEvent.pointerMove(rings, {
+      pointerType: "touch",
+      pointerId: 1,
+      clientX: 40,
+      clientY: 0,
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(250);
+    });
     fireEvent.pointerUp(rings, {
       pointerType: "touch",
       pointerId: 1,
@@ -155,14 +203,14 @@ describe("HoverCalloutTooltip touch press", () => {
     expect(calloutHost("Pact choices unlocked")).toHaveClass("opacity-0");
   });
 
-  it("leaves buttons and links to their own press", () => {
+  it("leaves buttons and links to their own press", async () => {
     render(
       <HoverCalloutTooltip label="Language">
         <button type="button">EN</button>
       </HoverCalloutTooltip>,
     );
 
-    press(screen.getByRole("button", { name: "EN" }), "touch");
+    await longPress(screen.getByRole("button", { name: "EN" }), "touch");
     expect(calloutHost("Language")).toHaveClass("opacity-0");
   });
 
