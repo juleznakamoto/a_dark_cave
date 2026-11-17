@@ -34,6 +34,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- Sound plays on iPhone, including while the silent switch is on.
 - In Settings, the music and sound sliders no longer show a red dot at the right end of the track.
 - On a phone, the resources an action needs light up only while that action's tip is open.
 - On a phone, tapping the pact choice rings in the header shows what they mean. The Cruel Mode mark does the same.

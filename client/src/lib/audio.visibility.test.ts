@@ -2,6 +2,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Howler } from "howler";
 import { audioManager } from "./audio";
+import { setNativeAppBackgrounded } from "./tabVisibility";
 
 describe("audio context while the page is hidden", () => {
   const originalCtx = Howler.ctx;
@@ -9,6 +10,7 @@ describe("audio context while the page is hidden", () => {
 
   afterEach(() => {
     hidden = false;
+    setNativeAppBackgrounded(false);
     Object.defineProperty(document, "hidden", {
       configurable: true,
       get: () => false,
@@ -62,5 +64,27 @@ describe("audio context while the page is hidden", () => {
     audioManager.playSound("not-loaded", 1, false);
 
     expect(ctx.resume).not.toHaveBeenCalled();
+  });
+
+  it("suspends when the iOS app backgrounds even if document.hidden stays false", async () => {
+    const ctx = installContext();
+
+    setNativeAppBackgrounded(true);
+    await Promise.resolve();
+
+    expect(ctx.suspend).toHaveBeenCalledOnce();
+
+    setNativeAppBackgrounded(false);
+
+    expect(ctx.resume).toHaveBeenCalledOnce();
+  });
+
+  it("resumes an interrupted context", () => {
+    const ctx = installContext();
+    ctx.state = "interrupted";
+
+    audioManager.playSound("not-loaded", 1, false);
+
+    expect(ctx.resume).toHaveBeenCalledOnce();
   });
 });

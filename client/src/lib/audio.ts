@@ -19,7 +19,13 @@ import { Howl, Howler } from 'howler';
     proto._emitPatched = true;
   }
 })();
+// iPhones run Web Audio at 48000 Hz. Howler treats any rate other than 44100
+// as a stale context and unload()s every sound on the first tap. Those Howls
+// stay empty, so the fire cue, the wind, and anything else already decoded
+// never plays. Skip that unload.
+(Howler as { _mobileUnloaded?: boolean })._mobileUnloaded = true;
 import { logger } from './logger';
+import { isGameTabHidden } from './tabVisibility';
 import { publicUrl } from './publicUrl';
 import { EVENT_AMBIENCE_FADE_SECONDS, SOUND_VOLUME } from './soundVolumes';
 
@@ -59,6 +65,7 @@ export class AudioManager {
   /** Bumps on every visibility change so a late suspend cannot win over show. */
   private visibilityEpoch = 0;
   private visibilityBound = false;
+  private iosGestureBound = false;
   /** Hunt preview is loading; ignore extra slider events until it can play. */
   private sfxPreviewPending = false;
   /**
@@ -72,6 +79,38 @@ export class AudioManager {
 
   private constructor() {
     this.bindPageVisibility();
+    this.bindIosPlaybackGesture();
+  }
+
+  /**
+   * App Store build, or Safari on an iPhone or iPad. Web Audio there stays
+   * silent while the ringer switch is on unless the session type is playback.
+   */
+  private isIosAudioDevice(): boolean {
+    if (import.meta.env.VITE_IOS_BUILD === "1") return true;
+    if (typeof navigator === "undefined") return false;
+    const ua = navigator.userAgent || "";
+    if (/iPad|iPhone|iPod/.test(ua)) return true;
+    const nav = navigator as Navigator & { platform?: string };
+    return nav.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+  }
+
+  /**
+   * Web Audio follows the silent switch until this is set. HTML audio does
+   * not, so the game looks broken while every other app still makes sound.
+   * Set it inside the tap that starts playback.
+   */
+  private primeIosPlaybackSession(): void {
+    if (!this.isIosAudioDevice()) return;
+    const session = (
+      navigator as Navigator & { audioSession?: { type: string } }
+    ).audioSession;
+    if (!session || session.type === "playback") return;
+    try {
+      session.type = "playback";
+    } catch {
+      // iOS 16 has no audio session API. Web Audio keeps following the switch.
+    }
   }
 
   private clampVolume(value: number): number {
@@ -131,23 +170,44 @@ export class AudioManager {
     return AudioManager.instance;
   }
 
+  /** Hidden browser tab, or the iOS app in the background (`document.hidden` stays false there). */
+  private audioPageHidden(): boolean {
+    return isGameTabHidden();
+  }
+
   // Resume AudioContext if it's suspended (required for autoplay policy).
-  // A hidden page must stay suspended; the visibility handler resumes it.
+  // iOS also uses "interrupted" after the app is left. A hidden page must
+  // stay suspended; the visibility handler resumes it.
   private resumeAudioContext(): void {
-    if (typeof document !== "undefined" && document.hidden) return;
+    if (this.audioPageHidden()) return;
+    this.primeIosPlaybackSession();
     const ctx = Howler.ctx;
-    if (ctx && ctx.state === 'suspended') {
-      ctx.resume().catch(() => {
-        // Silently ignore - will retry on next user interaction
-      });
-    }
+    if (!ctx) return;
+    const state = ctx.state as string;
+    if (state !== "suspended" && state !== "interrupted") return;
+    ctx.resume().catch(() => {
+      // Silently ignore - will retry on next user interaction
+    });
+  }
+
+  /** First tap on iPhone has to resume the context. Play calls do the same. */
+  private bindIosPlaybackGesture(): void {
+    if (this.iosGestureBound || typeof document === "undefined") return;
+    if (!this.isIosAudioDevice()) return;
+    this.iosGestureBound = true;
+    const onGesture = () => {
+      if (this.isMutedGlobally && this.isMusicMuted) return;
+      this.resumeAudioContext();
+    };
+    document.addEventListener("touchend", onGesture, true);
+    document.addEventListener("click", onGesture, true);
   }
 
   private bindPageVisibility(): void {
     if (this.visibilityBound || typeof document === "undefined") return;
     this.visibilityBound = true;
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) this.suspendForHiddenPage();
+      if (this.audioPageHidden()) this.suspendForHiddenPage();
       else this.resumeAfterVisiblePage();
     });
   }
@@ -162,7 +222,7 @@ export class AudioManager {
     const epoch = ++this.visibilityEpoch;
     this.suspendedForHide = true;
     void ctx.suspend().then(() => {
-      if (epoch !== this.visibilityEpoch || document.hidden) return;
+      if (epoch !== this.visibilityEpoch || this.audioPageHidden()) return;
       this.resumeAfterVisiblePage();
     }).catch(() => {
       if (epoch === this.visibilityEpoch) this.suspendedForHide = false;
@@ -171,7 +231,7 @@ export class AudioManager {
 
   private resumeAfterVisiblePage(): void {
     if (!this.suspendedForHide) return;
-    if (typeof document !== "undefined" && document.hidden) return;
+    if (this.audioPageHidden()) return;
     this.suspendedForHide = false;
     this.visibilityEpoch += 1;
     this.resumeAudioContext();
