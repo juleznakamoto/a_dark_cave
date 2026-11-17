@@ -1,28 +1,42 @@
 # Update log
 
-Notes for players. Newest first. Copy a dated section when you publish an update.
+Notes for players. Newest first.
+
+Steam and iOS each have a log. Most notes are shared: write those once under Shared. A note only one version would show goes under Steam or iOS. Phone layout that the Steam version does not have goes under iOS. When you publish, the Steam notes are Shared plus Steam, and the iOS notes are Shared plus iOS. Copy that pair for the date you are shipping.
 
 ## Unreleased
 
-### Changed
+### Shared
+
+#### Changed
+
+- On the village list, the Disgraced Prior row shows how many actions he is assigned to, labeled Disgraced Prior Actions.
+- The line under Tireless Worker names the Disgraced Prior, so you can see the skill is his.
+
+### iOS
+
+#### Changed
 
 - In the iOS app, Save stores the progress card in your photos, and Copy puts that image on the clipboard so you can paste it. Share opens the share sheet.
 - On a phone, a building you tap on the map stays marked until you leave the Map tab.
 - On a phone, and in the iOS app, the bottom bar is gone. Pause is at the top left, and your play time shows beside it while the game is paused. Feedback is in the menu. On a phone, Stay Connected sits under Feedback.
 - In the iOS app, the progress card has no store line. Share includes the App Store link. The invite link is not there.
 - The iOS app has no text size setting. Text stays at the normal size.
-- On the village list, the Disgraced Prior row shows how many actions he is assigned to, labeled Disgraced Prior Actions.
-- The line under Tireless Worker names the Disgraced Prior, so you can see the skill is his.
+
+#### Fixed
+
+- On a phone, tapping the pact choice rings in the header shows what they mean. The Cruel Mode mark does the same.
 
 ## 2026-11-16
 
-### Added
+### Shared
+
+#### Added
 
 - When your madness is high and you carry more than 100 silver, five children may stare at you from between the trees. Walk on, or approach them.
 - The header shows five red rings for pact choices. Each choice you have unlocked fills one ring, from left to right.
-- Text size settings include Huge.
 
-### Changed
+#### Changed
 
 - Estate upgrade bars and the attack-wave bar rest a little softer, and turn solid while you hover them. The smoke in the bar under your pointer moves eleven times as fast.
 - The Odd Elixir can appear once you have 4 Wooden Huts and the Crude Bow. Building more huts no longer skips it.
@@ -32,23 +46,19 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 - Later achievements pay 100 gold, and some mid-game ones pay 750 Insight. The earliest ones still pay silver.
 - Prime Foundry and Master Tannery add 1, and Masterwork Foundry and High Tannery add 2, in every version of the game.
 - Hovering a resource shows its capacity first, with the number on the right of that line, in yellow when the stack is full.
-- On Linux, the window stays a normal size. Pick Huge when the writing looks small.
-- Fix Linux scaling issues when using Proton.
 - In Cruel Mode, trying to free the slave trader's captives can now fail.
 - Updated Sleep dialog UI.
 - The cycle ring on the village panel fills more smoothly.
 
-### Fixed
+#### Fixed
 
 - The Great Fire countdown pauses while a dialog is open.
-- Pact choice cards keep each line of writing in its own space at Huge text size, and the cards grow a little wider as the text gets larger.
 - Calling the merchant no longer replaces an event that appears while he is on the way. He arrives after you finish that event.
 - Closing a cube memory or another event no longer brings the same dialog, or the next one, straight back.
 - Starting a new game keeps your music and sound volumes.
 - Bastion building tooltips and warehouse capacity lines use your language.
 - The message you share with a progress image is in your language.
 - Claiming an achievement no longer shifts the rows below it.
-- The Improve button, Claim button, shop filters, village job buttons, and build-queue marks grow with text size.
 - Effects of some events/items in code where not matching displayed effects:
     - Deepening the First Flame gives you 8 housing and a 15% crafting discount.
     - Raven's Orb gives 5 Knowledge.
@@ -57,33 +67,58 @@ Notes for players. Newest first. Copy a dated section when you publish an update
     - Choking Fog shows a 25% production cut.
 - While you sleep, steel, leather, and insight add up across cycles, only whole units go into your stores, and a gain shows a decimal only while it is still under 1.
 
+### Steam
+
+#### Added
+
+- Text size settings include Huge.
+
+#### Changed
+
+- On Linux, the window stays a normal size. Pick Huge when the writing looks small.
+- Fix Linux scaling issues when using Proton.
+
+#### Fixed
+
+- Pact choice cards keep each line of writing in its own space at Huge text size, and the cards grow a little wider as the text gets larger.
+- The Improve button, Claim button, shop filters, village job buttons, and build-queue marks grow with text size.
+
 ## 2026-11-07
 
-### Added
+### Shared
+
+#### Added
 
 - New items in the side panel have a red dotted line now so they are easier to see.
 - While the game is paused, your play time is now shown beside the pause button.
 
-### Changed
+#### Changed
 
 - After you win the game once, you can provoke an attack wave immediately instead of having to wait for 5 minutes.
 - Superior Bombs blessing now makes a thrown bomb half as likely to blow back on you (5% -> 2.5%).
 - An achievement category's icon glows, and gives off sparks while you still have a reward to claim there.
-- While the game is minimized, it now uses less computation (Thanks to Kuroiteiken).
 - Turkish localization has been improved (Thanks to Kuroiteiken).
 
-### Fixed
+#### Fixed
 
 - Calculation of workers output while having multiple positive and negative production effects has been fixed.
 
+### Steam
+
+#### Changed
+
+- While the game is minimized, it now uses less computation (Thanks to Kuroiteiken).
+
 ## 2026-11-06
 
-### Added
+### Shared
+
+#### Added
 
 - You can play the game in Turkish. Thank you to Kuroiteiken.
 - After you lose an attack wave, you can spend 1000 Insight once to push its return back 10 minutes, and again only after you lose that wave once more.
 
-### Changed
+#### Changed
 
 - Pact choice cards have a little less space between the border and the text.
 - Hovering a build button highlights that building in the side panel when you already have one. An upgrade highlights the building it replaces until the new one is built.
@@ -95,7 +130,7 @@ Notes for players. Newest first. Copy a dated section when you publish an update
 - Enter CRUELWORLD in Settings to unlock Cruel Mode. It can be activated when you start a new game. This is not recommended for new players.
 - Once you have 10 Stone Huts, special finds while exploring the cave and while hunting show up a little more often. Veinroot stays the same.
 
-### Fixed
+#### Fixed
 
 - The Obsidian Orb button, the huntress and crow bonus lines, and relic and blueprint names in costs and rewards now use your language.
 - Fur tents show how many you have built.

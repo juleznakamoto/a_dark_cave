@@ -5,6 +5,7 @@ import {
   useRef,
   useState,
   type CSSProperties,
+  type MouseEvent,
   type PointerEvent,
   type ReactNode,
 } from "react";
@@ -34,6 +35,20 @@ const CALLOUT_SIZE = {
 /** Touch taps synthesize mouseenter; only fine pointers should drive hover tooltips. */
 function isHoverCapablePointer(pointerType: string): boolean {
   return pointerType === "mouse" || pointerType === "pen";
+}
+
+/** A finger that slides farther than this is a scroll, not a tap. */
+const TOUCH_PRESS_SLOP_PX = 10;
+
+const INTERACTIVE_PRESS_SELECTOR =
+  "button, a, input, select, textarea, [role='button'], [role='menuitem']";
+
+/** Presses on real controls keep their own action. Informational marks toggle the callout. */
+function isInteractivePressTarget(target: EventTarget | null): boolean {
+  return (
+    target instanceof Element &&
+    !!target.closest(INTERACTIVE_PRESS_SELECTOR)
+  );
 }
 
 export interface HoverCalloutTooltipProps {
@@ -83,13 +98,21 @@ export function HoverCalloutTooltip({
 }: HoverCalloutTooltipProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const calloutRef = useRef<HTMLElement | null>(null);
+  const touchPressRef = useRef<{
+    x: number;
+    y: number;
+    pointerId: number;
+  } | null>(null);
+  /** Pointerup already toggled; the click that follows must not toggle again. */
+  const toggledForGestureRef = useRef(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [touchPinned, setTouchPinned] = useState(false);
   const [triggerRect, setTriggerRect] = useState<DOMRect | null>(null);
   const [calloutSize, setCalloutSize] = useState<{
     width: number;
     height: number;
   } | null>(null);
-  const visible = forceVisible || (hoverEnabled && isHovered);
+  const visible = forceVisible || (hoverEnabled && (isHovered || touchPinned));
   const usePortal = portal || visible;
   const modalCovered = useGameStore(isModalDialogOpen);
   const calloutZIndex = modalCovered
@@ -98,9 +121,26 @@ export function HoverCalloutTooltip({
 
   useEffect(() => {
     return subscribeGameTabHidden(() => {
-      if (isGameTabHidden()) setIsHovered(false);
+      if (!isGameTabHidden()) return;
+      setIsHovered(false);
+      setTouchPinned(false);
     });
   }, []);
+
+  useEffect(() => {
+    if (!touchPinned) return;
+    const dismissOnOutsidePress = (event: globalThis.PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (wrapRef.current?.contains(target)) return;
+      if (calloutRef.current?.contains(target)) return;
+      setTouchPinned(false);
+    };
+    document.addEventListener("pointerdown", dismissOnOutsidePress, true);
+    return () => {
+      document.removeEventListener("pointerdown", dismissOnOutsidePress, true);
+    };
+  }, [touchPinned]);
   const calloutClickable = !!onCalloutClick;
 
   const updateTriggerRect = useCallback(() => {
@@ -189,6 +229,48 @@ export function HoverCalloutTooltip({
     }
   };
 
+  const clearTouchPress = () => {
+    touchPressRef.current = null;
+  };
+
+  const armTouchPress = (e: PointerEvent<HTMLDivElement>) => {
+    if (!hoverEnabled || isHoverCapablePointer(e.pointerType)) return;
+    if (isInteractivePressTarget(e.target)) return;
+    touchPressRef.current = {
+      x: e.clientX,
+      y: e.clientY,
+      pointerId: e.pointerId,
+    };
+    toggledForGestureRef.current = false;
+  };
+
+  const toggleTouchPress = (x: number, y: number, pointerId?: number) => {
+    const start = touchPressRef.current;
+    if (!start) return;
+    if (pointerId !== undefined && start.pointerId !== pointerId) return;
+    touchPressRef.current = null;
+    const dx = x - start.x;
+    const dy = y - start.y;
+    if (dx * dx + dy * dy > TOUCH_PRESS_SLOP_PX * TOUCH_PRESS_SLOP_PX) return;
+    toggledForGestureRef.current = true;
+    setTouchPinned((open) => !open);
+  };
+
+  const finishTouchPress = (e: PointerEvent<HTMLDivElement>) => {
+    if (isHoverCapablePointer(e.pointerType)) return;
+    toggleTouchPress(e.clientX, e.clientY, e.pointerId);
+  };
+
+  const finishTouchClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (toggledForGestureRef.current) {
+      toggledForGestureRef.current = false;
+      clearTouchPress();
+      return;
+    }
+    // Older iOS builds deliver click without a pointerup on a non-button.
+    toggleTouchPress(e.clientX, e.clientY);
+  };
+
   const setCalloutNode = (node: HTMLElement | null) => {
     calloutRef.current = node;
   };
@@ -260,6 +342,10 @@ export function HoverCalloutTooltip({
       )}
       onPointerEnter={showHoverTooltip}
       onPointerLeave={hideHoverTooltip}
+      onPointerDown={armTouchPress}
+      onPointerUp={finishTouchPress}
+      onPointerCancel={clearTouchPress}
+      onClick={finishTouchClick}
     >
       {portaledCallout}
       {children}

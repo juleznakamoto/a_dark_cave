@@ -20,7 +20,6 @@ import {
   isBasicAchievementTabUnlocked,
   isOverallAchievementCategoryEnabled,
   getUnclaimedAchievementIds,
-  hasAnyOverallAchievementReached,
   isOverallAchievementTabUnlocked,
   overallChartConfig,
 } from "@/achievements";
@@ -538,18 +537,14 @@ export default function AchievementsPanel() {
   const lockedTooltip = t("achievements.notUnlocked");
   const chartUnavailable = t("achievements.chartUnavailable");
   // Same gate as the Claim buttons: Basics need the notes or the book,
-  // the other rings need the book. Epic rewards are never claimed.
+  // the other rings need the book. Epic rewards are never claimed, so that
+  // icon stays still even when an epic achievement is already complete.
   const unclaimedAchievementIds = getUnclaimedAchievementIds(
     basicUnlocked,
     bookOfTrials,
   );
   const categoryHasUnclaimed = (prefix: AchievementChartConfig["idPrefix"]) =>
     unclaimedAchievementIds.some((id) => id.startsWith(`${prefix}-`));
-  // Epic rewards are never claimed. A dev save still plays that glow once an
-  // epic achievement is complete, so the category animation can be checked.
-  const devSaveShowsEpicGlow =
-    !!(gameState as GameState & { activeDevSaveId?: string | null })
-      .activeDevSaveId && hasAnyOverallAchievementReached(gameState);
   return (
     <div className="mt-0 flex h-full flex-col min-h-0 overflow-hidden w-full pr-2">
       <Tabs
@@ -607,7 +602,7 @@ export default function AchievementsPanel() {
               isActive={effectiveTab === "overall"}
               disabled={!overallTabEnabled}
               hideProgress={!overallUnlocked}
-              pulseCenter={devSaveShowsEpicGlow}
+              pulseCenter={categoryHasUnclaimed("overall")}
               lockedTooltip={lockedTooltip}
               chartUnavailable={chartUnavailable}
             />

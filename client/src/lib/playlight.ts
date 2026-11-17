@@ -1,3 +1,4 @@
+import { isIosEditionActive } from "@/lib/edition";
 import { logger } from "@/lib/logger";
 
 /** True when the player landed with the Playlight campaign URL (`?utm_source=playlight`). */
@@ -20,6 +21,8 @@ let playlightCausedPause = false;
 let longPauseDiscoveryPollIntervalId: number | null = null;
 /** One automatic Discovery open per pause streak until the player unpauses. */
 let longPauseDiscoveryFiredThisPauseStreak = false;
+/** Discovery was closed because the session switched to iOS. */
+let closedDiscoveryForIos = false;
 
 function resetLongPauseDiscoveryFired() {
   longPauseDiscoveryFiredThisPauseStreak = false;
@@ -49,6 +52,10 @@ function ensurePlaylightStylesheet(): void {
  * Not needed on the start screen.
  */
 export async function initPlaylight() {
+  // iOS has no Playlight. DEV Game Mode → iOS uses this same gate; the App
+  // Store build also stubs this module.
+  if (isIosEditionActive()) return;
+
   // If initialization is already in progress or completed, return the existing promise
   if (initPlaylightPromise) {
     return initPlaylightPromise;
@@ -74,6 +81,16 @@ export async function initPlaylight() {
       type StoreState = ReturnType<typeof useGameStore.getState>;
 
       const syncLongPauseDiscovery = (state: StoreState) => {
+        if (isIosEditionActive()) {
+          resetLongPauseDiscoveryFired();
+          if (!closedDiscoveryForIos) {
+            closedDiscoveryForIos = true;
+            playlightSDK.setDiscovery(false);
+          }
+          return;
+        }
+        closedDiscoveryForIos = false;
+
         const eligible =
           !!state.flags.gameStarted &&
           state.isPaused &&
@@ -151,4 +168,21 @@ export async function initPlaylight() {
   })();
 
   return initPlaylightPromise;
+}
+
+if (import.meta.hot) {
+  import.meta.hot.dispose(() => {
+    teardownLongPauseDiscoveryPoll();
+    if (gameStoreUnsubscribe) {
+      gameStoreUnsubscribe();
+      gameStoreUnsubscribe = null;
+    }
+    initPlaylightPromise = null;
+    const sdk = (
+      window as Window & {
+        playlightSDK?: { setDiscovery?: (open?: boolean) => void };
+      }
+    ).playlightSDK;
+    sdk?.setDiscovery?.(false);
+  });
 }

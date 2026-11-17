@@ -4,7 +4,7 @@ import { useGameStore } from "@/game/state";
 import { stopGameLoop } from "@/game/loop";
 import { logger } from "@/lib/logger";
 import { initSessionTracker } from "@/lib/sessionTracker";
-import { isLocalOnlyEdition } from "@/lib/edition";
+import { isIosEditionActive, isLocalOnlyEdition } from "@/lib/edition";
 import { useSteamEditionActive } from "@/hooks/useSteamEditionActive";
 import PageLoadSpinner from "@/components/ui/page-load-spinner";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
@@ -41,9 +41,13 @@ export default function Game({
     logger.log("[GAME PAGE] Initializing game");
     if (!isLocalOnlyEdition()) {
       initSessionTracker();
-      void import("@/lib/playlight")
-        .then(({ initPlaylight }) => initPlaylight())
-        .catch(() => { });
+      // Playlight is web-only. The iOS app stubs the module; DEV iOS must
+      // not start the real SDK either.
+      if (!isIosEditionActive()) {
+        void import("@/lib/playlight")
+          .then(({ initPlaylight }) => initPlaylight())
+          .catch(() => { });
+      }
     }
 
     let cancelled = false;

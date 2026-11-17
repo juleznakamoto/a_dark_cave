@@ -1,3 +1,4 @@
+import { isIosEditionActive } from "@/lib/edition";
 import { initPlaylight } from "@/lib/playlight";
 import { useGameStore } from "@/game/state";
 import { saveGame } from "@/game/save";
@@ -52,6 +53,8 @@ function persistPlaylightDiscoverState(): void {
  * Opens Playlight Discovery, waits {@link PLAYLIGHT_DISCOVER_REWARD_COMPLETE_DELAY_MS}, then marks fulfilled (no reward until Claim).
  */
 export async function fulfillPlaylightDiscoverReward(): Promise<boolean> {
+  if (isIosEditionActive()) return false;
+
   const store = useGameStore.getState();
   const entry = store.social_media_rewards[PLAYLIGHT_DISCOVER_REWARD_KEY];
 
