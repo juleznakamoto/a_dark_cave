@@ -45,6 +45,7 @@ type VaporizeTextCycleProps = {
   /**
    * DOM node to pixel-align with (alphabetic baseline + left edge).
    * Use this for start-screen handoff so canvas text does not jump.
+   * When the node wraps, each visual line is sampled on its own baseline.
    */
   matchSource?: HTMLElement | null;
   /**
@@ -75,6 +76,12 @@ type TextBoundaries = {
   left: number;
   right: number;
   width: number;
+};
+
+type TextRun = {
+  text: string;
+  textX: number;
+  textY: number;
 };
 
 /**
@@ -175,6 +182,7 @@ export default function VaporizeTextCycle({
     alignment: "left" | "center" | "right";
     letterSpacing: string;
     textBaseline: CanvasTextBaseline;
+    runs?: TextRun[];
   } | null>(null);
 
   const sampleCanvas = (width: number, height: number, textIndex: number) => {
@@ -191,6 +199,8 @@ export default function VaporizeTextCycle({
     const fontSize = parseFloat(fontProp.fontSize?.replace("px", "") || "50");
     const letterSpacing = fontProp.letterSpacing ?? "0px";
     const matchEl = matchSourceRef.current;
+    // Relative line boxes, so a scroll does not look like a new wrap.
+    const wrapKey = matchEl ? wrappedLayoutKey(matchEl) : "";
     const key = [
       Math.round(width),
       Math.round(height),
@@ -204,6 +214,7 @@ export default function VaporizeTextCycle({
       align,
       globalDpr,
       matchEl ? "match" : "free",
+      wrapKey,
     ].join("|");
 
     // Skip identical re-samples — prevents mid-animation particle resets.
@@ -227,25 +238,51 @@ export default function VaporizeTextCycle({
     let textY: number;
     let drawAlign: "left" | "center" | "right" = align || "left";
     let textBaseline: CanvasTextBaseline = "middle";
+    let bitmapRuns: TextRun[] | undefined;
+    let bounds: TextBoundaries | undefined;
 
-    const matched = matchEl
-      ? measureDomTextAnchor(matchEl, canvas)
-      : null;
+    // fillText does not wrap. A start-screen line that breaks in the DOM has to
+    // be drawn once per visual line, or the particles sit on the wrong row and
+    // the wipe runs across the unwrapped width.
+    const wrapped =
+      matchEl && wrapKey ? measureWrappedDomRuns(matchEl, canvas) : null;
 
-    if (matched) {
-      // Pin to the live DOM glyph box — avoids middle-baseline jump on handoff.
+    if (wrapped && wrapped.length > 1) {
       const canvasRect = canvas.getBoundingClientRect();
       const scaleX = canvas.width / Math.max(1, canvasRect.width);
       const scaleY = canvas.height / Math.max(1, canvasRect.height);
-      textX = matched.textX * scaleX;
-      textY = matched.textY * scaleY;
+      bitmapRuns = wrapped.map((run) => ({
+        text: run.text,
+        textX: run.textX * scaleX,
+        textY: run.textY * scaleY,
+      }));
+      textX = bitmapRuns[0].textX;
+      textY = bitmapRuns[0].textY;
       drawAlign = "left";
       textBaseline = "alphabetic";
+      // Same box the DOM twin clips with inset(… progress%). A centered
+      // second line then dissolves when the wipe reaches it, not early.
+      bounds = { left: 0, right: canvas.width, width: canvas.width };
     } else {
-      textY = canvas.height / 2;
-      if (align === "center") textX = canvas.width / 2;
-      else if (align === "left") textX = 0;
-      else textX = canvas.width;
+      const matched = matchEl
+        ? measureDomTextAnchor(matchEl, canvas)
+        : null;
+
+      if (matched) {
+        // Pin to the live DOM glyph box — avoids middle-baseline jump on handoff.
+        const canvasRect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / Math.max(1, canvasRect.width);
+        const scaleY = canvas.height / Math.max(1, canvasRect.height);
+        textX = matched.textX * scaleX;
+        textY = matched.textY * scaleY;
+        drawAlign = "left";
+        textBaseline = "alphabetic";
+      } else {
+        textY = canvas.height / 2;
+        if (align === "center") textX = canvas.width / 2;
+        else if (align === "left") textX = 0;
+        else textX = canvas.width;
+      }
     }
 
     solidTextRef.current = {
@@ -257,6 +294,7 @@ export default function VaporizeTextCycle({
       alignment: drawAlign,
       letterSpacing: letterSpacingCanvas,
       textBaseline,
+      runs: bitmapRuns,
     };
 
     const { particles, textBoundaries } = createParticles(
@@ -270,6 +308,7 @@ export default function VaporizeTextCycle({
       drawAlign,
       letterSpacingCanvas,
       textBaseline,
+      bitmapRuns ? { runs: bitmapRuns, bounds } : undefined,
     );
 
     particlesRef.current = particles;
@@ -288,7 +327,17 @@ export default function VaporizeTextCycle({
     const solid = solidTextRef.current;
     if (!canvas || !ctx || !solid) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawSolidText(ctx, solid);
+    const runs = solid.runs?.length
+      ? solid.runs
+      : [{ text: solid.text, textX: solid.textX, textY: solid.textY }];
+    for (const run of runs) {
+      drawSolidText(ctx, {
+        ...solid,
+        text: run.text,
+        textX: run.textX,
+        textY: run.textY,
+      });
+    }
   };
 
   const paintStaticFrame = () => {
@@ -591,8 +640,13 @@ const createParticles = (
   alignment: "left" | "center" | "right",
   letterSpacing = "0px",
   textBaseline: CanvasTextBaseline = "middle",
+  extra?: { runs?: TextRun[]; bounds?: TextBoundaries },
 ) => {
   const particles: Particle[] = [];
+  const runs =
+    extra?.runs && extra.runs.length > 0
+      ? extra.runs
+      : [{ text, textX, textY }];
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   applyTextStyle(ctx, {
@@ -605,20 +659,32 @@ const createParticles = (
   ctx.imageSmoothingQuality = "high";
   ctx.imageSmoothingEnabled = true;
 
-  const metrics = ctx.measureText(text);
-  const textWidth = metrics.width;
-  let textLeft: number;
-  if (alignment === "center") textLeft = textX - textWidth / 2;
-  else if (alignment === "left") textLeft = textX;
-  else textLeft = textX - textWidth;
+  let textBoundaries: TextBoundaries;
+  if (extra?.bounds) {
+    textBoundaries = extra.bounds;
+  } else {
+    let left = Infinity;
+    let right = -Infinity;
+    for (const run of runs) {
+      const metrics = ctx.measureText(run.text);
+      const textWidth = metrics.width;
+      let runLeft: number;
+      if (alignment === "center") runLeft = run.textX - textWidth / 2;
+      else if (alignment === "left") runLeft = run.textX;
+      else runLeft = run.textX - textWidth;
+      left = Math.min(left, runLeft);
+      right = Math.max(right, runLeft + textWidth);
+    }
+    textBoundaries = {
+      left: Number.isFinite(left) ? left : 0,
+      right: Number.isFinite(right) ? right : 0,
+      width: Number.isFinite(left) ? Math.max(0, right - left) : 0,
+    };
+  }
 
-  const textBoundaries = {
-    left: textLeft,
-    right: textLeft + textWidth,
-    width: textWidth,
-  };
-
-  ctx.fillText(text, textX, textY);
+  for (const run of runs) {
+    ctx.fillText(run.text, run.textX, run.textY);
+  }
 
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data = imageData.data;
@@ -697,6 +763,134 @@ const drawSolidText = (
 };
 
 /**
+ * Zero-width strut on the alphabetic baseline. Removed by the caller.
+ * A full last line can wrap this strut; callers that care compare height.
+ */
+function attachBaselineProbe(matchEl: HTMLElement): HTMLSpanElement {
+  const probe = document.createElement("span");
+  probe.setAttribute("aria-hidden", "true");
+  probe.style.cssText =
+    "display:inline-block;width:0;height:0;overflow:hidden;vertical-align:baseline;";
+  matchEl.appendChild(probe);
+  return probe;
+}
+
+/** One border box per visual line. A single line is one rect. */
+function visualLineRects(matchEl: HTMLElement): DOMRect[] {
+  const range = document.createRange();
+  range.selectNodeContents(matchEl);
+  return Array.from(range.getClientRects()).filter(
+    (rect) => rect.width >= 1 && rect.height >= 1,
+  );
+}
+
+/** Stable when the element only moves, changes when a line break moves. */
+function wrappedLayoutKey(matchEl: HTMLElement): string {
+  const origin = matchEl.getBoundingClientRect();
+  const rects = visualLineRects(matchEl);
+  if (rects.length < 2) return "";
+  return rects
+    .map(
+      (rect) =>
+        `${Math.round(rect.left - origin.left)},${Math.round(rect.top - origin.top)},${Math.round(rect.width)}`,
+    )
+    .join(";");
+}
+
+function lineIndexForMidpoint(midY: number, lineRects: DOMRect[]): number {
+  for (let i = 0; i < lineRects.length; i++) {
+    const line = lineRects[i];
+    if (midY >= line.top - 0.5 && midY < line.bottom + 0.5) return i;
+  }
+  let best = 0;
+  let bestDist = Infinity;
+  for (let i = 0; i < lineRects.length; i++) {
+    const mid = lineRects[i].top + lineRects[i].height / 2;
+    const dist = Math.abs(midY - mid);
+    if (dist < bestDist) {
+      bestDist = dist;
+      best = i;
+    }
+  }
+  return best;
+}
+
+/**
+ * CSS-pixel runs relative to the canvas, one per wrapped visual line.
+ * Null when the node is a single line (the anchor path handles that).
+ * Baselines stay a line-step apart from the same probe the single-line path uses,
+ * so a short centered second line dissolves on its own glyphs.
+ */
+function measureWrappedDomRuns(
+  matchEl: HTMLElement,
+  canvas: HTMLCanvasElement,
+): TextRun[] | null {
+  const textNode = matchEl.firstChild;
+  if (!textNode || textNode.nodeType !== Node.TEXT_NODE) return null;
+  const text = textNode.textContent ?? "";
+  if (!text) return null;
+
+  const canvasRect = canvas.getBoundingClientRect();
+  if (canvasRect.width < 1 || canvasRect.height < 1) return null;
+
+  const beforeHeight = matchEl.getBoundingClientRect().height;
+  const probe = attachBaselineProbe(matchEl);
+  const rawBaseline = probe.getBoundingClientRect().top;
+  const afterHeight = matchEl.getBoundingClientRect().height;
+  matchEl.removeChild(probe);
+
+  const lineRects = visualLineRects(matchEl);
+  if (lineRects.length < 2) return null;
+
+  let baseline = rawBaseline;
+  if (afterHeight > beforeHeight + 1) {
+    const prev = lineRects[lineRects.length - 2];
+    const last = lineRects[lineRects.length - 1];
+    baseline -= last.top - prev.top;
+  }
+
+  const buckets = lineRects.map(() => ({
+    chars: [] as string[],
+    firstIndex: -1,
+  }));
+  const range = document.createRange();
+  for (let i = 0; i < text.length; i++) {
+    range.setStart(textNode, i);
+    range.setEnd(textNode, i + 1);
+    const rect = range.getClientRects()[0];
+    if (!rect) continue;
+    const lineIndex = lineIndexForMidpoint(
+      rect.top + rect.height / 2,
+      lineRects,
+    );
+    const bucket = buckets[lineIndex];
+    if (bucket.firstIndex < 0) bucket.firstIndex = i;
+    bucket.chars.push(text[i] ?? "");
+  }
+
+  const lastTop = lineRects[lineRects.length - 1].top;
+  const runs: TextRun[] = [];
+  for (let i = 0; i < buckets.length; i++) {
+    const raw = buckets[i].chars.join("");
+    const trimmed = raw.trim();
+    if (!trimmed || buckets[i].firstIndex < 0) continue;
+    const lead = raw.length - raw.trimStart().length;
+    const charIndex = buckets[i].firstIndex + lead;
+    range.setStart(textNode, charIndex);
+    range.setEnd(textNode, Math.min(text.length, charIndex + 1));
+    const charRect = range.getClientRects()[0];
+    const left = charRect ? charRect.left : lineRects[i].left;
+    runs.push({
+      text: trimmed,
+      textX: left - canvasRect.left,
+      textY: baseline - (lastTop - lineRects[i].top) - canvasRect.top,
+    });
+  }
+
+  return runs.length > 1 ? runs : null;
+}
+
+/**
  * Measure a DOM text node's left edge + alphabetic baseline relative to a canvas
  * (CSS pixel space). Used so canvas fillText can sit on the same glyphs.
  */
@@ -707,11 +901,7 @@ function measureDomTextAnchor(
   const canvasRect = canvas.getBoundingClientRect();
   if (canvasRect.width < 1 || canvasRect.height < 1) return null;
 
-  const probe = document.createElement("span");
-  probe.setAttribute("aria-hidden", "true");
-  probe.style.cssText =
-    "display:inline-block;width:0;height:0;overflow:hidden;vertical-align:baseline;";
-  matchEl.appendChild(probe);
+  const probe = attachBaselineProbe(matchEl);
   const baseline = probe.getBoundingClientRect().top;
   matchEl.removeChild(probe);
 

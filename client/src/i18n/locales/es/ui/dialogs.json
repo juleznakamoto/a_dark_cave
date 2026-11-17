@@ -258,7 +258,7 @@
     "copyErrorDesc": "Algo salió mal al copiar al portapapeles.",
     "shareTextSteam": "Llevo un {{percent}} % de A Dark Cave.",
     "shareText": "Llevo un {{percent}} % de A Dark Cave. Juega gratis en {{url}}",
-    "shareTextIos": "Llevo un {{percent}} % de A Dark Cave. {{url}}",
+    "shareTextIos": "Estoy jugando a A Dark Cave. Échale un vistazo: {{url}}",
     "share": "Compartir",
     "errorTitle": "No se pudo crear la imagen",
     "errorDesc": "Algo salió mal al generar la imagen.",

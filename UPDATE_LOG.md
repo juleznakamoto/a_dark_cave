@@ -13,10 +13,17 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 - On the village list, the Disgraced Prior row shows how many actions he is assigned to, labeled Disgraced Prior Actions.
 - The line under Tireless Worker names the Disgraced Prior, so you can see the skill is his.
 
+#### Fixed
+
+- On the start screen, a sentence that wraps onto a second line still dissolves when you light the fire.
+
 ### iOS
 
 #### Changed
 
+- When you share from the iOS app, the message says you are currently playing A Dark Cave, followed by the App Store link.
+- The iOS start screen no longer shows The Hustle logo, or the social, FAQ, About, Press, and legal links.
+- The start screen clouds fill the whole iPhone screen, including around the clock and the home indicator.
 - In the iOS app, Save stores the progress card in your photos, and Copy puts that image on the clipboard so you can paste it. Share opens the share sheet.
 - On a phone, a building you tap on the map stays marked until you leave the Map tab.
 - On a phone, and in the iOS app, the bottom bar is gone. Pause is at the top left, and your play time shows beside it while the game is paused. Feedback is in the menu. On a phone, Stay Connected sits under Feedback.

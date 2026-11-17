@@ -677,9 +677,8 @@ export default function ShareDialog() {
   const shareMessage = () => {
     if (iosEditionActive) {
       return t("share.shareTextIos", {
-        percent,
         url: APP_STORE_URL,
-        defaultValue: "I'm {{percent}}% through A Dark Cave. {{url}}",
+        defaultValue: "I am currently playing A Dark Cave. Check it out: {{url}}",
       });
     }
     if (steamDesktopEditionActive) {

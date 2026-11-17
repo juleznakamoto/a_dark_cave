@@ -119,6 +119,7 @@ import {
   useDemoEndCatalogActive,
   useCrazyGamesEditionActive,
   useHideSteamStoreLink,
+  useIosEditionActive,
   useSteamDesktopEditionActive,
   useMobileGameChrome,
   useSteamEditionActive,
@@ -1243,6 +1244,7 @@ export default function GameContainer() {
   });
 
   const panelResize = usePanelResize();
+  const iosEditionActive = useIosEditionActive();
   const iosChromeViewportStyle = useIOSChromeViewportShell();
 
   const showBloodMoonOverlay = isBloodMoonOverlayVisible(timedEventTab);
@@ -1313,6 +1315,17 @@ export default function GameContainer() {
             backgroundColor: showBloodMoonOverlay ? "hsl(0, 50%, 5%)" : undefined,
             transition: `background-color ${BLOOD_MOON_OVERLAY_FADE_MS}ms ease-in-out`,
             ...iosChromeViewportStyle,
+            // The web view is edge to edge. Keep the header and the log out of
+            // the status bar and the home indicator. The shell background still
+            // paints those strips.
+            ...(iosEditionActive
+              ? {
+                  paddingTop: "env(safe-area-inset-top, 0px)",
+                  paddingRight: "env(safe-area-inset-right, 0px)",
+                  paddingBottom: "env(safe-area-inset-bottom, 0px)",
+                  paddingLeft: "env(safe-area-inset-left, 0px)",
+                }
+              : null),
           }}
         >
           {/* Blood moon smoke — between header/footer only (same insets as pause/sleep). */}

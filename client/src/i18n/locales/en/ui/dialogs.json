@@ -258,7 +258,7 @@
     "copyErrorDesc": "Something went wrong while copying to the clipboard.",
     "shareTextSteam": "I'm {{percent}}% through A Dark Cave.",
     "shareText": "I'm {{percent}}% through A Dark Cave. Play for free at {{url}}",
-    "shareTextIos": "I'm {{percent}}% through A Dark Cave. {{url}}",
+    "shareTextIos": "I am currently playing A Dark Cave. Check it out: {{url}}",
     "share": "Share",
     "errorTitle": "Could not create image",
     "errorDesc": "Something went wrong while generating the image.",

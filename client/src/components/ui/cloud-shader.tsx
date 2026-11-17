@@ -228,9 +228,14 @@ const shaderSource = `#version 300 es
 // ---------------- CloudShader Component ----------------
 interface CloudShaderProps {
   className?: string;
+  /** Cover the viewport, including the iOS status bar and home indicator. */
+  coverViewport?: boolean;
 }
 
-export default function CloudShader({ className = "" }: CloudShaderProps) {
+export default function CloudShader({
+  className = "",
+  coverViewport = false,
+}: CloudShaderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<WebGLRenderer | null>(null);
   const [visible, setVisible] = useState(false); // for fade-in
@@ -339,11 +344,25 @@ export default function CloudShader({ className = "" }: CloudShaderProps) {
   return (
     <canvas
       ref={canvasRef}
-      className={`absolute inset-0 z-0 w-full h-full object-cover transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"
+      className={`${coverViewport ? "fixed" : "absolute"} inset-0 z-0 w-full h-full object-cover transition-opacity duration-1000 ${visible ? "opacity-100" : "opacity-0"
         } ${className}`}
-      style={{
-        background: "black",
-      }}
+      style={
+        coverViewport
+          ? {
+              background: "black",
+              // Overscan into the status bar and home indicator. When the
+              // viewport is already the full screen this hangs off the edges
+              // and is clipped. When the layout box stops at the safe area,
+              // it fills the black strips.
+              top: "calc(env(safe-area-inset-top, 0px) * -1)",
+              right: "calc(env(safe-area-inset-right, 0px) * -1)",
+              bottom: "calc(env(safe-area-inset-bottom, 0px) * -1)",
+              left: "calc(env(safe-area-inset-left, 0px) * -1)",
+              width: "auto",
+              height: "auto",
+            }
+          : { background: "black" }
+      }
     />
   );
 }

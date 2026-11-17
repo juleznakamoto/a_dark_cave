@@ -258,7 +258,7 @@
     "copyErrorDesc": "复制到剪贴板时出现问题。",
     "shareTextSteam": "我在 A Dark Cave 的进度是 {{percent}}%。",
     "shareText": "我在 A Dark Cave 的进度是 {{percent}}%。免费畅玩：{{url}}",
-    "shareTextIos": "我在 A Dark Cave 的进度是 {{percent}}%。{{url}}",
+    "shareTextIos": "我正在玩 A Dark Cave。来看看：{{url}}",
     "share": "分享",
     "errorTitle": "无法创建图片",
     "errorDesc": "生成图片时出现问题。",

@@ -18,7 +18,7 @@ import { VOLUME_SLIDER_TRACK } from "@/components/game/volumeSlider";
 import { useFullscreen } from "@/hooks/useFullscreen";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 import { mountFiraSansFontFace } from "@/lib/firaSansFontFace";
-import { isSteamBuild } from "@/lib/edition";
+import { isIosEditionActive, isSteamBuild } from "@/lib/edition";
 import { logger } from "@/lib/logger";
 import { publicUrl } from "@/lib/publicUrl";
 import type LanguageSelector from "@/components/game/LanguageSelector";
@@ -401,7 +401,11 @@ export default function StartScreen({
   const { locale } = useLocale();
   // Steam Game / Demo (build or DEV Game Mode): no social/store links in footer.
   // Galaxy and Normal/web keep Steam / Reddit / Contact.
-  const hideStartScreenSocialLinks = steamDesktopEditionActive;
+  // iOS App Store (and DEV Game Mode → iOS) drops the web promo and site links.
+  const iosEditionActive = isIosEditionActive();
+  const hideWebStartLinks = steamEditionActive || iosEditionActive;
+  const hideStartScreenSocialLinks =
+    steamDesktopEditionActive || iosEditionActive;
   const activityPrefsRef = useRef<StartScreenPreferences>({
     cruelMode: isCruelMode,
     musicMuted,
@@ -1010,7 +1014,7 @@ export default function StartScreen({
           <meta name="robots" content="noindex, follow" />
         )}
       </Helmet>
-      {!steamEditionActive && (
+      {!hideWebStartLinks && (
         <div className="absolute bottom-16 right-4 z-20 animate-fade-in-featured">
           <div className="bg-white/25 backdrop-blur-sm rounded-lg px-2 pt-2 pb-2.5 border border-white/25 flex flex-col items-end">
             <p className="text-xs md:text-sm text-gray-300/80 font-medium">
@@ -1117,7 +1121,9 @@ export default function StartScreen({
         }
       `}</style>
 
-      {CloudShaderCmp ? <CloudShaderCmp /> : null}
+      {CloudShaderCmp ? (
+        <CloudShaderCmp coverViewport={iosEditionActive} />
+      ) : null}
 
       {isCruelMode && (
         <div
@@ -1194,6 +1200,14 @@ export default function StartScreen({
             ? "top-4 right-4"
             : "top-4 right-4 md:top-2 md:right-2"
             }`}
+          style={
+            iosEditionActive
+              ? {
+                  top: "calc(1rem + env(safe-area-inset-top, 0px))",
+                  right: "calc(1rem + env(safe-area-inset-right, 0px))",
+                }
+              : undefined
+          }
         >
           {isCruelMode && (
             <StartScreenCruelModeIcon
@@ -1345,6 +1359,15 @@ export default function StartScreen({
 
       <nav
         className={`absolute bottom-4 left-4 right-4 z-10 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 ${START_FOOTER_TEXT} text-muted-foreground`}
+        style={
+          iosEditionActive
+            ? {
+                bottom: "calc(1rem + env(safe-area-inset-bottom, 0px))",
+                left: "calc(1rem + env(safe-area-inset-left, 0px))",
+                right: "calc(1rem + env(safe-area-inset-right, 0px))",
+              }
+            : undefined
+        }
         aria-label="Site links"
       >
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
@@ -1419,6 +1442,7 @@ export default function StartScreen({
           )}
           {!hideSteamStoreLink &&
             !crazyGamesEditionActive &&
+            !iosEditionActive &&
             GAME_FOOTER_RIGHT_ICON_ORDER.map((platform) => {
               const { href: defaultHref, title } =
                 GAME_FOOTER_RIGHT_ICON_LINKS[platform];
@@ -1505,7 +1529,7 @@ export default function StartScreen({
                 </span>
               </button>
             ))}
-          {!steamEditionActive && !crazyGamesEditionActive && (
+          {!hideWebStartLinks && !crazyGamesEditionActive && (
             <>
               <a
                 href="/faq"
@@ -1533,7 +1557,7 @@ export default function StartScreen({
               </a>
             </>
           )}
-          {!steamEditionActive && (
+          {!hideWebStartLinks && (
             <div className="flex flex-col items-end leading-tight sm:flex-row sm:items-center sm:gap-x-3">
               <a
                 href="/privacy"

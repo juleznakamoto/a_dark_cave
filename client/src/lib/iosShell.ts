@@ -9,11 +9,15 @@ import { setNativeAppBackgrounded } from "@/lib/tabVisibility";
 
 const PAGE_BACKGROUND = "#0b0b0e";
 
-/** Dark status bar, and pause plus save when the player leaves the app. */
+/**
+ * Dark status bar over the page, and pause plus save when the player leaves
+ * the app. The web view paints under the status bar and home indicator so
+ * full-screen art (the start-screen clouds) is not letterboxed in black.
+ */
 export async function installIosShell(): Promise<void> {
   try {
     await StatusBar.setStyle({ style: Style.Dark });
-    await StatusBar.setOverlaysWebView({ overlay: false });
+    await StatusBar.setOverlaysWebView({ overlay: true });
   } catch (error) {
     logger.warn("[iOS] Status bar setup failed:", error);
   }
