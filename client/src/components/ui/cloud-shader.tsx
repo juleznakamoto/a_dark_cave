@@ -252,11 +252,19 @@ export default function CloudShader({
     let stopPaint: (() => void) | null = null;
     isActiveRef.current = true;
 
+    const measureCanvas = (canvas: HTMLCanvasElement) => {
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width >= 1 && rect.height >= 1) {
+        return { width: rect.width, height: rect.height };
+      }
+      return getViewportSize();
+    };
+
     const startRenderer = () => {
       if (cancelled) return;
       const canvas = canvasRef.current;
       if (!canvas) return;
-      const { width, height } = getViewportSize();
+      const { width, height } = measureCanvas(canvas);
       const baseScale = width < 600 ? 0.25 : 0.4;
       const dpr = Math.max(1, baseScale * window.devicePixelRatio);
       canvas.width = Math.round(width * dpr);
@@ -295,7 +303,9 @@ export default function CloudShader({
 
     const handleResize = () => {
       if (cancelled || !rendererRef.current) return;
-      const { width, height } = getViewportSize();
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const { width, height } = measureCanvas(canvas);
       rendererRef.current.resizeToDisplay(width, height);
     };
 
@@ -350,16 +360,18 @@ export default function CloudShader({
         coverViewport
           ? {
               background: "black",
-              // Overscan into the status bar and home indicator. When the
-              // viewport is already the full screen this hangs off the edges
-              // and is clipped. When the layout box stops at the safe area,
-              // it fills the black strips.
+              // A canvas is replaced. width/height auto keeps the bitmap
+              // size, then the bottom inset is dropped. Shifting up by the
+              // status bar left a black strip under the footer. Size the box
+              // so it covers the status bar and the home indicator.
               top: "calc(env(safe-area-inset-top, 0px) * -1)",
-              right: "calc(env(safe-area-inset-right, 0px) * -1)",
-              bottom: "calc(env(safe-area-inset-bottom, 0px) * -1)",
+              right: "auto",
+              bottom: "auto",
               left: "calc(env(safe-area-inset-left, 0px) * -1)",
-              width: "auto",
-              height: "auto",
+              width:
+                "calc(100dvw + env(safe-area-inset-left, 0px) + env(safe-area-inset-right, 0px))",
+              height:
+                "calc(100dvh + env(safe-area-inset-top, 0px) + env(safe-area-inset-bottom, 0px))",
             }
           : { background: "black" }
       }

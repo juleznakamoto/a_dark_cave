@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +12,49 @@ import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { useLocale } from "@/i18n/useLocale";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import type { SupportedLocale } from "@/i18n/locales";
+import { paintSidePanelHighlightLine } from "@/components/game/panels/sidePanelHighlightLine";
 import cn from "clsx";
+
+/** Selected language uses the same faded underline as a highlighted side-panel name. */
+function LanguageOptionLabel({
+  label,
+  selected,
+}: {
+  label: string;
+  selected: boolean;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+
+  useLayoutEffect(() => {
+    const node = ref.current;
+    if (!node || !selected) return;
+    const paint = () => {
+      if (ref.current) paintSidePanelHighlightLine(ref.current);
+    };
+    paint();
+    const menu = node.closest("[role='menu']");
+    menu?.addEventListener("animationend", paint);
+    const observer = new ResizeObserver(paint);
+    observer.observe(node);
+    let cancelled = false;
+    void document.fonts?.ready.then(() => {
+      if (!cancelled) paint();
+    });
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+      menu?.removeEventListener("animationend", paint);
+      node.style.removeProperty("background-image");
+    };
+  }, [selected, label]);
+
+  if (!selected) return label;
+  return (
+    <span ref={ref} className="side-panel-highlight-line">
+      {label}
+    </span>
+  );
+}
 
 export default function LanguageSelector({
   buttonClassName = "group px-1 py-1 text-xs text-neutral-300 hover",
@@ -142,21 +184,25 @@ export default function LanguageSelector({
           )}
           onCloseAutoFocus={inDialog ? (e) => e.preventDefault() : undefined}
         >
-          {locales.map((code) => (
-            <DropdownMenuItem
-              key={code}
-              onClick={() => {
-                void setLocale(code as SupportedLocale);
-                if (inDialog) setOpen(false);
-              }}
-              className={cn(
-                locale === code && "font-semibold",
-                menuTextSizeClass,
-              )}
-            >
-              {localeLabels[code as SupportedLocale]}
-            </DropdownMenuItem>
-          ))}
+          {locales.map((code) => {
+            const selected = locale === code;
+            return (
+              <DropdownMenuItem
+                key={code}
+                onClick={() => {
+                  void setLocale(code as SupportedLocale);
+                  if (inDialog) setOpen(false);
+                }}
+                aria-current={selected ? "true" : undefined}
+                className={menuTextSizeClass}
+              >
+                <LanguageOptionLabel
+                  label={localeLabels[code as SupportedLocale]}
+                  selected={selected}
+                />
+              </DropdownMenuItem>
+            );
+          })}
         </DropdownMenuContent>
       )}
     </DropdownMenu>

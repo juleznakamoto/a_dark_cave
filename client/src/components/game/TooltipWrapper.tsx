@@ -12,6 +12,13 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+/**
+ * A tap synthesizes mouseenter (and often never mouseleave). Ignore those
+ * hover callbacks briefly so a click does not light resource costs. A real
+ * mouse or pen after this window still hovers normally.
+ */
+const TOUCH_MOUSE_COMPAT_MS = 700;
+
 export interface TooltipWrapperProps {
   children: React.ReactElement;
   tooltip?: React.ReactNode;
@@ -75,6 +82,9 @@ export function TooltipWrapper({
   const wasLongPressTooltipOpenRef = useRef(false);
   const onMouseEnterRef = useRef(onMouseEnter);
   const onMouseLeaveRef = useRef(onMouseLeave);
+  const ignoreMouseHoverRef = useRef(false);
+  const lastTouchAtRef = useRef(0);
+  const isLongPressTooltipOpenRef = useRef(false);
   onMouseEnterRef.current = onMouseEnter;
   onMouseLeaveRef.current = onMouseLeave;
 
@@ -83,10 +93,22 @@ export function TooltipWrapper({
   const tooltipOpen = useGlobalTooltipOpen(finalTooltipId);
   const resolvedOpen = open !== undefined ? open : tooltipOpen;
   const isLongPressTooltipOpen = tooltipOpen === true;
+  isLongPressTooltipOpenRef.current = isLongPressTooltipOpen;
   const insideGameProvider = useInsideGameTooltipProvider();
 
-  // Long-press / tap-to-open tooltips do not fire mouseenter on touch devices.
-  // Mirror hover callbacks so side-panel resource highlighting works on mobile too.
+  const noteTouchHover = () => {
+    lastTouchAtRef.current = Date.now();
+    ignoreMouseHoverRef.current = true;
+  };
+
+  const noteRealPointerHover = () => {
+    if (Date.now() - lastTouchAtRef.current < TOUCH_MOUSE_COMPAT_MS) return;
+    ignoreMouseHoverRef.current = false;
+  };
+
+  // Press-and-hold (and a tap that opens a disabled control's tooltip) does not
+  // reliably fire mouseenter. Mirror hover callbacks only while that tooltip is open
+  // so resource costs light up for the same time the tip is on screen.
   useEffect(() => {
     if (isLongPressTooltipOpen) {
       wasLongPressTooltipOpenRef.current = true;
@@ -102,11 +124,15 @@ export function TooltipWrapper({
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    if (ignoreMouseHoverRef.current) return;
     onMouseEnter?.(e);
   };
 
   const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
+    // Leave from the synthesized tap must not clear a highlight that belongs
+    // to the tooltip still on screen.
+    if (ignoreMouseHoverRef.current || isLongPressTooltipOpenRef.current) return;
     onMouseLeave?.(e);
   };
 
@@ -179,7 +205,17 @@ export function TooltipWrapper({
           globalTooltip.handleWrapperClick(finalTooltipId, disabled, false, e);
         }
       }}
+      onPointerEnter={(e) => {
+        if (e.pointerType === "mouse" || e.pointerType === "pen") {
+          noteRealPointerHover();
+        }
+      }}
       onPointerDownCapture={(e) => {
+        if (e.pointerType === "touch") {
+          noteTouchHover();
+        } else if (e.pointerType === "mouse" || e.pointerType === "pen") {
+          noteRealPointerHover();
+        }
         // Before Radix's pointerdown closes a hover tooltip. A press that
         // starts while effects are already visible must not become a long-press.
         globalTooltip.notePointerDown(finalTooltipId, e.pointerType);
@@ -214,6 +250,7 @@ export function TooltipWrapper({
         );
       }}
       onTouchStart={(e) => {
+        noteTouchHover();
         // Start hold timer for tooltip (works on all devices including tablets)
         globalTooltip.handleTouchStart(finalTooltipId, disabled, false, e);
       }}

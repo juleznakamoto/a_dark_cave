@@ -66,6 +66,8 @@ const EYES_EASTER_EGG_ASSET_LOAD_MS = 90_000;
 const EYES_EASTER_EGG_ARM_MS = 120_000;
 
 const START_FOOTER_TEXT = "text-2xs sm:text-xs md:text-base";
+/** Footer links stay tiny on a phone. The language list has to be readable. */
+const START_LANGUAGE_MENU_TEXT = "text-base";
 const START_FOOTER_LINK_BASE =
   "inline-flex items-center gap-0 sm:gap-1 font-normal text-muted-foreground hover:text-foreground transition-opacity";
 const START_FOOTER_SOCIAL_LINK = `${START_FOOTER_LINK_BASE} ${START_FOOTER_TEXT} opacity-70 hover:opacity-100`;
@@ -1379,7 +1381,7 @@ export default function StartScreen({
               iconVariant="globe"
               menuAlign="start"
               showTooltip={false}
-              menuTextClassName={START_FOOTER_TEXT}
+              menuTextClassName={START_LANGUAGE_MENU_TEXT}
               defaultOpen={languageDefaultOpen}
             />
           ) : (

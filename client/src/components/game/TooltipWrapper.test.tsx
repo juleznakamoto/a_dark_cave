@@ -57,6 +57,78 @@ describe("TooltipWrapper - mobile long-press vs action", () => {
     expect(onAction).not.toHaveBeenCalled();
   });
 
+  it("does not light costs on a short tap, only while the hold tooltip is open", async () => {
+    const onEnter = vi.fn();
+    const onLeave = vi.fn();
+    render(
+      <TooltipWrapper
+        tooltip="Gather wood"
+        tooltipId="chop-wood"
+        onMouseEnter={onEnter}
+        onMouseLeave={onLeave}
+      >
+        <button type="button" data-testid="make-wood">
+          Make Wood
+        </button>
+      </TooltipWrapper>,
+    );
+
+    const button = screen.getByTestId("make-wood");
+    const wrapper = button.closest("[data-tooltip-trigger-id]")!;
+
+    await act(async () => {
+      fireEvent.touchStart(wrapper);
+      fireEvent.touchEnd(wrapper);
+      fireEvent.mouseEnter(wrapper);
+      fireEvent.click(button);
+    });
+
+    expect(onEnter).not.toHaveBeenCalled();
+
+    await act(async () => {
+      fireEvent.touchStart(wrapper);
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(250);
+    });
+
+    expect(onEnter).toHaveBeenCalledTimes(1);
+
+    await act(async () => {
+      fireEvent.mouseLeave(wrapper);
+    });
+    expect(onLeave).not.toHaveBeenCalled();
+
+    await act(async () => {
+      closeAllGlobalTooltips();
+    });
+    expect(onLeave).toHaveBeenCalledTimes(1);
+  });
+
+  it("still lights costs on mouse hover", async () => {
+    setGlobalTooltipIsMobile(false);
+    const onEnter = vi.fn();
+    const onLeave = vi.fn();
+    render(
+      <TooltipWrapper
+        tooltip="Gather wood"
+        tooltipId="chop-wood-hover"
+        onMouseEnter={onEnter}
+        onMouseLeave={onLeave}
+      >
+        <button type="button" data-testid="make-wood">
+          Make Wood
+        </button>
+      </TooltipWrapper>,
+    );
+
+    const wrapper = screen.getByTestId("make-wood").closest("[data-tooltip-trigger-id]")!;
+    fireEvent.mouseEnter(wrapper);
+    expect(onEnter).toHaveBeenCalledTimes(1);
+    fireEvent.mouseLeave(wrapper);
+    expect(onLeave).toHaveBeenCalledTimes(1);
+  });
+
   it("executes the button on a short tap (synthesized click)", async () => {
     const onAction = vi.fn();
     render(<MakeWoodButton onAction={onAction} />);

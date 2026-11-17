@@ -10,6 +10,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- The language you have selected is underlined, the same way a highlighted name is in the side panel.
 - On the village list, the Disgraced Prior row shows how many actions he is assigned to, labeled Disgraced Prior Actions.
 - The line under Tireless Worker names the Disgraced Prior, so you can see the skill is his.
 
@@ -21,6 +22,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- On a phone, the language list on the start screen is larger.
 - When you share from the iOS app, the message says you are currently playing A Dark Cave, followed by the App Store link.
 - The iOS start screen no longer shows The Hustle logo, or the social, FAQ, About, Press, and legal links.
 - The start screen clouds fill the whole iPhone screen, including around the clock and the home indicator.
@@ -32,6 +34,8 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- In Settings, the music and sound sliders no longer show a red dot at the right end of the track.
+- On a phone, the resources an action needs light up only while that action's tip is open.
 - On a phone, tapping the pact choice rings in the header shows what they mean. The Cruel Mode mark does the same.
 
 ## 2026-11-16
