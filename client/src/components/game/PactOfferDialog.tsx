@@ -515,10 +515,13 @@ function PactOfferDialogOpen() {
                     <span className="w-full">{t(`pactOffer.cards.${pactId}.quote`)}</span>
                   </p>
 
-                  <div
-                    className="mb-1.5 mt-auto h-px w-full shrink-0 bg-red-800/80"
-                    aria-hidden="true"
-                  />
+                  {/* mt-auto collapses when the quote grows past min-height; pt keeps a gap. */}
+                  <div className="mt-auto w-full shrink-0 pt-1.5">
+                    <div
+                      className="mb-1.5 h-px w-full bg-red-800/80"
+                      aria-hidden="true"
+                    />
+                  </div>
 
                   <p
                     className={cn(
