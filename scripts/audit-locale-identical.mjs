@@ -57,6 +57,7 @@ const SKIP_IDENTICAL = new Set([
 /** Whole-string brands / proper nouns that stay English in every locale. */
 const BRAND_VALUES = new Set([
   "Steam",
+  "iOS",
   "Instagram",
   "Reddit",
   "FAQ",

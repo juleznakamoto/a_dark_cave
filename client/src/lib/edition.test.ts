@@ -32,6 +32,7 @@ describe("CrazyGames edition", () => {
     expect(edition.shouldHideSteamStoreLink("demoEnd")).toBe(true);
     expect(edition.shouldHideSteamStoreLink("steamEndCruelOn")).toBe(true);
     expect(edition.shouldHideSteamStoreLink("steamEndCruelOff")).toBe(true);
+    expect(edition.shouldHideSteamStoreLink("ios")).toBe(true);
   });
 
   it("offers a Steam review on Steam demo and Steam end modes only", async () => {
@@ -41,6 +42,7 @@ describe("CrazyGames edition", () => {
     expect(edition.shouldOfferSteamDemoReview("steamGame")).toBe(false);
     expect(edition.shouldOfferSteamDemoReview("crazyGamesDemo")).toBe(false);
     expect(edition.shouldOfferSteamDemoReview("normal")).toBe(false);
+    expect(edition.shouldOfferSteamDemoReview("ios")).toBe(false);
 
     expect(edition.shouldOfferSteamGameReview("steamGame")).toBe(true);
     expect(edition.shouldOfferSteamGameReview("steamEndCruelOn")).toBe(true);
@@ -49,6 +51,7 @@ describe("CrazyGames edition", () => {
     expect(edition.shouldOfferSteamGameReview("demoEnd")).toBe(false);
     expect(edition.shouldOfferSteamGameReview("crazyGamesDemo")).toBe(false);
     expect(edition.shouldOfferSteamGameReview("normal")).toBe(false);
+    expect(edition.shouldOfferSteamGameReview("ios")).toBe(false);
   });
 
   it("does not offer a Steam review on Galaxy, CrazyGames, or itch", async () => {
@@ -88,12 +91,23 @@ describe("CrazyGames edition", () => {
     edition.setDevGameModeOverride("normal");
   });
 
+  it("treats DEV iOS as the buy-once app without Steam desktop chrome", async () => {
+    const edition = await loadEdition();
+    edition.setDevGameModeOverride("ios");
+    expect(edition.isSteamEditionActive("ios")).toBe(true);
+    expect(edition.isDemoEdition()).toBe(false);
+    const { getSaveOriginEdition } = await import("@/game/saveOrigin");
+    expect(getSaveOriginEdition()).toBe("ios");
+    edition.setDevGameModeOverride("normal");
+  });
+
   it("limits Steam-desktop-only content to Steam builds and DEV Steam modes", async () => {
     const edition = await loadEdition();
     expect(edition.isSteamDesktopEditionActive("normal")).toBe(false);
     expect(edition.isSteamDesktopEditionActive("steamGame")).toBe(true);
     expect(edition.isSteamDesktopEditionActive("steamDemo")).toBe(true);
     expect(edition.isSteamDesktopEditionActive("crazyGamesDemo")).toBe(false);
+    expect(edition.isSteamDesktopEditionActive("ios")).toBe(false);
   });
 
   it("treats only the Steam demo as the pact-off edition", async () => {
@@ -104,6 +118,7 @@ describe("CrazyGames edition", () => {
     expect(edition.isSteamDemoEditionActive("steamDemo")).toBe(true);
     expect(edition.isSteamDemoEditionActive("demoEnd")).toBe(true);
     expect(edition.isSteamDemoEditionActive("crazyGamesDemo")).toBe(false);
+    expect(edition.isSteamDemoEditionActive("ios")).toBe(false);
   });
 
   it("treats /itch as a local-only capped demo that still links to Steam", async () => {

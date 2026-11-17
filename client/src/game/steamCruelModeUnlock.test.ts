@@ -41,6 +41,15 @@ describe("isSteamCruelModeUnlockAvailable", () => {
     ).toBe(true);
   });
 
+  it("offers Cruel Mode in Settings → iOS before a normal win", () => {
+    expect(
+      isSteamCruelModeUnlockAvailable({
+        devGameMode: "ios",
+        hasWonNormalGame: false,
+      }),
+    ).toBe(true);
+  });
+
   it("stays off on web Normal Mode even after a normal win", () => {
     expect(
       isSteamCruelModeUnlockAvailable({

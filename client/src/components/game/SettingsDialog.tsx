@@ -83,6 +83,7 @@ const GAME_MODE_LABEL_KEYS: Record<
   | "settings.gameModeSteamEndCruelOn"
   | "settings.gameModeSteamEndCruelOff"
   | "settings.gameModeCrazyGamesDemo"
+  | "settings.gameModeIos"
 > = {
   normal: "settings.gameModeNormal",
   steamGame: "settings.gameModeSteamGame",
@@ -91,6 +92,7 @@ const GAME_MODE_LABEL_KEYS: Record<
   steamEndCruelOn: "settings.gameModeSteamEndCruelOn",
   steamEndCruelOff: "settings.gameModeSteamEndCruelOff",
   crazyGamesDemo: "settings.gameModeCrazyGamesDemo",
+  ios: "settings.gameModeIos",
 };
 
 const GAME_MODE_DEFAULTS: Record<DevGameMode, string> = {
@@ -101,6 +103,7 @@ const GAME_MODE_DEFAULTS: Record<DevGameMode, string> = {
   steamEndCruelOn: "Steam End (Cruel On)",
   steamEndCruelOff: "Steam End (Cruel Off)",
   crazyGamesDemo: "CrazyGames Demo",
+  ios: "iOS",
 };
 
 interface AudioControlRowProps {

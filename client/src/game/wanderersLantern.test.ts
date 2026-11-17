@@ -57,6 +57,7 @@ describe("wanderers lantern", () => {
     expect(isWanderersLanternEdition("steamDemo")).toBe(true);
     expect(isWanderersLanternEdition("demoEnd")).toBe(true);
     expect(isWanderersLanternEdition("crazyGamesDemo")).toBe(false);
+    expect(isWanderersLanternEdition("ios")).toBe(false);
     expect(isWanderersLanternEdition("normal")).toBe(false);
     expect(isWanderersLanternEdition(undefined)).toBe(false);
   });

@@ -15,8 +15,9 @@
  * itch.io uses `VITE_ITCH=1` (`package:itch`) or the `/itch` preview path.
  *
  * In DEV (non-Steam builds), Settings → Game Mode can simulate Steam Game /
- * Demo / Demo End / Steam End (Cruel On/Off) / CrazyGames Demo via
- * {@link setDevGameModeOverride}.
+ * Demo / Demo End / Steam End (Cruel On/Off) / CrazyGames Demo / iOS via
+ * {@link setDevGameModeOverride}. iOS is the buy-once app without Steam
+ * desktop chrome (no wishlist, no Steam review, no Quit).
  */
 import { tryGetBoundGameStore } from "@/game/gameStoreHolder";
 
@@ -81,7 +82,8 @@ export type DevGameMode =
   | "demoEnd"
   | "steamEndCruelOn"
   | "steamEndCruelOff"
-  | "crazyGamesDemo";
+  | "crazyGamesDemo"
+  | "ios";
 
 export const DEV_GAME_MODE_OPTIONS: readonly DevGameMode[] = [
   "normal",
@@ -91,6 +93,7 @@ export const DEV_GAME_MODE_OPTIONS: readonly DevGameMode[] = [
   "steamEndCruelOn",
   "steamEndCruelOff",
   "crazyGamesDemo",
+  "ios",
 ] as const;
 
 /** DEV Settings → Steam End (Cruel On) or Steam End (Cruel Off). */
@@ -284,14 +287,16 @@ export function getDevGameModeOverride(): DevGameMode {
 }
 
 /**
- * Hide the Steam store / wishlist footer link. Steam desktop and the iOS app
- * (and DEV Steam Game / Demo) already are a paid copy. Web, Galaxy, CrazyGames,
- * and itch keep the link. Store-free so the lightweight start screen can use it.
+ * Hide the Steam store / wishlist footer link. Steam desktop, the iOS app,
+ * and DEV Steam Game / Demo / iOS already are a paid copy. Web, Galaxy,
+ * CrazyGames, and itch keep the link. Store-free so the lightweight start
+ * screen can use it.
  */
 export function shouldHideSteamStoreLink(
   devGameMode: DevGameMode = "normal",
 ): boolean {
   if (isSteamBuild || isIosBuild) return true;
+  if (devGameMode === "ios") return true;
   if (isSimulatedSteamGameMode(devGameMode)) return true;
   if (import.meta.env.DEV && !isSteamBuild) {
     return devGameMode === "steamDemo" || devGameMode === "demoEnd";
@@ -340,9 +345,9 @@ export function isSteamEditionActive(devGameMode?: DevGameMode): boolean {
 
 /**
  * Steam desktop client (or DEV Steam Game / Demo / End simulation).
- * False for public web, CrazyGames, itch, and Galaxy — use for content that
- * should not appear in browser builds even when those portals share other
- * Steam-like edition flags.
+ * False for public web, iOS, CrazyGames, itch, and Galaxy. Use for content
+ * that should not appear outside the Steam desktop client even when those
+ * editions share other buy-once flags.
  */
 export function isSteamDesktopEditionActive(
   devGameMode?: DevGameMode,

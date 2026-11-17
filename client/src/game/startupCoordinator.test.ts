@@ -259,6 +259,32 @@ describe("resolveStartupVisit", () => {
     expect(mockLoadStore).not.toHaveBeenCalled();
   });
 
+  it("hides Steam chrome for a DEV iOS header", async () => {
+    mockReadHeader.mockResolvedValue({
+      status: "loaded",
+      header: {
+        gameStarted: false,
+        cruelMode: false,
+        musicMuted: false,
+        sfxMuted: false,
+        musicVolume: 1,
+        sfxVolume: 1,
+        devGameMode: "ios",
+      },
+    });
+    const { resolveStartupVisit } = await import("./startupCoordinator");
+
+    await expect(
+      resolveStartupVisit({ pathname: "/", search: "", hash: "" }),
+    ).resolves.toMatchObject({
+      surface: "start",
+      steamEditionActive: true,
+      steamDesktopEditionActive: false,
+      crazyGamesEditionActive: false,
+      hideSteamStoreLink: true,
+    });
+  });
+
   it("keeps the Steam store link for a DEV CrazyGames Demo header", async () => {
     mockReadHeader.mockResolvedValue({
       status: "loaded",

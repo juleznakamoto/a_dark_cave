@@ -91,10 +91,14 @@ function createStartResolution(
     musicVolume: stored?.musicVolume ?? preferences.musicVolume,
     sfxVolume: stored?.sfxVolume ?? preferences.sfxVolume,
   };
+  const devIosMode =
+    import.meta.env.DEV && !isSteamBuild && devGameMode === "ios";
   const devSteamMode =
-    (!isSteamBuild &&
-      devGameMode === "steamGame") ||
-    (import.meta.env.DEV && !isSteamBuild && devGameMode !== "normal");
+    (!isSteamBuild && devGameMode === "steamGame") ||
+    (import.meta.env.DEV &&
+      !isSteamBuild &&
+      devGameMode !== "normal" &&
+      !devIosMode);
   return {
     surface: "start",
     preferences: resolvedPreferences,
@@ -104,7 +108,8 @@ function createStartResolution(
       isGalaxyEdition() ||
       isCrazyGamesEdition() ||
       isItchEdition() ||
-      devSteamMode,
+      devSteamMode ||
+      devIosMode,
     steamDesktopEditionActive:
       isSteamBuild || isCrazyGamesEdition() || devSteamMode,
     crazyGamesEditionActive:

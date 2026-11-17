@@ -12,7 +12,7 @@ import {
 import { DEMO_WOODEN_HUT_LIMIT } from "@/game/demoLimit";
 
 function isDevSteamMode(devGameMode: DevGameMode): boolean {
-  if (isSteamBuild) return false;
+  if (isSteamBuild || devGameMode === "ios") return false;
   if (devGameMode === "steamGame") return true;
   return import.meta.env.DEV && devGameMode !== "normal";
 }

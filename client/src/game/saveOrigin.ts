@@ -31,6 +31,7 @@ export function getSaveOriginEdition(): SaveOriginEdition {
       return "steam-full";
     }
     if (mode === "crazyGamesDemo") return "crazygames";
+    if (mode === "ios") return "ios";
   }
   return "web";
 }
