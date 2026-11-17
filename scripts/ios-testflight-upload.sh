@@ -84,16 +84,18 @@ cat > "$EXPORT_PLIST" <<EOF
 EOF
 
 cd "$APP_DIR"
+# Signing identity and profile live on the App target only (Release).
+# Passing them here would apply the App Store profile to every Swift package
+# target. Xcode then fails the archive with exit 65, because those targets
+# cannot use a provisioning profile. SDWebImage, pulled in by the photo
+# plugin, is one of those targets.
 xcodebuild \
   -project App.xcodeproj \
   -scheme App \
   -configuration Release \
   -destination "generic/platform=iOS" \
   -archivePath "$APP_DIR/build/App.xcarchive" \
-  CODE_SIGN_STYLE=Manual \
-  CODE_SIGN_IDENTITY="Apple Distribution" \
   DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
-  PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME" \
   OTHER_CODE_SIGN_FLAGS="--keychain $KEYCHAIN_PATH" \
   archive
 
