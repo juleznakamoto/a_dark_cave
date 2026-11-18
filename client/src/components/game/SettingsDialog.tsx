@@ -451,6 +451,7 @@ export default function SettingsDialog({
         ref={setMenuPortalContainer}
         className="[--adc-dialog-max-w:24rem] gap-3"
         layerZIndex={70}
+        backdrop="black"
       >
         <DialogHeader className="pb-0">
           <DialogTitle>{t("settings.title")}</DialogTitle>

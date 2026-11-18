@@ -150,7 +150,11 @@ import {
   SuccessParticles,
   useFeedFireParticles,
 } from "@/components/ui/feed-fire-particles";
-import { audioManager, feedFireVolume } from "@/lib/audio";
+import {
+  audioManager,
+  feedFirePlaybackRate,
+  feedFireVolume,
+} from "@/lib/audio";
 import { BUILD_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
 import { PRIOR_ELIGIBLE_ACTIONS } from "@/game/buttonUpgrades";
@@ -983,7 +987,12 @@ export default function VillagePanel() {
           ref={feedFireButtonRef}
           onClick={() => {
             executeAction(actionId);
-            audioManager.playSound("feedFire", feedFireVolume(currentLevel));
+            audioManager.playSound(
+              "feedFire",
+              feedFireVolume(currentLevel),
+              false,
+              feedFirePlaybackRate(currentLevel),
+            );
             // Generate 10 * current heartfire level particles
             const particleCount = 10 * (currentLevel + 1);
             if (particleCount > 0) {

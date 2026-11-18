@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import {
+  miningPlaybackRate,
   playActionStartSfx,
   shouldPlayPurchaseSfx,
 } from "./actionSfx";
@@ -36,6 +37,30 @@ describe("purchase sfx", () => {
     });
 
     expect(play).toHaveBeenCalledWith("chopWood", SOUND_VOLUME.chopWood);
+  });
+
+  it("slows the mining cue 2.5% per Mine resource in unlock order", () => {
+    expect(miningPlaybackRate("mineStone")).toBe(1);
+    expect(miningPlaybackRate("mineIron")).toBe(0.975);
+    expect(miningPlaybackRate("mineCoal")).toBe(0.95);
+    expect(miningPlaybackRate("mineSulfur")).toBe(0.925);
+    expect(miningPlaybackRate("mineObsidian")).toBe(0.9);
+    expect(miningPlaybackRate("mineAdamant")).toBe(0.875);
+    expect(miningPlaybackRate("mineMoonstone")).toBe(0.85);
+
+    const play = vi.spyOn(audioManager, "playSound").mockImplementation(() => {});
+
+    playActionStartSfx("mineMoonstone", {
+      forestUnlocked: true,
+      caveExploreLevel: 0,
+    });
+
+    expect(play).toHaveBeenCalledWith(
+      "mining",
+      SOUND_VOLUME.mining,
+      false,
+      0.85,
+    );
   });
 
   it("matches goods trades and skips farewells and failed merchant deals", () => {

@@ -139,6 +139,7 @@ const sortedEventsByPriority = Object.values(gameEvents).sort(
 export type EventRollState = GameState & {
   timedEventTab?: { isActive: boolean; lastEndedAt?: number };
   eventDialog?: { isOpen?: boolean; lastEndedAt?: number };
+  idleModeState?: { lastWokeAt?: number };
 };
 
 export function getEventCatalogIdByEventId(eventId: string): string {
@@ -379,6 +380,19 @@ function isHeldByEventDialogGap(
   return true;
 }
 
+/**
+ * After Sleep ends, hold every random roll (dialogs and timed tabs) briefly.
+ * Attack waves stay exempt so a due siege is not deferred by Get Up.
+ */
+function isHeldByPostSleepGap(
+  event: GameEvent,
+  gapActive: boolean,
+): boolean {
+  if (!gapActive) return false;
+  if (dialogGapExemptEventIds.has(event.id)) return false;
+  return true;
+}
+
 export class EventManager {
   static checkEvents(
     state: EventRollState,
@@ -427,6 +441,11 @@ export class EventManager {
       lastEventDialogEndedAt > 0 &&
       currentTime - lastEventDialogEndedAt < GAME_CONSTANTS.EVENT_DIALOG_MIN_GAP_MS;
 
+    const lastWokeAt = state.idleModeState?.lastWokeAt ?? 0;
+    const isPostSleepGapActive =
+      lastWokeAt > 0 &&
+      currentTime - lastWokeAt < GAME_CONSTANTS.POST_SLEEP_RANDOM_EVENT_BLOCK_MS;
+
     for (const event of events) {
       // Skip if already triggered and not repeatable
       if (event.triggered && !event.repeatable) continue;
@@ -442,6 +461,9 @@ export class EventManager {
       ) {
         continue;
       }
+
+      // Just woke from Sleep: hold random dialogs and timed tabs briefly.
+      if (isHeldByPostSleepGap(event, isPostSleepGapActive)) continue;
 
       // Recent EventDialog close: hold the next dialog beat, including short cube
       // memories. Timed tabs, attack waves, and setEventDialog follow-ups skip this.

@@ -48,6 +48,7 @@ export function markSleepSessionActive(now = Date.now()): boolean {
 
   useGameStore.setState({
     idleModeState: {
+      ...before.idleModeState,
       isActive: true,
       startTime: now,
       needsDisplay: true,

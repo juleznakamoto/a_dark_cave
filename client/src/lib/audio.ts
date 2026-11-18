@@ -40,6 +40,8 @@ export {
   CRUEL_MODE_ACTIVATE_VOLUME,
   caveExploreVolume,
   feedFireVolume,
+  feedFirePlaybackRate,
+  PLAYBACK_RATE_STEP,
 } from './soundVolumes';
 
 export class AudioManager {
@@ -90,8 +92,7 @@ export class AudioManager {
   }
 
   /**
-   * App Store build, or Safari on an iPhone or iPad. Web Audio there stays
-   * silent while the ringer switch is on unless the session type is playback.
+   * App Store build, or Safari on an iPhone or iPad.
    */
   private isIosAudioDevice(): boolean {
     if (import.meta.env.VITE_IOS_BUILD === "1") return true;
@@ -103,20 +104,21 @@ export class AudioManager {
   }
 
   /**
-   * Web Audio follows the silent switch until this is set. HTML audio does
-   * not, so the game looks broken while every other app still makes sound.
-   * Set it inside the tap that starts playback.
+   * Keep Web Audio as ambient on iPhone. `playback` ignores the silent switch
+   * but also puts the game in Control Center / Now Playing, so app switch,
+   * Control Center, and notification banners show a media strip and can pause
+   * the AudioContext. Ambient mixes like a normal game and skips that UI.
    */
-  private primeIosPlaybackSession(): void {
+  private primeIosAmbientSession(): void {
     if (!this.isIosAudioDevice()) return;
     const session = (
       navigator as Navigator & { audioSession?: { type: string } }
     ).audioSession;
-    if (!session || session.type === "playback") return;
+    if (!session || session.type === "ambient") return;
     try {
-      session.type = "playback";
+      session.type = "ambient";
     } catch {
-      // iOS 16 has no audio session API. Web Audio keeps following the switch.
+      // iOS 16 has no audio session API.
     }
   }
 
@@ -187,7 +189,7 @@ export class AudioManager {
   // stay suspended; the visibility handler resumes it.
   private resumeAudioContext(): void {
     if (this.audioPageHidden()) return;
-    this.primeIosPlaybackSession();
+    this.primeIosAmbientSession();
     const ctx = Howler.ctx;
     if (!ctx) return;
     const state = ctx.state as string;
@@ -393,7 +395,12 @@ export class AudioManager {
     }
   }
 
-  playSound(name: string, volume: number = 1, isMuted: boolean = false): void {
+  playSound(
+    name: string,
+    volume: number = 1,
+    isMuted: boolean = false,
+    rate: number = 1,
+  ): void {
     if (this.isMutedGlobally || isMuted) return;
 
     // Background music is handled separately for muting
@@ -405,6 +412,13 @@ export class AudioManager {
     this.requestedVolumes.set(name, volume);
     const effective = this.effectiveVolume(name, volume);
 
+    const startHowl = (howl: Howl) => {
+      howl.volume(effective);
+      const id = howl.play();
+      // Per-instance rate so overlapping one-shots keep their own pitch.
+      howl.rate(rate, id);
+    };
+
     const sound = this.sounds.get(name);
     if (!sound) {
       const url = this.soundUrls.get(name);
@@ -413,8 +427,7 @@ export class AudioManager {
           const loadedSound = this.sounds.get(name);
           if (loadedSound instanceof Howl) {
             try {
-              loadedSound.volume(effective);
-              loadedSound.play();
+              startHowl(loadedSound);
             } catch (error) {
               logger.warn(`Error playing loaded sound ${name}:`, error);
             }
@@ -427,8 +440,7 @@ export class AudioManager {
     }
 
     try {
-      sound.volume(effective);
-      sound.play();
+      startHowl(sound);
     } catch (error) {
       logger.warn(`Error playing sound ${name}:`, error);
     }

@@ -121,6 +121,8 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
     isActive: boolean;
     startTime: number;
     needsDisplay: boolean; // Track if user needs to see results
+    /** When the player last finished Sleep (Get Up). Used for the post-wake event block. */
+    lastWokeAt?: number;
   };
   inactivityDialogOpen: boolean;
   inactivityReason: "timeout" | "multitab" | null;

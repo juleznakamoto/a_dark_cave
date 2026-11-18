@@ -52,6 +52,7 @@ export default function StayConnectedDialog() {
       <DialogContent
         className="[--adc-dialog-max-w:20rem] gap-3"
         layerZIndex={70}
+        backdrop="black"
       >
         <DialogHeader className="pb-0">
           <DialogTitle>

@@ -89,12 +89,13 @@ export function InsightBadgeSection() {
   const [canAfford, setCanAfford] = useState(true);
   const [size, setSize] = useState<"sm" | "lg">("lg");
   const [glyph, setGlyph] = useState<"insight" | "boost">("insight");
+  const badgeGlyph = glyph === "boost" ? CONSTRUCTION_BOOST_GLYPH : undefined;
 
   return (
     <DemoSection
       id="insight-badge"
       title="Insight / action badges"
-      description="Real BuildingActionBadge. Hover for preview; Play reveal for the loop."
+      description="Real BuildingActionBadge. Hover for desktop preview; Play reveal for the loop. iOS column forces the SVG-filter goo path used on WKWebView (same triangles as desktop)."
     >
       <div className="flex flex-wrap gap-2">
         <Button
@@ -129,53 +130,119 @@ export function InsightBadgeSection() {
         </Button>
       </div>
 
-      <div className="flex flex-wrap items-end gap-8 pt-2">
-        <div className="space-y-1">
-          <p className="text-xs text-muted-foreground">Inline</p>
-          <button
-            type="button"
-            className={getInsightBadgeTriggerClassName({
-              canAfford,
-              playing,
-              className:
-                size === "sm"
-                  ? INSIGHT_BADGE_SIDE_PANEL_SIZE_CLASS
-                  : INSIGHT_BADGE_LG_SIZE_CLASS,
-            })}
-          >
-            <BuildingActionBadge
-              playing={playing}
-              embedded
-              size={size}
-              glyph={glyph === "boost" ? CONSTRUCTION_BOOST_GLYPH : undefined}
-            />
-          </button>
-        </div>
-
-        <div className="space-y-1">
-          <p className="text-xs text-muted-foreground">Action overlay</p>
-          <div className="relative inline-block">
-            <Button size="sm" variant="outline" className="h-7">
-              Build Cabin
-            </Button>
-            <div className="action-button-corner-badge action-button-corner-badge--insight">
+      <div className="flex flex-wrap items-end gap-10 pt-2">
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-muted-foreground">
+            Desktop (SVG gooey)
+          </p>
+          <div className="flex flex-wrap items-end gap-8">
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground">Inline</p>
               <button
                 type="button"
                 className={getInsightBadgeTriggerClassName({
                   canAfford,
                   playing,
-                  className: "flex h-full w-full",
+                  className:
+                    size === "sm"
+                      ? INSIGHT_BADGE_SIDE_PANEL_SIZE_CLASS
+                      : INSIGHT_BADGE_LG_SIZE_CLASS,
                 })}
               >
                 <BuildingActionBadge
                   playing={playing}
                   embedded
-                  size="lg"
-                  glyph={glyph === "boost" ? CONSTRUCTION_BOOST_GLYPH : undefined}
+                  size={size}
+                  glyph={badgeGlyph}
                 />
               </button>
             </div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground">Action overlay</p>
+              <div className="relative inline-block">
+                <Button size="sm" variant="outline" className="h-7">
+                  Build Cabin
+                </Button>
+                <div className="action-button-corner-badge action-button-corner-badge--insight">
+                  <button
+                    type="button"
+                    className={getInsightBadgeTriggerClassName({
+                      canAfford,
+                      playing,
+                      className: "flex h-full w-full",
+                    })}
+                  >
+                    <BuildingActionBadge
+                      playing={playing}
+                      embedded
+                      size="lg"
+                      glyph={badgeGlyph}
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+
+        <div className="space-y-2">
+          <p className="text-xs font-medium text-muted-foreground">
+            iOS (SVG goo filter)
+          </p>
+          <div className="flex flex-wrap items-end gap-8">
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground">Inline</p>
+              <button
+                type="button"
+                className={getInsightBadgeTriggerClassName({
+                  canAfford,
+                  playing,
+                  className:
+                    size === "sm"
+                      ? INSIGHT_BADGE_SIDE_PANEL_SIZE_CLASS
+                      : INSIGHT_BADGE_LG_SIZE_CLASS,
+                })}
+              >
+                <BuildingActionBadge
+                  playing={playing}
+                  embedded
+                  size={size}
+                  glyph={badgeGlyph}
+                  forceIosGoo
+                />
+              </button>
+            </div>
+            <div className="space-y-1">
+              <p className="text-xs text-muted-foreground">Action overlay</p>
+              <div className="relative inline-block">
+                <Button size="sm" variant="outline" className="h-7">
+                  Build Cabin
+                </Button>
+                <div className="action-button-corner-badge action-button-corner-badge--insight">
+                  <button
+                    type="button"
+                    className={getInsightBadgeTriggerClassName({
+                      canAfford,
+                      playing,
+                      className: "flex h-full w-full",
+                    })}
+                  >
+                    <BuildingActionBadge
+                      playing={playing}
+                      embedded
+                      size="lg"
+                      glyph={badgeGlyph}
+                      forceIosGoo
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p className="max-w-xs text-xs text-muted-foreground">
+            Forced iOS path on any browser. Same rotating triangles; gooey comes
+            from an SVG filter instead of CSS blur inside a mask.
+          </p>
         </div>
       </div>
     </DemoSection>

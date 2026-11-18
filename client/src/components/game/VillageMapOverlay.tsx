@@ -42,7 +42,10 @@ import {
   VILLAGE_MAP_OPEN_FADE_DELAY_MS,
   type VillageMapReveal,
 } from "@/game/villageMapReveal";
-import { useSidePanelActiveTooltipHoverId } from "./panels/SidePanelSection";
+import {
+  clearSidePanelActiveTooltipHover,
+  useSidePanelActiveTooltipHoverId,
+} from "./panels/SidePanelSection";
 
 const MAP_PLAY_BUTTON =
   `group absolute left-2 top-1 z-10 shrink-0 px-1 py-1 text-xs font-medium text-neutral-300 pointer-events-auto ${GAME_CHROME_NO_BG_HOVER}`;
@@ -120,6 +123,7 @@ export default function VillageMapOverlay() {
     useGameStore.getState().setHighlightedResources(metal ? [metal] : []);
   }, []);
   const onHoverBuilding = useCallback((buildingId: string | null) => {
+    if (buildingId) clearSidePanelActiveTooltipHover();
     setVillageMapHoveredBuilding(
       buildingId ? sidePanelRowFromMapBuilding(buildingId, buildingsRef.current) : null,
     );

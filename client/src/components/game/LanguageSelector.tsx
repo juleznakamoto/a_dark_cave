@@ -54,7 +54,9 @@ export default function LanguageSelector({
 } = {}) {
   const { locale, setLocale, locales, localeLabels } = useLocale();
   const { t } = useUiTranslation();
-  const [open, setOpen] = useState(false);
+  // Controlled like FooterNetworkMenu / CrazyGamesCornerMenu. Uncontrolled
+  // defaultOpen + modal dismisses on the same iOS tap that loaded this chunk.
+  const [open, setOpen] = useState(defaultOpen);
 
   const inlineLabel =
     inlineLabelVariant === "selected"
@@ -66,10 +68,8 @@ export default function LanguageSelector({
   const dialogPortalReady = !inDialog || menuPortalContainer != null;
 
   const handleOpenChange = (next: boolean) => {
-    if (inDialog) {
-      if (next && !menuPortalContainer) return;
-      setOpen(next);
-    }
+    if (inDialog && next && !menuPortalContainer) return;
+    setOpen(next);
   };
 
   useEffect(() => {
@@ -85,7 +85,7 @@ export default function LanguageSelector({
         size="xs"
         className={buttonClassName}
         aria-label={t("languageSelector.ariaLabel")}
-        aria-expanded={inDialog ? open : undefined}
+        aria-expanded={open}
         button_id="language-selector"
       >
         {showIcon &&
@@ -112,12 +112,7 @@ export default function LanguageSelector({
   );
 
   return (
-    <DropdownMenu
-      open={inDialog ? open : undefined}
-      onOpenChange={inDialog ? handleOpenChange : undefined}
-      modal={!inDialog}
-      defaultOpen={!inDialog ? defaultOpen : undefined}
-    >
+    <DropdownMenu open={open} onOpenChange={handleOpenChange} modal={false}>
       {showTooltip ? (
         <HoverCalloutTooltip
           label={t("languageSelector.ariaLabel")}

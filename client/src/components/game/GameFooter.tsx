@@ -327,7 +327,7 @@ export default function GameFooter() {
 
   return (
     <>
-      <footer className={`relative z-50 flex min-h-9 items-center ${GAME_CHROME_RULE_TOP} px-4 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible md:px-2`}>
+      <footer className={`relative z-50 flex min-h-9 items-center bg-inherit ${GAME_CHROME_RULE_TOP} px-4 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible md:px-2`}>
         {steamDemoActive && <SteamDemoProgressBar />}
         <div className="pointer-events-none relative z-10 flex w-full items-center justify-between">
           <div className="pointer-events-auto flex items-center gap-0.5 shrink-0">

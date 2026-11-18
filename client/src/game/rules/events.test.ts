@@ -304,6 +304,115 @@ describe('Event System', () => {
     expect(stateChanges._timedTabEvent).toBeDefined();
   });
 
+  it('does not spawn a dialog event within POST_SLEEP_RANDOM_EVENT_BLOCK_MS of wake', () => {
+    const now = Date.now();
+    if (gameEvents.veinrootIntroduction) {
+      gameEvents.veinrootIntroduction.triggered = false;
+    }
+
+    const { newLogEntries } = EventManager.checkEvents(
+      {
+        ...veinrootReadyState(),
+        idleModeState: {
+          isActive: false,
+          startTime: 0,
+          needsDisplay: false,
+          lastWokeAt:
+            now - GAME_CONSTANTS.POST_SLEEP_RANDOM_EVENT_BLOCK_MS + 1_000,
+        },
+      },
+    );
+
+    expect(
+      newLogEntries.some((entry) => entry.id.startsWith('veinrootIntroduction')),
+    ).toBe(false);
+  });
+
+  it('allows a dialog event after POST_SLEEP_RANDOM_EVENT_BLOCK_MS has elapsed', () => {
+    const now = Date.now();
+    if (gameEvents.veinrootIntroduction) {
+      gameEvents.veinrootIntroduction.triggered = false;
+    }
+
+    const { newLogEntries } = EventManager.checkEvents(
+      {
+        ...veinrootReadyState(),
+        idleModeState: {
+          isActive: false,
+          startTime: 0,
+          needsDisplay: false,
+          lastWokeAt:
+            now - GAME_CONSTANTS.POST_SLEEP_RANDOM_EVENT_BLOCK_MS - 1,
+        },
+      },
+    );
+
+    expect(
+      newLogEntries.some((entry) => entry.id.startsWith('veinrootIntroduction')),
+    ).toBe(true);
+  });
+
+  it('still rolls a due attack wave during POST_SLEEP_RANDOM_EVENT_BLOCK_MS', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+    const now = Date.now();
+    const base = createInitialState();
+    const state = {
+      ...base,
+      buildings: { ...base.buildings, bastion: 1 },
+      story: {
+        ...base.story,
+        seen: { ...base.story.seen, portalBlasted: true },
+      },
+      attackWaveTimers: {
+        firstWave: {
+          startTime: now - 10_000,
+          duration: 1000,
+          defeated: false,
+          provoked: true,
+          elapsedTime: 10_000,
+        },
+      },
+      idleModeState: {
+        isActive: false,
+        startTime: 0,
+        needsDisplay: false,
+        lastWokeAt: now - 1_000,
+      },
+    } as EventRollState;
+
+    const { newLogEntries } = EventManager.checkEvents(state, [
+      gameEvents.firstWave,
+    ]);
+
+    expect(newLogEntries.some((entry) => entry.id.startsWith('firstWave'))).toBe(
+      true,
+    );
+  });
+
+  it('holds timed-tab spawns during POST_SLEEP_RANDOM_EVENT_BLOCK_MS', () => {
+    vi.spyOn(Math, 'random').mockReturnValue(0);
+    const now = Date.now();
+    const state = {
+      ...createInitialState(),
+      buildings: { ...createInitialState().buildings, woodenHut: 3 },
+      idleModeState: {
+        isActive: false,
+        startTime: 0,
+        needsDisplay: false,
+        lastWokeAt: now - 1_000,
+      },
+      timedEventTab: {
+        isActive: false,
+        event: null,
+        expiryTime: 0,
+        lastEndedAt: now - GAME_CONSTANTS.TIMED_TAB_MIN_GAP_MS - 1,
+      },
+    } as EventRollState;
+
+    const { stateChanges } = EventManager.checkEvents(state);
+    expect(stateChanges._timedTabEvent).toBeUndefined();
+  });
+
   it('records lastEndedAt when an event dialog is closed', () => {
     const before = Date.now();
     useGameStore.setState({

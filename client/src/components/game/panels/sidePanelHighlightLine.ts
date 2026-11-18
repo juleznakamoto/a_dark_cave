@@ -10,7 +10,7 @@ type GlyphMeasure = {
 
 /** Letters that reach the line (g, y, p, q, j) get a little clear space. */
 const DESCENDER_MIN_PX = 1;
-const LETTER_PAD_PX = 2;
+const LETTER_PAD_PX = 1;
 /** Clear space on each side of the center dot. */
 const DOT_GAP_PX = 4;
 

@@ -29,7 +29,7 @@ export function DeleteAccountDialog({
       open={isOpen}
       onOpenChange={(open) => !open && !isDeleting && onClose()}
     >
-      <DialogContent className="[--adc-dialog-max-w:28rem] z-[70]">
+      <DialogContent className="[--adc-dialog-max-w:28rem] z-[70]" backdrop="black">
         <DialogHeader>
           <DialogTitle className="leading-6">
             {t("deleteAccount.title")}

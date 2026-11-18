@@ -119,7 +119,7 @@ export default function GameHeader() {
   };
 
   return (
-    <header className={`relative z-50 flex min-h-9 flex-shrink-0 items-center ${GAME_CHROME_RULE_BOTTOM} px-1 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible md:pl-4 md:pr-2`}>
+    <header className={`relative z-50 flex min-h-9 flex-shrink-0 items-center bg-inherit ${GAME_CHROME_RULE_BOTTOM} px-1 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible md:pl-4 md:pr-2`}>
       <div className="relative flex w-full items-center justify-between gap-2">
         {mobileGameChrome ? (
           <div className="flex shrink-0 items-center">

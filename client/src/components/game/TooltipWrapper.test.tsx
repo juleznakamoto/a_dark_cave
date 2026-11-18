@@ -238,6 +238,37 @@ describe("TooltipWrapper - mobile long-press vs action", () => {
 
     expect(onAction).toHaveBeenCalledTimes(1);
   });
+
+  it("executes the button on a later short tap while the long-press tooltip is still open", async () => {
+    const onAction = vi.fn();
+    render(<MakeWoodButton onAction={onAction} />);
+
+    const button = screen.getByTestId("make-wood");
+    const wrapper = button.closest("[data-tooltip-trigger-id]")!;
+
+    await act(async () => {
+      fireEvent.touchStart(wrapper);
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(250);
+    });
+    await act(async () => {
+      fireEvent.touchEnd(wrapper);
+      fireEvent.click(button);
+    });
+
+    expect(onAction).not.toHaveBeenCalled();
+    expect(getTooltipOpenProp("chop-wood")).toBe(true);
+
+    await act(async () => {
+      fireEvent.touchStart(wrapper);
+      fireEvent.touchEnd(wrapper);
+      fireEvent.click(button);
+    });
+
+    expect(onAction).toHaveBeenCalledTimes(1);
+    expect(getTooltipOpenProp("chop-wood")).toBeUndefined();
+  });
 });
 
 describe("TooltipWrapper - forced open", () => {

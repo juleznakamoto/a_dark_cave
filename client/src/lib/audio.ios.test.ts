@@ -33,12 +33,21 @@ describe("iOS playback", () => {
     ).toBe(true);
   });
 
-  it("sets the audio session to playback before a sound starts", () => {
+  it("sets the audio session to ambient before a sound starts", () => {
     const audioSession = stubIphone();
 
     audioManager.playSound("not-loaded", 1, false);
 
-    expect(audioSession.type).toBe("playback");
+    expect(audioSession.type).toBe("ambient");
+  });
+
+  it("clears a leftover playback session so Now Playing stays off", () => {
+    const audioSession = stubIphone();
+    audioSession.type = "playback";
+
+    audioManager.playSound("not-loaded", 1, false);
+
+    expect(audioSession.type).toBe("ambient");
   });
 
   it("leaves the audio session alone off iPhone", () => {

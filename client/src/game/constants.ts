@@ -26,6 +26,12 @@ export const GAME_CONSTANTS = {
    * / schedulers and are not blocked by this gap.
    */
   EVENT_DIALOG_MIN_GAP_MS: 60_000,
+  /**
+   * After Get Up from Sleep, hold random event rolls (dialogs and timed tabs) for this
+   * many wall-clock ms so the player is not hit immediately. Due attack waves stay
+   * exempt. Sleep dream windows open via schedulers and are not blocked.
+   */
+  POST_SLEEP_RANDOM_EVENT_BLOCK_MS: 30_000,
   /** First call costs this much gold; each subsequent call adds `CALL_MERCHANT_GOLD_PER_CALL`. */
   CALL_MERCHANT_BASE_GOLD: 10,
   CALL_MERCHANT_GOLD_PER_CALL: 10,

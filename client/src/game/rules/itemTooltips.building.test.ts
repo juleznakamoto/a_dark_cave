@@ -249,8 +249,8 @@ describe("building tooltip audit at max tier", () => {
         gameState,
       ).levelSections.map((s) => s.effects),
     ).toEqual([
-      ["Invest up to 500 Gold"],
-      ["Unlocks Investments", "+2% Lucky Chance"],
+      ["Invest up to 500 Gold", "+2% Lucky Chance"],
+      ["Unlocks Investments"],
     ]);
 
     expect(

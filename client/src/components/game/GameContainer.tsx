@@ -1328,10 +1328,11 @@ export default function GameContainer() {
               : null),
           }}
         >
-          {/* Blood moon smoke — between header/footer only (same insets as pause/sleep). */}
+          {/* Blood moon smoke — between header/footer only (same insets as pause/sleep).
+              Absolute (not fixed) so it stays under header/footer in this shell. */}
           {showBloodMoonOverlay && (
             <div
-              className="pointer-events-none absolute inset-x-0 z-0 blood-moon-smoke-fade-in"
+              className="pointer-events-none absolute inset-x-0 z-0 overflow-hidden blood-moon-smoke-fade-in"
               style={{
                 top: GAME_HEADER_INSET,
                 bottom: footerInset,
@@ -1345,10 +1346,12 @@ export default function GameContainer() {
 
           <GameHeader />
 
-          {/* Pause Overlay - covers panels; header and footer stay above */}
+          {/* Pause Overlay - covers panels; header and footer stay above.
+              Absolute (not fixed): fixed + z-index escapes the shell and paints
+              over the transparent header/footer strips. */}
           {isPaused && (
             <div
-              className="fixed inset-0 bg-black/30 pointer-events-auto overlay-fade-in"
+              className="absolute inset-x-0 bg-black/30 pointer-events-auto overflow-hidden overlay-fade-in"
               style={{
                 top: GAME_HEADER_INSET,
                 bottom: footerInset,
@@ -1739,10 +1742,11 @@ export default function GameContainer() {
             </section>
           </main>
 
-          {/* Sleep Mode Mist Background - covers main panels; header, footer, and promos stay above */}
+          {/* Sleep Mode Mist Background - covers main panels; header, footer, and promos stay above.
+              Absolute (not fixed): same stacking fix as the pause overlay. */}
           {idleModeDialog.isOpen && (
             <div
-              className="fixed inset-0 pointer-events-auto"
+              className="absolute inset-x-0 pointer-events-auto overflow-hidden"
               style={{
                 top: GAME_HEADER_INSET,
                 bottom: footerInset,
@@ -1756,7 +1760,7 @@ export default function GameContainer() {
           {/* Footer - above pause overlay so hover tooltips stay visible when paused.
               Phones and the iOS app move pause, feedback, and socials into the header. */}
           {!mobileGameChrome && (
-            <div className="relative z-50 flex-shrink-0 pointer-events-auto">
+            <div className="relative z-50 flex-shrink-0 bg-inherit pointer-events-auto">
               <GameFooter />
             </div>
           )}

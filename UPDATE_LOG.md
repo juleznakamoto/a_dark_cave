@@ -10,6 +10,11 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- After you finish Sleep, random events wait 30 seconds before they can start again.
+- Mining sounds are a little quieter.
+- Mining sounds play a little slower for each later ore under Mine, from Stone through Moonstone.
+- Feed Fire sounds play a little slower at higher Heartfire levels.
+- Dialogs from the top-right menu fade the game behind them to solid black.
 - Settings and Stay Connected use the same padding inside as other dialogs.
 - When you point at a resource in the side list, or press it on a phone, its amount turns bold.
 - While paused, the time beside Pause tells you it is the play time of this playthrough.
@@ -19,11 +24,23 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- During sleep and the blood moon, the top and bottom bars stay solid instead of letting the mist or smoke show through.
+- Sleep mist fades in smoothly instead of jumping brighter in steps.
+- Item tips no longer leave a wide empty gap when the description wraps under a shorter effect line.
+- After you press and hold an action button on a phone to read its tip, tapping that button again runs the action instead of doing nothing.
+- Tips stay a little in from the edge of the screen instead of sitting flush against it.
+- The Coinhouse tip no longer lists +2% Lucky Chance; that is the starting rate, and only Bank and Treasury list the bonus.
+- A new timed event tab flashes green again, and the tab and timer flash red when little time is left.
 - On pact choice cards, a long quote no longer sits against the line above the Madness cost.
 - On a phone, pact choice and cruel mode marks in the header show their tip while you press and hold, like other tooltips.
 - On the start screen, a sentence that wraps onto a second line still dissolves when you light the fire.
 
 ### iOS
+
+#### Fixed
+
+- On the village map, tapping a building in the side list clears the building you had selected on the map, so only one stays highlighted.
+- The language icon on the start screen opens on the first tap instead of needing a second one.
 
 #### Changed
 
@@ -44,12 +61,13 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- Insight badges animate as soft round shapes again, instead of spinning triangles.
 - Locking the phone no longer makes a short beep when the music stops.
 - On a phone, tapping a villager job or the play time beside Pause shows what it means.
 - A newly unlocked tab pulses brighter and dimmer again, instead of staying solid white.
 - On a phone, tapping a construction queue slot or a villager preset slot shows what it does.
 - The first time you open the app, it uses your iPhone's language.
-- Sound plays on iPhone, including while the silent switch is on.
+- Opening Control Center, switching apps, or getting a notification no longer shows a music player for the game.
 - In Settings, the music and sound sliders no longer show a red dot at the right end of the track.
 - On a phone, the resources an action needs light up only while that action's tip is open.
 - On a phone, tapping the pact choice rings in the header shows what they mean. The Cruel Mode mark does the same.

@@ -65,7 +65,8 @@ export interface TooltipWrapperProps {
  * - Touch: long-press opens the tooltip and does not run the action. A short tap clicks.
  * - `disabled`: a short tap on a phone opens the tooltip. Use for marks with no click.
  * - `openOnTap`: a short tap on a phone opens the tooltip and still runs the click.
- * - Long-press tooltips stay open until user clicks/taps elsewhere
+ * - Long-press tooltips stay open until the user taps elsewhere, or taps the
+ *   same control again (that second tap also runs the action)
  * - Only one tooltip open at a time globally
  */
 export function TooltipWrapper({

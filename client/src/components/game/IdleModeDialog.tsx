@@ -399,13 +399,14 @@ function IdleModeDialogOpen() {
         setRemainingTime(IDLE_DURATION_MS);
         setInitialResources({ ...currentState.resources });
 
-        useGameStore.setState({
+        useGameStore.setState((prev) => ({
           idleModeState: {
+            ...prev.idleModeState,
             isActive: true,
             startTime: initNow,
             needsDisplay: true,
           },
-        });
+        }));
 
         audioManager.playSound("sleep", SOUND_VOLUME.sleep);
 
@@ -435,13 +436,14 @@ function IdleModeDialogOpen() {
         setIsActive(false);
 
         // DO NOT CLEAR startTime HERE - only clear when user closes dialog
-        useGameStore.setState({
+        useGameStore.setState((prev) => ({
           idleModeState: {
+            ...prev.idleModeState,
             isActive: false,
             startTime: startTime, // Keep the original startTime, don't reset to 0
             needsDisplay: false,
           },
-        });
+        }));
       }
     }, 1000); // Update timer every second
 
@@ -651,12 +653,15 @@ function IdleModeDialogOpen() {
     // Reset production cycle so the next tick starts a fresh 15-second interval
     resetProductionCycle();
 
-    // Clear persisted idle mode state completely - now reset startTime to 0
+    // Clear persisted idle mode state completely - now reset startTime to 0.
+    // Stamp lastWokeAt so random events wait out POST_SLEEP_RANDOM_EVENT_BLOCK_MS.
+    const wokeAt = Date.now();
     useGameStore.setState({
       idleModeState: {
         isActive: false,
         startTime: 0, // Reset to 0 only when user closes dialog
         needsDisplay: false,
+        lastWokeAt: wokeAt,
       },
       idleModeDialog: { isOpen: false },
     });

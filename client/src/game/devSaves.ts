@@ -324,6 +324,7 @@ function withSleepSession(base: GameState): GameState {
       isActive: true,
       startTime,
       needsDisplay: true,
+      lastWokeAt: 0,
     },
   };
 }

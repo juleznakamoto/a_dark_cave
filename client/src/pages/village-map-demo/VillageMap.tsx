@@ -411,6 +411,8 @@ type VillageMapProps = {
 type VillageMapSvgProps = Omit<VillageMapProps, "highlightId"> & {
   svgRef: RefObject<SVGSVGElement>;
   highlightRef: { current: string | null };
+  /** Clears a sticky touch selection without re-rendering this SVG for highlight changes. */
+  clearStickyHoverRef: { current: (() => void) | null };
 };
 
 const VillageMapSvg = memo(function VillageMapSvg({
@@ -441,6 +443,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
   clearGround = false,
   svgRef,
   highlightRef,
+  clearStickyHoverRef,
 }: VillageMapSvgProps) {
   const dragRef = useRef<{ id: string; dx: number; dy: number; buildingId: string } | null>(null);
   const pathDragRef = useRef<{ id: string; dx: number; dy: number } | null>(null);
@@ -480,6 +483,12 @@ const VillageMapSvg = memo(function VillageMapSvg({
     touchStickUntilRef.current = 0;
     setHoveredBuilding(null);
   }, [releaseBuildingHover]);
+  clearStickyHoverRef.current = () => {
+    touchStickUntilRef.current = 0;
+    setHoveredBuilding(null);
+    onActiveLabel(null);
+    onHoverBuilding?.(null);
+  };
   const pathNodesRef = useRef<Map<string, { ribbon: Element | null; hit: Element | null }> | null>(null);
   pathNodesRef.current = null;
   const treeWobbleId = `tree-wobble-${useId().replace(/:/g, "")}`;
@@ -1723,24 +1732,39 @@ const VillageMapSvg = memo(function VillageMapSvg({
 function VillageMapHighlight({
   svgRef,
   highlightId,
+  clearStickyHoverRef,
 }: {
   svgRef: RefObject<SVGSVGElement>;
   highlightId: string | null;
+  clearStickyHoverRef: { current: (() => void) | null };
 }) {
   useLayoutEffect(() => {
     applyBuildingHighlight(svgRef.current, highlightId);
-  }, [svgRef, highlightId]);
+    // Side-panel row hover lights the map with highlightId. Drop a sticky touch
+    // selection so only one building stays lit (map tap, then side-panel tap).
+    if (highlightId) clearStickyHoverRef.current?.();
+  }, [svgRef, highlightId, clearStickyHoverRef]);
   return null;
 }
 
 export function VillageMap({ highlightId, ...props }: VillageMapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const highlightRef = useRef<string | null>(highlightId);
+  const clearStickyHoverRef = useRef<(() => void) | null>(null);
   highlightRef.current = highlightId;
   return (
     <>
-      <VillageMapSvg {...props} svgRef={svgRef} highlightRef={highlightRef} />
-      <VillageMapHighlight svgRef={svgRef} highlightId={highlightId} />
+      <VillageMapSvg
+        {...props}
+        svgRef={svgRef}
+        highlightRef={highlightRef}
+        clearStickyHoverRef={clearStickyHoverRef}
+      />
+      <VillageMapHighlight
+        svgRef={svgRef}
+        highlightId={highlightId}
+        clearStickyHoverRef={clearStickyHoverRef}
+      />
     </>
   );
 }

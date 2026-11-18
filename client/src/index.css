@@ -1231,19 +1231,24 @@ html[data-adc-chrome-stage="0"] {
 }
 
 /* These pulses live on the location-tab row, in the same column as the map.
-   Keep the paint on the tab so the map outlines are not redrawn every frame. */
+   Keep the paint on the tab so the map outlines are not redrawn every frame.
+   Color flashes (green/red) stay out of paint containment: that freezes
+   animated `color` the same way it froze opacity on iOS. */
 .tab-blink-new,
 .tab-fade-in,
 .timer-tab-pulse,
-.timer-tab-pulse-green,
-.timer-tab-pulse-red,
 button.new-item-pulse-text,
 .new-item-pulse-redacted {
   isolation: isolate;
   contain: paint;
 }
 
-/* iOS WebKit leaves this pulse at full white. The tab button is inside an
+.timer-tab-pulse-green,
+.timer-tab-pulse-red {
+  isolation: isolate;
+}
+
+/* iOS WebKit leaves opacity pulses at full white. The tab button is inside an
    overflow-x scroller, and paint containment freezes its opacity. Composite
    the pulse instead so the village map is still not repainted every frame. */
 @supports (-webkit-touch-callout: none) {
@@ -1256,8 +1261,6 @@ button.new-item-pulse-text,
   .tab-blink-new,
   .tab-fade-in,
   .timer-tab-pulse,
-  .timer-tab-pulse-green,
-  .timer-tab-pulse-red,
   button.new-item-pulse-text,
   .new-item-pulse-redacted {
     contain: none;
@@ -1265,6 +1268,14 @@ button.new-item-pulse-text,
     appearance: none;
     transform: translateZ(0);
     will-change: opacity;
+  }
+
+  .timer-tab-pulse-green,
+  .timer-tab-pulse-red {
+    -webkit-appearance: none;
+    appearance: none;
+    transform: translateZ(0);
+    will-change: color;
   }
 }
 
@@ -2072,6 +2083,59 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
 .building-action-badge__triangle--five,
 .building-action-badge__triangle--six {
   transform-origin: 60% 40%;
+}
+
+/*
+  Desktop: CSS blur+contrast on mask children (.desktop-goo circle).
+  iOS: CSS-in-mask is ignored, so .ios-goo uses an SVG feGaussianBlur goo
+  filter on the same triangles (outside a mask). Demo: --ios-goo forces that.
+  Never set CSS `filter` on .ios-goo — it overrides the SVG filter attribute.
+*/
+.building-action-badge__ios-goo {
+  display: none;
+  transform: scale(1.1);
+  transform-origin: 50% 50%;
+  transform-box: fill-box;
+}
+
+@supports (-webkit-touch-callout: none) {
+  .building-action-badge__desktop-goo {
+    display: none !important;
+  }
+
+  .building-action-badge__ios-goo {
+    display: block;
+  }
+
+  /* SVG filter owns gooey; triangles only rotate (no CSS blur). */
+  .building-action-badge--playing .building-action-badge__ios-goo .building-action-badge__triangle,
+  .insight-action-badge-trigger.insight-action-badge-trigger--playing:not(
+      .insight-action-badge-trigger--unaffordable
+    )
+    .building-action-badge__ios-goo
+    .building-action-badge__triangle {
+    filter: none !important;
+  }
+}
+
+.building-action-badge--ios-goo .building-action-badge__desktop-goo {
+  display: none !important;
+}
+
+.building-action-badge--ios-goo .building-action-badge__ios-goo {
+  display: block;
+}
+
+.building-action-badge--ios-goo.building-action-badge--playing
+  .building-action-badge__ios-goo
+  .building-action-badge__triangle,
+.insight-action-badge-trigger.insight-action-badge-trigger--playing:not(
+    .insight-action-badge-trigger--unaffordable
+  )
+  .building-action-badge--ios-goo
+  .building-action-badge__ios-goo
+  .building-action-badge__triangle {
+  filter: none !important;
 }
 
 @keyframes building-action-badge-rotation {
@@ -3016,46 +3080,44 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
 }
 
 /* Color only. A shadow on a tab repaints the village map for as long as it flashes.
-   Literal colors: a variable in the keyframe stays white on iOS. */
+   Literal colors: a variable in the keyframe stays white on iOS.
+   No !important in keyframes: that flag is invalid there and Safari/Chrome
+   drop the whole declaration, so the green/red flash never runs. */
 @keyframes timer-tab-pulse-event-green {
 
   0%,
-  38%,
-  62%,
   100% {
-    color: rgb(255 255 255) !important;
+    color: rgb(255 255 255);
   }
 
-  42%,
-  50%,
-  58% {
-    color: rgb(34 197 94) !important;
+  50% {
+    color: rgb(34 197 94);
   }
 }
 
 @keyframes timer-tab-pulse-event-red {
 
   0%,
-  38%,
-  62%,
   100% {
-    color: rgb(255 255 255) !important;
+    color: rgb(255 255 255);
   }
 
-  42%,
-  50%,
-  58% {
-    color: rgb(239 68 68) !important;
+  50% {
+    color: rgb(239 68 68);
   }
 }
 
 .timer-tab-pulse-green {
   opacity: 1 !important;
+  /* Non-important base color so the pulse owns `color` on this node
+     (body uses an important color that children inherit). */
+  color: rgb(255 255 255);
   animation: timer-tab-pulse-event-green 1.2s ease-in-out infinite;
 }
 
 .timer-tab-pulse-red {
   opacity: 1 !important;
+  color: rgb(255 255 255);
   animation: timer-tab-pulse-event-red 1.2s ease-in-out infinite;
 }
 
@@ -3071,6 +3133,22 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
 
 .overlay-fade-in {
   animation: overlay-fade-in 4s ease-in forwards;
+  opacity: 0;
+}
+
+/* Sleep mist (MistBackground): long CSS fade. Do not combine with RAF setState opacity. */
+@keyframes sleep-mist-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.sleep-mist-fade-in {
+  animation: sleep-mist-fade-in 10s ease-in forwards;
   opacity: 0;
 }
 

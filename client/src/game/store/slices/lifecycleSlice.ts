@@ -723,6 +723,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
           isActive: false,
           startTime: 0,
           needsDisplay: false,
+          lastWokeAt: 0,
         }, // Load idle mode state
         panelSizes: {
           ...defaultGameState.panelSizes,

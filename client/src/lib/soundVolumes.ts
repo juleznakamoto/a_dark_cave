@@ -31,7 +31,7 @@ export const SOUND_VOLUME = {
   newVillager: 0.02,
   buildingComplete: 0.4,
   craft: 0.25,
-  mining: 0.35,
+  mining: 0.3,
   /** Forest Chop Wood. File peak is already -3.8 dBFS; 0.8 made the hit as loud as explosion. */
   chopWood: 0.4,
   /** Cave Gather Wood (chopWood before forest unlock) */
@@ -69,6 +69,17 @@ export function feedFireVolume(heartfireLevel: number): number {
     SOUND_VOLUME.feedFire.base +
     SOUND_VOLUME.feedFire.perHeartfireLevel * heartfireLevel
   );
+}
+
+/** Each step (mine ore unlock, heartfire level) slows one-shots by this fraction. */
+export const PLAYBACK_RATE_STEP = 0.025;
+
+/** Feed Fire cue: 2.5% slower per current Heartfire level. */
+export function feedFirePlaybackRate(heartfireLevel: number): number {
+  const level = Number.isFinite(heartfireLevel)
+    ? Math.max(0, heartfireLevel)
+    : 0;
+  return 1 - level * PLAYBACK_RATE_STEP;
 }
 
 /** Volume for cave explore SFX; scales with shared caveExplore button upgrade level. */

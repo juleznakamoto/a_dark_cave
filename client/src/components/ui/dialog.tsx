@@ -24,14 +24,21 @@ const DialogPortal = DialogPrimitive.Portal
 
 const DialogClose = DialogPrimitive.Close
 
+type DialogBackdrop = "dim" | "black";
+
 const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
->(({ className, ...props }, ref) => (
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay> & {
+    backdrop?: DialogBackdrop;
+  }
+>(({ className, backdrop = "dim", ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      "fixed inset-0 bg-black/80 animate-fade-in",
+      "fixed inset-0",
+      backdrop === "black"
+        ? "bg-black adc-dialog-backdrop-fade-in"
+        : "bg-black/80 animate-fade-in",
       className
     )}
     {...props}
@@ -45,6 +52,11 @@ type DialogContentProps = React.ComponentPropsWithoutRef<typeof DialogPrimitive.
   customBackground?: React.ReactNode;
   /** When true, skip inline width/maxWidth (e.g. dialogs that use `w-max` / intrinsic sizing). */
   skipViewportWidthClamp?: boolean;
+  /**
+   * Backdrop fill. `dim` fades to 80% black (game dialogs). `black` fades to solid
+   * black (profile-menu dialogs).
+   */
+  backdrop?: DialogBackdrop;
   /** Backdrop classes — pair with elevated content z-index (e.g. overlay `z-[69]` + content `z-[70]`). */
   overlayClassName?: string;
   /**
@@ -82,6 +94,7 @@ const DialogContent = React.forwardRef<
   customBackground,
   style,
   skipViewportWidthClamp,
+  backdrop = "dim",
   overlayClassName,
   layerZIndex,
   openClickLockMs = defaultOpenClickLockMs,
@@ -122,6 +135,7 @@ const DialogContent = React.forwardRef<
       {customBackground}
       {!hideOverlay && (
         <DialogOverlay
+          backdrop={backdrop}
           className={overlayClassName}
           style={{
             zIndex:

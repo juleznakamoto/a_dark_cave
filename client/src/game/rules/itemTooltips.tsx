@@ -28,7 +28,10 @@ import {
   getUpgradeChainCurrentEffectLines,
   getUpgradeChainLevelEffectSections,
 } from "./buildingTooltipSections";
-import { ActionTooltipSeparator } from "./actionTooltipLayout";
+import {
+  ActionTooltipSeparator,
+  tooltipWrappedDescriptionClass,
+} from "./actionTooltipLayout";
 import {
   getWeaponHierarchyChain,
   getWeaponInheritedUnlockLines,
@@ -766,7 +769,12 @@ function getItemUnlockEffectLine(itemId: string): string | null {
 
 /** Description-only tooltips stay normal; mute when effects/title sit above. */
 function itemTooltipDescriptionToneClass(hasContentAbove: boolean): string {
-  return hasContentAbove ? "text-muted-foreground" : "text-foreground";
+  return [
+    hasContentAbove ? "text-muted-foreground" : "text-foreground",
+    tooltipWrappedDescriptionClass(hasContentAbove),
+  ]
+    .filter(Boolean)
+    .join(" ");
 }
 
 export function renderItemTooltip(

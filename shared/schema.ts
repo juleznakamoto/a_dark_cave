@@ -1249,11 +1249,14 @@ export const gameStateSchema = z.object({
       isActive: z.boolean().default(false),
       startTime: z.number().default(0),
       needsDisplay: z.boolean().default(false),
+      /** Wall-clock ms when the player last pressed Get Up; gates post-sleep event rolls. */
+      lastWokeAt: z.number().default(0),
     })
     .default({
       isActive: false,
       startTime: 0,
       needsDisplay: false,
+      lastWokeAt: 0,
     }),
 
   /**

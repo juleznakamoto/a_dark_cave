@@ -2257,7 +2257,6 @@ export const villageBuildActions: Record<string, Action> = {
     description: "Modest financial building allowing to make small investments",
     tooltipEffects: [
       bt("unlocksInvestments", "Unlocks Investments"),
-      bt("luckyChance", "+{{percent}}% Lucky Chance", { percent: 2 }),
     ],
     building: true,
     show_when: {

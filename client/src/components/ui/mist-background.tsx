@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { createCappedPaintLoop } from '@/lib/cappedFrameLoop';
 import { logger } from '@/lib/logger';
 
@@ -24,29 +24,13 @@ function createWebGL1Context(canvas: HTMLCanvasElement): WebGLRenderingContext |
  * Mist Background Component
  * Technology: WebGL 2D Fragment Shaders (GLSL)
  * Style: Ethereal Generative Fluid / Mist
+ *
+ * Fade-in is CSS-only (see `.sleep-mist-fade-in`). Driving opacity with
+ * requestAnimationFrame + setState while also using `transition-opacity`
+ * made the mist jump on iOS Safari instead of rising smoothly.
  */
 const MistBackground: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [opacity, setOpacity] = useState(0);
-
-  // Fade in effect over 10 seconds
-  useEffect(() => {
-    const startTime = Date.now();
-    const duration = 10000; // 10 seconds in milliseconds
-
-    const fadeIn = () => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      setOpacity(progress);
-
-      if (progress < 1) {
-        requestAnimationFrame(fadeIn);
-      }
-    };
-
-    // Start the fade-in animation
-    requestAnimationFrame(fadeIn);
-  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -191,14 +175,15 @@ const MistBackground: React.FC = () => {
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-100 ease-in-out"
-      style={{
-        background: '#09090b',
-        opacity: opacity
-      }}
-    />
+    <div
+      className="absolute inset-0 pointer-events-none sleep-mist-fade-in"
+      style={{ background: '#09090b' }}
+    >
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full"
+      />
+    </div>
   );
 };
 

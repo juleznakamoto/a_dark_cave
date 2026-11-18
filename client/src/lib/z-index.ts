@@ -20,7 +20,7 @@
  * - topLayer: Full-screen overlays (end screen, start screen CTA)
  */
 export const Z_INDEX = {
-  /** Sleep mist / pause overlay — covers main content only; action buttons must drop below this while active. */
+  /** Sleep mist / pause overlay — absolute in the game shell, covers main content only (under header/footer). Action buttons must drop below this while active. */
   sleepFog: 40,
   /** Floating invite button during sleep — above fog, below footer (50). */
   sleepPromo: 45,

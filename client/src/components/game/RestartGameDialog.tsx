@@ -125,7 +125,7 @@ export function RestartGameDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
-      <DialogContent className="[--adc-dialog-max-w:28rem] z-[70]">
+      <DialogContent className="[--adc-dialog-max-w:28rem] z-[70]" backdrop="black">
         <DialogHeader>
           <DialogTitle className="leading-6">{t("restart.title")}</DialogTitle>
         </DialogHeader>

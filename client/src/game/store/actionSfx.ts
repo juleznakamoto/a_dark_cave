@@ -1,4 +1,9 @@
-import { audioManager, SOUND_VOLUME, caveExploreVolume } from "@/lib/audio";
+import {
+  audioManager,
+  SOUND_VOLUME,
+  caveExploreVolume,
+  PLAYBACK_RATE_STEP,
+} from "@/lib/audio";
 import { isCollectorTradeChoiceId } from "@/game/rules/eventsWanderingCollector";
 
 const CAVE_EXPLORE_SOUND_ACTIONS = new Set([
@@ -95,6 +100,23 @@ export function shouldPlayPurchaseSfx(
   return PURCHASE_EVENT_CHOICES[catalogId]?.has(choiceId) ?? false;
 }
 
+/** Mine section order under Cave. Each later ore plays the mining cue 2.5% slower. */
+export const MINE_ACTION_ORDER = [
+  "mineStone",
+  "mineIron",
+  "mineCoal",
+  "mineSulfur",
+  "mineObsidian",
+  "mineAdamant",
+  "mineMoonstone",
+] as const;
+
+export function miningPlaybackRate(actionId: string): number {
+  const index = (MINE_ACTION_ORDER as readonly string[]).indexOf(actionId);
+  if (index < 0) return 1;
+  return 1 - index * PLAYBACK_RATE_STEP;
+}
+
 /** One-shot action cues that should fire when the player clicks, not when the bar finishes. */
 export function playActionStartSfx(
   actionId: string,
@@ -109,7 +131,12 @@ export function playActionStartSfx(
     return;
   }
   if (actionId.startsWith("mine")) {
-    audioManager.playSound("mining", SOUND_VOLUME.mining);
+    audioManager.playSound(
+      "mining",
+      SOUND_VOLUME.mining,
+      false,
+      miningPlaybackRate(actionId),
+    );
     return;
   }
   // chopWood is Gather Wood in the cave, Chop Wood once the forest is unlocked

@@ -22,7 +22,7 @@ function measure(char: string) {
 describe("highlightLineHoles", () => {
   it("opens a gap around a descending letter and leaves the others solid", () => {
     expect(highlightLineHoles("Lodge", measure)).toEqual([
-      { start: 7 + 7 + 7 - 2, end: 7 + 7 + 7 + 8 + 2 },
+      { start: 7 + 7 + 7 - 1, end: 7 + 7 + 7 + 8 + 1 },
     ]);
     expect(highlightLineHoles("Cabin", measure)).toEqual([]);
   });
@@ -40,8 +40,8 @@ describe("buildHighlightLineGradient", () => {
   it("keeps a gap around the g as well as the dot", () => {
     const holes = highlightLineHoles("xxxxg", measure);
     const gradient = buildHighlightLineGradient(120, 15, holes);
-    expect(gradient).toContain("transparent 26px");
-    expect(gradient).toContain("transparent 38px");
+    expect(gradient).toContain("transparent 27px");
+    expect(gradient).toContain("transparent 37px");
     expect(gradient).toContain("transparent 56px");
     expect(gradient).toContain("transparent 64px");
   });
@@ -56,8 +56,8 @@ describe("buildHighlightLineGradient", () => {
       true,
     );
     expect(gradient).toContain("#000 3px");
-    expect(gradient).toContain("transparent 26px");
-    expect(gradient).toContain("transparent 38px");
+    expect(gradient).toContain("transparent 27px");
+    expect(gradient).toContain("transparent 37px");
     expect(gradient).not.toContain("transparent 56px");
     expect(gradient.endsWith("transparent 120px)")).toBe(true);
   });
@@ -154,8 +154,8 @@ describe("syncSidePanelHighlightLines", () => {
 
     const painted = syncSidePanelNewItemLines(root, []);
     const mask = name.style.getPropertyValue("--side-panel-new-item-mask");
-    expect(mask).toContain("transparent 14px");
-    expect(mask).toContain("transparent 26px");
+    expect(mask).toContain("transparent 15px");
+    expect(mask).toContain("transparent 25px");
     expect(mask).not.toContain("currentColor");
 
     name.className = "";

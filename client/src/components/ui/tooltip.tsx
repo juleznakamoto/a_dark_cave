@@ -49,10 +49,13 @@ Tooltip.displayName = "Tooltip";
 
 const TooltipTrigger = TooltipPrimitive.Trigger;
 
+/** Keep tips off the screen edge (matches `CALLOUT_VIEWPORT_PAD_PX`). */
+export const TOOLTIP_VIEWPORT_PAD_PX = 10;
+
 const TooltipContent = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
->(({ className, sideOffset = 6, style, ...props }, ref) => {
+>(({ className, sideOffset = 6, collisionPadding = TOOLTIP_VIEWPORT_PAD_PX, style, ...props }, ref) => {
   const chromeSeed = React.useId();
   const destroyed = useDestroyedChrome();
   return (
@@ -60,13 +63,14 @@ const TooltipContent = React.forwardRef<
       <TooltipPrimitive.Content
         ref={ref}
         sideOffset={sideOffset}
+        collisionPadding={collisionPadding}
         style={{
           pointerEvents: "none",
           ...(destroyed ? destroyedChromeMaskStyle(chromeSeed) : {}),
           ...style,
         }}
         className={cn(
-          "z-[10000] rounded-md bg-neutral-950 px-2 pb-1 pt-1.5 text-xs text-neutral-200 shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-tooltip-content-transform-origin] max-w-xs whitespace-normal",
+          "z-[10000] w-max max-w-xs rounded-md bg-neutral-950 px-2 pb-1 pt-1.5 text-xs text-neutral-200 shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-tooltip-content-transform-origin] whitespace-normal",
           destroyed
             ? gameChromeTooltipClassName()
             : "overflow-hidden border border-neutral-800",

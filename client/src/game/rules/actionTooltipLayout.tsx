@@ -4,6 +4,17 @@ export function ActionTooltipSeparator() {
   return <div className="my-1 border-t border-neutral-800" />;
 }
 
+/**
+ * Flavour text below shorter header/effect lines should wrap to those lines'
+ * width instead of forcing the tooltip out to max-width with empty space.
+ * (`width: 0; min-width: 100%` — only when something above sets the width.)
+ */
+export function tooltipWrappedDescriptionClass(
+  hasContentAbove: boolean,
+): string {
+  return hasContentAbove ? "w-0 min-w-full" : "";
+}
+
 export type ActionTooltipParts = {
   /** Cost lines, resource gains, villager requirements, etc. */
   header?: React.ReactNode;
@@ -63,7 +74,14 @@ export function composeActionTooltip({
       {hasDescription ? (
         <>
           {hasHeader || hasEffects ? <ActionTooltipSeparator /> : null}
-          <div className="whitespace-normal text-muted-foreground">
+          <div
+            className={[
+              "whitespace-normal text-muted-foreground",
+              tooltipWrappedDescriptionClass(hasHeader || hasEffects),
+            ]
+              .filter(Boolean)
+              .join(" ")}
+          >
             {description}
           </div>
         </>

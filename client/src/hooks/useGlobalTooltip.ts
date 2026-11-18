@@ -520,12 +520,35 @@ export function useGlobalTooltip() {
     if (tooltipWasOpen) {
       const wasOpenedByTimer = globalTooltipManager.wasOpenedByTimer(id);
 
-      // If tooltip was opened by long press: keep it open, prevent action. User clicks elsewhere to close.
-      // Keep openedByTimer so a follow-up compatibility mouseup is treated the same way.
+      // Long-press tip: the release that opened it (and the compatibility
+      // mouseup) has wasPressing false because the timer cleared pressingIds.
+      // Keep the tip up and block that release. A later short press on the same
+      // control (wasPressing true) closes the tip and runs the action.
       if (wasOpenedByTimer) {
+        if (!wasPressing) {
+          e.preventDefault();
+          e.stopPropagation();
+          globalTooltipManager.suppressNextClick(id);
+          return;
+        }
+
+        globalTooltipManager.setOpenTooltip(null);
+        globalTooltipManager.clearOpenedByTimer(id);
+        // Drop leftover suppress from the long-press release so this tap's
+        // native click is not eaten within the 400ms window.
+        globalTooltipManager.consumeClickSuppression(id);
+
+        if (disabled) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+
+        if (preferNativeClick) return;
+
         e.preventDefault();
         e.stopPropagation();
-        globalTooltipManager.suppressNextClick(id);
+        onClick();
         return;
       }
 
@@ -611,12 +634,35 @@ export function useGlobalTooltip() {
     if (tooltipWasOpen) {
       const wasOpenedByTimer = globalTooltipManager.wasOpenedByTimer(id);
 
-      // If tooltip was opened by long press: keep it open, prevent action. User clicks elsewhere to close.
-      // Keep openedByTimer so a follow-up compatibility mouseup is treated the same way.
+      // Long-press tip: the release that opened it (and the compatibility
+      // mouseup) has wasPressing false because the timer cleared pressingIds.
+      // Keep the tip up and block that release. A later short press on the same
+      // control (wasPressing true) closes the tip and runs the action.
       if (wasOpenedByTimer) {
+        if (!wasPressing) {
+          if (e.cancelable) e.preventDefault();
+          e.stopPropagation();
+          globalTooltipManager.suppressNextClick(id);
+          return;
+        }
+
+        globalTooltipManager.setOpenTooltip(null);
+        globalTooltipManager.clearOpenedByTimer(id);
+        // Drop leftover suppress from the long-press release so this tap's
+        // native click is not eaten within the 400ms window.
+        globalTooltipManager.consumeClickSuppression(id);
+
+        if (disabled) {
+          if (e.cancelable) e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+
+        if (preferNativeClick) return;
+
         if (e.cancelable) e.preventDefault();
         e.stopPropagation();
-        globalTooltipManager.suppressNextClick(id);
+        onClick();
         return;
       }
 

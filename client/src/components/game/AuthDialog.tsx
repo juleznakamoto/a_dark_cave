@@ -221,6 +221,7 @@ export default function AuthDialog({
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent
         className="[--adc-dialog-max-w:28rem] z-[70]"
+        backdrop="black"
         onPointerDownOutside={(e) => e.preventDefault()}
         onInteractOutside={(e) => e.preventDefault()}
       >

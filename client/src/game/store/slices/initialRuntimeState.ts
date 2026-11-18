@@ -66,6 +66,7 @@ export const initialRuntimeState: Partial<GameStore> = {
     isActive: false,
     startTime: 0,
     needsDisplay: false,
+    lastWokeAt: 0,
   },
   inactivityDialogOpen: false,
   inactivityReason: null,

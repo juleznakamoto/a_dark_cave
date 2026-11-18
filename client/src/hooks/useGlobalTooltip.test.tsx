@@ -121,17 +121,48 @@ describe("useGlobalTooltip - mobile long-press behavior", () => {
     });
 
     expect(onAction).not.toHaveBeenCalled();
-
-    await act(async () => {
-      fireEvent.click(trigger);
-    });
-
-    expect(onAction).not.toHaveBeenCalled();
     expect(screen.getByTestId("open-test").textContent).toBe("open");
 
     await act(async () => {
       fireEvent.click(outside);
     });
+
+    expect(screen.getByTestId("open-test").textContent).toBe("closed");
+  });
+
+  it("runs the action on a later short tap while the long-press tooltip is still open", async () => {
+    const onAction = vi.fn();
+    render(
+      <TestTooltipButton id="retap" disabled={false} onAction={onAction} />,
+    );
+
+    const trigger = screen.getByTestId("trigger-retap");
+    const wrapper = trigger.closest("[data-tooltip-trigger-id]")!;
+
+    await act(async () => {
+      fireEvent.touchStart(wrapper);
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(250);
+    });
+    await act(async () => {
+      fireEvent.touchEnd(wrapper);
+      fireEvent.mouseUp(wrapper);
+      fireEvent.click(trigger);
+    });
+
+    expect(onAction).not.toHaveBeenCalled();
+    expect(screen.getByTestId("open-retap").textContent).toBe("open");
+
+    await act(async () => {
+      fireEvent.touchStart(wrapper);
+      fireEvent.touchEnd(wrapper);
+      fireEvent.mouseUp(wrapper);
+      fireEvent.click(trigger);
+    });
+
+    expect(onAction).toHaveBeenCalledTimes(1);
+    expect(screen.getByTestId("open-retap").textContent).toBe("closed");
   });
 
   it("does not execute after long-press when the browser fires compatibility mouse events plus click", async () => {
