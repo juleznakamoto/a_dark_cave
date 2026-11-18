@@ -309,6 +309,7 @@ export function GameHeaderStatusIndicators() {
             focusState: {
               isActive: false,
               endTime: 0,
+              startTime: 0,
               duration: 0,
               points: 0,
             },
