@@ -556,7 +556,7 @@ export default function AchievementsPanel() {
         className="flex h-full flex-col flex-1 min-h-0 overflow-hidden"
       >
         <TabsList
-          className={`sticky top-0 z-10 grid w-full mb-2 shrink-0 overflow-visible h-auto min-h-12 bg-transparent py-1 pl-2 ${tabGridClass}`}
+          className={`sticky top-0 z-10 grid w-full mb-1 shrink-0 overflow-visible h-auto min-h-12 bg-transparent py-1 pl-2 ${tabGridClass}`}
         >
           <TabTriggerWithTooltipWhenLocked
             value="basic"

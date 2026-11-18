@@ -24,8 +24,8 @@ import {
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { isGameTabHidden, subscribeGameTabHidden } from "@/lib/tabVisibility";
 
-/** Idle / assigned diameter. CSS `.button-prior-badge` scales with `--adc-control-scale`. */
-export const PRIOR_BADGE_SIZE_PX = 12;
+/** Idle / assigned disc diameter. Hit host is 24px (`.button-prior-badge`). */
+export const PRIOR_BADGE_SIZE_PX = 14;
 
 interface ButtonPriorBadgeProps {
   actionId: string;
@@ -118,24 +118,30 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
               isAssigned && "button-prior-badge--assigned",
             )}
             style={{
-              borderRadius: "50%",
-              background,
-              boxShadow,
               cursor: atCapacity ? "default" : "pointer",
               zIndex: 20,
-              transition: PRIOR_DISC_OUTER_TRANSITION,
             }}
           >
-            <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
-              <div
-                style={getPriorDiscInnerFillStyle({
-                  active: isAssigned,
-                  fillSize: badgeFillMetrics.fillSize,
-                  fillOffsetInPx: badgeFillMetrics.fillOffsetInPx,
-                  fillOffsetOutPx: badgeFillMetrics.fillOffsetOutPx,
-                  tone,
-                })}
-              />
+            <div
+              className="button-prior-badge__disc"
+              style={{
+                borderRadius: "50%",
+                background,
+                boxShadow,
+                transition: PRIOR_DISC_OUTER_TRANSITION,
+              }}
+            >
+              <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
+                <div
+                  style={getPriorDiscInnerFillStyle({
+                    active: isAssigned,
+                    fillSize: badgeFillMetrics.fillSize,
+                    fillOffsetInPx: badgeFillMetrics.fillOffsetInPx,
+                    fillOffsetOutPx: badgeFillMetrics.fillOffsetOutPx,
+                    tone,
+                  })}
+                />
+              </div>
             </div>
           </div>
         </TooltipTrigger>

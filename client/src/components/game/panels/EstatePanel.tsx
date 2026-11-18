@@ -14,7 +14,6 @@ import {
   EstateStyleProgress,
   SharedProgressShaderHost,
 } from "@/components/ui/shared-progress-shader";
-import { CircularProgress } from "@/components/ui/circular-progress";
 import CooldownButton, {
   gameActionButtonGridClassName,
   gameActionOutlineButtonClassName,
@@ -38,18 +37,12 @@ import {
 } from "@/game/rules/skillUpgrades";
 import { isTraderShopUnlocked, stackTimedDebuff } from "@/game/stateHelpers";
 import { playHaptic } from "@/lib/haptics";
-import { badDreamsTooltip, focusTooltip } from "@/game/rules/tooltips";
 import {
-  GAME_PANEL_HEADER_INDICATOR_CLASS,
-  GAME_PANEL_HEADER_INDICATOR_INNER_CLASS,
-  GAME_PANEL_HEADER_INDICATOR_SIZE_PX,
-  GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS,
   GAME_TAB_PANEL_BODY,
   GAME_TAB_SECTION_HEADER,
   GAME_TAB_SECTION_HEADER_ROW,
   GAME_TAB_SECTION_STACK,
 } from "@/components/game/gameChrome";
-import { headerIndicatorIcon } from "@/game/headerIndicatorIcons";
 import { formatSignedNumber } from "@/lib/utils";
 import cn from "clsx";
 import { buildLocalizedEventLogEntry } from "@/i18n/buildEventLogEntry";
@@ -395,106 +388,12 @@ export default function EstatePanel({
   );
   const resources = useResourcesWhileActive(active);
   const state = useGameStore.getState();
-  // Calculate focus progress based on game loop timing
-  const [focusProgress, setFocusProgress] = React.useState(0);
-  const [badDreamsProgress, setBadDreamsProgress] = React.useState(0);
   const focusState = useGameStore((state) => state.focusState);
-  const badDreamsState = useGameStore((state) => state.badDreamsState);
-  const focusIcon = headerIndicatorIcon("focus");
-  const badDreamsIcon = headerIndicatorIcon("badDreams");
-
-  React.useEffect(() => {
-    const updateFocusProgress = () => {
-      const now = Date.now();
-      if (focusState?.isActive && focusState.endTime > now) {
-        const fromStored =
-          typeof focusState.duration === "number" && focusState.duration > 0
-            ? focusState.duration
-            : null;
-        const fromRange =
-          focusState.startTime &&
-            focusState.endTime > focusState.startTime
-            ? focusState.endTime - focusState.startTime
-            : null;
-        const focusDuration = fromStored ?? fromRange ?? 60_000;
-        const focusElapsed = focusDuration - (focusState.endTime - now);
-        setFocusProgress(
-          Math.min(100, Math.max(0, (focusElapsed / focusDuration) * 100)),
-        );
-      } else {
-        setFocusProgress(0);
-        // Clear focus state when timer expires
-        if (
-          focusState?.isActive &&
-          focusState.endTime <= now &&
-          !isDemoPlayFrozen(useGameStore.getState())
-        ) {
-          useGameStore.setState({
-            focusState: {
-              isActive: false,
-              endTime: 0,
-              duration: 0,
-              points: 0,
-            },
-          });
-        }
-      }
-    };
-
-    updateFocusProgress();
-    const interval = setInterval(updateFocusProgress, 1000);
-
-    return () => clearInterval(interval);
-  }, [focusState]);
-
-  React.useEffect(() => {
-    const updateBadDreamsProgress = () => {
-      const now = Date.now();
-      if (badDreamsState?.isActive && badDreamsState.endTime > now) {
-        const fromStored =
-          typeof badDreamsState.duration === "number" &&
-          badDreamsState.duration > 0
-            ? badDreamsState.duration
-            : null;
-        const fromRange =
-          badDreamsState.startTime &&
-          badDreamsState.endTime > badDreamsState.startTime
-            ? badDreamsState.endTime - badDreamsState.startTime
-            : null;
-        const duration = fromStored ?? fromRange ?? 10 * 60 * 1000;
-        const elapsed = duration - (badDreamsState.endTime - now);
-        setBadDreamsProgress(
-          Math.min(100, Math.max(0, (elapsed / duration) * 100)),
-        );
-      } else {
-        setBadDreamsProgress(0);
-        if (
-          badDreamsState?.isActive &&
-          badDreamsState.endTime <= now &&
-          !isDemoPlayFrozen(useGameStore.getState())
-        ) {
-          useGameStore.setState({
-            badDreamsState: {
-              isActive: false,
-              endTime: 0,
-              startTime: 0,
-              duration: 0,
-            },
-          });
-        }
-      }
-    };
-
-    updateBadDreamsProgress();
-    const interval = setInterval(updateBadDreamsProgress, 1000);
-    return () => clearInterval(interval);
-  }, [badDreamsState]);
 
   // Keep Focus button mounted while active so Sleep upgrades don't jump up when points hit 0
   const showFocusButton =
     (focusState?.points ?? 0) > 0 ||
     Boolean(focusState?.isActive && focusState.endTime > Date.now());
-
   // Calculate Focus duration: 1 focus point = 1 minute of Focus time
   const calculateFocusDuration = (focusPoints: number) => {
     return focusPoints * 60 * 1000; // Convert focus points to milliseconds (1 point = 1 minute)
@@ -758,62 +657,6 @@ export default function EstatePanel({
               <h3 className={GAME_TAB_SECTION_HEADER}>
                 {t("estate.rest")}
               </h3>
-              {focusState?.isActive && focusState.endTime > Date.now() && (
-                <TooltipWrapper
-                  tooltip={
-                    <div className="text-xs">
-                      {focusTooltip.getContent(state)}
-                    </div>
-                  }
-                  tooltipId="focus-progress"
-                  disabled
-                  tooltipTriggerClassName={
-                    GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
-                  }
-                  className={GAME_PANEL_HEADER_INDICATOR_CLASS}
-                >
-                  <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
-                    <CircularProgress
-                      value={focusProgress}
-                      size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
-                      fill
-                      strokeWidth={2}
-                      className="text-teal-400"
-                    />
-                    <span className={focusIcon.glyphClassName}>
-                      {focusIcon.symbol}
-                    </span>
-                  </div>
-                </TooltipWrapper>
-              )}
-              {badDreamsState?.isActive && badDreamsState.endTime > Date.now() && (
-                <TooltipWrapper
-                  tooltip={
-                    <div className="text-xs">
-                      {badDreamsTooltip.getContent(state)}
-                    </div>
-                  }
-                  tooltipId="bad-dreams-progress"
-                  disabled
-                  tooltipTriggerClassName={
-                    GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS
-                  }
-                  className={GAME_PANEL_HEADER_INDICATOR_CLASS}
-                >
-                  <div className={GAME_PANEL_HEADER_INDICATOR_INNER_CLASS}>
-                    <CircularProgress
-                      value={badDreamsProgress}
-                      size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
-                      fill
-                      strokeWidth={2}
-                      className="text-red-500"
-                    />
-                    <span className={badDreamsIcon.glyphClassName}>
-                      {badDreamsIcon.symbol}
-                    </span>
-                  </div>
-                </TooltipWrapper>
-              )}
             </div>
           </div>
           <div className={gameActionButtonGridClassName("pb-1")}>

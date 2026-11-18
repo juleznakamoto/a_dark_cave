@@ -1318,51 +1318,82 @@ button.new-item-pulse-text,
   height: calc(18px * var(--adc-control-scale, 1));
 }
 
-/* Action-button corner badges. Offset is always half the disc so the
-   center sits on the host corner. */
+/* Action-button corner badges. Shared 24px hit host; center sits on the
+   button corner. Visual discs may be smaller (transparent border / inner disc). */
 .button-level-badge {
+  --adc-corner-badge-hit: 24px;
+  --adc-corner-badge-disc: 18px;
   position: absolute;
-  top: calc(-9px * var(--adc-control-scale, 1));
-  right: calc(-9px * var(--adc-control-scale, 1));
-  width: calc(18px * var(--adc-control-scale, 1));
-  height: calc(18px * var(--adc-control-scale, 1));
+  top: calc(var(--adc-corner-badge-hit) / -2 * var(--adc-control-scale, 1));
+  right: calc(var(--adc-corner-badge-hit) / -2 * var(--adc-control-scale, 1));
+  width: calc(var(--adc-corner-badge-hit) * var(--adc-control-scale, 1));
+  height: calc(var(--adc-corner-badge-hit) * var(--adc-control-scale, 1));
+  box-sizing: border-box;
+  /* (hit - disc) / 2 — keeps the red circle at disc size inside the hit host. */
+  border: calc(
+    (var(--adc-corner-badge-hit) - var(--adc-corner-badge-disc)) / 2 *
+      var(--adc-control-scale, 1)
+  )
+    solid transparent;
+  background-clip: padding-box;
 }
 
 /* Location-tab body top inset. Padding (not margin) so ScrollArea cannot
    clip hanging corner badges. Same class on every location tab so first
-   titles and buttons stay aligned when switching. Sized to half of
-   .button-focus-badge (largest top hang) plus 2px. */
+   titles and buttons stay aligned when switching. Sized to half of the
+   shared 24px hit host (largest top hang) plus 2px. */
 .game-tab-panel-body {
-  padding-top: calc(10px * var(--adc-control-scale, 1) + 2px);
+  padding-top: calc(12px * var(--adc-control-scale, 1) + 2px);
 }
 
 .button-focus-badge {
+  --adc-corner-badge-hit: 24px;
+  --adc-corner-badge-disc: 20px;
   position: absolute;
-  top: calc(-10px * var(--adc-control-scale, 1));
-  right: calc(-10px * var(--adc-control-scale, 1));
-  width: calc(20px * var(--adc-control-scale, 1));
-  height: calc(20px * var(--adc-control-scale, 1));
+  top: calc(var(--adc-corner-badge-hit) / -2 * var(--adc-control-scale, 1));
+  right: calc(var(--adc-corner-badge-hit) / -2 * var(--adc-control-scale, 1));
+  width: calc(var(--adc-corner-badge-hit) * var(--adc-control-scale, 1));
+  height: calc(var(--adc-corner-badge-hit) * var(--adc-control-scale, 1));
+  box-sizing: border-box;
+  border: calc(
+    (var(--adc-corner-badge-hit) - var(--adc-corner-badge-disc)) / 2 *
+      var(--adc-control-scale, 1)
+  )
+    solid transparent;
+  background-clip: padding-box;
 }
 
+/* Prior: 24 hit host; visual disc is .button-prior-badge__disc (box-shadow). */
 .button-prior-badge {
-  --adc-prior-badge-size: 12px;
+  --adc-corner-badge-hit: 24px;
+  --adc-prior-badge-size: 14px;
   position: absolute;
-  bottom: calc(var(--adc-prior-badge-size) / -2 * var(--adc-control-scale, 1));
-  right: calc(var(--adc-prior-badge-size) / -2 * var(--adc-control-scale, 1));
+  bottom: calc(var(--adc-corner-badge-hit) / -2 * var(--adc-control-scale, 1));
+  right: calc(var(--adc-corner-badge-hit) / -2 * var(--adc-control-scale, 1));
+  width: calc(var(--adc-corner-badge-hit) * var(--adc-control-scale, 1));
+  height: calc(var(--adc-corner-badge-hit) * var(--adc-control-scale, 1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-prior-badge__disc {
+  position: relative;
   width: calc(var(--adc-prior-badge-size) * var(--adc-control-scale, 1));
   height: calc(var(--adc-prior-badge-size) * var(--adc-control-scale, 1));
+  flex-shrink: 0;
 }
 
-/* Abort: host sized so tooltip wrappers cannot shift the disc. Tracks
-   --adc-control-scale like buttons. Opacity stays 1. The action button
-   underneath fades its label while running; this disc must not. */
+/* Abort: 24 hit host; 18 disc. Opacity stays 1 — the action button label
+   fades while running; this disc must not. */
 .button-corner-badge-16 {
-  --adc-corner-badge-16-size: 16px;
+  --adc-corner-badge-hit: 24px;
+  --adc-corner-badge-disc: 18px;
   position: absolute;
-  bottom: calc(var(--adc-corner-badge-16-size) / -2 * var(--adc-control-scale, 1));
-  right: calc(var(--adc-corner-badge-16-size) / -2 * var(--adc-control-scale, 1));
-  width: calc(var(--adc-corner-badge-16-size) * var(--adc-control-scale, 1));
-  height: calc(var(--adc-corner-badge-16-size) * var(--adc-control-scale, 1));
+  bottom: calc(var(--adc-corner-badge-hit) / -2 * var(--adc-control-scale, 1));
+  right: calc(var(--adc-corner-badge-hit) / -2 * var(--adc-control-scale, 1));
+  width: calc(var(--adc-corner-badge-hit) * var(--adc-control-scale, 1));
+  height: calc(var(--adc-corner-badge-hit) * var(--adc-control-scale, 1));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1372,27 +1403,30 @@ button.new-item-pulse-text,
   opacity: 1;
 }
 
+.button-corner-badge-16__disc {
+  width: calc(var(--adc-corner-badge-disc) * var(--adc-control-scale, 1));
+  height: calc(var(--adc-corner-badge-disc) * var(--adc-control-scale, 1));
+}
+
 .button-corner-badge-16 svg {
-  width: calc(12px * var(--adc-control-scale, 1));
-  height: calc(12px * var(--adc-control-scale, 1));
+  width: calc(14px * var(--adc-control-scale, 1));
+  height: calc(14px * var(--adc-control-scale, 1));
 }
 
 .action-button-corner-badge {
   position: absolute;
   z-index: 30;
   pointer-events: auto;
+  width: calc(24px * var(--adc-control-scale, 1));
+  height: calc(24px * var(--adc-control-scale, 1));
 }
 
 .action-button-corner-badge--insight {
-  width: calc(24px * var(--adc-control-scale, 1));
-  height: calc(24px * var(--adc-control-scale, 1));
   bottom: calc(-12px * var(--adc-control-scale, 1));
   right: calc(-12px * var(--adc-control-scale, 1));
 }
 
 .action-button-corner-badge--boost {
-  width: calc(24px * var(--adc-control-scale, 1));
-  height: calc(24px * var(--adc-control-scale, 1));
   top: calc(-12px * var(--adc-control-scale, 1));
   right: calc(-12px * var(--adc-control-scale, 1));
 }
@@ -1437,33 +1471,33 @@ button.new-item-pulse-text,
   gap: 6px;
 }
 
-/* Produce / Focus circular indicators — 18px Small, 20px Medium, 22px Large,
-   24px Extra Large, 26px at 200%. Produce rings: 22px / 26px / 30px / 34px / 38px.
+/* Header status circular indicators — 20px Small, 22px Medium, 24px Large,
+   26px Extra Large, 28px at 200%. Produce-row legacy sizes stay below.
    `adc-text-large` is on for Medium and up; `adc-text-xlarge` adds Large;
    `adc-text-xxlarge` adds Extra Large; `adc-text-xxxlarge` adds 200%. */
 .game-panel-header-indicator {
-  width: calc(18px * var(--adc-indicator-scale, 1));
-  height: calc(18px * var(--adc-indicator-scale, 1));
-}
-
-html.adc-text-large .game-panel-header-indicator {
   width: calc(20px * var(--adc-indicator-scale, 1));
   height: calc(20px * var(--adc-indicator-scale, 1));
 }
 
-html.adc-text-xlarge .game-panel-header-indicator {
+html.adc-text-large .game-panel-header-indicator {
   width: calc(22px * var(--adc-indicator-scale, 1));
   height: calc(22px * var(--adc-indicator-scale, 1));
 }
 
-html.adc-text-xxlarge .game-panel-header-indicator {
+html.adc-text-xlarge .game-panel-header-indicator {
   width: calc(24px * var(--adc-indicator-scale, 1));
   height: calc(24px * var(--adc-indicator-scale, 1));
 }
 
-html.adc-text-xxxlarge .game-panel-header-indicator {
+html.adc-text-xxlarge .game-panel-header-indicator {
   width: calc(26px * var(--adc-indicator-scale, 1));
   height: calc(26px * var(--adc-indicator-scale, 1));
+}
+
+html.adc-text-xxxlarge .game-panel-header-indicator {
+  width: calc(28px * var(--adc-indicator-scale, 1));
+  height: calc(28px * var(--adc-indicator-scale, 1));
 }
 
 /* Side-panel resource/building rows: slightly more vertical room when enlarged. */
@@ -1668,6 +1702,12 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
 .game-header-accent-icon {
   width: calc(18px * var(--adc-control-scale, 1));
   height: calc(18px * var(--adc-control-scale, 1));
+}
+
+/* Pause / resume glyph: slightly smaller than other header accent icons. */
+.game-header-pause-icon {
+  width: calc(16px * var(--adc-control-scale, 1));
+  height: calc(16px * var(--adc-control-scale, 1));
 }
 
 /* Cruel Mode pentagram. Larger than the menu glyph, still inside the w-7 button. */

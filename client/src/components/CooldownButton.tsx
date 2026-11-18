@@ -606,10 +606,10 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
               <button
                 type="button"
                 className={cn(
+                  // 24px hit host fills the corner wrapper; red disc is the child.
                   // Stay fully opaque. The action button label fades while the
                   // action runs; this disc sits on that button and must not.
-                  // Size comes from .button-corner-badge-16 (--adc-control-scale).
-                  "flex h-full w-full cursor-pointer items-center justify-center rounded-full border border-red-800 bg-red-950 text-white opacity-100 shadow-sm transition-colors hover:bg-red-900",
+                  "group flex h-full w-full cursor-pointer items-center justify-center border-0 bg-transparent p-0",
                 )}
                 data-testid={testId ? `${testId}-abort` : undefined}
                 aria-label={abortTooltip}
@@ -620,7 +620,12 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
                   abortActionExecution(actionIdFromProps);
                 }}
               >
-                <X className="stroke-[3]" aria-hidden="true" />
+                <span
+                  className="button-corner-badge-16__disc flex items-center justify-center rounded-full border border-red-800 bg-red-950 text-white opacity-100 shadow-sm transition-colors group-hover:bg-red-900"
+                  aria-hidden="true"
+                >
+                  <X className="stroke-[3]" />
+                </span>
               </button>
             </TooltipWrapper>
           </div>

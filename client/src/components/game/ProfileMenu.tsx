@@ -644,6 +644,7 @@ export function GameHeaderControls() {
 
   return (
     <div className="flex items-center gap-0.5 shrink-0">
+      <GameHeaderRewardsShortcut />
       {arePactsEnabled() && pactChoices >= 1 && (
         <HoverCalloutTooltip
           label={pactChoicesLabel}

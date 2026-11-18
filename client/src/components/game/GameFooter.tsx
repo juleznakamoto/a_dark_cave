@@ -9,8 +9,7 @@ import {
   STEAM_STORE_UTM_CONTENT,
   steamStoreUrl,
 } from "@/lib/gameFooterSocialLinks";
-import { useState, useEffect, useRef, useCallback, cloneElement, type ReactNode } from "react";
-import { useFadePresence } from "@/hooks/useFadePresence";
+import { useRef, useState, useCallback, cloneElement, type ReactNode } from "react";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { tWithFallback } from "@/i18n/resolveGameText";
@@ -20,8 +19,7 @@ import {
   useSteamDemoActive,
   useSteamEditionActive,
 } from "@/hooks/useSteamEditionActive";
-import { isGalaxyEdition, isSteamDesktopEditionActive } from "@/lib/edition";
-import { formatDurationMs } from "@/lib/utils";
+import { isGalaxyEdition } from "@/lib/edition";
 import {
   handleDonateHeartAnimationEnd,
   pumpDonateHeart,
@@ -45,6 +43,30 @@ import {
 } from "./gameChrome";
 import { useCoinHoverParticles } from "@/components/ui/coin-hover-particles";
 import { FOOTER_TRADER_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
+import { logger } from "@/lib/logger";
+
+async function saveAndReturnToStartScreen(): Promise<void> {
+  const { stopGameLoop } = await import("@/game/loop");
+  stopGameLoop();
+
+  try {
+    const [{ saveGame }, { buildGameState }, { useGameStore }] =
+      await Promise.all([
+        import("@/game/save"),
+        import("@/game/stateHelpers"),
+        import("@/game/state"),
+      ]);
+    await saveGame(buildGameState(useGameStore.getState()), false, {
+      force: true,
+    });
+  } catch (error) {
+    logger.warn("[FOOTER] Save before return to start screen failed:", error);
+  }
+
+  const { setPreferStartScreen } = await import("@/game/startupBootSurface");
+  setPreferStartScreen();
+  window.location.reload();
+}
 
 const FOOTER_CONTROL_BTN_BASE =
   `group shrink-0 px-1 py-1 text-xs font-medium text-neutral-300 hover ${GAME_CHROME_NO_BG_HOVER}`;
@@ -217,25 +239,30 @@ export default function GameFooter() {
   const showFooterTrader = useGameStore((s) => isTraderFooterShopVisible(s));
   const referralCount = useGameStore((s) => s.referralCount ?? 0);
   const isPaused = useGameStore((s) => s.isPaused);
-  const togglePause = useGameStore((s) => s.togglePause);
-  // Null while playing, so playTime ticks do not re-render the footer.
-  const pausedPlayTimeMs = useGameStore((s) => {
-    if (!s.isPaused || !isSteamDesktopEditionActive(s.devGameMode)) return null;
-    return s.playTime ?? 0;
-  });
   const idleModeDialogOpen = useGameStore((s) => s.idleModeDialog.isOpen);
-  const [glowingButton, setGlowingButton] = useState<string | null>(null);
+  const [returningToStart, setReturningToStart] = useState(false);
   const donateHeartRef = useRef<HTMLSpanElement>(null);
   const { t } = useUiTranslation();
   const steamEditionActive = useSteamEditionActive();
   const steamDemoActive = useSteamDemoActive();
   const crazyGamesEditionActive = useCrazyGamesEditionActive();
   const showFooterDonate = !steamEditionActive || isGalaxyEdition();
+  // Web desktop footer only (this component is not mounted on phone/iOS chrome).
+  const showBranding = !steamEditionActive;
   // Steam Game / Demo (build or DEV Game Mode) hide the store link.
   // Galaxy and Normal/web keep the wishlist link. CrazyGames moves Steam +
   // socials into the upper-right menu.
   const hideSteamStoreLink = useHideSteamStoreLink();
   const hideFooterSteamAndSocial = crazyGamesEditionActive;
+
+  const handleReturnToStart = () => {
+    if (returningToStart) return;
+    setReturningToStart(true);
+    void saveAndReturnToStartScreen().catch((error) => {
+      setReturningToStart(false);
+      logger.error("[FOOTER] Failed to return to start screen:", error);
+    });
+  };
 
   const triggerDonateHeartPump = useCallback(() => {
     pumpDonateHeart(donateHeartRef.current);
@@ -252,13 +279,6 @@ export default function GameFooter() {
     emitIntervalMs: 60_000,
     zIndex: 50,
   });
-
-  // Trigger glow animation when pause state changes
-  useEffect(() => {
-    setGlowingButton("pause");
-    const timer = setTimeout(() => setGlowingButton(null), 500);
-    return () => clearTimeout(timer);
-  }, [isPaused]);
 
   const handleOfferTribute = () => {
     window.open("https://www.buymeacoffee.com/julez.b", "_blank");
@@ -284,15 +304,6 @@ export default function GameFooter() {
   const socialLinkClass = `group ${FOOTER_CONTROL_BTN} flex items-center justify-center gap-1`;
   const socialIconClass = `${FOOTER_CONTROL_SVG_ICON_HOVER}${isPaused ? " !opacity-100" : ""}`;
   const showPauseSleepCallout = isPaused || idleModeDialogOpen;
-  const pausedPlayTimeFade = useFadePresence(pausedPlayTimeMs !== null);
-  const pausedPlayTimeTextRef = useRef("00:00:00");
-  if (pausedPlayTimeMs !== null) {
-    pausedPlayTimeTextRef.current = formatDurationMs(pausedPlayTimeMs);
-  }
-  const pausedPlayTimeText = pausedPlayTimeTextRef.current;
-  const pausedPlayTimeName = t("footer.playTime", {
-    defaultValue: "Play time of this playthrough",
-  });
   const feedbackButton = (
     <Button
       variant="ghost"
@@ -331,42 +342,17 @@ export default function GameFooter() {
         {steamDemoActive && <SteamDemoProgressBar />}
         <div className="pointer-events-none relative z-10 flex w-full items-center justify-between">
           <div className="pointer-events-auto flex items-center gap-0.5 shrink-0">
-            <Button
-              variant="ghost"
-              size="xs"
-              onClick={togglePause}
-              button_id="footer-pause"
-              data-testid="button-pause-game"
-              disabled={idleModeDialogOpen}
-              aria-label={
-                isPaused ? t("footer.resumeGame") : t("footer.pauseGame")
-              }
-              className={`${FOOTER_CONTROL_BTN} ${idleModeDialogOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "!text-red-600 !opacity-100" : ""} ${isPaused && !idleModeDialogOpen ? "continue-pause-glow" : ""}`}
-            >
-              <GameUiIcon
-                name={isPaused ? "unpause" : "pause"}
-                sizeClassName="game-tab-icon"
-                className={isPaused ? undefined : FOOTER_CONTROL_ICON}
-              />
-            </Button>
-            {pausedPlayTimeFade.mounted && (
-              <TooltipWrapper
-                tooltip={pausedPlayTimeName}
-                tooltipId="footer-paused-play-time"
-                side="top"
-                className={`inline-flex items-center ${pausedPlayTimeFade.visible ? "" : "pointer-events-none"}`}
-                tooltipTriggerClassName="inline-flex items-center"
+            {showBranding && (
+              <button
+                type="button"
+                data-testid="button-return-to-start"
+                disabled={returningToStart}
+                onClick={handleReturnToStart}
+                className={`shrink-0 bg-transparent px-1 py-1 text-sm font-medium tracking-wide text-neutral-300 hover:text-neutral-100 disabled:opacity-50 ${GAME_CHROME_NO_BG_HOVER}`}
               >
-                <span
-                  className={`pause-ui-fade ml-1 select-none whitespace-nowrap text-xs tabular-nums leading-none text-neutral-300 ${pausedPlayTimeFade.visible ? "opacity-100" : "opacity-0"}`}
-                  data-testid="footer-paused-play-time"
-                  aria-label={`${pausedPlayTimeName} ${pausedPlayTimeText}`}
-                >
-                  {pausedPlayTimeText}
-                </span>
-              </TooltipWrapper>
+                A Dark Cave
+              </button>
             )}
-
             {/* Shop is web-only (Stripe). Donate is web + Galaxy (external tip jar).
                 Footer Trader is only for paying players who do not yet have the tab. */}
             {!steamEditionActive && showFooterTrader && (

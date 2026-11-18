@@ -1197,7 +1197,7 @@ export default function GameContainer() {
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       if (isEditableKeyboardTarget(e.target)) return;
 
-      // Start on the Deck layout sends P. The footer pause button stays
+      // Start on the Deck layout sends P. The header pause button stays
       // clickable during event dialogs and only locks while Sleep is open.
       if (isGamePauseHotkey(e) && !e.repeat) {
         if (useGameStore.getState().idleModeDialog.isOpen) return;

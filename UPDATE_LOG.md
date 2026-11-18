@@ -10,6 +10,8 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- Action-button corner badges (Prior, Abort, level, Focus, Insight, boost) share a larger tap target. Prior and Abort discs are a little bigger too.
+- Pause, production, and Focus status rings sit in the top bar. Rewards sits just left of your pact choices. On the web, A Dark Cave sits in the bottom-left bar; Steam has no title link there.
 - When a village job is full, its /max turns yellow like a full resource.
 - The Wandering Collector only appears after you have seen gold.
 - Village − and + job buttons and insight marks are a little larger.

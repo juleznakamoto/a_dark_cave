@@ -37,22 +37,22 @@ export const BUTTON_OVERLAY_CATALOG: ButtonOverlayCatalogEntry[] = [
   {
     id: "level",
     label: "Level badge",
-    size: "18×18",
-    position: "top-right (-9px)",
+    size: "24 hit / 18 disc",
+    position: "top-right (-12px)",
     where: "Craft / gather action buttons. .button-level-badge",
   },
   {
     id: "level-max",
     label: "Level badge (max)",
-    size: "18×18",
-    position: "top-right (-9px)",
+    size: "24 hit / 18 disc",
+    position: "top-right (-12px)",
     where: "Same chip, star when maxed. .button-level-badge",
   },
   {
     id: "focus",
     label: "Focus points",
-    size: "20×20",
-    position: "top-right (-10px)",
+    size: "24 hit / 20 disc",
+    position: "top-right (-12px)",
     where: "Estate Focus button count chip. .button-focus-badge",
   },
   {
@@ -65,22 +65,22 @@ export const BUTTON_OVERLAY_CATALOG: ButtonOverlayCatalogEntry[] = [
   {
     id: "prior",
     label: "Prior assign",
-    size: "12×12",
-    position: "bottom-right (-6px)",
+    size: "24 hit / 14 disc",
+    position: "bottom-right (-12px)",
     where: "Eligible action buttons. .button-prior-badge",
   },
   {
     id: "prior-on",
     label: "Prior assigned",
-    size: "12×12",
-    position: "bottom-right (-6px)",
+    size: "24 hit / 14 disc",
+    position: "bottom-right (-12px)",
     where: "Same disc, filled / assigned state",
   },
   {
     id: "abort",
     label: "Abort (X)",
-    size: "16×16 host, 16×16 disc",
-    position: "bottom-right (-8px)",
+    size: "24 hit / 18 disc",
+    position: "bottom-right (-12px)",
     where: "CooldownButton craft / build / Call Merchant. .button-corner-badge-16",
   },
   {
@@ -156,23 +156,29 @@ function DemoPriorBadge({ initialAssigned }: { initialAssigned: boolean }) {
         assigned && "button-prior-badge--assigned",
       )}
       style={{
-        borderRadius: "50%",
-        background,
-        boxShadow,
         zIndex: 20,
         cursor: "pointer",
-        transition: PRIOR_DISC_OUTER_TRANSITION,
       }}
     >
-      <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
-        <div
-          style={getPriorDiscInnerFillStyle({
-            active: assigned,
-            fillSize: fill.fillSize,
-            fillOffsetInPx: fill.fillOffsetInPx,
-            fillOffsetOutPx: fill.fillOffsetOutPx,
-          })}
-        />
+      <div
+        className="button-prior-badge__disc"
+        style={{
+          borderRadius: "50%",
+          background,
+          boxShadow,
+          transition: PRIOR_DISC_OUTER_TRANSITION,
+        }}
+      >
+        <div className="absolute inset-0 overflow-hidden rounded-full pointer-events-none">
+          <div
+            style={getPriorDiscInnerFillStyle({
+              active: assigned,
+              fillSize: fill.fillSize,
+              fillOffsetInPx: fill.fillOffsetInPx,
+              fillOffsetOutPx: fill.fillOffsetOutPx,
+            })}
+          />
+        </div>
       </div>
     </button>
   );
@@ -300,10 +306,12 @@ export function ButtonOverlaysCatalog() {
               <div className="button-corner-badge-16">
                 <button
                   type="button"
-                  className="flex h-full w-full items-center justify-center rounded-full border border-red-800 bg-red-950 text-white opacity-100 shadow-sm"
+                  className="flex h-full w-full items-center justify-center border-0 bg-transparent p-0"
                   aria-label="Abort"
                 >
-                  <X className="stroke-[3]" aria-hidden="true" />
+                  <span className="button-corner-badge-16__disc flex items-center justify-center rounded-full border border-red-800 bg-red-950 text-white opacity-100 shadow-sm">
+                    <X className="stroke-[3]" aria-hidden="true" />
+                  </span>
                 </button>
               </div>
             </SampleActionButton>
@@ -397,10 +405,12 @@ export function ButtonOverlaysCatalog() {
           <div className="button-corner-badge-16">
             <button
               type="button"
-              className="flex h-full w-full items-center justify-center rounded-full border border-red-800 bg-red-950 text-white opacity-100 shadow-sm"
+              className="flex h-full w-full items-center justify-center border-0 bg-transparent p-0"
               aria-label="Abort"
             >
-              <X className="stroke-[3]" aria-hidden="true" />
+              <span className="button-corner-badge-16__disc flex items-center justify-center rounded-full border border-red-800 bg-red-950 text-white opacity-100 shadow-sm">
+                <X className="stroke-[3]" aria-hidden="true" />
+              </span>
             </button>
           </div>
         </div>

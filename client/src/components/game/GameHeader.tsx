@@ -1,8 +1,9 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
-import { GameHeaderControls, GameHeaderRewardsShortcut } from "./ProfileMenu";
+import { GameHeaderControls } from "./ProfileMenu";
+import { GameHeaderStatusIndicators } from "./GameHeaderStatusIndicators";
 import {
   DemoEndHeaderLink,
   SteamDemoHeaderStoreLink,
@@ -14,13 +15,9 @@ import {
 } from "./gameChrome";
 import { useGameStore } from "@/game/state";
 import { useFadePresence } from "@/hooks/useFadePresence";
-import {
-  useIosEditionActive,
-  useMobileGameChrome,
-} from "@/hooks/useSteamEditionActive";
+import { useIosEditionActive } from "@/hooks/useSteamEditionActive";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { formatDurationMs } from "@/lib/utils";
-import { logger } from "@/lib/logger";
 
 const HEADER_PAUSE_BTN =
   `group shrink-0 p-0 w-7 h-7 flex items-center justify-center ${GAME_CHROME_NO_BG_HOVER}`;
@@ -82,53 +79,19 @@ function HeaderPauseButton() {
     >
       <GameUiIcon
         name={isPaused ? "unpause" : "pause"}
-        sizeClassName="game-header-accent-icon"
+        sizeClassName="game-header-pause-icon"
         className={isPaused ? undefined : "opacity-80"}
       />
     </Button>
   );
 }
 
-async function saveAndReturnToStartScreen(): Promise<void> {
-  const { stopGameLoop } = await import("@/game/loop");
-  stopGameLoop();
-
-  try {
-    const [{ saveGame }, { buildGameState }, { useGameStore }] =
-      await Promise.all([
-        import("@/game/save"),
-        import("@/game/stateHelpers"),
-        import("@/game/state"),
-      ]);
-    await saveGame(buildGameState(useGameStore.getState()), false, {
-      force: true,
-    });
-  } catch (error) {
-    logger.warn("[HEADER] Save before return to start screen failed:", error);
-  }
-
-  const { setPreferStartScreen } = await import("@/game/startupBootSurface");
-  setPreferStartScreen();
-  window.location.reload();
-}
-
 export default function GameHeader() {
-  const [returningToStart, setReturningToStart] = useState(false);
-  const mobileGameChrome = useMobileGameChrome();
   const iosEditionActive = useIosEditionActive();
-
-  const handleReturnToStart = () => {
-    if (returningToStart) return;
-    setReturningToStart(true);
-    void saveAndReturnToStartScreen().catch((error) => {
-      setReturningToStart(false);
-      logger.error("[HEADER] Failed to return to start screen:", error);
-    });
-  };
 
   return (
     <header
-      className={`relative z-50 flex min-h-9 flex-shrink-0 items-center bg-inherit ${GAME_CHROME_RULE_BOTTOM} px-1 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible md:pl-4 md:pr-2`}
+      className={`relative z-50 flex min-h-9 flex-shrink-0 items-center bg-inherit ${GAME_CHROME_RULE_BOTTOM} px-1 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible`}
       style={
         iosEditionActive
           ? { paddingTop: GAME_HEADER_SAFE_AREA_TOP }
@@ -136,27 +99,15 @@ export default function GameHeader() {
       }
     >
       <div className="relative flex w-full items-center justify-between gap-2">
-        {mobileGameChrome ? (
-          <div className="flex shrink-0 items-center">
-            <HeaderPauseButton />
-            <HeaderPausedPlayTime />
-          </div>
-        ) : (
-          <button
-            type="button"
-            data-testid="button-return-to-start"
-            disabled={returningToStart}
-            onClick={handleReturnToStart}
-            className={`shrink-0 bg-transparent p-0 text-sm font-medium tracking-wide text-neutral-300 hover:text-neutral-100 disabled:opacity-50 ${GAME_CHROME_NO_BG_HOVER}`}
-          >
-            A Dark Cave
-          </button>
-        )}
+        <div className="flex shrink-0 items-center gap-1">
+          <HeaderPauseButton />
+          <HeaderPausedPlayTime />
+        </div>
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="pointer-events-auto flex items-center gap-2">
+          <div className="pointer-events-auto flex max-w-[min(100%,42rem)] flex-wrap items-center justify-center gap-2 px-12">
             <SteamDemoHeaderStoreLink />
             <DemoEndHeaderLink />
-            <GameHeaderRewardsShortcut />
+            <GameHeaderStatusIndicators />
           </div>
         </div>
         <GameHeaderControls />
