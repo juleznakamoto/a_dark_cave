@@ -11,6 +11,12 @@ on:
         type: boolean
         default: false
 
+# One Mac for the whole run. A second job has to win the arm64 queue again,
+# and GitHub cancels a job that is still waiting after about 15 minutes.
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   compile:
     runs-on: macos-latest
@@ -46,28 +52,8 @@ jobs:
           CODE_SIGNING_ALLOWED=NO
           build
 
-  testflight:
-    needs: compile
-    if: ${{ inputs.upload == true }}
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-
-      - name: Install
-        run: npm ci
-
-      - name: Build the iOS web bundle
-        run: npm run build:ios
-
-      - name: Sync Capacitor
-        run: npx cap sync ios
-
       - name: Archive and upload
+        if: ${{ inputs.upload == true }}
         env:
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}

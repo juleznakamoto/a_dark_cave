@@ -1,3 +1,5 @@
+import { TOOLTIP_VIEWPORT_PAD_PX } from "@/game/tooltipMetrics";
+
 export type HoverCalloutSide = "top" | "left" | "right" | "bottom";
 
 /** Arrow anchor along the callout edge facing the trigger (1/4, 1/2, or 3/4). */
@@ -7,7 +9,7 @@ export type HoverCalloutArrowAlign = "start" | "center" | "end";
 export const CALLOUT_GAP_PX = 6;
 /** Matches `-left-2` / `-right-2` on in-flow side callouts. */
 export const CALLOUT_SIDE_GAP_PX = 8;
-export const CALLOUT_VIEWPORT_PAD_PX = 10;
+export const CALLOUT_VIEWPORT_PAD_PX = TOOLTIP_VIEWPORT_PAD_PX;
 const ARROW_INSET_PX = 10;
 
 export function calloutAlignRatio(align: HoverCalloutArrowAlign): number {

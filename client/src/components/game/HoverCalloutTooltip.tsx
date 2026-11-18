@@ -15,6 +15,10 @@ import { useGameStore, isModalDialogOpen } from "@/game/state";
 import { Z_INDEX } from "@/lib/z-index";
 import { isGameTabHidden, subscribeGameTabHidden } from "@/lib/tabVisibility";
 import {
+  TOOLTIP_MAX_WIDTH,
+  TOOLTIP_VIEWPORT_PAD_PX,
+} from "@/game/tooltipMetrics";
+import {
   calloutArrowCss,
   placeCalloutInViewport,
   type HoverCalloutArrowAlign,
@@ -236,7 +240,7 @@ export function HoverCalloutTooltip({
       zIndex: calloutZIndex,
       left: placement?.left ?? triggerRect.left,
       top: placement?.top ?? triggerRect.bottom,
-      maxWidth: placement?.maxWidth,
+      maxWidth: `min(${TOOLTIP_MAX_WIDTH}, ${Math.max(0, window.innerWidth - TOOLTIP_VIEWPORT_PAD_PX * 2)}px)`,
       transform: undefined,
       visibility: placed ? "visible" : "hidden",
       ...fadeStyle,
@@ -325,7 +329,9 @@ export function HoverCalloutTooltip({
   const arrowCss = calloutArrowCss(side, arrowAlign, placement);
   const calloutInner = (
     <>
-      <span className="whitespace-nowrap">{label}</span>
+      <span className="whitespace-normal text-center [overflow-wrap:anywhere]">
+        {label}
+      </span>
       <div
         className="absolute bg-inherit p-1"
         style={{

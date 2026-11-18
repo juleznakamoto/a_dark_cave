@@ -60,6 +60,7 @@ export const KNOWN_SPA_PATHS = new Set([
   "/dev/production-icons",
   "/dev/village-map",
   "/dev/building-shapes",
+  "/dev/tooltips",
 ]);
 
 const HOME_ROUTE_SEO: PublicRouteSeo = {
@@ -228,6 +229,13 @@ const ROUTE_SEO: Record<string, PublicRouteSeo> = {
     includeHomeJsonLd: false,
     robots: "noindex, nofollow",
     pageName: "Building Shapes",
+  },
+  "/dev/tooltips": {
+    title: "Tooltips Demo - A Dark Cave",
+    description: "Development preview for A Dark Cave tooltip layouts.",
+    includeHomeJsonLd: false,
+    robots: "noindex, nofollow",
+    pageName: "Tooltips Demo",
   },
 };
 

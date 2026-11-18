@@ -1,22 +1,8 @@
 import React from "react";
+import { tooltipDescriptionLayoutStyle } from "@/game/tooltipMetrics";
 
 export function ActionTooltipSeparator() {
   return <div className="my-1 border-t border-neutral-800" />;
-}
-
-/**
- * Flavour text width:
- * - Below header/effect lines: wrap to those lines (`width: 0; min-width: 100%`)
- *   with a 12rem floor so short stats (e.g. "Luck: +3") do not crush the text.
- * - Description-only (books, fellowship, etc.): cap at 12rem so wrapping does
- *   not stretch the tip out to max-w-xs with empty space on the right.
- */
-export function tooltipWrappedDescriptionClass(
-  hasContentAbove: boolean,
-): string {
-  return hasContentAbove
-    ? "w-0 min-w-[max(100%,12rem)]"
-    : "max-w-[12rem]";
 }
 
 export type ActionTooltipParts = {
@@ -79,12 +65,8 @@ export function composeActionTooltip({
         <>
           {hasHeader || hasEffects ? <ActionTooltipSeparator /> : null}
           <div
-            className={[
-              "whitespace-normal text-muted-foreground",
-              tooltipWrappedDescriptionClass(hasHeader || hasEffects),
-            ]
-              .filter(Boolean)
-              .join(" ")}
+            className="whitespace-normal text-muted-foreground"
+            style={tooltipDescriptionLayoutStyle(hasHeader || hasEffects)}
           >
             {description}
           </div>

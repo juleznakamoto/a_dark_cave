@@ -1449,10 +1449,10 @@ button.new-item-pulse-text,
 
 /* Village header slots (construction queue, job presets, insight unlocks).
    Grow with the text bump. control-scale alone left the + and × looking stuck
-   while labeled buttons grew. 24px at Small, then +2px per size step. */
+   while labeled buttons grew. 22px at Small, then +2px per size step. */
 .game-panel-header-slot {
-  width: calc(24px + var(--adc-text-delta, 0px));
-  height: calc(24px + var(--adc-text-delta, 0px));
+  width: calc(22px + var(--adc-text-delta, 0px));
+  height: calc(22px + var(--adc-text-delta, 0px));
 }
 
 /* + / × / save mark inside those slots. text-[16px] is excluded from text scale. */
@@ -1462,7 +1462,7 @@ button.new-item-pulse-text,
 }
 
 .game-panel-header-slot-row {
-  gap: 6px;
+  gap: 8px;
 }
 
 /* Header status circular indicators — 22px Small, 24px Medium, 26px Large,

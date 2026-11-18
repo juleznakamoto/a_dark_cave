@@ -132,6 +132,5 @@ export function composeMerchantSpecialItemTooltip(
     header: costHeader,
     effects,
     description,
-    style: { width: "12rem" },
   });
 }

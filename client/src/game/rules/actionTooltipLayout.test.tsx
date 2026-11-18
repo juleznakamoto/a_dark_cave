@@ -3,6 +3,10 @@ import React from "react";
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { composeActionTooltip } from "./actionTooltipLayout";
+import {
+  TOOLTIP_MAX_WIDTH,
+  TOOLTIP_MIN_WIDTH,
+} from "@/game/tooltipMetrics";
 
 describe("composeActionTooltip", () => {
   it("orders cost, effects, and description with dividers between sections", () => {
@@ -52,7 +56,7 @@ describe("composeActionTooltip", () => {
     expect(container.querySelector(".font-bold")).toBeNull();
   });
 
-  it("sizes wrapped flavour text to the lines above, with a readable floor", () => {
+  it("lets flavour under other lines use the shared floor and cap", () => {
     const node = composeActionTooltip({
       header: <span>Gather Wood: +25% Bonus</span>,
       description: "Sturdy leather gloves that help with wood gathering",
@@ -61,11 +65,12 @@ describe("composeActionTooltip", () => {
     const description = screen.getByText(
       "Sturdy leather gloves that help with wood gathering",
     );
-    expect(description.className).toContain("w-0");
-    expect(description.className).toContain("min-w-[max(100%,12rem)]");
+    expect(description.style.width).toBe("0px");
+    expect(description.style.minWidth).toBe(`max(100%, ${TOOLTIP_MIN_WIDTH})`);
+    expect(description.style.maxWidth).toBe(TOOLTIP_MAX_WIDTH);
   });
 
-  it("caps description-only tips at 12rem instead of stretching to max-w-xs", () => {
+  it("wraps description-only tips at the shared floor", () => {
     const node = composeActionTooltip({
       description: "Sturdy leather gloves that help with wood gathering",
     });
@@ -73,7 +78,7 @@ describe("composeActionTooltip", () => {
     const description = screen.getByText(
       "Sturdy leather gloves that help with wood gathering",
     );
-    expect(description.className).not.toContain("w-0");
-    expect(description.className).toContain("max-w-[12rem]");
+    expect(description.style.width).toBe("max-content");
+    expect(description.style.maxWidth).toBe(TOOLTIP_MIN_WIDTH);
   });
 });

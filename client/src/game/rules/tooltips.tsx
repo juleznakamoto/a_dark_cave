@@ -144,7 +144,7 @@ export const getActionDurationLine = (
   const slowed = isBadDreamsActive(state, Date.now());
   return (
     <IconCostLine
-      className={slowed ? "text-red-500" : SATISFIED_COST_CLASS}
+      className={`${slowed ? "text-red-500" : SATISFIED_COST_CLASS} pb-[0.35em]`}
       icon={
         <span className="inline-block translate-y-[0.105em] font-noto-symbols-2 text-[1.2em] leading-none" aria-hidden>
           {DURATION_COST_GLYPH}

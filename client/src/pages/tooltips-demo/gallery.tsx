@@ -33,11 +33,13 @@ import {
   getEventChoiceCostBreakdown,
 } from "@/game/rules";
 import {
-  ActionTooltipResourceRows,
   ActionTooltipSeparator,
+  composeActionTooltip,
+} from "@/game/rules/actionTooltipLayout";
+import {
+  ActionTooltipResourceRows,
   TooltipCostLines,
   actionTooltipHasResourceSection,
-  composeActionTooltip,
   costBenefitTooltip,
   getResourceGainTooltip,
   heartfireTooltip,
@@ -143,7 +145,6 @@ function CaveGatherTip({ state }: { state: GameState }) {
     ),
     description,
     effects: revealed,
-    style: description || revealed ? { width: "12rem" } : undefined,
   });
 }
 
@@ -168,7 +169,6 @@ function VillageBuildTip({ state }: { state: GameState }) {
     ) : undefined,
     description,
     effects: revealed,
-    style: description || revealed ? { width: "12rem" } : undefined,
   });
 }
 
@@ -206,7 +206,6 @@ function ForestExpeditionTip({ state }: { state: GameState }) {
       </div>
     ),
     description,
-    style: description ? { width: "12rem" } : undefined,
   });
 }
 
@@ -239,7 +238,6 @@ function FinanceExpeditionTip({ state }: { state: GameState }) {
       </div>
     ),
     description,
-    style: description ? { width: "12rem" } : undefined,
   });
 }
 
@@ -589,7 +587,7 @@ function InvestTip() {
   const formatPercent = (value: number) =>
     Number.isInteger(value) ? String(value) : value.toFixed(1);
   return (
-    <div className="max-w-[280px] space-y-2 text-xs">
+    <div className="space-y-2 text-xs">
       <div className="mb-0.5 space-y-1.5 border-b border-border pb-2">
         <p className="font-medium text-foreground">
           {t("invest.luckyChanceTop", {
@@ -671,13 +669,13 @@ export function TooltipDemoGallery({ state }: { state: GameState }) {
   return (
     <div className="grid items-start gap-x-8 gap-y-6 sm:grid-cols-2 xl:grid-cols-3">
       <SectionTitle>Action tips</SectionTitle>
-      <TooltipSample id="action-gather" title="Cave gather (gain, 12rem)">
+      <TooltipSample id="action-gather" title="Cave gather (gain)">
         <CaveGatherTip state={state} />
       </TooltipSample>
-      <TooltipSample id="action-build" title="Village build (nowrap, 12rem)">
+      <TooltipSample id="action-build" title="Village build">
         <VillageBuildTip state={state} />
       </TooltipSample>
-      <TooltipSample id="action-expedition" title="Forest expedition (nowrap, 12rem)">
+      <TooltipSample id="action-expedition" title="Forest expedition">
         <ForestExpeditionTip state={state} />
       </TooltipSample>
       <TooltipSample id="action-finance" title="Finance expedition (nowrap effects)">
@@ -840,7 +838,7 @@ export function TooltipDemoGallery({ state }: { state: GameState }) {
       <TooltipSample id="menu-invite" title="Menu: invite friends">
         <InviteFriendsTooltip count={2} />
       </TooltipSample>
-      <TooltipSample id="invest-info" title="Invest info" className="max-w-sm">
+      <TooltipSample id="invest-info" title="Invest info">
         <InvestTip />
       </TooltipSample>
       <TooltipSample
@@ -853,7 +851,7 @@ export function TooltipDemoGallery({ state }: { state: GameState }) {
       <TooltipSample
         id="shop-compass"
         title="Shop: narrow artifact"
-        className="max-w-[14rem] border border-amber-600"
+        className="border border-amber-600"
       >
         <div className="text-xs">
           {resolveShopItemDescription(SHOP_ITEMS.tarnished_compass)}

@@ -144,7 +144,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
   };
 
   const strategyTableInfoTooltip = (
-    <div className="text-xs space-y-2 max-w-[280px]">
+    <div className="text-xs space-y-2">
       <div className="space-y-1.5 border-b border-border pb-2 mb-0.5">
         <p className="font-medium text-foreground">
           {formatLuckyChanceTopLine(luckyChancePct, luck, t)}
@@ -201,7 +201,6 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
               tooltip={strategyTableInfoTooltip}
               tooltipId="invest-dialog-info"
               disabled
-              tooltipContentClassName="max-w-sm"
               className={GAME_INFO_TRIGGER_CLASS}
             >
               <span

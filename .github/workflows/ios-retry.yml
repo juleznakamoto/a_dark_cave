@@ -1,0 +1,37 @@
+name: iOS retry
+
+# GitHub cancels a macos-latest job that no runner picks up. That failure
+# happens before any step, so the iOS workflow cannot retry itself.
+# This runs on Linux after that workflow finishes and re-runs the same attempt.
+on:
+  workflow_run:
+    workflows: ["iOS"]
+    types: [completed]
+
+jobs:
+  retry:
+    if: github.event.workflow_run.conclusion == 'failure' && github.event.workflow_run.run_attempt < 3
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    steps:
+      - name: Re-run if no Mac runner was assigned
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          set -euo pipefail
+          found=0
+          ids=$(gh api --paginate "/repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}/jobs" --jq '.jobs[].id')
+          for id in $ids; do
+            if gh api "/repos/${GITHUB_REPOSITORY}/check-runs/${id}/annotations" --jq '.[].message' \
+              | grep -Fqx "The job was not acquired by Runner of type hosted even after multiple attempts"; then
+              found=1
+            fi
+          done
+          if [ "$found" -eq 0 ]; then
+            echo "Failure was not a missing Mac runner. Leaving it."
+            exit 0
+          fi
+          echo "No Mac runner was assigned. Re-running attempt ${{ github.event.workflow_run.run_attempt }}."
+          gh api --method POST "/repos/${GITHUB_REPOSITORY}/actions/runs/${RUN_ID}/rerun"

@@ -119,6 +119,7 @@ describe("publicSeo", () => {
     expect(resolveSpaHtmlResponse("/dev/production-icons").status).toBe(200);
     expect(resolveSpaHtmlResponse("/dev/village-map").status).toBe(200);
     expect(resolveSpaHtmlResponse("/dev/building-shapes").status).toBe(200);
+    expect(resolveSpaHtmlResponse("/dev/tooltips").status).toBe(200);
   });
 
   it("customizes legal page metadata and strips home JSON-LD", () => {
@@ -235,6 +236,8 @@ describe("publicSeo", () => {
     expect(privacy).not.toBe(terms);
     expect(privacy).toContain("This Privacy Policy informs you");
     expect(privacy).toContain("The App Store app does not collect personal data");
+    expect(privacy).toContain("or with Google");
+    expect(privacy).toContain("Google Forms");
     expect(privacy).toContain("Art. 15 GDPR");
     expect(privacy).toContain("Julian Bauer");
     expect(privacy).not.toContain("Play for Free in Your Browser");

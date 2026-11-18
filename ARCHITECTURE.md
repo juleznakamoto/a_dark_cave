@@ -188,7 +188,7 @@ shared/schema.ts - Zod persisted shape
 | Client/server build | `write-build-meta.mjs` (`__BUILD_SHA__` / `/api/version`) |
 | i18n | `i18n:*` npm scripts (`extract`, `sync`, `verify`, `translate`) |
 | Steam package/upload | `package-steam-*.mjs`, `steam-upload*.ps1`, `build-electron.mjs` |
-| iOS compile / TestFlight | `.github/workflows/ios.yml`, `scripts/ios-testflight-upload.sh` |
+| iOS compile / TestFlight | `.github/workflows/ios.yml`, `.github/workflows/ios-retry.yml`, `scripts/ios-testflight-upload.sh` |
 | CrazyGames folder | `package-crazygames.mjs` |
 | itch.io HTML demo folder | `package-itch.mjs` |
 | Press / icons / fonts | `build-press-kit-assets.mjs`, `generate-logo-assets.py` |
@@ -214,7 +214,7 @@ The iOS app is the buy-once full game (no demo in v1).
 | itch.io demo | `VITE_ITCH=1` or `/itch` | `itchSave` | `package:itch` (`release/a-dark-cave-itch/`) |
 | iOS | `VITE_IOS_BUILD=1` | IndexedDB `iosSave` + `adc-ios-save.dat` in the app sandbox | `build:ios`, then the `ios` GitHub workflow |
 
-**iOS shell:** `ios/`, `capacitor.config.json`. The renderer uses `client/src/lib/iosShell.ts` and `client/src/game/iosSaveAdapter.ts`. Web and Steam alias `@capacitor/*` to stubs. Signing and TestFlight upload run only when the workflow is started with the upload input and the App Store Connect secrets exist. A normal run compiles an unsigned simulator build on `macos-latest` (Swift Package Manager, no CocoaPods).
+**iOS shell:** `ios/`, `capacitor.config.json`. The renderer uses `client/src/lib/iosShell.ts` and `client/src/game/iosSaveAdapter.ts`. Web and Steam alias `@capacitor/*` to stubs. Signing and TestFlight upload run only when the workflow is started with the upload input and the App Store Connect secrets exist. A normal run compiles an unsigned simulator build on `macos-latest` (Swift Package Manager, no CocoaPods). Upload, when requested, continues on that same runner. If GitHub never assigns a Mac, `ios-retry.yml` re-runs that attempt, up to three tries.
 
 **Steam shell:** `electron/main.ts`, `preload.ts`, `loopbackServer.ts`, `steam.ts`,
 `paths.ts`. Renderer talks through `client/src/lib/steam.ts`. Steam Vite build

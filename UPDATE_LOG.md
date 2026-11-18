@@ -14,6 +14,8 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- Tips with a longer description are a bit wider. Every tip stops at the same maximum width and keeps the same gap from the screen edge.
+- Construction queue and villager preset boxes are a little smaller, with more space between them.
 - Achievement progress after the description sits in parentheses, like (3/10).
 - On a phone, the pale light around your cursor is a smaller spot during sleep and on the title screen.
 - While you are sleeping, your play time sits next to Pause, and production and effect rings stay out of the top bar.
@@ -22,7 +24,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 - In the dice game, Roll and No Roll sit farther apart.
 - The Ambience and Sound knobs in Settings are a little larger, so they are easier to grab.
 - Pressing or dragging the line between panels shows the grab handle for a few seconds, then it fades out.
-- Cube memories on the Estate close right away, and the side arrows switch memories without a short wait. Those arrows are larger, and the memory window is a little wider.
+- Cube memories on the Estate close right away, and the side arrows switch memories without a short wait. Those arrows are larger, and the memory window is wider.
 - Pact choice cards are a little wider on phones.
 - The Insight tip for absolving an item now says it reduces Madness of the item by 1.
 - Pause, production, and Focus status rings in the top bar are a little larger.
@@ -49,6 +51,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- Long lines in tips stay inside the box, including larger text and longer translations.
 - Scrolling the screen while an action tip is open closes the tip.
 - Unlocking a construction queue slot or a villager preset plays the Insight animation before that badge goes away.
 - A new game starts with no pact choices. You earn one each time you finish a playthrough, or two if you finish in Cruel Mode.
@@ -62,7 +65,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 - Sleep mist fades in smoothly instead of jumping brighter in steps.
 - Item tip descriptions stay a readable width: they still hug longer effect lines, but short ones no longer squeeze the text into a tall column.
 - After you press and hold an action button on a phone to read its tip, tapping that button again runs the action instead of doing nothing.
-- Tips stay a little in from the edge of the screen instead of sitting flush against it.
+- Tips stay a little in from the edge of the screen, including an item tip beside a reward.
 - The Coinhouse tip no longer lists +2% Lucky Chance; that is the starting rate, and only Bank and Treasury list the bonus.
 - A new timed event tab flashes green again, and the tab and timer flash red when little time is left.
 - On pact choice cards, a long quote no longer sits against the line above the Madness cost.

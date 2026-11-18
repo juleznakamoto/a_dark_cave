@@ -371,8 +371,6 @@ export default function CavePanel() {
         headerTrailing: resourceGainTooltip ? undefined : tooltipHeaderTrailing,
         description,
         effects: revealedEffects,
-        style:
-          description || revealedEffects ? { width: "12rem" } : undefined,
       });
 
       const button = (

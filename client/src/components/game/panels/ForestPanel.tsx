@@ -430,7 +430,6 @@ export default function ForestPanel() {
       const tooltipContent = composeActionTooltip({
         header: tooltipHeader,
         description: flavorDescription,
-        style: flavorDescription ? { width: "12rem" } : undefined,
       });
 
       const button = (

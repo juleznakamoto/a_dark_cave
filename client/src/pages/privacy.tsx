@@ -103,11 +103,27 @@ export default function Privacy() {
 
       <h4>b) Account Creation (Cloud Save):</h4>
       <p>
-        If you choose to create an account, we collect your email
-        address and a password hash. This data is necessary to create
-        and manage your account and to provide the cloud save
-        functionality. The legal basis is Art. 6(1)(b) GDPR (performance
-        of a contract).
+        If you choose to create an account, you can sign up with an
+        email and a password, or with Google.
+      </p>
+      <p>
+        With email, we collect your email address and a password hash.
+      </p>
+      <p>
+        With Google, Google confirms your identity and provides the
+        email address and the display name on your Google account. We
+        do not receive your Google password. We store that email and
+        name with your account. From the display name only, we may
+        infer a gender label and store that label and the first name on
+        your cloud save, so a few lines in the game can match. We do
+        not infer this from your email address.
+      </p>
+      <p>
+        The account data is necessary to create and manage your account
+        and to provide the cloud save. The legal basis is Art. 6(1)(b)
+        GDPR (performance of a contract). For the gender label, the
+        legal basis is Art. 6(1)(f) GDPR (legitimate interest in
+        matching those lines to the player).
       </p>
 
       <h4>c) Game State Storage:</h4>
@@ -177,6 +193,16 @@ export default function Privacy() {
         year. The legal basis is Art. 6(1)(f) GDPR (legitimate interest
         in understanding how the game is used and which campaigns bring
         visitors).
+      </p>
+
+      <h4>h) Optional feedback:</h4>
+      <p>
+        Feedback on the website, in the Steam game, and in the iOS app
+        opens a form in the browser. The game does not fill in or send
+        that form. If you submit it, you choose what to write, and we
+        receive that message through Google Forms. You can play the
+        whole game without opening it. The legal basis is Art. 6(1)(a)
+        GDPR (consent).
       </p>
 
       <h3>4. Cookies and Local Storage</h3>
@@ -269,12 +295,24 @@ export default function Privacy() {
         collects through the SDK.
       </p>
 
+      <h4>f) Google:</h4>
+      <p>
+        For Sign in with Google, Google provides the email address and
+        display name described in section 3b. Our authentication
+        provider stores them with your account. For the optional
+        feedback form in section 3h, Google Forms delivers what you
+        submit to us. Google processes those steps under its own privacy
+        policy. The legal basis is Art. 6(1)(b) GDPR for sign-in and
+        Art. 6(1)(a) GDPR for the form.
+      </p>
+
       <h3>6. International Data Transfers</h3>
       <p>
         Your core account and cloud game save data are stored with
         Supabase in the EU (Frankfurt region). Some providers process
-        data outside the European Economic Area (for example Resend in
-        the United States, and hosting infrastructure used by Replit).
+        data outside the European Economic Area (for example Resend and
+        Google in the United States, and hosting infrastructure used by
+        Replit).
         Where a transfer to a third country requires safeguards under
         Art. 46 GDPR, we rely on appropriate mechanisms such as
         Standard Contractual Clauses in the provider&apos;s Data

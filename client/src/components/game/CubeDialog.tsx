@@ -204,7 +204,6 @@ export default function CubeDialog({
   const { previousId, nextId } = event.viewOnly
     ? getAdjacentUnlockedCubeEventIds({ events, relics }, eventId)
     : { previousId: null, nextId: null };
-  const canPageCubes = previousId != null || nextId != null;
 
   const showUnlockedCube = (targetId: string) => {
     const eventDef = cubeEvents[targetId];

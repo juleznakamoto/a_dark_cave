@@ -814,8 +814,6 @@ export default function VillagePanel() {
       headerTrailing: isUpgrade ? <BuildingUpgradeTooltipIcon /> : undefined,
       description: buildingDescription,
       effects: revealedEffects,
-      style:
-        buildingDescription || revealedEffects ? { width: "12rem" } : undefined,
     });
 
     const button = (

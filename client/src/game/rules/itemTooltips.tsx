@@ -28,10 +28,8 @@ import {
   getUpgradeChainCurrentEffectLines,
   getUpgradeChainLevelEffectSections,
 } from "./buildingTooltipSections";
-import {
-  ActionTooltipSeparator,
-  tooltipWrappedDescriptionClass,
-} from "./actionTooltipLayout";
+import { ActionTooltipSeparator } from "./actionTooltipLayout";
+import { tooltipDescriptionLayoutStyle } from "@/game/tooltipMetrics";
 import {
   getWeaponHierarchyChain,
   getWeaponInheritedUnlockLines,
@@ -610,7 +608,7 @@ function renderBuildingItemTooltip(
         <>
           {(hasMetaRow || effectsBlock) && <ActionTooltipSeparator />}
           <div
-            className={itemTooltipDescriptionToneClass(
+            {...itemTooltipDescriptionProps(
               Boolean(hasMetaRow || effectsBlock),
             )}
           >
@@ -700,7 +698,7 @@ export function renderFortificationTooltip(
         <>
           {(hasMetaRow || effectsBlock) && <ActionTooltipSeparator />}
           <div
-            className={itemTooltipDescriptionToneClass(
+            {...itemTooltipDescriptionProps(
               Boolean(hasMetaRow || effectsBlock),
             )}
           >
@@ -768,13 +766,14 @@ function getItemUnlockEffectLine(itemId: string): string | null {
 }
 
 /** Description-only tooltips stay normal; mute when effects/title sit above. */
-function itemTooltipDescriptionToneClass(hasContentAbove: boolean): string {
-  return [
-    hasContentAbove ? "text-muted-foreground" : "text-foreground",
-    tooltipWrappedDescriptionClass(hasContentAbove),
-  ]
-    .filter(Boolean)
-    .join(" ");
+function itemTooltipDescriptionProps(hasContentAbove: boolean): {
+  className: string;
+  style: React.CSSProperties;
+} {
+  return {
+    className: hasContentAbove ? "text-muted-foreground" : "text-foreground",
+    style: tooltipDescriptionLayoutStyle(hasContentAbove),
+  };
 }
 
 export function renderItemTooltip(
@@ -846,7 +845,7 @@ export function renderItemTooltip(
             <>
               {(showTitle || showEffects) && <ActionTooltipSeparator />}
               <div
-                className={itemTooltipDescriptionToneClass(
+                {...itemTooltipDescriptionProps(
                   Boolean(showTitle || showEffects),
                 )}
               >
@@ -936,7 +935,7 @@ export function renderItemTooltip(
           <>
             {descriptionHasContentAbove && <ActionTooltipSeparator />}
             <div
-              className={itemTooltipDescriptionToneClass(
+              {...itemTooltipDescriptionProps(
                 descriptionHasContentAbove,
               )}
             >
@@ -1490,7 +1489,7 @@ export function renderItemTooltip(
               <ActionTooltipSeparator />
             )}
           <div
-            className={itemTooltipDescriptionToneClass(
+            {...itemTooltipDescriptionProps(
               hasTitle ||
               hasAnyEffects ||
               (!showTitle &&

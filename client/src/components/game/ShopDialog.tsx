@@ -407,11 +407,7 @@ function ArtifactShopTooltipIcon({
       tooltip={tooltip}
       tooltipId={tooltipId}
       disabled
-      tooltipContentClassName={
-        artifact === "tarnished_compass" && variant === "description"
-          ? "max-w-[14rem] border border-amber-600"
-          : "max-w-xs border border-amber-600"
-      }
+      tooltipContentClassName="border border-amber-600"
       className={triggerClass}
     >
       <span className={GAME_INFO_GLYPH_CLASS} aria-hidden>
