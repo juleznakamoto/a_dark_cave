@@ -10,6 +10,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- When a village job is full, its /max turns yellow like a full resource.
 - The Wandering Collector only appears after you have seen gold.
 - Village − and + job buttons and insight marks are a little larger.
 - After you stay paused for 15 seconds, the red resume button pulses with a soft glow.

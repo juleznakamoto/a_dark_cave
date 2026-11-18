@@ -32,7 +32,10 @@ export function VillagerJobCap({
     <span
       translate="no"
       data-testid={`villager-job-cap-${jobId}`}
-      className={cn(className, !atCap && "text-muted-foreground")}
+      className={cn(
+        className,
+        atCap ? "text-yellow-500" : "text-muted-foreground",
+      )}
     >
       /<span
         key={flashGeneration}

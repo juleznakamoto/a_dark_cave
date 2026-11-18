@@ -15,9 +15,39 @@ describe("VillagerJobCap", () => {
 
     const cap = screen.getByTestId("villager-job-cap-hunter");
     expect(cap).toHaveTextContent("/10");
+    expect(cap.className).toContain("text-yellow-500");
     expect(screen.getByTestId("villager-job-cap-number-hunter").className).not.toContain(
       "villager-cap-flash",
     );
+  });
+
+  it("uses muted /cap below capacity and yellow at capacity", () => {
+    const { rerender } = render(
+      <VillagerJobCap
+        jobId="hunter"
+        cap={10}
+        atCap={false}
+        className={className}
+      />,
+    );
+
+    expect(screen.getByTestId("villager-job-cap-hunter").className).toContain(
+      "text-muted-foreground",
+    );
+    expect(
+      screen.getByTestId("villager-job-cap-hunter").className,
+    ).not.toContain("text-yellow-500");
+
+    rerender(
+      <VillagerJobCap jobId="hunter" cap={10} atCap className={className} />,
+    );
+
+    expect(screen.getByTestId("villager-job-cap-hunter").className).toContain(
+      "text-yellow-500",
+    );
+    expect(
+      screen.getByTestId("villager-job-cap-hunter").className,
+    ).not.toContain("text-muted-foreground");
   });
 
   it("flashes three times when an Insight upgrade raises the cap", () => {
