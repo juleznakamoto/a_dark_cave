@@ -533,7 +533,7 @@ export default function SocialPromptDialog({
     >
       <DialogContent
         scrollBody
-        className="[--adc-dialog-max-w:32rem] z-[70] max-h-[90vh]"
+        className="[--adc-dialog-max-w:32rem] [--adc-dialog-viewport-w:95vw] z-[70] max-h-[90vh]"
       >
         <DialogHeader>
           <DialogTitle>{t("socialPrompt.title")}</DialogTitle>

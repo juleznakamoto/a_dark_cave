@@ -40,9 +40,9 @@ const PACT_CARD_COPY_MIN_H =
   "min-h-[calc(2.75rem+2.75*var(--adc-text-delta,0px))]";
 const PACT_CARD_COST_MIN_H =
   "min-h-[calc(1.5rem+1.375*var(--adc-text-delta,0px))]";
-/** Base 15.5rem / sm 16rem. Larger text sizes widen the card a little. */
+/** Base 16.5rem / sm 16rem. Larger text sizes widen the card a little. */
 const PACT_CARD_WIDTH =
-  "w-[calc(15.5rem+6*var(--adc-text-delta,0px))] max-w-full sm:w-[calc(16rem+7*var(--adc-text-delta,0px))]";
+  "w-[calc(16.5rem+6*var(--adc-text-delta,0px))] max-w-full sm:w-[calc(16rem+7*var(--adc-text-delta,0px))]";
 
 type ViewportBox = {
   offsetTop: number;

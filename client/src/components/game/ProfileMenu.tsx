@@ -599,7 +599,7 @@ export function GameHeaderRewardsShortcut() {
             className={`text-lime-500 ${LIME_ACCENT_MASK_ICON_CLASS}`}
           />
         </span>
-        <span className="relative z-[1] text-xs font-medium tracking-wide text-neutral-300 opacity-80 transition-opacity group-hover:opacity-100">
+        <span className="relative z-[1] hidden text-xs font-medium tracking-wide text-neutral-300 opacity-80 transition-opacity group-hover:opacity-100 sm:inline">
           {rewardsLabel}
         </span>
       </button>
@@ -651,6 +651,7 @@ export function GameHeaderControls() {
           side="bottom"
           gapPx={12}
           className="mr-1"
+          openOnTap
         >
           <PactChoicesHeaderMark
             count={pactChoices}
@@ -662,6 +663,7 @@ export function GameHeaderControls() {
         <HoverCalloutTooltip
           label={t("footer.cruelModeActive")}
           side="bottom"
+          openOnTap
         >
           <CruelModeHeaderMark label={t("footer.cruelModeActive")} />
         </HoverCalloutTooltip>

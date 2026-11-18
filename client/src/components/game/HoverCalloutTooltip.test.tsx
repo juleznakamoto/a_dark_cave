@@ -143,6 +143,17 @@ describe("HoverCalloutTooltip touch press", () => {
     expect(calloutHost("Pact choices unlocked")).toHaveClass("opacity-100");
   });
 
+  it("opens on a short tap when openOnTap is set", () => {
+    render(
+      <HoverCalloutTooltip label="Pact choices unlocked" openOnTap>
+        <span>rings</span>
+      </HoverCalloutTooltip>,
+    );
+
+    shortPress(screen.getByText("rings"), "touch");
+    expect(calloutHost("Pact choices unlocked")).toHaveClass("opacity-100");
+  });
+
   it("does not open on a short tap", () => {
     render(
       <HoverCalloutTooltip label="Pact choices unlocked">

@@ -81,6 +81,8 @@ export interface HoverCalloutTooltipProps {
   size?: keyof typeof CALLOUT_SIZE;
   /** Space between the trigger and a top or bottom callout. Defaults to the shared gap. */
   gapPx?: number;
+  /** A short touch tap pins the callout. Default is long-press only. */
+  openOnTap?: boolean;
 }
 
 /** Playlight-style hover callout with a rotated-square arrow. */
@@ -98,6 +100,7 @@ export function HoverCalloutTooltip({
   portal = false,
   size = "sm",
   gapPx,
+  openOnTap = false,
 }: HoverCalloutTooltipProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const calloutRef = useRef<HTMLElement | null>(null);
@@ -296,6 +299,11 @@ export function HoverCalloutTooltip({
       // Keep pinned after long-press, same as useGlobalTooltip.
       swallowClickRef.current = true;
       openedByHoldRef.current = false;
+      return;
+    }
+    if (openOnTap) {
+      swallowClickRef.current = true;
+      setTouchPinned((open) => !open);
       return;
     }
     // Short tap: do not open. Resources also need a hold.

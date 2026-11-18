@@ -1322,8 +1322,6 @@ export default function GameContainer() {
         <div
           className="fixed inset-0 bg-background text-foreground flex flex-col"
           style={{
-            backgroundColor: showBloodMoonOverlay ? "hsl(0, 50%, 5%)" : undefined,
-            transition: `background-color ${BLOOD_MOON_OVERLAY_FADE_MS}ms ease-in-out`,
             ...iosChromeViewportStyle,
             // The web view is edge to edge. Header padding fills the status bar
             // with the header bg; shell padding keeps sides and the home indicator.
@@ -1336,6 +1334,21 @@ export default function GameContainer() {
               : null),
           }}
         >
+          {/* Blood moon wash stays between header and footer, same as sleep mist.
+              The bars use their own background so this red does not show through them. */}
+          <div
+            className="pointer-events-none absolute inset-x-0"
+            style={{
+              top: headerInset,
+              bottom: footerInset,
+              zIndex: 0,
+              backgroundColor: showBloodMoonOverlay
+                ? "hsl(0, 50%, 5%)"
+                : "var(--background)",
+              transition: `background-color ${BLOOD_MOON_OVERLAY_FADE_MS}ms ease-in-out`,
+            }}
+            aria-hidden
+          />
           {/* Blood moon smoke — between header/footer only (same insets as pause/sleep).
               Absolute (not fixed) so it stays under header/footer in this shell. */}
           {showBloodMoonOverlay && (
@@ -1768,7 +1781,7 @@ export default function GameContainer() {
           {/* Footer - above pause overlay so hover tooltips stay visible when paused.
               Phones and the iOS app move pause, feedback, and socials into the header. */}
           {!mobileGameChrome && (
-            <div className="relative z-50 flex-shrink-0 bg-inherit pointer-events-auto">
+            <div className="relative z-50 flex-shrink-0 bg-background pointer-events-auto">
               <GameFooter />
             </div>
           )}

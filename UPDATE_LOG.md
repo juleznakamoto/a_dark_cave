@@ -15,7 +15,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 - Pause, production, and Focus status rings in the top bar are a little larger.
 - The Focus mark on action tips is a little larger while Focus is active.
 - Action-button corner badges (Prior, Abort, level, Focus, Insight, boost) share a larger tap target. Prior and Abort discs are a little bigger too.
-- Pause, production, and Focus status rings sit in the top bar. Rewards sits just left of your pact choices. On the web, A Dark Cave sits in the bottom-left bar; Steam has no title link there.
+- Pause, production, and Focus status rings sit in the top bar to the right of Pause. Rewards sits just left of your pact choices. On the web, A Dark Cave sits in the bottom-left bar; Steam has no title link there.
 - When a village job is full, its /max turns yellow like a full resource.
 - The Wandering Collector only appears after you have seen gold.
 - Village − and + job buttons and insight marks are a little larger.
@@ -49,7 +49,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 - The Coinhouse tip no longer lists +2% Lucky Chance; that is the starting rate, and only Bank and Treasury list the bonus.
 - A new timed event tab flashes green again, and the tab and timer flash red when little time is left.
 - On pact choice cards, a long quote no longer sits against the line above the Madness cost.
-- On a phone, pact choice and cruel mode marks in the header show their tip while you press and hold, like other tooltips.
+- On a phone, tapping the pact choice rings or the Cruel Mode mark in the header shows what they mean.
 - On the start screen, a sentence that wraps onto a second line still dissolves when you light the fire.
 
 ### iOS
@@ -62,6 +62,8 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- On a phone, Rewards in the top bar shows only the diamond icon, without the word Rewards.
+- On a phone, the Rewards dialog uses more of the screen width.
 - On a phone, building outlines on the village map are a little thicker.
 - On a phone, language, ambience, and sound on the start screen are a bit larger.
 - On a phone, the header sits closer to the left and right edges of the screen.

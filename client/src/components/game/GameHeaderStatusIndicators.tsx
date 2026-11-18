@@ -423,7 +423,7 @@ export function GameHeaderStatusIndicators() {
 
   return (
     <div
-      className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5"
+      className="flex flex-wrap items-center justify-start gap-x-3 gap-y-1.5"
       data-testid="header-status-indicators"
     >
       {hasVillagers && (

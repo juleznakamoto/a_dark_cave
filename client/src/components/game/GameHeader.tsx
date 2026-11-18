@@ -91,7 +91,7 @@ export default function GameHeader() {
 
   return (
     <header
-      className={`relative z-50 flex min-h-9 flex-shrink-0 items-center bg-inherit ${GAME_CHROME_RULE_BOTTOM} px-1 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible`}
+      className={`relative z-50 flex min-h-9 flex-shrink-0 items-center bg-background ${GAME_CHROME_RULE_BOTTOM} px-1 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible`}
       style={
         iosEditionActive
           ? { paddingTop: GAME_HEADER_SAFE_AREA_TOP }
@@ -99,15 +99,17 @@ export default function GameHeader() {
       }
     >
       <div className="relative flex w-full items-center justify-between gap-2">
-        <div className="flex shrink-0 items-center gap-1">
-          <HeaderPauseButton />
-          <HeaderPausedPlayTime />
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1">
+            <HeaderPauseButton />
+            <HeaderPausedPlayTime />
+          </div>
+          <GameHeaderStatusIndicators />
         </div>
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div className="pointer-events-auto flex max-w-[min(100%,42rem)] flex-wrap items-center justify-center gap-2 px-12">
             <SteamDemoHeaderStoreLink />
             <DemoEndHeaderLink />
-            <GameHeaderStatusIndicators />
           </div>
         </div>
         <GameHeaderControls />

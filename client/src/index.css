@@ -1809,9 +1809,10 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
   /* 20px @ Small */
 }
 
-/* Population rows: column/row gaps track text delta (was fixed gap-y-1.5 / ml-*). */
+/* Population rows: column/row gaps track text delta (was fixed gap-y-1.5 / ml-*).
+   Row gap is 7px at Small. */
 .villager-count-stack {
-  row-gap: calc(0.375rem + 0.35 * var(--adc-text-delta, 0px));
+  row-gap: calc(7px + 0.35 * var(--adc-text-delta, 0px));
   column-gap: calc(0.25rem + 0.5 * var(--adc-text-delta, 0px));
 }
 
