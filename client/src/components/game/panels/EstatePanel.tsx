@@ -729,7 +729,7 @@ export default function EstatePanel({
                     focusState?.isActive
                   }
                   tooltip={
-                    <div className="text-xs whitespace-nowrap">
+                    <div className="text-xs">
                       <div>{t("estate.focusPointTooltip")}</div>
                       <div>
                         {t("estate.focusRewardTooltip", {

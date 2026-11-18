@@ -10,6 +10,8 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- Pause, production, and Focus status rings in the top bar are a little larger.
+- The Focus mark on action tips is a little larger while Focus is active.
 - Action-button corner badges (Prior, Abort, level, Focus, Insight, boost) share a larger tap target. Prior and Abort discs are a little bigger too.
 - Pause, production, and Focus status rings sit in the top bar. Rewards sits just left of your pact choices. On the web, A Dark Cave sits in the bottom-left bar; Steam has no title link there.
 - When a village job is full, its /max turns yellow like a full resource.
@@ -32,6 +34,9 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- Holding Prior or level badges on action buttons shows their tip after the usual hold time, not only when you let go.
+- If you close the game during an event while asleep, Sleep comes back first on reload; the event waits 5 seconds after you get up.
+- The Focus button tip wraps long lines instead of spilling past the box.
 - Achievement descriptions are no longer cut short; progress like 3/5 now sits after the text instead of in the middle of the row.
 - Loading a save while you are already asleep no longer replays the sleep sound or fades the mist in from empty.
 - During sleep and the blood moon, the top and bottom bars stay solid instead of letting the mist or smoke show through.

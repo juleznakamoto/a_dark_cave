@@ -1471,33 +1471,33 @@ button.new-item-pulse-text,
   gap: 6px;
 }
 
-/* Header status circular indicators — 20px Small, 22px Medium, 24px Large,
-   26px Extra Large, 28px at 200%. Produce-row legacy sizes stay below.
+/* Header status circular indicators — 22px Small, 24px Medium, 26px Large,
+   28px Extra Large, 30px at 200%. Produce-row legacy sizes stay below.
    `adc-text-large` is on for Medium and up; `adc-text-xlarge` adds Large;
    `adc-text-xxlarge` adds Extra Large; `adc-text-xxxlarge` adds 200%. */
 .game-panel-header-indicator {
-  width: calc(20px * var(--adc-indicator-scale, 1));
-  height: calc(20px * var(--adc-indicator-scale, 1));
-}
-
-html.adc-text-large .game-panel-header-indicator {
   width: calc(22px * var(--adc-indicator-scale, 1));
   height: calc(22px * var(--adc-indicator-scale, 1));
 }
 
-html.adc-text-xlarge .game-panel-header-indicator {
+html.adc-text-large .game-panel-header-indicator {
   width: calc(24px * var(--adc-indicator-scale, 1));
   height: calc(24px * var(--adc-indicator-scale, 1));
 }
 
-html.adc-text-xxlarge .game-panel-header-indicator {
+html.adc-text-xlarge .game-panel-header-indicator {
   width: calc(26px * var(--adc-indicator-scale, 1));
   height: calc(26px * var(--adc-indicator-scale, 1));
 }
 
-html.adc-text-xxxlarge .game-panel-header-indicator {
+html.adc-text-xxlarge .game-panel-header-indicator {
   width: calc(28px * var(--adc-indicator-scale, 1));
   height: calc(28px * var(--adc-indicator-scale, 1));
+}
+
+html.adc-text-xxxlarge .game-panel-header-indicator {
+  width: calc(30px * var(--adc-indicator-scale, 1));
+  height: calc(30px * var(--adc-indicator-scale, 1));
 }
 
 /* Side-panel resource/building rows: slightly more vertical room when enlarged. */
@@ -1644,23 +1644,23 @@ html.adc-text-xxxlarge .game-panel-header-indicator-glyph--xs {
 
 /* Tab section title row (Build, Explore, Rest, …). Matches Focus rings. */
 .game-panel-header-indicator-row {
-  height: 18px;
-}
-
-html.adc-text-large .game-panel-header-indicator-row {
   height: 20px;
 }
 
-html.adc-text-xlarge .game-panel-header-indicator-row {
+html.adc-text-large .game-panel-header-indicator-row {
   height: 22px;
 }
 
-html.adc-text-xxlarge .game-panel-header-indicator-row {
+html.adc-text-xlarge .game-panel-header-indicator-row {
   height: 24px;
 }
 
-html.adc-text-xxxlarge .game-panel-header-indicator-row {
+html.adc-text-xxlarge .game-panel-header-indicator-row {
   height: 26px;
+}
+
+html.adc-text-xxxlarge .game-panel-header-indicator-row {
+  height: 28px;
 }
 
 /* Produce: title line stays short; effect rings wrap underneath
@@ -1675,23 +1675,23 @@ html.adc-text-large .game-panel-produce-header.game-panel-header-indicator-row {
 }
 
 .game-panel-produce-effects {
-  --adc-indicator-scale: calc(22 / 18);
+  --adc-indicator-scale: calc(22 / 22);
 }
 
 html.adc-text-large .game-panel-produce-effects {
-  --adc-indicator-scale: calc(26 / 20);
+  --adc-indicator-scale: calc(26 / 24);
 }
 
 html.adc-text-xlarge .game-panel-produce-effects {
-  --adc-indicator-scale: calc(30 / 22);
+  --adc-indicator-scale: calc(30 / 26);
 }
 
 html.adc-text-xxlarge .game-panel-produce-effects {
-  --adc-indicator-scale: calc(34 / 24);
+  --adc-indicator-scale: calc(34 / 28);
 }
 
 html.adc-text-xxxlarge .game-panel-produce-effects {
-  --adc-indicator-scale: calc(38 / 26);
+  --adc-indicator-scale: calc(38 / 30);
 }
 
 .game-panel-produce-effects:empty {

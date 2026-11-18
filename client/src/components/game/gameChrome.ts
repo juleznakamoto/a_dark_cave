@@ -95,10 +95,10 @@ export const GAME_PANEL_HEADER_SLOT_ROW_CLASS =
 
 /**
  * Circular progress indicators in the game header (and IdleModeDialog).
- * Base: 20px. Medium: 22px. Large: 24px (see `.game-panel-header-indicator` in CSS).
+ * Base: 22px. Medium: 24px. Large: 26px (see `.game-panel-header-indicator` in CSS).
  * Pair with `CircularProgress fill` + `GAME_PANEL_HEADER_INDICATOR_GLYPH_CLASS`.
  */
-export const GAME_PANEL_HEADER_INDICATOR_SIZE_PX = 20;
+export const GAME_PANEL_HEADER_INDICATOR_SIZE_PX = 22;
 
 export const GAME_PANEL_HEADER_INDICATOR_CLASS =
   "game-panel-header-indicator inline-flex shrink-0 items-center justify-center self-center cursor-pointer rounded-full opacity-80 transition-opacity duration-150 hover:opacity-100";

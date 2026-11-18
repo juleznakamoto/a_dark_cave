@@ -6,9 +6,12 @@ import { playHaptic } from "@/lib/haptics";
 import { madnessEvents } from "@/game/rules/eventsMadness";
 import {
   gameEvents,
+  getPendingModalEventDialogResume,
   snapshotPendingModalEvent,
   type LogEntry,
 } from "@/game/rules/events";
+import { SLEEP_DREAM_DELAY_MS } from "@/game/rules/eventsSleepDream";
+import { shouldRestoreSleepDialog } from "@/game/sleepActivation";
 import type { GameState } from "@shared/schema";
 import type { CombatResultSummary } from "@/game/types";
 import type { GameStore } from "./types";
@@ -107,12 +110,19 @@ type GameStoreSetter = (
     | ((state: GameStore) => Partial<GameStore>),
 ) => void;
 
+type ScheduleWhenDialogClearOptions = {
+  /** Override the post-clear pause (default {@link DIALOG_HANDOFF_DELAY_MS}). */
+  handoffDelayMs?: number;
+};
+
 function scheduleWhenDialogClear(
   get: () => GameStore,
   isBlocked: (store: GameStore) => boolean,
   onOpen: () => void,
   initialDelayMs: number,
+  options?: ScheduleWhenDialogClearOptions,
 ): void {
+  const handoffDelayMs = options?.handoffDelayMs ?? DIALOG_HANDOFF_DELAY_MS;
   setTimeout(() => {
     let wasBlocked = false;
     const tryOpen = () => {
@@ -127,7 +137,7 @@ function scheduleWhenDialogClear(
         setTimeout(() => {
           wasBlocked = false;
           tryOpen();
-        }, DIALOG_HANDOFF_DELAY_MS);
+        }, handoffDelayMs);
         return;
       }
       onOpen();
@@ -201,6 +211,10 @@ export function scheduleEventDialogWhenClear(
   set: GameStoreSetter,
   event: LogEntry,
   initialDelayMs: number,
+  options?: ScheduleWhenDialogClearOptions & {
+    /** Extra block (e.g. sleep still pending restore before its dialog opens). */
+    isAlsoBlocked?: (store: GameStore) => boolean;
+  },
 ): void {
   // Wait for visible modals only, not dialogHandoffPending. Handoff is the
   // gap this queued open is supposed to clear. Using isModalDialogOpen here
@@ -208,13 +222,64 @@ export function scheduleEventDialogWhenClear(
   // bars sit at 0s because ticks stay frozen (pause button is still off).
   scheduleWhenDialogClear(
     get,
-    (store) => isVisibleModalDialogOpen(store) || store.villageMapReplaying === true,
+    (store) =>
+      isVisibleModalDialogOpen(store) ||
+      store.villageMapReplaying === true ||
+      Boolean(options?.isAlsoBlocked?.(store)),
     () => {
       if (shouldDropDeferredEvent(get, event)) return;
       openEventDialogNow(set, event);
     },
     initialDelayMs,
+    options,
   );
+}
+
+/**
+ * Bumped whenever a sleep-deferred pending event is re-scheduled so an older
+ * loadGame / orchestrator resume cannot open the same dialog twice.
+ */
+let pendingModalEventAfterSleepScheduleId = 0;
+
+/**
+ * Re-open a saved pending event after load. Sleep report wins when a session
+ * still needs display: keep the snapshot closed, then open 5s after Sleep
+ * closes (same gap as wake dreams).
+ */
+export function applyPendingModalEventDialogResume(
+  get: () => GameStore,
+  set: GameStoreSetter,
+  state: GameState,
+): ReturnType<typeof getPendingModalEventDialogResume> {
+  const resume = getPendingModalEventDialogResume(state);
+  const event = resume.eventDialog.currentEvent;
+  if (!event) return resume;
+
+  if (!shouldRestoreSleepDialog(state)) {
+    return resume;
+  }
+
+  const scheduleId = ++pendingModalEventAfterSleepScheduleId;
+  scheduleWhenDialogClear(
+    get,
+    (store) =>
+      isVisibleModalDialogOpen(store) ||
+      store.villageMapReplaying === true ||
+      shouldRestoreSleepDialog(store),
+    () => {
+      // Pending-modal resume is an unfinished choice, not a re-roll: do not
+      // drop when the catalog condition no longer holds.
+      if (scheduleId !== pendingModalEventAfterSleepScheduleId) return;
+      openEventDialogNow(set, event);
+    },
+    0,
+    { handoffDelayMs: SLEEP_DREAM_DELAY_MS },
+  );
+
+  return {
+    eventDialog: { isOpen: false, currentEvent: null, lastEndedAt: 0 },
+    pendingModalEvent: resume.pendingModalEvent,
+  };
 }
 
 /**

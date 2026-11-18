@@ -1,17 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { UpgradeKey, getButtonUpgradeInfo, getMasteryClickRate, getUpgradeLevelsForKey } from "@/game/buttonUpgrades";
 import { getCraftProduceAmount } from "@/game/craftUpgradeUtils";
 import { useGameStore } from "@/game/state";
 import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
-import { isGameTabHidden, subscribeGameTabHidden } from "@/lib/tabVisibility";
 
 interface ButtonLevelBadgeProps {
   upgradeKey: UpgradeKey;
@@ -29,13 +23,6 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
   const produceAmount = useDerivedGameState((s) =>
     getCraftProduceAmount(upgradeKey, s),
   );
-  const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    return subscribeGameTabHidden(() => {
-      if (isGameTabHidden()) setIsOpen(false);
-    });
-  }, []);
 
   if (!hasBook) {
     return null;
@@ -53,100 +40,93 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
   const clicksNeededForLevel = nextLevelTarget - currentLevelStart;
   const progressPercent = clicksNeededForLevel > 0 ? (clicksInCurrentLevel / clicksNeededForLevel) * 100 : 0;
 
-  return (
-    <TooltipProvider>
-      <Tooltip open={isOpen} onOpenChange={setIsOpen}>
-        <TooltipTrigger
-          asChild
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsOpen(!isOpen);
-          }}
-          onPointerDown={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <div
-            className="button-level-badge game-corner-badge-digit flex items-center justify-center bg-red-950 rounded-full cursor-default z-[20] hover:bg-red-900 transition-colors duration-300 ease-in-out"
-            data-testid={`level-badge-${upgradeKey}`}
-          >
-            {info.isMaxLevel ? '★' : info.level}
-          </div>
-        </TooltipTrigger>
-        <TooltipContent
-          side="right"
-          className="max-w-xs bg-popover text-white border text-xs"
-          data-testid={`level-tooltip-${upgradeKey}`}
-        >
-          <div className="space-y-1.5">
-            <div className="">
-              {!info.isMaxLevel && info.nextLevel ? (
-                <>
-                  <div className="flex items-center gap-2">
-                    <div className="pt-1 relative">
-                      <CircularProgress
-                        value={progressPercent}
-                        size={24}
-                        strokeWidth={2}
-                      />
-                      <div className="absolute mb-[0px] inset-0 flex items-center justify-center text-xs font-medium">
-                        {info.level}
-                      </div>
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                      <div className="text-xs">
-                        {t("badges.bonus")}{" "}
-                        <span className="font-medium">
-                          {isCraftUpgrade && produceAmount !== undefined
-                            ? t("badges.craftMultiplier", {
-                              amount: produceAmount,
-                            })
-                            : t("badges.bonusPercent", {
-                              percent: info.bonus,
-                            })}
-                        </span>
-                      </div>
-                      <div className="text-xs">
-                        {t("badges.nextBonus")}{" "}
-                        <span className="font-medium">
-                          {isCraftUpgrade && produceAmount !== undefined && info.nextLevel
-                            ? t("badges.craftMultiplier", {
-                              amount: Math.floor(
-                                1 * (1 + (info.nextLevel.bonus || 0) / 100),
-                              ),
-                            })
-                            : t("badges.bonusPercent", {
-                              percent: info.nextLevel.bonus,
-                            })}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <div className="flex flex-col gap-0.5">
-                  <div className="flex justify-between gap-1">
-                    <span>{t("badges.bonus")}</span>
-                    <span>
-                      {isCraftUpgrade && produceAmount !== undefined
-                        ? t("badges.craftMultiplier", { amount: produceAmount })
-                        : t("badges.bonusPercent", { percent: info.bonus })}
-                    </span>
-                  </div>
-                  {isCraftUpgrade && info.isMaxLevel && (
-                    <div className="text-xs text-muted-foreground">
-                      {t("badges.executionTimeReduction")}
-                    </div>
-                  )}
+  const tooltip = (
+    <div className="space-y-1.5" data-testid={`level-tooltip-${upgradeKey}`}>
+      <div className="">
+        {!info.isMaxLevel && info.nextLevel ? (
+          <>
+            <div className="flex items-center gap-2">
+              <div className="pt-1 relative">
+                <CircularProgress
+                  value={progressPercent}
+                  size={24}
+                  strokeWidth={2}
+                />
+                <div className="absolute mb-[0px] inset-0 flex items-center justify-center text-xs font-medium">
+                  {info.level}
                 </div>
-              )}
-              {info.isMaxLevel && (
-                <div className="mt-1 pt-1 border-t">{t("badges.maxLevel")}</div>
-              )}
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <div className="text-xs">
+                  {t("badges.bonus")}{" "}
+                  <span className="font-medium">
+                    {isCraftUpgrade && produceAmount !== undefined
+                      ? t("badges.craftMultiplier", {
+                        amount: produceAmount,
+                      })
+                      : t("badges.bonusPercent", {
+                        percent: info.bonus,
+                      })}
+                  </span>
+                </div>
+                <div className="text-xs">
+                  {t("badges.nextBonus")}{" "}
+                  <span className="font-medium">
+                    {isCraftUpgrade && produceAmount !== undefined && info.nextLevel
+                      ? t("badges.craftMultiplier", {
+                        amount: Math.floor(
+                          1 * (1 + (info.nextLevel.bonus || 0) / 100),
+                        ),
+                      })
+                      : t("badges.bonusPercent", {
+                        percent: info.nextLevel.bonus,
+                      })}
+                  </span>
+                </div>
+              </div>
             </div>
+          </>
+        ) : (
+          <div className="flex flex-col gap-0.5">
+            <div className="flex justify-between gap-1">
+              <span>{t("badges.bonus")}</span>
+              <span>
+                {isCraftUpgrade && produceAmount !== undefined
+                  ? t("badges.craftMultiplier", { amount: produceAmount })
+                  : t("badges.bonusPercent", { percent: info.bonus })}
+              </span>
+            </div>
+            {isCraftUpgrade && info.isMaxLevel && (
+              <div className="text-xs text-muted-foreground">
+                {t("badges.executionTimeReduction")}
+              </div>
+            )}
           </div>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+        )}
+        {info.isMaxLevel && (
+          <div className="mt-1 pt-1 border-t">{t("badges.maxLevel")}</div>
+        )}
+      </div>
+    </div>
+  );
+
+  return (
+    <TooltipWrapper
+      tooltip={tooltip}
+      tooltipId={`level-badge-${upgradeKey}`}
+      disabled
+      side="right"
+      tooltipContentClassName="max-w-xs bg-popover text-white border text-xs"
+      tooltipTriggerAsChild
+      className="button-level-badge game-corner-badge-digit z-[20] flex items-center justify-center bg-red-950 rounded-full cursor-default hover:bg-red-900 transition-colors duration-300 ease-in-out"
+    >
+      <div
+        className="flex h-full w-full items-center justify-center"
+        data-testid={`level-badge-${upgradeKey}`}
+        onPointerDown={(e) => e.stopPropagation()}
+      >
+        {info.isMaxLevel ? "★" : info.level}
+      </div>
+    </TooltipWrapper>
   );
 }

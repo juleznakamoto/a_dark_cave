@@ -22,6 +22,16 @@ export function clearSleepEnterPresentation(): void {
   sleepEnterPresentation = false;
 }
 
+/** True when a sleep session is still in progress and the dialog should come back. */
+export function shouldRestoreSleepDialog(state: {
+  idleModeState?: { needsDisplay?: boolean; startTime?: number } | null;
+}): boolean {
+  return (
+    state.idleModeState?.needsDisplay === true &&
+    (state.idleModeState.startTime ?? 0) > 0
+  );
+}
+
 /** Estate tab / Sleep button are available once Dark Estate is built. */
 export function isEstateUnlocked(state: {
   buildings?: { darkEstate?: number } | null;

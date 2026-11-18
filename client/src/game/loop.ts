@@ -75,8 +75,11 @@ import {
   beginSleepMode,
   clearSleepEnterPresentation,
   shouldAutoSleepOnInactivity,
+  shouldRestoreSleepDialog,
 } from "./sleepActivation";
 import { isGameStoryCompleted } from "./rules/eventsAttackWaves";
+
+export { shouldRestoreSleepDialog } from "./sleepActivation";
 let gameLoopRunning = false;
 let gameLoopTimer: ReturnType<typeof setTimeout> | null = null;
 /** Set while the loop is started so the timer can call the nested tick. */
@@ -390,16 +393,6 @@ function detachActivityListeners() {
 export function getMsSinceUserActivity(): number {
   if (lastUserActivity === 0) return 0;
   return Date.now() - lastUserActivity;
-}
-
-/** True when a sleep session is still in progress and the dialog should come back. */
-export function shouldRestoreSleepDialog(state: {
-  idleModeState?: { needsDisplay?: boolean; startTime?: number } | null;
-}): boolean {
-  return (
-    state.idleModeState?.needsDisplay === true &&
-    (state.idleModeState.startTime ?? 0) > 0
-  );
 }
 
 /** How the sleep dialog should initialize when it opens. */

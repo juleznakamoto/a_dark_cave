@@ -1338,6 +1338,68 @@ describe("pending modal event persist", () => {
     expect(isModalDialogOpen(state)).toBe(true);
   });
 
+  it("defers a pending event until Sleep closes, then opens it after 5s", async () => {
+    vi.useFakeTimers();
+    const savedState = {
+      ...createInitialState(),
+      pendingModalEvent: {
+        eventId: "paleFigure",
+        openedAt: 1_700_000_000_000,
+        title: "The Slender Figure",
+        message: "A slender figure waits.",
+      },
+      idleModeState: {
+        isActive: true,
+        startTime: 1_700_000_000_000,
+        needsDisplay: true,
+        lastWokeAt: 0,
+      },
+      log: [],
+    };
+
+    mockLoadGame.mockResolvedValue(savedState);
+
+    await useGameStore.getState().loadGame();
+
+    let state = useGameStore.getState();
+    expect(state.eventDialog.isOpen).toBe(false);
+    expect(state.pendingModalEvent?.eventId).toBe("paleFigure");
+
+    // Let the deferred scheduler observe Sleep still pending.
+    vi.advanceTimersByTime(200);
+    expect(useGameStore.getState().eventDialog.isOpen).toBe(false);
+
+    // Sleep report is showing (restore path opens the dialog separately).
+    useGameStore.getState().setIdleModeDialog(true);
+    vi.advanceTimersByTime(200);
+    expect(useGameStore.getState().eventDialog.isOpen).toBe(false);
+
+    // Wake: clear sleep session the same way Get Up does.
+    useGameStore.setState({
+      idleModeState: {
+        isActive: false,
+        startTime: 0,
+        needsDisplay: false,
+        lastWokeAt: Date.now(),
+      },
+      idleModeDialog: { isOpen: false },
+    });
+
+    // Poll notices the clear, then waits the 5s sleep handoff.
+    vi.advanceTimersByTime(200);
+    expect(useGameStore.getState().eventDialog.isOpen).toBe(false);
+
+    vi.advanceTimersByTime(4_900);
+    expect(useGameStore.getState().eventDialog.isOpen).toBe(false);
+
+    vi.advanceTimersByTime(200);
+    state = useGameStore.getState();
+    expect(state.eventDialog.isOpen).toBe(true);
+    expect(state.eventDialog.currentEvent?.eventId).toBe("paleFigure");
+
+    vi.useRealTimers();
+  });
+
   it("returns to the timed-event tab when a visit is still active", async () => {
     const savedState = {
       ...createInitialState(),

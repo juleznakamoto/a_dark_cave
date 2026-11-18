@@ -23,7 +23,6 @@ import {
   gameEvents,
   getEventCatalogIdByEventId,
   getEventI18nVars,
-  getPendingModalEventDialogResume,
   snapshotPendingModalEvent,
 } from "@/game/rules/events";
 import { checkMilestoneLogEntries } from "@/game/rules/eventLogEntries";
@@ -216,6 +215,7 @@ import {
   scheduleInsightIntroDialogWhenClear,
   scheduleVillageEffectDialogWhenClear,
   scheduleMadnessDialogAfterCombat,
+  applyPendingModalEventDialogResume,
   beginDialogHandoff,
   openEventDialogNow,
   scheduleEventDialogWhenClear,
@@ -229,7 +229,7 @@ export const createDialogsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
   resumePendingModalEventDialog: () => {
     set((state) => ({
       ...state,
-      ...getPendingModalEventDialogResume(state),
+      ...applyPendingModalEventDialogResume(get, set, state),
     }));
   },
 

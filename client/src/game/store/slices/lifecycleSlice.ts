@@ -23,7 +23,6 @@ import {
   gameEvents,
   getEventCatalogIdByEventId,
   getEventI18nVars,
-  getPendingModalEventDialogResume,
   snapshotPendingModalEvent,
 } from "@/game/rules/events";
 import { checkMilestoneLogEntries } from "@/game/rules/eventLogEntries";
@@ -217,6 +216,7 @@ import {
   scheduleInsightPotionDialogWhenClear,
   scheduleVillageEffectDialogWhenClear,
   scheduleMadnessDialogAfterCombat,
+  applyPendingModalEventDialogResume,
   beginDialogHandoff,
   openEventDialogNow,
   scheduleEventDialogWhenClear,
@@ -871,7 +871,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       resetMadnessLevelLogBaseline();
       set({
         ...migrated,
-        ...getPendingModalEventDialogResume(migrated),
+        ...applyPendingModalEventDialogResume(get, set, migrated),
       });
       const {
         flushOverdueActionExecutions,

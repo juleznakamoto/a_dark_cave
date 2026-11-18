@@ -17,7 +17,7 @@ export function FocusTooltipIcon({ className }: { className?: string }) {
   return (
     <span
       className={cn(
-        "font-extrabold text-[10px] leading-none",
+        "font-extrabold text-[15px] leading-none",
         FOCUS_TOOLTIP_HIGHLIGHT_CLASS,
         className,
       )}
