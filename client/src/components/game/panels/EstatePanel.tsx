@@ -493,6 +493,7 @@ export default function EstatePanel({
     levelKey: "lengthLevel" | "intensityLevel",
   ) => {
     if (isDemoPlayFrozen(useGameStore.getState())) return;
+    let upgraded = false;
     useGameStore.setState((state) => {
       const currentLevel = state.sleepUpgrades[levelKey];
       const maxLevel =
@@ -506,6 +507,7 @@ export default function EstatePanel({
 
       if (state.resources[currency] < nextUpgrade.cost) return state;
 
+      upgraded = true;
       return {
         ...state,
         sleepUpgrades: {
@@ -518,6 +520,7 @@ export default function EstatePanel({
         },
       };
     });
+    if (upgraded) playHaptic("estateSkill");
   };
 
   const handleSleepLengthUpgrade = () =>

@@ -10,6 +10,8 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- Pressing or dragging the line between panels shows the grab handle for a few seconds, then it fades out.
+- Cube memories on the Estate close right away, and the side arrows switch memories without a short wait. Those arrows are larger, and the memory window is a little wider.
 - Pact choice cards are a little wider on phones.
 - The Insight tip for absolving an item now says it reduces Madness of the item by 1.
 - Pause, production, and Focus status rings in the top bar are a little larger.
@@ -36,6 +38,8 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- A new game starts with no pact choices. You earn one each time you finish a playthrough, or two if you finish in Cruel Mode.
+- Pointing at or pressing a coin on the village map no longer draws a black ring around it.
 - Holding Prior or level badges on action buttons shows their tip after the usual hold time, not only when you let go.
 - If you close the game during an event while asleep, Sleep comes back first on reload; the event waits 5 seconds after you get up.
 - The Focus button tip wraps long lines instead of spilling past the box.
@@ -56,9 +60,9 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Added
 
-- Claiming an achievement reward or improving an Estate skill gives a medium haptic tap.
-- Collecting a silver or gold coin on the village map, or turning event log filters on or off, gives a light haptic tap.
-- The iOS app gives short haptic feedback on key moments such as lighting the fire, trading, events, combat, and sleep. You can turn it off in Settings.
+- Action buttons, choices in events and dialogs, Abort, job presets, and the save mark give a light tap. Job + and - give a softer tick. Event log filters stay a light tap. The arrows in a cube memory stay quiet.
+- Feeding the fire, the Wanderer's Lantern, a Prior mark, spending Insight, a coin on the village map, Improve (including Sleep length and intensity), and claiming an achievement reward give a medium tap. Lighting the fire and blasting the gate give a heavy tap. Unlocking a game tab gives a success tap.
+- Combat, sleep, a new villager, and a death still have their own taps. You can turn haptics off in Settings.
 
 #### Changed
 
@@ -82,6 +86,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- On a phone, the resource list fills the side panel when you drag that panel taller.
 - Leaving the app and coming back no longer leaves the ambience music silent until you restart.
 - Leaving the app and coming back no longer freezes the game when Sleep is unlocked.
 - The area above the header matches the header background, and the header stays clear of the status bar.

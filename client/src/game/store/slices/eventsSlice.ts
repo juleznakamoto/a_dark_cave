@@ -226,6 +226,7 @@ import { getTimedEventTabCleanupPatch } from "../timedEventTab";
 import { StateManager } from "../StateManager";
 import { maybeScheduleInsightIntroDialog } from "@/game/insightIntro";
 import { playPurchaseSfx, shouldPlayPurchaseSfx } from "../actionSfx";
+import { playInsightHapticIfSpent } from "@/lib/haptics";
 
 export const createEventsSlice: GameStoreCreator<Partial<GameStore>> = (set, get) => ({
   addLogEntry: (entry: LogEntry) => {
@@ -516,6 +517,11 @@ export const createEventsSlice: GameStoreCreator<Partial<GameStore>> = (set, get
     if (changes._choiceRejected) {
       return false;
     }
+
+    playInsightHapticIfSpent(
+      state.resources.insight,
+      changes.resources?.insight,
+    );
 
     if (shouldPlayPurchaseSfx(eventId, choiceId, changes)) {
       playPurchaseSfx();

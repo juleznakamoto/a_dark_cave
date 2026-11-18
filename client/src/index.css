@@ -1020,6 +1020,8 @@ html[data-adc-chrome-stage="0"] {
 
 .village-silver-coin {
   cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Press matches buttons (100ms ease-out) but 10% smaller. fill-box keeps the scale on the coin. */
@@ -1031,14 +1033,6 @@ html[data-adc-chrome-stage="0"] {
 
 .village-silver-coin.is-pressed .village-silver-coin-body {
   transform: scale(0.9);
-}
-
-.village-silver-coin-hover {
-  stroke-width: 0;
-}
-
-.village-silver-coin:hover .village-silver-coin-hover {
-  stroke-width: 1px;
 }
 
 /* Shown by :hover, .is-hovered, or .is-highlighted. No map render. */

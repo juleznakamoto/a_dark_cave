@@ -1874,6 +1874,7 @@ export default function VillagePanel() {
                                   size="xs"
                                   variant={isActive ? "default" : "outline"}
                                   compactChrome
+                                  haptic="light"
                                   data-testid={`preset-slot-${slot}`}
                                   button_id={`preset-slot-${slot}`}
                                   className={cn(
@@ -1916,6 +1917,7 @@ export default function VillagePanel() {
                                 size="xs"
                                 variant="outline"
                                 compactChrome
+                                haptic="light"
                                 data-testid="preset-save"
                                 button_id="preset-save"
                                 className={cn(

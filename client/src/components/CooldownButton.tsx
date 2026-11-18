@@ -15,6 +15,7 @@ import { useInlineButtonParticles } from "@/components/ui/bubbly-button";
 import type { ParticleConfig } from "@/components/ui/bubbly-button.particles";
 import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
 import { isCraftOnceAction } from "@/game/rules/insightReveal";
+import { playButtonHaptic, playHaptic } from "@/lib/haptics";
 import { actionHasExecutionTime } from "@/game/rules/executionTime";
 import {
   ADC_PROGRESS_WIPE_PAUSED_CLASS,
@@ -404,6 +405,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       emitClickParticles(e.currentTarget);
 
       onClick(e);
+      playButtonHaptic();
       // Reset the flag after a short delay
       setTimeout(() => {
         actionExecutedRef.current = false;
@@ -618,6 +620,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
                   e.stopPropagation();
                   e.preventDefault();
                   abortActionExecution(actionIdFromProps);
+                  playHaptic("button");
                 }}
               >
                 <span

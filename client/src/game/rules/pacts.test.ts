@@ -81,34 +81,41 @@ describe("pact madness", () => {
 });
 
 describe("pact choices", () => {
-  it("gives older saves one choice when the count is missing", () => {
-    expect(clampPactChoices(undefined)).toBe(1);
-    expect(clampPactChoices("nope")).toBe(1);
+  it("gives older saves no choices when the count is missing", () => {
+    expect(clampPactChoices(undefined)).toBe(0);
+    expect(clampPactChoices("nope")).toBe(0);
   });
 
-  it("caps the stored count at five and never spends it below one", () => {
-    expect(clampPactChoices(0)).toBe(1);
+  it("caps the stored count at five and allows zero", () => {
+    expect(clampPactChoices(0)).toBe(0);
     expect(clampPactChoices(3.9)).toBe(3);
     expect(clampPactChoices(9)).toBe(5);
   });
 
   it("adds one choice when a game is completed, up to five", () => {
+    expect(grantPactChoiceForCompletedGame(0)).toBe(1);
+    expect(grantPactChoiceForCompletedGame(0, true)).toBe(2);
     expect(grantPactChoiceForCompletedGame(1)).toBe(2);
     expect(grantPactChoiceForCompletedGame(5)).toBe(5);
-    expect(grantPactChoiceForCompletedGame(undefined)).toBe(2);
+    expect(grantPactChoiceForCompletedGame(undefined)).toBe(1);
     expect(grantPactChoiceForCompletedGame(1, true)).toBe(3);
     expect(grantPactChoiceForCompletedGame(4, true)).toBe(5);
     expect(grantPactChoiceForCompletedGame(5, true)).toBe(5);
   });
 
-  it("gives one choice when no game has been finished", () => {
-    expect(resolvePactChoicesFromSave(undefined, 0)).toBe(1);
-    expect(resolvePactChoicesFromSave(undefined, undefined)).toBe(1);
+  it("gives no choices when the count is missing and no game has been finished", () => {
+    expect(resolvePactChoicesFromSave(undefined, 0)).toBe(0);
+    expect(resolvePactChoicesFromSave(undefined, undefined)).toBe(0);
+  });
+
+  it("keeps a stored count when no game has been finished", () => {
+    expect(resolvePactChoicesFromSave(1, 0)).toBe(1);
+    expect(resolvePactChoicesFromSave(3, 0)).toBe(3);
   });
 
   it("counts games finished before the choice field existed", () => {
-    expect(resolvePactChoicesFromSave(undefined, 1)).toBe(2);
-    expect(resolvePactChoicesFromSave(undefined, 3)).toBe(4);
+    expect(resolvePactChoicesFromSave(undefined, 1)).toBe(1);
+    expect(resolvePactChoicesFromSave(undefined, 3)).toBe(3);
     expect(resolvePactChoicesFromSave(undefined, 8)).toBe(5);
   });
 

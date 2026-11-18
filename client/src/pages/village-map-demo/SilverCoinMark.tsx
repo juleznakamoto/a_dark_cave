@@ -114,14 +114,6 @@ export function SilverCoinMark({
           <circle r={RING_R} fill="none" stroke="currentColor" strokeWidth={RING_STROKE} />
           <circle r={INNER_R} fill="currentColor" />
         </g>
-        <circle
-          className="village-silver-coin-hover"
-          r={OUTER_R}
-          fill="none"
-          stroke="#000"
-          vectorEffect="non-scaling-stroke"
-          pointerEvents="none"
-        />
       </g>
     </g>
   );

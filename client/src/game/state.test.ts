@@ -849,8 +849,18 @@ describe("pact choices from older saves", () => {
     return { ...rest, ...overrides } as GameState;
   }
 
-  it("starts at one choice when the save has no finished games", async () => {
+  it("starts at zero choices when the save has no finished games", async () => {
     mockLoadGame.mockResolvedValue(saveWithoutPactChoices());
+    await useGameStore.getState().loadGame();
+    expect(useGameStore.getState().pactChoices).toBe(0);
+  });
+
+  it("keeps a stored choice when no game has been finished", async () => {
+    mockLoadGame.mockResolvedValue({
+      ...createInitialState(),
+      pactChoices: 1,
+      lifetimeGamesWon: 0,
+    });
     await useGameStore.getState().loadGame();
     expect(useGameStore.getState().pactChoices).toBe(1);
   });
@@ -892,7 +902,7 @@ describe("pact choices from older saves", () => {
     );
     await useGameStore.getState().loadGame();
     expect(useGameStore.getState().lifetimeGamesWon).toBe(3);
-    expect(useGameStore.getState().pactChoices).toBe(4);
+    expect(useGameStore.getState().pactChoices).toBe(3);
   });
 
   it("counts a single legacy win flag when no finish list exists", async () => {
@@ -900,7 +910,7 @@ describe("pact choices from older saves", () => {
       saveWithoutPactChoices({ hasWonAnyGame: true }),
     );
     await useGameStore.getState().loadGame();
-    expect(useGameStore.getState().pactChoices).toBe(2);
+    expect(useGameStore.getState().pactChoices).toBe(1);
   });
 
   it("caps older careers at five choices", async () => {

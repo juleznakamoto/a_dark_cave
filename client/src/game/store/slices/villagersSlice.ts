@@ -221,6 +221,7 @@ import {
 import { getTimedEventTabCleanupPatch } from "../timedEventTab";
 import { StateManager } from "../StateManager";
 import { playActionStartSfx } from "../actionSfx";
+import { playHaptic } from "@/lib/haptics";
 
 /** In-flight timers for delayed villager-cap Insight upgrades (one per group). */
 const villagerCapUpgradeTimers = new Map<
@@ -235,6 +236,7 @@ export const createVillagersSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       const updates = assignVillagerToJob(state, job, count);
       if (Object.keys(updates).length > 0) {
         StateManager.schedulePopulationUpdate(get);
+        playHaptic("selection");
       }
       return updates;
     });
@@ -246,6 +248,7 @@ export const createVillagersSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       const updates = unassignVillagerFromJob(state, job, count);
       if (Object.keys(updates).length > 0) {
         StateManager.schedulePopulationUpdate(get);
+        playHaptic("selection");
       }
       return updates;
     });
@@ -324,6 +327,7 @@ export const createVillagersSlice: GameStoreCreator<Partial<GameStore>> = (set, 
     }
 
     set(update);
+    playHaptic("insight");
     return true;
   },
 
@@ -346,6 +350,7 @@ export const createVillagersSlice: GameStoreCreator<Partial<GameStore>> = (set, 
         [QUEUE_SLOT_UNLOCK_INSIGHT_KEY]: Date.now() + INSIGHT_REVEAL_DURATION_MS,
       },
     });
+    playHaptic("insight");
     return true;
   },
 
@@ -374,6 +379,7 @@ export const createVillagersSlice: GameStoreCreator<Partial<GameStore>> = (set, 
         [actionId]: true,
       },
     });
+    playHaptic("insight");
     return true;
   },
 
@@ -423,6 +429,7 @@ export const createVillagersSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       set({ insightRevealing: next });
     }, INSIGHT_REVEAL_DURATION_MS);
     villagerCapUpgradeTimers.set(capGroupId, timer);
+    playHaptic("insight");
     return true;
   },
 
@@ -453,6 +460,7 @@ export const createVillagersSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       },
     });
     StateManager.scheduleEffectsUpdate(get);
+    playHaptic("insight");
     return true;
   },
 
@@ -484,6 +492,7 @@ export const createVillagersSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       },
     });
     StateManager.scheduleEffectsUpdate(get);
+    playHaptic("insight");
     return true;
   },
 

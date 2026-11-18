@@ -53,11 +53,13 @@ function CubeEventArrow({
         // Center with top, not translate. The open click lock sets
         // `transform: none` on buttons, which would drop a translate and
         // jump the arrow up when the button becomes clickable.
-        "cube-event-arrow absolute top-[calc(50%-1.375rem)] z-30 flex h-11 w-11 items-center justify-center text-muted-foreground opacity-70 transition-[opacity,color] hover:text-white hover:opacity-100",
-        direction === "previous" ? "-left-14" : "-right-14",
+        // ~30% larger than the old h-11 / h-6 (2.75rem / 1.5rem).
+        // Offset keeps the same gap beside the frame (old -3.5rem on a 2.75rem button).
+        "cube-event-arrow absolute top-[calc(50%-1.7875rem)] z-30 flex h-[3.575rem] w-[3.575rem] items-center justify-center text-muted-foreground opacity-70 transition-[opacity,color] hover:text-white hover:opacity-100",
+        direction === "previous" ? "-left-[4.325rem]" : "-right-[4.325rem]",
       )}
     >
-      <Icon className="h-6 w-6" aria-hidden />
+      <Icon className="h-[1.95rem] w-[1.95rem]" aria-hidden />
     </button>
   );
 }
@@ -241,13 +243,16 @@ export default function CubeDialog({
     <Dialog open={isOpen} onOpenChange={() => { }}>
       <DialogContent
         openClickLockKey={event.id}
+        // Estate rereads are a deliberate open. Close and the paging arrows
+        // stay live, including when an arrow swaps in the next memory.
+        openClickLockMs={event.viewOnly ? 0 : undefined}
         className="cube-dialog-content [&>.adc-dialog-close]:hidden border-2 border-gray-400 shadow-2xl min-h-[21rem] max-h-[90dvh] flex flex-col overflow-visible z-[100]"
         style={{
           ...chromeRuleColorStyle("#9ca3af"),
           // Room on both sides for the chevrons, including when only one is shown.
           "--adc-dialog-max-w": canPageCubes
-            ? "min(22rem, calc(100vw - 7.5rem))"
-            : "22rem",
+            ? "min(25rem, calc(100vw - 9.5rem))"
+            : "25rem",
         }}
       >
         {previousId && (

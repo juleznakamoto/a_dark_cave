@@ -565,6 +565,7 @@ export default function TimedEventPanel() {
 
     const buttonContent = (
       <Button
+        haptic="light"
         onClick={(e) => {
           if (isDisabled) return;
           e.stopPropagation();
@@ -863,6 +864,7 @@ export default function TimedEventPanel() {
             {collectorNothingChoice && (
               <div className="!mt-4">
                 <Button
+                  haptic="light"
                   onClick={(e) => {
                     e.stopPropagation();
                     setHighlightedResources([]);
@@ -898,6 +900,7 @@ export default function TimedEventPanel() {
               {isMerchantEvent && (
                 <div className="basis-full">
                   <Button
+                    haptic="light"
                     onClick={(e) => {
                       e.stopPropagation();
                       setHighlightedResources([]);

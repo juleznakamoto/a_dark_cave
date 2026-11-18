@@ -29,6 +29,7 @@ import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTo
 import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useExplosionEffect } from "@/components/ui/explosion-effect";
+import { playHaptic } from "@/lib/haptics";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   RedactedLockedHint,
@@ -313,7 +314,10 @@ export default function CavePanel() {
           explosionEffect.triggerExplosion(centerX, centerY);
         }
         setBlastPortalConsumed(true);
-        // Let the explode VFX commit before the store unmounts this button.
+        // Heavy tap now. The action itself waits a tick so the explosion
+        // can paint before the button unmounts, and that would be too late
+        // to replace the light button tap.
+        playHaptic("blastGate");
         queueMicrotask(() => executeAction(actionId));
         return;
       }

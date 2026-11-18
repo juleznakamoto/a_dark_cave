@@ -45,16 +45,17 @@ function resolvePactId(id: string): PactId | null {
   return LEGACY_PACT_IDS[id] ?? null;
 }
 
-/** Missing or invalid values become 1. Never above the cap. */
+/** Missing or invalid values become 0. Never below 0. Never above the cap. */
 export function clampPactChoices(value: unknown): number {
   const n = typeof value === "number" ? value : Number(value);
-  if (!Number.isFinite(n)) return 1;
-  return Math.min(PACT_CHOICE_MAX, Math.max(1, Math.floor(n)));
+  if (!Number.isFinite(n)) return 0;
+  return Math.min(PACT_CHOICE_MAX, Math.max(0, Math.floor(n)));
 }
 
 /**
  * Opening allowance for a loaded save.
- * A run starts with 1. Finished games already on the save add one each, up to 5.
+ * A new run starts at 0. A stored count is kept.
+ * Finished games already on the save add one each, up to 5, when that is higher.
  * A Cruel Mode finish grants two when that win is awarded. This backfill
  * cannot tell those wins apart, so a stored count that is already higher is kept.
  */
@@ -63,7 +64,7 @@ export function resolvePactChoicesFromSave(
   completedGames: unknown,
 ): number {
   const wins = Math.max(0, Math.floor(Number(completedGames) || 0));
-  const fromCompletions = Math.min(PACT_CHOICE_MAX, 1 + wins);
+  const fromCompletions = Math.min(PACT_CHOICE_MAX, wins);
   return Math.max(clampPactChoices(stored), fromCompletions);
 }
 
@@ -107,7 +108,7 @@ export function resolvePactOfferForLoad(
   };
 }
 
-/** A finished game grants one pact choice. Cruel Mode grants two. Starting over does not. */
+/** A finished game grants one pact choice. Cruel Mode grants two. A new game starts at 0. Starting over does not grant one. */
 export function grantPactChoiceForCompletedGame(
   current: unknown,
   cruelMode = false,

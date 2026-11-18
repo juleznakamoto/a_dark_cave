@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
+import { playHaptic } from "@/lib/haptics";
 import { cn } from "@/lib/utils";
 import { useGameStore } from "@/game/state";
 import {
@@ -428,6 +429,7 @@ function PactOfferDialogOpen() {
                   onClick={() => {
                     if (!isShown || !canSelect) return;
                     toggle(pactId);
+                    playHaptic("button");
                   }}
                   className={cn(
                     "pact-offer-card group relative z-0 flex flex-col overflow-visible rounded-lg bg-background p-2 text-left shadow-2xl transition-opacity duration-1000 ease-out sm:p-2.5",

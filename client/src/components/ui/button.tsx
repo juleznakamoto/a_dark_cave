@@ -8,6 +8,7 @@ import {
   gameChromeTinyClassName,
   useDestroyedChrome,
 } from "@/components/game/gameChrome"
+import { armClickHaptic, playButtonHaptic } from "@/lib/haptics"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "./button-variants"
 
@@ -18,6 +19,11 @@ export interface ButtonProps
   button_id?: string
   /** Tiny −/+/preset squares: cropped tiles, less push-out, Extreme keeps ≥2 corners. */
   compactChrome?: boolean
+  /**
+   * iOS haptic. `auto` is a light tap inside a dialog. `light` is a light tap
+   * for event choices that are not inside a dialog. `off` stays silent.
+   */
+  haptic?: "auto" | "light" | "off"
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -30,6 +36,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       onClick,
       button_id,
       compactChrome = false,
+      haptic = "auto",
       style,
       ...props
     },
@@ -41,6 +48,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const tiny = destroyedOutline && compactChrome
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      armClickHaptic();
       // Read from the prop, not the DOM. `asChild` renders a Slot and the
       // click target (e.g. an inner <a> or icon) may not carry `button_id`.
       if (button_id) {
@@ -54,6 +62,18 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       }
 
       onClick?.(e);
+
+      if (haptic === "off") return;
+      const el = e.currentTarget;
+      if (!el) return;
+      const blocked =
+        el.getAttribute("aria-disabled") === "true" ||
+        ("disabled" in el && Boolean((el as HTMLButtonElement).disabled));
+      if (blocked) return;
+      const inDialog = el.closest("[role='dialog'],[role='alertdialog']") != null;
+      if (haptic === "light" || inDialog) {
+        playButtonHaptic();
+      }
     };
 
     return (

@@ -263,6 +263,7 @@ export const createUiSlice: GameStoreCreator<Partial<GameStore>> = (set, get) =>
           Date.now() + INSIGHT_REVEAL_DURATION_MS,
       },
     });
+    playHaptic("insight");
     return true;
   },
 

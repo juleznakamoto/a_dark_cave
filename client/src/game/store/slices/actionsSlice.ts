@@ -236,6 +236,7 @@ import {
 } from "@/game/heartfireClock";
 import { StateManager } from "../StateManager";
 import { playActionStartSfx } from "../actionSfx";
+import { playHaptic, playInsightHapticIfSpent } from "@/lib/haptics";
 import { maybeScheduleInsightIntroDialog } from "@/game/insightIntro";
 
 export const createActionsSlice: GameStoreCreator<Partial<GameStore>> = (set, get) => ({
@@ -295,6 +296,13 @@ export const createActionsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
       return;
 
     const result = executeGameAction(actionId, state);
+
+    if (meta?.executionSource !== "prior" && !isCompletingExecution) {
+      playInsightHapticIfSpent(
+        state.resources.insight,
+        result.stateUpdates.resources?.insight,
+      );
+    }
 
     // Track button usage and check for level up (only if book_of_ascension is owned)
     const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
@@ -633,7 +641,11 @@ export const createActionsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
     const isPlayerStarted = meta?.executionSource !== "prior";
 
     // Deduct costs immediately on click (resources are consumed when the action begins)
+    const insightBefore = state.resources.insight;
     const costUpdates = deductActionCosts(actionId, state);
+    if (isPlayerStarted) {
+      playInsightHapticIfSpent(insightBefore, costUpdates.resources?.insight);
+    }
 
     const expeditionRequired = action?.expeditionVillagersRequired
       ? action.expeditionVillagersRequired(state)
@@ -859,6 +871,7 @@ export const createActionsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
           Date.now() + INSIGHT_REVEAL_DURATION_MS,
       },
     });
+    playHaptic("insight");
     return true;
   },
 

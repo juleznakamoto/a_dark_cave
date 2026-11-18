@@ -17,6 +17,7 @@ import { getRenderedControlScaleFactor } from "@/lib/textScale";
 import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
+import { playHaptic } from "@/lib/haptics";
 
 /** Idle / assigned disc diameter. Hit host is 24px (`.button-prior-badge`). */
 export const PRIOR_BADGE_SIZE_PX = 14;
@@ -71,6 +72,7 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
     e.preventDefault();
     if (!atCapacity || isAssigned) {
       togglePriorAction(actionId);
+      playHaptic("priorBadge");
     }
   };
 

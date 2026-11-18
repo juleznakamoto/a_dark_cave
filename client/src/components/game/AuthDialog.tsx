@@ -7,6 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { playHaptic } from "@/lib/haptics";
 import { TextShimmer } from "@/components/ui/text-shimmer";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -281,7 +282,10 @@ export default function AuthDialog({
                   />
                   <button
                     type="button"
-                    onClick={() => setShowPassword((v) => !v)}
+                    onClick={() => {
+                      playHaptic("button");
+                      setShowPassword((v) => !v);
+                    }}
                     className="absolute right-2 top-1/2 -translate-y-1/2 rounded-sm p-1 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     aria-label={
                       showPassword

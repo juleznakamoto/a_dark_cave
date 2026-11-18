@@ -722,12 +722,13 @@ export const gameStateSchema = z.object({
   pactOfferPending: z.boolean().default(false),
   /**
    * How many pacts the player may pick on the opening offer.
-   * Starts at 1. A finished game adds one. A Cruel Mode finish adds two. Up to 5.
+   * Starts at 0. A finished game adds one. A Cruel Mode finish adds two. Up to 5.
    * Starting a new game does not. Choosing pacts does not spend these.
-   * Saves from before this field existed get 1 plus games already finished.
+   * Saves from before this field existed get one per game already finished.
+   * A count already stored on the save is kept.
    * Older saves stored this as curseChoices, and before that as cruelCurseChoices.
    */
-  pactChoices: z.number().default(1),
+  pactChoices: z.number().default(0),
   /** Meta: won the game at least once (any difficulty). Persists across restarts. */
   hasWonAnyGame: z.boolean().default(false),
   /** Meta: won while not in Cruel Mode. Persists across restarts. */

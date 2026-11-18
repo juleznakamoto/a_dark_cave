@@ -7,6 +7,7 @@ import { formatCompactDuration } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import { gameActionButtonGridClassName } from "@/components/CooldownButton";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { playHaptic } from "@/lib/haptics";
 import {
   SuccessParticles,
   useFeedFireParticles,
@@ -102,6 +103,7 @@ export function WanderersLanternButton() {
           onClick={() => {
             const state = useGameStore.getState();
             if (!isWanderersLanternReady(state)) return;
+            playHaptic("wanderersLantern");
             spawnParticles(30, buttonRef, { fromCenter: true });
             setBurst(true);
             useGameStore.setState(activateWanderersLantern(state));

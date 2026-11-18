@@ -873,9 +873,11 @@ export default function SidePanel() {
     }
   };
 
+  // Fill the shell. Mobile defaults it to 36vh and a drag can grow it.
+  // A fixed 36vh cap here left empty space under the list.
   return (
     <div
-      className="h-full max-h-[36vh] md:max-h-full min-h-0 overflow-hidden"
+      className="h-full max-h-full min-h-0 overflow-hidden"
       onPointerLeave={handleSidePanelPointerLeave}
       onWheel={clearSidePanelActiveTooltipHover}
     >

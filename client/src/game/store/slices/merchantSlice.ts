@@ -644,6 +644,7 @@ export const createMerchantSlice: GameStoreCreator<Partial<GameStore>> = (set, g
       );
     }
 
+    playHaptic("insight");
     return true;
   },
 
