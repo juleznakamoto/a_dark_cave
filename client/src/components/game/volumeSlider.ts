@@ -3,7 +3,7 @@
  * iOS WebKit: the rounded end samples the first color stop. The red is a
  * sized layer on a solid track, so that cap stays dark.
  */
-export const VOLUME_SLIDER_TRACK =
+const VOLUME_SLIDER_TRACK_BASE =
   "cursor-pointer appearance-none bg-transparent accent-transparent " +
   "[&::-webkit-slider-runnable-track]:h-1.5 [&::-webkit-slider-runnable-track]:rounded-full " +
   "[&::-webkit-slider-runnable-track]:appearance-none [&::-webkit-slider-runnable-track]:border-0 " +
@@ -13,14 +13,27 @@ export const VOLUME_SLIDER_TRACK =
   "[&::-webkit-slider-runnable-track]:[background-repeat:no-repeat] " +
   "[&::-webkit-slider-runnable-track]:[background-position:left_center] " +
   "[&::-webkit-slider-runnable-track]:[background-size:var(--slider-fill)_100%] " +
-  "[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 " +
-  "[&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-red-600 [&::-webkit-slider-thumb]:border-0 " +
+  "[&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full " +
+  "[&::-webkit-slider-thumb]:bg-red-600 [&::-webkit-slider-thumb]:border-0 " +
   "[&::-webkit-slider-thumb]:shadow-none " +
-  "[&::-webkit-slider-thumb]:mt-[calc(0.375rem/2-0.75rem/2)] " +
   "[&::-moz-range-track]:h-1.5 [&::-moz-range-track]:rounded-full [&::-moz-range-track]:bg-neutral-800 " +
   "[&::-moz-range-progress]:h-1.5 [&::-moz-range-progress]:rounded-full [&::-moz-range-progress]:bg-red-600 " +
-  "[&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:w-3 [&::-moz-range-thumb]:rounded-full " +
-  "[&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-red-600";
+  "[&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-red-600";
 
-/** Horizontal settings slider. */
-export const VOLUME_SLIDER = `w-full h-4 ${VOLUME_SLIDER_TRACK}`;
+/** Start-screen knob: 0.75rem (12px at the default root size). */
+const VOLUME_SLIDER_THUMB =
+  "[&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 " +
+  "[&::-webkit-slider-thumb]:mt-[calc(0.375rem/2-0.75rem/2)] " +
+  "[&::-moz-range-thumb]:h-3 [&::-moz-range-thumb]:w-3";
+
+/** Settings knob: 16px (1rem at the default root size). */
+const SETTINGS_VOLUME_SLIDER_THUMB =
+  "[&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 " +
+  "[&::-webkit-slider-thumb]:mt-[calc(0.375rem/2-1rem/2)] " +
+  "[&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4";
+
+/** Vertical start-screen slider. */
+export const VOLUME_SLIDER_TRACK = `${VOLUME_SLIDER_TRACK_BASE} ${VOLUME_SLIDER_THUMB}`;
+
+/** Horizontal settings slider (ambience and sound). */
+export const VOLUME_SLIDER = `w-full h-5 ${VOLUME_SLIDER_TRACK_BASE} ${SETTINGS_VOLUME_SLIDER_THUMB}`;

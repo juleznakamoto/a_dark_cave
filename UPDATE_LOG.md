@@ -10,6 +10,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- The Ambience and Sound knobs in Settings are a little larger, so they are easier to grab.
 - Pressing or dragging the line between panels shows the grab handle for a few seconds, then it fades out.
 - Cube memories on the Estate close right away, and the side arrows switch memories without a short wait. Those arrows are larger, and the memory window is a little wider.
 - Pact choice cards are a little wider on phones.
