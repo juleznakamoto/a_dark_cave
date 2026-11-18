@@ -18,8 +18,8 @@ export const HEADER_INDICATOR_ICONS: HeaderIndicatorIcon[] = [
     id: "cycle",
     label: "Cycle",
     ringClassName: "text-gray-400",
-    glyphClassName: `${G} game-panel-header-indicator-glyph--sm leading-none translate-x-[0.05em] translate-y-[0.1em] text-gray-400`,
-    symbol: "\u21A6",
+    glyphClassName: `${G} scale-120 text-gray-400 -translate-x-[0.00em] translate-y-[0.14em]`,
+    symbol: "\u{1F82A}",
   },
   {
     id: "feast",
