@@ -52,21 +52,20 @@ describe("composeActionTooltip", () => {
     expect(container.querySelector(".font-bold")).toBeNull();
   });
 
-  it("sizes wrapped flavour text to the lines above, not max-width", () => {
+  it("sizes wrapped flavour text to the lines above, with a readable floor", () => {
     const node = composeActionTooltip({
       header: <span>Gather Wood: +25% Bonus</span>,
       description: "Sturdy leather gloves that help with wood gathering",
     });
-    const { container } = render(<>{node}</>);
+    render(<>{node}</>);
     const description = screen.getByText(
       "Sturdy leather gloves that help with wood gathering",
     );
     expect(description.className).toContain("w-0");
-    expect(description.className).toContain("min-w-full");
-    expect(container.querySelector(".w-0.min-w-full")).toBe(description);
+    expect(description.className).toContain("min-w-[max(100%,12rem)]");
   });
 
-  it("does not force hug width on description-only tooltips", () => {
+  it("caps description-only tips at 12rem instead of stretching to max-w-xs", () => {
     const node = composeActionTooltip({
       description: "Sturdy leather gloves that help with wood gathering",
     });
@@ -75,5 +74,6 @@ describe("composeActionTooltip", () => {
       "Sturdy leather gloves that help with wood gathering",
     );
     expect(description.className).not.toContain("w-0");
+    expect(description.className).toContain("max-w-[12rem]");
   });
 });

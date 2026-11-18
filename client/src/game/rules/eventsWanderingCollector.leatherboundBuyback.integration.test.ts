@@ -39,6 +39,7 @@ describe("leatherbound buyback integration", () => {
     const before = stateWith({
       buildings: { woodenHut: 6 } as GameState["buildings"],
       resources: { gold: 2000 } as GameState["resources"],
+      seenResources: ["gold"],
       stats: { madnessFromEvents: 0 } as GameState["stats"],
       story: {
         seen: {

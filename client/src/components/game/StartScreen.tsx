@@ -1416,12 +1416,14 @@ export default function StartScreen({
           className={
             iosEditionActive
               ? "fixed z-20 flex flex-wrap items-center gap-x-2 gap-y-1.5"
-              : "fixed top-4 left-4 z-20 flex flex-wrap items-center gap-x-2 gap-y-1.5 md:static md:top-auto md:left-auto md:z-auto"
+              : // top-1 matches GameHeader py-1 so these share the header control row
+                "fixed top-1 left-4 z-20 flex flex-wrap items-center gap-x-2 gap-y-1.5 md:static md:top-auto md:left-auto md:z-auto"
           }
           style={
             iosEditionActive
               ? {
-                  top: "calc(1rem + env(safe-area-inset-top, 0px))",
+                  // Header puts safe-area on padding-top; controls sit flush under it.
+                  top: "env(safe-area-inset-top, 0px)",
                   left: "calc(1rem + env(safe-area-inset-left, 0px))",
                 }
               : undefined

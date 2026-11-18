@@ -5,14 +5,18 @@ export function ActionTooltipSeparator() {
 }
 
 /**
- * Flavour text below shorter header/effect lines should wrap to those lines'
- * width instead of forcing the tooltip out to max-width with empty space.
- * (`width: 0; min-width: 100%` — only when something above sets the width.)
+ * Flavour text width:
+ * - Below header/effect lines: wrap to those lines (`width: 0; min-width: 100%`)
+ *   with a 12rem floor so short stats (e.g. "Luck: +3") do not crush the text.
+ * - Description-only (books, fellowship, etc.): cap at 12rem so wrapping does
+ *   not stretch the tip out to max-w-xs with empty space on the right.
  */
 export function tooltipWrappedDescriptionClass(
   hasContentAbove: boolean,
 ): string {
-  return hasContentAbove ? "w-0 min-w-full" : "";
+  return hasContentAbove
+    ? "w-0 min-w-[max(100%,12rem)]"
+    : "max-w-[12rem]";
 }
 
 export type ActionTooltipParts = {

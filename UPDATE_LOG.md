@@ -29,10 +29,11 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- Achievement descriptions are no longer cut short; progress like 3/5 now sits after the text instead of in the middle of the row.
 - Loading a save while you are already asleep no longer replays the sleep sound or fades the mist in from empty.
 - During sleep and the blood moon, the top and bottom bars stay solid instead of letting the mist or smoke show through.
 - Sleep mist fades in smoothly instead of jumping brighter in steps.
-- Item tips no longer leave a wide empty gap when the description wraps under a shorter effect line.
+- Item tip descriptions stay a readable width: they still hug longer effect lines, but short ones no longer squeeze the text into a tall column.
 - After you press and hold an action button on a phone to read its tip, tapping that button again runs the action instead of doing nothing.
 - Tips stay a little in from the edge of the screen instead of sitting flush against it.
 - The Coinhouse tip no longer lists +2% Lucky Chance; that is the starting rate, and only Bank and Treasury list the bonus.
@@ -56,7 +57,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 - On a phone, the header sits closer to the left and right edges of the screen.
 - On a phone, dialogs have a bit less space inside between the frame and the text.
 - On a phone, dialogs sit farther in from the left and right edges of the screen.
-- On a phone, language, ambience, and sound on the start screen sit in the upper left.
+- On a phone, language, ambience, and sound on the start screen sit in the upper left, at the same height as the header icons.
 - On a phone, the language list on the start screen is larger.
 - When you share from the iOS app, the message says you are currently playing A Dark Cave, followed by the App Store link.
 - The iOS start screen no longer shows The Hustle logo, or the social, FAQ, About, Press, and legal links.

@@ -314,15 +314,18 @@ function AchievementRowComponent({
         ) : null}
       </div>
       {isTitleVisible ? (
-        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2">
-          <p className="min-w-0 truncate text-xs leading-snug text-muted-foreground">
+        <div className="flex min-w-0 items-start justify-between gap-2">
+          <p className="min-w-0 flex-1 text-xs leading-snug text-muted-foreground">
             {description}
+            {!forceRedacted && progressOrDetail ? (
+              <span className="whitespace-nowrap">
+                {" "}
+                {progressOrDetail}
+              </span>
+            ) : null}
           </p>
-          <span className="shrink-0 text-center text-xs text-muted-foreground">
-            {!forceRedacted && progressOrDetail ? progressOrDetail : ""}
-          </span>
           <span
-            className={`min-w-0 truncate text-right text-xs pr-1 ${
+            className={`min-w-0 shrink-0 max-w-[45%] truncate text-right text-xs pr-1 ${
               canClaim ? "text-foreground" : "text-muted-foreground"
             }`}
           >
