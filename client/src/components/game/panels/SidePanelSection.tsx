@@ -17,6 +17,7 @@ import {
   INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS,
 } from "@/components/game/BuildingActionBadge";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { useInsightSpendHighlight } from "@/components/game/useInsightSpendHighlight";
 import ResourceChangeNotification from "./ResourceChangeNotification";
 import {
   syncSidePanelHighlightLines,
@@ -433,11 +434,9 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
     handleTooltipEnter,
     handleTooltipLeave,
   } = useInsightBadgeTooltipPulse(tooltipId);
-  const setHighlightedResources = useGameStore(
-    (s) => s.setHighlightedResources,
-  );
   const insightRevealEnd = useGameStore((s) => s.insightRevealing?.[revealKey]);
   const isRevealing = typeof insightRevealEnd === "number";
+  useInsightSpendHighlight(isRevealing);
   const canShow = useDerivedGameState((s) => {
     if (!isWeaponEnchantUnlocked(s)) return false;
     if (!isInsightUnlocked(s)) return false;
@@ -457,12 +456,6 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
   useEffect(() => {
     if (isRevealing) revealStartedRef.current = true;
   }, [isRevealing]);
-
-  useEffect(() => {
-    if (!isRevealing) return;
-    setHighlightedResources(["insight"]);
-    return () => setHighlightedResources([]);
-  }, [isRevealing, setHighlightedResources]);
 
   useEffect(() => {
     if (revealStartedRef.current && !isRevealing) {
@@ -492,7 +485,6 @@ function WeaponEnchantBadge({ weaponId }: { weaponId: string }) {
       tooltip={enchant.tooltip}
       tooltipId={tooltipId}
       disabled={isDisabled}
-      tooltipContentClassName="max-w-xs"
       tooltipTriggerAsChild
       tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
       onMouseEnter={handleTooltipEnter}
@@ -538,11 +530,9 @@ function ItemAbsolveBadge({ itemId }: { itemId: string }) {
     handleTooltipEnter,
     handleTooltipLeave,
   } = useInsightBadgeTooltipPulse(tooltipId);
-  const setHighlightedResources = useGameStore(
-    (s) => s.setHighlightedResources,
-  );
   const insightRevealEnd = useGameStore((s) => s.insightRevealing?.[revealKey]);
   const isRevealing = typeof insightRevealEnd === "number";
+  useInsightSpendHighlight(isRevealing);
   const canShow = useDerivedGameState((s) =>
     shouldShowAbsolveBadge(s, itemId),
   );
@@ -556,12 +546,6 @@ function ItemAbsolveBadge({ itemId }: { itemId: string }) {
   useEffect(() => {
     if (isRevealing) revealStartedRef.current = true;
   }, [isRevealing]);
-
-  useEffect(() => {
-    if (!isRevealing) return;
-    setHighlightedResources(["insight"]);
-    return () => setHighlightedResources([]);
-  }, [isRevealing, setHighlightedResources]);
 
   useEffect(() => {
     if (revealStartedRef.current && !isRevealing) {
@@ -593,7 +577,6 @@ function ItemAbsolveBadge({ itemId }: { itemId: string }) {
       tooltip={absolve.tooltip}
       tooltipId={tooltipId}
       disabled={isDisabled}
-      tooltipContentClassName="max-w-xs"
       tooltipTriggerAsChild
       tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
       onMouseEnter={handleTooltipEnter}
@@ -1388,7 +1371,6 @@ export default function SidePanelSection({
           tooltip={tooltip}
           tooltipId={item.id}
           disabled
-          tooltipContentClassName="max-w-xs"
           onMouseEnter={() => handleItemTooltipEnter(item.id)}
           onMouseLeave={() => handleItemTooltipLeave(item.id)}
           className={cn(
@@ -1448,7 +1430,6 @@ export default function SidePanelSection({
               )}
               tooltipId={item.id}
               disabled
-              tooltipContentClassName="max-w-xs"
               onMouseEnter={() => handleItemTooltipEnter(item.id)}
               onMouseLeave={() => handleItemTooltipLeave(item.id)}
               className={cn(
@@ -1491,7 +1472,6 @@ export default function SidePanelSection({
               )}
               tooltipId={item.id}
               disabled
-              tooltipContentClassName="max-w-xs"
               onMouseEnter={() => handleItemTooltipEnter(item.id)}
               onMouseLeave={() => handleItemTooltipLeave(item.id)}
               className={cn(
@@ -1532,7 +1512,6 @@ export default function SidePanelSection({
             )}
             tooltipId={item.id}
             disabled
-            tooltipContentClassName="max-w-xs"
             onMouseEnter={() => handleItemTooltipEnter(item.id)}
             onMouseLeave={() => handleItemTooltipLeave(item.id)}
             className={sidePanelTooltipTriggerClass}
@@ -1567,7 +1546,6 @@ export default function SidePanelSection({
             )}
             tooltipId={item.id}
             disabled
-            tooltipContentClassName="max-w-xs"
             onMouseEnter={() => handleItemTooltipEnter(item.id)}
             onMouseLeave={() => handleItemTooltipLeave(item.id)}
             className={cn(
@@ -1643,7 +1621,6 @@ export default function SidePanelSection({
             tooltip={tooltipContent}
             tooltipId={item.id}
             disabled
-            tooltipContentClassName="max-w-xs"
             onMouseEnter={() => handleItemTooltipEnter(item.id)}
             onMouseLeave={() => handleItemTooltipLeave(item.id)}
             className={sidePanelTooltipTriggerClass}

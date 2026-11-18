@@ -1840,14 +1840,33 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
   opacity: 0.7;
 }
 
-/* 0.75rem gap beside the frame (button is 3.575rem, so the outer edge is 4.325rem out).
-   On a narrow window, stop at the screen edge instead of forcing the cube narrower. */
+/* Arrows stay in the margin beside the frame. The paging dialog narrows so
+   that margin exists even on a phone, instead of letting the arrows overlap
+   the memory. */
+.cube-dialog-content {
+  --cube-arrow-size: 3.575rem;
+  --cube-arrow-gap: 1.5rem;
+  --cube-arrow-outset: calc(var(--cube-arrow-size) + var(--cube-arrow-gap));
+  --adc-dialog-max-w: 28rem;
+}
+
+.cube-dialog-content--paging {
+  --adc-dialog-max-w: min(
+    28rem,
+    calc(
+      100vw - (2 * var(--cube-arrow-outset)) - 1rem - env(safe-area-inset-left, 0px) -
+        env(safe-area-inset-right, 0px)
+    )
+  );
+  touch-action: pan-y;
+}
+
 .cube-event-arrow[data-direction="previous"] {
-  left: max(-4.325rem, calc(0.35rem - (100vw - 100%) / 2));
+  left: calc(-1 * var(--cube-arrow-outset));
 }
 
 .cube-event-arrow[data-direction="next"] {
-  right: max(-4.325rem, calc(0.35rem - (100vw - 100%) / 2));
+  right: calc(-1 * var(--cube-arrow-outset));
 }
 
 /* Shared dialog X: square hit target + icon grow slightly with text size. */

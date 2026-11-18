@@ -686,8 +686,8 @@
   },
   "cube14a": {
     "choices": {
-      "continue": {
-        "label": "Weiter"
+      "close": {
+        "label": "Schließen"
       }
     },
     "message": "„Als der Widerstand sich den Schädelgeräten widersetzte, wurden sie in die Tiefen des Berges verbannt, hinter dem Tor eingeschlossen. Ohne Rückweg gruben sie immer tiefer. In Isolation und Finsternis zerfielen ihre Geister, und sie verfielen in Wahnsinn und Entartung.“",
@@ -695,8 +695,8 @@
   },
   "cube14b": {
     "choices": {
-      "continue": {
-        "label": "Weiter"
+      "close": {
+        "label": "Schließen"
       }
     },
     "message": "„Eines Tages fanden sie tief in der Erde einen Monolithen aus unbekanntem Erz. Daraus schmiedeten sie einen Sprengstoff, um das Tor zu zerstören. Doch die Bombe durchbrach das Tor nicht, sondern entfesselte einen elektrischen Impuls über den ganzen Planeten, der alle Geräte vernichtete und die Zivilisation beendete.“",
@@ -704,8 +704,8 @@
   },
   "cube14c": {
     "choices": {
-      "continue": {
-        "label": "Weiter"
+      "close": {
+        "label": "Schließen"
       }
     },
     "message": "„Kurz nach der Explosion begann sich ein Mann in der Nähe zu dematerialisieren; seine Gestalt flackerte sekundenlang halb durchsichtig. Voller Entsetzen und vom Geschehenen in den Wahnsinn getrieben, nahm er sich wenige Augenblicke später das Leben.“",

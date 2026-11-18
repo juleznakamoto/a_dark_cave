@@ -23,6 +23,7 @@ import {
 } from "@/components/CooldownButton";
 import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
 import CubeDialog from "./CubeDialog";
 import VillageEffectDialog from "./VillageEffectDialog";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
@@ -415,7 +416,7 @@ function EventDialogOpen({
                     0 && (
                       <TooltipWrapper
                         tooltip={
-                          <div className="text-xs whitespace-nowrap">
+                          <div>
                             {t("event.knowledgeTimeBonus", {
                               seconds: calculateKnowledgeTimeBonus(
                                 getTotalKnowledge(gameState),
@@ -563,17 +564,17 @@ function EventDialogOpen({
                 const tooltipContent =
                   merchantItemTooltip ??
                   (costText || costBreakdown.length > 0 || rewardText || showSuccessTooltip ? (
-                    <div className="text-xs whitespace-nowrap">
+                    <div>
                       {costHeader}
                       {(costText || costBreakdown.length > 0) && rewardText && (
-                        <div className="border-t border-border my-1" />
+                        <ActionTooltipSeparator />
                       )}
                       {rewardText && (
                         <div className="text-foreground">{rewardText}</div>
                       )}
                       {(costText || costBreakdown.length > 0 || rewardText) &&
                         showSuccessTooltip && (
-                          <div className="border-t border-border my-1" />
+                          <ActionTooltipSeparator />
                         )}
                       {showSuccessTooltip && (
                         <EventChoiceSuccessTooltipContent

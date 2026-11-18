@@ -686,8 +686,8 @@
   },
   "cube14a": {
     "choices": {
-      "continue": {
-        "label": "Continuar"
+      "close": {
+        "label": "Fechar"
       }
     },
     "message": "“Quando a resistência se opôs aos dispositivos cranianos, ela foi exilada para as profundezas da montanha, selada atrás do portão. Sem caminho de volta, eles cavaram cada vez mais fundo. No isolamento e na escuridão, suas mentes se corroeram e eles mergulharam na loucura e na degeneração.”",
@@ -695,8 +695,8 @@
   },
   "cube14b": {
     "choices": {
-      "continue": {
-        "label": "Continuar"
+      "close": {
+        "label": "Fechar"
       }
     },
     "message": "“Um dia, nas profundezas da terra, eles encontraram um monólito de minério desconhecido. Dele forjaram um explosivo para destruir o portão. Mas a bomba não conseguiu romper o portão, e em vez disso desencadeou um pulso elétrico que abrangeu o planeta inteiro, destruindo todos os dispositivos e encerrando a civilização.”",
@@ -704,8 +704,8 @@
   },
   "cube14c": {
     "choices": {
-      "continue": {
-        "label": "Continuar"
+      "close": {
+        "label": "Fechar"
       }
     },
     "message": "“Logo após a explosão, um homem ali perto começou a se desmaterializar, sua forma tremeluzindo, semitransparente por alguns segundos. Aterrorizado e enlouquecido pelo que havia acontecido, ele tirou a própria vida momentos depois.”",

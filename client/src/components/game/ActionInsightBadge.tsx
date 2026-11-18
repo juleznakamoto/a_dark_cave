@@ -20,6 +20,7 @@ import {
 } from "@/game/state";
 import { costBenefitTooltip } from "@/game/rules/tooltips";
 import { useUntilTimestamp } from "@/lib/uiClock";
+import { useInsightSpendHighlight } from "@/components/game/useInsightSpendHighlight";
 
 const PROLONG_MINUTES = TIMED_EVENT_TAB_PROLONG_MS / 60_000;
 
@@ -57,6 +58,7 @@ export function ActionInsightBadge({ timeRemainingMs }: ActionInsightBadgeProps)
     timedTabActive &&
     (!insightProlongUsed || isInsightRevealAnimating);
   const playing = canShow && isInsightRevealAnimating;
+  useInsightSpendHighlight(playing);
 
   // Once the reveal animation has started, we must never fall back to the idle
   // triangle: when the animation timer ends, `playing` flips to false a moment
@@ -66,12 +68,6 @@ export function ActionInsightBadge({ timeRemainingMs }: ActionInsightBadgeProps)
   useEffect(() => {
     if (isInsightRevealAnimating) revealStartedRef.current = true;
   }, [isInsightRevealAnimating]);
-
-  useEffect(() => {
-    if (!playing) return;
-    setHighlightedResources(["insight"]);
-    return () => setHighlightedResources([]);
-  }, [playing, setHighlightedResources]);
 
   const prolong = costBenefitTooltip({
     amount: TIMED_EVENT_TAB_PROLONG_INSIGHT_COST,
@@ -133,7 +129,6 @@ export function ActionInsightBadge({ timeRemainingMs }: ActionInsightBadgeProps)
       <TooltipWrapper
         tooltip={prolong.tooltip}
         tooltipId="timed-event-insight-prolong"
-        tooltipContentClassName="text-white"
         className="inline-flex items-center"
         tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
         disabled={isBadgeDisabled}

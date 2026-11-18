@@ -14,6 +14,7 @@ import { cn, formatCompactDuration } from "@/lib/utils";
 import { useInlineButtonParticles } from "@/components/ui/bubbly-button";
 import type { ParticleConfig } from "@/components/ui/bubbly-button.particles";
 import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
+import { TOOLTIP_MUTED_CLASS, TOOLTIP_STACK_CLASS } from "@/game/tooltipMetrics";
 import { isCraftOnceAction } from "@/game/rules/insightReveal";
 import { playButtonHaptic, playHaptic } from "@/lib/haptics";
 import { actionHasExecutionTime } from "@/game/rules/executionTime";
@@ -571,10 +572,10 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     const hasBaseTooltip = tooltip != null && tooltip !== false && tooltip !== "";
     const resolvedTooltip = isExecuting
       ? (
-        <div className="text-xs">
+        <div className={TOOLTIP_STACK_CLASS}>
           {hasBaseTooltip ? tooltip : null}
           {hasBaseTooltip ? <ActionTooltipSeparator /> : null}
-          <div className="text-muted-foreground">
+          <div className={TOOLTIP_MUTED_CLASS}>
             <ExecutionRemainingLabel
               startMs={executionStart}
               durationSec={executionDurationSec}

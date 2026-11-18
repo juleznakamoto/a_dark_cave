@@ -4,6 +4,12 @@ import { getCraftProduceAmount } from "@/game/craftUpgradeUtils";
 import { useGameStore } from "@/game/state";
 import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
+import {
+  TOOLTIP_MUTED_CLASS,
+  TOOLTIP_STACK_CLASS,
+  TOOLTIP_TITLE_CLASS,
+} from "@/game/tooltipMetrics";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 
@@ -41,7 +47,7 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
   const progressPercent = clicksNeededForLevel > 0 ? (clicksInCurrentLevel / clicksNeededForLevel) * 100 : 0;
 
   const tooltip = (
-    <div className="space-y-1.5" data-testid={`level-tooltip-${upgradeKey}`}>
+    <div className={TOOLTIP_STACK_CLASS} data-testid={`level-tooltip-${upgradeKey}`}>
       <div className="">
         {!info.isMaxLevel && info.nextLevel ? (
           <>
@@ -57,9 +63,9 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
                 </div>
               </div>
               <div className="flex flex-col gap-0.5">
-                <div className="text-xs">
+                <div>
                   {t("badges.bonus")}{" "}
-                  <span className="font-medium">
+                  <span className={TOOLTIP_TITLE_CLASS}>
                     {isCraftUpgrade && produceAmount !== undefined
                       ? t("badges.craftMultiplier", {
                         amount: produceAmount,
@@ -69,9 +75,9 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
                       })}
                   </span>
                 </div>
-                <div className="text-xs">
+                <div>
                   {t("badges.nextBonus")}{" "}
-                  <span className="font-medium">
+                  <span className={TOOLTIP_TITLE_CLASS}>
                     {isCraftUpgrade && produceAmount !== undefined && info.nextLevel
                       ? t("badges.craftMultiplier", {
                         amount: Math.floor(
@@ -97,14 +103,17 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
               </span>
             </div>
             {isCraftUpgrade && info.isMaxLevel && (
-              <div className="text-xs text-muted-foreground">
+              <div className={TOOLTIP_MUTED_CLASS}>
                 {t("badges.executionTimeReduction")}
               </div>
             )}
           </div>
         )}
         {info.isMaxLevel && (
-          <div className="mt-1 pt-1 border-t">{t("badges.maxLevel")}</div>
+          <>
+            <ActionTooltipSeparator />
+            <div>{t("badges.maxLevel")}</div>
+          </>
         )}
       </div>
     </div>
@@ -116,7 +125,6 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
       tooltipId={`level-badge-${upgradeKey}`}
       disabled
       side="right"
-      tooltipContentClassName="max-w-xs bg-popover text-white border text-xs"
       tooltipTriggerAsChild
       className="button-level-badge game-corner-badge-digit z-[20] flex items-center justify-center bg-red-950 rounded-full cursor-default hover:bg-red-900 transition-colors duration-300 ease-in-out"
     >

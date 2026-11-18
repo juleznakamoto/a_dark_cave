@@ -1,5 +1,6 @@
 import React from "react";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
+import { TOOLTIP_MUTED_CLASS } from "@/game/tooltipMetrics";
 import type { GameState } from "@shared/schema";
 import { isBastionTabVisible } from "@shared/repairUnlockFlags";
 import {
@@ -41,7 +42,7 @@ const MADNESS_COMBAT_FAIL_MAX_PERCENT = 15;
 /** Highest gambler wager tier (luck unlocks tiers via WAGER_LUCK_THRESHOLDS). */
 const MAX_WAGER_TIER = WAGER_TIERS[WAGER_TIERS.length - 1];
 
-const MUTED_SECONDARY_CLASS = "text-muted-foreground text-gray-400/70";
+const MUTED_SECONDARY_CLASS = TOOLTIP_MUTED_CLASS;
 
 type EffectLine = {
   key: string;

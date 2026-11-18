@@ -144,7 +144,7 @@ function SkillUpgradeRow({
           level < maxLevel ? (
             <TooltipWrapper
               tooltip={
-                <div className="text-xs whitespace-nowrap">
+                <div>
                   <TooltipCostLines
                     costs={[{ text: costLine, satisfied: canAfford }]}
                   />
@@ -665,14 +665,14 @@ export default function EstatePanel({
           <div className={gameActionButtonGridClassName("pb-1")}>
             <TooltipWrapper
               tooltip={
-                <div className="text-xs">
+                <div>
                   {canActivateIdle ? (
                     <div>{t("estate.sleepTooltipReady")}</div>
                   ) : (
                     <>
                       <div>{t("estate.sleepTooltipBlocked")}</div>
-                      <div className="border-t border-border my-1" />
-                      <div className="whitespace-nowrap">
+                      <ActionTooltipSeparator />
+                      <div>
                         <div>{t("estate.sleepTooltipCurrentProduction")}</div>
                         <div>
                           {getResourceName("wood", "Wood")}:{" "}
@@ -732,7 +732,7 @@ export default function EstatePanel({
                     focusState?.isActive
                   }
                   tooltip={
-                    <div className="text-xs">
+                    <div>
                       <div>{t("estate.focusPointTooltip")}</div>
                       <div>
                         {t("estate.focusRewardTooltip", {
@@ -771,7 +771,7 @@ export default function EstatePanel({
                     sleepUpgrades.lengthLevel < MAX_SLEEP_LENGTH_LEVEL ? (
                       <TooltipWrapper
                         tooltip={
-                          <div className="text-xs whitespace-nowrap">
+                          <div>
                             <TooltipCostLines
                               costs={[
                                 {
@@ -834,7 +834,7 @@ export default function EstatePanel({
                     sleepUpgrades.intensityLevel < MAX_SLEEP_INTENSITY_LEVEL ? (
                       <TooltipWrapper
                         tooltip={
-                          <div className="text-xs whitespace-nowrap">
+                          <div>
                             <TooltipCostLines
                               costs={[
                                 {

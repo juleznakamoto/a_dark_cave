@@ -27,6 +27,8 @@ import {
   TIMER_URGENCY_PULSE_CLASS,
 } from "@/game/timerUrgencyPulse";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
+import { TOOLTIP_MUTED_CLASS, TOOLTIP_STACK_CLASS } from "@/game/tooltipMetrics";
 import {
   GAME_TAB_PANEL_BODY,
   GAME_TAB_SECTION_HEADER,
@@ -640,15 +642,15 @@ export default function TimedEventPanel() {
         costBreakdown.length > 0 ||
         rewardText ||
         showSuccessTooltip ? (
-        <div className="text-xs whitespace-nowrap">
+        <div className={TOOLTIP_STACK_CLASS}>
           {costHeader}
           {(costText || costBreakdown.length > 0) && rewardText && (
-            <div className="border-t border-border my-1" />
+            <ActionTooltipSeparator />
           )}
-          {rewardText && <div className="text-foreground">{rewardText}</div>}
+          {rewardText && <div>{rewardText}</div>}
           {(costText || costBreakdown.length > 0 || rewardText) &&
             showSuccessTooltip && (
-              <div className="border-t border-border my-1" />
+              <ActionTooltipSeparator />
             )}
           {showSuccessTooltip && (
             <EventChoiceSuccessTooltipContent
@@ -728,7 +730,7 @@ export default function TimedEventPanel() {
       return (
         <TooltipWrapper
           tooltip={
-            <div className="text-xs whitespace-nowrap">
+            <div className={TOOLTIP_STACK_CLASS}>
               {t("timedEvent.discount", {
                 percent: Math.round(totalDiscount * 100),
               })}
@@ -736,7 +738,7 @@ export default function TimedEventPanel() {
                 <>
                   <br />
                   {knowledgeDiscount > 0 && (
-                    <span className="text-gray-400/70">
+                    <span className={TOOLTIP_MUTED_CLASS}>
                       {t("timedEvent.discountFromKnowledge", {
                         percent: Math.round(knowledgeDiscount * 100),
                         max: isKnowledgeBonusMaxed(knowledge)
@@ -747,13 +749,13 @@ export default function TimedEventPanel() {
                   )}
                   {knowledgeDiscount > 0 && hasRingOfObedience && <br />}
                   {hasRingOfObedience && (
-                    <span className="text-gray-400/70">
+                    <span className={TOOLTIP_MUTED_CLASS}>
                       {t("timedEvent.discountFromRing")}
                     </span>
                   )}
                   {(knowledgeDiscount > 0 || hasRingOfObedience) && hasCunningTrader && <br />}
                   {hasCunningTrader && (
-                    <span className="text-gray-400/70">
+                    <span className={TOOLTIP_MUTED_CLASS}>
                       {t("timedEvent.discountFromPact")}
                     </span>
                   )}

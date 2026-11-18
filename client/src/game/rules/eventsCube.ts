@@ -467,7 +467,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     repeatable: true,
     choices: [
       {
-        id: "continue",
+        id: "close",
         effect: (state: GameState) => {
           return {
             events: {
@@ -489,7 +489,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     repeatable: true,
     choices: [
       {
-        id: "continue",
+        id: "close",
         effect: (state: GameState) => {
           return {
             events: {
@@ -511,7 +511,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     repeatable: true,
     choices: [
       {
-        id: "continue",
+        id: "close",
         effect: (state: GameState) => {
           return {
             events: {

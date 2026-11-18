@@ -29,7 +29,11 @@ import {
   getUpgradeChainLevelEffectSections,
 } from "./buildingTooltipSections";
 import { ActionTooltipSeparator } from "./actionTooltipLayout";
-import { tooltipDescriptionLayoutStyle } from "@/game/tooltipMetrics";
+import {
+  TOOLTIP_MUTED_CLASS,
+  TOOLTIP_TITLE_CLASS,
+  tooltipDescriptionLayoutStyle,
+} from "@/game/tooltipMetrics";
 import {
   getWeaponHierarchyChain,
   getWeaponInheritedUnlockLines,
@@ -158,7 +162,7 @@ function renderNightshadePoisonTooltip(gameState: GameState) {
           </span>
         )}
       </div>
-      <div className="mt-1 text-muted-foreground">
+      <div className={`mt-1 ${TOOLTIP_MUTED_CLASS}`}>
         {getUiTooltip("poisonArrowsAvailable", "Available: 1/1 per combat")}
       </div>
     </div>
@@ -400,7 +404,7 @@ function renderPriorLevelSections(
   return (
     <>
       {visible.map((section) => (
-        <div key={`level-${section.level}`} className="text-muted-foreground">
+        <div key={`level-${section.level}`} className={TOOLTIP_MUTED_CLASS}>
           <ActionTooltipSeparator />
           <div>{section.label}</div>
           {section.effects.map((effect, effectIdx) => (
@@ -429,7 +433,7 @@ function renderLeveledEffectsBlock(
           <div key={`current-${idx}`}>{effect}</div>
         ))}
       {visibleSections.map((section, idx) => (
-        <div key={`level-${section.level}`} className="text-muted-foreground">
+        <div key={`level-${section.level}`} className={TOOLTIP_MUTED_CLASS}>
           {(hasCurrent || idx > 0) && (
             <ActionTooltipSeparator />
           )}
@@ -589,13 +593,13 @@ function renderBuildingItemTooltip(
   const hasMetaRow = showTitle || isDamaged;
 
   return (
-    <div className="text-xs">
+    <div>
       {hasMetaRow && (
         <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
           <span>
-            {showTitle && <span className="font-bold">{titleLabel}</span>}
+            {showTitle && <span className={TOOLTIP_TITLE_CLASS}>{titleLabel}</span>}
             {isDamaged && (
-              <span className="font-normal text-muted-foreground">
+              <span className={`font-normal ${TOOLTIP_MUTED_CLASS}`}>
                 {" "}
                 {getUiTooltip("damaged", "(damaged)")}
               </span>
@@ -679,13 +683,13 @@ export function renderFortificationTooltip(
   const hasMetaRow = showTitle || isDamaged;
 
   return (
-    <div className="text-xs">
+    <div>
       {hasMetaRow && (
         <div className="flex flex-wrap items-center gap-x-2 gap-y-0 leading-none">
           <span>
-            {showTitle && <span className="font-bold">{titleLabel}</span>}
+            {showTitle && <span className={TOOLTIP_TITLE_CLASS}>{titleLabel}</span>}
             {isDamaged && (
-              <span className="font-normal text-muted-foreground">
+              <span className={`font-normal ${TOOLTIP_MUTED_CLASS}`}>
                 {" "}
                 {getUiTooltip("damaged", "(damaged)")}
               </span>
@@ -771,7 +775,7 @@ function itemTooltipDescriptionProps(hasContentAbove: boolean): {
   style: React.CSSProperties;
 } {
   return {
-    className: hasContentAbove ? "text-muted-foreground" : "text-foreground",
+    className: hasContentAbove ? TOOLTIP_MUTED_CLASS : "",
     style: tooltipDescriptionLayoutStyle(hasContentAbove),
   };
 }
@@ -811,7 +815,7 @@ export function renderItemTooltip(
         0;
       const atCapacity = isResourceAmountAtCap(itemId, held, gameState);
       return (
-        <div className="text-xs">
+        <div>
           {atCapacity && (
             <div
               className="mb-1 text-yellow-500"
@@ -826,7 +830,7 @@ export function renderItemTooltip(
             </div>
           )}
           {showTitle && (
-            <div className="font-bold">
+            <div className={TOOLTIP_TITLE_CLASS}>
               {getEffectName("weapons", itemId, effect?.name ?? itemId)}
             </div>
           )}
@@ -836,7 +840,7 @@ export function renderItemTooltip(
               <pre className="whitespace-pre-wrap font-sans text-xs text-foreground">
                 {content}
               </pre>
-              <div className="mt-1 text-muted-foreground">
+              <div className={`mt-1 ${TOOLTIP_MUTED_CLASS}`}>
                 {getUiTooltip("maxHeld", "Max: {{value}}", { value: maxHeld })}
               </div>
             </>
@@ -911,9 +915,9 @@ export function renderItemTooltip(
       hasFellowshipTitle || unlockEffectLine || greyOneLines.length > 0,
     );
     return (
-      <div className="text-xs">
+      <div>
         {hasFellowshipTitle && (
-          <div className="font-bold">
+          <div className={TOOLTIP_TITLE_CLASS}>
             {getEffectName(effectCategory, itemId, effect.name)}
           </div>
         )}
@@ -1030,12 +1034,12 @@ export function renderItemTooltip(
   }
 
   return (
-    <div className="text-xs">
+    <div>
       {showTitle &&
         effect.name &&
         (enchantLevel > 0 ? (
           <div className="flex w-full flex-wrap items-baseline justify-between gap-x-2 gap-y-0">
-            <span className="font-bold">
+            <span className={TOOLTIP_TITLE_CLASS}>
               {getEffectName(effectCategory, itemId, effect.name)}
             </span>
             <span
@@ -1049,7 +1053,7 @@ export function renderItemTooltip(
           </div>
         ) : itemId === "map_fragment" ? (
           <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0">
-            <span className="font-bold">
+            <span className={TOOLTIP_TITLE_CLASS}>
               {getEffectName(effectCategory, itemId, effect.name)}
             </span>
             <span
@@ -1065,7 +1069,7 @@ export function renderItemTooltip(
             </span>
           </div>
         ) : (
-          <div className="font-bold">
+          <div className={TOOLTIP_TITLE_CLASS}>
             {getEffectName(effectCategory, itemId, effect.name)}
           </div>
         ))}

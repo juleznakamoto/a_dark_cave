@@ -3,6 +3,7 @@ import { useUiTranslation } from "@/i18n/useUiTranslation";
 import type { EventChoice } from "@/game/rules/events";
 import type { GameState } from "@shared/schema";
 import { cn } from "@/lib/utils";
+import { TOOLTIP_MUTED_CLASS, TOOLTIP_STACK_CLASS } from "@/game/tooltipMetrics";
 import {
   getSuccessChanceBreakdown,
   getSuccessChanceFormula,
@@ -108,12 +109,12 @@ export function SuccessChanceTooltipContent({
     : null;
 
   return (
-    <div className="text-xs whitespace-nowrap">
+    <div className={TOOLTIP_STACK_CLASS}>
       {percent !== null && (
         <div>{t("event.successChance", { percent })}</div>
       )}
       {breakdown && !breakdown.forceZero ? (
-        <div className="mt-1 text-muted-foreground">
+        <div className={TOOLTIP_MUTED_CLASS}>
           <div>{t("event.successChanceBase", { percent: breakdown.basePercent, defaultValue: "Base: {{percent}}%" })}</div>
           {breakdown.stats.map((stat) => (
             <div key={stat.type} className="flex items-center gap-1">
@@ -142,7 +143,7 @@ export function SuccessChanceTooltipContent({
       ) : (
         relevantStats.length > 0 &&
         !breakdown && (
-          <div className="mt-1 text-muted-foreground">
+          <div className={TOOLTIP_MUTED_CLASS}>
             <div>{t("event.influencedBy")}</div>
             {relevantStats.map((stat) => (
               <div key={stat} className="flex items-center gap-1.5">

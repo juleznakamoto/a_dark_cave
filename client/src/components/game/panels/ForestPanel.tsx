@@ -49,7 +49,10 @@ import {
   getChopWoodParticleConfig,
   getHuntParticleConfig,
 } from "@/components/ui/bubbly-button.particles";
-import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
+import {
+  ActionTooltipSeparator,
+  composeActionTooltip,
+} from "@/game/rules/actionTooltipLayout";
 import type { Action, GameState } from "@shared/schema";
 import { formatNumber } from "@/lib/utils";
 
@@ -367,14 +370,14 @@ export default function ForestPanel() {
           costBreakdown.length,
         );
         tooltipHeader = (
-          <div className="whitespace-nowrap">
+          <div>
             <ActionTooltipResourceRows
               actionId={actionId}
               state={state}
               costs={costBreakdown}
             />
             {hasResourceSection && effectLines.length > 0 && (
-              <div className="border-t border-border my-1" />
+              <ActionTooltipSeparator />
             )}
             {effectLines.map((effect, index) => (
               <div key={`effect-${index}`}>{effect}</div>
@@ -396,7 +399,7 @@ export default function ForestPanel() {
             )
             : null;
         tooltipHeader = (
-          <div className="whitespace-nowrap">
+          <div>
             <ActionTooltipResourceRows
               actionId={actionId}
               state={state}
@@ -405,7 +408,7 @@ export default function ForestPanel() {
             {forestTradeGainLine != null && (
               <>
                 {hasResourceSection && (
-                  <div className="border-t border-border my-1" />
+                  <ActionTooltipSeparator />
                 )}
                 <div>{forestTradeGainLine}</div>
               </>
@@ -413,7 +416,7 @@ export default function ForestPanel() {
             {showSuccessTooltip && (
               <>
                 {(hasResourceSection || forestTradeGainLine != null) && (
-                  <div className="border-t border-border my-1" />
+                  <ActionTooltipSeparator />
                 )}
                 <SuccessChanceTooltipContent
                   gameState={state}

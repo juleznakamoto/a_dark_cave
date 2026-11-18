@@ -117,6 +117,7 @@ import {
   type DemoEndVillageUtilityActionId,
 } from "@/game/demoEndCatalog";
 import { ConstructionBoostBadge } from "@/components/game/ConstructionBoostBadge";
+import { useInsightSpendHighlight } from "@/components/game/useInsightSpendHighlight";
 import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTooltip";
 import { composeActionTooltip } from "@/game/rules/actionTooltipLayout";
 import {
@@ -263,7 +264,7 @@ function VillageInvestButton({ label }: { label: string }) {
       : null;
   const tooltipContent = !investReady ? (
     active ? (
-      <div className="text-xs max-w-[220px]">
+      <div>
         {t("village.investCompleteIn", {
           time: formatRemaining(
             Math.max(0, active.endPlayTime - currentPlayTime),
@@ -271,13 +272,13 @@ function VillageInvestButton({ label }: { label: string }) {
         })}
       </div>
     ) : currentPlayTime < nextWave ? (
-      <div className="text-xs max-w-[220px]">
+      <div>
         {t("village.investAvailableIn", {
           time: formatRemaining(Math.max(0, nextWave - currentPlayTime)),
         })}
       </div>
     ) : (
-      <div className="text-xs whitespace-nowrap">
+      <div>
         {t("village.investPreparing")}
       </div>
     )
@@ -359,15 +360,15 @@ function VillageCallMerchantButton({ label }: { label: string }) {
     formatCompactDuration(Math.max(0, ms) / 1000);
 
   const tooltipContent = isOtherEventActive ? (
-    <div className="text-xs">{t("village.merchantBlocked")}</div>
+    <div>{t("village.merchantBlocked")}</div>
   ) : isOnCooldown ? (
-    <div className="text-xs whitespace-nowrap">
+    <div>
       {t("village.merchantAvailableIn", {
         time: formatRemaining(remainingMs),
       })}
     </div>
   ) : (
-    <div className="text-xs whitespace-nowrap">
+    <div>
       <TooltipCostLines
         costs={[
           {
@@ -479,6 +480,8 @@ export default function VillagePanel() {
   );
   const isPresetUnlockAnimating = useUntilTimestamp(presetUnlockRevealEnd);
   const isQueueSlotUnlockAnimating = useUntilTimestamp(queueSlotUnlockRevealEnd);
+  useInsightSpendHighlight(isQueueSlotUnlockAnimating);
+  useInsightSpendHighlight(isPresetUnlockAnimating);
   const presetUnlockRevealStartedRef = useRef(false);
   const queueSlotUnlockRevealStartedRef = useRef(false);
 
@@ -715,7 +718,7 @@ export default function VillagePanel() {
 
       const tooltipContent =
         currentLevel < 5 ? (
-          <div className="text-xs whitespace-nowrap">
+          <div>
             <TooltipCostLines
               costs={[
                 {
@@ -803,7 +806,7 @@ export default function VillagePanel() {
     const revealedEffects = getRevealedEffectsForActionTooltip(actionId, state);
     const tooltipContent = composeActionTooltip({
       header: (
-        <div className="flex-1 min-w-0 whitespace-nowrap">
+        <div className="min-w-0 flex-1">
           <ActionTooltipResourceRows
             actionId={actionId}
             state={state}
@@ -1500,7 +1503,6 @@ export default function VillagePanel() {
                               <TooltipWrapper
                                 tooltipId="queue-slot-unlock"
                                 tooltip={queueUnlock?.tooltip}
-                                tooltipContentClassName="text-white"
                                 className="inline-flex items-center"
                                 tooltipTriggerClassName={
                                   INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS
@@ -1567,7 +1569,7 @@ export default function VillagePanel() {
                                 tooltipId={queueTooltipId}
                                 disabled
                                 tooltip={
-                                  <div className="text-xs">
+                                  <div>
                                     {isBuildingLocked
                                       ? t(
                                         "village.slotBuildingNeededToUnlock",
@@ -1747,7 +1749,6 @@ export default function VillagePanel() {
                             <TooltipWrapper
                               tooltipId="preset-unlock"
                               tooltip={presetUnlock?.tooltip}
-                              tooltipContentClassName="text-white"
                               className="inline-flex items-center"
                               tooltipTriggerClassName={
                                 INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS
@@ -1811,7 +1812,7 @@ export default function VillagePanel() {
                                   tooltipId={presetTooltipId}
                                   disabled
                                   tooltip={
-                                    <div className="text-xs">
+                                    <div>
                                       {t("village.slotBuildingNeededToUnlock", {
                                         building: unlockBuildingKey
                                           ? getBuildingDisplayName(
@@ -1846,7 +1847,7 @@ export default function VillagePanel() {
                                   tooltipId={presetTooltipId}
                                   disabled
                                   tooltip={
-                                    <div className="text-xs">
+                                    <div>
                                       {insightUnlockCost !== null
                                         ? costBenefitTooltip({
                                             amount: insightUnlockCost,
@@ -1892,7 +1893,7 @@ export default function VillagePanel() {
                                 tooltipId={presetTooltipId}
                                 openOnTap
                                 tooltip={
-                                  <div className="text-xs">{tooltipText}</div>
+                                  <div>{tooltipText}</div>
                                 }
                                 tooltipTriggerClassName="inline-flex items-center leading-none"
                                 className="group flex items-center cursor-pointer"
@@ -1931,7 +1932,7 @@ export default function VillagePanel() {
                             <TooltipWrapper
                               tooltipId="preset-save"
                               tooltip={
-                                <div className="text-xs">
+                                <div>
                                   {t("village.presetSave", {
                                     slot: activePresetSlot,
                                   })}

@@ -29,19 +29,21 @@ vi.mock("@/components/ui/dialog", () => ({
     open: boolean;
     children: React.ReactNode;
   }) => (open ? <div>{children}</div> : null),
-  DialogContent: ({
-    children,
-    openClickLockKey,
-    openClickLockMs,
-  }: {
-    children: React.ReactNode;
-    openClickLockKey?: string | number;
-    openClickLockMs?: number;
-  }) => {
+  DialogContent: React.forwardRef<
+    HTMLDivElement,
+    {
+      children: React.ReactNode;
+      openClickLockKey?: string | number;
+      openClickLockMs?: number;
+    }
+  >(function DialogContent(
+    { children, openClickLockKey, openClickLockMs },
+    ref,
+  ) {
     openClickLockKeys.push(openClickLockKey);
     openClickLockMsValues.push(openClickLockMs);
-    return <div>{children}</div>;
-  },
+    return <div ref={ref}>{children}</div>;
+  }),
   DialogHeader: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>
   ),

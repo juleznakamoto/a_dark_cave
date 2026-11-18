@@ -18,6 +18,7 @@ import { useGameStore } from "@/game/state";
 import { useDerivedGameState } from "@/game/useGameStoreWithoutTickClock";
 import { cn, formatCompactDuration } from "@/lib/utils";
 import { useUntilTimestamp } from "@/lib/uiClock";
+import { useReleaseInsightHighlightOnUnmount } from "@/components/game/useInsightSpendHighlight";
 
 /** Noto text double-triangle (U+23E9 + text VS). Do not use the ⏩ emoji form. */
 export const CONSTRUCTION_BOOST_GLYPH = "\u23E9\uFE0E";
@@ -72,6 +73,7 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
 
   const insight = useGameStore((s) => s.resources.insight ?? 0);
   const savedTime = formatCompactDuration(reductionSeconds, "round");
+  useReleaseInsightHighlightOnUnmount();
 
   const isCraftAction = actionId.startsWith("craft");
   const benefit = finishesBuild
@@ -104,7 +106,6 @@ export function ConstructionBoostBadge({ actionId }: ConstructionBoostBadgeProps
       <TooltipWrapper
         tooltip={costTooltip}
         tooltipId={`${actionId}-construction-boost`}
-        tooltipContentClassName="text-white"
         className="block h-full w-full"
         tooltipTriggerAsChild
         tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_OVERLAY_CLASS}

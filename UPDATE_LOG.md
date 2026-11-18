@@ -14,6 +14,12 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- Cube memories that said Continue now say Close.
+- Cube memory arrows sit beside the memory, on the left and on the right.
+- Invest countdowns and the dice rules use the same width as other tips. Lines inside a tip sit at the same distance, and tip headings use the same weight.
+- The pact choice rings in the top bar use the same tip as the rest of the game.
+- In the browser shop, gold packs, Great Feasts, bundles, and Cruel Mode cost less.
+- Every tip uses the same dark background, the same text, and the same divider. Level badges, the production cycle, and combat breakdowns match the other tips.
 - Tips with a longer description are a bit wider. Every tip stops at the same maximum width and keeps the same gap from the screen edge.
 - Construction queue and villager preset boxes are a little smaller, with more space between them.
 - Achievement progress after the description sits in parentheses, like (3/10).
@@ -51,6 +57,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- Insight in the resource list stops glowing after you reveal an achievement title, unlock a queue slot or villager preset, or speed up a build.
 - Long lines in tips stay inside the box, including larger text and longer translations.
 - Scrolling the screen while an action tip is open closes the tip.
 - Unlocking a construction queue slot or a villager preset plays the Insight animation before that badge goes away.
@@ -83,6 +90,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- Swipe left or right on a cube memory to move to the next or previous memory.
 - On a phone, Rewards in the top bar shows only the diamond icon, without the word Rewards.
 - On a phone, the Rewards dialog uses more of the screen width.
 - On a phone, building outlines on the village map are a little thicker.

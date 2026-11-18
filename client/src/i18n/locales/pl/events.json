@@ -686,8 +686,8 @@
   },
   "cube14a": {
     "choices": {
-      "continue": {
-        "label": "Kontynuuj"
+      "close": {
+        "label": "Zamknij"
       }
     },
     "message": "„Gdy ruch oporu wystąpił przeciw urządzeniom w czaszkach, jego członków zesłano w głąb góry i zamknięto za bramą. Bez drogi powrotu kopali coraz głębiej. W izolacji i ciemności ich umysły niszczały, aż popadli w szaleństwo i zwyrodnienie”.",
@@ -695,8 +695,8 @@
   },
   "cube14b": {
     "choices": {
-      "continue": {
-        "label": "Kontynuuj"
+      "close": {
+        "label": "Zamknij"
       }
     },
     "message": "„Pewnego dnia, głęboko w ziemi, znaleźli monolit z nieznanej rudy. Z niej wykuli ładunek, by zniszczyć bramę. Lecz bomba nie przebiła bramy. Zamiast tego wyzwoliła impuls elektryczny, który objął planetę, niszcząc wszystkie urządzenia i kończąc cywilizację.”",
@@ -704,8 +704,8 @@
   },
   "cube14c": {
     "choices": {
-      "continue": {
-        "label": "Kontynuuj"
+      "close": {
+        "label": "Zamknij"
       }
     },
     "message": "„Wkrótce po wybuchu mężczyzna stojący w pobliżu zaczął się dematerializować, jego kształt migotał, na sekundy półprzezroczysty. Przerażony i oszalały tym, co się stało, chwilę później odebrał sobie życie.”",

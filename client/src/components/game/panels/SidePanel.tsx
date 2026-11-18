@@ -12,6 +12,7 @@ import StatEffectsTooltip from "@/components/game/StatEffectsTooltip";
 import BonusCompositionTooltip from "@/components/game/BonusCompositionTooltip";
 import ResourceFlowTooltip from "@/components/game/ResourceFlowTooltip";
 import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
+import { TOOLTIP_MUTED_CLASS } from "@/game/tooltipMetrics";
 import { ResourceCoinIcon } from "@/components/ui/resource-coin-icon";
 import { ResourceInsightIcon } from "@/components/ui/resource-insight-icon";
 import { clothingEffects } from "@/game/rules/effects";
@@ -414,7 +415,7 @@ export default function SidePanel() {
         <>
           <StatEffectsTooltip statKey="luck" />
           <ActionTooltipSeparator />
-          <span className="text-muted-foreground">
+          <span className={TOOLTIP_MUTED_CLASS}>
             {t("sidePanel.statLuckTooltip")}
           </span>
         </>
@@ -432,7 +433,7 @@ export default function SidePanel() {
         <>
           <StatEffectsTooltip statKey="strength" />
           <ActionTooltipSeparator />
-          <span className="text-muted-foreground">
+          <span className={TOOLTIP_MUTED_CLASS}>
             {t("sidePanel.statStrengthTooltip")}
           </span>
         </>
@@ -450,7 +451,7 @@ export default function SidePanel() {
         <>
           <StatEffectsTooltip statKey="knowledge" />
           <ActionTooltipSeparator />
-          <span className="text-muted-foreground">
+          <span className={TOOLTIP_MUTED_CLASS}>
             {t("sidePanel.statKnowledgeTooltip")}
           </span>
         </>
@@ -497,7 +498,7 @@ export default function SidePanel() {
           )}
           <StatEffectsTooltip statKey="madness" />
           <ActionTooltipSeparator />
-          <div className="text-muted-foreground">
+          <div className={TOOLTIP_MUTED_CLASS}>
             {t("sidePanel.statMadnessTooltip")}
           </div>
         </>
@@ -555,7 +556,7 @@ export default function SidePanel() {
                 })}
               </div>
               <ActionTooltipSeparator />
-              <div className="text-muted-foreground">
+              <div className={TOOLTIP_MUTED_CLASS}>
                 {t("sidePanel.bastionAttackTooltip")}
               </div>
             </div>

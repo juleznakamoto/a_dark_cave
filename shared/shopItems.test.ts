@@ -180,8 +180,8 @@ describe('Shop Items Configuration', () => {
   });
 
   describe('Cruel Mode price', () => {
-    it('is 4.99 EUR', () => {
-      expect(SHOP_ITEMS.cruel_mode.price).toBe(499);
+    it('is 4.49 EUR', () => {
+      expect(SHOP_ITEMS.cruel_mode.price).toBe(449);
     });
   });
 
@@ -195,13 +195,13 @@ describe('Shop Items Configuration', () => {
     it('sells 15k as a mid-high shop pack', () => {
       expect(SHOP_ITEMS.gold_15000.rewards.resources?.gold).toBe(15000);
       expect(SHOP_ITEMS.gold_15000.hiddenFromShop).toBeFalsy();
-      expect(SHOP_ITEMS.gold_15000.price).toBe(899);
+      expect(SHOP_ITEMS.gold_15000.price).toBe(749);
     });
 
     it('sells 30k as the current top shop pack', () => {
       expect(SHOP_ITEMS.gold_30000.rewards.resources?.gold).toBe(30000);
       expect(SHOP_ITEMS.gold_30000.hiddenFromShop).toBeFalsy();
-      expect(SHOP_ITEMS.gold_30000.price).toBe(1499);
+      expect(SHOP_ITEMS.gold_30000.price).toBe(1199);
     });
 
     it('uses a rising gold-pack glyph ladder', () => {
@@ -322,7 +322,7 @@ describe('Shop Items Configuration', () => {
     });
 
     it('should validate basic bundle catalog price vs component sum', () => {
-      expect(SHOP_ITEMS.basic_survival_bundle.price).toBe(649);
+      expect(SHOP_ITEMS.basic_survival_bundle.price).toBe(499);
       const listSum = bundleComponentsListPriceSumCents(
         SHOP_ITEMS.basic_survival_bundle.bundleComponents!,
         SHOP_ITEMS,
@@ -387,7 +387,7 @@ describe('Shop Items Configuration', () => {
 
     it('should have correct pricing for advanced bundle', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
-      expect(bundle.price).toBe(999);
+      expect(bundle.price).toBe(799);
       expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
         SHOP_ITEMS.gold_15000.price + SHOP_ITEMS.great_feast_3.price,
       );
@@ -475,7 +475,7 @@ describe('Shop Items Configuration', () => {
 
     it('should have correct catalog pricing', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
-      expect(bundle.price).toBe(1349);
+      expect(bundle.price).toBe(1199);
       expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
         SHOP_ITEMS.gold_15000.price +
         SHOP_ITEMS.great_feast_3.price +
@@ -537,12 +537,12 @@ describe('Shop Items Configuration', () => {
 
   describe('shopPackageSavingsPercent', () => {
     it('computes gold baseline from smallest pack catalog price', () => {
-      expect(goldAmountBaselineCatalogCents(1000, SHOP_ITEMS)).toBe(149);
-      expect(goldAmountBaselineCatalogCents(250, SHOP_ITEMS)).toBe(37);
+      expect(goldAmountBaselineCatalogCents(1000, SHOP_ITEMS)).toBe(129);
+      expect(goldAmountBaselineCatalogCents(250, SHOP_ITEMS)).toBe(32);
     });
 
     it('uses 3x single Great Feast catalog price for the 3-pack', () => {
-      expect(greatFeast3BaselineCatalogCents(SHOP_ITEMS)).toBe(447);
+      expect(greatFeast3BaselineCatalogCents(SHOP_ITEMS)).toBe(387);
     });
 
     it('returns null for gold_250 and single feast', () => {
@@ -552,9 +552,9 @@ describe('Shop Items Configuration', () => {
 
     it('returns savings vs catalog baselines only (no optional sale originalPrice)', () => {
       expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_1000)).toBeNull();
-      expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_2500)).toBe(20);
-      expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_30000)).toBe(66);
-      expect(shopPackageSavingsPercent(SHOP_ITEMS.great_feast_3)).toBe(33);
+      expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_2500)).toBe(23);
+      expect(shopPackageSavingsPercent(SHOP_ITEMS.gold_30000)).toBe(69);
+      expect(shopPackageSavingsPercent(SHOP_ITEMS.great_feast_3)).toBe(36);
       const bundle = SHOP_ITEMS.basic_survival_bundle;
       const catalogSum = bundleComponentsCatalogPriceSumCents(
         bundle.bundleComponents!,

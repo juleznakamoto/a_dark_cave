@@ -686,8 +686,8 @@
   },
   "cube14a": {
     "choices": {
-      "continue": {
-        "label": "Continuer"
+      "close": {
+        "label": "Fermer"
       }
     },
     "message": "« Lorsque la résistance s'opposa aux dispositifs crâniens, elle fut exilée dans les profondeurs de la montagne, scellée derrière la porte. Sans issue, ils creusèrent toujours plus profond. Dans l'isolement et l'obscurité, leurs esprits s'érodèrent et ils sombrèrent dans la folie et la dégénérescence. »",
@@ -695,8 +695,8 @@
   },
   "cube14b": {
     "choices": {
-      "continue": {
-        "label": "Continuer"
+      "close": {
+        "label": "Fermer"
       }
     },
     "message": "« Un jour, au fond de la terre, ils trouvèrent un monolithe d'un minerai inconnu. Ils en forgèrent un explosif pour détruire la porte. Mais la bombe ne perça pas la porte ; elle déclencha une impulsion électrique à l'échelle de la planète, détruisant tous les dispositifs et mettant fin à la civilisation. »",
@@ -704,8 +704,8 @@
   },
   "cube14c": {
     "choices": {
-      "continue": {
-        "label": "Continuer"
+      "close": {
+        "label": "Fermer"
       }
     },
     "message": "« Peu après l'explosion, un homme proche commença à se dématérialiser ; sa forme vacillait, demi-transparente pendant quelques secondes. Terrifié et rendu fou par ce qui s'était passé, il se donna la mort quelques instants plus tard. »",

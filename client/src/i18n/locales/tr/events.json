@@ -686,8 +686,8 @@
   },
   "cube14a": {
     "choices": {
-      "continue": {
-        "label": "Devam Et"
+      "close": {
+        "label": "Kapat"
       }
     },
     "message": "'Direnişçiler Kafatası Aygıtlarına karşı çıkınca dağın derinliklerine sürüldü ve kapının ardında mühürlendi. Geri dönecek yolları olmadığından hep daha derine kazdılar. Yalnızlığın ve karanlığın içinde zihinleri aşındı; delirip yozlaştılar.'",
@@ -695,8 +695,8 @@
   },
   "cube14b": {
     "choices": {
-      "continue": {
-        "label": "Devam Et"
+      "close": {
+        "label": "Kapat"
       }
     },
     "message": "'Bir gün toprağın derinliklerinde, bilinmeyen bir cevherden oluşmuş bir monolite rastladılar. Ondan kapıyı yok edecek bir patlayıcı yaptılar. Ama bomba kapıda gedik açamadı. Bunun yerine gezegeni baştan başa saran bir elektrik dalgası saldı; bütün aygıtları yok edip uygarlığın sonunu getirdi.'",
@@ -704,8 +704,8 @@
   },
   "cube14c": {
     "choices": {
-      "continue": {
-        "label": "Devam Et"
+      "close": {
+        "label": "Kapat"
       }
     },
     "message": "'Patlamadan kısa süre sonra, yakında duran bir adamın bedeni silinmeye başladı; görüntüsü titriyor, saniyelerce yarı saydam kalıyordu. Olanlar karşısında dehşete düşen, aklını yitiren adam az sonra kendi canına kıydı.'",

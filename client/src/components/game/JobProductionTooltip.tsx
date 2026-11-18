@@ -12,6 +12,7 @@ import {
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { formatTooltipResourceName } from "@/i18n/tooltipLabels";
 import { formatSignedNumber } from "@/lib/utils";
+import { TOOLTIP_MUTED_CLASS } from "@/game/tooltipMetrics";
 
 export function villageJobProductionTooltipId(jobId: string): string {
   return `village-job-${jobId}-production`;
@@ -70,7 +71,7 @@ export default function JobProductionTooltip({
             return (
               <div
                 key={`${line.sourceId}-${lineIndex}`}
-                className="flex justify-between gap-3 text-muted-foreground"
+                className={`flex justify-between gap-3 ${TOOLTIP_MUTED_CLASS}`}
                 aria-label={t("sidePanel.bonusSourceEffect", {
                   source,
                   effect,

@@ -112,10 +112,9 @@ function TaskInfoIcon({
 }) {
   return (
     <TooltipWrapper
-      tooltip={<p className="text-xs leading-snug">{tooltipText}</p>}
+      tooltip={tooltipText}
       tooltipId={tooltipId}
       disabled
-      tooltipContentClassName="max-w-xs"
       className={`${GAME_INFO_TRIGGER_CLASS} align-text-bottom translate-y-[0.06em]`}
     >
       <span className={GAME_INFO_GLYPH_CLASS} aria-hidden>
@@ -152,7 +151,7 @@ function LockedSocialButton({
   if (!locked) return button;
   return (
     <TooltipWrapper
-      tooltip={<p className="text-xs">{tooltipText}</p>}
+      tooltip={tooltipText}
       tooltipId={tooltipId}
       disabled
       className="flex w-full min-w-0"

@@ -973,7 +973,6 @@ export default function ShareDialog() {
             <TooltipWrapper
               tooltip={<InviteFriendsTooltip count={referralCount} />}
               tooltipId="share-dialog-invite"
-              tooltipContentClassName="max-w-xs"
               onClick={() => {
                 void handleCopyInviteLink();
               }}

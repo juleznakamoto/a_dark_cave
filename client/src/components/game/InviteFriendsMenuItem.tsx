@@ -4,6 +4,7 @@ import { DropdownMenuItemWithTooltip } from "@/components/game/DropdownMenuItemW
 import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { useToast } from "@/hooks/use-toast";
 import { tWithFallback } from "@/i18n/resolveGameText";
+import { TOOLTIP_TITLE_CLASS } from "@/game/tooltipMetrics";
 import { isSteamEditionActive } from "@/lib/edition";
 import { logger } from "@/lib/logger";
 import {
@@ -13,7 +14,7 @@ import {
 
 export function InviteFriendsTooltip({ count }: { count: number }) {
   return (
-    <p className="text-xs">
+    <p>
       <Trans
         i18nKey="invite.tooltip"
         ns="ui"
@@ -23,7 +24,7 @@ export function InviteFriendsTooltip({ count }: { count: number }) {
           cap: SOCIAL_PROMPT_REFERRAL_CAP,
           count,
         }}
-        components={{ bold: <span className="font-semibold" /> }}
+        components={{ bold: <span className={TOOLTIP_TITLE_CLASS} /> }}
       />
     </p>
   );
@@ -88,7 +89,6 @@ export function InviteFriendsMenuItem({
       <DropdownMenuItemWithTooltip
         tooltip={<InviteFriendsTooltip count={referralCount} />}
         tooltipId="footer-social-invite"
-        tooltipContentClassName="max-w-xs"
         tooltipSide="top"
         tooltipAvoidCollisions={false}
         className={className}

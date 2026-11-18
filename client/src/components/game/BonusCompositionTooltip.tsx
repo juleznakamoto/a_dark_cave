@@ -8,6 +8,7 @@ import {
   type BonusCompositionLine,
 } from "@/game/rules/bonusComposition";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
+import { TOOLTIP_STACK_CLASS } from "@/game/tooltipMetrics";
 
 function formatPercent(percent: number): string {
   return Number.isInteger(percent) ? String(percent) : percent.toFixed(1);
@@ -45,7 +46,7 @@ export default function BonusCompositionTooltip({
   );
   if (lines.length === 0) return null;
   return (
-    <div className="text-xs">
+    <div className={TOOLTIP_STACK_CLASS}>
       {lines.map((line) => (
         <CompositionLine key={line.sourceId} line={line} t={t} />
       ))}

@@ -188,7 +188,6 @@ function RewardItemLine({
       tooltip={tooltip}
       tooltipId={`reward-item-${prefix === "-" ? "lost-" : ""}${kind}-${itemId}`}
       disabled
-      tooltipContentClassName="max-w-xs"
       className="w-fit max-w-full"
       tooltipTriggerClassName="inline-block max-w-full"
       side="right"

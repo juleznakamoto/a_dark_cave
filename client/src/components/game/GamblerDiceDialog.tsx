@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { TOOLTIP_STACK_CLASS } from "@/game/tooltipMetrics";
 import {
   WAGER_TIERS,
   WAGER_LUCK_THRESHOLDS,
@@ -162,7 +163,7 @@ function RulesInfoButton() {
   return (
     <TooltipWrapper
       tooltip={
-        <div className="text-xs space-y-1 max-w-[200px]">
+        <div className={TOOLTIP_STACK_CLASS}>
           <p>{t("gambler.rulesTurns")}</p>
           <p>{t("gambler.rulesTotals")}</p>
           <p>{t("gambler.rulesGoal")}</p>
@@ -172,7 +173,6 @@ function RulesInfoButton() {
       }
       tooltipId="gambler-rules"
       disabled
-      tooltipContentClassName="max-w-xs"
       className={GAME_INFO_TRIGGER_CLASS}
     >
       <span
@@ -907,7 +907,7 @@ export default function GamblerDiceDialog({
                             <TooltipWrapper
                               key={tier}
                               tooltip={
-                                <div className="text-xs">
+                                <div>
                                   {t("gambler.requiresLuck", {
                                     luck: requiredLuck,
                                   })}

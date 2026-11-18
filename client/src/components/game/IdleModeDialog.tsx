@@ -10,6 +10,12 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
+import {
+  TOOLTIP_MUTED_CLASS,
+  TOOLTIP_STACK_CLASS,
+  TOOLTIP_TITLE_CLASS,
+} from "@/game/tooltipMetrics";
 import {
   GAME_PANEL_HEADER_INDICATOR_CLASS,
   GAME_PANEL_HEADER_INDICATOR_INNER_CLASS,
@@ -222,8 +228,8 @@ function SleepCycleIndicator({
   return (
     <TooltipWrapper
       tooltip={
-        <div className="text-xs">
-          <div className="font-semibold">{t("village.cycle")}</div>
+        <div className={TOOLTIP_STACK_CLASS}>
+          <div className={TOOLTIP_TITLE_CLASS}>{t("village.cycle")}</div>
           {active && (
             <div>
               {t("village.nextCycleIn", {
@@ -231,15 +237,15 @@ function SleepCycleIndicator({
               })}
             </div>
           )}
-          <div className="border-t border-gray-600 my-1" />
+          <ActionTooltipSeparator />
           <div>
             {t("idleMode.villageProduction", {
               percent,
               defaultValue: "Village production: {{percent}}%",
             })}
           </div>
-          <div className="border-t border-gray-600 my-1" />
-          <div className="text-gray-400/70">
+          <ActionTooltipSeparator />
+          <div className={TOOLTIP_MUTED_CLASS}>
             {t("idleMode.villageProductionTooltip", {
               defaultValue:
                 "Temporary production bonuses not active while sleeping",
@@ -250,7 +256,6 @@ function SleepCycleIndicator({
       tooltipId="idle-mode-village-production"
       disabled
       side="bottom"
-      tooltipContentClassName="max-w-xs"
       tooltipTriggerClassName={GAME_PANEL_HEADER_INDICATOR_TRIGGER_CLASS}
       className={GAME_PANEL_HEADER_INDICATOR_CLASS}
     >

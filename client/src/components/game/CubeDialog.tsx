@@ -32,6 +32,7 @@ import {
   cubeHeartbeatBoxShadow,
   heartbeatGlowIntensity,
 } from "@/components/game/cubeHeartbeatGlow";
+import { cubeMemorySwipeDirection } from "@/components/game/cubeMemorySwipe";
 
 function CubeEventArrow({
   direction,
@@ -55,8 +56,8 @@ function CubeEventArrow({
         // `transform: none` on buttons, which would drop a translate and
         // jump the arrow up when the button becomes clickable.
         // ~30% larger than the old h-11 / h-6 (2.75rem / 1.5rem).
-        // Side position lives in CSS so a narrow window can slide the arrow
-        // inward without shrinking the cube.
+        // Side position lives in CSS, outside the frame. The paging dialog
+        // narrows so the arrow never sits on the memory.
         "cube-event-arrow absolute top-[calc(50%-1.7875rem)] z-30 flex h-[3.575rem] w-[3.575rem] items-center justify-center text-muted-foreground opacity-70 transition-[opacity,color] hover:text-white hover:opacity-100",
       )}
     >
@@ -81,6 +82,13 @@ export default function CubeDialog({
   const { t } = useUiTranslation();
   const chromeOn = useDestroyedChrome();
   const glowRef = useRef<HTMLDivElement>(null);
+  const swipeSurfaceRef = useRef<HTMLDivElement>(null);
+  const pagingRef = useRef({
+    viewOnly: false,
+    previousId: null as string | null,
+    nextId: null as string | null,
+    show: (_targetId: string, _trackId: string) => {},
+  });
   const events = useGameStore((s) => s.events);
   const relics = useGameStore((s) => s.relics);
 
@@ -132,6 +140,70 @@ export default function CubeDialog({
       node.style.boxShadow = "";
     };
   }, [isOpen]);
+
+  // Estate rereads: a sideways finger swipe pages the memory. Buttons keep
+  // their own taps, so Close and the arrows are not swipes.
+  useEffect(() => {
+    const node = swipeSurfaceRef.current;
+    if (!node || !isOpen) return;
+
+    let startX = 0;
+    let startY = 0;
+    let tracking = false;
+
+    const stopTracking = () => {
+      tracking = false;
+    };
+
+    const onStart = (touchEvent: TouchEvent) => {
+      if (touchEvent.touches.length !== 1) {
+        tracking = false;
+        return;
+      }
+      const target = touchEvent.target;
+      if (target instanceof Element && target.closest("button")) {
+        tracking = false;
+        return;
+      }
+      const touch = touchEvent.touches[0];
+      if (!touch) return;
+      tracking = true;
+      startX = touch.clientX;
+      startY = touch.clientY;
+    };
+
+    const onEnd = (touchEvent: TouchEvent) => {
+      if (!tracking) return;
+      tracking = false;
+      const paging = pagingRef.current;
+      if (!paging.viewOnly) return;
+      const touch = touchEvent.changedTouches[0];
+      if (!touch) return;
+      const direction = cubeMemorySwipeDirection(
+        touch.clientX - startX,
+        touch.clientY - startY,
+      );
+      if (!direction) return;
+      const targetId = direction === "next" ? paging.nextId : paging.previousId;
+      if (!targetId) return;
+      touchEvent.preventDefault();
+      paging.show(
+        targetId,
+        direction === "next"
+          ? `cube-swipe-next-${targetId}`
+          : `cube-swipe-prev-${targetId}`,
+      );
+    };
+
+    node.addEventListener("touchstart", onStart, { passive: true });
+    node.addEventListener("touchend", onEnd, { passive: false });
+    node.addEventListener("touchcancel", stopTracking);
+    return () => {
+      node.removeEventListener("touchstart", onStart);
+      node.removeEventListener("touchend", onEnd);
+      node.removeEventListener("touchcancel", stopTracking);
+    };
+  }, [isOpen, event?.id]);
 
   // Guard against null/undefined event
   if (!event) {
@@ -224,6 +296,16 @@ export default function CubeDialog({
       },
     }));
   };
+  const canPage = Boolean(previousId || nextId);
+  pagingRef.current = {
+    viewOnly: Boolean(event.viewOnly),
+    previousId,
+    nextId,
+    show: (targetId, trackId) => {
+      useGameStore.getState().trackButtonClick(trackId);
+      showUnlockedCube(targetId);
+    },
+  };
   const resolvedTitle =
     getEventTitle(eventId, event.title) ??
     event.title ??
@@ -242,17 +324,16 @@ export default function CubeDialog({
   return (
     <Dialog open={isOpen} onOpenChange={() => { }}>
       <DialogContent
+        ref={swipeSurfaceRef}
         openClickLockKey={event.id}
         // Estate rereads are a deliberate open. Close and the paging arrows
         // stay live, including when an arrow swaps in the next memory.
         openClickLockMs={event.viewOnly ? 0 : undefined}
-        className="cube-dialog-content [&>.adc-dialog-close]:hidden border-2 border-gray-400 shadow-2xl min-h-[21rem] max-h-[90dvh] flex flex-col overflow-visible z-[100]"
-        style={{
-          ...chromeRuleColorStyle("#9ca3af"),
-          // Wider than the old 22rem. Arrows sit in the margin and slide
-          // inward on a narrow window instead of shrinking this frame.
-          "--adc-dialog-max-w": "28rem",
-        }}
+        className={cn(
+          "cube-dialog-content [&>.adc-dialog-close]:hidden border-2 border-gray-400 shadow-2xl min-h-[21rem] max-h-[90dvh] flex flex-col overflow-visible z-[100]",
+          canPage && "cube-dialog-content--paging",
+        )}
+        style={chromeRuleColorStyle("#9ca3af")}
       >
         {previousId && (
           <CubeEventArrow

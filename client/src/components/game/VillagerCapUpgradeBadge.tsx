@@ -20,6 +20,7 @@ import {
 } from "@/game/villagerCapUpgrades";
 import { getUiTooltip } from "@/i18n/tooltipLabels";
 import { useUntilTimestamp } from "@/lib/uiClock";
+import { useInsightSpendHighlight } from "@/components/game/useInsightSpendHighlight";
 
 /** New-item pulse + insight highlight for villager-cap upgrade badges. */
 function useInsightBadgeTooltipPulse(tooltipId: string) {
@@ -85,24 +86,16 @@ export function VillagerCapUpgradeBadge({
   const startVillagerCapUpgrade = useGameStore(
     (s) => s.startVillagerCapUpgrade,
   );
-  const setHighlightedResources = useGameStore(
-    (s) => s.setHighlightedResources,
-  );
   const [suppressHover, setSuppressHover] = useState(false);
   const revealStartedRef = useRef(false);
 
   // One timeout at the store deadline — not a 10 Hz poll per job badge.
   const isPlaying = useUntilTimestamp(insightRevealEnd);
+  useInsightSpendHighlight(isPlaying);
 
   useEffect(() => {
     if (isPlaying) revealStartedRef.current = true;
   }, [isPlaying]);
-
-  useEffect(() => {
-    if (!isPlaying) return;
-    setHighlightedResources(["insight"]);
-    return () => setHighlightedResources([]);
-  }, [isPlaying, setHighlightedResources]);
 
   useEffect(() => {
     if (revealStartedRef.current && !isPlaying) {
@@ -135,7 +128,6 @@ export function VillagerCapUpgradeBadge({
       tooltip={upgrade.tooltip}
       tooltipId={tooltipId}
       disabled={isDisabled}
-      tooltipContentClassName="max-w-xs"
       tooltipTriggerAsChild
       tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
       onMouseEnter={handleTooltipEnter}

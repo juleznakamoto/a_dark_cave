@@ -686,8 +686,8 @@
   },
   "cube14a": {
     "choices": {
-      "continue": {
-        "label": "Continua"
+      "close": {
+        "label": "Chiudi"
       }
     },
     "message": "«Quando la resistenza si oppose ai dispositivi cranici, fu esiliata nelle profondità della montagna, sigillata dietro il portale. Senza via di ritorno, scavarono sempre più in profondità. Nell'isolamento e nell'oscurità, le loro menti si erosero e discesero nella follia e nella degenerazione.»",
@@ -695,8 +695,8 @@
   },
   "cube14b": {
     "choices": {
-      "continue": {
-        "label": "Continua"
+      "close": {
+        "label": "Chiudi"
       }
     },
     "message": "«Un giorno, nelle profondità della terra, trovarono un monolite di un minerale sconosciuto. Da esso forgiarono un esplosivo per distruggere il portale. Ma la bomba non riuscì a sfondare il portale, scatenando invece un impulso elettrico che si estese all'intero pianeta distruggendo tutti i dispositivi, ponendo fine alla civiltà.»",
@@ -704,8 +704,8 @@
   },
   "cube14c": {
     "choices": {
-      "continue": {
-        "label": "Continua"
+      "close": {
+        "label": "Chiudi"
       }
     },
     "message": "«Poco dopo l'esplosione, un uomo lì vicino iniziò a smaterializzarsi, la sua forma che tremolava, semitrasparente per alcuni secondi. Terrorizzato e impazzito per quanto accaduto, si tolse la vita pochi istanti dopo.»",

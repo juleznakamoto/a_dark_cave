@@ -12,6 +12,8 @@ import {
   getVeinfireElixirHeal,
 } from "@/game/rules/effectsCalculation";
 import { combatItemTooltips } from "@/game/rules/tooltips";
+import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
+import { TOOLTIP_MUTED_CLASS, TOOLTIP_STACK_CLASS } from "@/game/tooltipMetrics";
 import {
   calculateCriticalStrikeChance,
   calculateEnemyCriticalChancePercent,
@@ -1118,7 +1120,7 @@ export default function CombatDialog({
   );
   const fightTooltip =
     totalCrit > 0 || failPct > 0 ? (
-      <div className="text-xs space-y-2 max-w-[220px]">
+      <div className={TOOLTIP_STACK_CLASS}>
         {totalCrit > 0 && (
           <div className="space-y-1">
             <div>
@@ -1132,7 +1134,7 @@ export default function CombatDialog({
               })}
             </div>
             {luckCrit > 0 && (
-              <div className="text-gray-400/70">
+              <div className={TOOLTIP_MUTED_CLASS}>
                 {t("combat.critFromLuck", {
                   percent: luckCrit,
                   stat: getStatName("luck", "Luck"),
@@ -1144,7 +1146,7 @@ export default function CombatDialog({
               </div>
             )}
             {itemCrit > 0 && (
-              <div className="text-gray-400/70">
+              <div className={TOOLTIP_MUTED_CLASS}>
                 {t("combat.critFromItems", {
                   percent: itemCrit,
                 })}
@@ -1153,12 +1155,9 @@ export default function CombatDialog({
           </div>
         )}
         {failPct > 0 && (
-          <div
-            className={
-              totalCrit > 0 ? "pt-1 border-t border-gray-600/50" : ""
-            }
-          >
-            <div className="text-gray-300">
+          <div>
+            {totalCrit > 0 && <ActionTooltipSeparator />}
+            <div className={TOOLTIP_MUTED_CLASS}>
               {t("combat.missChance", {
                 percent: failPct,
                 stat: getStatName("madness", "Madness"),
@@ -1870,7 +1869,6 @@ export default function CombatDialog({
                   <TooltipWrapper
                     tooltip={fightTooltip}
                     tooltipId="combat-fight"
-                    tooltipContentClassName="max-w-xs"
                     disabled={
                       isProcessingRound ||
                       (currentEnemy?.currentHealth || 0) <= 0

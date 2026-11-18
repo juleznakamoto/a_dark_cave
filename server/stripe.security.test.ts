@@ -82,7 +82,7 @@ describe('Bundle Purchase Security Tests', () => {
 
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 100, // Wrong amount (should be 999)
+        amount: 100, // Wrong amount (should be 799)
         status: 'succeeded',
         metadata: { itemId: 'advanced_bundle' },
       } as Stripe.PaymentIntent;
@@ -100,7 +100,7 @@ describe('Bundle Purchase Security Tests', () => {
 
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 999, // Correct price for advanced_bundle
+        amount: 799, // Correct price for advanced_bundle
         status: 'succeeded',
         currency: 'eur',
         metadata: { itemId: 'advanced_bundle' },
@@ -130,10 +130,10 @@ describe('Bundle Purchase Security Tests', () => {
         },
       });
 
-      // advanced_bundle: 999 -> floor(999 * 0.8) = 799
+      // advanced_bundle: 799 -> floor(799 * 0.8) = 639
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 799,
+        amount: 639,
         status: 'succeeded',
         currency: 'eur',
         metadata: {
@@ -157,7 +157,7 @@ describe('Bundle Purchase Security Tests', () => {
       // Attacker fakes discounted amount - metadata only set by server at createPaymentIntent
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 799, // Looks like 20% off
+        amount: 639, // Looks like 20% off
         status: 'succeeded',
         metadata: { itemId: 'advanced_bundle' }, // No tradersGratitudeDiscountApplied
       } as Stripe.PaymentIntent;
@@ -185,10 +185,10 @@ describe('Bundle Purchase Security Tests', () => {
         true
       );
 
-      // Must be floor(999 * 0.8) = 799, not arbitrary
+      // Must be floor(799 * 0.8) = 639, not arbitrary
       expect(mockPaymentIntents.create).toHaveBeenCalledWith(
         expect.objectContaining({
-          amount: 799,
+          amount: 639,
           metadata: expect.objectContaining({
             tradersGratitudeDiscountApplied: 'true',
           }),
@@ -207,7 +207,7 @@ describe('Bundle Purchase Security Tests', () => {
 
       expect(mockPaymentIntents.create).toHaveBeenCalledWith(
         expect.objectContaining({
-          amount: 999, // Server enforces correct price
+          amount: 799, // Server enforces correct price
         })
       );
     });
@@ -239,7 +239,7 @@ describe('Bundle Purchase Security Tests', () => {
 
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 999,
+        amount: 799,
         status: 'succeeded',
         currency: 'eur',
         metadata: { itemId: 'advanced_bundle' },
@@ -260,7 +260,7 @@ describe('Bundle Purchase Security Tests', () => {
 
       // Bundle purchase
       expect(insertCalls[0].item_id).toBe('advanced_bundle');
-      expect(insertCalls[0].price_paid).toBe(999);
+      expect(insertCalls[0].price_paid).toBe(799);
       expect(insertCalls[0].bundle_id).toBe(null);
       expect(insertCalls[0].currency).toBe('eur');
 
@@ -280,7 +280,7 @@ describe('Bundle Purchase Security Tests', () => {
 
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 999,
+        amount: 799,
         status: 'pending',
         metadata: { itemId: 'advanced_bundle' },
       } as Stripe.PaymentIntent;
@@ -297,7 +297,7 @@ describe('Bundle Purchase Security Tests', () => {
 
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 999,
+        amount: 799,
         status: 'canceled',
         metadata: { itemId: 'advanced_bundle' },
       } as Stripe.PaymentIntent;
@@ -316,7 +316,7 @@ describe('Bundle Purchase Security Tests', () => {
 
       const mockIntent: Stripe.PaymentIntent = {
         id: 'pi_test',
-        amount: 999,
+        amount: 799,
         status: 'succeeded',
         currency: 'eur',
         metadata: { itemId: 'advanced_bundle' },

@@ -99,7 +99,6 @@ export function ButtonPriorBadge({ actionId }: ButtonPriorBadgeProps) {
       tooltipId={`prior-badge-${actionId}`}
       disabled={tipOnly}
       side="right"
-      tooltipContentClassName="max-w-xs bg-popover text-white border text-xs"
       tooltipTriggerAsChild
       className={cn(
         "button-prior-badge z-[20]",

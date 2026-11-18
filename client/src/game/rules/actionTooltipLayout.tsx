@@ -1,8 +1,12 @@
 import React from "react";
-import { tooltipDescriptionLayoutStyle } from "@/game/tooltipMetrics";
+import {
+  TOOLTIP_DIVIDER_CLASS,
+  TOOLTIP_MUTED_CLASS,
+  tooltipDescriptionLayoutStyle,
+} from "@/game/tooltipMetrics";
 
 export function ActionTooltipSeparator() {
-  return <div className="my-1 border-t border-neutral-800" />;
+  return <div className={TOOLTIP_DIVIDER_CLASS} />;
 }
 
 export type ActionTooltipParts = {
@@ -41,7 +45,7 @@ export function composeActionTooltip({
   headerTrailing,
   description,
   effects,
-  className = "text-xs",
+  className,
   style,
 }: ActionTooltipParts): React.ReactNode | null {
   const hasHeader = header != null;
@@ -65,7 +69,7 @@ export function composeActionTooltip({
         <>
           {hasHeader || hasEffects ? <ActionTooltipSeparator /> : null}
           <div
-            className="whitespace-normal text-muted-foreground"
+            className={`whitespace-normal ${TOOLTIP_MUTED_CLASS}`}
             style={tooltipDescriptionLayoutStyle(hasHeader || hasEffects)}
           >
             {description}

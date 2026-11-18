@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
+import {
+  TOOLTIP_MUTED_CLASS,
+  TOOLTIP_STACK_CLASS,
+  TOOLTIP_TITLE_CLASS,
+} from "@/game/tooltipMetrics";
 import {
   GAME_PANEL_HEADER_INDICATOR_CLASS,
   GAME_PANEL_HEADER_INDICATOR_INNER_CLASS,
@@ -112,71 +118,71 @@ function ProductionCycleIndicator({
         } = getStrangerApproachProbability(state);
         const chancePct = Math.round(rawChance * 100);
         return (
-          <div className="text-xs">
-            <div className="font-semibold">{t("village.cycle")}</div>
+          <div className={TOOLTIP_STACK_CLASS}>
+            <div className={TOOLTIP_TITLE_CLASS}>{t("village.cycle")}</div>
             <div>
               {t("village.nextCycleIn", {
                 seconds: productionSecondsRemaining,
               })}
             </div>
-            <div className="border-t border-gray-600 my-1" />
+            <ActionTooltipSeparator />
             <div>
               {t("village.newVillagerChance", {
                 percent: chancePct,
               })}
             </div>
             {lowPopulationBonus > 0 && (
-              <div className="text-gray-400/70">
+              <div className={TOOLTIP_MUTED_CLASS}>
                 {t("village.lowPopulationBonus", {
                   percent: Math.round(lowPopulationBonus * 100),
                 })}
               </div>
             )}
             {fromBuildings > 0 && (
-              <div className="text-gray-400/70">
+              <div className={TOOLTIP_MUTED_CLASS}>
                 {t("village.fromBuildings", {
                   percent: Math.round(fromBuildings * 100),
                 })}
               </div>
             )}
             {fromBlessings > 0 && (
-              <div className="text-gray-400/70">
+              <div className={TOOLTIP_MUTED_CLASS}>
                 {t("village.fromBlessings", {
                   percent: Math.round(fromBlessings * 100),
                 })}
               </div>
             )}
             {fromEvents > 0 && (
-              <div className="text-gray-400/70">
+              <div className={TOOLTIP_MUTED_CLASS}>
                 {t("village.fromEvents", {
                   percent: Math.round(fromEvents * 100),
                 })}
               </div>
             )}
             {fromGreatFeast > 0 && (
-              <div className="text-gray-400/70">
+              <div className={TOOLTIP_MUTED_CLASS}>
                 {t("village.fromGreatFeast", {
                   percent: Math.round(fromGreatFeast * 100),
                 })}
               </div>
             )}
             {fromHeartfire > 0 && (
-              <div className="text-gray-400/70">
+              <div className={TOOLTIP_MUTED_CLASS}>
                 {t("village.fromHeartfire", {
                   percent: Math.round(fromHeartfire * 100),
                 })}
               </div>
             )}
             {fromAchievements > 0 && (
-              <div className="text-gray-400/70">
+              <div className={TOOLTIP_MUTED_CLASS}>
                 {t("village.fromAchievements", {
                   percent: Math.round(fromAchievements * 100),
                   defaultValue: "{{percent}}% from Achievements",
                 })}
               </div>
             )}
-            <div className="border-t border-gray-600 my-1" />
-            <div className="text-gray-400/70">
+            <ActionTooltipSeparator />
+            <div className={TOOLTIP_MUTED_CLASS}>
               {t("village.cycleDescription")}
             </div>
           </div>
@@ -437,7 +443,7 @@ export function GameHeaderStatusIndicators() {
       {heartfireLevel > 0 && heartfireState && (
         <TooltipWrapper
           tooltip={
-            <div className="text-xs">{heartfireTooltip.getContent(state)}</div>
+            <div>{heartfireTooltip.getContent(state)}</div>
           }
           tooltipId="heartfire-progress"
           disabled
@@ -470,7 +476,7 @@ export function GameHeaderStatusIndicators() {
       {(isGreatFeast || isFeast) && (
         <TooltipWrapper
           tooltip={
-            <div className="text-xs">{feastTooltip.getContent(state)}</div>
+            <div>{feastTooltip.getContent(state)}</div>
           }
           tooltipId="feast-progress"
           disabled
@@ -498,7 +504,7 @@ export function GameHeaderStatusIndicators() {
       {isSolstice && (
         <TooltipWrapper
           tooltip={
-            <div className="text-xs">{solsticeTooltip.getContent(state)}</div>
+            <div>{solsticeTooltip.getContent(state)}</div>
           }
           tooltipId="solstice-progress"
           disabled
@@ -526,7 +532,7 @@ export function GameHeaderStatusIndicators() {
       {isCursed && curseState && (
         <TooltipWrapper
           tooltip={
-            <div className="text-xs whitespace-pre-line">
+            <div className="whitespace-pre-line">
               {curseTooltip.getContent(state)}
             </div>
           }
@@ -566,7 +572,7 @@ export function GameHeaderStatusIndicators() {
       {isDisgusted && disgustState && (
         <TooltipWrapper
           tooltip={
-            <div className="text-xs whitespace-pre-line">
+            <div className="whitespace-pre-line">
               {disgustTooltip.getContent(state)}
             </div>
           }
@@ -604,7 +610,7 @@ export function GameHeaderStatusIndicators() {
       {isMiningBoosted && miningBoostState && (
         <TooltipWrapper
           tooltip={
-            <div className="text-xs whitespace-pre-line">
+            <div className="whitespace-pre-line">
               {miningBoostTooltip.getContent(state)}
             </div>
           }
@@ -639,7 +645,7 @@ export function GameHeaderStatusIndicators() {
       {isBrimstoneFlux && brimstoneFluxState && (
         <TooltipWrapper
           tooltip={
-            <div className="text-xs whitespace-pre-line">
+            <div className="whitespace-pre-line">
               {brimstoneFluxTooltip.getContent(state)}
             </div>
           }
@@ -674,7 +680,7 @@ export function GameHeaderStatusIndicators() {
       {isFrostfall && frostfallState && (
         <TooltipWrapper
           tooltip={
-            <div className="text-xs">{frostfallTooltip.getContent(state)}</div>
+            <div>{frostfallTooltip.getContent(state)}</div>
           }
           tooltipId="frostfall-progress"
           disabled
@@ -712,7 +718,7 @@ export function GameHeaderStatusIndicators() {
       {isFog && fogState && (
         <TooltipWrapper
           tooltip={
-            <div className="text-xs">{fogTooltip.getContent(state)}</div>
+            <div>{fogTooltip.getContent(state)}</div>
           }
           tooltipId="fog-progress"
           disabled
@@ -748,7 +754,7 @@ export function GameHeaderStatusIndicators() {
       {isStaringDeer && staringDeerState && (
         <TooltipWrapper
           tooltip={
-            <div className="text-xs">
+            <div>
               {staringDeerTooltip.getContent(state)}
             </div>
           }
@@ -788,7 +794,7 @@ export function GameHeaderStatusIndicators() {
       {isForestFear && forestFearState && (
         <TooltipWrapper
           tooltip={
-            <div className="text-xs">
+            <div>
               {forestFearTooltip.getContent(state)}
             </div>
           }
@@ -826,7 +832,7 @@ export function GameHeaderStatusIndicators() {
       {totalMadness >= 10 && (
         <TooltipWrapper
           tooltip={
-            <div className="text-xs">
+            <div>
               {madnessProductionTooltip.getContent(state)}
             </div>
           }
@@ -856,7 +862,7 @@ export function GameHeaderStatusIndicators() {
       {isBadDreams && (
         <TooltipWrapper
           tooltip={
-            <div className="text-xs">{badDreamsTooltip.getContent(state)}</div>
+            <div>{badDreamsTooltip.getContent(state)}</div>
           }
           tooltipId="bad-dreams-progress"
           disabled
@@ -887,7 +893,7 @@ export function GameHeaderStatusIndicators() {
       {isFocus && (
         <TooltipWrapper
           tooltip={
-            <div className="text-xs">{focusTooltip.getContent(state)}</div>
+            <div>{focusTooltip.getContent(state)}</div>
           }
           tooltipId="focus-progress"
           disabled

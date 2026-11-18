@@ -37,6 +37,13 @@ import {
   composeActionTooltip,
 } from "@/game/rules/actionTooltipLayout";
 import {
+  TOOLTIP_ACCENT_SHOP_CLASS,
+  TOOLTIP_MUTED_CLASS,
+  TOOLTIP_RULE_COLOR_CLASS,
+  TOOLTIP_STACK_CLASS,
+  TOOLTIP_TITLE_CLASS,
+} from "@/game/tooltipMetrics";
+import {
   ActionTooltipResourceRows,
   TooltipCostLines,
   actionTooltipHasResourceSection,
@@ -156,7 +163,7 @@ function VillageBuildTip({ state }: { state: GameState }) {
   const revealed = getRevealedEffectsForActionTooltip(actionId, state);
   return composeActionTooltip({
     header: (
-      <div className="min-w-0 flex-1 whitespace-nowrap">
+      <div className="min-w-0 flex-1">
         <ActionTooltipResourceRows
           actionId={actionId}
           state={state}
@@ -186,7 +193,7 @@ function ForestExpeditionTip({ state }: { state: GameState }) {
   const description = getActionDescription(actionId, action.description);
   return composeActionTooltip({
     header: (
-      <div className="whitespace-nowrap">
+      <div>
         <ActionTooltipResourceRows
           actionId={actionId}
           state={state}
@@ -194,7 +201,7 @@ function ForestExpeditionTip({ state }: { state: GameState }) {
         />
         {showSuccess && (
           <>
-            {hasResourceSection && <div className="my-1 border-t border-border" />}
+            {hasResourceSection && <ActionTooltipSeparator />}
             <SuccessChanceTooltipContent
               gameState={state}
               successChance={action.success_chance}
@@ -223,14 +230,14 @@ function FinanceExpeditionTip({ state }: { state: GameState }) {
   const description = getActionDescription(actionId, action.description);
   return composeActionTooltip({
     header: (
-      <div className="whitespace-nowrap">
+      <div>
         <ActionTooltipResourceRows
           actionId={actionId}
           state={state}
           costs={costs}
         />
         {hasResourceSection && effectLines.length > 0 && (
-          <div className="my-1 border-t border-border" />
+          <ActionTooltipSeparator />
         )}
         {effectLines.map((effect, index) => (
           <div key={`effect-${index}`}>{effect}</div>
@@ -254,7 +261,7 @@ function NowrapCostTip({
       : getActionCostBreakdown(actionId, state);
   if (costs.length === 0 && actionId !== "feedFire") return null;
   return (
-    <div className="whitespace-nowrap text-xs">
+    <div className={TOOLTIP_STACK_CLASS}>
       <ActionTooltipResourceRows
         actionId={actionId}
         state={state}
@@ -268,7 +275,7 @@ function FeedFireTip({ state }: { state: GameState }) {
   const level = state.heartfireState?.level || 0;
   const woodCost = 50 * (level + 1);
   return (
-    <div className="whitespace-nowrap text-xs">
+    <div className={TOOLTIP_STACK_CLASS}>
       <TooltipCostLines
         costs={[
           {
@@ -298,10 +305,10 @@ function BlackRotTip({ state }: { state: GameState }) {
   const costHeader =
     costs.length > 0 ? <TooltipCostLines costs={costs} /> : undefined;
   return (
-    <div className="whitespace-nowrap text-xs">
+    <div className={TOOLTIP_STACK_CLASS}>
       {costHeader}
-      {rewardText && <div className="text-foreground">{rewardText}</div>}
-      <div className="my-1 border-t border-border" />
+      {rewardText && <div>{rewardText}</div>}
+      <ActionTooltipSeparator />
       <EventChoiceSuccessTooltipContent choice={choice} gameState={state} />
     </div>
   );
@@ -311,7 +318,7 @@ function KnowledgeTimeTip({ state }: { state: GameState }) {
   const { t } = useUiTranslation();
   const knowledge = getTotalKnowledge(state);
   return (
-    <div className="whitespace-nowrap text-xs">
+    <div className={TOOLTIP_STACK_CLASS}>
       {t("event.knowledgeTimeBonus", {
         seconds: calculateKnowledgeTimeBonus(knowledge),
         maxSuffix: isKnowledgeBonusMaxed(knowledge)
@@ -330,7 +337,7 @@ function MerchantDiscountTip({ state }: { state: GameState }) {
   const hasRing = state.clothing?.ring_of_obedience ?? false;
   const hasCunningTrader = hasChosenPact(state, "cunning_trader");
   return (
-    <div className="whitespace-nowrap text-xs">
+    <div className={TOOLTIP_STACK_CLASS}>
       {t("timedEvent.discount", {
         percent: Math.round(totalDiscount * 100),
       })}
@@ -338,7 +345,7 @@ function MerchantDiscountTip({ state }: { state: GameState }) {
         <>
           <br />
           {knowledgeDiscount > 0 && (
-            <span className="text-gray-400/70">
+            <span className={TOOLTIP_MUTED_CLASS}>
               {t("timedEvent.discountFromKnowledge", {
                 percent: Math.round(knowledgeDiscount * 100),
                 max: isKnowledgeBonusMaxed(knowledge)
@@ -450,18 +457,18 @@ function LevelBadgeTip() {
   );
   const info = getButtonUpgradeInfo("chopWood", upgrade);
   return (
-    <div className="space-y-1.5 text-xs">
+    <div className={TOOLTIP_STACK_CLASS}>
       {info.nextLevel ? (
         <>
           <div>
             {t("badges.bonus")}{" "}
-            <span className="font-medium">
+            <span className={TOOLTIP_TITLE_CLASS}>
               {t("badges.bonusPercent", { percent: info.bonus })}
             </span>
           </div>
           <div>
             {t("badges.nextBonus")}{" "}
-            <span className="font-medium">
+            <span className={TOOLTIP_TITLE_CLASS}>
               {t("badges.bonusPercent", { percent: info.nextLevel.bonus })}
             </span>
           </div>
@@ -473,10 +480,11 @@ function LevelBadgeTip() {
       )}
       {info.isMaxLevel && (
         <>
-          <div className="text-muted-foreground">
+          <div className={TOOLTIP_MUTED_CLASS}>
             {t("badges.executionTimeReduction")}
           </div>
-          <div className="mt-1 border-t pt-1">{t("badges.maxLevel")}</div>
+          <ActionTooltipSeparator />
+          <div>{t("badges.maxLevel")}</div>
         </>
       )}
     </div>
@@ -497,63 +505,63 @@ function ProductionCycleTip({ state }: { state: GameState }) {
   } = getStrangerApproachProbability(state);
   const chancePct = Math.round(rawChance * 100);
   return (
-    <div className="text-xs">
-      <div className="font-semibold">{t("village.cycle")}</div>
+    <div className={TOOLTIP_STACK_CLASS}>
+      <div className={TOOLTIP_TITLE_CLASS}>{t("village.cycle")}</div>
       <div>{t("village.nextCycleIn", { seconds: 8 })}</div>
-      <div className="my-1 border-t border-gray-600" />
+      <ActionTooltipSeparator />
       <div>{t("village.newVillagerChance", { percent: chancePct })}</div>
       {lowPopulationBonus > 0 && (
-        <div className="text-gray-400/70">
+        <div className={TOOLTIP_MUTED_CLASS}>
           {t("village.lowPopulationBonus", {
             percent: Math.round(lowPopulationBonus * 100),
           })}
         </div>
       )}
       {fromBuildings > 0 && (
-        <div className="text-gray-400/70">
+        <div className={TOOLTIP_MUTED_CLASS}>
           {t("village.fromBuildings", {
             percent: Math.round(fromBuildings * 100),
           })}
         </div>
       )}
       {fromBlessings > 0 && (
-        <div className="text-gray-400/70">
+        <div className={TOOLTIP_MUTED_CLASS}>
           {t("village.fromBlessings", {
             percent: Math.round(fromBlessings * 100),
           })}
         </div>
       )}
       {fromEvents > 0 && (
-        <div className="text-gray-400/70">
+        <div className={TOOLTIP_MUTED_CLASS}>
           {t("village.fromEvents", {
             percent: Math.round(fromEvents * 100),
           })}
         </div>
       )}
       {fromGreatFeast > 0 && (
-        <div className="text-gray-400/70">
+        <div className={TOOLTIP_MUTED_CLASS}>
           {t("village.fromGreatFeast", {
             percent: Math.round(fromGreatFeast * 100),
           })}
         </div>
       )}
       {fromHeartfire > 0 && (
-        <div className="text-gray-400/70">
+        <div className={TOOLTIP_MUTED_CLASS}>
           {t("village.fromHeartfire", {
             percent: Math.round(fromHeartfire * 100),
           })}
         </div>
       )}
       {fromAchievements > 0 && (
-        <div className="text-gray-400/70">
+        <div className={TOOLTIP_MUTED_CLASS}>
           {t("village.fromAchievements", {
             percent: Math.round(fromAchievements * 100),
             defaultValue: "{{percent}}% from Achievements",
           })}
         </div>
       )}
-      <div className="my-1 border-t border-gray-600" />
-      <div className="text-gray-400/70">{t("village.cycleDescription")}</div>
+      <ActionTooltipSeparator />
+      <div className={TOOLTIP_MUTED_CLASS}>{t("village.cycleDescription")}</div>
     </div>
   );
 }
@@ -570,7 +578,7 @@ function StatTip({
     <>
       <StatEffectsTooltip statKey={statKey} />
       <ActionTooltipSeparator />
-      <div className="text-muted-foreground">{t(flavorKey)}</div>
+      <div className={TOOLTIP_MUTED_CLASS}>{t(flavorKey)}</div>
     </>
   );
 }
@@ -587,36 +595,36 @@ function InvestTip() {
   const formatPercent = (value: number) =>
     Number.isInteger(value) ? String(value) : value.toFixed(1);
   return (
-    <div className="space-y-2 text-xs">
-      <div className="mb-0.5 space-y-1.5 border-b border-border pb-2">
-        <p className="font-medium text-foreground">
+    <div className={TOOLTIP_STACK_CLASS}>
+      <div className={`mb-0.5 ${TOOLTIP_STACK_CLASS} border-b ${TOOLTIP_RULE_COLOR_CLASS} pb-2`}>
+        <p className={TOOLTIP_TITLE_CLASS}>
           {t("invest.luckyChanceTop", {
             percent: formatPercent(luckyChancePct),
             fromLuck: formatPercent(getLuckWinChanceBonus(luck)),
           })}
         </p>
       </div>
-      <ul className="list-none space-y-1.5 pl-0 text-muted-foreground">
+      <ul className={`list-none ${TOOLTIP_STACK_CLASS} pl-0 ${TOOLTIP_MUTED_CLASS}`}>
         <li>
-          <span className="font-medium text-foreground">
+          <span className={TOOLTIP_TITLE_CLASS}>
             {t("invest.headers.time")}
           </span>
           : {t("invest.tooltip.time")}
         </li>
         <li>
-          <span className="font-medium text-foreground">
+          <span className={TOOLTIP_TITLE_CLASS}>
             {t("invest.headers.success")}
           </span>
           : {t("invest.tooltip.success")}
         </li>
         <li>
-          <span className="font-medium text-foreground">
+          <span className={TOOLTIP_TITLE_CLASS}>
             {t("invest.headers.profit")}
           </span>
           : {t("invest.tooltip.profit")}
         </li>
         <li>
-          <span className="font-medium text-foreground">
+          <span className={TOOLTIP_TITLE_CLASS}>
             {t("invest.headers.lucky")}
           </span>
           :{" "}
@@ -625,13 +633,13 @@ function InvestTip() {
           })}
         </li>
         <li>
-          <span className="font-medium text-foreground">
+          <span className={TOOLTIP_TITLE_CLASS}>
             {t("invest.headers.loss")}
           </span>
           : {t("invest.tooltip.loss")}
         </li>
       </ul>
-      <p className="text-muted-foreground">{t("invest.tooltip.wait")}</p>
+      <p className={TOOLTIP_MUTED_CLASS}>{t("invest.tooltip.wait")}</p>
     </div>
   );
 }
@@ -643,9 +651,9 @@ function ShopDiscountTips() {
       <TooltipSample
         id="shop-gratitude"
         title="Shop: trader gratitude"
-        className="border border-amber-600"
+        className={TOOLTIP_ACCENT_SHOP_CLASS}
       >
-        <div className="text-xs">
+        <div>
           {t("shop.tradersGratitudeDiscount", {
             percent: TRADERS_GRATITUDE_DISCOUNT_PERCENT,
           })}
@@ -654,9 +662,9 @@ function ShopDiscountTips() {
       <TooltipSample
         id="shop-journey"
         title="Shop: journey complete"
-        className="border border-amber-600"
+        className={TOOLTIP_ACCENT_SHOP_CLASS}
       >
-        <div className="text-xs">{t("shop.journeyCompleteDiscount")}</div>
+        <div>{t("shop.journeyCompleteDiscount")}</div>
       </TooltipSample>
     </>
   );
@@ -814,21 +822,18 @@ export function TooltipDemoGallery({ state }: { state: GameState }) {
       <TooltipSample
         id="badge-level"
         title="Level badge"
-        className="border bg-popover text-xs text-white"
       >
         <LevelBadgeTip />
       </TooltipSample>
       <TooltipSample
         id="badge-prior"
         title="Prior badge"
-        className="border bg-popover text-xs text-white"
       >
         {t("badges.priorUpgradeRequired")}
       </TooltipSample>
       <TooltipSample
         id="badge-prior-assign"
         title="Prior badge (assign)"
-        className="border bg-popover text-xs text-white"
       >
         {t("badges.priorAssign")}
       </TooltipSample>
@@ -844,16 +849,16 @@ export function TooltipDemoGallery({ state }: { state: GameState }) {
       <TooltipSample
         id="shop-cruel"
         title="Shop: Cruel Mode"
-        className="border border-amber-600"
+        className={TOOLTIP_ACCENT_SHOP_CLASS}
       >
         <CruelModeEffectsList />
       </TooltipSample>
       <TooltipSample
         id="shop-compass"
         title="Shop: narrow artifact"
-        className="border border-amber-600"
+        className={TOOLTIP_ACCENT_SHOP_CLASS}
       >
-        <div className="text-xs">
+        <div>
           {resolveShopItemDescription(SHOP_ITEMS.tarnished_compass)}
         </div>
       </TooltipSample>

@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { TOOLTIP_ACCENT_DANGER_CLASS } from "@/game/tooltipMetrics";
 import {
   GAME_INFO_GLYPH_CLASS,
   GAME_INFO_TRIGGER_CLASS,
@@ -166,7 +167,7 @@ export function RestartGameDialog({
                     tooltip={<CruelModeRestartTooltip />}
                     tooltipId="restart-cruel-mode-info"
                     disabled
-                    tooltipContentClassName="max-w-xs border border-red-600 shadow-[0_0_10px_theme(colors.red.600/0.55)]"
+                    tooltipContentClassName={TOOLTIP_ACCENT_DANGER_CLASS}
                     className={GAME_INFO_TRIGGER_CLASS}
                   >
                     <span

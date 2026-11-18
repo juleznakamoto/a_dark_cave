@@ -1,4 +1,4 @@
-import { TOOLTIP_VIEWPORT_PAD_PX } from "@/game/tooltipMetrics";
+import { TOOLTIP_GAP_PX, TOOLTIP_VIEWPORT_PAD_PX } from "@/game/tooltipMetrics";
 
 export type HoverCalloutSide = "top" | "left" | "right" | "bottom";
 
@@ -6,7 +6,7 @@ export type HoverCalloutSide = "top" | "left" | "right" | "bottom";
 export type HoverCalloutArrowAlign = "start" | "center" | "end";
 
 /** Matches `mb-1.5` / `mt-1.5` on in-flow callouts. */
-export const CALLOUT_GAP_PX = 6;
+export const CALLOUT_GAP_PX = TOOLTIP_GAP_PX;
 /** Matches `-left-2` / `-right-2` on in-flow side callouts. */
 export const CALLOUT_SIDE_GAP_PX = 8;
 export const CALLOUT_VIEWPORT_PAD_PX = TOOLTIP_VIEWPORT_PAD_PX;

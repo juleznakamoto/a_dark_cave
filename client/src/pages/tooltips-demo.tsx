@@ -103,7 +103,6 @@ function OverflowReport({ revision }: { revision: number }) {
 function CalloutSamples() {
   const { t } = useUiTranslation();
   const labels = [
-    t("footer.pactChoicesUnlocked", { defaultValue: "Pact choices unlocked" }),
     t("footer.cruelModeActive"),
     t("footer.wishlistOnSteam"),
     t("playlight.tryMoreGames", { defaultValue: "Try more Games" }),

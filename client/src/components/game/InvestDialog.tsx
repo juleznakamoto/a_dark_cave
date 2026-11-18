@@ -10,6 +10,12 @@ import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import {
+  TOOLTIP_MUTED_CLASS,
+  TOOLTIP_RULE_COLOR_CLASS,
+  TOOLTIP_STACK_CLASS,
+  TOOLTIP_TITLE_CLASS,
+} from "@/game/tooltipMetrics";
+import {
   GAME_INFO_GLYPH_CLASS,
   GAME_INFO_TRIGGER_CLASS,
 } from "@/components/game/gameChrome";
@@ -144,33 +150,33 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
   };
 
   const strategyTableInfoTooltip = (
-    <div className="text-xs space-y-2">
-      <div className="space-y-1.5 border-b border-border pb-2 mb-0.5">
-        <p className="font-medium text-foreground">
+    <div className={TOOLTIP_STACK_CLASS}>
+      <div className={`${TOOLTIP_STACK_CLASS} border-b ${TOOLTIP_RULE_COLOR_CLASS} pb-2 mb-0.5`}>
+        <p className={TOOLTIP_TITLE_CLASS}>
           {formatLuckyChanceTopLine(luckyChancePct, luck, t)}
         </p>
       </div>
-      <ul className="space-y-1.5 pl-0 list-none text-muted-foreground">
+      <ul className={`${TOOLTIP_STACK_CLASS} pl-0 list-none ${TOOLTIP_MUTED_CLASS}`}>
         <li>
-          <span className="text-foreground font-medium">
+          <span className={TOOLTIP_TITLE_CLASS}>
             {t("invest.headers.time")}
           </span>
           : {t("invest.tooltip.time")}
         </li>
         <li>
-          <span className="text-foreground font-medium">
+          <span className={TOOLTIP_TITLE_CLASS}>
             {t("invest.headers.success")}
           </span>
           : {t("invest.tooltip.success")}
         </li>
         <li>
-          <span className="text-foreground font-medium">
+          <span className={TOOLTIP_TITLE_CLASS}>
             {t("invest.headers.profit")}
           </span>
           : {t("invest.tooltip.profit")}
         </li>
         <li>
-          <span className="text-foreground font-medium">
+          <span className={TOOLTIP_TITLE_CLASS}>
             {t("invest.headers.lucky")}
           </span>
           :{" "}
@@ -179,13 +185,13 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
           })}
         </li>
         <li>
-          <span className="text-foreground font-medium">
+          <span className={TOOLTIP_TITLE_CLASS}>
             {t("invest.headers.loss")}
           </span>
           : {t("invest.tooltip.loss")}
         </li>
       </ul>
-      <p className="text-muted-foreground">{t("invest.tooltip.wait")}</p>
+      <p className={TOOLTIP_MUTED_CLASS}>{t("invest.tooltip.wait")}</p>
     </div>
   );
 
@@ -403,7 +409,7 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                         {disabled ? (
                           <TooltipWrapper
                             tooltip={
-                              <div className="text-xs">
+                              <div>
                                 {t("invest.unlockTooltip", {
                                   building: unlockBuilding
                                     ? getBuildingDisplayName(unlockBuilding)
@@ -415,7 +421,6 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
                             disabled
                             className="inline-flex shrink-0"
                             tooltipTriggerClassName="inline-flex shrink-0 cursor-default"
-                            tooltipContentClassName="max-w-xs"
                           >
                             <RadioGroup.Item
                               value={String(a)}

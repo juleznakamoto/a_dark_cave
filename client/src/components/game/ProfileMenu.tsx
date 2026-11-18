@@ -36,6 +36,7 @@ import { triggerExclusivePromoPingOnce } from "@/lib/exclusivePromoShockwave";
 import { CruelModeHeaderMark } from "@/components/game/CruelModeHeaderMark";
 import { PactChoicesHeaderMark } from "@/components/game/PactChoicesHeaderMark";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
+import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { arePactsEnabled } from "@/game/rules/pacts";
 import { DropdownMenuItemWithTooltip } from "@/components/game/DropdownMenuItemWithTooltip";
 import {
@@ -646,18 +647,19 @@ export function GameHeaderControls() {
     <div className="flex items-center gap-0.5 shrink-0">
       <GameHeaderRewardsShortcut />
       {arePactsEnabled() && pactChoices >= 1 && (
-        <HoverCalloutTooltip
-          label={pactChoicesLabel}
+        <TooltipWrapper
+          tooltip={pactChoicesLabel}
+          tooltipId="header-pact-choices"
+          disabled
           side="bottom"
-          gapPx={12}
-          className="mr-1"
-          openOnTap
+          className="relative mr-1 inline-flex items-center"
+          tooltipTriggerClassName="inline-flex items-center"
         >
           <PactChoicesHeaderMark
             count={pactChoices}
             label={pactChoicesLabel}
           />
-        </HoverCalloutTooltip>
+        </TooltipWrapper>
       )}
       {cruelMode && (
         <HoverCalloutTooltip
@@ -720,7 +722,7 @@ export function GameHeaderControls() {
             <>
               <DropdownMenuItemWithTooltip
                 tooltip={
-                  <div className="text-xs">
+                  <div>
                     <p>
                       {currentUser
                         ? t("profile.autoSaveSignedIn")

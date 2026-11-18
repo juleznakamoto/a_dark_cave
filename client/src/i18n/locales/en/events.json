@@ -686,8 +686,8 @@
   },
   "cube14a": {
     "choices": {
-      "continue": {
-        "label": "Continue"
+      "close": {
+        "label": "Close"
       }
     },
     "message": "'When the resistance opposed the skull devices, they were exiled into the mountain's depths, sealed away behind the gate. With no path back, they dug ever deeper. In isolation and darkness, their minds eroded and they descended into madness and degeneration.'",
@@ -695,8 +695,8 @@
   },
   "cube14b": {
     "choices": {
-      "continue": {
-        "label": "Continue"
+      "close": {
+        "label": "Close"
       }
     },
     "message": "'One day, deep in the earth, they found a monolith of unknown ore. From it they forged an explosive to destroy the gate. But the bomb failed to breach the gate. Instead, it unleashed an electric pulse that spanned the planet, destroying all devices and ending civilization.'",
@@ -704,8 +704,8 @@
   },
   "cube14c": {
     "choices": {
-      "continue": {
-        "label": "Continue"
+      "close": {
+        "label": "Close"
       }
     },
     "message": "'Shortly after the explosion, a man standing nearby began to dematerialize, his form flickering, half-transparent for seconds. Terrified and driven mad by what had happened, he took his own life moments later.'",

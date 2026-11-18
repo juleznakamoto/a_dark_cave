@@ -107,7 +107,6 @@ export default function InviteFriendsFloatingButton() {
         <TooltipWrapper
           tooltip={<InviteFriendsTooltip count={referralCount} />}
           tooltipId="referral-floating-invite"
-          tooltipContentClassName="max-w-xs"
           className="inline-flex"
           onClick={() => {
             void handleCopyInviteLink();

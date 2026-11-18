@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/card";
 import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { TOOLTIP_ACCENT_SHOP_CLASS } from "@/game/tooltipMetrics";
 import { CruelModeEffectsList } from "@/components/game/CruelModeEffectsList";
 import { PROMO_TAG_CLASS } from "@/components/game/promoTag";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -395,9 +396,9 @@ function ArtifactShopTooltipIcon({
   // Card info: flavor description. Bundle row info: effects only (name is already on the row).
   const tooltip =
     variant === "cardTitle" && shopItem ? (
-      <div className="text-xs">{resolveShopItemDescription(shopItem)}</div>
+      <div>{resolveShopItemDescription(shopItem)}</div>
     ) : (
-      <div className="text-xs">
+      <div>
         <ArtifactEffectsList artifact={artifact} />
       </div>
     );
@@ -407,7 +408,7 @@ function ArtifactShopTooltipIcon({
       tooltip={tooltip}
       tooltipId={tooltipId}
       disabled
-      tooltipContentClassName="border border-amber-600"
+      tooltipContentClassName={TOOLTIP_ACCENT_SHOP_CLASS}
       className={triggerClass}
     >
       <span className={GAME_INFO_GLYPH_CLASS} aria-hidden>
@@ -621,7 +622,7 @@ function ShopItemDescriptionParagraph({ item }: { item: ShopItem }) {
                     tooltip={<CruelModeEffectsList />}
                     tooltipId={`cruel-mode-info-desc-${item.id}`}
                     disabled
-                    tooltipContentClassName="max-w-xs border border-amber-600"
+                    tooltipContentClassName={TOOLTIP_ACCENT_SHOP_CLASS}
                     className={`ml-0.5 inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse align-text-bottom translate-y-[0.08em]`}
                   >
                     <span className={GAME_INFO_GLYPH_CLASS} aria-hidden>
@@ -2239,7 +2240,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                               tooltip={<CruelModeEffectsList />}
                                               tooltipId="cruel-mode-info"
                                               disabled
-                                              tooltipContentClassName="max-w-xs border border-amber-600"
+                                              tooltipContentClassName={TOOLTIP_ACCENT_SHOP_CLASS}
                                               className={`inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse`}
                                             >
                                               <span
@@ -2379,7 +2380,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                               {showTradersGratitudeInfo && (
                                                 <TooltipWrapper
                                                   tooltip={
-                                                    <div className="text-xs">
+                                                    <div>
                                                       {t("shop.tradersGratitudeDiscount",
                                                         {
                                                           percent:
@@ -2390,7 +2391,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                   }
                                                   tooltipId={`traders-gratitude-${item.id}`}
                                                   disabled
-                                                  tooltipContentClassName="max-w-xs border border-amber-600"
+                                                  tooltipContentClassName={TOOLTIP_ACCENT_SHOP_CLASS}
                                                   className={`inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
                                                 >
                                                   <span
@@ -2404,7 +2405,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                               {showTradersSonInfo && (
                                                 <TooltipWrapper
                                                   tooltip={
-                                                    <div className="text-xs">
+                                                    <div>
                                                       {t("shop.tradersSonDiscount",
                                                         {
                                                           percent:
@@ -2415,7 +2416,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                                   }
                                                   tooltipId={`traders-son-gratitude-${item.id}`}
                                                   disabled
-                                                  tooltipContentClassName="max-w-xs border border-amber-600"
+                                                  tooltipContentClassName={TOOLTIP_ACCENT_SHOP_CLASS}
                                                   className={`inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
                                                 >
                                                   <span
@@ -2429,14 +2430,14 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
                                               {showJourneyCompleteInfo && (
                                                 <TooltipWrapper
                                                   tooltip={
-                                                    <div className="text-xs">
+                                                    <div>
                                                       {t("shop.journeyCompleteDiscount",
                                                       )}
                                                     </div>
                                                   }
                                                   tooltipId={`journey-complete-cruel-${item.id}`}
                                                   disabled
-                                                  tooltipContentClassName="max-w-xs border border-amber-600"
+                                                  tooltipContentClassName={TOOLTIP_ACCENT_SHOP_CLASS}
                                                   className={`inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
                                                 >
                                                   <span

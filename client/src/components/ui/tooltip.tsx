@@ -13,6 +13,9 @@ import {
   subscribeGameTabHidden,
 } from "@/lib/tabVisibility";
 import {
+  TOOLTIP_GAP_PX,
+  TOOLTIP_RULE_COLOR_CLASS,
+  TOOLTIP_SURFACE_CLASS,
   TOOLTIP_VIEWPORT_PAD_PX,
   tooltipFrameMaxWidth,
 } from "@/game/tooltipMetrics";
@@ -58,8 +61,7 @@ const TooltipTrigger = TooltipPrimitive.Trigger;
  * overflow-visible). Those lines wrap, and long tokens can break, so a flex
  * row can shrink inside the shared maximum width.
  */
-const TOOLTIP_FRAME_CLASS =
-  "z-[10000] w-max rounded-md bg-neutral-950 px-2 pb-1 pt-1.5 text-xs text-neutral-200 shadow-md whitespace-normal [overflow-wrap:anywhere] [&_.whitespace-nowrap]:whitespace-normal";
+const TOOLTIP_FRAME_CLASS = `z-[10000] w-max rounded-md ${TOOLTIP_SURFACE_CLASS} px-2 pb-1 pt-1.5 shadow-md whitespace-normal [overflow-wrap:anywhere] [&_.whitespace-nowrap]:whitespace-normal`;
 
 const TOOLTIP_MOTION_CLASS =
   "animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-tooltip-content-transform-origin]";
@@ -80,8 +82,9 @@ export function useTooltipFrame(
       TOOLTIP_FRAME_CLASS,
       destroyed
         ? gameChromeTooltipClassName()
-        : "overflow-hidden border border-neutral-800",
+        : `overflow-hidden border ${TOOLTIP_RULE_COLOR_CLASS}`,
       className,
+      TOOLTIP_SURFACE_CLASS,
     ),
     style: {
       pointerEvents: "none" as const,
@@ -95,7 +98,7 @@ export function useTooltipFrame(
 const TooltipContent = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
->(({ className, sideOffset = 6, collisionPadding = TOOLTIP_VIEWPORT_PAD_PX, style, ...props }, ref) => {
+>(({ className, sideOffset = TOOLTIP_GAP_PX, collisionPadding = TOOLTIP_VIEWPORT_PAD_PX, style, ...props }, ref) => {
   const frame = useTooltipFrame(className, style);
   return (
     <TooltipPrimitive.Portal>

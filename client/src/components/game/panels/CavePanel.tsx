@@ -337,7 +337,7 @@ export default function CavePanel() {
         const cooldownReduction = bonuses?.cooldownReduction || 0;
 
         tooltipHeader = (
-          <div className="whitespace-nowrap">
+          <div>
             <ActionTooltipResourceRows
               actionId={actionId}
               state={state}

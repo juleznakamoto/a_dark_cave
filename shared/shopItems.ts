@@ -103,7 +103,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Cruel Mode",
     description:
       "Play again in a more cruel world, with expanded story, more items, deadlier foes and much more.",
-    price: 499, // 4.99 €
+    price: 449, // 4.49 €
     rewards: {},
     canPurchaseMultipleTimes: false,
     category: "blessing",
@@ -117,7 +117,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_250",
     name: "1'000 Gold",
     description: "A decent amount of Gold",
-    price: 149, // 1.49 €
+    price: 129, // 1.29 €
     rewards: {
       resources: { gold: 1000 },
     },
@@ -132,7 +132,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_1000",
     name: "1'000 Gold",
     description: "A decent amount of Gold",
-    price: 149, // 1.49 €
+    price: 129, // 1.29 €
     rewards: {
       resources: { gold: 1000 },
     },
@@ -147,7 +147,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_2500",
     name: "2'500 Gold",
     description: "A substantial treasure",
-    price: 299, // 2.99 €
+    price: 249, // 2.49 €
     rewards: {
       resources: { gold: 2500 },
     },
@@ -162,7 +162,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_5000",
     name: "5'000 Gold",
     description: "A fortune in Gold",
-    price: 549, // 5.49 €
+    price: 449, // 4.49 €
     rewards: {
       resources: { gold: 5000 },
     },
@@ -177,7 +177,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_15000",
     name: "15'000 Gold",
     description: "Unholy amounts of Gold",
-    price: 899, // 8.99 €
+    price: 749, // 7.49 €
     rewards: {
       resources: { gold: 15000 },
     },
@@ -192,7 +192,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_30000",
     name: "30'000 Gold",
     description: "Blasphemous amounts of Gold",
-    price: 1499, // 14.99 €
+    price: 1199, // 11.99 €
     rewards: {
       resources: { gold: 30000 },
     },
@@ -227,7 +227,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "great_feast_1",
     name: "1 Great Feast",
     description: `For ${GREAT_FEAST_DURATION_MS / 60000} minutes:\n• 5x Village Production\n• +25 % New Villager Chance`,
-    price: 149, // 1.49 €
+    price: 129, // 1.29 €
     rewards: {
       feastActivations: 1,
     },
@@ -242,7 +242,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "great_feast_3",
     name: "3 Great Feasts",
     description: `For ${GREAT_FEAST_DURATION_MS / 60000} minutes:\n• 5x Village Production\n• +25 % New Villager Chance`,
-    price: 299, // 2.99 €
+    price: 249, // 2.49 €
     rewards: {
       feastActivations: 3,
     },
@@ -317,7 +317,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "basic_survival_bundle",
     name: "Fading Wanderer Bundle",
     description: "",
-    price: 649, // 6.49 €
+    price: 499, // 4.99 €
     rewards: {
       resources: { gold: 5000 },
       feastActivations: 1,
@@ -358,7 +358,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "advanced_bundle",
     name: "Pale King's Bundle",
     description: "",
-    price: 999, // 9.99 €
+    price: 799, // 7.99 €
     rewards: {
       resources: { gold: 15000 },
       feastActivations: 3,
@@ -376,7 +376,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "ashen_throne_bundle",
     name: "Ashen Throne Bundle",
     description: "",
-    price: 1349, // 13.49 €
+    price: 1199, // 11.99 €
     rewards: {
       resources: { gold: 15000 },
       feastActivations: 3,

@@ -1,4 +1,5 @@
 import { Component, type CSSProperties, type ReactNode, useState } from "react";
+import { useInsightSpendHighlight } from "@/components/game/useInsightSpendHighlight";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { ScrollAreaWithIndicator } from "@/components/ui/scroll-area-with-indicator";
@@ -127,6 +128,7 @@ function AchievementTitleInsightBadge({
   // game loop together with the row flipping to the unveiled layout, so we
   // never briefly show a gap where the badge is gone but the title is still redacted.
   const isRevealing = typeof insightRevealEnd === "number";
+  useInsightSpendHighlight(isRevealing);
 
   if (!isInsightUnlocked(gameState)) return null;
   if (
@@ -157,7 +159,6 @@ function AchievementTitleInsightBadge({
 
   const handleClick = () => {
     if (isDisabled) return;
-    setHighlightedResources(["insight"]);
     revealAchievementTitle(achievementId, currentCount);
   };
 
@@ -169,7 +170,6 @@ function AchievementTitleInsightBadge({
       // cannot run. A hard-coded `disabled` forced cursor-default and blocked
       // short-tap unlock on mobile (tooltip stole the gesture).
       disabled={isDisabled}
-      tooltipContentClassName="max-w-xs"
       tooltipTriggerClassName={INSIGHT_BADGE_TOOLTIP_TRIGGER_CLASS}
       onMouseEnter={() => setHighlightedResources(["insight"])}
       onMouseLeave={() => {

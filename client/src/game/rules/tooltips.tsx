@@ -64,6 +64,7 @@ import {
   ActionTooltipSeparator,
   wrapTooltipHeaderWithTrailing,
 } from "./actionTooltipLayout";
+import { TOOLTIP_MUTED_CLASS, TOOLTIP_STACK_CLASS } from "@/game/tooltipMetrics";
 import {
   FOCUS_TOOLTIP_HIGHLIGHT_CLASS,
   isFocusGlowActive,
@@ -128,7 +129,7 @@ function costLabelWithoutSign(text: string): string {
  * Unmet resource and villager costs stay at full foreground.
  * Time is always covered, so the duration row uses this class too.
  */
-const SATISFIED_COST_CLASS = "text-muted-foreground";
+const SATISFIED_COST_CLASS = TOOLTIP_MUTED_CLASS;
 
 /**
  * Tooltip line showing an action's execution duration. Last row of the
@@ -268,7 +269,7 @@ export function costBenefitTooltip(options: {
   return {
     label: `${costLine}. ${options.benefit}`,
     tooltip: (
-      <div className="text-xs whitespace-nowrap">
+      <div className={TOOLTIP_STACK_CLASS}>
         <TooltipCostLines
           costs={[{ text: costLine, satisfied: options.satisfied }]}
         />
@@ -628,7 +629,7 @@ export const getResourceGainTooltip = (
   const gainsBlock = (
     <>
       {hallNeedsRepair && (
-        <div className="text-muted-foreground mb-1">
+        <div className={`${TOOLTIP_MUTED_CLASS} mb-1`}>
           {getUiTooltip(
             "alchemistHallNeedsRepair",
             "Alchemist's Hall needs to be repaired.",
@@ -636,14 +637,14 @@ export const getResourceGainTooltip = (
         </div>
       )}
       {isBombAtMax && (
-        <div className="text-muted-foreground mb-1">
+        <div className={`${TOOLTIP_MUTED_CLASS} mb-1`}>
           {getUiTooltip("maxBombsReached", "Max bombs reached ({{limit}} per type)", {
             limit: getMaxBombLimit(state),
           })}
         </div>
       )}
       {isVeinfireElixirAtMax && (
-        <div className="text-muted-foreground mb-1">
+        <div className={`${TOOLTIP_MUTED_CLASS} mb-1`}>
           {getUiTooltip(
             "maxVeinfireElixirReached",
             "Max Veinfire Elixir reached ({{limit}})",
@@ -652,7 +653,7 @@ export const getResourceGainTooltip = (
         </div>
       )}
       {(isBombAtMax || isVeinfireElixirAtMax || hallNeedsRepair) && gains.length > 0 && (
-        <div className="border-t border-border my-1" />
+        <ActionTooltipSeparator />
       )}
       {gains.map((gain, index) => (
         <div key={`gain-${index}`} className={focusGainClass}>
@@ -697,18 +698,18 @@ export const getResourceGainTooltip = (
     : wrapTooltipHeaderWithTrailing(gainsBlock, headerTrailing);
 
   return (
-    <div className="text-xs">
+    <div>
       {hasResourceSection
         ? wrapTooltipHeaderWithTrailing(costBlock, headerTrailing)
         : null}
       {hasResourceSection && hasGainsSection && (
-        <div className="border-t border-border my-1" />
+        <ActionTooltipSeparator />
       )}
       {hasGainsSection ? rewardBlock : null}
       {veinrootPctLine != null && (
         <>
           {headerBlockAboveVein && (
-            <div className="border-t border-border my-1" />
+            <ActionTooltipSeparator />
           )}
           <div>{veinrootPctLine}</div>
         </>
