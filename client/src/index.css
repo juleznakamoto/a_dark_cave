@@ -2886,20 +2886,24 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   }
 }
 
-@keyframes continue-pause-flash {
-
+/* Red unpause cue: wait 15s paused, then pulse a red glow every 2s.
+   Override --continue-pause-glow-delay (e.g. 0s) on the animations demo. */
+@keyframes continue-pause-glow {
   0%,
   100% {
-    opacity: 1;
+    filter: drop-shadow(0 0 0 transparent);
   }
 
   50% {
-    opacity: 0.4;
+    filter: drop-shadow(0 0 6px rgba(220, 38, 38, 0.95))
+      drop-shadow(0 0 14px rgba(220, 38, 38, 0.55));
   }
 }
 
-.continue-pause-flash {
-  animation: continue-pause-flash 2s ease-in-out infinite;
+.continue-pause-glow {
+  --continue-pause-glow-delay: 15s;
+  animation: continue-pause-glow 2s ease-in-out
+    var(--continue-pause-glow-delay) infinite;
 }
 
 @keyframes donate-heart-pump {

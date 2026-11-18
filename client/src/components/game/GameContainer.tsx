@@ -24,6 +24,7 @@ import {
   GAME_CHROME_RULE_TABS_NAV,
   GAME_FOOTER_INSET,
   GAME_HEADER_INSET,
+  GAME_HEADER_INSET_WITH_SAFE_AREA,
   GAME_PANEL_HEADER_BAND,
   GAME_PARTICLE_LAYER_ID,
   TAB_ICON_ALIGN_CLASS,
@@ -82,9 +83,11 @@ import { hardReload } from "@/lib/hardReload";
 import { setResumeGame } from "@/game/startupBootSurface";
 import { formatCompactDuration } from "@/lib/utils";
 import MistBackground from "@/components/ui/mist-background";
+import { shouldAnimateSleepEnter } from "@/game/sleepActivation";
 import { SmokeBackground } from "@/components/ui/spooky-smoke-animation";
 import { isBloodMoonOverlayVisible, BLOOD_MOON_OVERLAY_FADE_MS } from "@/game/bloodMoonOverlay";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
+import { playHaptic } from "@/lib/haptics";
 import { getUnclaimedAchievementIds } from "@/achievements";
 import { getVisibleHotkeyTabs, isEditableKeyboardTarget, isGamePauseHotkey } from "./tabHotkeys";
 import TabHotkeyCallout from "./TabHotkeyCallout";
@@ -414,6 +417,7 @@ export default function GameContainer() {
     for (const id of next) {
       if (!prev.has(id)) {
         audioManager.playSound("achievement", SOUND_VOLUME.achievement);
+        playHaptic("achievement");
         break;
       }
     }
@@ -932,6 +936,7 @@ export default function GameContainer() {
 
     // One cue per unlock batch (matches the shared 3s tab-fade-in animation).
     audioManager.playSound("tabFadeIn", SOUND_VOLUME.tabFadeIn);
+    playHaptic("tabUnlock");
 
     scheduleTabUnlockFadeEndForTabs(newlyUnlocked);
     // Do not advance prevTabUnlockRef here — wait until fade completes (or tab click via clearTabAnimation).
@@ -1246,6 +1251,11 @@ export default function GameContainer() {
   const panelResize = usePanelResize();
   const iosEditionActive = useIosEditionActive();
   const iosChromeViewportStyle = useIOSChromeViewportShell();
+  // Header owns the iOS status-bar inset so its bg fills that strip; overlays
+  // must clear safe-area + header height (not just the 36px chrome).
+  const headerInset = iosEditionActive
+    ? GAME_HEADER_INSET_WITH_SAFE_AREA
+    : GAME_HEADER_INSET;
 
   const showBloodMoonOverlay = isBloodMoonOverlayVisible(timedEventTab);
 
@@ -1315,12 +1325,10 @@ export default function GameContainer() {
             backgroundColor: showBloodMoonOverlay ? "hsl(0, 50%, 5%)" : undefined,
             transition: `background-color ${BLOOD_MOON_OVERLAY_FADE_MS}ms ease-in-out`,
             ...iosChromeViewportStyle,
-            // The web view is edge to edge. Keep the header and the log out of
-            // the status bar and the home indicator. The shell background still
-            // paints those strips.
+            // The web view is edge to edge. Header padding fills the status bar
+            // with the header bg; shell padding keeps sides and the home indicator.
             ...(iosEditionActive
               ? {
-                  paddingTop: "env(safe-area-inset-top, 0px)",
                   paddingRight: "env(safe-area-inset-right, 0px)",
                   paddingBottom: "env(safe-area-inset-bottom, 0px)",
                   paddingLeft: "env(safe-area-inset-left, 0px)",
@@ -1334,7 +1342,7 @@ export default function GameContainer() {
             <div
               className="pointer-events-none absolute inset-x-0 z-0 overflow-hidden blood-moon-smoke-fade-in"
               style={{
-                top: GAME_HEADER_INSET,
+                top: headerInset,
                 bottom: footerInset,
                 animationDuration: `${BLOOD_MOON_OVERLAY_FADE_MS}ms`,
               }}
@@ -1353,7 +1361,7 @@ export default function GameContainer() {
             <div
               className="absolute inset-x-0 bg-black/30 pointer-events-auto overflow-hidden overlay-fade-in"
               style={{
-                top: GAME_HEADER_INSET,
+                top: headerInset,
                 bottom: footerInset,
                 zIndex: Z_INDEX.sleepFog,
               }}
@@ -1748,12 +1756,12 @@ export default function GameContainer() {
             <div
               className="absolute inset-x-0 pointer-events-auto overflow-hidden"
               style={{
-                top: GAME_HEADER_INSET,
+                top: headerInset,
                 bottom: footerInset,
                 zIndex: Z_INDEX.sleepFog,
               }}
             >
-              <MistBackground />
+              <MistBackground fadeIn={shouldAnimateSleepEnter()} />
             </div>
           )}
 

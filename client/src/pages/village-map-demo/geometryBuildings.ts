@@ -13,7 +13,6 @@ import {
 
 import {
   bastionMouth,
-  ESTATE_BORDER,
   ESTATE_DEPTH,
   ESTATE_LENGTH,
   ESTATE_PORCH_DEPTH,
@@ -632,13 +631,12 @@ export function buildingClearance(buildingId: string, hutSize: number, level = 1
     );
   }
   if (buildingId === "estate") {
-    const border = level > 1 ? ESTATE_BORDER : 1;
     const outerReach = (hutSize * ESTATE_DEPTH) / 2 + (hutSize / 2) * 1.25;
     const sideReach = level > 1 ? (hutSize * ESTATE_LENGTH) / 2 + (hutSize / 4) * 1.5 : 0;
     const porchHalfW = (hutSize * ESTATE_LENGTH * ESTATE_PORCH_WIDTH) / 2;
     const porchTip = (hutSize * ESTATE_DEPTH) / 2 + hutSize * ESTATE_DEPTH * ESTATE_PORCH_DEPTH;
     const porchReach = Math.hypot(porchHalfW, porchTip);
-    return Math.max(outerReach, sideReach, porchReach) + border / 2;
+    return Math.max(outerReach, sideReach, porchReach) + 0.5;
   }
   if (buildingId === "wizardTower") {
     const towerRadius = markSize(buildingId, hutSize) / 2;

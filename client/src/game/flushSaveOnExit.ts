@@ -34,16 +34,23 @@ function hasLiveGameToFlush(state: {
   return state.flags?.gameStarted === true || state.isGameLoopActive === true;
 }
 
-async function flushLiveGame(): Promise<void> {
+async function flushLiveGame(options?: {
+  /** Quit / pagehide only. Temporary iOS background must not auto-sleep. */
+  activateSleep?: boolean;
+}): Promise<void> {
   const { useGameStore } = await import("./state");
   const state = useGameStore.getState();
   if (!hasLiveGameToFlush(state)) return;
 
-  // Estate + Sleep ready: fall asleep on close so offline progress accrues.
+  // Estate + Sleep ready: fall asleep on real exit so offline progress accrues.
   // Sync mutation before save; dialog restore happens on next load.
-  const { tryActivateSleepForExit } = await import("./sleepActivation");
-  if (tryActivateSleepForExit()) {
-    logger.log("[SAVE] Auto-started sleep on exit");
+  // Do not do this for a brief app switch: isActive without the dialog freezes
+  // the sim until a full restart.
+  if (options?.activateSleep !== false) {
+    const { tryActivateSleepForExit } = await import("./sleepActivation");
+    if (tryActivateSleepForExit()) {
+      logger.log("[SAVE] Auto-started sleep on exit");
+    }
   }
 
   const { saveGame } = await import("./save");
@@ -51,11 +58,11 @@ async function flushLiveGame(): Promise<void> {
   await saveGame(buildGameState(useGameStore.getState()), false, { force: true });
 }
 
-function flushLiveGameOnce(): Promise<void> {
+function flushLiveGameOnce(options?: { activateSleep?: boolean }): Promise<void> {
   if (flushInFlight) return flushInFlight;
   if (exitFlushLocked) return Promise.resolve();
 
-  flushInFlight = flushLiveGame()
+  flushInFlight = flushLiveGame(options)
     .catch((error) => {
       logger.warn("[SAVE] Exit flush failed:", error);
     })
@@ -65,9 +72,13 @@ function flushLiveGameOnce(): Promise<void> {
   return flushInFlight;
 }
 
-/** iOS background: write the live game. Does not lock later flushes. */
+/**
+ * iOS app switch / Control Center: write the live game only.
+ * Does not auto-sleep (that froze the running session with no Sleep dialog)
+ * and does not lock later flushes.
+ */
 export function flushLiveGameForBackground(): Promise<void> {
-  return flushLiveGameOnce();
+  return flushLiveGameOnce({ activateSleep: false });
 }
 
 /** True when a started game is in memory and should be written on quit. */

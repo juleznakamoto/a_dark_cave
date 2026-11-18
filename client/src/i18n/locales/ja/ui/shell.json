@@ -18,6 +18,7 @@
     "giftCodeRedeem": "使う",
     "giftCodeInvalid": "そのコードには何の効果もありません",
     "giftCodeAccepted": "コードを受け付けました",
+    "haptics": "触覚",
     "fullscreen": "フルスクリーン"
   },
   "textScale": {

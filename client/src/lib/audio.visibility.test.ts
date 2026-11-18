@@ -11,11 +11,13 @@ describe("audio context while the page is hidden", () => {
 
   afterEach(() => {
     hidden = false;
-    setNativeAppBackgrounded(false);
     Object.defineProperty(document, "hidden", {
       configurable: true,
       get: () => false,
     });
+    setNativeAppBackgrounded(false);
+    audioManager.stopAllSounds();
+    audioManager.musicMute(false, { resume: false });
     Howler.ctx = originalCtx;
     Howler.masterGain = originalMasterGain;
     vi.useRealTimers();
@@ -152,5 +154,82 @@ describe("audio context while the page is hidden", () => {
     audioManager.playSound("not-loaded", 1, false);
 
     expect(ctx.resume).toHaveBeenCalledOnce();
+  });
+
+  it("restarts background music when iOS already interrupted audio before hide", async () => {
+    const ctx = installContext();
+    const play = vi
+      .spyOn(
+        audioManager as unknown as { playLoopingSound: () => void },
+        "playLoopingSound",
+      )
+      .mockImplementation(() => {});
+
+    await audioManager.startBackgroundMusic(0.3);
+    play.mockClear();
+
+    // Ambient session interrupted the context before Capacitor told us.
+    ctx.state = "interrupted" as AudioContextState;
+    setNativeAppBackgrounded(true);
+    await Promise.resolve();
+    expect(ctx.suspend).not.toHaveBeenCalled();
+
+    setNativeAppBackgrounded(false);
+
+    expect(ctx.resume).toHaveBeenCalledOnce();
+    expect(play).toHaveBeenCalledWith("backgroundMusic", 0.3, false, 0.04);
+  });
+
+  it("does not restart dialog-ducked background music on app foreground", async () => {
+    installContext();
+    const play = vi
+      .spyOn(
+        audioManager as unknown as { playLoopingSound: () => void },
+        "playLoopingSound",
+      )
+      .mockImplementation(() => {});
+
+    await audioManager.startBackgroundMusic(0.3);
+    audioManager.pauseForSimulation(0);
+    play.mockClear();
+
+    setNativeAppBackgrounded(true);
+    await Promise.resolve();
+    setNativeAppBackgrounded(false);
+
+    expect(play).not.toHaveBeenCalledWith(
+      "backgroundMusic",
+      expect.anything(),
+      expect.anything(),
+      expect.anything(),
+    );
+  });
+
+  it("re-resumes if suspend finishes after the page is already visible", async () => {
+    let resolveSuspend!: () => void;
+    const ctx = installContext();
+    ctx.suspend = vi.fn().mockImplementation(() => {
+      ctx.state = "suspended";
+      return new Promise<void>((resolve) => {
+        resolveSuspend = resolve;
+      });
+    });
+
+    hidden = true;
+    document.dispatchEvent(new Event("visibilitychange"));
+    await Promise.resolve();
+    expect(ctx.suspend).toHaveBeenCalledOnce();
+
+    hidden = false;
+    document.dispatchEvent(new Event("visibilitychange"));
+    expect(ctx.resume).toHaveBeenCalledOnce();
+
+    // Late suspend completion must not leave the context suspended.
+    ctx.state = "suspended";
+    resolveSuspend();
+    await Promise.resolve();
+
+    expect(ctx.resume).toHaveBeenCalledTimes(2);
+    expect(ctx.state).toBe("running");
   });
 });

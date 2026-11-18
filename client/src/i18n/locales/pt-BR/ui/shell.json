@@ -18,6 +18,7 @@
     "giftCodeRedeem": "Resgatar",
     "giftCodeInvalid": "Esse código não faz nada",
     "giftCodeAccepted": "Código aceito",
+    "haptics": "Tátil",
     "fullscreen": "Tela cheia"
   },
   "textScale": {

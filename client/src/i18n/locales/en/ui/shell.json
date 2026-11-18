@@ -18,6 +18,7 @@
     "giftCodeRedeem": "Redeem",
     "giftCodeInvalid": "That code does nothing",
     "giftCodeAccepted": "Code accepted",
+    "haptics": "Haptics",
     "fullscreen": "Full screen"
   },
   "textScale": {

@@ -20,6 +20,11 @@ function createWebGL1Context(canvas: HTMLCanvasElement): WebGLRenderingContext |
   return null;
 }
 
+type MistBackgroundProps = {
+  /** When false (restore into an active sleep), start at full opacity. */
+  fadeIn?: boolean;
+};
+
 /**
  * Mist Background Component
  * Technology: WebGL 2D Fragment Shaders (GLSL)
@@ -29,7 +34,7 @@ function createWebGL1Context(canvas: HTMLCanvasElement): WebGLRenderingContext |
  * requestAnimationFrame + setState while also using `transition-opacity`
  * made the mist jump on iOS Safari instead of rising smoothly.
  */
-const MistBackground: React.FC = () => {
+const MistBackground: React.FC<MistBackgroundProps> = ({ fadeIn = true }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -176,8 +181,12 @@ const MistBackground: React.FC = () => {
 
   return (
     <div
-      className="absolute inset-0 pointer-events-none sleep-mist-fade-in"
-      style={{ background: '#09090b' }}
+      className={
+        fadeIn
+          ? "absolute inset-0 pointer-events-none sleep-mist-fade-in"
+          : "absolute inset-0 pointer-events-none"
+      }
+      style={{ background: "#09090b" }}
     >
       <canvas
         ref={canvasRef}

@@ -341,7 +341,7 @@ export default function GameFooter() {
               aria-label={
                 isPaused ? t("footer.resumeGame") : t("footer.pauseGame")
               }
-              className={`${FOOTER_CONTROL_BTN} ${idleModeDialogOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "!text-red-600 !opacity-100" : ""} ${isPaused && !idleModeDialogOpen ? "continue-pause-flash" : ""}`}
+              className={`${FOOTER_CONTROL_BTN} ${idleModeDialogOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "!text-red-600 !opacity-100" : ""} ${isPaused && !idleModeDialogOpen ? "continue-pause-glow" : ""}`}
             >
               <GameUiIcon
                 name={isPaused ? "unpause" : "pause"}

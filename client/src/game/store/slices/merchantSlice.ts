@@ -101,6 +101,7 @@ import {
 import { calculateBastionStats } from "@/game/bastionStats";
 import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
+import { playHaptic } from "@/lib/haptics";
 import { BLOOD_MOON_EVENT_ID } from "@/game/bloodMoonOverlay";
 import { GAME_CONSTANTS, getCallMerchantGoldCost } from "@/game/constants";
 import { socialPromptMilestoneFloorFromPlayTime } from "@/game/socialPromptAuto";
@@ -234,6 +235,8 @@ export const createMerchantSlice: GameStoreCreator<Partial<GameStore>> = (set, g
       if (isBloodMoonEvent) {
         // One-shot sting when the timed tab appears (not a looping bed).
         audioManager.playSound("bloodMoon", SOUND_VOLUME.bloodMoon);
+        // Same attention haptic as other timed events (not a heavier blood-moon cue).
+        playHaptic("event");
       } else {
         const madnessEventIds = Object.keys(madnessEvents);
         const isMadnessEvent = madnessEventIds.includes(catalogId!);
@@ -241,6 +244,7 @@ export const createMerchantSlice: GameStoreCreator<Partial<GameStore>> = (set, g
           isMadnessEvent ? "eventMadness" : "event",
           isMadnessEvent ? SOUND_VOLUME.eventMadness : SOUND_VOLUME.eventUi,
         );
+        playHaptic(isMadnessEvent ? "madnessEvent" : "event");
       }
     }
 

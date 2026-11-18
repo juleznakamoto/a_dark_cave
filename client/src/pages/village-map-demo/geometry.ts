@@ -178,8 +178,6 @@ export function longhouseDoor(at: Point, hutSize: number): Point {
 
 export const ESTATE_LENGTH = 4;
 export const ESTATE_DEPTH = 3;
-/** Black Estate outline. One pixel heavier than the Dark Estate's 1px line. */
-export const ESTATE_BORDER = 2;
 export const BASTION_LENGTH = 4.4;
 export const BASTION_DEPTH = 3;
 

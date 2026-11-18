@@ -18,6 +18,7 @@
     "giftCodeRedeem": "Odbierz",
     "giftCodeInvalid": "Ten kod nic nie robi",
     "giftCodeAccepted": "Kod przyjęty",
+    "haptics": "Wibracje",
     "fullscreen": "Pełny ekran"
   },
   "textScale": {

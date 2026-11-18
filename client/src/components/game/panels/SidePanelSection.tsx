@@ -1235,7 +1235,8 @@ export default function SidePanelSection({
       <span
         className={cn(
           "text-gray-400",
-          usesLabelValueGridLayout ? RESOURCE_ROW_TEXT_CLASS : "text-xs",
+          // Same as value cells; plain text-xs alone uses a shorter line-height.
+          RESOURCE_ROW_TEXT_CLASS,
           item.icon !== undefined &&
           (usesLabelValueGridLayout
             ? "inline-flex items-baseline gap-1"
@@ -1675,7 +1676,7 @@ export default function SidePanelSection({
   return (
     <div ref={rootRef} className={cn("min-w-0 w-full", className)}>
       <div className="min-w-0 flex-1">{titleHeading}</div>
-      <div className="side-panel-item-list min-w-0 text-xs">
+      <div className="side-panel-item-list min-w-0 text-xs leading-tight">
         {visibleItems.map((item) => (
           <div
             key={item.id}

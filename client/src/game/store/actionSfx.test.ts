@@ -39,6 +39,30 @@ describe("purchase sfx", () => {
     expect(play).toHaveBeenCalledWith("chopWood", SOUND_VOLUME.chopWood);
   });
 
+  it("plays the construct cue when a building starts, not later", () => {
+    const play = vi.spyOn(audioManager, "playSound").mockImplementation(() => {});
+
+    playActionStartSfx("buildWoodenHut", {
+      forestUnlocked: false,
+      caveExploreLevel: 0,
+    });
+    playActionStartSfx("repairBastion", {
+      forestUnlocked: true,
+      caveExploreLevel: 0,
+    });
+
+    expect(play).toHaveBeenNthCalledWith(
+      1,
+      "buildingComplete",
+      SOUND_VOLUME.buildingComplete,
+    );
+    expect(play).toHaveBeenNthCalledWith(
+      2,
+      "buildingComplete",
+      SOUND_VOLUME.buildingComplete,
+    );
+  });
+
   it("slows the mining cue 2.5% per Mine resource in unlock order", () => {
     expect(miningPlaybackRate("mineStone")).toBe(1);
     expect(miningPlaybackRate("mineIron")).toBe(0.975);

@@ -83,7 +83,6 @@ import {
   watchtowerLevelScale,
   tentOutline,
   crossOutline,
-  ESTATE_BORDER,
   BASTION_LENGTH,
   BASTION_DEPTH,
   bastionOutlineWidth,
@@ -139,6 +138,10 @@ export const MapBorderExtraContext = createContext(0);
 /** Reveal fade: the extra outline stays thick, then eases off over the last second. */
 export const MapHighlightFadeContext = createContext(false);
 export const MapInkContext = createContext("#000000");
+/** Default building outline. Phones use {@link BUILDING_STROKE_MOBILE}. */
+export const BUILDING_STROKE = 1;
+export const BUILDING_STROKE_MOBILE = 1.5;
+export const MapBuildingStrokeContext = createContext(BUILDING_STROKE);
 /**
  * The interactive map always draws the hover ring, hidden until a class shows it.
  * Icons leave this off, so they do not carry a second copy of every shape.
@@ -151,6 +154,10 @@ function useMapBorderExtra(): number {
 
 export function useMapInk(): string {
   return useContext(MapInkContext);
+}
+
+export function useBuildingStroke(): number {
+  return useContext(MapBuildingStrokeContext);
 }
 
 export function useOutlineRing(stroke: number, strokeLinejoin: "miter" | "round" = "miter") {
@@ -267,7 +274,7 @@ export function BorderStack({
   rings,
   fills,
   outline,
-  stroke = 1,
+  stroke,
   outsideOnly = false,
 }: {
   rings: ReactNode;
@@ -278,13 +285,15 @@ export function BorderStack({
   /** Add 1px outside the painted border. The ring does not step into the fill. */
   outsideOnly?: boolean;
 }) {
+  const buildingStroke = useBuildingStroke();
+  const width = stroke ?? buildingStroke;
   // The ring needs the fills too, or the hole inside a stroke grows inward.
   const highlight = outsideOnly ? <>{rings}{fills}</> : (outline ?? fills);
   return (
     <g>
       {rings}
       {fills}
-      <SilhouetteHighlight stroke={stroke} outsideOnly={outsideOnly}>
+      <SilhouetteHighlight stroke={width} outsideOnly={outsideOnly}>
         {highlight}
       </SilhouetteHighlight>
     </g>

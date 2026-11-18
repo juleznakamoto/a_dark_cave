@@ -24,11 +24,16 @@ import { gameActionOutlineButtonClassName } from "@/components/CooldownButton";
 import { capitalizeWords, cn, formatNumber } from "@/lib/utils";
 import { getTotalPopulationEffects } from "@/game/population";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
+import { playHaptic } from "@/lib/haptics";
 import {
   CYCLE_RING_FRAME_MS,
   resetProductionCycle,
   resolveSleepDialogInit,
 } from "@/game/loop";
+import {
+  clearSleepEnterPresentation,
+  shouldAnimateSleepEnter,
+} from "@/game/sleepActivation";
 import { logger } from "@/lib/logger";
 import { BOMB_RESOURCES, constrainResourceAmount } from "@/game/resourceLimits";
 import { gameStateSchema, type GameState } from "@shared/schema";
@@ -385,8 +390,11 @@ function IdleModeDialogOpen() {
         const stillActive = remaining > 0;
         setIsActive(stillActive);
 
-        if (stillActive) {
+        // Only play enter cues for a fresh Sleep this session. Restoring an
+        // already-active sleep on load must stay silent (mist stays opaque).
+        if (stillActive && shouldAnimateSleepEnter()) {
           audioManager.playSound("sleep", SOUND_VOLUME.sleep);
+          playHaptic("sleep");
         }
       } else {
         // Fresh sleep: Estate usually writes startTime first, but this effect
@@ -409,6 +417,7 @@ function IdleModeDialogOpen() {
         }));
 
         audioManager.playSound("sleep", SOUND_VOLUME.sleep);
+        playHaptic("sleep");
 
         void import("@/game/save")
           .then(({ saveGame }) => saveGame(useGameStore.getState(), false))
@@ -649,6 +658,8 @@ function IdleModeDialogOpen() {
 
     // Stop sleep sound when ending idle mode
     audioManager.stopLoopingSound("sleep", 1);
+    playHaptic("sleep");
+    clearSleepEnterPresentation();
 
     // Reset production cycle so the next tick starts a fresh 15-second interval
     resetProductionCycle();

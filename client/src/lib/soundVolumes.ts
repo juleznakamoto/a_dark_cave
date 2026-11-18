@@ -29,6 +29,7 @@ export const SOUND_VOLUME = {
     perHeartfireLevel: 0.05,
   },
   newVillager: 0.02,
+  /** Construction start (village build / bastion repair click). */
   buildingComplete: 0.4,
   craft: 0.25,
   mining: 0.3,

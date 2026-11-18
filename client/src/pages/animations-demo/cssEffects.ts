@@ -139,9 +139,9 @@ export const CSS_EFFECT_DEMOS: CssEffectDemo[] = [
     sample: "Fun Games",
   },
   {
-    id: "continue-pause-flash",
-    label: "Continue / pause flash",
-    className: "continue-pause-flash",
+    id: "continue-pause-glow",
+    label: "Continue / pause glow",
+    className: "continue-pause-glow [--continue-pause-glow-delay:0s] text-red-600",
     mode: "loop",
     sample: "Continue",
   },

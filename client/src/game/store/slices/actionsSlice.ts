@@ -101,7 +101,6 @@ import {
 } from "@/game/rules/effectsCalculation";
 import { calculateBastionStats } from "@/game/bastionStats";
 import { getCurrentPopulation, getMaxPopulation } from "@/game/population";
-import { audioManager, SOUND_VOLUME } from "@/lib/audio";
 import { BLOOD_MOON_EVENT_ID } from "@/game/bloodMoonOverlay";
 import { GAME_CONSTANTS, getCallMerchantGoldCost } from "@/game/constants";
 import { socialPromptMilestoneFloorFromPlayTime } from "@/game/socialPromptAuto";
@@ -472,27 +471,12 @@ export const createActionsSlice: GameStoreCreator<Partial<GameStore>> = (set, ge
     if (playActionSfx) {
       // Instant actions (no execution bar) still play their start cue here.
       // Timed actions play it in startActionExecution on click.
+      // Construct cues also fire on start (see playActionStartSfx), not completion.
       if (!isCompletingExecution) {
         playActionStartSfx(actionId, {
           forestUnlocked: Boolean(get().flags?.forestUnlocked),
           caveExploreLevel: get().buttonUpgrades?.caveExplore?.level ?? 0,
         });
-      }
-
-      // Village build + bastion repair share the same completion cue
-      const isBastionRepair =
-        actionId === "repairBastion" ||
-        actionId === "repairWatchtower" ||
-        actionId === "repairPalisades";
-      if (
-        (actionId.startsWith("build") && result.stateUpdates.buildings) ||
-        actionId === "buildRepairAlchemistHall" ||
-        isBastionRepair
-      ) {
-        audioManager.playSound(
-          "buildingComplete",
-          SOUND_VOLUME.buildingComplete,
-        );
       }
     }
 

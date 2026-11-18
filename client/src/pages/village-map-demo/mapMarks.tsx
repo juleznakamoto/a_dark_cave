@@ -45,7 +45,6 @@ import {
   pitOutline,
   pitScale,
   pitContourScales,
-  storageBorder,
   storageScale,
   storageTowers,
   blacksmithAnnex,
@@ -84,7 +83,6 @@ import {
   watchtowerLevelScale,
   tentOutline,
   crossOutline,
-  ESTATE_BORDER,
   BASTION_LENGTH,
   BASTION_DEPTH,
   bastionGateTowers,
@@ -144,6 +142,7 @@ import {
   MapInkContext,
   SilhouetteHighlight,
   bridgeHatchPaths,
+  useBuildingStroke,
   useMapInk,
   useOutlineRing,
   wobbleFilterId,
@@ -164,7 +163,8 @@ function HeartfireMark({
   level: number;
   ebonGrace?: boolean;
 }) {
-  const border = ebonGrace ? 2 : 1;
+  const buildingStroke = useBuildingStroke();
+  const border = ebonGrace ? 2 : buildingStroke;
   const ring = useOutlineRing(border);
   const radius = size / 2;
   const triangles = ebonGrace ? heartfireBorderTriangles(radius, border) : [];
@@ -521,7 +521,7 @@ function StorageMark({
   fill: string;
 }) {
   const body = size * storageScale(level);
-  const stroke = storageBorder(level);
+  const stroke = useBuildingStroke();
   const outset = stroke / 2;
   const ring = useOutlineRing(stroke);
   const towers = storageTowers(body, level);
@@ -624,7 +624,7 @@ function ArchiveMark({
   fill: string;
 }) {
   const outline = archiveOutline(size, level);
-  const stroke = 1;
+  const stroke = useBuildingStroke();
   const outset = stroke / 2;
   const ring = useOutlineRing(stroke);
   return (
@@ -653,7 +653,7 @@ function BuildersMark({
   const outer = buildersOutline(size, level);
   const hole = buildersHole(size, level);
   const wing = buildersWing(size, level);
-  const stroke = 1;
+  const stroke = useBuildingStroke();
   const ring = useOutlineRing(stroke);
   return (
     <g>
@@ -693,7 +693,7 @@ function FoundryMark({
 }) {
   const outline = foundryOutline(size, level);
   const domes = brimstone ? foundryFurnacePlates(size, level) : [];
-  const stroke = 1;
+  const stroke = useBuildingStroke();
   const ring = useOutlineRing(stroke);
   return (
     <g>
@@ -726,7 +726,7 @@ function FoundryMark({
 
 function AlchemistMark({ size, fill }: { size: number; fill: string }) {
   const hall = alchemistHall(size);
-  const stroke = 1;
+  const stroke = useBuildingStroke();
   const outset = stroke / 2;
   const ring = useOutlineRing(stroke);
   return (
@@ -766,7 +766,7 @@ function CabinMark({
 }) {
   const outline = cabinOutline(size, level);
   const tower = cabinTower(size, level);
-  const stroke = 1;
+  const stroke = useBuildingStroke();
   const outset = stroke / 2;
   const ring = useOutlineRing(stroke);
   return (
@@ -792,7 +792,7 @@ function CabinMark({
 function BoneTempleMark({ size, fill }: { size: number; fill: string }) {
   const outline = boneTempleOutline(size);
   const corners = boneTempleSpikedCorners(size);
-  const stroke = 1;
+  const stroke = useBuildingStroke();
   const ring = useOutlineRing(stroke);
   return (
     <g>
@@ -820,7 +820,7 @@ function BoneTempleMark({ size, fill }: { size: number; fill: string }) {
 
 function PillarMark({ size, fill }: { size: number; fill: string }) {
   const outline = pillarOutline(size);
-  const stroke = 1;
+  const stroke = useBuildingStroke();
   const ring = useOutlineRing(stroke);
   return (
     <BorderStack
@@ -832,7 +832,7 @@ function PillarMark({ size, fill }: { size: number; fill: string }) {
 
 function BoneyardMark({ size, fill }: { size: number; fill: string }) {
   const outline = boneyardOutline(size);
-  const stroke = 1;
+  const stroke = useBuildingStroke();
   const ring = useOutlineRing(stroke);
   return (
     <g>
@@ -874,7 +874,7 @@ function BoneyardCrosses({
 
 function QuarryMark({ size, fill }: { size: number; fill: string }) {
   const outline = quarryOutline(size);
-  const stroke = 1;
+  const stroke = useBuildingStroke();
   const ring = useOutlineRing(stroke, "round");
   return (
     <g>
@@ -888,7 +888,7 @@ function QuarryMark({ size, fill }: { size: number; fill: string }) {
 
 function TimberMillMark({ size, fill }: { size: number; fill: string }) {
   const outline = timberMillOutline(size);
-  const stroke = 1;
+  const stroke = useBuildingStroke();
   const ring = useOutlineRing(stroke);
   return (
     <g>
@@ -902,7 +902,7 @@ function TimberMillMark({ size, fill }: { size: number; fill: string }) {
 
 function LonghouseMark({ size, fill }: { size: number; fill: string }) {
   const outline = longhouseOutline(size);
-  const stroke = 1;
+  const stroke = useBuildingStroke();
   const ring = useOutlineRing(stroke);
   return (
     <g>
@@ -925,7 +925,7 @@ function TradeMark({
 }) {
   const outline = tradeOutline(size, level);
   const circles = tradeCircles(size, level);
-  const stroke = 1;
+  const stroke = useBuildingStroke();
   const outset = stroke / 2;
   const ring = useOutlineRing(stroke);
   return (
@@ -964,7 +964,7 @@ function TempleKnightCross({
   deepened: boolean;
 }) {
   const ink = useMapInk();
-  const stroke = 1;
+  const stroke = useBuildingStroke();
   const rays = deepened ? templeKnightCrossRays(size, stroke / 2) : [];
   return (
     <g opacity={0.8}>
@@ -984,7 +984,7 @@ function TempleKnightCross({
           x2={ray[1].x + x}
           y2={ray[1].y + y}
           stroke={ink}
-          strokeWidth={1}
+          strokeWidth={stroke}
         />
       ))}
     </g>
@@ -1006,7 +1006,7 @@ function AltarMark({
 }) {
   const outline = altarOutline(size, level);
   const lobes = sanctumCircles(size, level);
-  const stroke = 1;
+  const stroke = useBuildingStroke();
   const outset = stroke / 2;
   const ring = useOutlineRing(stroke);
   const { depth } = altarSpan(size, level);
@@ -1067,7 +1067,7 @@ function TanneryMark({
   fill: string;
 }) {
   const outline = tanneryOutline(size, level);
-  const stroke = 1;
+  const stroke = useBuildingStroke();
   const ring = useOutlineRing(stroke);
   return (
     <g>
@@ -1092,7 +1092,7 @@ function BlacksmithMark({
   const outline = blacksmithOutline(span, span, level);
   const furnace = blacksmithFurnace(span, span);
   const annex = blacksmithAnnex(span, span, level);
-  const stroke = 1;
+  const stroke = useBuildingStroke();
   const outset = stroke / 2;
   const ring = useOutlineRing(stroke);
   const pieces = annex ? [furnace, annex] : [furnace];
@@ -1222,7 +1222,7 @@ function CoinhouseMark({
   fill: string;
 }) {
   const layout = coinhouseLayout(size, level);
-  const stroke = 1;
+  const stroke = useBuildingStroke();
   const outset = stroke / 2;
   const ring = useOutlineRing(stroke);
   const corner = layout.wallCorner;
@@ -1310,6 +1310,7 @@ export function BuildingMark({
   dedicationDeepened?: SanctumGod | null;
 }) {
   const ink = useMapInk();
+  const buildingStroke = useBuildingStroke();
   const level = Math.max(1, tier);
   if (buildingId === "storage") {
     return <StorageMark size={size} level={level} fill={tuning.fill} />;
@@ -1339,7 +1340,7 @@ export function BuildingMark({
     return <PillarMark size={size} fill={tuning.fill} />;
   }
   if (buildingId === "blackMonolith") {
-    return <BuildingFootprint size={size} shape="round" fill={tuning.fill} strokeWidth={1} />;
+    return <BuildingFootprint size={size} shape="round" fill={tuning.fill} strokeWidth={buildingStroke} />;
   }
   if (buildingId === "boneTemple") {
     return <BoneTempleMark size={size} fill={tuning.fill} />;
@@ -1393,7 +1394,7 @@ export function BuildingMark({
         size={size}
         shape="estate"
         fill={tuning.fill}
-        strokeWidth={level > 1 ? ESTATE_BORDER : 1}
+        strokeWidth={buildingStroke}
         level={level}
       />
     );
@@ -1402,8 +1403,8 @@ export function BuildingMark({
     const grown = size * pitScale(level);
     return (
       <g>
-        <path d={smoothClosedPath(pitOutline(grown))} fill={tuning.fill} stroke={ink} strokeWidth={1} />
-        <SilhouetteHighlight stroke={1}>
+        <path d={smoothClosedPath(pitOutline(grown))} fill={tuning.fill} stroke={ink} strokeWidth={buildingStroke} />
+        <SilhouetteHighlight stroke={buildingStroke}>
           <path d={smoothClosedPath(pitOutline(grown))} fill="#000" />
         </SilhouetteHighlight>
         {pitContourScales(level).map((scale) => (
@@ -1427,7 +1428,7 @@ export function BuildingMark({
       size={size}
       shape={shape}
       fill={tuning.fill}
-      strokeWidth={shape === "bastion" || shape === "watchtower" ? bastionOutlineWidth(level) : 1}
+      strokeWidth={shape === "bastion" || shape === "watchtower" ? bastionOutlineWidth(level) : buildingStroke}
       outwardBorder={!special}
       level={level}
     />

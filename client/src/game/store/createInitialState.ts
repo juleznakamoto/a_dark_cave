@@ -159,6 +159,7 @@ export const createInitialState = (): GameState => ({
   isPaused: false,
   musicMuted: false,
   sfxMuted: false,
+  hapticsMuted: false,
   musicVolume: 1,
   sfxVolume: 1,
   authNotificationSeen: false,

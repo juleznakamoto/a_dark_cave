@@ -5,6 +5,23 @@ import { useGameStore } from "@/game/state";
 import { saveGame } from "@/game/save";
 import { logger } from "@/lib/logger";
 
+/**
+ * True only for a fresh Sleep enter this client session (Estate / AFK).
+ * Restore-on-load keeps this false so mist stays opaque and the sleep cue
+ * does not replay.
+ */
+let sleepEnterPresentation = false;
+
+/** Whether mist should fade in and the sleep sound/haptic should play. */
+export function shouldAnimateSleepEnter(): boolean {
+  return sleepEnterPresentation;
+}
+
+/** Clear after wake so a later restore cannot inherit a stale enter cue. */
+export function clearSleepEnterPresentation(): void {
+  sleepEnterPresentation = false;
+}
+
 /** Estate tab / Sleep button are available once Dark Estate is built. */
 export function isEstateUnlocked(state: {
   buildings?: { darkEstate?: number } | null;
@@ -75,7 +92,17 @@ export function tryActivateSleepForExit(): boolean {
  * persist session first, then open the dialog.
  */
 export async function beginSleepMode(): Promise<boolean> {
+  const before = useGameStore.getState();
+  const alreadyInSleep =
+    !!before.idleModeDialog?.isOpen || !!before.idleModeState?.isActive;
+
   if (!markSleepSessionActive()) return false;
+
+  // Fresh enter only. Loading into an existing sleep session must not replay
+  // the sound or mist fade (scheduleSleepDialogRestore never sets this).
+  if (!alreadyInSleep) {
+    sleepEnterPresentation = true;
+  }
 
   try {
     await saveGame(useGameStore.getState(), false);

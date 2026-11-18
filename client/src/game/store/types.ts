@@ -271,6 +271,8 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
   isPaused: boolean; // New state for pause/unpause
   musicMuted: boolean; // Background music mute state
   sfxMuted: boolean; // Sound effects mute state
+  /** iOS haptic feedback mute. Persists with audio prefs across new games. */
+  hapticsMuted: boolean;
   musicVolume: number; // Background music master volume (0–1)
   sfxVolume: number; // Sound effects master volume (0–1)
 
@@ -337,6 +339,7 @@ export interface GameStore extends Omit<GameState, "focusState" | "merchantTrade
   ) => void;
   setMusicMuted: (muted: boolean) => void;
   setSfxMuted: (muted: boolean) => void;
+  setHapticsMuted: (muted: boolean) => void;
   setMusicVolume: (volume: number) => void;
   setSfxVolume: (volume: number) => void;
   setSignUpPromptEligibleForGold: (eligible: boolean) => void;

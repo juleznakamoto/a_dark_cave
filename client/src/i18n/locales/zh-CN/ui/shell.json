@@ -18,6 +18,7 @@
     "giftCodeRedeem": "兑换",
     "giftCodeInvalid": "这个代码没有用",
     "giftCodeAccepted": "代码已接受",
+    "haptics": "触感",
     "fullscreen": "全屏"
   },
   "textScale": {

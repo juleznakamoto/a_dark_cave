@@ -155,6 +155,7 @@ import {
   feedFirePlaybackRate,
   feedFireVolume,
 } from "@/lib/audio";
+import { playHaptic } from "@/lib/haptics";
 import { BUILD_PARTICLE_CONFIG } from "@/components/ui/bubbly-button.particles";
 import { ButtonPriorBadge } from "@/components/game/ButtonPriorBadge";
 import { PRIOR_ELIGIBLE_ACTIONS } from "@/game/buttonUpgrades";
@@ -993,6 +994,7 @@ export default function VillagePanel() {
               false,
               feedFirePlaybackRate(currentLevel),
             );
+            playHaptic("feedFire");
             // Generate 10 * current heartfire level particles
             const particleCount = 10 * (currentLevel + 1);
             if (particleCount > 0) {

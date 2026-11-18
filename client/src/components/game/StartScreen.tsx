@@ -807,6 +807,9 @@ export default function StartScreen({
       if (!audioPrefsRef.current.sfxMuted) {
         mod.audioManager.playSound("makeFire", mod.SOUND_VOLUME.makeFire);
       }
+      void import("@/lib/haptics").then(({ playHaptic }) => {
+        playHaptic("makeFire");
+      });
       mod.audioManager.stopLoopingSound("wind", 1);
 
       // After Make Fire one-shot: load core pack (BGM + early cave), start music,
@@ -977,6 +980,33 @@ export default function StartScreen({
       setLanguageDefaultOpen,
     );
   };
+  const loadLanguageSelectorRef = useRef(loadLanguageSelector);
+  loadLanguageSelectorRef.current = loadLanguageSelector;
+
+  // Touch / iOS has no hover prefetch. Warm the language chunk while idle so the
+  // first tap hits the real menu instead of a placeholder that opens mid-gesture.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia(FINE_HOVER_QUERY).matches) return;
+    let idleId: number | null = null;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    const warm = () => loadLanguageSelectorRef.current("prefetch");
+    const ric = window.requestIdleCallback;
+    if (typeof ric === "function") {
+      idleId = ric(warm, { timeout: 2500 });
+    } else {
+      timeoutId = setTimeout(warm, 600);
+    }
+    return () => {
+      if (
+        idleId !== null &&
+        typeof window.cancelIdleCallback === "function"
+      ) {
+        window.cancelIdleCallback(idleId);
+      }
+      if (timeoutId !== null) clearTimeout(timeoutId);
+    };
+  }, []);
 
   const loadFooterNetworkMenu = (kind: DeferredStartMenuLoadKind) => {
     queueDeferredMenuImport(
@@ -1405,6 +1435,7 @@ export default function StartScreen({
               iconVariant="globe"
               menuAlign="start"
               showTooltip={false}
+              unstyledTrigger
               menuTextClassName={START_LANGUAGE_MENU_TEXT}
               defaultOpen={languageDefaultOpen}
             />

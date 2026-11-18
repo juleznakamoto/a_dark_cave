@@ -7,10 +7,17 @@ import {
   DemoEndHeaderLink,
   SteamDemoHeaderStoreLink,
 } from "./SteamDemoStoreLink";
-import { GAME_CHROME_NO_BG_HOVER, GAME_CHROME_RULE_BOTTOM } from "./gameChrome";
+import {
+  GAME_CHROME_NO_BG_HOVER,
+  GAME_CHROME_RULE_BOTTOM,
+  GAME_HEADER_SAFE_AREA_TOP,
+} from "./gameChrome";
 import { useGameStore } from "@/game/state";
 import { useFadePresence } from "@/hooks/useFadePresence";
-import { useMobileGameChrome } from "@/hooks/useSteamEditionActive";
+import {
+  useIosEditionActive,
+  useMobileGameChrome,
+} from "@/hooks/useSteamEditionActive";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { formatDurationMs } from "@/lib/utils";
 import { logger } from "@/lib/logger";
@@ -71,7 +78,7 @@ function HeaderPauseButton() {
       data-testid="button-pause-game"
       disabled={idleModeDialogOpen}
       aria-label={isPaused ? t("footer.resumeGame") : t("footer.pauseGame")}
-      className={`${HEADER_PAUSE_BTN} touch-manipulation ${idleModeDialogOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "!text-red-600 !opacity-100" : "text-neutral-300"} ${isPaused && !idleModeDialogOpen ? "continue-pause-flash" : ""}`}
+      className={`${HEADER_PAUSE_BTN} touch-manipulation ${idleModeDialogOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "!text-red-600 !opacity-100" : "text-neutral-300"} ${isPaused && !idleModeDialogOpen ? "continue-pause-glow" : ""}`}
     >
       <GameUiIcon
         name={isPaused ? "unpause" : "pause"}
@@ -108,6 +115,7 @@ async function saveAndReturnToStartScreen(): Promise<void> {
 export default function GameHeader() {
   const [returningToStart, setReturningToStart] = useState(false);
   const mobileGameChrome = useMobileGameChrome();
+  const iosEditionActive = useIosEditionActive();
 
   const handleReturnToStart = () => {
     if (returningToStart) return;
@@ -119,7 +127,14 @@ export default function GameHeader() {
   };
 
   return (
-    <header className={`relative z-50 flex min-h-9 flex-shrink-0 items-center bg-inherit ${GAME_CHROME_RULE_BOTTOM} px-1 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible md:pl-4 md:pr-2`}>
+    <header
+      className={`relative z-50 flex min-h-9 flex-shrink-0 items-center bg-inherit ${GAME_CHROME_RULE_BOTTOM} px-1 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible md:pl-4 md:pr-2`}
+      style={
+        iosEditionActive
+          ? { paddingTop: GAME_HEADER_SAFE_AREA_TOP }
+          : undefined
+      }
+    >
       <div className="relative flex w-full items-center justify-between gap-2">
         {mobileGameChrome ? (
           <div className="flex shrink-0 items-center">

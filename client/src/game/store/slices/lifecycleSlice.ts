@@ -354,6 +354,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       // Volume and mute stay with the player across new games.
       musicMuted: state.musicMuted === true,
       sfxMuted: state.sfxMuted === true,
+      hapticsMuted: state.hapticsMuted === true,
       musicVolume:
         typeof state.musicVolume === "number" ? state.musicVolume : 1,
       sfxVolume: typeof state.sfxVolume === "number" ? state.sfxVolume : 1,
@@ -492,6 +493,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
       const saved = savedState as typeof savedState & {
         musicMuted?: boolean;
         sfxMuted?: boolean;
+        hapticsMuted?: boolean;
         musicVolume?: number;
         sfxVolume?: number;
       };
@@ -677,6 +679,7 @@ export const createLifecycleSlice: GameStoreCreator<Partial<GameStore>> = (set, 
           savedState.isPaused !== undefined ? savedState.isPaused : false, // Ensure isPaused is loaded
         musicMuted: saved.musicMuted ?? false,
         sfxMuted: saved.sfxMuted ?? false,
+        hapticsMuted: saved.hapticsMuted ?? false,
         musicVolume:
           typeof saved.musicVolume === "number" ? saved.musicVolume : 1,
         sfxVolume: typeof saved.sfxVolume === "number" ? saved.sfxVolume : 1,

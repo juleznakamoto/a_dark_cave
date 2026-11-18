@@ -32,6 +32,7 @@ import {
   EVENT_AMBIENCE_FADE_SECONDS,
   SOUND_VOLUME,
 } from "@/lib/audio";
+import { playHaptic } from "@/lib/haptics";
 import {
   getTotalMadness,
   getStrangerApproachProbability,
@@ -72,6 +73,7 @@ import { tickVillageMapSilver } from "@/game/villageMapSilver";
 import { isLocalOnlyEdition, shouldSyncSteamAchievements } from "@/lib/edition";
 import {
   beginSleepMode,
+  clearSleepEnterPresentation,
   shouldAutoSleepOnInactivity,
 } from "./sleepActivation";
 import { isGameStoryCompleted } from "./rules/eventsAttackWaves";
@@ -353,7 +355,10 @@ function handleActivityVisibilityChange() {
   lastUserActivity = Date.now();
   // After unfreeze, drop a visit only if its remaining time is actually gone.
   clearExpiredTimedEventTab();
+  // Sleep session may be active with the dialog still closed (load, or an older
+  // iOS background flush). Re-open so the sim is not frozen with no UI.
   if (gameLoopRunning) {
+    scheduleSleepDialogRestore();
     const elapsed = performance.now() - lastRenderTime;
     scheduleGameTick(FRAME_DURATION - elapsed);
   }
@@ -456,6 +461,8 @@ export function scheduleSleepDialogRestore(): void {
   clearIdleModeDisplayTimeout();
   const state = useGameStore.getState();
   if (!shouldRestoreSleepDialog(state)) return;
+  // Restore is not a fresh enter: skip sleep sound + mist fade-in.
+  clearSleepEnterPresentation();
   idleModeDisplayTimeoutId = setTimeout(() => {
     idleModeDisplayTimeoutId = null;
     const current = useGameStore.getState();
@@ -1454,6 +1461,7 @@ function handleStarvationCheck() {
         timestamp: Date.now(),
         type: "system",
       });
+      playHaptic("villagerDeath");
 
       // Update population after applying changes
       setTimeout(() => state.updatePopulation(), 0);
@@ -1504,6 +1512,7 @@ function handleFreezingCheck() {
         timestamp: Date.now(),
         type: "system",
       });
+      playHaptic("villagerDeath");
 
       // Update population after applying changes
       setTimeout(() => state.updatePopulation(), 0);
@@ -1743,6 +1752,7 @@ function handleStrangerApproach() {
 
     // Play new villager sound
     audioManager.playSound("newVillager", SOUND_VOLUME.newVillager);
+    playHaptic("newVillager");
   }
 }
 

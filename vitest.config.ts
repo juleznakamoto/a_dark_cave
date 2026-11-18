@@ -21,6 +21,7 @@ export default defineConfig({
       '@capacitor/app': path.resolve(__dirname, 'client/src/stubs/capacitor/app.ts'),
       '@capacitor/status-bar': path.resolve(__dirname, 'client/src/stubs/capacitor/statusBar.ts'),
       '@capacitor-community/media': path.resolve(__dirname, 'client/src/stubs/capacitor/media.ts'),
+      '@capacitor/haptics': path.resolve(__dirname, 'client/src/stubs/capacitor/haptics.ts'),
     },
   },
 });

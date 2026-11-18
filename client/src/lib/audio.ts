@@ -62,8 +62,15 @@ export class AudioManager {
    * A simulation pause must not stop these.
    */
   private activeEventAmbience = new Set<string>();
-  /** True when we suspended a running context because the page was hidden. */
+  /** True when we need to restore audio after the page/app was hidden. */
   private suspendedForHide = false;
+  /**
+   * BGM was ducked for a simulation pause / event bed. Do not restart it on
+   * app-foreground until {@link resumeSounds} runs.
+   */
+  private bgmPausedForSimulation = false;
+  /** Looping Howls that were audible (or should stay audible) when we hid. */
+  private loopsPausedForHide = new Set<string>();
   /** Bumps on every visibility change so a late suspend cannot win over show. */
   private visibilityEpoch = 0;
   private visibilityBound = false;
@@ -104,10 +111,10 @@ export class AudioManager {
   }
 
   /**
-   * Keep Web Audio as ambient on iPhone. `playback` ignores the silent switch
-   * but also puts the game in Control Center / Now Playing, so app switch,
-   * Control Center, and notification banners show a media strip and can pause
-   * the AudioContext. Ambient mixes like a normal game and skips that UI.
+   * Apple’s game audio guidance: Ambient (mix with Music, obey silent switch,
+   * stop when locked). `playback` is for media apps and puts the game in
+   * Control Center / Now Playing. Force ambient so a leftover playback session
+   * cannot claim system media controls.
    */
   private primeIosAmbientSession(): void {
     if (!this.isIosAudioDevice()) return;
@@ -118,7 +125,7 @@ export class AudioManager {
     try {
       session.type = "ambient";
     } catch {
-      // iOS 16 has no audio session API.
+      // iOS 16 has no audio session API. Web Audio already behaves as ambient.
     }
   }
 
@@ -222,17 +229,25 @@ export class AudioManager {
   }
 
   /**
-   * Drop the audio thread while the tab is in the background. Howl keeps its
-   * playing flags; resume continues the same loops. Fade the master gain first
-   * so suspend does not click.
+   * Drop the audio thread while the tab/app is in the background. On iOS the
+   * ambient session often stops Howls (or interrupts the context) before this
+   * runs, so we snapshot which loops should return and always mark restore.
+   * Fade the master gain first so suspend does not click.
    */
   private suspendForHiddenPage(): void {
-    const ctx = Howler.ctx;
-    if (!ctx || ctx.state !== "running") return;
+    // Already marked and not mid-fade. Re-entry while the fade timer is armed
+    // still restarts the fade/suspend with a fresh epoch.
     if (this.suspendedForHide && this.hideFadeTimer === null) return;
+
     const epoch = ++this.visibilityEpoch;
     this.suspendedForHide = true;
     this.clearHideFadeTimer();
+    this.snapshotLoopsForHide();
+
+    const ctx = Howler.ctx;
+    // iOS may already have interrupted/suspended us (ambient + app switch).
+    // Still restore on show; there is nothing left to fade/suspend here.
+    if (!ctx || (ctx.state as string) !== "running") return;
 
     const fadeMs = this.fadeMasterGainForHide(ctx);
     const runSuspend = () => {
@@ -241,7 +256,10 @@ export class AudioManager {
       void ctx
         .suspend()
         .then(() => {
-          if (epoch !== this.visibilityEpoch || this.audioPageHidden()) return;
+          // Suspend must not win over show: a late completion can leave the
+          // context suspended after resumeAfterVisiblePage already ran.
+          if (this.audioPageHidden()) return;
+          this.suspendedForHide = true;
           this.resumeAfterVisiblePage();
         })
         .catch(() => {
@@ -254,6 +272,34 @@ export class AudioManager {
       return;
     }
     this.hideFadeTimer = setTimeout(runSuspend, fadeMs);
+  }
+
+  /** Remember looping beds so foreground can restart what iOS stopped. */
+  private snapshotLoopsForHide(): void {
+    this.loopsPausedForHide.clear();
+    this.sounds.forEach((sound, name) => {
+      if (!sound || typeof sound.loop !== "function" || !sound.loop()) return;
+      if (typeof sound.playing !== "function" || !sound.playing()) return;
+      this.loopsPausedForHide.add(name);
+    });
+
+    if (this.isSoundPlaying("backgroundMusic") || this.wasBackgroundMusicPlaying) {
+      this.wasBackgroundMusicPlaying = !this.isMusicMuted;
+    }
+
+    // Ambient session can stop BGM before our hide handler sees playing().
+    // Skip when a dialog already ducked it; resumeSounds owns that restore.
+    if (
+      this.wasBackgroundMusicPlaying &&
+      !this.isMusicMuted &&
+      !this.bgmPausedForSimulation
+    ) {
+      this.loopsPausedForHide.add("backgroundMusic");
+    }
+
+    for (const name of this.activeEventAmbience) {
+      this.loopsPausedForHide.add(name);
+    }
   }
 
   /** Ramp Howler's master gain to near silence. Returns ms to wait before suspend. */
@@ -325,6 +371,48 @@ export class AudioManager {
     this.visibilityEpoch += 1;
     this.resumeAudioContext();
     this.restoreMasterGainAfterShow();
+    this.restoreLoopsAfterVisiblePage();
+  }
+
+  /**
+   * iOS ambient audio stops looping Howls on background. Context resume alone
+   * leaves them silent; restart the beds we snapshotted on hide.
+   */
+  private restoreLoopsAfterVisiblePage(): void {
+    const names = [...this.loopsPausedForHide];
+    this.loopsPausedForHide.clear();
+    if (names.length === 0) return;
+
+    const eventBedActive = this.activeEventAmbience.size > 0;
+    for (const name of names) {
+      if (name === "backgroundMusic") {
+        if (
+          eventBedActive ||
+          this.bgmPausedForSimulation ||
+          this.isMusicMuted ||
+          !this.wasBackgroundMusicPlaying
+        ) {
+          continue;
+        }
+        if (this.isBackgroundMusicAtTargetVolume()) continue;
+        this.playLoopingSound(
+          "backgroundMusic",
+          this.backgroundMusicVolume,
+          false,
+          AudioManager.HIDE_FADE_SECONDS,
+        );
+        continue;
+      }
+
+      if (this.isSoundPlaying(name)) continue;
+      const volume = this.requestedVolumes.get(name) ?? 1;
+      this.playLoopingSound(
+        name,
+        volume,
+        false,
+        AudioManager.HIDE_FADE_SECONDS,
+      );
+    }
   }
 
   /** Resolves when Howl has finished loading (or failed); does not hang forever. */
@@ -573,6 +661,7 @@ export class AudioManager {
       if (this.isSoundPlaying('backgroundMusic') || this.wasBackgroundMusicPlaying) {
         this.wasBackgroundMusicPlaying = !this.isMusicMuted;
       }
+      this.bgmPausedForSimulation = true;
       this.stopLoopingSound('backgroundMusic', fadeSeconds);
     }
 
@@ -632,10 +721,12 @@ export class AudioManager {
     if (this.isSoundPlaying('backgroundMusic')) {
       this.wasBackgroundMusicPlaying = !this.isMusicMuted;
       if (!keepBackgroundMusic) {
+        this.bgmPausedForSimulation = true;
         this.stopLoopingSound('backgroundMusic', musicFadeOutSeconds);
       }
     } else if (!this.isMusicMuted && this.wasBackgroundMusicPlaying) {
       // Keep resume intent if BGM already faded for event ambience
+      if (!keepBackgroundMusic) this.bgmPausedForSimulation = true;
     } else if (this.activeEventAmbience.size === 0) {
       this.wasBackgroundMusicPlaying = false;
     }
@@ -646,6 +737,8 @@ export class AudioManager {
   stopAllSounds(): void {
     // Full stop (restart / start screen): do not leave resume intent for BGM.
     this.wasBackgroundMusicPlaying = false;
+    this.bgmPausedForSimulation = false;
+    this.loopsPausedForHide.clear();
     this.activeEventAmbience.clear();
 
     this.sounds.forEach(sound => {
@@ -763,6 +856,7 @@ export class AudioManager {
   async startBackgroundMusic(volume: number = SOUND_VOLUME.backgroundMusic): Promise<void> {
     this.backgroundMusicVolume = volume;
     this.wasBackgroundMusicPlaying = true;
+    this.bgmPausedForSimulation = false;
     this.playLoopingSound('backgroundMusic', volume, false, 1);
   }
 
@@ -803,6 +897,8 @@ export class AudioManager {
   ): Promise<void> {
     // Event dialog still owns the mix. Do not pull BGM back underneath it.
     if (this.activeEventAmbience.size > 0) return;
+
+    this.bgmPausedForSimulation = false;
 
     // Only resume background music if it was playing AND music is not muted.
     // Settings leaves BGM at the slider level; don't restart that fade.
@@ -915,6 +1011,8 @@ export class AudioManager {
     this.isMusicMuted = mute;
     if (mute) {
       this.wasBackgroundMusicPlaying = false; // Prevent resumeSounds() from restarting
+      this.bgmPausedForSimulation = false;
+      this.loopsPausedForHide.delete('backgroundMusic');
       // Mute cuts immediately; unmute fades back in below.
       this.stopLoopingSound('backgroundMusic');
       return;
@@ -923,10 +1021,12 @@ export class AudioManager {
     const shouldResume = options?.resume !== false;
     if (!shouldResume) {
       this.wasBackgroundMusicPlaying = false;
+      this.bgmPausedForSimulation = false;
       return;
     }
 
     this.wasBackgroundMusicPlaying = true;
+    this.bgmPausedForSimulation = false;
     // Don't restart BGM under an active event bed
     if (this.activeEventAmbience.size === 0) {
       this.playLoopingSound('backgroundMusic', this.backgroundMusicVolume, false, 1);

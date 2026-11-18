@@ -18,6 +18,7 @@
     "giftCodeRedeem": "Kullan",
     "giftCodeInvalid": "Bu kod hiçbir işe yaramıyor",
     "giftCodeAccepted": "Kod kabul edildi",
+    "haptics": "Dokunsal geri bildirim",
     "fullscreen": "Tam Ekran"
   },
   "textScale": {

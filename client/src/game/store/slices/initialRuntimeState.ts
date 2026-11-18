@@ -57,6 +57,7 @@ export const initialRuntimeState: Partial<GameStore> = {
   shopCheckoutItemId: null,
   musicMuted: false,
   sfxMuted: false,
+  hapticsMuted: false,
   musicVolume: 1,
   sfxVolume: 1,
   idleModeDialog: {

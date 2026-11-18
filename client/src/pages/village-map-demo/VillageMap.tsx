@@ -86,7 +86,6 @@ import {
   watchtowerLevelScale,
   tentOutline,
   crossOutline,
-  ESTATE_BORDER,
   BASTION_LENGTH,
   BASTION_DEPTH,
   bastionOutlineWidth,
@@ -133,11 +132,15 @@ import {
   type VillagePath,
 } from "@/pages/village-map-demo/pathways";
 
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
+  BUILDING_STROKE,
+  BUILDING_STROKE_MOBILE,
   CROSSED_HATCH_WIDTH,
   HATCH_WIDTH,
   MAP_HIGHLIGHT_BORDER,
   MapBorderExtraContext,
+  MapBuildingStrokeContext,
   MapHoverRingContext,
   MapInkContext,
   OUTLINE_WOBBLE,
@@ -445,6 +448,8 @@ const VillageMapSvg = memo(function VillageMapSvg({
   highlightRef,
   clearStickyHoverRef,
 }: VillageMapSvgProps) {
+  const isMobile = useIsMobile();
+  const buildingStroke = isMobile ? BUILDING_STROKE_MOBILE : BUILDING_STROKE;
   const dragRef = useRef<{ id: string; dx: number; dy: number; buildingId: string } | null>(null);
   const pathDragRef = useRef<{ id: string; dx: number; dy: number } | null>(null);
   const treeDragRef = useRef<{ id: string; dx: number; dy: number } | null>(null);
@@ -1045,6 +1050,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
   const chitinColor = tuning.chitin;
 
   return (
+    <MapBuildingStrokeContext.Provider value={buildingStroke}>
     <MapInkContext.Provider value={tuning.ink}>
       <MapHoverRingContext.Provider value={true}>
         <svg
@@ -1726,6 +1732,7 @@ const VillageMapSvg = memo(function VillageMapSvg({
         </svg>
       </MapHoverRingContext.Provider>
     </MapInkContext.Provider>
+    </MapBuildingStrokeContext.Provider>
   );
 });
 

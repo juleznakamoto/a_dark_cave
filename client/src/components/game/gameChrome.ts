@@ -24,6 +24,14 @@ export const GAME_HEADER_INSET = "36px";
 export const GAME_FOOTER_INSET = "36px";
 
 /**
+ * iOS edge-to-edge: full system safe-area inset as header padding-top so the
+ * header background fills the status-bar strip and controls stay clear of the
+ * notch / Dynamic Island (Apple HIG).
+ */
+export const GAME_HEADER_SAFE_AREA_TOP = "env(safe-area-inset-top, 0px)";
+/** Overlay top when the header owns the iOS safe-area inset. */
+export const GAME_HEADER_INSET_WITH_SAFE_AREA = `calc(${GAME_HEADER_SAFE_AREA_TOP} + ${GAME_HEADER_INSET})`;
+/**
  * Header/footer chrome controls: Reddit-style hover (opacity/color only, no fill)
  * and no press squash. Overrides Button `ghost` `hover:bg-accent` and
  * `active:scale-[0.97]`.

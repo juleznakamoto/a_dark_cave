@@ -2,6 +2,7 @@ import React, { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { useGameStore } from "@/game/state";
 import { audioManager } from "@/lib/audio";
 import { SOUND_VOLUME } from "@/lib/soundVolumes";
+import { playHaptic } from "@/lib/haptics";
 import { calculateBastionStats } from "@/game/bastionStats";
 import {
   getTotalKnowledge,
@@ -444,6 +445,7 @@ export default function CombatDialog({
       return;
     }
     consequencesAppliedRef.current = true;
+    playHaptic(combatResult === "victory" ? "combatVictory" : "combatDefeat");
     if (combatResult === "victory") {
       setCombatSummary(extractCombatResultSummary(onVictory()));
     } else {
@@ -553,6 +555,7 @@ export default function CombatDialog({
 
   const handleUseCrushingStrike = () => {
     if (usedCrushingStrike || isProcessingRound || playerStunned || combatResult) return;
+    playHaptic("combatItemOrSkill");
 
     const level = crushingStrikeLevel || 0;
     const config = CRUSHING_STRIKE_UPGRADES[level];
@@ -598,6 +601,7 @@ export default function CombatDialog({
 
   const handleUseBloodflameSphere = () => {
     if (usedBloodflameSphere || isProcessingRound || playerStunned || combatResult) return;
+    playHaptic("combatItemOrSkill");
 
     const level = bloodflameSphereLevel || 0;
     const config = BLOODFLAME_SPHERE_UPGRADES[level];
@@ -645,6 +649,7 @@ export default function CombatDialog({
 
   const handleUseFeralHowl = () => {
     if (usedFeralHowl || isProcessingRound || playerStunned || combatResult) return;
+    playHaptic("combatItemOrSkill");
 
     const level = feralHowlLevel || 0;
     const config = FERAL_HOWL_UPGRADES[level];
@@ -678,6 +683,7 @@ export default function CombatDialog({
       );
       // Only consume when healing applies (matches available: must be below max)
       if (healAmount <= 0) return;
+      playHaptic("combatItemOrSkill");
 
       setUsedItemsInRound((prev) => {
         const next = new Set(prev);
@@ -701,6 +707,8 @@ export default function CombatDialog({
       }));
       return;
     }
+
+    playHaptic("combatItemOrSkill");
 
     // Use the item - track for this round and for entire combat
     setUsedItemsInRound((prev) => {
@@ -823,6 +831,7 @@ export default function CombatDialog({
 
   const handleFight = () => {
     if (!currentEnemy || isProcessingRound || playerStunned || combatResult) return;
+    playHaptic("combatFight");
 
     setIsProcessingRound(true);
 

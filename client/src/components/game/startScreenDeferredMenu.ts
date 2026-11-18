@@ -7,6 +7,13 @@ export type DeferredStartMenuMount = {
 export type DeferredStartMenuLoadKind = "prefetch" | "open";
 
 /**
+ * After a click-to-load mounts the real menu already open, iOS/WKWebView still
+ * delivers focus-outside / leftover pointer events from that same tap. Ignore
+ * closes for this long so the menu does not flash shut.
+ */
+export const DEFERRED_MENU_OPEN_DISMISS_GUARD_MS = 450;
+
+/**
  * Hover/click-to-load menus only apply the winning request. A stale callback
  * must not mount (defaultOpen is first-mount only).
  *
@@ -26,6 +33,15 @@ export function resolveDeferredStartMenuMount(
     return { apply: false, open: false };
   }
   return { apply: true, open: openOnMount && !makeFireStarted };
+}
+
+/** True when Radix tries to close during the deferred open-on-mount guard. */
+export function shouldIgnoreDeferredMenuClose(
+  nextOpen: boolean,
+  guardUntilMs: number,
+  nowMs: number = performance.now(),
+): boolean {
+  return !nextOpen && nowMs < guardUntilMs;
 }
 
 /** Click during a hover prefetch should open when that import settles. */

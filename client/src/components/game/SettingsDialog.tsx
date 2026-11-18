@@ -55,7 +55,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDown, Maximize2 } from "lucide-react";
+import { ChevronDown, Maximize2, Vibrate } from "lucide-react";
 import { useFullscreen } from "@/hooks/useFullscreen";
 import cn from "clsx";
 
@@ -356,10 +356,12 @@ export default function SettingsDialog({
   const {
     musicMuted,
     sfxMuted,
+    hapticsMuted,
     musicVolume,
     sfxVolume,
     setMusicMuted,
     setSfxMuted,
+    setHapticsMuted,
     setMusicVolume,
     setSfxVolume,
     devGameMode,
@@ -370,10 +372,12 @@ export default function SettingsDialog({
     useShallow((s) => ({
       musicMuted: s.musicMuted,
       sfxMuted: s.sfxMuted,
+      hapticsMuted: s.hapticsMuted,
       musicVolume: s.musicVolume,
       sfxVolume: s.sfxVolume,
       setMusicMuted: s.setMusicMuted,
       setSfxMuted: s.setSfxMuted,
+      setHapticsMuted: s.setHapticsMuted,
       setMusicVolume: s.setMusicVolume,
       setSfxVolume: s.setSfxVolume,
       devGameMode: s.devGameMode,
@@ -483,6 +487,22 @@ export default function SettingsDialog({
                 onVolumeChange={changeSfxVolume}
               />
             </div>
+            {iosEditionActive && (
+              <div className={ROW}>
+                <span className={ICON_SLOT}>
+                  <Vibrate className="h-5 w-5" aria-hidden />
+                </span>
+                <span className="flex-1 text-sm">{t("settings.haptics")}</span>
+                <Checkbox
+                  checked={!hapticsMuted}
+                  onCheckedChange={(checked) =>
+                    setHapticsMuted(checked !== true)
+                  }
+                  aria-label={t("settings.haptics")}
+                  data-testid="settings-haptics"
+                />
+              </div>
+            )}
             {!iosEditionActive && (
               <div className={ROW}>
                 <span className={ICON_SLOT}>

@@ -2,6 +2,7 @@ import { isBlockingDialogOpenFromRegistry } from "@/game/dialogRegistry";
 import { isDemoPlayFrozen } from "@/game/demoLimit";
 import { isGameTabHidden } from "@/lib/tabVisibility";
 import { audioManager, SOUND_VOLUME } from "@/lib/audio";
+import { playHaptic } from "@/lib/haptics";
 import { madnessEvents } from "@/game/rules/eventsMadness";
 import {
   gameEvents,
@@ -162,6 +163,7 @@ export function openEventDialogNow(
       isMadnessEvent ? "eventMadness" : "event",
       isMadnessEvent ? SOUND_VOLUME.eventMadness : SOUND_VOLUME.eventUi,
     );
+    playHaptic(isMadnessEvent ? "madnessEvent" : "event");
   }
 }
 

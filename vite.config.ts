@@ -118,6 +118,10 @@ export default defineConfig(async ({ mode }) => ({
             clientRoot,
             "src/stubs/capacitor/media.ts",
           ),
+          "@capacitor/haptics": path.resolve(
+            clientRoot,
+            "src/stubs/capacitor/haptics.ts",
+          ),
         }
         : {}),
     },

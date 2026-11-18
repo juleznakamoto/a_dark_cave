@@ -174,6 +174,19 @@ describe("flushSaveOnExit", () => {
     stop();
   });
 
+  it("iOS background saves without auto-starting sleep", async () => {
+    const live = {
+      flags: { gameStarted: true },
+      isGameLoopActive: true,
+      resources: { wood: 3 },
+    };
+    getState.mockReturnValue(live);
+    const { flushLiveGameForBackground } = await import("./flushSaveOnExit");
+    await flushLiveGameForBackground();
+    expect(tryActivateSleepForExit).not.toHaveBeenCalled();
+    expect(saveGame).toHaveBeenCalledWith(live, false, { force: true });
+  });
+
   it("saves after auto-sleep mutates state on pagehide", async () => {
     const awake = {
       flags: { gameStarted: true },

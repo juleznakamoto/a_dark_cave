@@ -28,6 +28,7 @@ export const PERSISTED_STORE_EXTENSION_KEYS = [
   "isPaused",
   "musicMuted",
   "sfxMuted",
+  "hapticsMuted",
   "musicVolume",
   "sfxVolume",
   "highlightedResources",

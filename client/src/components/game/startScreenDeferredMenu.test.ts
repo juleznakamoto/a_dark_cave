@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   resolveDeferredStartMenuMount,
   shouldBlockDeferredStartMenuLoad,
+  shouldIgnoreDeferredMenuClose,
   shouldRequestOpenOnInFlightLoad,
 } from "./startScreenDeferredMenu";
 
@@ -61,5 +62,19 @@ describe("shouldBlockDeferredStartMenuLoad", () => {
     expect(shouldBlockDeferredStartMenuLoad(false, loadInFlightAfterSettle)).toBe(
       false,
     );
+  });
+});
+
+describe("shouldIgnoreDeferredMenuClose", () => {
+  it("ignores close while the open-on-mount guard is active", () => {
+    expect(shouldIgnoreDeferredMenuClose(false, 200, 100)).toBe(true);
+  });
+
+  it("allows close after the guard expires", () => {
+    expect(shouldIgnoreDeferredMenuClose(false, 200, 250)).toBe(false);
+  });
+
+  it("never blocks an open request", () => {
+    expect(shouldIgnoreDeferredMenuClose(true, 200, 100)).toBe(false);
   });
 });

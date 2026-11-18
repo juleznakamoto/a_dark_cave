@@ -18,6 +18,7 @@
     "giftCodeRedeem": "Einlösen",
     "giftCodeInvalid": "Dieser Code bewirkt nichts",
     "giftCodeAccepted": "Code akzeptiert",
+    "haptics": "Haptik",
     "fullscreen": "Vollbild"
   },
   "textScale": {

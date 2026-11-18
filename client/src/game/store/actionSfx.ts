@@ -5,6 +5,18 @@ import {
   PLAYBACK_RATE_STEP,
 } from "@/lib/audio";
 import { isCollectorTradeChoiceId } from "@/game/rules/eventsWanderingCollector";
+import { isCraftOnceAction } from "@/game/rules/insightReveal";
+import { playHaptic } from "@/lib/haptics";
+
+/** Village build, hall repair, and bastion fortification repairs. */
+export function isConstructAction(actionId: string): boolean {
+  return (
+    actionId.startsWith("build") ||
+    actionId === "repairBastion" ||
+    actionId === "repairWatchtower" ||
+    actionId === "repairPalisades"
+  );
+}
 
 const CAVE_EXPLORE_SOUND_ACTIONS = new Set([
   "exploreCave",
@@ -73,6 +85,7 @@ const PURCHASE_EVENT_CHOICES: Record<string, ReadonlySet<string>> = {
 
 export function playPurchaseSfx(): void {
   audioManager.playSound("purchase", SOUND_VOLUME.purchase);
+  playHaptic("purchase");
 }
 
 /**
@@ -126,8 +139,19 @@ export function playActionStartSfx(
     playPurchaseSfx();
     return;
   }
+  if (isConstructAction(actionId)) {
+    audioManager.playSound(
+      "buildingComplete",
+      SOUND_VOLUME.buildingComplete,
+    );
+    playHaptic("construct");
+    return;
+  }
   if (actionId.startsWith("craft")) {
     audioManager.playSound("craft", SOUND_VOLUME.craft);
+    if (isCraftOnceAction(actionId)) {
+      playHaptic("craftOnce");
+    }
     return;
   }
   if (actionId.startsWith("mine")) {

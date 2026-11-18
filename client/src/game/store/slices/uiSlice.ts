@@ -279,6 +279,7 @@ export const createUiSlice: GameStoreCreator<Partial<GameStore>> = (set, get) =>
 
   setMusicMuted: (muted: boolean) => set({ musicMuted: muted }),
   setSfxMuted: (muted: boolean) => set({ sfxMuted: muted }),
+  setHapticsMuted: (muted: boolean) => set({ hapticsMuted: muted }),
   setMusicVolume: (volume: number) =>
     set({ musicVolume: Math.max(0, Math.min(1, volume)) }),
   setSfxVolume: (volume: number) =>

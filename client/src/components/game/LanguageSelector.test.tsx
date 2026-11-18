@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import LanguageSelector from "./LanguageSelector";
 
 vi.mock("@/i18n/useLocale", () => ({
@@ -35,5 +35,34 @@ describe("LanguageSelector start-screen defaultOpen", () => {
     ).toHaveAttribute("aria-expanded", "true");
     expect(screen.getByRole("menu")).toBeInTheDocument();
     expect(screen.getByRole("menuitem", { name: "English" })).toBeInTheDocument();
+  });
+
+  it("stays open through leftover outside pointer events from the loading tap", () => {
+    vi.useFakeTimers();
+    try {
+      render(
+        <LanguageSelector
+          showTooltip={false}
+          defaultOpen
+          unstyledTrigger
+          iconVariant="globe"
+        />,
+      );
+
+      expect(screen.getByRole("menu")).toBeInTheDocument();
+
+      act(() => {
+        fireEvent.pointerDown(document.body);
+        fireEvent.pointerUp(document.body);
+        fireEvent.click(document.body);
+      });
+
+      expect(screen.getByRole("menu")).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: "languageSelector.ariaLabel" }),
+      ).toHaveAttribute("aria-expanded", "true");
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });

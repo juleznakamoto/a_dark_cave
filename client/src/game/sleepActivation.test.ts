@@ -5,20 +5,30 @@ import * as saveModule from "./save";
 import {
   beginSleepMode,
   canActivateSleep,
+  clearSleepEnterPresentation,
   isEstateUnlocked,
+  shouldAnimateSleepEnter,
   shouldAutoSleepOnInactivity,
   tryActivateSleepForExit,
 } from "./sleepActivation";
-import { handleInactivity, startGameLoop, stopGameLoop } from "./loop";
+import {
+  handleInactivity,
+  scheduleSleepDialogRestore,
+  startGameLoop,
+  stopGameLoop,
+} from "./loop";
 
 describe("sleepActivation", () => {
   beforeEach(() => {
+    clearSleepEnterPresentation();
     useGameStore.getState().initialize();
     vi.spyOn(saveModule, "saveGame").mockResolvedValue(undefined as never);
   });
 
   afterEach(() => {
+    clearSleepEnterPresentation();
     stopGameLoop();
+    vi.useRealTimers();
     vi.restoreAllMocks();
   });
 
@@ -54,6 +64,32 @@ describe("sleepActivation", () => {
     expect(state.idleModeState.startTime).toBeGreaterThan(0);
     expect(state.inactivityDialogOpen).toBe(false);
     expect(saveModule.saveGame).toHaveBeenCalled();
+    expect(shouldAnimateSleepEnter()).toBe(true);
+  });
+
+  it("beginSleepMode does not mark enter presentation when already sleeping", async () => {
+    useGameStore.getState().initialize(buildDevSave("sleep-active"));
+    expect(shouldAnimateSleepEnter()).toBe(false);
+
+    const started = await beginSleepMode();
+
+    expect(started).toBe(true);
+    expect(useGameStore.getState().idleModeDialog.isOpen).toBe(true);
+    expect(shouldAnimateSleepEnter()).toBe(false);
+  });
+
+  it("scheduleSleepDialogRestore clears enter presentation before reopen", async () => {
+    useGameStore.getState().initialize(buildDevSave("sleep-unlocked"));
+    await beginSleepMode();
+    expect(shouldAnimateSleepEnter()).toBe(true);
+
+    useGameStore.setState({ idleModeDialog: { isOpen: false } });
+    vi.useFakeTimers();
+    scheduleSleepDialogRestore();
+    expect(shouldAnimateSleepEnter()).toBe(false);
+    vi.advanceTimersByTime(600);
+    expect(useGameStore.getState().idleModeDialog.isOpen).toBe(true);
+    vi.useRealTimers();
   });
 
   it("tryActivateSleepForExit marks a session without opening the dialog", () => {
@@ -66,6 +102,7 @@ describe("sleepActivation", () => {
     expect(state.idleModeState.needsDisplay).toBe(true);
     expect(state.idleModeState.startTime).toBeGreaterThan(0);
     expect(state.idleModeDialog.isOpen).toBe(false);
+    expect(shouldAnimateSleepEnter()).toBe(false);
   });
 
   it("tryActivateSleepForExit skips when sleep is not allowed", () => {

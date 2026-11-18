@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +12,10 @@ import { GameUiIcon } from "@/components/game/GameUiIcon";
 import { useLocale } from "@/i18n/useLocale";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import type { SupportedLocale } from "@/i18n/locales";
+import {
+  DEFERRED_MENU_OPEN_DISMISS_GUARD_MS,
+  shouldIgnoreDeferredMenuClose,
+} from "@/components/game/startScreenDeferredMenu";
 import cn from "clsx";
 
 export default function LanguageSelector({
@@ -32,6 +36,11 @@ export default function LanguageSelector({
   inDialog = false,
   menuPortalContainer = null,
   defaultOpen = false,
+  /**
+   * Native button with no shadcn size/padding. Start-screen placeholder and
+   * loaded trigger must share the same box.
+   */
+  unstyledTrigger = false,
   menuTextClassName,
 }: {
   buttonClassName?: string;
@@ -49,6 +58,7 @@ export default function LanguageSelector({
   menuPortalContainer?: HTMLElement | null;
   /** Open on mount (start-screen click-to-load). */
   defaultOpen?: boolean;
+  unstyledTrigger?: boolean;
   /** Start-screen footer menus match the footer link size. */
   menuTextClassName?: string;
 } = {}) {
@@ -57,6 +67,9 @@ export default function LanguageSelector({
   // Controlled like FooterNetworkMenu / CrazyGamesCornerMenu. Uncontrolled
   // defaultOpen + modal dismisses on the same iOS tap that loaded this chunk.
   const [open, setOpen] = useState(defaultOpen);
+  const dismissGuardUntilRef = useRef(
+    defaultOpen ? performance.now() + DEFERRED_MENU_OPEN_DISMISS_GUARD_MS : 0,
+  );
 
   const inlineLabel =
     inlineLabelVariant === "selected"
@@ -67,8 +80,43 @@ export default function LanguageSelector({
     menuTextClassName ?? (inDialog ? "text-sm" : "text-xs");
   const dialogPortalReady = !inDialog || menuPortalContainer != null;
 
+  useEffect(() => {
+    if (!defaultOpen) return;
+    // Hold open through leftover focus/pointer dismiss from the tap that loaded us.
+    dismissGuardUntilRef.current =
+      performance.now() + DEFERRED_MENU_OPEN_DISMISS_GUARD_MS;
+    const extendGuardSlightly = () => {
+      // Only stretch an active guard so a later outside tap can still close.
+      if (dismissGuardUntilRef.current <= performance.now()) return;
+      dismissGuardUntilRef.current = Math.max(
+        dismissGuardUntilRef.current,
+        performance.now() + 80,
+      );
+    };
+    document.addEventListener("pointerup", extendGuardSlightly, true);
+    document.addEventListener("pointercancel", extendGuardSlightly, true);
+    document.addEventListener("click", extendGuardSlightly, true);
+    const timeoutId = window.setTimeout(() => {
+      dismissGuardUntilRef.current = 0;
+      document.removeEventListener("pointerup", extendGuardSlightly, true);
+      document.removeEventListener("pointercancel", extendGuardSlightly, true);
+      document.removeEventListener("click", extendGuardSlightly, true);
+    }, DEFERRED_MENU_OPEN_DISMISS_GUARD_MS + 120);
+    return () => {
+      document.removeEventListener("pointerup", extendGuardSlightly, true);
+      document.removeEventListener("pointercancel", extendGuardSlightly, true);
+      document.removeEventListener("click", extendGuardSlightly, true);
+      window.clearTimeout(timeoutId);
+    };
+  }, [defaultOpen]);
+
   const handleOpenChange = (next: boolean) => {
     if (inDialog && next && !menuPortalContainer) return;
+    if (
+      shouldIgnoreDeferredMenuClose(next, dismissGuardUntilRef.current)
+    ) {
+      return;
+    }
     setOpen(next);
   };
 
@@ -78,38 +126,61 @@ export default function LanguageSelector({
     }
   }, [inDialog, menuPortalContainer]);
 
+  const triggerInner = (
+    <>
+      {showIcon &&
+        (iconVariant === "globe" ? (
+          <Globe className={iconClassName} aria-hidden />
+        ) : (
+          <GameUiIcon
+            name="language"
+            className={iconClassName}
+            sizeClassName="w-4 h-4"
+          />
+        ))}
+      {showInlineLabel && (
+        <span className={inlineLabelClassName}>{inlineLabel}</span>
+      )}
+      {showChevron && (
+        <ChevronDown
+          className="w-3.5 h-3.5 shrink-0 opacity-70"
+          aria-hidden
+        />
+      )}
+    </>
+  );
+
   const trigger = (
     <DropdownMenuTrigger asChild>
-      <Button
-        variant="ghost"
-        size="xs"
-        className={buttonClassName}
-        aria-label={t("languageSelector.ariaLabel")}
-        aria-expanded={open}
-        button_id="language-selector"
-      >
-        {showIcon &&
-          (iconVariant === "globe" ? (
-            <Globe className={iconClassName} aria-hidden />
-          ) : (
-            <GameUiIcon
-              name="language"
-              className={iconClassName}
-              sizeClassName="w-4 h-4"
-            />
-          ))}
-        {showInlineLabel && (
-          <span className={inlineLabelClassName}>{inlineLabel}</span>
-        )}
-        {showChevron && (
-          <ChevronDown
-            className="w-3.5 h-3.5 shrink-0 opacity-70"
-            aria-hidden
-          />
-        )}
-      </Button>
+      {unstyledTrigger ? (
+        <button
+          type="button"
+          className={buttonClassName}
+          aria-label={t("languageSelector.ariaLabel")}
+          aria-expanded={open}
+        >
+          {triggerInner}
+        </button>
+      ) : (
+        <Button
+          variant="ghost"
+          size="xs"
+          className={buttonClassName}
+          aria-label={t("languageSelector.ariaLabel")}
+          aria-expanded={open}
+          button_id="language-selector"
+        >
+          {triggerInner}
+        </Button>
+      )}
     </DropdownMenuTrigger>
   );
+
+  const guardOutsideDismiss = (event: Event) => {
+    if (shouldIgnoreDeferredMenuClose(false, dismissGuardUntilRef.current)) {
+      event.preventDefault();
+    }
+  };
 
   return (
     <DropdownMenu open={open} onOpenChange={handleOpenChange} modal={false}>
@@ -136,6 +207,9 @@ export default function LanguageSelector({
             inDialog && "z-[60]",
           )}
           onCloseAutoFocus={inDialog ? (e) => e.preventDefault() : undefined}
+          onPointerDownOutside={guardOutsideDismiss}
+          onFocusOutside={guardOutsideDismiss}
+          onInteractOutside={guardOutsideDismiss}
         >
           {locales.map((code) => {
             const selected = locale === code;

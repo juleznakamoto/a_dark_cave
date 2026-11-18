@@ -10,6 +10,9 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- After you stay paused for 15 seconds, the red resume button pulses with a soft glow.
+- On the village map, the Black Estate outline is the same thickness as other buildings.
+- The building sound plays when you start construction, not when the building finishes.
 - After you finish Sleep, random events wait 30 seconds before they can start again.
 - Mining sounds are a little quieter.
 - Mining sounds play a little slower for each later ore under Mine, from Stone through Moonstone.
@@ -24,6 +27,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- Loading a save while you are already asleep no longer replays the sleep sound or fades the mist in from empty.
 - During sleep and the blood moon, the top and bottom bars stay solid instead of letting the mist or smoke show through.
 - Sleep mist fades in smoothly instead of jumping brighter in steps.
 - Item tips no longer leave a wide empty gap when the description wraps under a shorter effect line.
@@ -37,13 +41,13 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 ### iOS
 
-#### Fixed
+#### Added
 
-- On the village map, tapping a building in the side list clears the building you had selected on the map, so only one stays highlighted.
-- The language icon on the start screen opens on the first tap instead of needing a second one.
+- The iOS app gives short haptic feedback on key moments such as lighting the fire, trading, events, combat, and sleep. You can turn it off in Settings.
 
 #### Changed
 
+- On a phone, building outlines on the village map are a little thicker.
 - On a phone, language, ambience, and sound on the start screen are a bit larger.
 - On a phone, the header sits closer to the left and right edges of the screen.
 - On a phone, dialogs have a bit less space inside between the frame and the text.
@@ -61,6 +65,11 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- Leaving the app and coming back no longer leaves the ambience music silent until you restart.
+- Leaving the app and coming back no longer freezes the game when Sleep is unlocked.
+- The area above the header matches the header background, and the header stays clear of the status bar.
+- On the village map, tapping a building in the side list clears the building you had selected on the map, so only one stays highlighted.
+- The language icon on the start screen opens on the first tap instead of needing a second one.
 - Insight badges animate as soft round shapes again, instead of spinning triangles.
 - Locking the phone no longer makes a short beep when the music stops.
 - On a phone, tapping a villager job or the play time beside Pause shows what it means.
