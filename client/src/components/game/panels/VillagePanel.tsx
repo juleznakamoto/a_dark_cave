@@ -1472,13 +1472,25 @@ export default function VillagePanel() {
                       const hideQueueSlotUnlockAfterReveal =
                         queueSlotUnlockRevealStartedRef.current &&
                         !isQueueSlotUnlockAnimating;
+                      // Buying the slot clears the next offer immediately. Keep
+                      // the badge mounted until the reveal animation finishes.
+                      const showQueueSlotUnlockBadge =
+                        isQueueSlotUnlockAnimating ||
+                        (showQueueSlotUnlock && !hideQueueSlotUnlockAfterReveal);
                       const insightHeld = state.resources.insight ?? 0;
+                      const queueUnlockAmount = isQueueSlotUnlockAnimating
+                        ? getQueueSlotUnlockCost(
+                            Math.max(0, constructionQueueSlotsPurchased - 1),
+                          )
+                        : nextUnlockCost;
                       const queueUnlock =
-                        showQueueSlotUnlock && nextUnlockCost !== null
+                        queueUnlockAmount != null
                           ? costBenefitTooltip({
-                              amount: nextUnlockCost,
+                              amount: queueUnlockAmount,
                               available: insightHeld,
-                              satisfied: insightHeld >= nextUnlockCost,
+                              satisfied: isQueueSlotUnlockAnimating
+                                ? true
+                                : insightHeld >= queueUnlockAmount,
                               benefit: t("village.queueSlotUnlock", {
                                 defaultValue: "Unlock construction queue slot",
                               }),
@@ -1486,8 +1498,7 @@ export default function VillagePanel() {
                           : null;
                       return (
                         <div className={GAME_PANEL_HEADER_SLOT_ROW_CLASS}>
-                          {showQueueSlotUnlock &&
-                            !hideQueueSlotUnlockAfterReveal && (
+                          {showQueueSlotUnlockBadge && (
                               <TooltipWrapper
                                 tooltipId="queue-slot-unlock"
                                 tooltip={queueUnlock?.tooltip}
@@ -1527,7 +1538,11 @@ export default function VillagePanel() {
                                     }
                                   }}
                                 >
-                                  <BuildingActionBadge embedded size="lg" />
+                                  <BuildingActionBadge
+                                    embedded
+                                    size="lg"
+                                    playing={isQueueSlotUnlockAnimating}
+                                  />
                                 </button>
                               </TooltipWrapper>
                             )}
@@ -1706,13 +1721,23 @@ export default function VillagePanel() {
                       const hidePresetUnlockAfterReveal =
                         presetUnlockRevealStartedRef.current &&
                         !isPresetUnlockAnimating;
+                      const showPresetUnlockBadge =
+                        isPresetUnlockAnimating ||
+                        (showPresetUnlock && !hidePresetUnlockAfterReveal);
                       const insightHeld = state.resources.insight ?? 0;
+                      const presetUnlockAmount = isPresetUnlockAnimating
+                        ? getPresetUnlockCost(
+                            Math.max(0, villagerPresetsPurchased - 1),
+                          )
+                        : nextUnlockCost;
                       const presetUnlock =
-                        showPresetUnlock && nextUnlockCost !== null
+                        presetUnlockAmount != null
                           ? costBenefitTooltip({
-                              amount: nextUnlockCost,
+                              amount: presetUnlockAmount,
                               available: insightHeld,
-                              satisfied: insightHeld >= nextUnlockCost,
+                              satisfied: isPresetUnlockAnimating
+                                ? true
+                                : insightHeld >= presetUnlockAmount,
                               benefit: t("village.presetUnlock", {
                                 defaultValue: "Unlock villager preset",
                               }),
@@ -1720,7 +1745,7 @@ export default function VillagePanel() {
                           : null;
                       return (
                         <div className={GAME_PANEL_HEADER_SLOT_ROW_CLASS}>
-                          {showPresetUnlock && !hidePresetUnlockAfterReveal && (
+                          {showPresetUnlockBadge && (
                             <TooltipWrapper
                               tooltipId="preset-unlock"
                               tooltip={presetUnlock?.tooltip}
@@ -1759,7 +1784,11 @@ export default function VillagePanel() {
                                   }
                                 }}
                               >
-                                <BuildingActionBadge embedded size="lg" />
+                                <BuildingActionBadge
+                                  embedded
+                                  size="lg"
+                                  playing={isPresetUnlockAnimating}
+                                />
                               </button>
                             </TooltipWrapper>
                           )}

@@ -10,12 +10,19 @@ export const RESOURCE_GLYPH_CLASS =
 interface ResourceCoinIconProps {
   resource: "gold" | "silver";
   className?: string;
+  /** Bump when this resource increases so the hover burst plays for 0.5s. */
+  burstNonce?: number;
 }
 
-export function ResourceCoinIcon({ resource, className = "" }: ResourceCoinIconProps) {
+export function ResourceCoinIcon({
+  resource,
+  className = "",
+  burstNonce = 0,
+}: ResourceCoinIconProps) {
   return (
     <CoinHoverParticleSurface
       resource={resource}
+      burstNonce={burstNonce}
       className={cn(RESOURCE_GLYPH_CLASS, className)}
       zIndex={50}
     >

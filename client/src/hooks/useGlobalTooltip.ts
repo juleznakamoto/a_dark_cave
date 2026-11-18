@@ -80,6 +80,9 @@ class GlobalTooltipManager {
   /** Mouse/pen press that started while the Radix hover tooltip was already visible. */
   private hoverTooltipPressIds: Set<string> = new Set();
   private outsideListenerAttached = false;
+  private scrollListenerAttached = false;
+  /** Touch or mouse button is down on this trigger. Cleared on release. */
+  private pointerHeldIds: Set<string> = new Set();
 
   subscribe(listener: () => void) {
     this.listeners.add(listener);
@@ -146,6 +149,65 @@ class GlobalTooltipManager {
     document.removeEventListener("touchstart", this.handleOutside, true);
   }
 
+  /**
+   * A held tip is position:fixed and follows its button, so it rides up the
+   * screen while that list scrolls. Scrolling a container that holds the
+   * trigger closes the tip. A scroll during the hold delay cancels the press
+   * so the tip does not open mid-drag.
+   */
+  private handleScroll = (event: Event) => {
+    const target = event.target;
+    if (!(target instanceof Node)) return;
+    if (target instanceof Element && target.closest('[role="tooltip"]')) return;
+
+    const openId = this.openTooltipId;
+    if (openId && this.scrollTargetContainsTrigger(target, openId)) {
+      // Finger still down: the drag's release would click the button.
+      // After the finger is up, a later tap should still run the action.
+      if (this.pointerHeldIds.has(openId)) this.suppressNextClick(openId);
+      this.setOpenTooltip(null);
+      return;
+    }
+
+    const movedPresses: string[] = [];
+    this.pressingIds.forEach((id) => {
+      if (this.scrollTargetContainsTrigger(target, id)) movedPresses.push(id);
+    });
+    for (const id of movedPresses) this.clearPressTimer(id);
+  };
+
+  private scrollTargetContainsTrigger(target: Node, id: string): boolean {
+    if (typeof document === "undefined") return false;
+    try {
+      const triggers = document.querySelectorAll(triggerSelector(id));
+      for (const trigger of triggers) {
+        if (target.contains(trigger)) return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  }
+
+  private syncScrollListener() {
+    const need = this.openTooltipId !== null || this.pressTimers.size > 0;
+    if (need) this.attachScrollListener();
+    else this.detachScrollListener();
+  }
+
+  private attachScrollListener() {
+    if (this.scrollListenerAttached || typeof document === "undefined") return;
+    this.scrollListenerAttached = true;
+    // Scroll does not bubble. Capture still sees list and panel scrolls.
+    document.addEventListener("scroll", this.handleScroll, true);
+  }
+
+  private detachScrollListener() {
+    if (!this.scrollListenerAttached || typeof document === "undefined") return;
+    this.scrollListenerAttached = false;
+    document.removeEventListener("scroll", this.handleScroll, true);
+  }
+
   setOpenTooltip(id: string | null, openedByTimer: boolean = false) {
     // Modal suppression blocks game-chrome tooltips, but not triggers inside
     // the open dialog (shop / settings info icons still need to work).
@@ -179,6 +241,7 @@ class GlobalTooltipManager {
     } else {
       this.detachOutsideListener();
     }
+    this.syncScrollListener();
     this.notify(previousId);
   }
 
@@ -192,6 +255,7 @@ class GlobalTooltipManager {
       this.tooltipsOpenedByTimer.clear();
       this.detachOutsideListener();
     }
+    this.syncScrollListener();
     this.notify(previousId);
     this.suppressedListeners.forEach((listener) => listener());
   }
@@ -206,6 +270,7 @@ class GlobalTooltipManager {
       this.tooltipsOpenedByTimer.clear();
       this.detachOutsideListener();
     }
+    this.syncScrollListener();
     this.notify(previousId);
     this.suppressedListeners.forEach((listener) => listener());
   }
@@ -241,6 +306,7 @@ class GlobalTooltipManager {
     this.pressTimers.forEach((timer) => clearTimeout(timer));
     this.pressTimers.clear();
     this.pressingIds.clear();
+    this.syncScrollListener();
   }
 
   wasOpenedByTimer(id: string) {
@@ -310,6 +376,18 @@ class GlobalTooltipManager {
     this.hoverTooltipPressIds.clear();
   }
 
+  holdPointer(id: string) {
+    this.pointerHeldIds.add(id);
+  }
+
+  releasePointer(id: string) {
+    this.pointerHeldIds.delete(id);
+  }
+
+  clearHeldPointers() {
+    this.pointerHeldIds.clear();
+  }
+
   setPressTimer(id: string, timer: ReturnType<typeof setTimeout>) {
     // Clear any existing timer for this id
     const existingTimer = this.pressTimers.get(id);
@@ -318,6 +396,7 @@ class GlobalTooltipManager {
     }
     this.pressTimers.set(id, timer);
     this.pressingIds.add(id);
+    this.syncScrollListener();
   }
 
   clearPressTimer(id: string) {
@@ -327,6 +406,7 @@ class GlobalTooltipManager {
       this.pressTimers.delete(id);
     }
     this.pressingIds.delete(id);
+    this.syncScrollListener();
   }
 
   isPressing(id: string) {
@@ -354,6 +434,7 @@ export function closeAllGlobalTooltips() {
   globalTooltipManager.clearAllPressTimers();
   globalTooltipManager.clearAllClickSuppression();
   globalTooltipManager.clearHoverTooltipPresses();
+  globalTooltipManager.clearHeldPointers();
   globalTooltipManager.setOpenTooltip(null);
 }
 
@@ -492,6 +573,7 @@ export function useGlobalTooltip() {
   }, []);
 
   const handleMouseDown = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
+    globalTooltipManager.holdPointer(id);
     // A finger already armed long-press from touchstart. The compatibility
     // mousedown that follows must not cancel that timer.
     if (globalTooltipManager.isPressing(id)) return;
@@ -511,6 +593,7 @@ export function useGlobalTooltip() {
     preferNativeClick = true,
     openOnTap = false,
   ) => {
+    globalTooltipManager.releasePointer(id);
     const sawHoverTooltip = globalTooltipManager.consumeHoverTooltipPress(id);
     const wasPressing = globalTooltipManager.isPressing(id);
     const tooltipWasOpen = globalTooltipManager.isTooltipOpen(id);
@@ -604,6 +687,7 @@ export function useGlobalTooltip() {
   }, []);
 
   const handleTouchStart = useCallback((id: string, disabled: boolean, isCoolingDown: boolean, e: React.TouchEvent) => {
+    globalTooltipManager.holdPointer(id);
     // Clear any existing timer before creating a new one
     globalTooltipManager.clearPressTimer(id);
 
@@ -625,6 +709,7 @@ export function useGlobalTooltip() {
     preferNativeClick = true,
     openOnTap = false,
   ) => {
+    globalTooltipManager.releasePointer(id);
     // Capture state before clearing (clearPressTimer removes from pressingIds)
     const wasPressing = globalTooltipManager.isPressing(id);
     const tooltipWasOpen = globalTooltipManager.isTooltipOpen(id);

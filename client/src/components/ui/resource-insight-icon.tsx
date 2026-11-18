@@ -7,14 +7,20 @@ import { cn } from "@/lib/utils";
 
 interface ResourceInsightIconProps {
   className?: string;
+  /** Bump when insight increases so the hover burst plays for 0.5s. */
+  burstNonce?: number;
 }
 
-export function ResourceInsightIcon({ className = "" }: ResourceInsightIconProps) {
+export function ResourceInsightIcon({
+  className = "",
+  burstNonce = 0,
+}: ResourceInsightIconProps) {
   return (
     <CoinHoverParticleSurface
       resource="silver"
       particleConfig={INSIGHT_PARTICLE_CONFIG}
       emitIntervalMs={600}
+      burstNonce={burstNonce}
       className={cn(RESOURCE_GLYPH_CLASS, className)}
       zIndex={50}
     >

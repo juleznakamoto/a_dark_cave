@@ -85,6 +85,29 @@ function isHapticsMuted(): boolean {
   return store.getState().hapticsMuted === true;
 }
 
+/**
+ * iOS drops `selectionChanged` until `selectionStart` creates the generator.
+ * Keep that generator while +/− is held, then start a fresh one after a pause.
+ */
+let selectionSession: Promise<void> | null = null;
+let selectionTouchedAt = 0;
+const SELECTION_SESSION_MS = 1500;
+
+function playSelectionTick(): Promise<void> {
+  const now = Date.now();
+  if (!selectionSession || now - selectionTouchedAt > SELECTION_SESSION_MS) {
+    selectionSession = Haptics.selectionStart().catch((error: unknown) => {
+      selectionSession = null;
+      throw error;
+    });
+  }
+  selectionTouchedAt = now;
+  return selectionSession.then(() => Haptics.selectionChanged()).catch((error: unknown) => {
+    selectionSession = null;
+    throw error;
+  });
+}
+
 function fireHaptic(event: HapticEvent): void {
   if (!isIosBuild) return;
   if (isHapticsMuted()) return;
@@ -95,7 +118,7 @@ function fireHaptic(event: HapticEvent): void {
       ? Haptics.impact({ style: preset.style })
       : preset.kind === "notification"
         ? Haptics.notification({ type: preset.type })
-        : Haptics.selectionChanged();
+        : playSelectionTick();
 
   void run.catch((error) => {
     logger.warn("[haptics] failed:", error);

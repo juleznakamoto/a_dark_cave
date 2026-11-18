@@ -22,6 +22,9 @@ import {
 export const COIN_HOVER_EMIT_INTERVAL_MS = 350;
 export const COIN_HOVER_BUBBLE_REMOVE_DELAY_MS = 2500;
 
+/** How long a silver, gold, or insight gain keeps the hover burst running. */
+export const PRECIOUS_RESOURCE_GAIN_PARTICLE_MS = 500;
+
 export type CoinHoverResource = "gold" | "silver";
 
 export function useCoinHoverParticles(
@@ -182,6 +185,7 @@ export function CoinHoverParticleSurface({
   enabled,
   emitIntervalMs,
   particleConfig,
+  burstNonce = 0,
 }: {
   resource: CoinHoverResource;
   className?: string;
@@ -191,16 +195,32 @@ export function CoinHoverParticleSurface({
   enabled?: boolean;
   emitIntervalMs?: number;
   particleConfig?: Partial<ParticleConfig>;
+  /**
+   * Bump to play the hover burst for `PRECIOUS_RESOURCE_GAIN_PARTICLE_MS`.
+   * `0` stays idle so the first paint of a loaded save does not spark.
+   */
+  burstNonce?: number;
 }) {
-  const { glyphOriginRef, hoverHandlers, portal } = useCoinHoverParticles(
-    resource,
-    {
+  const { glyphOriginRef, hoverHandlers, portal, setForcedEmit } =
+    useCoinHoverParticles(resource, {
       zIndex,
       enabled,
       emitIntervalMs,
       particleConfig,
-    },
-  );
+    });
+  const setForcedEmitRef = useRef(setForcedEmit);
+  setForcedEmitRef.current = setForcedEmit;
+
+  useEffect(() => {
+    if (!burstNonce) return;
+    setForcedEmitRef.current(true);
+    const timer = setTimeout(() => {
+      setForcedEmitRef.current(false);
+    }, PRECIOUS_RESOURCE_GAIN_PARTICLE_MS);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [burstNonce]);
 
   return (
     <>

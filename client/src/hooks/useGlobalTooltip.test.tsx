@@ -130,6 +130,129 @@ describe("useGlobalTooltip - mobile long-press behavior", () => {
     expect(screen.getByTestId("open-test").textContent).toBe("closed");
   });
 
+  it("closes a long-press tooltip when the list holding it scrolls", async () => {
+    const onAction = vi.fn();
+    render(
+      <TestTooltipButton id="scroll-close" disabled={false} onAction={onAction} />,
+    );
+
+    const trigger = screen.getByTestId("trigger-scroll-close");
+    const wrapper = trigger.closest("[data-tooltip-trigger-id]")!;
+
+    await act(async () => {
+      fireEvent.touchStart(wrapper);
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(250);
+    });
+
+    expect(screen.getByTestId("open-scroll-close").textContent).toBe("open");
+
+    await act(async () => {
+      document.body.dispatchEvent(new Event("scroll"));
+    });
+
+    expect(screen.getByTestId("open-scroll-close").textContent).toBe("closed");
+
+    await act(async () => {
+      fireEvent.touchEnd(wrapper);
+      fireEvent.click(trigger);
+    });
+
+    expect(onAction).not.toHaveBeenCalled();
+  });
+
+  it("closes a pinned tooltip on scroll and still runs a later tap", async () => {
+    const onAction = vi.fn();
+    render(
+      <TestTooltipButton id="scroll-retap" disabled={false} onAction={onAction} />,
+    );
+
+    const trigger = screen.getByTestId("trigger-scroll-retap");
+    const wrapper = trigger.closest("[data-tooltip-trigger-id]")!;
+
+    await act(async () => {
+      fireEvent.touchStart(wrapper);
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(250);
+    });
+    await act(async () => {
+      fireEvent.touchEnd(wrapper);
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(400);
+    });
+
+    expect(screen.getByTestId("open-scroll-retap").textContent).toBe("open");
+
+    await act(async () => {
+      document.body.dispatchEvent(new Event("scroll"));
+    });
+
+    expect(screen.getByTestId("open-scroll-retap").textContent).toBe("closed");
+
+    await act(async () => {
+      fireEvent.touchStart(wrapper);
+      fireEvent.touchEnd(wrapper);
+      fireEvent.click(trigger);
+    });
+
+    expect(onAction).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not open a tooltip when the hold turns into a scroll", async () => {
+    const onAction = vi.fn();
+    render(
+      <TestTooltipButton id="scroll-hold" disabled={false} onAction={onAction} />,
+    );
+
+    const trigger = screen.getByTestId("trigger-scroll-hold");
+    const wrapper = trigger.closest("[data-tooltip-trigger-id]")!;
+
+    await act(async () => {
+      fireEvent.touchStart(wrapper);
+    });
+    await act(async () => {
+      document.body.dispatchEvent(new Event("scroll"));
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(250);
+    });
+
+    expect(screen.getByTestId("open-scroll-hold").textContent).toBe("closed");
+    expect(onAction).not.toHaveBeenCalled();
+  });
+
+  it("leaves a tooltip open when a different list scrolls", async () => {
+    const onAction = vi.fn();
+    render(
+      <TestTooltipButton id="scroll-other" disabled={false} onAction={onAction} />,
+    );
+
+    const trigger = screen.getByTestId("trigger-scroll-other");
+    const wrapper = trigger.closest("[data-tooltip-trigger-id]")!;
+    const otherList = document.createElement("div");
+    document.body.appendChild(otherList);
+
+    await act(async () => {
+      fireEvent.touchStart(wrapper);
+    });
+    await act(async () => {
+      vi.advanceTimersByTime(250);
+    });
+    await act(async () => {
+      fireEvent.touchEnd(wrapper);
+    });
+
+    await act(async () => {
+      otherList.dispatchEvent(new Event("scroll"));
+    });
+
+    expect(screen.getByTestId("open-scroll-other").textContent).toBe("open");
+    otherList.remove();
+  });
+
   it("runs the action on a later short tap while the long-press tooltip is still open", async () => {
     const onAction = vi.fn();
     render(

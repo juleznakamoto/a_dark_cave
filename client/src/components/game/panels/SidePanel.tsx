@@ -27,7 +27,7 @@ import {
   getResourceName,
   getStatName,
 } from "@/i18n/resolveGameText";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { type FortificationBuildingKey } from "@/game/bastionStats";
 import { isResourceLimited } from "@/game/resourceLimits";
@@ -56,6 +56,7 @@ import {
   getDemoEndToolCatalogIds,
 } from "@/game/demoEndCatalog";
 import { useDemoEndCatalogActive } from "@/hooks/useSteamEditionActive";
+import { useResourceGainBurstNonce } from "@/components/game/panels/preciousGainBurst";
 import type { GameState } from "@shared/schema";
 
 function getFortificationDisplayLabel(
@@ -134,6 +135,11 @@ function bonusTooltip(row: SidePanelBonusRow) {
 export default function SidePanel() {
   const { t } = useUiTranslation();
   const model = useDerivedGameState(getSidePanelModel, sidePanelModelEqual);
+  const preciousRows = useMemo(
+    () => model.resourceRows.filter((row) => row.isPrecious),
+    [model.resourceRows],
+  );
+  const preciousGainNonce = useResourceGainBurstNonce(preciousRows);
   const activeTab = useGameStore((s) => s.activeTab);
   const catalogActive = useDemoEndCatalogActive();
   const catalogState = useGameStoreWithoutTickClock() as unknown as GameState;
@@ -200,10 +206,14 @@ export default function SidePanel() {
       label: row.isPrecious ? (
       <span className="inline-flex items-center gap-1">
         {row.id === "insight" ? (
-          <ResourceInsightIcon className={cn("shrink-0", "text-blue-600")} />
+          <ResourceInsightIcon
+            className={cn("shrink-0", "text-blue-600")}
+            burstNonce={preciousGainNonce[row.id] ?? 0}
+          />
         ) : (
           <ResourceCoinIcon
             resource={row.id as "gold" | "silver"}
+            burstNonce={preciousGainNonce[row.id] ?? 0}
             className={cn(
               "shrink-0",
               row.id === "gold" ? "text-yellow-600" : "text-gray-400",

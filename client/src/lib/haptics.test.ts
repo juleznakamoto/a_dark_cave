@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const impact = vi.fn(async () => {});
 const notification = vi.fn(async () => {});
+const selectionStart = vi.fn(async () => {});
 const selectionChanged = vi.fn(async () => {});
 
 vi.mock("@capacitor/haptics", () => ({
@@ -11,7 +12,7 @@ vi.mock("@capacitor/haptics", () => ({
     Warning: "WARNING",
     Error: "ERROR",
   },
-  Haptics: { impact, notification, selectionChanged },
+  Haptics: { impact, notification, selectionStart, selectionChanged },
 }));
 
 vi.mock("@/lib/edition", () => ({
@@ -28,9 +29,11 @@ let muted = false;
 
 describe("playHaptic", () => {
   beforeEach(() => {
+    vi.resetModules();
     muted = false;
     impact.mockClear();
     notification.mockClear();
+    selectionStart.mockClear();
     selectionChanged.mockClear();
   });
 
@@ -68,8 +71,24 @@ describe("playHaptic", () => {
   it("maps job + and - to the selection tick", async () => {
     const { playHaptic } = await import("./haptics");
     playHaptic("selection");
-    expect(selectionChanged).toHaveBeenCalledTimes(1);
+    await vi.waitFor(() => {
+      expect(selectionChanged).toHaveBeenCalledTimes(1);
+    });
+    expect(selectionStart).toHaveBeenCalledTimes(1);
+    expect(selectionStart.mock.invocationCallOrder[0]).toBeLessThan(
+      selectionChanged.mock.invocationCallOrder[0],
+    );
     expect(impact).not.toHaveBeenCalled();
+  });
+
+  it("reuses the selection generator while + or - is held", async () => {
+    const { playHaptic } = await import("./haptics");
+    playHaptic("selection");
+    playHaptic("selection");
+    await vi.waitFor(() => {
+      expect(selectionChanged).toHaveBeenCalledTimes(2);
+    });
+    expect(selectionStart).toHaveBeenCalledTimes(1);
   });
 
   it("maps a new game tab to success", async () => {

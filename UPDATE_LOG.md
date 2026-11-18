@@ -8,8 +8,13 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 ### Shared
 
+#### Added
+
+- When silver, gold, or insight goes up, its icon in the resource list sparks for a moment.
+
 #### Changed
 
+- In the dice game, Roll and No Roll sit farther apart.
 - The Ambience and Sound knobs in Settings are a little larger, so they are easier to grab.
 - Pressing or dragging the line between panels shows the grab handle for a few seconds, then it fades out.
 - Cube memories on the Estate close right away, and the side arrows switch memories without a short wait. Those arrows are larger, and the memory window is a little wider.
@@ -39,6 +44,8 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- Scrolling the screen while an action tip is open closes the tip.
+- Unlocking a construction queue slot or a villager preset plays the Insight animation before that badge goes away.
 - A new game starts with no pact choices. You earn one each time you finish a playthrough, or two if you finish in Cruel Mode.
 - Pointing at or pressing a coin on the village map no longer draws a black ring around it.
 - Holding Prior or level badges on action buttons shows their tip after the usual hold time, not only when you let go.

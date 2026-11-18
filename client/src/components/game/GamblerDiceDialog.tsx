@@ -1066,7 +1066,7 @@ export default function GamblerDiceDialog({
                     </div>
 
                     {(phase === "playerTurn" || phase === "npcTurn") && (
-                      <div className="flex gap-2 justify-center min-h-[1.75rem] items-center">
+                      <div className="flex gap-6 justify-center min-h-[1.75rem] items-center">
                         <Button
                           variant="outline"
                           size="xs"
