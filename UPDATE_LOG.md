@@ -10,6 +10,8 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- The Wandering Collector only appears after you have seen gold.
+- Village − and + job buttons and insight marks are a little larger.
 - After you stay paused for 15 seconds, the red resume button pulses with a soft glow.
 - On the village map, the Black Estate outline is the same thickness as other buildings.
 - The building sound plays when you start construction, not when the building finishes.
@@ -43,6 +45,8 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Added
 
+- Claiming an achievement reward or improving an Estate skill gives a medium haptic tap.
+- Collecting a silver or gold coin on the village map, or turning event log filters on or off, gives a light haptic tap.
 - The iOS app gives short haptic feedback on key moments such as lighting the fire, trading, events, combat, and sleep. You can turn it off in Settings.
 
 #### Changed

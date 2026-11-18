@@ -20,6 +20,7 @@ function stateWith(overrides: Partial<GameState> = {}): GameState {
     books: { ...initial.books, ...(overrides.books || {}) },
     events: { ...initial.events, ...(overrides.events || {}) },
     stats: { ...initial.stats, ...(overrides.stats || {}) },
+    seenResources: overrides.seenResources ?? initial.seenResources,
     story: {
       ...initial.story,
       ...(overrides.story || {}),
@@ -69,6 +70,7 @@ describe("leatherbound buyback integration", () => {
     const awaiting = stateWith({
       buildings: { woodenHut: 10, stoneHut: 10 } as GameState["buildings"],
       events: { cube15b: true } as GameState["events"],
+      seenResources: ["gold"],
       story: {
         seen: {
           leatherboundBookSoldToCollector: true,

@@ -31,6 +31,7 @@ function baseState(overrides: Partial<GameState> = {}): GameState {
     resources: { ...initial.resources, ...(overrides.resources || {}) },
     clothing: { ...initial.clothing, ...(overrides.clothing || {}) },
     relics: { ...initial.relics, ...(overrides.relics || {}) },
+    seenResources: overrides.seenResources ?? initial.seenResources,
     story: {
       ...initial.story,
       ...(overrides.story || {}),
@@ -110,6 +111,22 @@ describe("wandering_collector buy/sell", () => {
     expect(event.cooldownPercent).toBe(0.5);
   });
 
+  it("does not appear before the player has seen gold", () => {
+    const beforeGold = baseState({
+      buildings: { woodenHut: 6 } as any,
+      clothing: { bloodstained_belt: true } as any,
+      seenResources: [],
+    });
+    expect(event.condition(beforeGold)).toBe(false);
+
+    const afterGold = baseState({
+      buildings: { woodenHut: 6 } as any,
+      clothing: { bloodstained_belt: true } as any,
+      seenResources: ["gold"],
+    });
+    expect(event.condition(afterGold)).toBe(true);
+  });
+
   it("offers rejected items for goldCost and owned items for reward", () => {
     const state = baseState({
       buildings: { woodenHut: 6 } as any,
@@ -148,6 +165,7 @@ describe("wandering_collector buy/sell", () => {
     const state = baseState({
       buildings: { woodenHut: 6 } as any,
       clothing: { bloodstained_belt: true } as any,
+      seenResources: ["gold"],
     });
 
     expect(event.condition(state)).toBe(true);
@@ -174,6 +192,7 @@ describe("wandering_collector buy/sell", () => {
   it("can arrive with only rejected items to buy (no sell section stock)", () => {
     const state = baseState({
       buildings: { woodenHut: 6 } as any,
+      seenResources: ["gold"],
       story: {
         seen: { [collectorRejectedSeenKey("bone_dice")]: true },
         merchantPurchases: 0,
@@ -256,6 +275,7 @@ describe("wandering_collector buy/sell", () => {
     const afterHuts = baseState({
       buildings: { woodenHut: 10, stoneHut: 10 } as any,
       clothing: { bloodstained_belt: true } as any,
+      seenResources: ["gold"],
       story: {
         seen: { collectorVisitCount: 5 },
         merchantPurchases: 0,
@@ -267,6 +287,7 @@ describe("wandering_collector buy/sell", () => {
     const afterFourth = baseState({
       buildings: { woodenHut: 10, stoneHut: 10 } as any,
       clothing: { bloodstained_belt: true } as any,
+      seenResources: ["gold"],
       story: {
         seen: { collectorVisitCount: 5, fourthWaveVictory: true },
         merchantPurchases: 0,
@@ -278,6 +299,7 @@ describe("wandering_collector buy/sell", () => {
     const afterEighth = baseState({
       buildings: { woodenHut: 10, stoneHut: 10 } as any,
       clothing: { bloodstained_belt: true } as any,
+      seenResources: ["gold"],
       story: {
         seen: {
           collectorVisitCount: 6,
@@ -293,6 +315,7 @@ describe("wandering_collector buy/sell", () => {
     const done = baseState({
       buildings: { woodenHut: 10, stoneHut: 10 } as any,
       clothing: { bloodstained_belt: true } as any,
+      seenResources: ["gold"],
       story: {
         seen: {
           collectorVisitCount: 7,
@@ -336,6 +359,7 @@ describe("leatherbound book resell", () => {
   it("offers on even visit counts after the book was sold to the Chainmaster collector", () => {
     const evenVisit = baseState({
       buildings: { woodenHut: 6 } as any,
+      seenResources: ["gold"],
       story: {
         seen: { leatherboundBookSoldToCollector: true, collectorVisitCount: 0 },
         merchantPurchases: 0,
@@ -401,6 +425,7 @@ describe("leatherbound book resell", () => {
     const pastCap = baseState({
       buildings: { woodenHut: 10, stoneHut: 10 } as any,
       events: { cube15a: true } as any,
+      seenResources: ["gold"],
       story: {
         seen: {
           leatherboundBookSoldToCollector: true,

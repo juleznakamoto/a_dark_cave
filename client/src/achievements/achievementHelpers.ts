@@ -16,6 +16,7 @@ import {
   formatTooltipResourceName,
   getUiTooltip,
 } from "@/i18n/tooltipLabels";
+import { playHaptic } from "@/lib/haptics";
 
 export interface AchievementRow {
   segmentId: string;
@@ -258,6 +259,8 @@ export function claimAchievement(
     ].slice(-100),
     claimedAchievements: [...(s.claimedAchievements || []), achievementId],
   }));
+
+  playHaptic("claimAchievementReward");
 
   void import("./nonOverallCompletion").then(
     ({ persistAchievementMaxerIfComplete }) =>

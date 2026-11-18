@@ -1384,10 +1384,10 @@ button.new-item-pulse-text,
 }
 
 .action-button-corner-badge--insight {
-  width: calc(22px * var(--adc-control-scale, 1));
-  height: calc(22px * var(--adc-control-scale, 1));
-  bottom: calc(-11px * var(--adc-control-scale, 1));
-  right: calc(-11px * var(--adc-control-scale, 1));
+  width: calc(24px * var(--adc-control-scale, 1));
+  height: calc(24px * var(--adc-control-scale, 1));
+  bottom: calc(-12px * var(--adc-control-scale, 1));
+  right: calc(-12px * var(--adc-control-scale, 1));
 }
 
 .action-button-corner-badge--boost {
@@ -1406,30 +1406,30 @@ button.new-item-pulse-text,
   right: calc(-10px * var(--adc-control-scale, 1));
 }
 
-/* Side-panel insight hit target. Tracks button control scale. */
+/* Side-panel insight hit target. 24px at Small; tracks button control scale. */
 .insight-action-badge-trigger--side-panel {
-  width: calc(16px * var(--adc-control-scale, 1));
-  height: calc(16px * var(--adc-control-scale, 1));
-  font-size: calc(16px * var(--adc-control-scale, 1));
+  width: calc(24px * var(--adc-control-scale, 1));
+  height: calc(24px * var(--adc-control-scale, 1));
+  font-size: calc(24px * var(--adc-control-scale, 1));
 }
 
-/* Village jobs / timed-tab / achievement insight buttons. */
+/* Village jobs / timed-tab / achievement insight buttons. Same Small base as side-panel. */
 .insight-action-badge-trigger--lg {
-  width: calc(22px * var(--adc-control-scale, 1));
-  height: calc(22px * var(--adc-control-scale, 1));
+  width: calc(24px * var(--adc-control-scale, 1));
+  height: calc(24px * var(--adc-control-scale, 1));
 }
 
 /* Village header slots (construction queue, job presets, insight unlocks).
    Grow with the text bump. control-scale alone left the + and × looking stuck
-   while labeled buttons grew. 18px at Small, then +2px per size step. */
+   while labeled buttons grew. 24px at Small, then +2px per size step. */
 .game-panel-header-slot {
-  width: calc(18px + var(--adc-text-delta, 0px));
-  height: calc(18px + var(--adc-text-delta, 0px));
+  width: calc(24px + var(--adc-text-delta, 0px));
+  height: calc(24px + var(--adc-text-delta, 0px));
 }
 
-/* + / × / save mark inside those slots. text-[12px] is excluded from text scale. */
+/* + / × / save mark inside those slots. text-[16px] is excluded from text scale. */
 .game-panel-header-slot-glyph {
-  font-size: calc(12px + var(--adc-text-delta, 0px));
+  font-size: calc(16px + var(--adc-text-delta, 0px));
   line-height: 1;
 }
 
@@ -1758,15 +1758,15 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
 
 /* Village − / + assignment hit targets.
    Glyph size is on the inner span — Button’s `text-xs` would override font-size on the button itself.
-   The box stays 2px larger than that glyph. A 20px * control-scale box falls behind the text bump. */
+   The box stays 2px larger than that glyph. 22px box / 20px glyph at Small, then +text-delta. */
 .villager-count-button {
-  width: calc(1.125rem + var(--adc-text-delta, 0px) + 2px);
-  height: calc(1.125rem + var(--adc-text-delta, 0px) + 2px);
+  width: calc(1.25rem + var(--adc-text-delta, 0px) + 2px);
+  height: calc(1.25rem + var(--adc-text-delta, 0px) + 2px);
 }
 
 .villager-count-button>span {
-  font-size: calc(1.125rem + var(--adc-text-delta, 0px));
-  /* 18px @ Small */
+  font-size: calc(1.25rem + var(--adc-text-delta, 0px));
+  /* 20px @ Small */
 }
 
 /* Population rows: column/row gaps track text delta (was fixed gap-y-1.5 / ml-*). */
@@ -1869,11 +1869,11 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
 }
 
 .building-action-badge--sm .building-action-badge__glyph {
-  font-size: calc(16px * var(--adc-control-scale, 1));
+  font-size: calc(24px * var(--adc-control-scale, 1));
 }
 
 .building-action-badge--lg .building-action-badge__glyph {
-  font-size: calc(19px * var(--adc-control-scale, 1));
+  font-size: calc(21px * var(--adc-control-scale, 1));
 }
 
 .building-action-badge__svg {

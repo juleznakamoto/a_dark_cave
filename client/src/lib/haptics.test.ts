@@ -54,6 +54,22 @@ describe("playHaptic", () => {
     expect(notification).toHaveBeenCalledTimes(2);
   });
 
+  it("maps mapCoin and logFilter to light impact", async () => {
+    const { playHaptic } = await import("./haptics");
+    playHaptic("mapCoin");
+    playHaptic("logFilter");
+    expect(impact).toHaveBeenNthCalledWith(1, { style: "LIGHT" });
+    expect(impact).toHaveBeenNthCalledWith(2, { style: "LIGHT" });
+  });
+
+  it("maps claimAchievementReward and estateSkill to medium impact", async () => {
+    const { playHaptic } = await import("./haptics");
+    playHaptic("claimAchievementReward");
+    playHaptic("estateSkill");
+    expect(impact).toHaveBeenNthCalledWith(1, { style: "MEDIUM" });
+    expect(impact).toHaveBeenNthCalledWith(2, { style: "MEDIUM" });
+  });
+
   it("skips when haptics are muted", async () => {
     muted = true;
     const { playHaptic } = await import("./haptics");

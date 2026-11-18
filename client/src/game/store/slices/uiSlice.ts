@@ -224,8 +224,8 @@ import {
 } from "../dialogScheduling";
 import { getTimedEventTabCleanupPatch } from "../timedEventTab";
 import { StateManager } from "../StateManager";
-import { playActionStartSfx, playPurchaseSfx } from "../actionSfx";
 import { collectVillageSilverPatch } from "@/game/villageMapSilver";
+import { playHaptic } from "@/lib/haptics";
 import { maybeScheduleInsightIntroDialog } from "@/game/insightIntro";
 
 export const createUiSlice: GameStoreCreator<Partial<GameStore>> = (set, get) => ({
@@ -401,9 +401,14 @@ export const createUiSlice: GameStoreCreator<Partial<GameStore>> = (set, get) =>
     }));
   },
 
-  setLogFilterShowNewVillagers: (show: boolean) =>
-    set({ logFilterShowNewVillagers: show }),
-  setLogFilterShowOther: (show: boolean) => set({ logFilterShowOther: show }),
+  setLogFilterShowNewVillagers: (show: boolean) => {
+    set({ logFilterShowNewVillagers: show });
+    playHaptic("logFilter");
+  },
+  setLogFilterShowOther: (show: boolean) => {
+    set({ logFilterShowOther: show });
+    playHaptic("logFilter");
+  },
 
   toggleDevMode: () => {
     // Dev mode is controlled by NODE_ENV - no-op in production
@@ -434,7 +439,8 @@ export const createUiSlice: GameStoreCreator<Partial<GameStore>> = (set, get) =>
     const goldGained = (next.resources.gold ?? 0) - beforeGold;
     if (silverGained > 0) next.emitResourceChange("silver", silverGained);
     if (goldGained > 0) next.emitResourceChange("gold", goldGained);
-    playPurchaseSfx();
+    audioManager.playSound("purchase", SOUND_VOLUME.purchase);
+    playHaptic("mapCoin");
   },
 
   setSettingsDialogOpen: (isOpen: boolean) => {

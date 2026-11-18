@@ -1,5 +1,6 @@
 import type { GameEvent, EventChoice, LogEntry } from "./eventTypes";
 import type { GameState } from "@shared/schema";
+import { getSeenResourceKeys } from "@/game/stateHelpers";
 import {
   getClothingOrRelicEffectName,
   getEffectName,
@@ -293,6 +294,8 @@ export const wanderingCollectorEvents: Record<string, GameEvent> = {
       };
     },
     condition: (state: GameState) => {
+      if (!getSeenResourceKeys(state).includes("gold")) return false;
+
       const ownedItems = getOwnedCollectorItems(state);
       const rejectedItems = getRejectedCollectorItems(state);
       const offerLeatherbound = shouldOfferLeatherboundBookResell(state);

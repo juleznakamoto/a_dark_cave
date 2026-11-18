@@ -25,7 +25,11 @@ export type HapticEvent =
   | "combatVictory"
   | "combatDefeat"
   | "achievement"
-  | "sleep";
+  | "claimAchievementReward"
+  | "estateSkill"
+  | "sleep"
+  | "mapCoin"
+  | "logFilter";
 
 type HapticPreset =
   | { kind: "impact"; style: (typeof ImpactStyle)[keyof typeof ImpactStyle] }
@@ -50,7 +54,11 @@ const HAPTIC_PRESETS: Record<HapticEvent, HapticPreset> = {
   combatVictory: { kind: "notification", type: NotificationType.Success },
   combatDefeat: { kind: "notification", type: NotificationType.Error },
   achievement: { kind: "notification", type: NotificationType.Success },
+  claimAchievementReward: { kind: "impact", style: ImpactStyle.Medium },
+  estateSkill: { kind: "impact", style: ImpactStyle.Medium },
   sleep: { kind: "notification", type: NotificationType.Success },
+  mapCoin: { kind: "impact", style: ImpactStyle.Light },
+  logFilter: { kind: "impact", style: ImpactStyle.Light },
 };
 
 function isHapticsMuted(): boolean {

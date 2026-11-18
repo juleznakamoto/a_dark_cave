@@ -37,6 +37,7 @@ import {
   getGreyOneEffectLines,
 } from "@/game/rules/skillUpgrades";
 import { isTraderShopUnlocked, stackTimedDebuff } from "@/game/stateHelpers";
+import { playHaptic } from "@/lib/haptics";
 import { badDreamsTooltip, focusTooltip } from "@/game/rules/tooltips";
 import {
   GAME_PANEL_HEADER_INDICATOR_CLASS,
@@ -633,21 +634,20 @@ export default function EstatePanel({
     currency: "gold" | "bones" = "gold",
   ) => {
     if (isDemoPlayFrozen(useGameStore.getState())) return;
-    useGameStore.setState((state) => {
-      const currentLevel = getCurrentLevel(state);
-      if (currentLevel >= 5) return state;
-      const next = upgrades[currentLevel + 1];
-      const available = state.resources[currency] ?? 0;
-      if (!next || available < next.cost) return state;
-      return {
-        ...state,
-        ...applyLevel(state, currentLevel + 1),
-        resources: {
-          ...state.resources,
-          [currency]: available - next.cost,
-        },
-      };
+    const state = useGameStore.getState();
+    const currentLevel = getCurrentLevel(state);
+    if (currentLevel >= 5) return;
+    const next = upgrades[currentLevel + 1];
+    const available = state.resources[currency] ?? 0;
+    if (!next || available < next.cost) return;
+    useGameStore.setState({
+      ...applyLevel(state, currentLevel + 1),
+      resources: {
+        ...state.resources,
+        [currency]: available - next.cost,
+      },
     });
+    playHaptic("estateSkill");
   };
 
   const handleHuntingSkillUpgrade = () =>
@@ -685,24 +685,23 @@ export default function EstatePanel({
 
   const handleChainmasterUpgrade = () => {
     if (isDemoPlayFrozen(useGameStore.getState())) return;
-    useGameStore.setState((state) => {
-      const currentLevel = state.chainmasterSkills?.level ?? 0;
-      if (currentLevel >= 5) return state;
-      const next = CHAINMASTER_UPGRADES[currentLevel + 1];
-      if (!next || state.resources.gold < next.cost) return state;
-      return {
-        ...state,
-        chainmasterSkills: { level: currentLevel + 1 },
-        resources: {
-          ...state.resources,
-          gold: state.resources.gold - next.cost,
-        },
-        disgustState: stackTimedDebuff(
-          state.disgustState,
-          chainmasterUpgradeDisgustMs(next.disgustMinutes, state.cruelMode),
-        ),
-      };
+    const state = useGameStore.getState();
+    const currentLevel = state.chainmasterSkills?.level ?? 0;
+    if (currentLevel >= 5) return;
+    const next = CHAINMASTER_UPGRADES[currentLevel + 1];
+    if (!next || state.resources.gold < next.cost) return;
+    useGameStore.setState({
+      chainmasterSkills: { level: currentLevel + 1 },
+      resources: {
+        ...state.resources,
+        gold: state.resources.gold - next.cost,
+      },
+      disgustState: stackTimedDebuff(
+        state.disgustState,
+        chainmasterUpgradeDisgustMs(next.disgustMinutes, state.cruelMode),
+      ),
     });
+    playHaptic("estateSkill");
   };
 
   const handleCrushingStrikeUpgrade = () =>
