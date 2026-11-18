@@ -1,7 +1,11 @@
 import { useRef, useEffect, useState } from "react";
 import { createCappedPaintLoop } from "@/lib/cappedFrameLoop";
+import { cursorGlowRadius } from "@/lib/cursorGlowRadius";
 import { logger } from "@/lib/logger";
 import { getViewportSize, subscribeViewportResize } from "@/lib/viewportSize";
+
+/** Desktop cursor glow, as a fraction of screen height. Phones use a tighter spot. */
+const CLOUD_CURSOR_GLOW = 0.21;
 
 function createWebGL2Context(canvas: HTMLCanvasElement): WebGL2RenderingContext {
   const contexts: WebGLContextAttributes[] = [
@@ -106,6 +110,7 @@ class WebGLRenderer {
     (program as any).resolution = gl.getUniformLocation(program, "resolution");
     (program as any).time = gl.getUniformLocation(program, "time");
     (program as any).mouse = gl.getUniformLocation(program, "mouse");
+    (program as any).glowRadius = gl.getUniformLocation(program, "glowRadius");
   }
 
   private mouseX = 0;
@@ -131,6 +136,11 @@ class WebGLRenderer {
     );
     gl.uniform1f((program as any).time, now * 1e-3);
     gl.uniform2f((program as any).mouse, this.mouseX, this.mouseY);
+    const viewport = getViewportSize();
+    gl.uniform1f(
+      (program as any).glowRadius,
+      cursorGlowRadius(CLOUD_CURSOR_GLOW, viewport.width, viewport.height),
+    );
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
 
@@ -160,6 +170,7 @@ const shaderSource = `#version 300 es
     uniform vec2 resolution;
     uniform float time;
     uniform vec2 mouse;
+    uniform float glowRadius;
     #define FC gl_FragCoord.xy
     #define T time
     #define R resolution
@@ -213,13 +224,13 @@ const shaderSource = `#version 300 es
       float bg=clouds(vec2(st.x+T*CLOUD_SPEED,-st.y));
       vec3 cloudColor = BACKGROUND_TINT * (1.0 + (bg - 0.5) * CLOUD_COLOR_DEVIATION);
 
-      // Same mouse glow as sleep mist (MistBackground)
+      // Same mouse glow as sleep mist (MistBackground). Radius matches that shader's height space.
       vec2 aspectUv = FC / R;
       aspectUv.x *= R.x / R.y;
       vec2 mPos = mouse / R;
       mPos.x *= R.x / R.y;
       float dist = distance(aspectUv, mPos);
-      float mouseGlow = smoothstep(0.21, 0.0, dist);
+      float mouseGlow = smoothstep(glowRadius, 0.0, dist);
       cloudColor += mouseGlow * 0.05 * vec3(0.6, 0.7, 1.0);
 
       O=vec4(cloudColor,1);

@@ -277,7 +277,10 @@
     "wake": "Проснуться сейчас",
     "getUp": "Встать",
     "focusGainedLog": "Отдых принёс вам очки фокуса: {{count}}.",
-    "villagersProducedLog": "Жители добыли: {{resources}}"
+    "villagersProducedLog": "Жители добыли: {{resources}}",
+    "columnTotal": "Всего",
+    "columnRate": "Темп",
+    "columnProduced": "Добыто"
   },
   "demoEnd": {
     "craftUpTo": "Создавайте и находите предметы — их {{count}}",

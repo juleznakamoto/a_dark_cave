@@ -243,7 +243,7 @@ function AchievementRowComponent({
       row.currentCount,
     ) &&
     !isRevealAnimating;
-  const progressLabel = `${Math.min(Math.floor(row.currentCount), row.maxCount)}/${row.maxCount}`;
+  const progressLabel = `(${Math.min(Math.floor(row.currentCount), row.maxCount)}/${row.maxCount})`;
   const progressOrDetail =
     row.maxCount > 1 ? progressLabel : row.detailLabel;
   const description = t(

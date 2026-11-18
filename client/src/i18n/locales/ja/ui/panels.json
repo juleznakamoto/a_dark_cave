@@ -253,7 +253,10 @@
     "wake": "今すぐ起きる",
     "getUp": "起きる",
     "focusGainedLog": "休息で集中を{{count}}得た。",
-    "villagersProducedLog": "村人が生産した：{{resources}}"
+    "villagersProducedLog": "村人が生産した：{{resources}}",
+    "columnTotal": "合計",
+    "columnRate": "速度",
+    "columnProduced": "生産"
   },
   "demoEnd": {
     "craftUpTo": "アイテムを{{count}}個製作または発見",

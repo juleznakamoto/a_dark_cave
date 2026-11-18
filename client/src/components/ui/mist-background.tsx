@@ -1,6 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { createCappedPaintLoop } from '@/lib/cappedFrameLoop';
+import { cursorGlowRadius } from '@/lib/cursorGlowRadius';
 import { logger } from '@/lib/logger';
+import { getViewportSize } from '@/lib/viewportSize';
+
+/** Desktop cursor glow, as a fraction of screen height. Phones use a tighter spot. */
+const SLEEP_CURSOR_GLOW = 0.35;
 
 function createWebGL1Context(canvas: HTMLCanvasElement): WebGLRenderingContext | null {
   const attempts: WebGLContextAttributes[] = [
@@ -59,6 +64,7 @@ const MistBackground: React.FC<MistBackgroundProps> = ({ fadeIn = true }) => {
       uniform float u_time;
       uniform vec2 u_resolution;
       uniform vec2 u_mouse;
+      uniform float u_glowRadius;
 
       float hash(vec2 p) {
           p = fract(p * vec2(123.34, 456.21));
@@ -114,8 +120,8 @@ const MistBackground: React.FC<MistBackgroundProps> = ({ fadeIn = true }) => {
           vec3 color = mix(baseColor, mistColor, f);
           color = mix(color, accentColor, dot(q, r) * 0.5);
 
-          // Subtle mouse glow
-          float mouseGlow = smoothstep(0.35, 0.0, dist);
+          // Subtle mouse glow. Radius is in the same height-normalized space as dist.
+          float mouseGlow = smoothstep(u_glowRadius, 0.0, dist);
           color += mouseGlow * 0.05 * vec3(0.6, 0.7, 1.0);
 
           // Post-processing
@@ -149,25 +155,40 @@ const MistBackground: React.FC<MistBackgroundProps> = ({ fadeIn = true }) => {
     const timeLoc = gl.getUniformLocation(program, 'u_time');
     const resLoc = gl.getUniformLocation(program, 'u_resolution');
     const mouseLoc = gl.getUniformLocation(program, 'u_mouse');
+    const glowLoc = gl.getUniformLocation(program, 'u_glowRadius');
 
     let mouse = { x: 0, y: 0 };
+    const syncPointer = (clientX: number, clientY: number) => {
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width < 1 || rect.height < 1 || canvas.width < 1 || canvas.height < 1) return;
+      mouse.x = ((clientX - rect.left) / rect.width) * canvas.width;
+      mouse.y = (1 - (clientY - rect.top) / rect.height) * canvas.height;
+    };
     const handleMouseMove = (e: MouseEvent) => {
-      mouse.x = e.clientX;
-      mouse.y = window.innerHeight - e.clientY;
+      syncPointer(e.clientX, e.clientY);
+    };
+    const handleTouch = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      if (!touch) return;
+      syncPointer(touch.clientX, touch.clientY);
     };
 
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchstart', handleTouch, { passive: true });
+    window.addEventListener('touchmove', handleTouch, { passive: true });
 
     const paintLoop = createCappedPaintLoop(1000 / 20, (time) => {
-      if (canvas.width !== window.innerWidth || canvas.height !== window.innerHeight) {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+      const viewport = getViewportSize();
+      if (canvas.width !== viewport.width || canvas.height !== viewport.height) {
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
         gl.viewport(0, 0, canvas.width, canvas.height);
       }
 
       gl.uniform1f(timeLoc, time * 0.001);
       gl.uniform2f(resLoc, canvas.width, canvas.height);
       gl.uniform2f(mouseLoc, mouse.x, mouse.y);
+      gl.uniform1f(glowLoc, cursorGlowRadius(SLEEP_CURSOR_GLOW, viewport.width, viewport.height));
 
       gl.drawArrays(gl.TRIANGLES, 0, 6);
     });
@@ -175,6 +196,8 @@ const MistBackground: React.FC<MistBackgroundProps> = ({ fadeIn = true }) => {
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchstart', handleTouch);
+      window.removeEventListener('touchmove', handleTouch);
       paintLoop.stop();
     };
   }, []);

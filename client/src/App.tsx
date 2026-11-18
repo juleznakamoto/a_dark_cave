@@ -78,6 +78,7 @@ const ProductionIconsDemo = lazy(
 );
 const VillageMapDemo = lazy(() => import("@/pages/village-map-demo"));
 const BuildingShapeDemo = lazy(() => import("@/pages/building-shape-demo"));
+const TooltipsDemo = lazy(() => import("@/pages/tooltips-demo"));
 const DevDashboard = lazy(() => import("@/pages/dev-dashboard"));
 
 function AppRoutes() {
@@ -113,6 +114,7 @@ function AppRoutes() {
         />
         <Route path="/dev/village-map" component={VillageMapDemo} />
         <Route path="/dev/building-shapes" component={BuildingShapeDemo} />
+        <Route path="/dev/tooltips" component={TooltipsDemo} />
         <Route path="/dev/estate-bar-upgrade">
           {() => <Redirect to="/dev/animations#estate-bars" />}
         </Route>

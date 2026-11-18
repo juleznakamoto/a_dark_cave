@@ -253,7 +253,10 @@
     "wake": "Se réveiller maintenant",
     "getUp": "Se lever",
     "focusGainedLog": "Vous avez gagné {{count}} points de concentration grâce à votre repos.",
-    "villagersProducedLog": "Les villageois ont produit : {{resources}}"
+    "villagersProducedLog": "Les villageois ont produit : {{resources}}",
+    "columnTotal": "Total",
+    "columnRate": "Taux",
+    "columnProduced": "Produit"
   },
   "demoEnd": {
     "craftUpTo": "Fabriquez ou trouvez {{count}} objets",

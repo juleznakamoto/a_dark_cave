@@ -41,6 +41,11 @@ const DEV_PAGES = [
     title: "Building shapes",
     blurb: "Every building from above, at each stage drawn on the map.",
   },
+  {
+    href: "/dev/tooltips",
+    title: "Tooltips",
+    blurb: "Every tooltip layout, with the game's own copy.",
+  },
 ] as const;
 
 export default function DevDashboard() {

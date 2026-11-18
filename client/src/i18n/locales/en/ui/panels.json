@@ -253,7 +253,10 @@
     "wake": "Wake up now",
     "getUp": "Get Up",
     "focusGainedLog": "You gained {{count}} Focus from your rest.",
-    "villagersProducedLog": "Villagers produced: {{resources}}"
+    "villagersProducedLog": "Villagers produced: {{resources}}",
+    "columnTotal": "Total",
+    "columnRate": "Rate",
+    "columnProduced": "Produced"
   },
   "demoEnd": {
     "craftUpTo": "Craft or find {{count}} items",

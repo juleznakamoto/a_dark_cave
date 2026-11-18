@@ -19,6 +19,7 @@ import { useFullscreen } from "@/hooks/useFullscreen";
 import { clearStaleChunkReloadGuard } from "@/lib/hardReload";
 import { mountFiraSansFontFace } from "@/lib/firaSansFontFace";
 import { isIosEditionActive, isSteamBuild } from "@/lib/edition";
+import { privacyPolicyHref } from "@/lib/privacyPolicyUrl";
 import { logger } from "@/lib/logger";
 import { publicUrl } from "@/lib/publicUrl";
 import type LanguageSelector from "@/components/game/LanguageSelector";
@@ -1637,6 +1638,17 @@ export default function StartScreen({
                 {t("footer.imprint")}
               </a>
             </div>
+          )}
+          {iosEditionActive && (
+            <a
+              href={privacyPolicyHref()}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="link-start-privacy"
+              className={`${START_FOOTER_LINK_BASE} text-[11px] leading-none opacity-40 hover:opacity-100`}
+            >
+              {t("footer.privacy")}
+            </a>
           )}
         </div>
       </nav>

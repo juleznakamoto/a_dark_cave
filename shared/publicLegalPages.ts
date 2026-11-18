@@ -60,12 +60,22 @@ const ADDRESS_BLOCK = [
 function privacyBodyInnerHtml(): string {
   return [
     h1("Privacy Policy"),
-    p("Last Updated: 31.07.2026"),
+    p("Last Updated: 18.11.2026"),
     h2("1. General Information"),
     p(
-      'This Privacy Policy informs you about the nature, scope, and purpose of the processing of personal data (hereinafter "data") within our online game "A Dark Cave" and its associated websites, functions, and content.',
+      'This Privacy Policy informs you about the nature, scope, and purpose of the processing of personal data (hereinafter "data") within our online game "A Dark Cave", the iOS app, and its associated websites, functions, and content.',
     ),
     pHtml(CONTROLLER_BLOCK),
+    h2("iOS App"),
+    p(
+      "The App Store app does not collect personal data. It has no account, no cloud save, no shop, no advertising, and no analytics or tracking. Progress and settings stay in the app's own storage on your device. Deleting the app deletes that save. If you save a progress card, iOS puts the picture in your Photos library. We do not receive it.",
+    ),
+    p(
+      "Feedback in the menu is optional and opens a form in the browser. The app does not send that form. If you submit it, you choose what to write, and we receive that message through Google Forms. You can play the whole game without opening it.",
+    ),
+    p(
+      "The Privacy link opens this page on our website. That visit is covered by the website sections below. The app itself does not make the request.",
+    ),
     h2("2. Your Rights as a Data Subject"),
     p("You have the right:"),
     ul([

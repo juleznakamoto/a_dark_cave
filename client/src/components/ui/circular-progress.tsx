@@ -13,12 +13,17 @@ interface CircularProgressProps {
   fill?: boolean
   strokeWidth?: number
   className?: string
+  /**
+   * Ease the stroke toward the value. Turn this off when the value already
+   * ticks in small steps, or the stroke lags the number it is meant to match.
+   */
+  animate?: boolean
 }
 
 const CircularProgress = React.forwardRef<
   HTMLDivElement,
   CircularProgressProps
->(({ value, size = 20, fill = false, strokeWidth = 2, className }, ref) => {
+>(({ value, size = 20, fill = false, strokeWidth = 2, className, animate = true }, ref) => {
   const [prevValue, setPrevValue] = React.useState(value)
   const [shouldAnimate, setShouldAnimate] = React.useState(true)
 
@@ -78,7 +83,7 @@ const CircularProgress = React.forwardRef<
           strokeDashoffset={strokeDashoffset}
           className={cn(
             "text-[lightgrey]",
-            shouldAnimate && "transition-all duration-500 ease-in-out",
+            animate && shouldAnimate && "transition-all duration-500 ease-in-out",
             className
           )}
           strokeLinecap="round"

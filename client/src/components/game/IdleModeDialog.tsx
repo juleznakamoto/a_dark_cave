@@ -162,6 +162,31 @@ function applySleepProductionInterval(
   clampSimulatedResourcesToStorage(resources, state as GameState, before);
 }
 
+/** One more 15s cycle on the sleep deltas, using the same storage rules. */
+function accumulateSleepInterval(
+  prevDeltas: Record<string, number>,
+  state: GameState,
+  multiplier: number,
+  startingResources: Record<string, number>,
+): Record<string, number> {
+  const simulatedResources: Record<string, number> = {};
+  Object.keys(startingResources).forEach((resource) => {
+    simulatedResources[resource] =
+      (startingResources[resource] || 0) + (prevDeltas[resource] || 0);
+  });
+  applySleepProductionInterval(state, multiplier, simulatedResources);
+  const newDeltas: Record<string, number> = {};
+  Object.keys(simulatedResources).forEach((resource) => {
+    newDeltas[resource] =
+      (simulatedResources[resource] || 0) - (startingResources[resource] || 0);
+  });
+  return capSleepGainDeltasToStorageRoom(
+    newDeltas,
+    startingResources,
+    state,
+  );
+}
+
 /** Same 15s production cycle and 8 Hz clock as the village ring. */
 const SLEEP_CYCLE_MS = 15_000;
 
@@ -172,26 +197,21 @@ function sleepCycleProgress(startTime: number, now: number, active: boolean): nu
 }
 
 /**
- * Cycle ring for the sleep dialog. Ticks on its own so the resource table
- * stays on the once-a-second clock.
+ * Cycle ring for the sleep dialog. `now` is the same timestamp the resource
+ * table uses, so the ring completes on the frame the amounts increase.
  */
 function SleepCycleIndicator({
   startTime,
+  now,
   active,
   percent,
 }: {
   startTime: number;
+  now: number;
   active: boolean;
   percent: number;
 }) {
   const { t } = useUiTranslation();
-  const [now, setNow] = useState(() => Date.now());
-
-  useEffect(() => {
-    if (!active || startTime <= 0) return;
-    const id = setInterval(() => setNow(Date.now()), CYCLE_RING_FRAME_MS);
-    return () => clearInterval(id);
-  }, [active, startTime]);
 
   const progress = sleepCycleProgress(startTime, now, active);
   const secondsRemaining = active
@@ -246,6 +266,7 @@ function SleepCycleIndicator({
           size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
           fill
           strokeWidth={2}
+          animate={false}
           className={cycleIcon.ringClassName}
         />
         <span className={cycleIcon.glyphClassName}>{cycleIcon.symbol}</span>
@@ -318,6 +339,8 @@ function IdleModeDialogOpen() {
   idleDurationMsRef.current = IDLE_DURATION_MS;
   const productionSpeedMultiplierRef = useRef(PRODUCTION_SPEED_MULTIPLIER);
   productionSpeedMultiplierRef.current = PRODUCTION_SPEED_MULTIPLIER;
+  // How many 15s cycles are already in accumulatedResources.
+  const appliedSleepIntervalsRef = useRef(0);
 
   // Reset local state when game changes (new game started)
   useEffect(() => {
@@ -327,6 +350,7 @@ function IdleModeDialogOpen() {
     setStartTime(0);
     setInitialResources({});
     setDisplayNow(Date.now());
+    appliedSleepIntervalsRef.current = 0;
   }, [gameId]);
 
   // Initialize idle mode when dialog opens.
@@ -348,6 +372,7 @@ function IdleModeDialogOpen() {
         // Calculate resources accumulated while offline
         const secondsElapsed = Math.min(initElapsed, IDLE_DURATION_MS) / 1000;
         const intervals = Math.floor(secondsElapsed / 15); // How many 15-second intervals have passed
+        appliedSleepIntervalsRef.current = intervals;
 
         // Get CURRENT resources state (most recent)
         const currentState = useGameStore.getState();
@@ -401,8 +426,10 @@ function IdleModeDialogOpen() {
         // can still run against a stale hook snapshot (startTime 0). Starting
         // here keeps Sleep from closing itself.
         const currentState = useGameStore.getState();
+        appliedSleepIntervalsRef.current = 0;
         setIsActive(true);
         setStartTime(initNow);
+        setDisplayNow(initNow);
         setAccumulatedResources({});
         setRemainingTime(IDLE_DURATION_MS);
         setInitialResources({ ...currentState.resources });
@@ -428,128 +455,57 @@ function IdleModeDialogOpen() {
     }
   }, [idleModeDialog.isOpen, isActive]);
 
-  // Timer update loop (every second)
+  // One clock for the countdown, the cycle ring, and the 15s production jumps.
   useEffect(() => {
-    if (!isActive || !idleModeDialog.isOpen) return;
+    if (!isActive || !idleModeDialog.isOpen || startTime <= 0) return;
 
-    const timerInterval = setInterval(() => {
+    const tick = () => {
       const now = Date.now();
-      const elapsed = now - startTime;
-      const remaining = Math.max(0, idleDurationMsRef.current - elapsed);
+      const elapsed = Math.max(0, now - startTime);
+      const duration = idleDurationMsRef.current;
+      const remaining = Math.max(0, duration - elapsed);
+      const cappedElapsed = Math.min(elapsed, duration);
+      const due = Math.floor(cappedElapsed / SLEEP_CYCLE_MS);
+      const pending = due - appliedSleepIntervalsRef.current;
 
-      setRemainingTime(remaining);
       setDisplayNow(now);
+      setRemainingTime(remaining);
+
+      if (pending > 0 && useGameStore.getState().idleModeState?.isActive) {
+        appliedSleepIntervalsRef.current = due;
+        const currentState = useGameStore.getState();
+        const multiplier = productionSpeedMultiplierRef.current;
+        setAccumulatedResources((prev) => {
+          let next = prev;
+          for (let i = 0; i < pending; i++) {
+            next = accumulateSleepInterval(
+              next,
+              currentState,
+              multiplier,
+              initialResourcesRef.current,
+            );
+          }
+          return next;
+        });
+      }
 
       if (remaining <= 0) {
-        // Time's up - stop active state and resource accumulation
+        // Time's up. Keep startTime until the player closes the dialog.
         setIsActive(false);
-
-        // DO NOT CLEAR startTime HERE - only clear when user closes dialog
         useGameStore.setState((prev) => ({
           idleModeState: {
             ...prev.idleModeState,
             isActive: false,
-            startTime: startTime, // Keep the original startTime, don't reset to 0
+            startTime,
             needsDisplay: false,
           },
         }));
       }
-    }, 1000); // Update timer every second
+    };
 
+    tick();
+    const timerInterval = setInterval(tick, CYCLE_RING_FRAME_MS);
     return () => clearInterval(timerInterval);
-  }, [isActive, idleModeDialog.isOpen, startTime]);
-
-  // Resource accumulation loop (synchronized to timer intervals)
-  useEffect(() => {
-    // Stop accumulation if not active or dialog closed
-    if (!isActive || !idleModeDialog.isOpen) return;
-
-    const now = Date.now();
-    const elapsed = now - startTime;
-    const remaining = Math.max(0, idleDurationMsRef.current - elapsed);
-
-    // Don't start accumulation if time is already up
-    if (remaining <= 0) {
-      setIsActive(false);
-      return;
-    }
-
-    // Calculate how many seconds have elapsed since idle mode started
-    const secondsElapsed = Math.floor(elapsed / 1000);
-
-    // Calculate how many seconds until the next 15-second mark from start
-    const secondsUntilNextMark = 15 - (secondsElapsed % 15);
-    const msUntilNextInterval = secondsUntilNextMark * 1000;
-
-    const updateResources = () => {
-      // Check if still active before updating
-      const state = useGameStore.getState();
-      if (!state.idleModeState?.isActive) {
-        return false; // Signal to stop
-      }
-
-      const currentState = useGameStore.getState();
-      const multiplier = productionSpeedMultiplierRef.current;
-
-      // Accumulate resources using the same production functions as normal mode
-      setAccumulatedResources((prev) => {
-        const startingResources = initialResourcesRef.current;
-        // Start with current tracked resources (delta from start)
-        const currentTracked = { ...prev };
-
-        // Create a simulated resource state (initial + accumulated changes)
-        const simulatedResources: Record<string, number> = {};
-        Object.keys(startingResources).forEach((resource) => {
-          simulatedResources[resource] =
-            (startingResources[resource] || 0) + (currentTracked[resource] || 0);
-        });
-
-        applySleepProductionInterval(
-          currentState,
-          multiplier,
-          simulatedResources,
-        );
-
-        // Calculate new deltas from initial state
-        const newDeltas: Record<string, number> = {};
-        Object.keys(simulatedResources).forEach((resource) => {
-          newDeltas[resource] =
-            (simulatedResources[resource] || 0) -
-            (startingResources[resource] || 0);
-        });
-
-        return capSleepGainDeltasToStorageRoom(
-          newDeltas,
-          startingResources,
-          currentState,
-        );
-      });
-
-      return true; // Continue
-    };
-
-    let resourceInterval: NodeJS.Timeout | null = null;
-
-    const initialTimeout = setTimeout(() => {
-      if (updateResources() === false) return;
-
-      // After first sync, continue every 15 seconds
-      resourceInterval = setInterval(() => {
-        const now = Date.now();
-        const elapsed = now - startTime;
-        const remaining = Math.max(0, idleDurationMsRef.current - elapsed);
-
-        if (remaining <= 0 || updateResources() === false) {
-          if (resourceInterval) clearInterval(resourceInterval);
-          return;
-        }
-      }, 15000);
-    }, msUntilNextInterval);
-
-    return () => {
-      clearTimeout(initialTimeout);
-      if (resourceInterval) clearInterval(resourceInterval);
-    };
   }, [isActive, idleModeDialog.isOpen, startTime]);
 
   const handleEndIdleMode = () => {
@@ -730,9 +686,12 @@ function IdleModeDialogOpen() {
   // Show resources that are being produced
   const displayElapsed = displayNow - startTime;
 
-  // Calculate Focus points (1 per almost 1 hour slept, or 1 per 5 seconds in dev mode)
+  // Focus points (1 per almost 1 hour slept, or 1 per 5 seconds in dev mode).
   const focusIntervalMs = devMode ? 5 * 1000 : 59.99 * 60 * 1000;
-  const focusPoints = Math.floor(displayElapsed / focusIntervalMs);
+  const focusPoints =
+    startTime > 0
+      ? Math.floor(Math.max(0, displayElapsed) / focusIntervalMs)
+      : 0;
 
   // Theoretical sleep net rate (pos + neg); yellow amount when storage is full
   const productionPerInterval = getProductionPerInterval(
@@ -755,10 +714,10 @@ function IdleModeDialogOpen() {
     const total = tidySleepAmount(accumulatedResources[r] || 0);
     return rate !== 0 || total !== 0;
   });
-  const displayResources = [
-    ...sortResourcesLikeSidePanel(resourceKeys),
-    "Focus",
-  ];
+  const displayResources = sortResourcesLikeSidePanel(resourceKeys);
+  if (focusPoints >= 1) displayResources.push("Focus");
+  const sleepTableColumns =
+    "minmax(0,1fr) minmax(4.5rem, max-content) minmax(4.5rem, max-content) minmax(4.5rem, max-content)";
 
   const isTimeUp = remainingTime <= 0;
   const villageProductionPercent =
@@ -788,6 +747,7 @@ function IdleModeDialogOpen() {
             <DialogTitle className="pr-0">{t("idleMode.sleeping")}</DialogTitle>
             <SleepCycleIndicator
               startTime={startTime}
+              now={displayNow}
               active={isActive}
               percent={villageProductionPercent}
             />
@@ -810,6 +770,21 @@ function IdleModeDialogOpen() {
         </DialogHeader>
 
         <div className="pb-1.5 border-border text-xs space-y-0.5">
+          <div
+            className="grid gap-x-3 items-end pb-1 text-muted-foreground"
+            style={{ gridTemplateColumns: sleepTableColumns }}
+          >
+            <div />
+            <div className="text-right leading-tight">
+              {t("idleMode.columnTotal", { defaultValue: "Total" })}
+            </div>
+            <div className="text-right leading-tight">
+              {t("idleMode.columnRate", { defaultValue: "Rate" })}
+            </div>
+            <div className="text-right leading-tight">
+              {t("idleMode.columnProduced", { defaultValue: "Produced" })}
+            </div>
+          </div>
           {displayResources.map((resource) => {
             const isFocus = resource === "Focus";
             const resourceLabel = isFocus
@@ -847,9 +822,7 @@ function IdleModeDialogOpen() {
                   "grid gap-x-3 items-center py-0.5",
                   isFocus && "mt-1.5",
                 )}
-                style={{
-                  gridTemplateColumns: "minmax(0,1fr) 4.5rem 4.5rem 4.5rem",
-                }}
+                style={{ gridTemplateColumns: sleepTableColumns }}
               >
                 <div className="text-gray-400 truncate leading-tight">
                   {resourceLabel}

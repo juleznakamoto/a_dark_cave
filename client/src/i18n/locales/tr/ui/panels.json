@@ -253,7 +253,10 @@
     "wake": "Hemen uyan",
     "getUp": "Kalk",
     "focusGainedLog": "Dinlenerek {{count}} Odak kazandın.",
-    "villagersProducedLog": "Köylülerin ürettikleri: {{resources}}"
+    "villagersProducedLog": "Köylülerin ürettikleri: {{resources}}",
+    "columnTotal": "Toplam",
+    "columnRate": "Hız",
+    "columnProduced": "Üretilen"
   },
   "demoEnd": {
     "craftUpTo": "{{count}} eşya yap ya da bul",

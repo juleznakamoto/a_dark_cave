@@ -25,6 +25,7 @@ import {
   useIosEditionActive,
   useSteamEditionActive,
 } from "@/hooks/useSteamEditionActive";
+import { privacyPolicyHref } from "@/lib/privacyPolicyUrl";
 import { Input } from "@/components/ui/input";
 import {
   hasWanderersLanternCode,
@@ -628,6 +629,19 @@ export default function SettingsDialog({
             </>
           )}
 
+          {iosEditionActive && (
+            <div className="flex items-center justify-center pt-1">
+              <a
+                href={privacyPolicyHref()}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="link-settings-privacy"
+                className="text-[11px] leading-none text-muted-foreground opacity-60 hover:opacity-100 hover:text-foreground transition-opacity"
+              >
+                {t("footer.privacy")}
+              </a>
+            </div>
+          )}
           {!steamEditionActive && (
             <div className="flex items-center justify-center gap-3 pt-1">
               <a

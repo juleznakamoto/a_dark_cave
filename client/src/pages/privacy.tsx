@@ -5,14 +5,14 @@ export default function Privacy() {
     <PublicDocPage
       path="/privacy"
       heading="Privacy Policy"
-      description="Last Updated: 31.07.2026"
+      description="Last Updated: 18.11.2026"
     >
       <h3>1. General Information</h3>
       <p>
         This Privacy Policy informs you about the nature, scope, and
         purpose of the processing of personal data (hereinafter "data")
-        within our online game "A Dark Cave" and its associated
-        websites, functions, and content.
+        within our online game "A Dark Cave", the iOS app, and its
+        associated websites, functions, and content.
       </p>
       <p>
         <strong>Data Controller:</strong>
@@ -23,6 +23,27 @@ export default function Privacy() {
         97072 Deutschland
         <br />
         Email: support@a-dark-cave.com
+      </p>
+
+      <h3>iOS App</h3>
+      <p>
+        The App Store app does not collect personal data. It has no
+        account, no cloud save, no shop, no advertising, and no
+        analytics or tracking. Progress and settings stay in the app's
+        own storage on your device. Deleting the app deletes that save.
+        If you save a progress card, iOS puts the picture in your Photos
+        library. We do not receive it.
+      </p>
+      <p>
+        Feedback in the menu is optional and opens a form in the
+        browser. The app does not send that form. If you submit it, you
+        choose what to write, and we receive that message through Google
+        Forms. You can play the whole game without opening it.
+      </p>
+      <p>
+        The Privacy link opens this page on our website. That visit is
+        covered by the website sections below. The app itself does not
+        make the request.
       </p>
 
       <h3>2. Your Rights as a Data Subject</h3>

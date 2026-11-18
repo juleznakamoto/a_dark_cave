@@ -253,7 +253,10 @@
     "wake": "Despertar ahora",
     "getUp": "Levantarse",
     "focusGainedLog": "Has ganado {{count}} de concentración con tu descanso.",
-    "villagersProducedLog": "Los aldeanos produjeron: {{resources}}"
+    "villagersProducedLog": "Los aldeanos produjeron: {{resources}}",
+    "columnTotal": "Total",
+    "columnRate": "Tasa",
+    "columnProduced": "Producido"
   },
   "demoEnd": {
     "craftUpTo": "Fabrica o encuentra {{count}} objetos",

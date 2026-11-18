@@ -14,6 +14,11 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- Achievement progress after the description sits in parentheses, like (3/10).
+- On a phone, the pale light around your cursor is a smaller spot during sleep and on the title screen.
+- While you are sleeping, your play time sits next to Pause, and production and effect rings stay out of the top bar.
+- Sleep lists Total, Rate, and Produced. Focus appears only after this rest grants at least one.
+- The Sleep production ring completes as the amounts in the list go up.
 - In the dice game, Roll and No Roll sit farther apart.
 - The Ambience and Sound knobs in Settings are a little larger, so they are easier to grab.
 - Pressing or dragging the line between panels shows the grab handle for a few seconds, then it fades out.
@@ -68,6 +73,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Added
 
+- Privacy is on the start screen, lower right, and in Settings.
 - Action buttons, choices in events and dialogs, Abort, job presets, and the save mark give a light tap. Job + and - give a softer tick. Event log filters stay a light tap. The arrows in a cube memory stay quiet.
 - Feeding the fire, the Wanderer's Lantern, a Prior mark, spending Insight, a coin on the village map, Improve (including Sleep length and intensity), and claiming an achievement reward give a medium tap. Lighting the fire and blasting the gate give a heavy tap. Unlocking a game tab gives a success tap.
 - Combat, sleep, a new villager, and a death still have their own taps. You can turn haptics off in Settings.
@@ -84,7 +90,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 - On a phone, language, ambience, and sound on the start screen sit in the upper left, at the same height as the header icons.
 - On a phone, the language list on the start screen is larger.
 - When you share from the iOS app, the message says you are currently playing A Dark Cave, followed by the App Store link.
-- The iOS start screen no longer shows The Hustle logo, or the social, FAQ, About, Press, and legal links.
+- The iOS start screen no longer shows The Hustle logo, or the social, FAQ, About, and Press links.
 - The start screen clouds fill the whole iPhone screen, including around the clock and the home indicator.
 - In the iOS app, Save stores the progress card in your photos, and Copy puts that image on the clipboard so you can paste it. Share opens the share sheet.
 - On a phone, a building you tap on the map stays marked until you leave the Map tab.

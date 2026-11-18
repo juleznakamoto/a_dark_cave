@@ -359,6 +359,7 @@ export function HoverCalloutTooltip({
       aria-hidden={!placed}
       className={calloutClassName}
       style={portalStyle}
+      data-hover-callout=""
     >
       {calloutInner}
     </button>
@@ -368,6 +369,7 @@ export function HoverCalloutTooltip({
       className={calloutClassName}
       style={portalStyle}
       aria-hidden={!placed}
+      data-hover-callout=""
     >
       {calloutInner}
     </div>

@@ -24,8 +24,9 @@ const HEADER_PAUSE_BTN =
 
 function HeaderPausedPlayTime() {
   // Null while playing, so playTime ticks do not re-render the header.
+  // Sleep hides the status rings and freezes play time, so show it here too.
   const pausedPlayTimeMs = useGameStore((s) =>
-    s.isPaused ? (s.playTime ?? 0) : null,
+    s.isPaused || s.idleModeDialog.isOpen ? (s.playTime ?? 0) : null,
   );
   const { t } = useUiTranslation();
   const fade = useFadePresence(pausedPlayTimeMs !== null);
@@ -88,6 +89,7 @@ function HeaderPauseButton() {
 
 export default function GameHeader() {
   const iosEditionActive = useIosEditionActive();
+  const idleModeDialogOpen = useGameStore((s) => s.idleModeDialog.isOpen);
 
   return (
     <header
@@ -104,7 +106,7 @@ export default function GameHeader() {
             <HeaderPauseButton />
             <HeaderPausedPlayTime />
           </div>
-          <GameHeaderStatusIndicators />
+          {!idleModeDialogOpen && <GameHeaderStatusIndicators />}
         </div>
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <div className="pointer-events-auto flex max-w-[min(100%,42rem)] flex-wrap items-center justify-center gap-2 px-12">

@@ -234,6 +234,7 @@ describe("publicSeo", () => {
     expect(privacy).not.toBe(home);
     expect(privacy).not.toBe(terms);
     expect(privacy).toContain("This Privacy Policy informs you");
+    expect(privacy).toContain("The App Store app does not collect personal data");
     expect(privacy).toContain("Art. 15 GDPR");
     expect(privacy).toContain("Julian Bauer");
     expect(privacy).not.toContain("Play for Free in Your Browser");

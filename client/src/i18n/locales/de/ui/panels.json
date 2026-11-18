@@ -253,7 +253,10 @@
     "wake": "Jetzt aufwachen",
     "getUp": "Aufstehen",
     "focusGainedLog": "Du hast durch deine Ruhe {{count}} Fokus erhalten.",
-    "villagersProducedLog": "Dorfbewohner haben produziert: {{resources}}"
+    "villagersProducedLog": "Dorfbewohner haben produziert: {{resources}}",
+    "columnTotal": "Gesamt",
+    "columnRate": "Rate",
+    "columnProduced": "Produziert"
   },
   "demoEnd": {
     "craftUpTo": "Fertige oder finde {{count}} Gegenstände",

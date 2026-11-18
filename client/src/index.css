@@ -1840,6 +1840,16 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
   opacity: 0.7;
 }
 
+/* 0.75rem gap beside the frame (button is 3.575rem, so the outer edge is 4.325rem out).
+   On a narrow window, stop at the screen edge instead of forcing the cube narrower. */
+.cube-event-arrow[data-direction="previous"] {
+  left: max(-4.325rem, calc(0.35rem - (100vw - 100%) / 2));
+}
+
+.cube-event-arrow[data-direction="next"] {
+  right: max(-4.325rem, calc(0.35rem - (100vw - 100%) / 2));
+}
+
 /* Shared dialog X: square hit target + icon grow slightly with text size. */
 .adc-dialog-close {
   width: calc(1.5rem * var(--adc-control-scale, 1));

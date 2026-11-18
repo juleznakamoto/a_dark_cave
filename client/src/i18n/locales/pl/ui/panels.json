@@ -277,7 +277,10 @@
     "wake": "Obudź się teraz",
     "getUp": "Wstań",
     "focusGainedLog": "Z odpoczynku zyskujesz {{count}} skupienia.",
-    "villagersProducedLog": "Wieśniacy wytworzyli: {{resources}}"
+    "villagersProducedLog": "Wieśniacy wytworzyli: {{resources}}",
+    "columnTotal": "Suma",
+    "columnRate": "Tempo",
+    "columnProduced": "Wytworzono"
   },
   "demoEnd": {
     "craftUpTo": "Wytwórz albo znajdź {{count}} przedmiotów",

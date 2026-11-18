@@ -253,7 +253,10 @@
     "wake": "现在醒来",
     "getUp": "起床",
     "focusGainedLog": "你通过休息获得了 {{count}} 点专注。",
-    "villagersProducedLog": "村民生产了：{{resources}}"
+    "villagersProducedLog": "村民生产了：{{resources}}",
+    "columnTotal": "总计",
+    "columnRate": "速率",
+    "columnProduced": "产出"
   },
   "demoEnd": {
     "craftUpTo": "可制作或发现 {{count}} 种物品",

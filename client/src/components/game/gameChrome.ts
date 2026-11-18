@@ -121,7 +121,7 @@ export const TAB_ICON_MASK_BOTTOM =
  * Mask-bottom keeps wide art on the icon-box floor; negative translate offsets
  * the font descent space that `items-end` otherwise shares with the icons.
  */
-export const TAB_ICON_ALIGN_CLASS = `${TAB_ICON_MASK_BOTTOM} -translate-y-[3px]`;
+export const TAB_ICON_ALIGN_CLASS = `${TAB_ICON_MASK_BOTTOM} -translate-y-[2px]`;
 
 /** Default size for Cave/City/… tab mask icons (tracks `--adc-text-delta`). */
 export const TAB_ICON_SIZE_CLASS = "game-tab-icon";

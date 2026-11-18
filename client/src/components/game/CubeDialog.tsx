@@ -48,15 +48,16 @@ function CubeEventArrow({
       type="button"
       aria-label={label}
       data-testid={`cube-event-${direction}`}
+      data-direction={direction}
       onClick={onClick}
       className={cn(
         // Center with top, not translate. The open click lock sets
         // `transform: none` on buttons, which would drop a translate and
         // jump the arrow up when the button becomes clickable.
         // ~30% larger than the old h-11 / h-6 (2.75rem / 1.5rem).
-        // Offset keeps the same gap beside the frame (old -3.5rem on a 2.75rem button).
+        // Side position lives in CSS so a narrow window can slide the arrow
+        // inward without shrinking the cube.
         "cube-event-arrow absolute top-[calc(50%-1.7875rem)] z-30 flex h-[3.575rem] w-[3.575rem] items-center justify-center text-muted-foreground opacity-70 transition-[opacity,color] hover:text-white hover:opacity-100",
-        direction === "previous" ? "-left-[4.325rem]" : "-right-[4.325rem]",
       )}
     >
       <Icon className="h-[1.95rem] w-[1.95rem]" aria-hidden />
@@ -249,10 +250,9 @@ export default function CubeDialog({
         className="cube-dialog-content [&>.adc-dialog-close]:hidden border-2 border-gray-400 shadow-2xl min-h-[21rem] max-h-[90dvh] flex flex-col overflow-visible z-[100]"
         style={{
           ...chromeRuleColorStyle("#9ca3af"),
-          // Room on both sides for the chevrons, including when only one is shown.
-          "--adc-dialog-max-w": canPageCubes
-            ? "min(25rem, calc(100vw - 9.5rem))"
-            : "25rem",
+          // Wider than the old 22rem. Arrows sit in the margin and slide
+          // inward on a narrow window instead of shrinking this frame.
+          "--adc-dialog-max-w": "28rem",
         }}
       >
         {previousId && (
