@@ -482,7 +482,7 @@ function PactOfferDialogOpen() {
 
                   <h3
                     className={cn(
-                      "mb-1 flex items-start justify-center text-center text-sm font-semibold leading-tight text-red-500 sm:text-base",
+                      "mb-0.5 flex items-start justify-center text-center text-sm font-semibold leading-tight text-red-500 sm:text-base",
                       PACT_CARD_TITLE_MIN_H,
                       isSelected ? "opacity-100" : "opacity-[0.85]",
                     )}
