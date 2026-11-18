@@ -10,6 +10,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- The Insight tip for absolving an item now says it reduces Madness of the item by 1.
 - Pause, production, and Focus status rings in the top bar are a little larger.
 - The Focus mark on action tips is a little larger while Focus is active.
 - Action-button corner badges (Prior, Abort, level, Focus, Insight, boost) share a larger tap target. Prior and Abort discs are a little bigger too.

@@ -90,7 +90,7 @@
     "unlockMoreJobsForInsight": "提高上限",
     "villagerCapJobs": "{{count}} 个岗位",
     "enchantForInsight": "附魔",
-    "absolveMadnessForInsight": "疯狂 -1",
+    "absolveMadnessForInsight": "将该物品的疯狂 -1",
     "maxHeld": "上限：{{value}}",
     "doubleActionChance": "{{percent}}% 几率使行动收益翻倍",
     "luck": "幸运：+{{value}}",

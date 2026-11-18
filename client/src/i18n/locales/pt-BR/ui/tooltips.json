@@ -90,7 +90,7 @@
     "unlockMoreJobsForInsight": "Aumentar o limite",
     "villagerCapJobs": "{{count}} trabalhos",
     "enchantForInsight": "Encantar",
-    "absolveMadnessForInsight": "Reduzir a Loucura em 1",
+    "absolveMadnessForInsight": "Reduzir a Loucura do item em 1",
     "maxHeld": "Máx.: {{value}}",
     "doubleActionChance": "{{percent}}% de chance de dobrar os ganhos das ações",
     "luck": "Sorte: +{{value}}",

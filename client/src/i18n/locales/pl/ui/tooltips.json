@@ -90,7 +90,7 @@
     "unlockMoreJobsForInsight": "Podnieś limit",
     "villagerCapJobs": "{{count}} prac",
     "enchantForInsight": "Zaczaruj",
-    "absolveMadnessForInsight": "Zmniejsz szaleństwo o 1",
+    "absolveMadnessForInsight": "Zmniejsz szaleństwo przedmiotu o 1",
     "maxHeld": "Maks.: {{value}}",
     "doubleActionChance": "{{percent}}% szansy na podwojenie zysków z akcji",
     "luck": "Szczęście: +{{value}}",

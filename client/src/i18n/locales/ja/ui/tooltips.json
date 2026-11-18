@@ -90,7 +90,7 @@
     "unlockMoreJobsForInsight": "上限を上げる",
     "villagerCapJobs": "仕事{{count}}",
     "enchantForInsight": "付与",
-    "absolveMadnessForInsight": "狂気を1減らす",
+    "absolveMadnessForInsight": "アイテムの狂気を1減らす",
     "maxHeld": "上限：{{value}}",
     "doubleActionChance": "行動の獲得が倍になる確率{{percent}}%",
     "luck": "運：+{{value}}",

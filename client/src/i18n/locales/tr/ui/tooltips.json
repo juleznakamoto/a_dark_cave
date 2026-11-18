@@ -90,7 +90,7 @@
     "unlockMoreJobsForInsight": "Sınırı artır",
     "villagerCapJobs": "{{count}} meslek",
     "enchantForInsight": "Efsunla",
-    "absolveMadnessForInsight": "Deliliği 1 azalt",
+    "absolveMadnessForInsight": "Eşyanın deliliğini 1 azalt",
     "maxHeld": "En fazla: {{value}}",
     "doubleActionChance": "%{{percent}} ihtimalle eylem kazançları iki katına çıkar",
     "luck": "Şans: +{{value}}",
