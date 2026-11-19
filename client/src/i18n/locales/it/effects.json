@@ -1,11 +1,11 @@
 {
   "books": {
     "book_of_ascension": {
-      "description": "Libro sull'ascesa di sé. Concede la capacità di migliorare nei compiti attraverso la pratica.",
+      "description": "Libro sull'ascesa di sé.",
       "name": "Libro dell'ascensione"
     },
     "book_of_absolution": {
-      "description": "Libro di riti per calmare gli oggetti maledetti. Permette di indebolire i loro effetti negativi.",
+      "description": "Libro di riti per calmare gli oggetti maledetti.",
       "name": "Libro dell'assoluzione"
     },
     "book_of_chainmaster": {

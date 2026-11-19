@@ -139,11 +139,18 @@ function nextPactEyeBlinkDelayMs(): number {
 }
 
 /** Open while the card is chosen. Closes for one blink, then opens again. */
-export function PactOfferEye({ open }: { open: boolean }) {
+export function PactOfferEye({
+  open,
+  blink = true,
+}: {
+  open: boolean;
+  /** Blessing cards stay open. Pact cards blink. */
+  blink?: boolean;
+}) {
   const [blinking, setBlinking] = useState(false);
 
   useEffect(() => {
-    if (!open || prefersReducedMotion()) {
+    if (!open || !blink || prefersReducedMotion()) {
       setBlinking(false);
       return;
     }
@@ -170,7 +177,7 @@ export function PactOfferEye({ open }: { open: boolean }) {
       window.clearTimeout(closeTimer);
       window.clearTimeout(reopenTimer);
     };
-  }, [open]);
+  }, [open, blink]);
 
   const closed = !open || blinking;
 
@@ -178,7 +185,9 @@ export function PactOfferEye({ open }: { open: boolean }) {
     <SidePanelSectionIcon
       sectionId={closed ? "blessings" : "bonuses"}
       sizeClassName="h-8 w-8 sm:h-10 sm:w-10"
-      className={closed ? "pact-offer-closed-eye" : "pact-offer-open-eye opacity-90"}
+      className={
+        closed ? "opacity-80" : "-translate-y-0.5 scale-[0.98] opacity-90"
+      }
     />
   );
 }
@@ -305,12 +314,6 @@ function PactOfferDialogOpen() {
         .pact-offer-card.pact-offer-card--open:not([aria-pressed="true"]):focus-visible {
           outline: 1px solid var(--adc-chrome-rule-color, #6b1515);
           outline-offset: 0;
-        }
-        .pact-offer-open-eye {
-          transform: translateY(-2px) scale(0.98);
-        }
-        .pact-offer-closed-eye {
-          opacity: 0.8;
         }
         @keyframes pact-offer-title-pulse {
           0%, 100% {

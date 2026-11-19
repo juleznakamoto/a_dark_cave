@@ -67,6 +67,7 @@ import {
 import { TOOLTIP_MUTED_CLASS, TOOLTIP_STACK_CLASS } from "@/game/tooltipMetrics";
 import {
   FOCUS_TOOLTIP_HIGHLIGHT_CLASS,
+  FocusTooltipIcon,
   isFocusGlowActive,
 } from "./focusTooltipIndicator";
 import {
@@ -609,7 +610,8 @@ export const getResourceGainTooltip = (
 
   const showExactGains = true;
 
-  const focusGainClass = isFocusGlowActive(actionId, state)
+  const focusActive = isFocusGlowActive(actionId, state);
+  const focusGainClass = focusActive
     ? FOCUS_TOOLTIP_HIGHLIGHT_CLASS
     : undefined;
 
@@ -655,24 +657,29 @@ export const getResourceGainTooltip = (
       {(isBombAtMax || isVeinfireElixirAtMax || hallNeedsRepair) && gains.length > 0 && (
         <ActionTooltipSeparator />
       )}
-      {gains.map((gain, index) => (
-        <div key={`gain-${index}`} className={focusGainClass}>
-          {showExactGains
-            ? gain.min === gain.max
-              ? getUiTooltip("gainExact", "+{{amount}} {{resource}}", {
-                amount: formatNumber(gain.min),
-                resource: formatResourceName(gain.resource),
-              })
-              : getUiTooltip("gainRange", "+{{min}}-{{max}} {{resource}}", {
-                min: formatNumber(gain.min),
-                max: formatNumber(gain.max),
-                resource: formatResourceName(gain.resource),
-              })
-            : getUiTooltip("gainUnknown", "+? {{resource}}", {
-              resource: formatResourceName(gain.resource),
-            })}
-        </div>
-      ))}
+      {wrapTooltipHeaderWithTrailing(
+        <>
+          {gains.map((gain, index) => (
+            <div key={`gain-${index}`} className={focusGainClass}>
+              {showExactGains
+                ? gain.min === gain.max
+                  ? getUiTooltip("gainExact", "+{{amount}} {{resource}}", {
+                    amount: formatNumber(gain.min),
+                    resource: formatResourceName(gain.resource),
+                  })
+                  : getUiTooltip("gainRange", "+{{min}}-{{max}} {{resource}}", {
+                    min: formatNumber(gain.min),
+                    max: formatNumber(gain.max),
+                    resource: formatResourceName(gain.resource),
+                  })
+                : getUiTooltip("gainUnknown", "+? {{resource}}", {
+                  resource: formatResourceName(gain.resource),
+                })}
+            </div>
+          ))}
+        </>,
+        focusActive && gains.length > 0 ? <FocusTooltipIcon /> : undefined,
+      )}
     </>
   );
 

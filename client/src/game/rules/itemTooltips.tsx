@@ -32,7 +32,6 @@ import { ActionTooltipSeparator } from "./actionTooltipLayout";
 import {
   TOOLTIP_MUTED_CLASS,
   TOOLTIP_TITLE_CLASS,
-  tooltipDescriptionLayoutStyle,
 } from "@/game/tooltipMetrics";
 import {
   getWeaponHierarchyChain,
@@ -737,6 +736,18 @@ const ITEM_UNLOCK_EFFECTS: Record<string, { key: string; fallback: string }> = {
     key: "unlocksAchievementRewards",
     fallback: "Unlocks advanced achievements",
   },
+  book_of_ascension: {
+    key: "unlocksActionPractice",
+    fallback: "Unlocks improving actions through repetition",
+  },
+  book_of_chainmaster: {
+    key: "unlocksChainmaster",
+    fallback: "Unlocks Chainmaster skill",
+  },
+  book_of_absolution: {
+    key: "unlocksItemAbsolution",
+    fallback: "Unlocks reducing an item's Madness",
+  },
   ashwraith_huntress: {
     key: "unlocksHuntingUpgrades",
     fallback: "Unlocks Huntress Training",
@@ -772,11 +783,9 @@ function getItemUnlockEffectLine(itemId: string): string | null {
 /** Description-only tooltips stay normal; mute when effects/title sit above. */
 function itemTooltipDescriptionProps(hasContentAbove: boolean): {
   className: string;
-  style: React.CSSProperties;
 } {
   return {
     className: hasContentAbove ? TOOLTIP_MUTED_CLASS : "",
-    style: tooltipDescriptionLayoutStyle(hasContentAbove),
   };
 }
 

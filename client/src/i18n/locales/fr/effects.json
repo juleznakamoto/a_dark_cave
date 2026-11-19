@@ -1,11 +1,11 @@
 {
   "books": {
     "book_of_ascension": {
-      "description": "Livre sur l'élévation de soi. Permet de progresser dans les tâches par la pratique.",
+      "description": "Livre sur l'élévation de soi.",
       "name": "Livre de l'ascension"
     },
     "book_of_absolution": {
-      "description": "Livre de rites pour apaiser les objets maudits. Permet d'affaiblir leurs effets négatifs.",
+      "description": "Livre de rites pour apaiser les objets maudits.",
       "name": "Livre de l'absolution"
     },
     "book_of_chainmaster": {

@@ -62,7 +62,6 @@ import { getCraftProduceAmount } from "@/game/craftUpgradeUtils";
 import { useActionUnlockOrder } from "@/game/useActionUnlockOrder";
 import { orderCraftOnceRow } from "@/game/actionUnlockOrder";
 import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
-import { getFocusTooltipHeaderTrailing } from "@/game/rules/focusTooltipIndicator";
 import {
   resolveActionDescription,
   resolveActionLabel,
@@ -281,15 +280,12 @@ export default function CavePanel() {
     const isCraftAction = actionId.startsWith("craft");
     const hasExpeditionRequirement =
       (action.expeditionVillagersRequired?.(state) ?? 0) > 0;
-    const focusTrailing = getFocusTooltipHeaderTrailing(actionId, state);
     const weaponUpgradeHighlightId = isCraftAction
       ? getWeaponUpgradeHighlightId(craftActionIdToItemKey(actionId))
       : null;
     const tooltipHeaderTrailing = weaponUpgradeHighlightId ? (
       <BuildingUpgradeTooltipIcon />
-    ) : (
-      focusTrailing
-    );
+    ) : undefined;
     const resourceGainTooltip =
       isChopWood || isMineAction || isCaveExploreAction || isCraftAction
         ? getResourceGainTooltip(actionId, state, tooltipHeaderTrailing)

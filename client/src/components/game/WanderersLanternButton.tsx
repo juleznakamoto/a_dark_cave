@@ -65,7 +65,7 @@ export function WanderersLanternButton() {
   };
 
   const tooltip = (
-    <div className="max-w-[16rem] space-y-1 text-xs">
+    <div className="space-y-1">
       <div className="font-bold">{name}</div>
       <div>
         {ready

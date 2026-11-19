@@ -1,11 +1,11 @@
 {
   "books": {
     "book_of_ascension": {
-      "description": "Buch über die Erhebung des Selbst. Ermöglicht es, dich durch Übung in Aufgaben zu verbessern.",
+      "description": "Buch über die Erhebung des Selbst.",
       "name": "Buch des Aufstiegs"
     },
     "book_of_absolution": {
-      "description": "Buch der Riten, um verfluchte Gegenstände zu beruhigen. Lässt dich ihre negativen Effekte abschwächen.",
+      "description": "Buch der Riten, um verfluchte Gegenstände zu beruhigen.",
       "name": "Buch der Absolution"
     },
     "book_of_chainmaster": {

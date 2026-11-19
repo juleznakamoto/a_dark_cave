@@ -255,7 +255,7 @@ export default function AttackWavesChart({
                   data-testid="button-delay-attack"
                   disabled={!canExecuteAction(DELAY_ACTION_ID, state)}
                   tooltip={
-                    <div className="text-xs max-w-[16rem]">
+                    <div>
                       <ActionTooltipResourceRows
                         actionId={DELAY_ACTION_ID}
                         state={state}

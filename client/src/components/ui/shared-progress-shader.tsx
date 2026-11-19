@@ -16,7 +16,11 @@ import { createCappedPaintLoop } from "@/lib/cappedFrameLoop";
 import { cn } from "@/lib/utils";
 import { logger } from "@/lib/logger";
 import { tailwindToHex } from "@/lib/tailwindColors";
-import { SegmentedProgress } from "@/components/ui/progress-bar";
+import {
+  PROGRESS_GROW_EVENT,
+  PROGRESS_GROWING_SELECTOR,
+  SegmentedProgress,
+} from "@/components/ui/progress-bar";
 import {
   shouldAnimateSmokeShader,
   SMOKE_FLOW_FRAGMENT_SHADER,
@@ -39,7 +43,19 @@ export const SHARED_PROGRESS_SHADER_FALLBACK_CLASS = "bg-red-950";
 /** Matches Tailwind `rounded-[4px]` on SegmentedProgress segments. */
 const SEGMENT_CORNER_RADIUS_CSS_PX = 4;
 /** Smoke redraw while Estate or Bastion is visible. 100ms is 10 fps. */
-const SHARED_PROGRESS_SHADER_FRAME_MS = 100;
+export const SHARED_PROGRESS_SHADER_FRAME_MS = 100;
+
+/**
+ * Full canvas redraw, or only the bar whose fill width is moving.
+ * Idle smoke stays at 10 fps. While Improve is running, keep painting just
+ * that bar. A full redraw of every estate segment on the same frames made
+ * the fill stutter, and a slow full redraw would schedule another one.
+ */
+export function resolveSharedProgressPaintScope(
+  hasGrowingBar: boolean,
+): "full" | "growing" {
+  return hasGrowingBar ? "growing" : "full";
+}
 
 /**
  * Layout box used to size the shared WebGL canvas.
@@ -187,6 +203,14 @@ type SegmentRegistration = {
   element: HTMLElement;
 };
 
+function nodeListContains(roots: ArrayLike<Node>, element: Node): boolean {
+  for (let i = 0; i < roots.length; i++) {
+    const root = roots[i];
+    if (root instanceof Node && root.contains(element)) return true;
+  }
+  return false;
+}
+
 /** Matches SegmentedProgress cell rim — painted above the WebGL canvas. */
 const SEGMENT_RIM_BASE_CLASS =
   "pointer-events-none absolute rounded-[4px] transition-[box-shadow] duration-300";
@@ -225,17 +249,27 @@ function syncSegmentRims(
     // Keep the 1px outside rim flush with the segment's left edge. The source
     // rim starts 1px inside so its shadow still reaches, but never overhangs,
     // that edge.
-    rim.style.left = `${r.left - layerRect.left + 1}px`;
-    rim.style.top = `${r.top - layerRect.top}px`;
-    rim.style.width = `${Math.max(0, r.width - 1)}px`;
-    rim.style.height = `${r.height}px`;
-    rim.className = SEGMENT_RIM_BASE_CLASS;
-    if (cell.hasAttribute("data-filled")) {
-      for (const token of filledClass.split(/\s+/).filter(Boolean)) {
-        rim.classList.add(token);
+    const left = `${r.left - layerRect.left + 1}px`;
+    const top = `${r.top - layerRect.top}px`;
+    const width = `${Math.max(0, r.width - 1)}px`;
+    const height = `${r.height}px`;
+    const opacity = String(sharedProgressSegmentOpacity(cell));
+    if (rim.style.left !== left) rim.style.left = left;
+    if (rim.style.top !== top) rim.style.top = top;
+    if (rim.style.width !== width) rim.style.width = width;
+    if (rim.style.height !== height) rim.style.height = height;
+    if (rim.style.opacity !== opacity) rim.style.opacity = opacity;
+    const filled = cell.hasAttribute("data-filled") ? "1" : "0";
+    if (rim.dataset.filled !== filled || rim.dataset.rimClass !== filledClass) {
+      rim.className = SEGMENT_RIM_BASE_CLASS;
+      if (filled === "1") {
+        for (const token of filledClass.split(/\s+/).filter(Boolean)) {
+          rim.classList.add(token);
+        }
       }
+      rim.dataset.filled = filled;
+      rim.dataset.rimClass = filledClass;
     }
-    rim.style.opacity = String(sharedProgressSegmentOpacity(cell));
     i++;
   }
   while (rimLayer.children.length > i) {
@@ -462,17 +496,27 @@ class SharedProgressShaderRenderer {
     segments: SegmentRegistration[],
     canvasRect: DOMRectReadOnly,
     dpr: number,
+    /**
+     * When set, skip the full clear and redraw only segments inside these
+     * bars. Their cells are scissor-cleared first so a shrinking fill does
+     * not leave smoke behind. Other bars keep the pixels from the last full
+     * frame.
+     */
+    growingRoots: ArrayLike<Node> | null = null,
   ) {
     const gl = this.gl;
+    const partial = growingRoots != null && growingRoots.length > 0;
     const now = performance.now();
     const dtSeconds = (now - this.lastFrameMs) / 1000;
     this.lastFrameMs = now;
     const restSeconds =
       ((now - this.startMs) / 1000) * SHARED_PROGRESS_SHADER_TIME_SCALE;
     const boostedBars = new Set<HTMLElement>();
-    gl.disable(gl.SCISSOR_TEST);
     gl.clearColor(0, 0, 0, 0);
-    gl.clear(gl.COLOR_BUFFER_BIT);
+    if (!partial) {
+      gl.disable(gl.SCISSOR_TEST);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+    }
     gl.enable(gl.SCISSOR_TEST);
     gl.useProgram(this.program);
     gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
@@ -484,6 +528,7 @@ class SharedProgressShaderRenderer {
     const cornerRadiusPx = SEGMENT_CORNER_RADIUS_CSS_PX * dpr;
 
     for (const { element } of segments) {
+      if (growingRoots && !nodeListContains(growingRoots, element)) continue;
       const bar = element.closest<HTMLElement>("[data-progress-dim]");
       const hovered = !!bar && bar.matches(":hover");
       if (bar && hovered && !boostedBars.has(bar)) {
@@ -505,7 +550,6 @@ class SharedProgressShaderRenderer {
       );
 
       const rect = element.getBoundingClientRect();
-      if (rect.width < 0.5 || rect.height < 0.5) continue;
 
       // Round against the whole cell, not the fill: a partially filled cell must
       // keep a straight cut at the fill edge and curve only at the cell's corners.
@@ -524,6 +568,27 @@ class SharedProgressShaderRenderer {
         { left, bottom, width, height },
         dpr,
       );
+
+      if (partial) {
+        const clearLeft = Math.max(0, Math.floor(clip.left - 1));
+        const clearBottom = Math.max(0, Math.floor(clip.bottom - 1));
+        const clearRight = Math.min(
+          canvasW,
+          Math.ceil(clip.left + clip.width + 1),
+        );
+        const clearTop = Math.min(
+          canvasH,
+          Math.ceil(clip.bottom + clip.height + 1),
+        );
+        const clearW = clearRight - clearLeft;
+        const clearH = clearTop - clearBottom;
+        if (clearW > 0 && clearH > 0) {
+          gl.scissor(clearLeft, clearBottom, clearW, clearH);
+          gl.clear(gl.COLOR_BUFFER_BIT);
+        }
+      }
+
+      if (rect.width < 0.5 || rect.height < 0.5) continue;
 
       // Scissor to the fill tip. Pad top/bottom/right 1px so outside-only AA can
       // sit under the CSS rim (box-shadow). Start at ceil(clip.left): floor +
@@ -791,24 +856,52 @@ export function SharedProgressShaderHost({
     let attachRaf = 0;
     let ro: ResizeObserver | null = null;
 
-    const paintFrame = (canvas: HTMLCanvasElement) => {
+    let forceFull = true;
+
+    const paintFrame = (
+      canvas: HTMLCanvasElement,
+      mode: "auto" | "full" = "full",
+    ) => {
       const renderer = rendererRef.current;
       if (!renderer) return;
-      const hostBox = host.getBoundingClientRect();
-      const canvasBox = canvas.getBoundingClientRect();
-      const display = resolveSharedProgressShaderDisplayBox(hostBox, canvasBox);
-      if (display.width < 1 || display.height < 1) return;
+      const growingRoots =
+        mode === "auto"
+          ? host.querySelectorAll(PROGRESS_GROWING_SELECTOR)
+          : null;
+      const hasGrowing = !!growingRoots && growingRoots.length > 0;
+      const full =
+        mode === "full" ||
+        forceFull ||
+        resolveSharedProgressPaintScope(hasGrowing) === "full";
+
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      renderer.resizeToDisplay(display.width, display.height, dpr);
-      // Scissor math is relative to the canvas element's on-screen box *after*
-      // the CSS pin, which may be 1 device pixel off the host.
-      const canvasRect = canvas.getBoundingClientRect();
+      let canvasRect: DOMRect;
+      if (full) {
+        const hostBox = host.getBoundingClientRect();
+        const canvasBox = canvas.getBoundingClientRect();
+        const display = resolveSharedProgressShaderDisplayBox(
+          hostBox,
+          canvasBox,
+        );
+        if (display.width < 1 || display.height < 1) return;
+        renderer.resizeToDisplay(display.width, display.height, dpr);
+        // Scissor math is relative to the canvas element's on-screen box *after*
+        // the CSS pin, which may be 1 device pixel off the host.
+        canvasRect = canvas.getBoundingClientRect();
+      } else {
+        // Host size is stable while a fill width tweens. Skip the resize read.
+        canvasRect = canvas.getBoundingClientRect();
+      }
       if (canvasRect.width < 1 || canvasRect.height < 1) return;
       const list: SegmentRegistration[] = [];
       segmentsRef.current.forEach((element, id) => {
-        list.push({ id, element });
+        if (full || (growingRoots && nodeListContains(growingRoots, element))) {
+          list.push({ id, element });
+        }
       });
-      renderer.render(list, canvasRect, dpr);
+      renderer.render(list, canvasRect, dpr, full ? null : growingRoots);
+      if (!full) return;
+      forceFull = false;
       const rimLayer = rimLayerRef.current;
       if (rimLayer) {
         syncSegmentRims(host, rimLayer, rimFilledClassRef.current);
@@ -817,21 +910,38 @@ export function SharedProgressShaderHost({
     paintRef.current = paintFrame;
 
     let stopPaint = () => { };
-    const paintLoop = createCappedPaintLoop(SHARED_PROGRESS_SHADER_FRAME_MS, () => {
-      const canvas = canvasRef.current;
-      if (!rendererRef.current || !canvas) return;
-      const box = canvas.getBoundingClientRect();
-      if (box.width < 1 || box.height < 1) {
-        stopPaint();
-        return;
-      }
-      paintFrame(canvas);
-    }, {
-      isActive: () => activeRef.current && visibleRef.current,
-    });
+    const paintLoop = createCappedPaintLoop(
+      () =>
+        host.querySelector(PROGRESS_GROWING_SELECTOR)
+          ? 0
+          : SHARED_PROGRESS_SHADER_FRAME_MS,
+      () => {
+        const canvas = canvasRef.current;
+        if (!rendererRef.current || !canvas) return;
+        const box = canvas.getBoundingClientRect();
+        if (box.width < 1 || box.height < 1) {
+          stopPaint();
+          return;
+        }
+        paintFrame(canvas, "auto");
+      },
+      {
+        isActive: () => activeRef.current && visibleRef.current,
+      },
+    );
     stopPaint = () => paintLoop.stop();
     startLoopRef.current = () => paintLoop.start();
     stopLoopRef.current = () => paintLoop.stop();
+
+    const onGrow = (event: Event) => {
+      event.stopPropagation();
+      // Drop the idle 100ms wait so the first grow frame is not a tenth of a
+      // second late. The next paint is full; frames after that track the tip.
+      forceFull = true;
+      paintLoop.stop();
+      paintLoop.start();
+    };
+    host.addEventListener(PROGRESS_GROW_EVENT, onGrow);
 
     const attachShader = (shader: ParkedSharedProgressShader) => {
       shader.canvas.style.cssText = ACTIVE_CANVAS_STYLE;
@@ -863,6 +973,7 @@ export function SharedProgressShaderHost({
     };
 
     const detachShader = () => {
+      host.removeEventListener(PROGRESS_GROW_EVENT, onGrow);
       ro?.disconnect();
       window.removeEventListener("resize", onResize);
       paintLoop.stop();

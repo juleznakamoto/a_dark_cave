@@ -3,6 +3,7 @@
  */
 import { describe, expect, it } from "vitest";
 import {
+  resolveSharedProgressPaintScope,
   resolveSharedProgressShaderCellClip,
   resolveSharedProgressShaderDisplayBox,
   scheduleSharedProgressShaderPrewarm,
@@ -57,6 +58,13 @@ describe("shared progress shader", () => {
     expect(() =>
       scheduleSharedProgressShaderPrewarm({ immediate: true }),
     ).not.toThrow();
+  });
+});
+
+describe("resolveSharedProgressPaintScope", () => {
+  it("keeps idle smoke on a full redraw and tracks only a growing bar", () => {
+    expect(resolveSharedProgressPaintScope(false)).toBe("full");
+    expect(resolveSharedProgressPaintScope(true)).toBe("growing");
   });
 });
 

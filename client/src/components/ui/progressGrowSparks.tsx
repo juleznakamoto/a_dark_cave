@@ -219,12 +219,18 @@ function drawGrowSparkParticle(
     return;
   }
 
-  ctx.shadowColor = particle.color;
-  ctx.shadowBlur = particle.size * 2;
+  // A second disc instead of shadowBlur. Blur on a full-screen canvas was
+  // stalling the Improve fill on the main thread.
+  ctx.save();
+  ctx.globalAlpha = alpha * 0.28;
+  ctx.beginPath();
+  ctx.arc(particle.x, particle.y, particle.size * 2.4, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+  ctx.globalAlpha = alpha;
   ctx.beginPath();
   ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
   ctx.fill();
-  ctx.shadowBlur = 0;
 }
 
 /**
@@ -264,23 +270,33 @@ export function ProgressGrowSparksCanvas({
     if (!ctx) return;
 
     const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
-
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-
-      canvas.style.width = `${window.innerWidth}px`;
-      canvas.style.height = `${window.innerHeight}px`;
-
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const width = Math.max(1, Math.round(window.innerWidth * dpr));
+      const height = Math.max(1, Math.round(window.innerHeight * dpr));
+      const cssW = `${width / dpr}px`;
+      const cssH = `${height / dpr}px`;
+      if (canvas.style.width !== cssW) canvas.style.width = cssW;
+      if (canvas.style.height !== cssH) canvas.style.height = cssH;
+      // Assigning width clears the buffer and reallocates. Skip when the
+      // backing store already matches (another Improve in the same window).
+      if (canvas.width !== width || canvas.height !== height) {
+        canvas.width = width;
+        canvas.height = height;
+      }
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
     window.addEventListener("resize", resize);
 
     const start = performance.now();
     let lastEmit = -GROW_SPARK_EMIT_INTERVAL_MS;
     lastFrameRef.current = start;
     let lastTipX: number | null = null;
+    let clearX = 0;
+    let clearY = 0;
+    let clearW = 0;
+    let clearH = 0;
     let tipEverMoved = false;
     let tipMotionlessMs = 0;
     let tipSettled = false;
@@ -355,7 +371,31 @@ export function ProgressGrowSparksCanvas({
         return particle.life > 0;
       });
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Clear only the previous spark bounds. A full-window clear each frame
+      // was stalling the bar fill on large displays.
+      const glowPad = Math.max(28, tipHeight * 5 + 12);
+      let minX = marker ? tipX - glowPad : Number.POSITIVE_INFINITY;
+      let minY = marker ? tipY - glowPad : Number.POSITIVE_INFINITY;
+      let maxX = marker ? tipX + glowPad : Number.NEGATIVE_INFINITY;
+      let maxY = marker ? tipY + glowPad : Number.NEGATIVE_INFINITY;
+      for (const particle of particlesRef.current) {
+        const pad = Math.max(16, particle.size * 4);
+        minX = Math.min(minX, particle.x - pad);
+        minY = Math.min(minY, particle.y - pad);
+        maxX = Math.max(maxX, particle.x + pad);
+        maxY = Math.max(maxY, particle.y + pad);
+      }
+      if (clearW > 0) ctx.clearRect(clearX, clearY, clearW, clearH);
+      if (maxX > minX && maxY > minY) {
+        clearX = minX;
+        clearY = minY;
+        clearW = maxX - minX;
+        clearH = maxY - minY;
+        ctx.clearRect(clearX, clearY, clearW, clearH);
+      } else {
+        clearW = 0;
+        clearH = 0;
+      }
 
       if (showTipGlow && tipActive && marker) {
         drawTipGlow(ctx, tipX, tipY, tipHeight, sparkPalette);

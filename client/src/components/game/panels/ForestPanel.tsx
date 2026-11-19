@@ -13,7 +13,6 @@ import {
   actionTooltipHasResourceSection,
 } from "@/game/rules/tooltips";
 import { FOCUS_ELIGIBLE_ACTIONS } from "@/game/rules/actionEffects";
-import { getFocusTooltipHeaderTrailing } from "@/game/rules/focusTooltipIndicator";
 import { getResourceLimit, isResourceLimited } from "@/game/resourceLimits";
 import CooldownButton, { gameActionButtonGridClassName } from "@/components/CooldownButton";
 import { DemoEndPromoBadge } from "@/components/game/DemoEndPromoBadge";
@@ -303,14 +302,13 @@ export default function ForestPanel() {
     ].includes(actionId);
     const isVeinfireElixirTradeAction =
       actionId === "tradeGoldForVeinfireElixir";
-    const focusTrailing = getFocusTooltipHeaderTrailing(actionId, state);
     const resourceGainTooltip =
       isChopWood ||
         isHunt ||
         isSacrificeAction ||
         isBombTradeAction ||
         isVeinfireElixirTradeAction
-        ? getResourceGainTooltip(actionId, state, focusTrailing)
+        ? getResourceGainTooltip(actionId, state)
         : null;
 
     // Check if this action is affected by focus mode (only actions that get 2x bonus)

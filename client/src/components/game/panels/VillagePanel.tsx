@@ -97,6 +97,7 @@ import {
   QUEUE_SLOT_UNLOCK_INSIGHT_KEY,
 } from "@/game/constructionQueueSlots";
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useHoldToRepeat } from "./useHoldToRepeat";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   RedactedBar,
@@ -871,76 +872,10 @@ export default function VillagePanel() {
     );
   };
 
-  // Hold-to-repeat state management (moved outside to avoid conditional hooks)
-  // Use refs so we can clear from anywhere (e.g. when Merchant dialog opens and mouseup never fires)
-  const holdRef = useRef<{
-    interval: NodeJS.Timeout | null;
-    timeout: NodeJS.Timeout | null;
-  }>({ interval: null, timeout: null });
-
-  // Track if a touch event occurred to prevent duplicate mouse events
-  const touchActiveRef = useRef(false);
-
-  const startHold = (action: () => void, isTouch: boolean = false) => {
-    // If this is a mouse event but touch is active, skip it
-    if (!isTouch && touchActiveRef.current) {
-      return;
-    }
-
-    // Set touch active flag if this is a touch event
-    if (isTouch) {
-      touchActiveRef.current = true;
-    }
-
-    // Clear any existing hold before starting new one
-    if (holdRef.current.timeout) clearTimeout(holdRef.current.timeout);
-    if (holdRef.current.interval) clearInterval(holdRef.current.interval);
-    holdRef.current = { interval: null, timeout: null };
-
-    // Execute immediately
-    action();
-
-    // Wait 500ms before starting repeat
-    const timeout = setTimeout(() => {
-      // Then repeat every 100ms
-      const interval = setInterval(action, 100);
-      holdRef.current.interval = interval;
-    }, 500);
-    holdRef.current.timeout = timeout;
-  };
-
-  const stopHold = (isTouch: boolean = false) => {
-    // Ignore synthetic mouse up/leave that browsers fire after touch — they would
-    // cancel the hold before the repeat interval starts.
-    if (!isTouch && touchActiveRef.current) {
-      return;
-    }
-
-    if (holdRef.current.timeout) {
-      clearTimeout(holdRef.current.timeout);
-    }
-    if (holdRef.current.interval) {
-      clearInterval(holdRef.current.interval);
-    }
-    holdRef.current = { interval: null, timeout: null };
-
-    // Reset touch flag after a delay to allow mouse event to be skipped
-    if (isTouch) {
-      setTimeout(() => {
-        touchActiveRef.current = false;
-      }, 100);
-    }
-  };
-
-  // When the tab switches away, VillagePanel unmounts but the hold interval keeps running. Clear on unmount.
-  useEffect(() => {
-    return () => {
-      if (holdRef.current.timeout) clearTimeout(holdRef.current.timeout);
-      if (holdRef.current.interval) clearInterval(holdRef.current.interval);
-      holdRef.current = { interval: null, timeout: null };
-      touchActiveRef.current = false;
-    };
-  }, []);
+  // Hold-to-repeat. The hook clears itself on unmount so leaving the tab
+  // cannot keep assigning after the panel is gone.
+  const { startHold, stopHold, beginTouchHold, endTouchHold } =
+    useHoldToRepeat();
 
   const totalPopulation = useGameStore((s) => getCurrentPopulation(s));
   const maxPopulation = useGameStore((s) => s.total_population);
@@ -1253,16 +1188,10 @@ export default function VillagePanel() {
               }
             }}
             onTouchStart={(e) => {
-              if (currentCount > 0) {
-                e.preventDefault(); // Prevent ghost click - synthetic mouse events cause unwanted assign on nearby +
-                startHold(() => unassignVillager(jobId), true);
-              }
+              beginTouchHold(e, () => unassignVillager(jobId), currentCount > 0);
             }}
-            onTouchEnd={(e) => {
-              if (e.cancelable) e.preventDefault();
-              stopHold(true);
-            }}
-            onTouchCancel={() => stopHold(true)}
+            onTouchEnd={endTouchHold}
+            onTouchCancel={endTouchHold}
             disabled={currentCount === 0}
             variant="outline"
             size="xs"
@@ -1304,16 +1233,10 @@ export default function VillagePanel() {
               }
             }}
             onTouchStart={(e) => {
-              if (canAssignMore) {
-                e.preventDefault(); // Prevent ghost click - synthetic mouse events cause unwanted actions
-                startHold(() => assignVillager(jobId), true);
-              }
+              beginTouchHold(e, () => assignVillager(jobId), canAssignMore);
             }}
-            onTouchEnd={(e) => {
-              if (e.cancelable) e.preventDefault();
-              stopHold(true);
-            }}
-            onTouchCancel={() => stopHold(true)}
+            onTouchEnd={endTouchHold}
+            onTouchCancel={endTouchHold}
             disabled={!canAssignMore}
             variant="outline"
             size="xs"

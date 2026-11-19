@@ -4,7 +4,8 @@
  * A loop that calls requestAnimationFrame on every refresh, then returns
  * until the cap elapses, still wakes the CPU at 60 or 120 Hz. This sleeps
  * on a timer until the next draw is due, then takes a single animation
- * frame so the paint lands on vsync.
+ * frame so the paint lands on vsync. A gap of 0 skips the sleep and chains
+ * frames (used only while an estate bar is growing).
  *
  * While the document is hidden the pending timer and frame are dropped.
  * `start()` again, or the page becoming visible, arms the next paint.
@@ -16,12 +17,16 @@ export type CappedPaintLoop = {
 };
 
 export function createCappedPaintLoop(
-  intervalMs: number,
+  intervalMs: number | (() => number),
   paint: (now: number) => void,
   options?: { isActive?: () => boolean },
 ): CappedPaintLoop {
   const isActive = options?.isActive ?? (() => true);
-  const gapMs = Math.max(0, intervalMs);
+  const gapMs = () =>
+    Math.max(
+      0,
+      typeof intervalMs === "function" ? intervalMs() : intervalMs,
+    );
   let wanted = false;
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
   let rafId: number | null = null;
@@ -43,6 +48,12 @@ export function createCappedPaintLoop(
 
   const armTimeout = (delayMs: number) => {
     if (!wanted || !isActive() || pageHidden()) return;
+    // A 0 gap is a vsync chain (estate Improve). Idle shaders keep a real gap
+    // so they do not wake on every refresh.
+    if (delayMs <= 0) {
+      armFrame();
+      return;
+    }
     timeoutId = setTimeout(() => {
       timeoutId = null;
       armFrame();
@@ -58,7 +69,7 @@ export function createCappedPaintLoop(
       paint(now);
       // paint() may have called stop().
       if (!wanted || !isActive() || pageHidden()) return;
-      armTimeout(gapMs);
+      armTimeout(gapMs());
     });
   };
 

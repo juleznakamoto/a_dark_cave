@@ -1,11 +1,11 @@
 {
   "books": {
     "book_of_ascension": {
-      "description": "Księga o wznoszeniu siebie. Daje zdolność doskonalenia się w zadaniach przez praktykę.",
+      "description": "Księga o wznoszeniu siebie.",
       "name": "Księga wzniesienia"
     },
     "book_of_absolution": {
-      "description": "Księga obrzędów uspokajania przeklętych przedmiotów. Pozwala osłabić ich złe skutki.",
+      "description": "Księga obrzędów uspokajania przeklętych przedmiotów.",
       "name": "Księga rozgrzeszenia"
     },
     "book_of_chainmaster": {

@@ -23,6 +23,13 @@ const SEGMENT_WIDTH_TRANSITION_MS = 500;
 /** Matches the per-segment `transitionDelay` while the bar animates. */
 const SEGMENT_WIDTH_STAGGER_MS = 20;
 
+/** Bubbles from a bar so the shared smoke canvas can track the CSS fill. */
+export const PROGRESS_GROW_EVENT = "adc-progress-grow";
+/** Set on the bar root for the length of that CSS fill transition. */
+export const PROGRESS_GROWING_SELECTOR = "[data-progress-growing]";
+/** easeOutCubic, same curve the old per-frame tween used. */
+const GROW_EASE = "cubic-bezier(0.33, 1, 0.68, 1)";
+
 /**
  * How long to wait after the displayed fill reaches a segment before flashing.
  * The width transition (and its stagger) is the visible fill; the flash follows it.
@@ -190,13 +197,32 @@ export function SegmentedProgress({
   /** New stages waiting until their fill animation finishes. */
   const pendingFlashRef = useRef<Set<number>>(new Set());
   const flashTimersRef = useRef<Map<number, number>>(new Map());
+  const barRef = useRef<HTMLDivElement>(null);
+  const growClearTimerRef = useRef(0);
+  /** False on the first paint so a loaded save does not grow from empty. */
+  const [widthTransitionOn, setWidthTransitionOn] = useState(false);
+  /** Change-only bars show the target immediately and let CSS move the width. */
+  const shownValue = changeOnlyGrow ? value : displayValue;
 
   useEffect(() => {
     return () => {
       flashTimersRef.current.forEach((timer) => clearTimeout(timer));
       flashTimersRef.current.clear();
+      window.clearTimeout(growClearTimerRef.current);
     };
   }, []);
+
+  useEffect(() => {
+    if (!changeOnlyGrow) return;
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+    const id = requestAnimationFrame(() => setWidthTransitionOn(true));
+    return () => cancelAnimationFrame(id);
+  }, [changeOnlyGrow]);
 
   useEffect(() => {
     if (!flashOnFill) return;
@@ -237,7 +263,7 @@ export function SegmentedProgress({
 
   useEffect(() => {
     if (!flashOnFill) return;
-    const displayed = getCompletedSegmentCount(displayValue, segments);
+    const displayed = getCompletedSegmentCount(shownValue, segments);
     pendingFlashRef.current.forEach((index) => {
       if (index >= displayed || flashTimersRef.current.has(index)) return;
       const delay = getSegmentFillFlashDelayMs(index, changeOnlyGrow);
@@ -252,7 +278,7 @@ export function SegmentedProgress({
       }, delay);
       flashTimersRef.current.set(index, timer);
     });
-  }, [flashOnFill, displayValue, segments, changeOnlyGrow]);
+  }, [flashOnFill, shownValue, segments, changeOnlyGrow]);
 
   const sparkPalette = useMemo(
     () => resolveSparkPalette(sparkClassName),
@@ -280,6 +306,15 @@ export function SegmentedProgress({
       if (emitSparksOnGrow) {
         setGrowSparkSession((s) => s + 1);
       }
+      const bar = barRef.current;
+      if (bar && widthTransitionOn) {
+        bar.setAttribute("data-progress-growing", "");
+        window.clearTimeout(growClearTimerRef.current);
+        growClearTimerRef.current = window.setTimeout(() => {
+          bar.removeAttribute("data-progress-growing");
+        }, tweenDurationMs);
+        bar.dispatchEvent(new Event(PROGRESS_GROW_EVENT, { bubbles: true }));
+      }
     }
     prevValueRef.current = value;
   }, [
@@ -288,6 +323,8 @@ export function SegmentedProgress({
     changeOnlyGrow,
     disableGlow,
     emitSparksOnGrow,
+    widthTransitionOn,
+    tweenDurationMs,
   ]);
 
   useEffect(() => {
@@ -296,6 +333,10 @@ export function SegmentedProgress({
       setIsInitialized(true);
       return;
     }
+
+    // Estate / attack-wave bars: one style update, then a CSS width transition.
+    // A rAF setState here re-rendered the bar every frame and fought the shader.
+    if (changeOnlyGrow) return;
 
     if (!isInitialized) {
       const initTimeout = setTimeout(() => setIsInitialized(true), 50);
@@ -328,15 +369,16 @@ export function SegmentedProgress({
     };
     // displayValue is captured at effect start via startValueRef; omit from deps
     // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional
-  }, [value, isInitialized, animate, tweenDurationMs]);
+  }, [value, isInitialized, animate, tweenDurationMs, changeOnlyGrow]);
 
   const tipSegmentIndex = emitSparksOnGrow
-    ? getActiveSegmentIndex(displayValue, segments)
+    ? getActiveSegmentIndex(shownValue, segments)
     : -1;
 
   return (
     <>
       <div
+        ref={barRef}
         className={cn(
           "flex flex-col",
           compact ? "gap-1" : "gap-8",
@@ -369,7 +411,7 @@ export function SegmentedProgress({
               )}
               {showPercentage && (
                 <span className="text-sm font-semibold text-foreground tabular-nums tracking-tight">
-                  {Math.round(displayValue)}%
+                  {Math.round(shownValue)}%
                 </span>
               )}
             </div>
@@ -385,7 +427,7 @@ export function SegmentedProgress({
             data-testid={dataTestId}
           >
             {Array.from({ length: segments }).map((_, index) => {
-              const fill = getSegmentFill(displayValue, segments, index);
+              const fill = getSegmentFill(shownValue, segments, index);
               const delay =
                 isInitialized && !changeOnlyGrow
                   ? index * SEGMENT_WIDTH_STAGGER_MS
@@ -417,15 +459,28 @@ export function SegmentedProgress({
                   >
                     <div
                       className={cn(
-                        "absolute inset-y-0 left-0 overflow-hidden transition-[width] ease-out",
-                        changeOnlyGrow ? "duration-0" : "duration-500",
+                        "absolute inset-y-0 left-0 overflow-hidden ease-out",
+                        changeOnlyGrow
+                          ? ""
+                          : "transition-[width] duration-500",
                         // Keep solid fill under optional renderFill (shader paints on top).
                         filledClassName,
                       )}
-                      style={{
-                        width: `${fill * 100}%`,
-                        transitionDelay: `${delay}ms`,
-                      }}
+                      style={
+                        changeOnlyGrow
+                          ? {
+                              width: `${fill * 100}%`,
+                              transitionProperty: "width",
+                              transitionDuration: widthTransitionOn
+                                ? `${tweenDurationMs}ms`
+                                : "0ms",
+                              transitionTimingFunction: GROW_EASE,
+                            }
+                          : {
+                              width: `${fill * 100}%`,
+                              transitionDelay: `${delay}ms`,
+                            }
+                      }
                     >
                       {renderFill ? renderFill() : null}
                       {showSegmentGlow && (
@@ -525,7 +580,6 @@ export function SegmentedProgress({
 
       {emitSparksOnGrow && growSparkSession > 0 && (
         <ProgressGrowSparksCanvas
-          key={growSparkSession}
           tipMarkerRef={tipMarkerRef}
           durationMs={tweenDurationMs}
           sessionKey={growSparkSession}

@@ -1,9 +1,8 @@
 /**
- * Tests for job assignment touch behavior (mobile ghost-click fix).
- * Verifies that assignVillager/unassignVillager work correctly and that
- * touch handlers are set up to prevent ghost clicks via preventDefault.
+ * Job assignment counts. Touch hold-to-repeat and scroll cancel live in
+ * useHoldToRepeat.test.ts.
  */
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { useGameStore } from "@/game/state";
 import {
   assignVillagerToJob,
@@ -145,49 +144,5 @@ describe("Job assignment - touch/ghost-click fix", () => {
 
     expect(updates.villagers?.gatherer).toBe(0);
     expect(updates.villagers?.free).toBe(4);
-  });
-
-  it("touch handlers call preventDefault when condition met (prevents ghost click)", () => {
-    // Verify the VillagePanel touch handler pattern: when we have a valid action,
-    // we call e.preventDefault() to block synthetic mouse events.
-    const mockEvent = {
-      preventDefault: vi.fn(),
-      cancelable: true,
-      stopPropagation: vi.fn(),
-    };
-
-    // Simulate the handler logic from VillagePanel
-    const currentCount = 4;
-    const handleTouchStart = (e: typeof mockEvent) => {
-      if (currentCount > 0) {
-        e.preventDefault();
-      }
-    };
-
-    handleTouchStart(mockEvent);
-    expect(mockEvent.preventDefault).toHaveBeenCalled();
-  });
-
-  it("stopHold ignores synthetic mouse events while touch hold is active", () => {
-    // Mirrors VillagePanel hold-to-repeat: touch sets touchActiveRef; mouse stop must no-op.
-    let touchActive = false;
-    let holdCleared = false;
-
-    const stopHold = (isTouch: boolean) => {
-      if (!isTouch && touchActive) return;
-      holdCleared = true;
-      if (isTouch) {
-        setTimeout(() => {
-          touchActive = false;
-        }, 100);
-      }
-    };
-
-    touchActive = true;
-    stopHold(false);
-    expect(holdCleared).toBe(false);
-
-    stopHold(true);
-    expect(holdCleared).toBe(true);
   });
 });

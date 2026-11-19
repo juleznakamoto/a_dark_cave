@@ -1,11 +1,11 @@
 {
   "books": {
     "book_of_ascension": {
-      "description": "Book on ascending the self. Grants the ability to improve at tasks through practice.",
+      "description": "Book on ascending the self.",
       "name": "Book of Ascension"
     },
     "book_of_absolution": {
-      "description": "Book of rites for calming cursed objects. Lets you weaken their negative effects.",
+      "description": "Book of rites for calming cursed objects.",
       "name": "Book of Absolution"
     },
     "book_of_chainmaster": {

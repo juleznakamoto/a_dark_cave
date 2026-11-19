@@ -1,11 +1,11 @@
 {
   "books": {
     "book_of_ascension": {
-      "description": "Libro sobre la elevación del yo. Otorga la capacidad de mejorar en las tareas mediante la práctica.",
+      "description": "Libro sobre la elevación del yo.",
       "name": "Libro de la ascensión"
     },
     "book_of_absolution": {
-      "description": "Libro de ritos para calmar objetos malditos. Permite debilitar sus efectos negativos.",
+      "description": "Libro de ritos para calmar objetos malditos.",
       "name": "Libro de la absolución"
     },
     "book_of_chainmaster": {

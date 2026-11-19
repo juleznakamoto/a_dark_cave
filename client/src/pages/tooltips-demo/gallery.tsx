@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import type { GameState } from "@shared/schema";
 import { SHOP_ITEMS } from "@shared/shopItems";
 import { TRADERS_GRATITUDE_DISCOUNT_PERCENT } from "@shared/shopCheckoutPrice";
@@ -62,7 +62,6 @@ import {
   isKnowledgeBonusMaxed,
 } from "@/game/rules/effectsStats";
 import { hasChosenPact } from "@/game/rules/pacts";
-import { getFocusTooltipHeaderTrailing } from "@/game/rules/focusTooltipIndicator";
 import { getRevealedEffectsForActionTooltip } from "@/game/rules/insightRevealTooltip";
 import { BuildingUpgradeTooltipIcon } from "@/game/rules/buildingUpgradeTooltipIndicator";
 import {
@@ -100,11 +99,14 @@ function TooltipSample({
   id,
   title,
   className,
+  frameStyle,
   children,
 }: {
   id: string;
   title: string;
   className?: string;
+  /** Extra frame style. Use this to fake a narrow popper cap. */
+  frameStyle?: CSSProperties;
   children: ReactNode;
 }) {
   const frame = useTooltipFrame(className);
@@ -121,7 +123,7 @@ function TooltipSample({
         role="tooltip"
         data-specimen-tip={id}
         className={frame.className}
-        style={frame.style}
+        style={{ ...frame.style, ...frameStyle }}
       >
         {children}
       </div>
@@ -145,11 +147,7 @@ function CaveGatherTip({ state }: { state: GameState }) {
   });
   const revealed = getRevealedEffectsForActionTooltip("chopWood", state);
   return composeActionTooltip({
-    header: getResourceGainTooltip(
-      "chopWood",
-      state,
-      getFocusTooltipHeaderTrailing("chopWood", state) ?? undefined,
-    ),
+    header: getResourceGainTooltip("chopWood", state),
     description,
     effects: revealed,
   });
@@ -756,6 +754,20 @@ export function TooltipDemoGallery({ state }: { state: GameState }) {
       <TooltipSample id="item-building" title="Building">
         {renderItemTooltip(
           "woodenHut",
+          "building",
+          undefined,
+          SIDE_PANEL_ITEM_TOOLTIP_DISPLAY,
+        )}
+      </TooltipSample>
+      <TooltipSample
+        id="item-building-narrow"
+        title="Building, narrow side list"
+        frameStyle={
+          { "--radix-popper-available-width": "12rem" } as CSSProperties
+        }
+      >
+        {renderItemTooltip(
+          "foundry",
           "building",
           undefined,
           SIDE_PANEL_ITEM_TOOLTIP_DISPLAY,

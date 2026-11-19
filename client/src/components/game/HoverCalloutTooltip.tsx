@@ -14,10 +14,7 @@ import { cn } from "@/lib/utils";
 import { useGameStore, isModalDialogOpen } from "@/game/state";
 import { Z_INDEX } from "@/lib/z-index";
 import { isGameTabHidden, subscribeGameTabHidden } from "@/lib/tabVisibility";
-import {
-  TOOLTIP_MAX_WIDTH,
-  TOOLTIP_VIEWPORT_PAD_PX,
-} from "@/game/tooltipMetrics";
+import { tooltipFrameMaxWidth } from "@/game/tooltipMetrics";
 import {
   calloutArrowCss,
   placeCalloutInViewport,
@@ -240,7 +237,7 @@ export function HoverCalloutTooltip({
       zIndex: calloutZIndex,
       left: placement?.left ?? triggerRect.left,
       top: placement?.top ?? triggerRect.bottom,
-      maxWidth: `min(${TOOLTIP_MAX_WIDTH}, ${Math.max(0, window.innerWidth - TOOLTIP_VIEWPORT_PAD_PX * 2)}px)`,
+      maxWidth: tooltipFrameMaxWidth(),
       transform: undefined,
       visibility: placed ? "visible" : "hidden",
       ...fadeStyle,

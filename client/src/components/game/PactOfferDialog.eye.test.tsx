@@ -58,6 +58,18 @@ describe("PactOfferEye", () => {
     expect(eyeMask()).toContain("precision_boost");
   });
 
+  it("stays open when blinking is off", () => {
+    installMedia(false);
+    vi.useFakeTimers();
+    render(<PactOfferEye open blink={false} />);
+    expect(eyeMask()).toContain("precision_boost");
+
+    act(() => {
+      vi.advanceTimersByTime(30_000);
+    });
+    expect(eyeMask()).toContain("precision_boost");
+  });
+
   it("keeps an unchosen eye closed", () => {
     installMedia(false);
     vi.useFakeTimers();

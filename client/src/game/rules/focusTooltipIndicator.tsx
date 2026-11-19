@@ -1,4 +1,3 @@
-import React from "react";
 import type { GameState } from "@shared/schema";
 import { FOCUS_ELIGIBLE_ACTIONS } from "./actionEffects";
 import { cn } from "@/lib/utils";
@@ -28,13 +27,3 @@ export function FocusTooltipIcon({ className }: { className?: string }) {
   );
 }
 
-export function getFocusTooltipHeaderTrailing(
-  actionId: string,
-  state: GameState,
-): React.ReactNode | undefined {
-  if (!isFocusGlowActive(actionId, state)) {
-    return undefined;
-  }
-
-  return <FocusTooltipIcon />;
-}

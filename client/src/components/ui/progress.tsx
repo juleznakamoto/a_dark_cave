@@ -249,7 +249,6 @@ const Progress = React.forwardRef<
         {root}
         {emitChangeParticles && growSparkSession > 0 && (
           <ProgressGrowSparksCanvas
-            key={growSparkSession}
             tipMarkerRef={tipMarkerRef}
             durationMs={changeAnimationMs}
             sessionKey={growSparkSession}

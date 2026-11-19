@@ -1,7 +1,7 @@
 import { Action, GameState } from "@shared/schema";
 import { formatNumber } from "@/lib/utils";
 import { FULL_DARK_ESTATE_RESOURCE_COST } from "@/game/demoLimit";
-import { PRESET_SLOTS_BY_BUILDING_TIER } from "@/game/villagerJobPresets";
+import { PRESET_SLOTS_BY_BUILDING_TIER } from "@/game/villagerJobPresetSlots";
 import { getBoneyardBurialMadnessReduction } from "./boneyardMadness";
 import { bt, type BuildingTooltipEffect } from "./buildingTooltipEffects";
 import {

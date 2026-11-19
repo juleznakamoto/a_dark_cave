@@ -1,11 +1,11 @@
 {
   "books": {
     "book_of_ascension": {
-      "description": "自己を高める書。務めを繰り返すことで上達できるようになる。",
+      "description": "自己を高める書。",
       "name": "昇華の書"
     },
     "book_of_absolution": {
-      "description": "呪われた品を鎮める儀式の書。その負の効果を弱められる。",
+      "description": "呪われた品を鎮める儀式の書。",
       "name": "赦しの書"
     },
     "book_of_chainmaster": {

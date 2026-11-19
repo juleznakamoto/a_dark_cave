@@ -1,11 +1,11 @@
 {
   "books": {
     "book_of_ascension": {
-      "description": "Benliğin yükselişine dair bir kitap. Bir işi yaptıkça o işte ustalaşırsın.",
+      "description": "Benliğin yükselişine dair bir kitap.",
       "name": "Yükseliş Kitabı"
     },
     "book_of_absolution": {
-      "description": "Lanetli nesneleri yatıştırmaya yarayan ayinlerin kitabı. Olumsuz etkilerini zayıflatabilirsin.",
+      "description": "Lanetli nesneleri yatıştırmaya yarayan ayinlerin kitabı.",
       "name": "Arınma Kitabı"
     },
     "book_of_chainmaster": {

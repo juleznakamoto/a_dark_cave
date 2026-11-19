@@ -13,9 +13,9 @@ import {
   PRESET_UNLOCK_INSIGHT_KEY,
 } from "@/game/rules/insightReveal";
 import { updatePopulationCounts } from "@/game/stateHelpers";
+import { PRESET_SLOTS_BY_BUILDING_TIER } from "@/game/villagerJobPresetSlots";
 
-/** Preset slots unlocked per archive building tier (Scribe's → Records → Grand Archive). */
-export const PRESET_SLOTS_BY_BUILDING_TIER = [2, 1, 2] as const;
+export { PRESET_SLOTS_BY_BUILDING_TIER };
 
 export const MAX_PRESET_SLOTS = PRESET_SLOTS_BY_BUILDING_TIER.reduce(
   (sum, count) => sum + count,

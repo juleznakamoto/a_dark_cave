@@ -1,11 +1,11 @@
 {
   "books": {
     "book_of_ascension": {
-      "description": "关于自我升华的书。使你能够通过练习提升各项行动能力。",
+      "description": "关于自我升华的书。",
       "name": "升华之书"
     },
     "book_of_absolution": {
-      "description": "记载安抚被诅咒之物仪式的书。可以削弱其负面效果。",
+      "description": "记载安抚被诅咒之物仪式的书。",
       "name": "赦免之书"
     },
     "book_of_chainmaster": {

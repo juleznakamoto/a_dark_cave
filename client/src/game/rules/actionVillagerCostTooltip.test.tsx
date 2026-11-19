@@ -123,4 +123,27 @@ describe("action villager cost tooltip", () => {
     expect(time?.className).toContain("text-muted-foreground");
     expect(wood?.className).not.toContain("text-muted-foreground");
   });
+
+  it("places the focus mark on the gains, not the costs", () => {
+    const state = gameStateSchema.parse({
+      tools: { iron_lantern: true },
+      resources: { food: 50 },
+      villagers: { free: 2 },
+      focusState: {
+        isActive: true,
+        endTime: Date.now() + 60_000,
+      },
+    });
+    const node = getResourceGainTooltip("descendFurther", state);
+    const { container } = render(<>{node}</>);
+    const mark = Array.from(container.querySelectorAll("span")).find(
+      (el) => el.textContent === "☩",
+    );
+    const gainsRow = mark?.closest(".flex");
+
+    expect(mark).toBeTruthy();
+    expect(gainsRow?.textContent).toContain("Stone");
+    expect(gainsRow?.textContent).not.toContain("Food");
+    expect(gainsRow?.textContent).not.toContain("20s");
+  });
 });

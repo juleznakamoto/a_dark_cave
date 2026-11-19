@@ -37,6 +37,25 @@ describe("item unlock effect lines", () => {
         description: /Book about navigating life.s challenges\./,
       },
       {
+        id: "book_of_ascension",
+        type: "book" as const,
+        effect: "Unlocks improving actions through repetition",
+        description: "Book on ascending the self.",
+      },
+      {
+        id: "book_of_chainmaster",
+        type: "book" as const,
+        effect: "Unlocks Chainmaster skill",
+        description:
+          "Book of the long-dead Chainmaster containing harsh methods to drive workers beyond their limits.",
+      },
+      {
+        id: "book_of_absolution",
+        type: "book" as const,
+        effect: "Unlocks reducing an item's Madness",
+        description: "Book of rites for calming cursed objects.",
+      },
+      {
         id: "survivors_notes",
         type: "blessing" as const,
         effect: "Unlocks basic achievements",

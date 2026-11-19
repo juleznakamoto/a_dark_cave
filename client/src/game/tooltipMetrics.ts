@@ -1,12 +1,11 @@
-import type { CSSProperties } from "react";
-
 /**
- * Shared tip sizing. Flavour text may be wider than the lines above it, down
- * to this floor, and no tip grows past the maximum. The screen edge uses the
- * same inset for Radix tips and hover callouts.
+ * Shared tip sizing. No tip grows past the maximum. Phones use the smaller
+ * maximum (see `--adc-tooltip-max` in index.css, same 768px break as the
+ * rest of the layout). The screen edge uses the same inset for Radix tips
+ * and hover callouts.
  */
-export const TOOLTIP_MIN_WIDTH = "16rem";
 export const TOOLTIP_MAX_WIDTH = "22rem";
+export const TOOLTIP_MAX_WIDTH_MOBILE = "18rem";
 export const TOOLTIP_VIEWPORT_PAD_PX = 10;
 /** Space between a tip and its trigger. Hover callouts use the same gap. */
 export const TOOLTIP_GAP_PX = 6;
@@ -29,29 +28,12 @@ export const TOOLTIP_ACCENT_SHOP_CLASS = "border border-amber-600";
 export const TOOLTIP_ACCENT_DANGER_CLASS =
   "border border-red-600 shadow-[0_0_10px_theme(colors.red.600/0.55)]";
 
-/** Cap used by the tooltip frame. Popper's available width already includes the pad. */
+/**
+ * Cap for every tip. Popper's available width already includes the pad, so a
+ * tip beside the screen edge is narrower than the maximum and its text wraps.
+ */
 export function tooltipFrameMaxWidth(): string {
   const pad = TOOLTIP_VIEWPORT_PAD_PX * 2;
-  return `min(${TOOLTIP_MAX_WIDTH}, calc(100vw - ${pad}px), var(--radix-popper-available-width, ${TOOLTIP_MAX_WIDTH}))`;
-}
-
-/**
- * Flavour under costs or effects takes the lines above when those are wider
- * than the floor, and never passes the maximum. Flavour alone wraps at the
- * floor and stays narrower when the sentence is short.
- */
-export function tooltipDescriptionLayoutStyle(
-  hasContentAbove: boolean,
-): CSSProperties {
-  if (hasContentAbove) {
-    return {
-      width: 0,
-      minWidth: `max(100%, ${TOOLTIP_MIN_WIDTH})`,
-      maxWidth: TOOLTIP_MAX_WIDTH,
-    };
-  }
-  return {
-    width: "max-content",
-    maxWidth: TOOLTIP_MIN_WIDTH,
-  };
+  const max = `var(--adc-tooltip-max, ${TOOLTIP_MAX_WIDTH})`;
+  return `min(${max}, calc(100vw - ${pad}px), var(--radix-popper-available-width, ${max}))`;
 }

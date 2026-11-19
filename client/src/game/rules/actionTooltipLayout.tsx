@@ -2,7 +2,6 @@ import React from "react";
 import {
   TOOLTIP_DIVIDER_CLASS,
   TOOLTIP_MUTED_CLASS,
-  tooltipDescriptionLayoutStyle,
 } from "@/game/tooltipMetrics";
 
 export function ActionTooltipSeparator() {
@@ -12,7 +11,7 @@ export function ActionTooltipSeparator() {
 export type ActionTooltipParts = {
   /** Cost lines, resource gains, villager requirements, etc. */
   header?: React.ReactNode;
-  /** Icon or badge shown at the top-right of the header row (e.g. upgrade 🠕, focus ☩). */
+  /** Icon or badge shown at the top-right of the header row (e.g. upgrade arrow). */
   headerTrailing?: React.ReactNode;
   /** Flavour text — never includes the action/item title. */
   description?: string;
@@ -68,10 +67,7 @@ export function composeActionTooltip({
       {hasDescription ? (
         <>
           {hasHeader || hasEffects ? <ActionTooltipSeparator /> : null}
-          <div
-            className={`whitespace-normal ${TOOLTIP_MUTED_CLASS}`}
-            style={tooltipDescriptionLayoutStyle(hasHeader || hasEffects)}
-          >
+          <div className={TOOLTIP_MUTED_CLASS}>
             {description}
           </div>
         </>

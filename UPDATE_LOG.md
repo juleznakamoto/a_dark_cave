@@ -14,13 +14,19 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- Blessing choices work like pact choices. Select a card, then press Continue. The cards stay the same height when a description uses two lines.
+- The Book of Ascension tip says you improve actions by repeating them.
+- The Pause and Menu marks in the top bar are a little larger.
+- Improving an Estate skill fills the next segment smoothly.
+- While Focus is active, the Focus mark on an action tip sits in the upper right of what you gain.
+- Book tips for Ascension, Chainmaster, and Absolution list what the book does, then a short description, the same way Book of Trials does.
 - Cube memories that said Continue now say Close.
 - Cube memory arrows sit on the left and on the right.
 - Invest countdowns and the dice rules use the same width as other tips. Lines inside a tip sit at the same distance, and tip headings use the same weight.
 - The pact choice rings in the top bar use the same tip as the rest of the game.
 - In the browser shop, gold packs, Great Feasts, bundles, and Cruel Mode cost less.
 - Every tip uses the same dark background, the same text, and the same divider. Level badges, the production cycle, and combat breakdowns match the other tips.
-- Tips with a longer description are a bit wider. Every tip stops at the same maximum width and keeps the same gap from the screen edge.
+- Every tip stops at the same width. On a phone that width is a little smaller, and a long description wraps inside the box.
 - Construction queue and villager preset boxes are a little smaller, with more space between them.
 - Achievement progress after the description sits in parentheses, like (3/10).
 - On a phone, the pale light around your cursor is a smaller spot during sleep and on the title screen.
@@ -58,7 +64,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 #### Fixed
 
 - Insight in the resource list stops glowing after you reveal an achievement title, unlock a queue slot or villager preset, or speed up a build.
-- Long lines in tips stay inside the box, including larger text and longer translations.
+- Long lines in tips stay inside the box, including side-list building tips, larger text, and longer translations.
 - Scrolling the screen while an action tip is open closes the tip.
 - Unlocking a construction queue slot or a villager preset plays the Insight animation before that badge goes away.
 - A new game starts with no pact choices. You earn one each time you finish a playthrough, or two if you finish in Cruel Mode.
@@ -96,6 +102,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- On a phone, effect icons in the top bar sit a little closer together.
 - On a phone, the arrows on a cube memory sit against the memory and the edge of the screen.
 - On a phone, the arrow marks beside a cube memory are a little larger.
 - Swipe left or right on a cube memory to move to the next or previous memory.
@@ -119,6 +126,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- On a phone, scrolling the village list lets go of a job's + or - button, so villagers stop moving while the list scrolls.
 - On a phone, the resource list fills the side panel when you drag that panel taller.
 - Leaving the app and coming back no longer leaves the ambience music silent until you restart.
 - Leaving the app and coming back no longer freezes the game when Sleep is unlocked.

@@ -27,7 +27,7 @@
   },
   "blessingOffer": {
     "title": "Choose a Blessing",
-    "chooseBlessing": "Choose"
+    "continue": "Continue"
   },
   "pactOffer": {
     "title": "Choose your Pacts",

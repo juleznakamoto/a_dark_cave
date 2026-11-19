@@ -1,11 +1,11 @@
 {
   "books": {
     "book_of_ascension": {
-      "description": "Livro sobre a ascensão do eu. Concede a habilidade de melhorar nas tarefas por meio de prática.",
+      "description": "Livro sobre a ascensão do eu.",
       "name": "Livro da Ascensão"
     },
     "book_of_absolution": {
-      "description": "Livro de ritos para acalmar objetos amaldiçoados. Permite enfraquecer seus efeitos negativos.",
+      "description": "Livro de ritos para acalmar objetos amaldiçoados.",
       "name": "Livro da Absolvição"
     },
     "book_of_chainmaster": {

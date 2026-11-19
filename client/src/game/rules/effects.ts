@@ -1813,8 +1813,7 @@ export const bookEffects: Record<string, EffectDefinition> = {
   book_of_ascension: {
     id: "book_of_ascension",
     name: "Book of Ascension",
-    description:
-      "Book on ascending the self. Grants the ability to improve at tasks through practice.",
+    description: "Book on ascending the self.",
     bonuses: {},
   },
   book_of_trials: {
@@ -1834,8 +1833,7 @@ export const bookEffects: Record<string, EffectDefinition> = {
   book_of_absolution: {
     id: "book_of_absolution",
     name: "Book of Absolution",
-    description:
-      "Rites for quieting cursed things. Spend Insight to lessen the madness an artifact inflicts.",
+    description: "Book of rites for calming cursed objects.",
     bonuses: {},
   },
 };
