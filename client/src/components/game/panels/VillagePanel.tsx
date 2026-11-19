@@ -191,6 +191,11 @@ const VILLAGER_COUNT_STACK_COLS_WITH_BADGE_CLASS =
   "grid-cols-[auto_auto_auto_1fr]";
 const VILLAGER_COUNT_ROW_CLASS =
   "col-span-full grid min-w-0 grid-cols-subgrid items-center";
+/** Summary and stat rows have no −/+. See `.villager-count-row--plain`. */
+const VILLAGER_COUNT_PLAIN_ROW_CLASS = cn(
+  VILLAGER_COUNT_ROW_CLASS,
+  "villager-count-row--plain",
+);
 /** − / count / + only; /cap + optional Insight badge sit as grid siblings after. */
 const VILLAGER_COUNT_CONTROL_GRID_CLASS =
   "villager-count-control-grid grid shrink-0 grid-cols-[auto_3.5ch_auto] items-center";
@@ -988,7 +993,7 @@ export default function VillagePanel() {
       </>
     );
     return (
-      <div key={key} className={VILLAGER_COUNT_ROW_CLASS}>
+      <div key={key} className={VILLAGER_COUNT_PLAIN_ROW_CLASS}>
         <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
           <span
             className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}
@@ -1018,7 +1023,7 @@ export default function VillagePanel() {
   };
 
   const renderVillagersSummaryRow = () => (
-    <div key="villagers-summary" className={VILLAGER_COUNT_ROW_CLASS}>
+    <div key="villagers-summary" className={VILLAGER_COUNT_PLAIN_ROW_CLASS}>
       <div className={VILLAGER_COUNT_CONTROL_GRID_CLASS}>
         <span
           className={cn(VILLAGER_COUNT_BUTTON_SIZE_CLASS, "inline-block")}

@@ -53,14 +53,14 @@ export function gameActionOutlineButtonClassName(
       // opacity (that lets portaled click particles show through the chrome).
       cn(
         "border-orange-950/50",
-        "!bg-transparent hover:!bg-transparent",
+        "!bg-neutral-600/5 hover:!bg-neutral-600/5",
       )
       : cn(
         "border-orange-950",
         "text-foreground",
       ),
     !disabled &&
-    `${hoverPrefix}bg-accent ${hoverPrefix}text-accent-foreground bg-neutral-600/10`,
+    `${hoverPrefix}bg-accent ${hoverPrefix}text-accent-foreground bg-neutral-600/15`,
   );
 }
 
@@ -437,7 +437,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           isButtonDisabled && "pointer-events-none",
           // aria-disabled (not native disabled) so outline variant hover styles still apply — reset them.
           isButtonDisabled &&
-          "!bg-transparent hover:!bg-transparent hover:!text-foreground",
+          "!bg-neutral-600/5 hover:!bg-neutral-600/5 hover:!text-foreground",
           isButtonDisabled && "active:scale-100",
           isCompassGlowing && "compass-glow",
           showBadDreamGlow && "bad-dream-glow",

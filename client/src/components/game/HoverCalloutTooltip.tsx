@@ -15,6 +15,7 @@ import { useGameStore, isModalDialogOpen } from "@/game/state";
 import { Z_INDEX } from "@/lib/z-index";
 import { isGameTabHidden, subscribeGameTabHidden } from "@/lib/tabVisibility";
 import { tooltipFrameMaxWidth } from "@/game/tooltipMetrics";
+import { useSafeAreaInsets } from "@/lib/safeAreaInsets";
 import {
   calloutArrowCss,
   placeCalloutInViewport,
@@ -125,6 +126,7 @@ export function HoverCalloutTooltip({
   const visible = forceVisible || (hoverEnabled && (isHovered || touchPinned));
   const usePortal = portal || visible;
   const modalCovered = useGameStore(isModalDialogOpen);
+  const safeArea = useSafeAreaInsets();
   const calloutZIndex = modalCovered
     ? Z_INDEX.hoverCalloutUnderModal
     : Z_INDEX.hoverCallout;
@@ -226,6 +228,7 @@ export function HoverCalloutTooltip({
         viewportWidth: window.innerWidth,
         viewportHeight: window.innerHeight,
         gapPx,
+        safeArea,
       })
       : null;
 

@@ -66,7 +66,13 @@ function BlessingOfferDialogOpen() {
         }
       `}</style>
       <div
-        className="fixed inset-0 z-50 overflow-x-hidden overflow-y-auto bg-black/80 animate-fade-in p-3"
+        className="fixed inset-0 z-50 overflow-x-hidden overflow-y-auto bg-black/80 animate-fade-in"
+        style={{
+          paddingTop: "max(0.75rem, env(safe-area-inset-top, 0px))",
+          paddingRight: "max(0.75rem, env(safe-area-inset-right, 0px))",
+          paddingBottom: "max(0.75rem, env(safe-area-inset-bottom, 0px))",
+          paddingLeft: "max(0.75rem, env(safe-area-inset-left, 0px))",
+        }}
         role="dialog"
         aria-modal="true"
         aria-label={t("blessingOffer.title", {

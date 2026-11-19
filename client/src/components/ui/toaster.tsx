@@ -7,10 +7,15 @@ import {
   ToastTitle,
   ToastViewport,
 } from "@/components/ui/toast"
+import { GAME_HEADER_INSET_WITH_SAFE_AREA } from "@/components/game/gameChrome"
+import { useIosEditionActive } from "@/hooks/useSteamEditionActive"
 import { cn } from "@/lib/utils"
 
 export function Toaster() {
   const { toasts } = useToast()
+  // The iOS web view is edge to edge. top-0 lands inside the status bar,
+  // which the header fills. Overlays already clear that strip.
+  const iosEditionActive = useIosEditionActive()
 
   return (
     <ToastProvider>
@@ -36,7 +41,14 @@ export function Toaster() {
           </Toast>
         )
       })}
-      <ToastViewport />
+      <ToastViewport
+        className={iosEditionActive ? "top-[var(--adc-toast-top)]" : undefined}
+        style={
+          iosEditionActive
+            ? { "--adc-toast-top": GAME_HEADER_INSET_WITH_SAFE_AREA }
+            : undefined
+        }
+      />
     </ToastProvider>
   )
 }

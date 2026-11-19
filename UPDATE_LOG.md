@@ -14,6 +14,12 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- Buttons in dialogs use the same gray fill as other buttons you can use.
+- Buttons you can use have a slightly stronger gray fill.
+- Buttons you cannot use have a faint gray fill.
+- Wrapped tips hug the longest line, so the box does not keep empty space on the right.
+- Villagers, available, and on mission sit a little closer together. Those rows have no buttons.
+- Tips cast a small shadow all the way around, in the same dark color as the cave.
 - Save, Copy, and Share under your progress card are a little larger, and they sit a little farther below the card.
 - On the website, the progress card button says Invite Friends.
 - While the game is paused, the dark layer over the panels is a little darker.
@@ -66,6 +72,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- A cube memory stays almost square when the window is narrow.
 - Insight in the resource list stops glowing after you reveal an achievement title, unlock a queue slot or villager preset, or speed up a build.
 - Long lines in tips stay inside the box, including side-list building tips, larger text, and longer translations.
 - Scrolling the screen while an action tip is open closes the tip.
@@ -108,7 +115,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 - On a phone, effect icons in the top bar sit a little closer together.
 - On a phone, the arrows on a cube memory sit against the memory and the edge of the screen.
 - On a phone, the arrow marks beside a cube memory are a little larger.
-- Swipe left or right on a cube memory to move to the next or previous memory.
+- Swipe left or right on a cube memory to move to the next or previous memory. The first swipe works as soon as the memory opens.
 - On a phone, Rewards in the top bar shows only the diamond icon, without the word Rewards.
 - On a phone, the Rewards dialog uses more of the screen width.
 - On a phone, building outlines on the village map are a little thicker.
@@ -129,7 +136,9 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
-- The light on your progress card travels around the edge again.
+- Tips, menus, and dialogs stop at the top of the header, clear of the notch.
+- Notices sit below the top bar, clear of the clock and status icons.
+- The light on your progress card travels around the edge as a soft glow.
 - On a phone, the pact choice rings in the header brighten while their tip is open.
 - On a phone, scrolling the village list lets go of a job's + or - button, so villagers stop moving while the list scrolls.
 - On a phone, the resource list fills the side panel when you drag that panel taller.

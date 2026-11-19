@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { LogEntry } from "@/game/rules/events";
 import { cubeEvents } from "@/game/rules/eventsCube";
@@ -32,7 +32,10 @@ import {
   cubeHeartbeatBoxShadow,
   heartbeatGlowIntensity,
 } from "@/components/game/cubeHeartbeatGlow";
-import { cubeMemorySwipeDirection } from "@/components/game/cubeMemorySwipe";
+import {
+  cubeMemorySwipeDirection,
+  shouldClaimCubeMemoryTouch,
+} from "@/components/game/cubeMemorySwipe";
 
 function CubeEventArrow({
   direction,
@@ -82,7 +85,10 @@ export default function CubeDialog({
   const { t } = useUiTranslation();
   const chromeOn = useDestroyedChrome();
   const glowRef = useRef<HTMLDivElement>(null);
-  const swipeSurfaceRef = useRef<HTMLDivElement>(null);
+  const [swipeNode, setSwipeNode] = useState<HTMLDivElement | null>(null);
+  const setSwipeSurface = useCallback((node: HTMLDivElement | null) => {
+    setSwipeNode((current) => (current === node ? current : node));
+  }, []);
   const pagingRef = useRef({
     viewOnly: false,
     previousId: null as string | null,
@@ -143,50 +149,28 @@ export default function CubeDialog({
 
   // Estate rereads: a sideways finger swipe pages the memory. Buttons keep
   // their own taps, so Close and the arrows are not swipes.
+  // iOS drops that swipe until a button has been tapped when touchstart is
+  // passive. Claiming it here (non-passive, and before the scroll view) makes
+  // the first swipe page the memory.
   useEffect(() => {
-    const node = swipeSurfaceRef.current;
-    if (!node || !isOpen) return;
+    if (!swipeNode || !isOpen || !event?.viewOnly) return;
 
     let startX = 0;
     let startY = 0;
+    let lastX = 0;
+    let lastY = 0;
     let tracking = false;
 
-    const stopTracking = () => {
-      tracking = false;
-    };
-
-    const onStart = (touchEvent: TouchEvent) => {
-      if (touchEvent.touches.length !== 1) {
-        tracking = false;
-        return;
-      }
-      const target = touchEvent.target;
-      if (target instanceof Element && target.closest("button")) {
-        tracking = false;
-        return;
-      }
-      const touch = touchEvent.touches[0];
-      if (!touch) return;
-      tracking = true;
-      startX = touch.clientX;
-      startY = touch.clientY;
-    };
-
-    const onEnd = (touchEvent: TouchEvent) => {
+    const finish = (endX: number, endY: number, touchEvent?: TouchEvent) => {
       if (!tracking) return;
       tracking = false;
       const paging = pagingRef.current;
       if (!paging.viewOnly) return;
-      const touch = touchEvent.changedTouches[0];
-      if (!touch) return;
-      const direction = cubeMemorySwipeDirection(
-        touch.clientX - startX,
-        touch.clientY - startY,
-      );
+      const direction = cubeMemorySwipeDirection(endX - startX, endY - startY);
       if (!direction) return;
       const targetId = direction === "next" ? paging.nextId : paging.previousId;
       if (!targetId) return;
-      touchEvent.preventDefault();
+      if (touchEvent?.cancelable) touchEvent.preventDefault();
       paging.show(
         targetId,
         direction === "next"
@@ -195,15 +179,68 @@ export default function CubeDialog({
       );
     };
 
-    node.addEventListener("touchstart", onStart, { passive: true });
-    node.addEventListener("touchend", onEnd, { passive: false });
-    node.addEventListener("touchcancel", stopTracking);
-    return () => {
-      node.removeEventListener("touchstart", onStart);
-      node.removeEventListener("touchend", onEnd);
-      node.removeEventListener("touchcancel", stopTracking);
+    const onStart = (touchEvent: TouchEvent) => {
+      if (touchEvent.touches.length !== 1) {
+        tracking = false;
+        return;
+      }
+      if (!shouldClaimCubeMemoryTouch(touchEvent.target, swipeNode)) {
+        tracking = false;
+        return;
+      }
+      const touch = touchEvent.touches[0];
+      if (!touch) return;
+      tracking = true;
+      startX = lastX = touch.clientX;
+      startY = lastY = touch.clientY;
+      if (touchEvent.cancelable) touchEvent.preventDefault();
     };
-  }, [isOpen, event?.id]);
+
+    const onMove = (touchEvent: TouchEvent) => {
+      if (!tracking) return;
+      const touch = touchEvent.touches[0];
+      if (!touch) return;
+      lastX = touch.clientX;
+      lastY = touch.clientY;
+      const dx = lastX - startX;
+      const dy = lastY - startY;
+      if (Math.abs(dx) > Math.abs(dy) && touchEvent.cancelable) {
+        touchEvent.preventDefault();
+      }
+    };
+
+    const onEnd = (touchEvent: TouchEvent) => {
+      const touch = touchEvent.changedTouches[0];
+      // iOS sometimes reports the lift at the start point. The move events
+      // already have the travel.
+      const stale =
+        !touch || (touch.clientX === startX && touch.clientY === startY);
+      finish(
+        stale || !touch ? lastX : touch.clientX,
+        stale || !touch ? lastY : touch.clientY,
+        touchEvent,
+      );
+    };
+
+    const onCancel = () => {
+      finish(lastX, lastY);
+    };
+
+    // Document, not the card. iOS delivers the move to the document while a
+    // dialog sets pointer-events: none on the body, and the card never sees
+    // it until something inside (an arrow) has been tapped.
+    const listen = { capture: true, passive: false } as const;
+    document.addEventListener("touchstart", onStart, listen);
+    document.addEventListener("touchmove", onMove, listen);
+    document.addEventListener("touchend", onEnd, listen);
+    document.addEventListener("touchcancel", onCancel, true);
+    return () => {
+      document.removeEventListener("touchstart", onStart, listen);
+      document.removeEventListener("touchmove", onMove, listen);
+      document.removeEventListener("touchend", onEnd, listen);
+      document.removeEventListener("touchcancel", onCancel, true);
+    };
+  }, [isOpen, event?.viewOnly, swipeNode]);
 
   // Guard against null/undefined event
   if (!event) {
@@ -324,7 +361,8 @@ export default function CubeDialog({
   return (
     <Dialog open={isOpen} onOpenChange={() => { }}>
       <DialogContent
-        ref={swipeSurfaceRef}
+        ref={setSwipeSurface}
+        data-testid="cube-memory-surface"
         openClickLockKey={event.id}
         // Estate rereads are a deliberate open. Close and the paging arrows
         // stay live, including when an arrow swaps in the next memory.
@@ -333,7 +371,12 @@ export default function CubeDialog({
           "cube-dialog-content [&>.adc-dialog-close]:hidden border-2 border-gray-400 shadow-2xl flex flex-col overflow-visible z-[100]",
           canPage && "cube-dialog-content--paging",
         )}
-        style={chromeRuleColorStyle("#9ca3af")}
+        style={{
+          ...chromeRuleColorStyle("#9ca3af"),
+          // Inline, so iOS applies it on the first paint. A stylesheet
+          // pan-y was ignored until an arrow tap.
+          ...(canPage ? { touchAction: "none" as const } : {}),
+        }}
       >
         {previousId && (
           <CubeEventArrow

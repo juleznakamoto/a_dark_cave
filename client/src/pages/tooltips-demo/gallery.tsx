@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import { useRef, type CSSProperties, type ReactNode } from "react";
 import type { GameState } from "@shared/schema";
 import { SHOP_ITEMS } from "@shared/shopItems";
 import { TRADERS_GRATITUDE_DISCOUNT_PERCENT } from "@shared/shopCheckoutPrice";
@@ -13,6 +13,7 @@ import {
   SuccessChanceTooltipContent,
 } from "@/components/game/EventChoiceSuccessTooltip";
 import { useTooltipFrame } from "@/components/ui/tooltip";
+import { useTooltipShrinkWrap } from "@/game/tooltipShrinkWrap";
 import { getButtonUpgradeInfo } from "@/game/buttonUpgrades";
 import {
   getConstructionBoostCost,
@@ -110,6 +111,8 @@ function TooltipSample({
   children: ReactNode;
 }) {
   const frame = useTooltipFrame(className);
+  const tipRef = useRef<HTMLDivElement>(null);
+  useTooltipShrinkWrap(tipRef);
   if (children == null || children === false) return null;
   return (
     <figure
@@ -120,6 +123,7 @@ function TooltipSample({
         {title}
       </figcaption>
       <div
+        ref={tipRef}
         role="tooltip"
         data-specimen-tip={id}
         className={frame.className}

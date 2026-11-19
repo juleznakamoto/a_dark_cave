@@ -98,7 +98,7 @@ describe("TimedEventPanel traders_daughter choice styling", () => {
 
     expect(sendButton).toHaveAttribute("aria-disabled", "true");
     expect(declineButton).not.toHaveAttribute("aria-disabled");
-    expect(declineButton.className).toContain("bg-neutral-600/10");
+    expect(declineButton.className).toContain("bg-neutral-600/15");
     expect(sendButton.querySelector(".opacity-60")).not.toBeNull();
     expect(declineButton.querySelector(".opacity-60")).toBeNull();
   });
@@ -114,7 +114,7 @@ describe("TimedEventPanel traders_daughter choice styling", () => {
     expect(sendButton).not.toHaveAttribute("aria-disabled");
     expect(declineButton).not.toHaveAttribute("aria-disabled");
 
-    expect(declineButton.className).toContain("bg-neutral-600/10");
+    expect(declineButton.className).toContain("bg-neutral-600/15");
     expect(declineButton.className).toContain("border-transparent");
     expect(declineButton.querySelector(".opacity-60")).toBeNull();
   });

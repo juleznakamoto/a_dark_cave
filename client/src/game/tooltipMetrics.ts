@@ -12,6 +12,8 @@ export const TOOLTIP_GAP_PX = 6;
 
 /** Fill and body type for every tip. The frame applies this last, so a caller cannot swap the background or the text color. */
 export const TOOLTIP_SURFACE_CLASS = "bg-neutral-950 text-xs text-neutral-200";
+/** Small shadow in the cave background, even on every side. */
+export const TOOLTIP_SHADOW_CLASS = "shadow-[0_0_8px_1px_var(--background)]";
 /** Breakdown lines and flavour under a heading. */
 export const TOOLTIP_MUTED_CLASS = "text-muted-foreground";
 /** Hairline color. Same as the frame edge when the destroyed border is off. */

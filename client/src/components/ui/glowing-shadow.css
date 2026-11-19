@@ -231,28 +231,23 @@
 }
 
 .adc-share-rim-sheen,
-.adc-share-rim-mid,
 .adc-share-rim-core {
   fill: none;
-  stroke-width: 5;
+  stroke: #fff;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
-/* Dash length is set in user units by SharePreviewRim. pathLength would turn
-   those dashes into a dotted ring, which is the solid halo this replaces. */
+/* Wide bloom. Blur lives on the SVG filter, in user units. */
 .adc-share-rim-sheen {
-  stroke: #8e949c;
+  stroke-width: 16;
   opacity: 0.55;
 }
 
-.adc-share-rim-mid {
-  stroke: #d5d8dc;
-  opacity: 0.9;
-}
-
+/* Shorter peak, lightly blurred so it does not sit as a second hard line. */
 .adc-share-rim-core {
-  stroke: #fff;
+  stroke-width: 6;
+  opacity: 0.95;
 }
 
 @supports (-webkit-touch-callout: none) {

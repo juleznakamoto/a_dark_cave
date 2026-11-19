@@ -15,6 +15,11 @@ import {
   DIALOG_OPEN_CLICK_LOCK_MS,
   useDialogOpenClickLock,
 } from "@/hooks/useDialogOpenClickLock"
+import {
+  dialogFrameClearOfSafeArea,
+  useSafeAreaInsets,
+} from "@/lib/safeAreaInsets"
+import { DialogButtonSurfaceContext } from "@/components/ui/dialogButtonSurface"
 
 const Dialog = DialogPrimitive.Root
 
@@ -115,6 +120,7 @@ const DialogContent = React.forwardRef<
 }, ref) => {
   const chromeSeed = React.useId();
   const chromeOn = useDestroyedChrome() && destroyedChrome;
+  const safeArea = useSafeAreaInsets();
   const {
     lockActive,
     onActivationCapture,
@@ -200,21 +206,24 @@ const DialogContent = React.forwardRef<
             }),
           ...(layerZIndex != null ? { zIndex: layerZIndex } : {}),
           ...(chromeOn ? destroyedChromeMaskStyle(chromeSeed) : {}),
+          ...dialogFrameClearOfSafeArea(className, safeArea),
           ...style,
         }}
         {...props}
       >
-        {scrollBody ? (
-          <div className="min-h-0 overflow-y-auto overscroll-contain">{children}</div>
-        ) : (
-          children
-        )}
-        {!hideClose && (
-          <DialogPrimitive.Close className="adc-dialog-close absolute right-3 top-3 flex items-center justify-center rounded-sm p-0 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-            <X className="adc-dialog-close-icon" aria-hidden="true" />
-            <span className="sr-only">Close</span>
-          </DialogPrimitive.Close>
-        )}
+        <DialogButtonSurfaceContext.Provider value={true}>
+          {scrollBody ? (
+            <div className="min-h-0 overflow-y-auto overscroll-contain">{children}</div>
+          ) : (
+            children
+          )}
+          {!hideClose && (
+            <DialogPrimitive.Close className="adc-dialog-close absolute right-3 top-3 flex items-center justify-center rounded-sm p-0 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+              <X className="adc-dialog-close-icon" aria-hidden="true" />
+              <span className="sr-only">Close</span>
+            </DialogPrimitive.Close>
+          )}
+        </DialogButtonSurfaceContext.Provider>
       </DialogPrimitive.Content>
     </DialogPortal>
   );

@@ -10,7 +10,16 @@ import {
 } from "@/components/game/gameChrome"
 import { armClickHaptic, playButtonHaptic } from "@/lib/haptics"
 import { cn } from "@/lib/utils"
+import { DialogButtonSurfaceContext } from "@/components/ui/dialogButtonSurface"
 import { buttonVariants } from "./button-variants"
+
+/** Dialog action buttons share the panel-button wash. Ghost, link, and danger stay as they are. */
+function dialogButtonFill(variant: ButtonProps["variant"]): string | null {
+  if (variant === "ghost" || variant === "link" || variant === "destructive") {
+    return null;
+  }
+  return "bg-neutral-600/15 hover:bg-accent";
+}
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -44,6 +53,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const Comp = asChild ? Slot : "button"
     const chromeSeed = React.useId()
+    const inDialogSurface = React.useContext(DialogButtonSurfaceContext)
     const destroyedOutline = useDestroyedChrome() && variant === "outline"
     const tiny = destroyedOutline && compactChrome
 
@@ -82,6 +92,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           buttonVariants({ variant, size }),
           destroyedOutline && gameChromeBoxClassName(),
           tiny && gameChromeTinyClassName(),
+          inDialogSurface && dialogButtonFill(variant),
           className,
           destroyedOutline && "border-transparent",
         )}

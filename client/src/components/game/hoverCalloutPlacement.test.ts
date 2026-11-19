@@ -60,6 +60,21 @@ describe("placeCalloutInViewport", () => {
     expect(placed.top).toBeGreaterThanOrEqual(CALLOUT_VIEWPORT_PAD_PX);
     expect(placed.left + placed.arrowLeft).toBeCloseTo(4 + 20, 5);
   });
+
+  it("keeps a top callout on the header's top edge, not in the notch", () => {
+    const placed = placeCalloutInViewport({
+      side: "top",
+      arrowAlign: "center",
+      trigger: { left: 160, top: 70, width: 28, height: 28 },
+      width: 120,
+      height: 40,
+      viewportWidth: 390,
+      viewportHeight: 844,
+      safeArea: { top: 59, right: 0, bottom: 34, left: 0 },
+    });
+
+    expect(placed.top).toBe(59);
+  });
 });
 
 describe("fallbackCalloutArrow", () => {

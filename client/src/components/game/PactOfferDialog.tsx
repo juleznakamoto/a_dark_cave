@@ -358,7 +358,13 @@ function PactOfferDialogOpen() {
         data-testid="pact-offer-dialog"
       >
         <div className="flex min-h-full w-full justify-center">
-        <div className="m-auto flex w-full max-w-[min(98vw,80rem)] flex-col items-center px-3 pt-2 pb-4">
+        <div
+          className="m-auto flex w-full max-w-[min(98vw,80rem)] flex-col items-center px-3"
+          style={{
+            paddingTop: "max(0.5rem, env(safe-area-inset-top, 0px))",
+            paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))",
+          }}
+        >
           <div className="mb-4 flex flex-col items-center gap-1">
             <div
               className={cn(

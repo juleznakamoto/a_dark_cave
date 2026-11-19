@@ -1801,6 +1801,14 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
   height: calc(1.25rem + var(--adc-text-delta, 0px) + 2px);
 }
 
+/* Villagers, available, on mission: no −/+ and no insight badge.
+   Keep those columns' width so counts and labels still line up. */
+.villager-count-row--plain .villager-count-button,
+.villager-count-row--plain .insight-action-badge-trigger--lg {
+  height: 0;
+  overflow: hidden;
+}
+
 .villager-count-button>span {
   font-size: calc(1.25rem + var(--adc-text-delta, 0px));
   /* 20px @ Small */
@@ -1843,9 +1851,9 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
   opacity: 0.7;
 }
 
-/* Desktop keeps the original 21rem height and is a little narrower than
-   that, so the card is almost square. Phones use 84vw, and the arrows
-   sit in the side margin, outside the frame. */
+/* 20rem wide and at least 21rem tall, so the card stays a little taller
+   than it is wide. Below 768px, 84vw is used only when 20rem would not
+   fit, which still leaves 8vw on each side for the arrows. */
 .cube-dialog-content {
   --adc-dialog-max-w: 20rem;
   height: auto;
@@ -1855,13 +1863,21 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
 
 @media (max-width: 767px) {
   .cube-dialog-content {
-    --adc-dialog-viewport-w: 84vw;
-    --adc-dialog-max-w: 84vw;
+    --adc-dialog-viewport-w: min(20rem, 84vw);
+    --adc-dialog-max-w: min(20rem, 84vw);
   }
 }
 
 .cube-dialog-content--paging {
-  touch-action: pan-y;
+  /* pan-y lets iOS keep the first sideways swipe until an arrow is tapped. */
+  touch-action: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .cube-dialog-content--paging {
+    /* iOS only sends the move to a target it treats as clickable. */
+    cursor: pointer;
+  }
 }
 
 .cube-event-arrow {
@@ -1880,29 +1896,24 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
 
 @media (max-width: 767px) {
 
-  /* 84vw leaves 8vw on each side. The arrow fills that strip,
-     touching the cube and the screen edge. */
+  /* Sit just outside the card. A narrow phone has no room for the gap,
+     so the arrow fills the margin and meets the screen edge. A wider
+     window keeps the desktop size instead of stretching into the leftover
+     space. */
   button.cube-event-arrow {
-    --cube-arrow-gap: 0px;
-    --cube-arrow-size: 8vw;
+    --cube-side-room: calc((100vw - min(20rem, 84vw)) / 2);
+    --cube-arrow-gap: clamp(0px, var(--cube-side-room) - 3.575rem, 0.75rem);
+    --cube-arrow-size: min(3.575rem, var(--cube-side-room) - var(--cube-arrow-gap));
     box-sizing: border-box;
-    width: 8vw;
-    height: 8vw;
+    width: var(--cube-arrow-size);
+    height: var(--cube-arrow-size);
     margin: 0;
     padding: 0;
   }
 
-  button.cube-event-arrow[data-direction="previous"] {
-    left: calc(50% - 50vw);
-  }
-
-  button.cube-event-arrow[data-direction="next"] {
-    right: calc(50% - 50vw);
-  }
-
   button.cube-event-arrow svg {
-    width: 77.5%;
-    height: 77.5%;
+    width: min(1.95rem, 77.5%);
+    height: min(1.95rem, 77.5%);
   }
 }
 

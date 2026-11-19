@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
 import { Button } from "./button";
+import { DialogButtonSurfaceContext } from "./dialogButtonSurface";
 import {
   DestroyedChromeScope,
   chromeRuleColorStyle,
@@ -104,6 +105,39 @@ describe("Button destroyed outline chrome", () => {
     expect(btn.className).toContain("rounded-lg");
     expect(btn.style.getPropertyValue("--adc-chrome-rule-color")).toBe("#9ca3af");
     expect(btn.className).not.toMatch(/(^|\s)border-2(\s|$)/);
+  });
+
+  it("gives dialog buttons the shared gray fill", () => {
+    render(
+      <DialogButtonSurfaceContext.Provider value={true}>
+        <Button variant="outline">Claim</Button>
+        <Button>Share</Button>
+        <Button variant="destructive">Delete</Button>
+        <Button variant="ghost">Mute</Button>
+        <Button variant="outline" className="bg-red-600/10">
+          Pact
+        </Button>
+      </DialogButtonSurfaceContext.Provider>,
+    );
+
+    expect(screen.getByRole("button", { name: "Claim" }).className).toContain(
+      "bg-neutral-600/15",
+    );
+    expect(screen.getByRole("button", { name: "Share" }).className).toContain(
+      "bg-neutral-600/15",
+    );
+    expect(screen.getByRole("button", { name: "Delete" }).className).not.toContain(
+      "bg-neutral-600/15",
+    );
+    expect(screen.getByRole("button", { name: "Mute" }).className).not.toContain(
+      "bg-neutral-600/15",
+    );
+    expect(screen.getByRole("button", { name: "Pact" }).className).toContain(
+      "bg-red-600/10",
+    );
+    expect(screen.getByRole("button", { name: "Pact" }).className).not.toContain(
+      "bg-neutral-600/15",
+    );
   });
 
   it("puts compact chrome on tiny outline buttons", () => {

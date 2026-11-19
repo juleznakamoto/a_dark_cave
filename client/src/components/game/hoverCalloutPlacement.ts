@@ -1,4 +1,5 @@
 import { TOOLTIP_GAP_PX, TOOLTIP_VIEWPORT_PAD_PX } from "@/game/tooltipMetrics";
+import type { SafeAreaInsets } from "@/lib/safeAreaInsets";
 
 export type HoverCalloutSide = "top" | "left" | "right" | "bottom";
 
@@ -72,6 +73,7 @@ export function placeCalloutInViewport({
   viewportWidth,
   viewportHeight,
   gapPx = CALLOUT_GAP_PX,
+  safeArea,
 }: {
   side: HoverCalloutSide;
   arrowAlign: HoverCalloutArrowAlign;
@@ -82,10 +84,16 @@ export function placeCalloutInViewport({
   viewportHeight: number;
   /** Space between the trigger and a top or bottom callout. */
   gapPx?: number;
+  /** Notch and home indicator. Callouts may meet the header's top edge, not cross it. */
+  safeArea?: SafeAreaInsets;
 }): CalloutPlacementBox {
   const ratio = calloutAlignRatio(arrowAlign);
   const verticalGap = gapPx;
-  const maxWidth = Math.max(0, viewportWidth - CALLOUT_VIEWPORT_PAD_PX * 2);
+  const padTop = Math.max(CALLOUT_VIEWPORT_PAD_PX, safeArea?.top ?? 0);
+  const padRight = Math.max(CALLOUT_VIEWPORT_PAD_PX, safeArea?.right ?? 0);
+  const padBottom = Math.max(CALLOUT_VIEWPORT_PAD_PX, safeArea?.bottom ?? 0);
+  const padLeft = Math.max(CALLOUT_VIEWPORT_PAD_PX, safeArea?.left ?? 0);
+  const maxWidth = Math.max(0, viewportWidth - padLeft - padRight);
   const boxWidth = Math.min(width, maxWidth);
   const boxHeight = height;
 
@@ -114,10 +122,10 @@ export function placeCalloutInViewport({
       break;
   }
 
-  const minLeft = CALLOUT_VIEWPORT_PAD_PX;
-  const maxLeft = Math.max(minLeft, viewportWidth - boxWidth - CALLOUT_VIEWPORT_PAD_PX);
-  const minTop = CALLOUT_VIEWPORT_PAD_PX;
-  const maxTop = Math.max(minTop, viewportHeight - boxHeight - CALLOUT_VIEWPORT_PAD_PX);
+  const minLeft = padLeft;
+  const maxLeft = Math.max(minLeft, viewportWidth - boxWidth - padRight);
+  const minTop = padTop;
+  const maxTop = Math.max(minTop, viewportHeight - boxHeight - padBottom);
   left = Math.min(Math.max(left, minLeft), maxLeft);
   top = Math.min(Math.max(top, minTop), maxTop);
 

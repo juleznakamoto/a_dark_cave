@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useId,
   useLayoutEffect,
   useRef,
   useState,
@@ -75,11 +76,13 @@ const SHARE_ACTION_BUTTON_CLASS = "shrink-0 font-medium h-8 px-3.5";
 const SHARE_RIM_STROKE = 5;
 const SHARE_RIM_TRAVEL_MS = 4000;
 
-/** One soft sheen: wide dim tail, brighter middle, short white peak. */
+/**
+ * One glow: a wide blurred bloom and a shorter, softer peak on the same path.
+ * Hard strokes read as two lines on iOS, where CSS blur on this rim is ignored.
+ */
 const SHARE_RIM_BANDS = [
-  { className: "adc-share-rim-sheen", portion: 0.16, phase: 0 },
-  { className: "adc-share-rim-mid", portion: 0.09, phase: 0.035 },
-  { className: "adc-share-rim-core", portion: 0.035, phase: 0.0625 },
+  { className: "adc-share-rim-sheen", portion: 0.14, phase: 0, filter: "glow" },
+  { className: "adc-share-rim-core", portion: 0.05, phase: 0.045, filter: "soft" },
 ] as const;
 
 /**
@@ -104,6 +107,9 @@ function shareRimPerimeter(): number {
  */
 function SharePreviewRim() {
   const svgRef = useRef<SVGSVGElement>(null);
+  const rawId = useId().replace(/:/g, "");
+  const glowFilterId = `${rawId}-glow`;
+  const softFilterId = `${rawId}-soft`;
   const inset = SHARE_RIM_STROKE / 2;
   const rect = {
     x: inset,
@@ -143,10 +149,41 @@ function SharePreviewRim() {
       className="adc-share-rim"
       viewBox={`0 0 ${SHARE_IMAGE_WIDTH} ${SHARE_IMAGE_HEIGHT}`}
       preserveAspectRatio="none"
+      overflow="visible"
       aria-hidden
     >
-      {SHARE_RIM_BANDS.map(({ className }) => (
-        <rect key={className} className={className} {...rect} />
+      <defs>
+        {/* SVG blur, not CSS filter: WebKit ignores CSS blur on this stroke. */}
+        <filter
+          id={glowFilterId}
+          x={-80}
+          y={-80}
+          width={SHARE_IMAGE_WIDTH + 160}
+          height={SHARE_IMAGE_HEIGHT + 160}
+          filterUnits="userSpaceOnUse"
+          colorInterpolationFilters="sRGB"
+        >
+          <feGaussianBlur stdDeviation="14" />
+        </filter>
+        <filter
+          id={softFilterId}
+          x={-40}
+          y={-40}
+          width={SHARE_IMAGE_WIDTH + 80}
+          height={SHARE_IMAGE_HEIGHT + 80}
+          filterUnits="userSpaceOnUse"
+          colorInterpolationFilters="sRGB"
+        >
+          <feGaussianBlur stdDeviation="5" />
+        </filter>
+      </defs>
+      {SHARE_RIM_BANDS.map(({ className, filter }) => (
+        <rect
+          key={className}
+          className={className}
+          filter={`url(#${filter === "glow" ? glowFilterId : softFilterId})`}
+          {...rect}
+        />
       ))}
     </svg>
   );
