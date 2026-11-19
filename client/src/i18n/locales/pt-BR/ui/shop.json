@@ -1,6 +1,7 @@
 {
   "shop": {
     "title": "Mercador",
+    "winterSale": "Promoção de inverno",
     "purchase": "Comprar",
     "forSale": "À Venda",
     "forSalePlaythroughNote": "As compras podem ser usadas novamente em cada partida.",

@@ -1,6 +1,7 @@
 {
   "shop": {
     "title": "Marchand",
+    "winterSale": "Soldes d'hiver",
     "purchase": "Acheter",
     "forSale": "À vendre",
     "forSalePlaythroughNote": "Les achats peuvent être réutilisés à chaque partie.",

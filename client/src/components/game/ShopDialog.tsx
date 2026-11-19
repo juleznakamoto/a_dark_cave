@@ -11,6 +11,7 @@ import {
 import { CruelModePentagramIcon } from "@/components/game/GameUiIcon";
 import { logger } from "@/lib/logger";
 import { Button } from "@/components/ui/button";
+import { DialogButtonSurfaceContext } from "@/components/ui/dialogButtonSurface";
 import { useToast } from "@/hooks/use-toast";
 import { TextShimmer } from "@/components/ui/text-shimmer";
 import {
@@ -124,6 +125,9 @@ const getSupabaseClient = async () => {
   // you would handle it here to ensure the client is ready before use.
   return supabase;
 };
+
+/** Winter Sale label and the price you pay on shop cards. */
+const SHOP_WINTER_SALE_BLUE_CLASS = "text-sky-300";
 
 /** Same promo-pill shape as `PROMO_TAG_CLASS`, Insight / blue variant. */
 const SHOP_INSIGHT_PROMO_TAG_CLASS =
@@ -275,8 +279,11 @@ function getCheckoutPriceBreakdown(
     catalogSaleListCents != null ? catalogSaleListCents - catalogCents : 0;
   const additionalDiscountCents =
     catalogCents > finalCents ? catalogCents - finalCents : 0;
+  const hasMsrpSale =
+    item.originalPrice != null && item.originalPrice > item.price;
   const isBundleDiscount =
     catalogSaleDiscountCents > 0 &&
+    !hasMsrpSale &&
     !!(item.bundleComponents && item.bundleComponents.length > 0);
   return {
     catalogSaleListCents,
@@ -689,6 +696,18 @@ async function detectCurrency(): Promise<"EUR" | "USD"> {
 
   // Default to USD
   return "USD";
+}
+
+/**
+ * Buy buttons, checkout, and filter chips keep the solid primary and outline
+ * styles. Other dialogs use the shared gray wash.
+ */
+function ShopButtonSurface({ children }: { children: React.ReactNode }) {
+  return (
+    <DialogButtonSurfaceContext.Provider value={false}>
+      {children}
+    </DialogButtonSurfaceContext.Provider>
+  );
 }
 
 interface CheckoutFormProps {
@@ -1936,797 +1955,820 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
-            <DialogHeader className="h-6 shrink-0 -mb-3">
-              <DialogTitle className="sr-only">{t("shop.title")}</DialogTitle>
-              <DialogDescription className="sr-only">
-                {t("shop.srDescription")}
-              </DialogDescription>
-            </DialogHeader>
-
-            {isLoading && (
-              <div className="flex shrink-0 justify-center py-8">
-                <div className="text-muted-foreground">
-                  {t("common:status.loading")}
-                </div>
-              </div>
-            )}
-
-            {!isLoading && showSecurePurchasePrompt && (
-              <div className="flex flex-col gap-4">
-                <div className="rounded-lg border border-amber-600/50 bg-amber-600/10 p-4 space-y-3">
-                  <h3 className="text-lg font-semibold">
-                    {t("shop.securePurchaseTitle")}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {t("shop.securePurchaseBody")}
-                  </p>
-                </div>
-                <div className="flex flex-col gap-2">
-                  <Button
-                    className="w-full"
-                    button_id="shop-secure-purchase-sign-up"
-                    onClick={() => {
-                      setShowSecurePurchasePrompt(false);
-                      openSignInFromShop();
-                    }}
-                  >
-                    {t("shop.securePurchaseSignUp")}
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full"
-                    button_id="shop-secure-purchase-later"
-                    onClick={() => {
-                      setShowSecurePurchasePrompt(false);
-                      setActiveTab("purchases");
-                    }}
-                  >
-                    {t("shop.securePurchaseLater")}
-                  </Button>
-                </div>
-              </div>
-            )}
-
-            {!isLoading && !showSecurePurchasePrompt && (
-              <Tabs
-                value={activeTab}
-                onValueChange={(value) =>
-                  setActiveTab(value as "shop" | "purchases")
-                }
+            <p className="pointer-events-none absolute inset-x-0 top-2.5 z-10 flex h-7 items-center justify-center px-10">
+              <span
                 className={cn(
-                  "flex min-h-0 w-full flex-col",
-                  lockedShopHeight != null &&
-                  "h-full flex-1 overflow-hidden",
+                  "rounded border border-sky-300/50 bg-sky-300/10 px-1.5 py-[1px] text-base font-medium leading-tight",
+                  SHOP_WINTER_SALE_BLUE_CLASS,
                 )}
               >
-                {/* Header stays outside ScrollArea: DialogContent uses CSS transform for centering,
-                    which breaks position:sticky for descendants; pin tabs/copy via layout instead. */}
-                <div className="shrink-0 pb-2 pt-0.5">
-                  <TabsList className="grid h-10 w-full grid-cols-2 items-stretch gap-0 overflow-hidden rounded-md border-2 border-foreground/55 bg-muted p-1 shadow-sm dark:border-foreground/65">
-                    <TabsTrigger
-                      value="shop"
-                      className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 text-base data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
-                    >
-                      {t("shop.forSale")}
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="purchases"
-                      disabled={!sessionUser}
-                      className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 text-base data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
-                    >
-                      {t("shop.purchases")}
-                    </TabsTrigger>
-                  </TabsList>
-                </div>
+                {t("shop.winterSale")}
+              </span>
+            </p>
+            <ShopButtonSurface>
+              <DialogHeader className="h-6 shrink-0 -mb-3">
+                <DialogTitle className="sr-only">{t("shop.title")}</DialogTitle>
+                <DialogDescription className="sr-only">
+                  {t("shop.srDescription")}
+                </DialogDescription>
+              </DialogHeader>
 
-                <TabsContent
-                  value="shop"
-                  data-shop-for-sale-pane
-                  className={cn(
-                    "mt-0 flex flex-col outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden",
-                    lockedShopHeight != null
-                      ? "h-0 min-h-0 flex-1 overflow-hidden"
-                      : "min-h-0",
-                  )}
-                >
-                  {/* Pinned via flex split below TabsList + intro (sticky breaks under dialog transforms). */}
-                  {(import.meta.env.DEV ||
-                    !gameState.hasMadeNonFreePurchase) && (
-                      <div className="relative mb-3 shrink-0 overflow-hidden rounded-md border border-blue-500/40 bg-blue-950">
-                        <SmokeShader scale={SMOKE_SHADER_BANNER_SCALE} />
-                        {/* Soft scrim so bright smoke peaks don't wash out the copy. */}
-                        <div
-                          className="pointer-events-none absolute inset-0 bg-cyan-950/55"
-                          aria-hidden
-                        />
-                        <div className="relative z-10 px-2 py-2 text-center text-sm font-semibold text-white sm:text-base">
-                          {t(insightBannerBefore.key, {
-                            defaultValue: insightBannerBefore.defaultValue,
-                          })}{" "}
-                          <span className="tabular-nums">
-                            {formatNumber(firstPurchaseInsightAmount)}
-                          </span>{" "}
-                          <span
-                            className={cn(
-                              "font-noto-symbols-2",
-                              INSIGHT_TEXT_CLASS,
-                            )}
-                            aria-hidden
-                          >
-                            {INSIGHT_GLYPH}
-                          </span>{" "}
-                          {t("shop.firstPurchaseInsightBannerInsight", {
-                            defaultValue: "Insight",
-                          })}{" "}
-                          {t("shop.firstPurchaseInsightBannerAfter", {
-                            defaultValue: "free with your first purchase",
-                          })}
-                        </div>
-                      </div>
-                    )}
-                  <div className="flex shrink-0 flex-wrap gap-x-1.5 gap-y-4 pb-3">
+              {isLoading && (
+                <div className="flex shrink-0 justify-center py-8">
+                  <div className="text-muted-foreground">
+                    {t("common:status.loading")}
+                  </div>
+                </div>
+              )}
+
+              {!isLoading && showSecurePurchasePrompt && (
+                <div className="flex flex-col gap-4">
+                  <div className="rounded-lg border border-amber-600/50 bg-amber-600/10 p-4 space-y-3">
+                    <h3 className="text-lg font-semibold">
+                      {t("shop.securePurchaseTitle")}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      {t("shop.securePurchaseBody")}
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-2">
                     <Button
-                      variant={selectedFilter === null ? "default" : "outline"}
-                      size="xs"
-                      button_id="shop-filter-highlights"
-                      onClick={() => setSelectedFilter(null)}
-                      className={
-                        selectedFilter === null
-                          ? "text-xs"
-                          : "border border-red-500/50 text-xs"
-                      }
+                      className="w-full"
+                      button_id="shop-secure-purchase-sign-up"
+                      onClick={() => {
+                        setShowSecurePurchasePrompt(false);
+                        openSignInFromShop();
+                      }}
                     >
-                      {t("shop.highlights")}
+                      {t("shop.securePurchaseSignUp")}
                     </Button>
                     <Button
-                      variant={
-                        selectedFilter === "gold" ? "default" : "outline"
-                      }
-                      size="xs"
-                      button_id="shop-filter-gold"
-                      onClick={() => setSelectedFilter("gold")}
-                      className={
-                        selectedFilter === "gold"
-                          ? "text-xs"
-                          : "border border-red-500/50 text-xs"
-                      }
+                      variant="outline"
+                      className="w-full"
+                      button_id="shop-secure-purchase-later"
+                      onClick={() => {
+                        setShowSecurePurchasePrompt(false);
+                        setActiveTab("purchases");
+                      }}
                     >
-                      {t("shop.gold")}
-                    </Button>
-                    <Button
-                      variant={
-                        selectedFilter === "boosts" ? "default" : "outline"
-                      }
-                      size="xs"
-                      button_id="shop-filter-boosts"
-                      onClick={() => setSelectedFilter("boosts")}
-                      className={
-                        selectedFilter === "boosts"
-                          ? "text-xs"
-                          : "border border-red-500/50 text-xs"
-                      }
-                    >
-                      {t("shop.boosts")}
-                    </Button>
-                    <Button
-                      variant={
-                        selectedFilter === "bundles" ? "default" : "outline"
-                      }
-                      size="xs"
-                      button_id="shop-filter-bundles"
-                      onClick={() => setSelectedFilter("bundles")}
-                      className={
-                        selectedFilter === "bundles"
-                          ? "text-xs"
-                          : "border border-red-500/50 text-xs"
-                      }
-                    >
-                      {t("shop.bundles")}
+                      {t("shop.securePurchaseLater")}
                     </Button>
                   </div>
-                  <ScrollAreaWithIndicator
-                    className={
-                      lockedShopHeight != null
-                        ? "h-0 min-h-0 flex-1"
-                        : "min-h-0"
-                    }
-                    scrollAreaId="shop-dialog-for-sale"
-                    viewportClassName="!pl-0 !pr-0"
-                  >
-                    <div
-                      data-shop-card-grid
-                      className="grid w-full grid-cols-1 gap-4 md:grid-cols-3"
-                    >
-                      {(selectedFilter === null
-                        ? getHighlightsOrder(gameState.playTime || 0)
-                          .map((id) => SHOP_ITEMS[id])
-                          .filter(Boolean)
-                        : Object.values(SHOP_ITEMS)
-                      )
-                        .filter((item) => {
-                          // Items sold only via a dedicated checkout dialog are never listed here.
-                          if (item.hiddenFromShop) {
-                            return false;
-                          }
+                </div>
+              )}
 
-                          // Apply filter based on selectedFilter
-                          if (selectedFilter === "gold") {
-                            return shopItemMatchesGoldFilterTab(item);
-                          }
-                          if (selectedFilter === "boosts") {
-                            // Boosts include Great Feasts and other boost items
-                            return item.category === "feast";
-                          }
-                          if (selectedFilter === "bundles") {
-                            // Bundles have bundle category
-                            return item.category === "bundle";
-                          }
-
-                          // For Highlights tab we already filtered by HIGHLIGHTS_ORDER
-                          if (selectedFilter === null) return true;
-
-                          return true;
-                        })
-                        .map((item) => (
-                          <ShopItemGlyphParticleScope key={item.id} item={item}>
-                            {({ hoverHandlers, portal, glyphOriginRef }) => {
-                              const purchaseDisabled =
-                                isShopItemPurchaseDisabled(item, {
-                                  isUserSignedIn: !!gameState.isUserSignedIn,
-                                  lastFreeGoldClaim:
-                                    gameState.lastFreeGoldClaim || 0,
-                                  purchasedItems,
-                                });
-                              return (
-                                <>
-                                  <Card
-                                    {...(hoverHandlers ?? {})}
-                                    id={
-                                      item.id === "cruel_mode"
-                                        ? "shop-card-cruel_mode"
-                                        : undefined
-                                    }
-                                    onClick={(e) => {
-                                      if (purchaseDisabled) return;
-                                      const target = e.target as HTMLElement;
-                                      if (
-                                        target.closest(
-                                          "button, [data-tooltip-trigger-id]",
-                                        )
-                                      ) {
-                                        return;
-                                      }
-                                      handleShopItemPurchaseClick(item.id);
-                                    }}
-                                    className={`border-neutral-500 flex h-52 min-h-0 max-h-52 flex-col relative transition-[outline-color] duration-400 hover:outline hover:outline-2 hover:outline-offset-[-2px] ${purchaseDisabled ? "" : "cursor-pointer"} ${item.category === "bundle"
-                                      ? "border border-amber-600 outline-amber-500"
-                                      : item.id === "cruel_mode" &&
-                                        shopCruelModeHighlight
-                                        ? "border border-red-600 outline-red-500"
-                                        : "outline-neutral-400"
-                                      }`}
-                                  >
-                                    <CardHeader className="relative space-y-0 gap-1 px-4 pb-2 pt-3 leading-snug">
-                                      <div
-                                        className={`flex items-start gap-2${item.symbol ? " pr-8" : ""}`}
-                                      >
-                                        <CardTitle className="!m-0 flex min-w-0 flex-1 items-start gap-1 text-md leading-snug">
-                                          <span className="min-w-0">
-                                            {resolveShopItemName(item)}
-                                          </span>
-                                          {item.id === "skull_lantern" && (
-                                            <ArtifactShopTooltipIcon
-                                              artifact="skull_lantern"
-                                              tooltipId="skull-lantern-info"
-                                              variant="cardTitle"
-                                            />
-                                          )}
-                                          {item.id === "tarnished_compass" && (
-                                            <ArtifactShopTooltipIcon
-                                              artifact="tarnished_compass"
-                                              tooltipId="tarnished-compass-info"
-                                              variant="cardTitle"
-                                            />
-                                          )}
-                                          {item.id === "crow_harness" && (
-                                            <ArtifactShopTooltipIcon
-                                              artifact="crow_harness"
-                                              tooltipId="crow-harness-info"
-                                              variant="cardTitle"
-                                            />
-                                          )}
-                                          {item.id === "cruel_mode" && (
-                                            <TooltipWrapper
-                                              tooltip={<CruelModeEffectsList />}
-                                              tooltipId="cruel-mode-info"
-                                              disabled
-                                              tooltipContentClassName={TOOLTIP_ACCENT_SHOP_CLASS}
-                                              className={`inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse`}
-                                            >
-                                              <span
-                                                className={GAME_INFO_GLYPH_CLASS}
-                                                aria-hidden
-                                              >
-                                                🛈
-                                              </span>
-                                            </TooltipWrapper>
-                                          )}
-                                        </CardTitle>
-                                        {item.symbol && (
-                                          <ShopCardCornerGlyph
-                                            item={item}
-                                            glyphOriginRef={glyphOriginRef}
-                                            glyphWrapperClassName={`absolute right-4 top-3 text-[20px] leading-none inline-flex items-center justify-center${isShopPaidGoldPackItem(item.id)
-                                              ? " cursor-default"
-                                              : ""
-                                              }`}
-                                            glyphWrapperStyle={{
-                                              color: tailwindToHex(
-                                                (item.symbolColor || "").replace(
-                                                  "text-",
-                                                  "",
-                                                ),
-                                              ),
-                                              maxWidth: "2.55em",
-                                              wordBreak: "break-all",
-                                              overflowWrap: "anywhere",
-                                            }}
-                                          />
-                                        )}
-                                      </div>
-                                      <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1">
-                                        {(() => {
-                                          const cruelJourneyDiscountActive =
-                                            item.id === "cruel_mode" &&
-                                            gameState.story?.seen
-                                              ?.cruelModeJourneyCompleteDiscount ===
-                                            true;
-                                          const tradersGratitudeActive =
-                                            gameState.tradersGratitudeState
-                                              ?.accepted === true;
-                                          const tradersSonGratitudeActive =
-                                            gameState.tradersSonGratitudeState
-                                              ?.accepted === true;
-                                          const pctOpts = {
-                                            tradersGratitude:
-                                              tradersGratitudeActive,
-                                            tradersSonGratitude:
-                                              tradersSonGratitudeActive,
-                                          };
-                                          const displayPrice =
-                                            item.price > 0
-                                              ? getDiscountedShopPriceCents(
-                                                item.price,
-                                                {
-                                                  ...pctOpts,
-                                                  cruelModeJourneyComplete:
-                                                    cruelJourneyDiscountActive,
-                                                },
-                                                item.id,
-                                              )
-                                              : item.price;
-                                          const strikethroughCents =
-                                            shopCardStrikethroughCents(
-                                              item,
-                                              displayPrice,
-                                            );
-                                          const priceWithoutJourneyCents =
-                                            item.price > 0 &&
-                                              item.id === "cruel_mode"
-                                              ? getDiscountedShopPriceCents(
-                                                item.price,
-                                                {
-                                                  ...pctOpts,
-                                                  cruelModeJourneyComplete: false,
-                                                },
-                                                item.id,
-                                              )
-                                              : item.price;
-                                          const tradersOnlyCents =
-                                            item.price > 0
-                                              ? getDiscountedShopPriceCents(
-                                                item.price,
-                                                {
-                                                  tradersGratitude: true,
-                                                },
-                                                item.id,
-                                              )
-                                              : item.price;
-                                          const sonOnlyCents =
-                                            item.price > 0
-                                              ? getDiscountedShopPriceCents(
-                                                item.price,
-                                                {
-                                                  tradersSonGratitude: true,
-                                                },
-                                                item.id,
-                                              )
-                                              : item.price;
-                                          const discounted =
-                                            item.price > 0 &&
-                                            displayPrice < item.price;
-                                          const priceClassName = discounted
-                                            ? "!font-semibold text-green-500"
-                                            : "";
-                                          const showTradersGratitudeInfo =
-                                            item.price > 0 &&
-                                            tradersGratitudeActive &&
-                                            displayPrice === tradersOnlyCents &&
-                                            displayPrice < item.price;
-                                          const showTradersSonInfo =
-                                            item.price > 0 &&
-                                            tradersSonGratitudeActive &&
-                                            displayPrice === sonOnlyCents &&
-                                            displayPrice < item.price;
-                                          const showJourneyCompleteInfo =
-                                            item.price > 0 &&
-                                            cruelJourneyDiscountActive &&
-                                            displayPrice <
-                                            priceWithoutJourneyCents;
-                                          return (
-                                            <>
-                                              {strikethroughCents != null && (
-                                                <span className="text-xs line-through text-muted-foreground">
-                                                  {formatPrice(
-                                                    strikethroughCents,
-                                                  )}
-                                                </span>
-                                              )}
-                                              <span className={priceClassName}>
-                                                {item.price === 0
-                                                  ? t("common:status.free")
-                                                  : formatPrice(displayPrice)}
-                                              </span>
-                                              {showTradersGratitudeInfo && (
-                                                <TooltipWrapper
-                                                  tooltip={
-                                                    <div>
-                                                      {t("shop.tradersGratitudeDiscount",
-                                                        {
-                                                          percent:
-                                                            TRADERS_GRATITUDE_DISCOUNT_PERCENT,
-                                                        },
-                                                      )}
-                                                    </div>
-                                                  }
-                                                  tooltipId={`traders-gratitude-${item.id}`}
-                                                  disabled
-                                                  tooltipContentClassName={TOOLTIP_ACCENT_SHOP_CLASS}
-                                                  className={`inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
-                                                >
-                                                  <span
-                                                    className={GAME_INFO_GLYPH_CLASS}
-                                                    aria-hidden
-                                                  >
-                                                    🛈
-                                                  </span>
-                                                </TooltipWrapper>
-                                              )}
-                                              {showTradersSonInfo && (
-                                                <TooltipWrapper
-                                                  tooltip={
-                                                    <div>
-                                                      {t("shop.tradersSonDiscount",
-                                                        {
-                                                          percent:
-                                                            TRADERS_SON_DISCOUNT_PERCENT,
-                                                        },
-                                                      )}
-                                                    </div>
-                                                  }
-                                                  tooltipId={`traders-son-gratitude-${item.id}`}
-                                                  disabled
-                                                  tooltipContentClassName={TOOLTIP_ACCENT_SHOP_CLASS}
-                                                  className={`inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
-                                                >
-                                                  <span
-                                                    className={GAME_INFO_GLYPH_CLASS}
-                                                    aria-hidden
-                                                  >
-                                                    🛈
-                                                  </span>
-                                                </TooltipWrapper>
-                                              )}
-                                              {showJourneyCompleteInfo && (
-                                                <TooltipWrapper
-                                                  tooltip={
-                                                    <div>
-                                                      {t("shop.journeyCompleteDiscount",
-                                                      )}
-                                                    </div>
-                                                  }
-                                                  tooltipId={`journey-complete-cruel-${item.id}`}
-                                                  disabled
-                                                  tooltipContentClassName={TOOLTIP_ACCENT_SHOP_CLASS}
-                                                  className={`inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
-                                                >
-                                                  <span
-                                                    className={GAME_INFO_GLYPH_CLASS}
-                                                    aria-hidden
-                                                  >
-                                                    🛈
-                                                  </span>
-                                                </TooltipWrapper>
-                                              )}
-                                            </>
-                                          );
-                                        })()}
-                                        {item.id === "advanced_bundle" && (
-                                          <span
-                                            className={PROMO_TAG_CLASS}
-                                          >
-                                            {t("shop.mostPopular")}
-                                          </span>
-                                        )}
-                                        {(item.id === "gold_15000" ||
-                                          item.id === "gold_30000") && (
-                                            <span
-                                              className={PROMO_TAG_CLASS}
-                                            >
-                                              {item.id === "gold_30000"
-                                                ? "3x"
-                                                : "2.5x"}{" "}
-                                              {t("shop.threeXValue")}
-                                            </span>
-                                          )}
-                                      </CardDescription>
-                                    </CardHeader>
-                                    <CardContent className="min-h-0 flex-1 overflow-hidden pl-4 pr-4 pb-2">
-                                      <div className="leading-tight text-sm opacity-80">
-                                        <ShopItemDescriptionParagraph
-                                          item={item}
-                                        />
-                                      </div>
-                                    </CardContent>
-                                    <CardFooter className="relative z-10 mt-auto shrink-0 flex-col gap-2 bg-card pl-4 pr-4 pb-4">
-                                      <div className="relative z-0 w-full overflow-visible pt-1">
-                                        <Button
-                                          onClick={() =>
-                                            handleShopItemPurchaseClick(item.id)
-                                          }
-                                          disabled={purchaseDisabled}
-                                          className="relative z-10 w-full"
-                                          button_id={`shop-purchase-${item.id}`}
-                                        >
-                                          {item.price === 0 &&
-                                            !gameState.isUserSignedIn
-                                            ? t("shop.signInToClaim")
-                                            : item.id === "gold_100_free"
-                                              ? (Date.now() -
-                                                (gameState.lastFreeGoldClaim ||
-                                                  0)) /
-                                                (1000 * 60 * 60) <
-                                                24
-                                                ? (() => {
-                                                  const hoursRemaining =
-                                                    Math.ceil(
-                                                      24 -
-                                                      (Date.now() -
-                                                        (gameState.lastFreeGoldClaim ||
-                                                          0)) /
-                                                      (1000 * 60 * 60),
-                                                    );
-                                                  return hoursRemaining === 1
-                                                    ? t("shop.availableInOneHour",
-                                                    )
-                                                    : t("shop.availableInHours",
-                                                      {
-                                                        hours: hoursRemaining,
-                                                      },
-                                                    );
-                                                })()
-                                                : t("common:buttons.claim")
-                                              : !item.canPurchaseMultipleTimes &&
-                                                purchasedItems.some(
-                                                  (pid) =>
-                                                    purchaseIdToItemId(pid) ===
-                                                    item.id,
-                                                )
-                                                ? item.price === 0
-                                                  ? t("shop.alreadyClaimed")
-                                                  : t("shop.alreadyPurchased")
-                                                : item.price === 0
-                                                  ? t("common:buttons.claim")
-                                                  : t("shop.continueCheckout")}
-                                        </Button>
-                                      </div>
-                                    </CardFooter>
-                                    {(item.category === "bundle" ||
-                                      (item.id === "cruel_mode" &&
-                                        shopCruelModeHighlight)) && (
-                                        <div
-                                          className={`absolute inset-0 -z-10 pointer-events-none rounded-lg ${item.category === "bundle" ? "bundle-card-glow" : "cruel-mode-card-glow"}`}
-                                        ></div>
-                                      )}
-                                  </Card>
-                                  {portal}
-                                </>
-                              );
-                            }}
-                          </ShopItemGlyphParticleScope>
-                        ))}
-                    </div>
-                  </ScrollAreaWithIndicator>
-                </TabsContent>
-
-                <TabsContent
-                  value="purchases"
+              {!isLoading && !showSecurePurchasePrompt && (
+                <Tabs
+                  value={activeTab}
+                  onValueChange={(value) =>
+                    setActiveTab(value as "shop" | "purchases")
+                  }
                   className={cn(
-                    "mt-0 flex flex-col outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden",
-                    lockedShopHeight != null
-                      ? "h-0 min-h-0 flex-1 overflow-hidden"
-                      : "min-h-0",
+                    "flex min-h-0 w-full flex-col",
+                    lockedShopHeight != null &&
+                    "h-full flex-1 overflow-hidden",
                   )}
                 >
-                  {!(
-                    purchasedItems.length === 0 &&
-                    Object.keys(gameState.feastActivations || {}).length === 0
-                  ) ? (
+                  {/* Header stays outside ScrollArea: DialogContent uses CSS transform for centering,
+                    which breaks position:sticky for descendants; pin tabs/copy via layout instead. */}
+                  <div className="shrink-0 pb-2 pt-0.5">
+                    <TabsList className="grid h-10 w-full grid-cols-2 items-stretch gap-0 overflow-hidden rounded-md border-2 border-foreground/55 bg-muted p-1 shadow-sm dark:border-foreground/65">
+                      <TabsTrigger
+                        value="shop"
+                        className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 text-base data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
+                      >
+                        {t("shop.forSale")}
+                      </TabsTrigger>
+                      <TabsTrigger
+                        value="purchases"
+                        disabled={!sessionUser}
+                        className="flex h-full min-h-0 min-w-0 w-full items-center justify-center rounded-sm border border-transparent py-0 text-base data-[state=active]:border-foreground/60 data-[state=active]:shadow-md dark:data-[state=active]:border-foreground/70"
+                      >
+                        {t("shop.purchases")}
+                      </TabsTrigger>
+                    </TabsList>
+                  </div>
+
+                  <TabsContent
+                    value="shop"
+                    data-shop-for-sale-pane
+                    className={cn(
+                      "mt-0 flex flex-col outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden",
+                      lockedShopHeight != null
+                        ? "h-0 min-h-0 flex-1 overflow-hidden"
+                        : "min-h-0",
+                    )}
+                  >
+                    {/* Pinned via flex split below TabsList + intro (sticky breaks under dialog transforms). */}
+                    {(import.meta.env.DEV ||
+                      !gameState.hasMadeNonFreePurchase) && (
+                        <div className="relative mb-3 shrink-0 overflow-hidden rounded-md border border-blue-500/40 bg-blue-950">
+                          <SmokeShader scale={SMOKE_SHADER_BANNER_SCALE} />
+                          {/* Soft scrim so bright smoke peaks don't wash out the copy. */}
+                          <div
+                            className="pointer-events-none absolute inset-0 bg-cyan-950/55"
+                            aria-hidden
+                          />
+                          <div className="relative z-10 px-2 py-2 text-center text-sm font-semibold text-white sm:text-base">
+                            {t(insightBannerBefore.key, {
+                              defaultValue: insightBannerBefore.defaultValue,
+                            })}{" "}
+                            <span className="tabular-nums">
+                              {formatNumber(firstPurchaseInsightAmount)}
+                            </span>{" "}
+                            <span
+                              className={cn(
+                                "font-noto-symbols-2",
+                                INSIGHT_TEXT_CLASS,
+                              )}
+                              aria-hidden
+                            >
+                              {INSIGHT_GLYPH}
+                            </span>{" "}
+                            {t("shop.firstPurchaseInsightBannerInsight", {
+                              defaultValue: "Insight",
+                            })}{" "}
+                            {t("shop.firstPurchaseInsightBannerAfter", {
+                              defaultValue: "free with your first purchase",
+                            })}
+                          </div>
+                        </div>
+                      )}
+                    <div className="flex shrink-0 flex-wrap gap-x-1.5 gap-y-4 pb-3">
+                      <Button
+                        variant={selectedFilter === null ? "default" : "outline"}
+                        size="xs"
+                        button_id="shop-filter-highlights"
+                        onClick={() => setSelectedFilter(null)}
+                        className={
+                          selectedFilter === null
+                            ? "text-xs"
+                            : "border border-red-500/50 text-xs"
+                        }
+                      >
+                        {t("shop.highlights")}
+                      </Button>
+                      <Button
+                        variant={
+                          selectedFilter === "gold" ? "default" : "outline"
+                        }
+                        size="xs"
+                        button_id="shop-filter-gold"
+                        onClick={() => setSelectedFilter("gold")}
+                        className={
+                          selectedFilter === "gold"
+                            ? "text-xs"
+                            : "border border-red-500/50 text-xs"
+                        }
+                      >
+                        {t("shop.gold")}
+                      </Button>
+                      <Button
+                        variant={
+                          selectedFilter === "boosts" ? "default" : "outline"
+                        }
+                        size="xs"
+                        button_id="shop-filter-boosts"
+                        onClick={() => setSelectedFilter("boosts")}
+                        className={
+                          selectedFilter === "boosts"
+                            ? "text-xs"
+                            : "border border-red-500/50 text-xs"
+                        }
+                      >
+                        {t("shop.boosts")}
+                      </Button>
+                      <Button
+                        variant={
+                          selectedFilter === "bundles" ? "default" : "outline"
+                        }
+                        size="xs"
+                        button_id="shop-filter-bundles"
+                        onClick={() => setSelectedFilter("bundles")}
+                        className={
+                          selectedFilter === "bundles"
+                            ? "text-xs"
+                            : "border border-red-500/50 text-xs"
+                        }
+                      >
+                        {t("shop.bundles")}
+                      </Button>
+                    </div>
                     <ScrollAreaWithIndicator
                       className={
                         lockedShopHeight != null
                           ? "h-0 min-h-0 flex-1"
                           : "min-h-0"
                       }
-                      scrollAreaId="shop-dialog-purchases"
+                      scrollAreaId="shop-dialog-for-sale"
                       viewportClassName="!pl-0 !pr-0"
                     >
-                      <div className="w-full space-y-2">
-                        {Object.entries(gameState.feastActivations || {}).map(
-                          ([purchaseId, activationsRemaining]) => {
-                            const itemId = purchaseIdToItemId(purchaseId);
-
-                            const item = itemId ? SHOP_ITEMS[itemId] : null;
-
-                            if (!item) {
-                              return null;
+                      <div
+                        data-shop-card-grid
+                        className="grid w-full grid-cols-1 gap-4 md:grid-cols-3"
+                      >
+                        {(selectedFilter === null
+                          ? getHighlightsOrder(gameState.playTime || 0)
+                            .map((id) => SHOP_ITEMS[id])
+                            .filter(Boolean)
+                          : Object.values(SHOP_ITEMS)
+                        )
+                          .filter((item) => {
+                            // Items sold only via a dedicated checkout dialog are never listed here.
+                            if (item.hiddenFromShop) {
+                              return false;
                             }
 
-                            // Skip bundles - only show bundle components
-                            if (item.bundleComponents) {
-                              return null;
+                            // Apply filter based on selectedFilter
+                            if (selectedFilter === "gold") {
+                              return shopItemMatchesGoldFilterTab(item);
+                            }
+                            if (selectedFilter === "boosts") {
+                              // Boosts include Great Feasts and other boost items
+                              return item.category === "feast";
+                            }
+                            if (selectedFilter === "bundles") {
+                              // Bundles have bundle category
+                              return item.category === "bundle";
                             }
 
-                            const isGreatFeastActive =
-                              gameState.greatFeastState?.isActive &&
-                              gameState.greatFeastState.endTime > Date.now();
+                            // For Highlights tab we already filtered by HIGHLIGHTS_ORDER
+                            if (selectedFilter === null) return true;
 
-                            return (
-                              <div
-                                key={purchaseId}
-                                className="flex items-center justify-between rounded-lg border p-3"
-                              >
-                                <div className="flex flex-col">
-                                  <span className="text-sm font-medium">
-                                    {t("shop.feastAvailable", {
-                                      name: resolveShopItemName(item),
-                                      remaining: activationsRemaining,
-                                      total: item.rewards.feastActivations!,
-                                    })}{" "}
-                                    {/* Display remaining activations */}
-                                  </span>
-                                  <span className="text-xs text-muted-foreground">
-                                    <GreatFeastEffectsList />
-                                  </span>
-                                </div>
-                                <Button
-                                  onClick={() =>
-                                    handleActivatePurchase(
-                                      purchaseId,
-                                      item.id, // Use item.id for the itemId argument
-                                    )
-                                  }
-                                  disabled={
-                                    activationsRemaining <= 0 || // Check remaining activations
-                                    isGreatFeastActive
-                                  }
-                                  size="sm"
-                                  variant={
-                                    isGreatFeastActive ||
-                                      activationsRemaining <= 0
-                                      ? "outline"
-                                      : "default"
-                                  }
-                                  className={
-                                    isGreatFeastActive
-                                      ? "border-green-600 bg-green-900/50 text-white"
-                                      : ""
-                                  }
-                                  button_id={`shop-activate-${item.id}`}
-                                >
-                                  {isGreatFeastActive
-                                    ? t("common:status.active")
-                                    : activationsRemaining <= 0
-                                      ? t("common:status.activated")
-                                      : t("common:buttons.activate")}
-                                </Button>
-                              </div>
-                            );
-                          },
-                        )}
-
-                        {/* Show non-feast, non-bundle purchases */}
-                        {purchasedItems
-                          .filter((purchaseId) => {
-                            const itemId = purchaseIdToItemId(purchaseId);
-                            const item = itemId ? SHOP_ITEMS[itemId] : null;
-                            return (
-                              item &&
-                              !item.rewards.feastActivations &&
-                              !item.bundleComponents
-                            );
+                            return true;
                           })
-                          .map((purchaseId) => {
-                            const itemId = purchaseIdToItemId(purchaseId);
-                            const item = itemId ? SHOP_ITEMS[itemId] : null;
-
-                            if (!item) return null;
-
-                            const isActivated =
-                              activatedPurchases[purchaseId] || false;
-                            const isCruelModeItem = item.id === "cruel_mode";
-
-                            return (
-                              <div
-                                key={purchaseId}
-                                className="flex items-center justify-between rounded-lg border p-3"
-                              >
-                                <div className="flex flex-col">
-                                  <span className="text-sm font-medium">
-                                    {resolveShopItemName(item)}
-                                    {isCruelModeItem && (
-                                      <span className="text-md ml-2 font-medium">
-                                        {t("shop.cruelModeActivateHint")}
-                                      </span>
-                                    )}
-                                  </span>
-                                  <span className="text-xs text-muted-foreground">
-                                    {resolveShopItemDescription(item)}
-                                  </span>
-                                </div>
-                                <Button
-                                  onClick={() =>
-                                    handleActivatePurchase(purchaseId, item.id)
-                                  }
-                                  disabled={!isCruelModeItem && isActivated}
-                                  size="sm"
-                                  variant={isActivated ? "outline" : "default"}
-                                  button_id={`shop-activate-${item.id}`}
-                                >
-                                  {isCruelModeItem
-                                    ? isActivated
-                                      ? t("common:buttons.deactivate")
-                                      : t("common:buttons.activate")
-                                    : isActivated
-                                      ? t("common:status.activated")
-                                      : t("common:buttons.activate")}
-                                </Button>
-                              </div>
-                            );
-                          })}
+                          .map((item) => (
+                            <ShopItemGlyphParticleScope key={item.id} item={item}>
+                              {({ hoverHandlers, portal, glyphOriginRef }) => {
+                                const purchaseDisabled =
+                                  isShopItemPurchaseDisabled(item, {
+                                    isUserSignedIn: !!gameState.isUserSignedIn,
+                                    lastFreeGoldClaim:
+                                      gameState.lastFreeGoldClaim || 0,
+                                    purchasedItems,
+                                  });
+                                return (
+                                  <>
+                                    <Card
+                                      {...(hoverHandlers ?? {})}
+                                      id={
+                                        item.id === "cruel_mode"
+                                          ? "shop-card-cruel_mode"
+                                          : undefined
+                                      }
+                                      onClick={(e) => {
+                                        if (purchaseDisabled) return;
+                                        const target = e.target as HTMLElement;
+                                        if (
+                                          target.closest(
+                                            "button, [data-tooltip-trigger-id]",
+                                          )
+                                        ) {
+                                          return;
+                                        }
+                                        handleShopItemPurchaseClick(item.id);
+                                      }}
+                                      className={`group border-neutral-500 flex h-52 min-h-0 max-h-52 flex-col relative ${purchaseDisabled ? "" : "cursor-pointer"} ${item.category === "bundle"
+                                        ? "border border-amber-600"
+                                        : item.id === "cruel_mode" &&
+                                          shopCruelModeHighlight
+                                          ? "border border-red-600"
+                                          : ""
+                                        }`}
+                                    >
+                                      <CardHeader className="relative space-y-0 gap-1 px-4 pb-2 pt-3 leading-snug">
+                                        <div
+                                          className={`flex items-start gap-2${item.symbol ? " pr-8" : ""}`}
+                                        >
+                                          <CardTitle className="!m-0 flex min-w-0 flex-1 items-start gap-1 text-md leading-snug">
+                                            <span className="min-w-0">
+                                              {resolveShopItemName(item)}
+                                            </span>
+                                            {item.id === "skull_lantern" && (
+                                              <ArtifactShopTooltipIcon
+                                                artifact="skull_lantern"
+                                                tooltipId="skull-lantern-info"
+                                                variant="cardTitle"
+                                              />
+                                            )}
+                                            {item.id === "tarnished_compass" && (
+                                              <ArtifactShopTooltipIcon
+                                                artifact="tarnished_compass"
+                                                tooltipId="tarnished-compass-info"
+                                                variant="cardTitle"
+                                              />
+                                            )}
+                                            {item.id === "crow_harness" && (
+                                              <ArtifactShopTooltipIcon
+                                                artifact="crow_harness"
+                                                tooltipId="crow-harness-info"
+                                                variant="cardTitle"
+                                              />
+                                            )}
+                                            {item.id === "cruel_mode" && (
+                                              <TooltipWrapper
+                                                tooltip={<CruelModeEffectsList />}
+                                                tooltipId="cruel-mode-info"
+                                                disabled
+                                                tooltipContentClassName={TOOLTIP_ACCENT_SHOP_CLASS}
+                                                className={`inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-white-500 cursor-pointer motion-safe:animate-shop-info-pulse`}
+                                              >
+                                                <span
+                                                  className={GAME_INFO_GLYPH_CLASS}
+                                                  aria-hidden
+                                                >
+                                                  🛈
+                                                </span>
+                                              </TooltipWrapper>
+                                            )}
+                                          </CardTitle>
+                                          {item.symbol && (
+                                            <ShopCardCornerGlyph
+                                              item={item}
+                                              glyphOriginRef={glyphOriginRef}
+                                              glyphWrapperClassName={`absolute right-4 top-3 text-[20px] leading-none inline-flex items-center justify-center${isShopPaidGoldPackItem(item.id)
+                                                ? " cursor-default"
+                                                : ""
+                                                }`}
+                                              glyphWrapperStyle={{
+                                                color: tailwindToHex(
+                                                  (item.symbolColor || "").replace(
+                                                    "text-",
+                                                    "",
+                                                  ),
+                                                ),
+                                                maxWidth: "2.55em",
+                                                wordBreak: "break-all",
+                                                overflowWrap: "anywhere",
+                                              }}
+                                            />
+                                          )}
+                                        </div>
+                                        <CardDescription className="!m-0 text-bold flex flex-wrap items-center gap-1">
+                                          {(() => {
+                                            const cruelJourneyDiscountActive =
+                                              item.id === "cruel_mode" &&
+                                              gameState.story?.seen
+                                                ?.cruelModeJourneyCompleteDiscount ===
+                                              true;
+                                            const tradersGratitudeActive =
+                                              gameState.tradersGratitudeState
+                                                ?.accepted === true;
+                                            const tradersSonGratitudeActive =
+                                              gameState.tradersSonGratitudeState
+                                                ?.accepted === true;
+                                            const pctOpts = {
+                                              tradersGratitude:
+                                                tradersGratitudeActive,
+                                              tradersSonGratitude:
+                                                tradersSonGratitudeActive,
+                                            };
+                                            const displayPrice =
+                                              item.price > 0
+                                                ? getDiscountedShopPriceCents(
+                                                  item.price,
+                                                  {
+                                                    ...pctOpts,
+                                                    cruelModeJourneyComplete:
+                                                      cruelJourneyDiscountActive,
+                                                  },
+                                                  item.id,
+                                                )
+                                                : item.price;
+                                            const strikethroughCents =
+                                              shopCardStrikethroughCents(
+                                                item,
+                                                displayPrice,
+                                              );
+                                            const priceWithoutJourneyCents =
+                                              item.price > 0 &&
+                                                item.id === "cruel_mode"
+                                                ? getDiscountedShopPriceCents(
+                                                  item.price,
+                                                  {
+                                                    ...pctOpts,
+                                                    cruelModeJourneyComplete: false,
+                                                  },
+                                                  item.id,
+                                                )
+                                                : item.price;
+                                            const tradersOnlyCents =
+                                              item.price > 0
+                                                ? getDiscountedShopPriceCents(
+                                                  item.price,
+                                                  {
+                                                    tradersGratitude: true,
+                                                  },
+                                                  item.id,
+                                                )
+                                                : item.price;
+                                            const sonOnlyCents =
+                                              item.price > 0
+                                                ? getDiscountedShopPriceCents(
+                                                  item.price,
+                                                  {
+                                                    tradersSonGratitude: true,
+                                                  },
+                                                  item.id,
+                                                )
+                                                : item.price;
+                                            const priceClassName =
+                                              strikethroughCents != null
+                                                ? cn(
+                                                  "font-semibold",
+                                                  SHOP_WINTER_SALE_BLUE_CLASS,
+                                                )
+                                                : "";
+                                            const showTradersGratitudeInfo =
+                                              item.price > 0 &&
+                                              tradersGratitudeActive &&
+                                              displayPrice === tradersOnlyCents &&
+                                              displayPrice < item.price;
+                                            const showTradersSonInfo =
+                                              item.price > 0 &&
+                                              tradersSonGratitudeActive &&
+                                              displayPrice === sonOnlyCents &&
+                                              displayPrice < item.price;
+                                            const showJourneyCompleteInfo =
+                                              item.price > 0 &&
+                                              cruelJourneyDiscountActive &&
+                                              displayPrice <
+                                              priceWithoutJourneyCents;
+                                            return (
+                                              <>
+                                                {strikethroughCents != null && (
+                                                  <span className="text-xs line-through text-muted-foreground">
+                                                    {formatPrice(
+                                                      strikethroughCents,
+                                                    )}
+                                                  </span>
+                                                )}
+                                                <span className={priceClassName}>
+                                                  {item.price === 0
+                                                    ? t("common:status.free")
+                                                    : formatPrice(displayPrice)}
+                                                </span>
+                                                {showTradersGratitudeInfo && (
+                                                  <TooltipWrapper
+                                                    tooltip={
+                                                      <div>
+                                                        {t("shop.tradersGratitudeDiscount",
+                                                          {
+                                                            percent:
+                                                              TRADERS_GRATITUDE_DISCOUNT_PERCENT,
+                                                          },
+                                                        )}
+                                                      </div>
+                                                    }
+                                                    tooltipId={`traders-gratitude-${item.id}`}
+                                                    disabled
+                                                    tooltipContentClassName={TOOLTIP_ACCENT_SHOP_CLASS}
+                                                    className={`inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
+                                                  >
+                                                    <span
+                                                      className={GAME_INFO_GLYPH_CLASS}
+                                                      aria-hidden
+                                                    >
+                                                      🛈
+                                                    </span>
+                                                  </TooltipWrapper>
+                                                )}
+                                                {showTradersSonInfo && (
+                                                  <TooltipWrapper
+                                                    tooltip={
+                                                      <div>
+                                                        {t("shop.tradersSonDiscount",
+                                                          {
+                                                            percent:
+                                                              TRADERS_SON_DISCOUNT_PERCENT,
+                                                          },
+                                                        )}
+                                                      </div>
+                                                    }
+                                                    tooltipId={`traders-son-gratitude-${item.id}`}
+                                                    disabled
+                                                    tooltipContentClassName={TOOLTIP_ACCENT_SHOP_CLASS}
+                                                    className={`inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
+                                                  >
+                                                    <span
+                                                      className={GAME_INFO_GLYPH_CLASS}
+                                                      aria-hidden
+                                                    >
+                                                      🛈
+                                                    </span>
+                                                  </TooltipWrapper>
+                                                )}
+                                                {showJourneyCompleteInfo && (
+                                                  <TooltipWrapper
+                                                    tooltip={
+                                                      <div>
+                                                        {t("shop.journeyCompleteDiscount",
+                                                        )}
+                                                      </div>
+                                                    }
+                                                    tooltipId={`journey-complete-cruel-${item.id}`}
+                                                    disabled
+                                                    tooltipContentClassName={TOOLTIP_ACCENT_SHOP_CLASS}
+                                                    className={`inline-flex items-center justify-center ${GAME_INFO_HIT_SIZE_CLASS} rounded-full text-muted-foreground hover:text-foreground cursor-pointer motion-safe:animate-shop-info-pulse`}
+                                                  >
+                                                    <span
+                                                      className={GAME_INFO_GLYPH_CLASS}
+                                                      aria-hidden
+                                                    >
+                                                      🛈
+                                                    </span>
+                                                  </TooltipWrapper>
+                                                )}
+                                              </>
+                                            );
+                                          })()}
+                                          {item.id === "advanced_bundle" && (
+                                            <span
+                                              className={PROMO_TAG_CLASS}
+                                            >
+                                              {t("shop.mostPopular")}
+                                            </span>
+                                          )}
+                                          {(item.id === "gold_15000" ||
+                                            item.id === "gold_30000") && (
+                                              <span
+                                                className={PROMO_TAG_CLASS}
+                                              >
+                                                {item.id === "gold_30000"
+                                                  ? "3x"
+                                                  : "2.5x"}{" "}
+                                                {t("shop.threeXValue")}
+                                              </span>
+                                            )}
+                                        </CardDescription>
+                                      </CardHeader>
+                                      <CardContent className="min-h-0 flex-1 overflow-hidden pl-4 pr-4 pb-2">
+                                        <div className="leading-tight text-sm opacity-80">
+                                          <ShopItemDescriptionParagraph
+                                            item={item}
+                                          />
+                                        </div>
+                                      </CardContent>
+                                      <CardFooter className="relative z-10 mt-auto shrink-0 flex-col gap-2 bg-card pl-4 pr-4 pb-4">
+                                        <div className="relative z-0 w-full overflow-visible pt-1">
+                                          <Button
+                                            onClick={() =>
+                                              handleShopItemPurchaseClick(item.id)
+                                            }
+                                            disabled={purchaseDisabled}
+                                            className="relative z-10 w-full"
+                                            button_id={`shop-purchase-${item.id}`}
+                                          >
+                                            {item.price === 0 &&
+                                              !gameState.isUserSignedIn
+                                              ? t("shop.signInToClaim")
+                                              : item.id === "gold_100_free"
+                                                ? (Date.now() -
+                                                  (gameState.lastFreeGoldClaim ||
+                                                    0)) /
+                                                  (1000 * 60 * 60) <
+                                                  24
+                                                  ? (() => {
+                                                    const hoursRemaining =
+                                                      Math.ceil(
+                                                        24 -
+                                                        (Date.now() -
+                                                          (gameState.lastFreeGoldClaim ||
+                                                            0)) /
+                                                        (1000 * 60 * 60),
+                                                      );
+                                                    return hoursRemaining === 1
+                                                      ? t("shop.availableInOneHour",
+                                                      )
+                                                      : t("shop.availableInHours",
+                                                        {
+                                                          hours: hoursRemaining,
+                                                        },
+                                                      );
+                                                  })()
+                                                  : t("common:buttons.claim")
+                                                : !item.canPurchaseMultipleTimes &&
+                                                  purchasedItems.some(
+                                                    (pid) =>
+                                                      purchaseIdToItemId(pid) ===
+                                                      item.id,
+                                                  )
+                                                  ? item.price === 0
+                                                    ? t("shop.alreadyClaimed")
+                                                    : t("shop.alreadyPurchased")
+                                                  : item.price === 0
+                                                    ? t("common:buttons.claim")
+                                                    : t("shop.continueCheckout")}
+                                          </Button>
+                                        </div>
+                                      </CardFooter>
+                                      <div
+                                        aria-hidden
+                                        className={`pointer-events-none absolute -inset-px z-20 rounded-lg outline outline-2 outline-offset-[-2px] outline-transparent ${item.category === "bundle"
+                                          ? "group-hover:outline-amber-500"
+                                          : item.id === "cruel_mode" &&
+                                            shopCruelModeHighlight
+                                            ? "group-hover:outline-red-500"
+                                            : "group-hover:outline-neutral-400"
+                                          }`}
+                                      />
+                                      {(item.category === "bundle" ||
+                                        (item.id === "cruel_mode" &&
+                                          shopCruelModeHighlight)) && (
+                                          <div
+                                            className={`absolute inset-0 -z-10 pointer-events-none rounded-lg ${item.category === "bundle" ? "bundle-card-glow" : "cruel-mode-card-glow"}`}
+                                          ></div>
+                                        )}
+                                    </Card>
+                                    {portal}
+                                  </>
+                                );
+                              }}
+                            </ShopItemGlyphParticleScope>
+                          ))}
                       </div>
                     </ScrollAreaWithIndicator>
-                  ) : null}
-                </TabsContent>
-                {activeTab === "shop" && (
-                  <div className="mt-3 flex shrink-0 items-center gap-1.5 text-xs font-normal leading-none text-foreground sm:text-sm">
-                    <span
-                      className={`inline-flex ${GAME_INFO_HIT_SIZE_CLASS} shrink-0 items-center justify-center text-muted-foreground`}
-                    >
-                      <span
-                        className={`${GAME_INFO_GLYPH_CLASS} translate-y-[0.12em]`}
-                        aria-hidden
+                  </TabsContent>
+
+                  <TabsContent
+                    value="purchases"
+                    className={cn(
+                      "mt-0 flex flex-col outline-none ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 data-[state=inactive]:hidden",
+                      lockedShopHeight != null
+                        ? "h-0 min-h-0 flex-1 overflow-hidden"
+                        : "min-h-0",
+                    )}
+                  >
+                    {!(
+                      purchasedItems.length === 0 &&
+                      Object.keys(gameState.feastActivations || {}).length === 0
+                    ) ? (
+                      <ScrollAreaWithIndicator
+                        className={
+                          lockedShopHeight != null
+                            ? "h-0 min-h-0 flex-1"
+                            : "min-h-0"
+                        }
+                        scrollAreaId="shop-dialog-purchases"
+                        viewportClassName="!pl-0 !pr-0"
                       >
-                        🛈
+                        <div className="w-full space-y-2">
+                          {Object.entries(gameState.feastActivations || {}).map(
+                            ([purchaseId, activationsRemaining]) => {
+                              const itemId = purchaseIdToItemId(purchaseId);
+
+                              const item = itemId ? SHOP_ITEMS[itemId] : null;
+
+                              if (!item) {
+                                return null;
+                              }
+
+                              // Skip bundles - only show bundle components
+                              if (item.bundleComponents) {
+                                return null;
+                              }
+
+                              const isGreatFeastActive =
+                                gameState.greatFeastState?.isActive &&
+                                gameState.greatFeastState.endTime > Date.now();
+
+                              return (
+                                <div
+                                  key={purchaseId}
+                                  className="flex items-center justify-between rounded-lg border p-3"
+                                >
+                                  <div className="flex flex-col">
+                                    <span className="text-sm font-medium">
+                                      {t("shop.feastAvailable", {
+                                        name: resolveShopItemName(item),
+                                        remaining: activationsRemaining,
+                                        total: item.rewards.feastActivations!,
+                                      })}{" "}
+                                      {/* Display remaining activations */}
+                                    </span>
+                                    <span className="text-xs text-muted-foreground">
+                                      <GreatFeastEffectsList />
+                                    </span>
+                                  </div>
+                                  <Button
+                                    onClick={() =>
+                                      handleActivatePurchase(
+                                        purchaseId,
+                                        item.id, // Use item.id for the itemId argument
+                                      )
+                                    }
+                                    disabled={
+                                      activationsRemaining <= 0 || // Check remaining activations
+                                      isGreatFeastActive
+                                    }
+                                    size="sm"
+                                    variant={
+                                      isGreatFeastActive ||
+                                        activationsRemaining <= 0
+                                        ? "outline"
+                                        : "default"
+                                    }
+                                    className={
+                                      isGreatFeastActive
+                                        ? "border-green-600 bg-green-900/50 text-white"
+                                        : ""
+                                    }
+                                    button_id={`shop-activate-${item.id}`}
+                                  >
+                                    {isGreatFeastActive
+                                      ? t("common:status.active")
+                                      : activationsRemaining <= 0
+                                        ? t("common:status.activated")
+                                        : t("common:buttons.activate")}
+                                  </Button>
+                                </div>
+                              );
+                            },
+                          )}
+
+                          {/* Show non-feast, non-bundle purchases */}
+                          {purchasedItems
+                            .filter((purchaseId) => {
+                              const itemId = purchaseIdToItemId(purchaseId);
+                              const item = itemId ? SHOP_ITEMS[itemId] : null;
+                              return (
+                                item &&
+                                !item.rewards.feastActivations &&
+                                !item.bundleComponents
+                              );
+                            })
+                            .map((purchaseId) => {
+                              const itemId = purchaseIdToItemId(purchaseId);
+                              const item = itemId ? SHOP_ITEMS[itemId] : null;
+
+                              if (!item) return null;
+
+                              const isActivated =
+                                activatedPurchases[purchaseId] || false;
+                              const isCruelModeItem = item.id === "cruel_mode";
+
+                              return (
+                                <div
+                                  key={purchaseId}
+                                  className="flex items-center justify-between rounded-lg border p-3"
+                                >
+                                  <div className="flex flex-col">
+                                    <span className="text-sm font-medium">
+                                      {resolveShopItemName(item)}
+                                      {isCruelModeItem && (
+                                        <span className="text-md ml-2 font-medium">
+                                          {t("shop.cruelModeActivateHint")}
+                                        </span>
+                                      )}
+                                    </span>
+                                    <span className="text-xs text-muted-foreground">
+                                      {resolveShopItemDescription(item)}
+                                    </span>
+                                  </div>
+                                  <Button
+                                    onClick={() =>
+                                      handleActivatePurchase(purchaseId, item.id)
+                                    }
+                                    disabled={!isCruelModeItem && isActivated}
+                                    size="sm"
+                                    variant={isActivated ? "outline" : "default"}
+                                    button_id={`shop-activate-${item.id}`}
+                                  >
+                                    {isCruelModeItem
+                                      ? isActivated
+                                        ? t("common:buttons.deactivate")
+                                        : t("common:buttons.activate")
+                                      : isActivated
+                                        ? t("common:status.activated")
+                                        : t("common:buttons.activate")}
+                                  </Button>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      </ScrollAreaWithIndicator>
+                    ) : null}
+                  </TabsContent>
+                  {activeTab === "shop" && (
+                    <div className="mt-3 flex shrink-0 items-center gap-1.5 text-xs font-normal leading-none text-foreground sm:text-sm">
+                      <span
+                        className={`inline-flex ${GAME_INFO_HIT_SIZE_CLASS} shrink-0 items-center justify-center text-muted-foreground`}
+                      >
+                        <span
+                          className={`${GAME_INFO_GLYPH_CLASS} translate-y-[0.12em]`}
+                          aria-hidden
+                        >
+                          🛈
+                        </span>
                       </span>
-                    </span>
-                    <span className="min-w-0 flex-1 leading-none">
-                      {t("shop.forSalePlaythroughNote")}
-                    </span>
-                  </div>
-                )}
-              </Tabs>
-            )}
+                      <span className="min-w-0 flex-1 leading-none">
+                        {t("shop.forSalePlaythroughNote")}
+                      </span>
+                    </div>
+                  )}
+                </Tabs>
+              )}
+            </ShopButtonSurface>
           </DialogContent>
         )}
       </Dialog>
@@ -2740,134 +2782,136 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
             onPointerDownOutside={(e) => e.preventDefault()}
             onInteractOutside={(e) => e.preventDefault()}
           >
-            <DialogHeader className="shrink-0 space-y-1 pb-0">
-              <DialogTitle className="pr-0 flex items-center justify-between gap-3">
-                <span className="min-w-0">
-                  {SHOP_ITEMS[selectedItem] ? (
-                    <ShopCheckoutItemTitle item={SHOP_ITEMS[selectedItem]} />
-                  ) : (
-                    ""
-                  )}
-                </span>
-                {(import.meta.env.DEV ||
-                  !gameState.hasMadeNonFreePurchase) && (
-                    <span className={SHOP_INSIGHT_PROMO_TAG_CLASS}>
-                      <span>
-                        +
-                        <span className="tabular-nums">
-                          {formatNumber(firstPurchaseInsightAmount)}
-                        </span>
-                      </span>
-                      <span
-                        className={cn(
-                          "inline-flex items-center justify-center font-noto-symbols-2 leading-none translate-y-[0.12em]",
-                          INSIGHT_TEXT_CLASS,
-                        )}
-                        aria-hidden
-                      >
-                        {INSIGHT_GLYPH}
-                      </span>
-                      <span>
-                        {t("shop.firstPurchaseInsightBannerInsight", {
-                          defaultValue: "Insight",
-                        })}{" "}
-                        {t("shop.firstPurchaseInsightCheckoutFree", {
-                          defaultValue: "for free",
-                        })}
-                      </span>
-                    </span>
-                  )}
-              </DialogTitle>
-              <DialogDescription className="sr-only">
-                {t("shop.paymentSrDescription", {
-                  name: SHOP_ITEMS[selectedItem]
-                    ? resolveShopItemName(SHOP_ITEMS[selectedItem])
-                    : "",
-                })}
-              </DialogDescription>
-            </DialogHeader>
-            {checkoutPriceBreakdown && (
-              <div className="shrink-0 pb-3 text-sm">
-                {checkoutPriceBreakdown.hasCatalogSale &&
-                  checkoutPriceBreakdown.catalogSaleListCents != null && (
-                    <>
-                      <div className="flex justify-between gap-4 text-muted-foreground">
-                        <span>{t("shop.originalPrice")}</span>
-                        <span className="shrink-0 text-right line-through tabular-nums">
-                          {formatPrice(
-                            checkoutPriceBreakdown.catalogSaleListCents,
-                          )}
-                        </span>
-                      </div>
-                      <div className="flex justify-between gap-4 text-emerald-600 dark:text-emerald-500">
+            <ShopButtonSurface>
+              <DialogHeader className="shrink-0 space-y-1 pb-0">
+                <DialogTitle className="pr-0 flex items-center justify-between gap-3">
+                  <span className="min-w-0">
+                    {SHOP_ITEMS[selectedItem] ? (
+                      <ShopCheckoutItemTitle item={SHOP_ITEMS[selectedItem]} />
+                    ) : (
+                      ""
+                    )}
+                  </span>
+                  {(import.meta.env.DEV ||
+                    !gameState.hasMadeNonFreePurchase) && (
+                      <span className={SHOP_INSIGHT_PROMO_TAG_CLASS}>
                         <span>
-                          {checkoutPriceBreakdown.isBundleDiscount
-                            ? t("shop.bundleDiscount")
-                            : t("shop.saleDiscount")}
+                          +
+                          <span className="tabular-nums">
+                            {formatNumber(firstPurchaseInsightAmount)}
+                          </span>
                         </span>
+                        <span
+                          className={cn(
+                            "inline-flex items-center justify-center font-noto-symbols-2 leading-none translate-y-[0.12em]",
+                            INSIGHT_TEXT_CLASS,
+                          )}
+                          aria-hidden
+                        >
+                          {INSIGHT_GLYPH}
+                        </span>
+                        <span>
+                          {t("shop.firstPurchaseInsightBannerInsight", {
+                            defaultValue: "Insight",
+                          })}{" "}
+                          {t("shop.firstPurchaseInsightCheckoutFree", {
+                            defaultValue: "for free",
+                          })}
+                        </span>
+                      </span>
+                    )}
+                </DialogTitle>
+                <DialogDescription className="sr-only">
+                  {t("shop.paymentSrDescription", {
+                    name: SHOP_ITEMS[selectedItem]
+                      ? resolveShopItemName(SHOP_ITEMS[selectedItem])
+                      : "",
+                  })}
+                </DialogDescription>
+              </DialogHeader>
+              {checkoutPriceBreakdown && (
+                <div className="shrink-0 pb-3 text-sm">
+                  {checkoutPriceBreakdown.hasCatalogSale &&
+                    checkoutPriceBreakdown.catalogSaleListCents != null && (
+                      <>
+                        <div className="flex justify-between gap-4 text-muted-foreground">
+                          <span>{t("shop.originalPrice")}</span>
+                          <span className="shrink-0 text-right line-through tabular-nums">
+                            {formatPrice(
+                              checkoutPriceBreakdown.catalogSaleListCents,
+                            )}
+                          </span>
+                        </div>
+                        <div className="flex justify-between gap-4 text-emerald-600 dark:text-emerald-500">
+                          <span>
+                            {checkoutPriceBreakdown.isBundleDiscount
+                              ? t("shop.bundleDiscount")
+                              : t("shop.saleDiscount")}
+                          </span>
+                          <span className="shrink-0 text-right tabular-nums">
+                            −
+                            {formatPrice(
+                              checkoutPriceBreakdown.catalogSaleDiscountCents,
+                            )}
+                          </span>
+                        </div>
+                      </>
+                    )}
+                  {checkoutPriceBreakdown.hasEventDiscount && (
+                    <>
+                      {!checkoutPriceBreakdown.hasCatalogSale && (
+                        <div className="flex justify-between gap-4 text-muted-foreground">
+                          <span>{t("shop.originalPrice")}</span>
+                          <span className="shrink-0 text-right line-through tabular-nums">
+                            {formatPrice(checkoutPriceBreakdown.catalogCents)}
+                          </span>
+                        </div>
+                      )}
+                      <div className="flex justify-between gap-4 text-emerald-600 dark:text-emerald-500">
+                        <span>{t("shop.eventDiscount")}</span>
                         <span className="shrink-0 text-right tabular-nums">
                           −
                           {formatPrice(
-                            checkoutPriceBreakdown.catalogSaleDiscountCents,
+                            checkoutPriceBreakdown.additionalDiscountCents,
                           )}
                         </span>
                       </div>
                     </>
                   )}
-                {checkoutPriceBreakdown.hasEventDiscount && (
-                  <>
-                    {!checkoutPriceBreakdown.hasCatalogSale && (
-                      <div className="flex justify-between gap-4 text-muted-foreground">
-                        <span>{t("shop.originalPrice")}</span>
-                        <span className="shrink-0 text-right line-through tabular-nums">
-                          {formatPrice(checkoutPriceBreakdown.catalogCents)}
-                        </span>
-                      </div>
-                    )}
-                    <div className="flex justify-between gap-4 text-emerald-600 dark:text-emerald-500">
-                      <span>{t("shop.eventDiscount")}</span>
-                      <span className="shrink-0 text-right tabular-nums">
-                        −
-                        {formatPrice(
-                          checkoutPriceBreakdown.additionalDiscountCents,
-                        )}
-                      </span>
-                    </div>
-                  </>
-                )}
-                <div
-                  className={`flex justify-between gap-4 text-base font-semibold${checkoutPriceBreakdown.hasCatalogSale ||
-                    checkoutPriceBreakdown.hasEventDiscount
-                    ? " mt-2 border-t border-border/50 pt-2"
-                    : ""
-                    }`}
-                >
-                  <span>{t("shop.total")}</span>
-                  <span className="shrink-0 tabular-nums">
-                    {formatPrice(checkoutPriceBreakdown.finalCents)}
-                  </span>
-                </div>
-              </div>
-            )}
-            <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain pb-1 scrollbar-hide">
-              {stripePromise ? (
-                <Elements stripe={stripePromise} options={{ clientSecret }}>
-                  <CheckoutForm
-                    itemId={selectedItem!}
-                    onSuccess={handlePurchaseSuccess}
-                    currency={currency}
-                    onCancel={handleCancelPayment}
-                    displayPriceCents={checkoutPriceBreakdown?.finalCents ?? 0}
-                  />
-                </Elements>
-              ) : (
-                <div className="flex justify-center py-8">
-                  <div className="text-muted-foreground">
-                    Loading payment system...
+                  <div
+                    className={`flex justify-between gap-4 text-base font-semibold${checkoutPriceBreakdown.hasCatalogSale ||
+                      checkoutPriceBreakdown.hasEventDiscount
+                      ? " mt-2 border-t border-border/50 pt-2"
+                      : ""
+                      }`}
+                  >
+                    <span>{t("shop.total")}</span>
+                    <span className="shrink-0 tabular-nums">
+                      {formatPrice(checkoutPriceBreakdown.finalCents)}
+                    </span>
                   </div>
                 </div>
               )}
-            </div>
+              <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden overscroll-contain pb-1 scrollbar-hide">
+                {stripePromise ? (
+                  <Elements stripe={stripePromise} options={{ clientSecret }}>
+                    <CheckoutForm
+                      itemId={selectedItem!}
+                      onSuccess={handlePurchaseSuccess}
+                      currency={currency}
+                      onCancel={handleCancelPayment}
+                      displayPriceCents={checkoutPriceBreakdown?.finalCents ?? 0}
+                    />
+                  </Elements>
+                ) : (
+                  <div className="flex justify-center py-8">
+                    <div className="text-muted-foreground">
+                      Loading payment system...
+                    </div>
+                  </div>
+                )}
+              </div>
+            </ShopButtonSurface>
           </DialogContent>
         </Dialog>
       )}

@@ -14,6 +14,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- In the shop, pointing at a card draws a line inside the edge. The text and button stay put.
 - Lantern tips list torch cost first on every tier, then mining and cave explore.
 - Trade Post and Clerk's Hut tips list their unlock first on every tier.
 - Bastion and Hungering Moat tips list attack before defense.
@@ -37,7 +38,8 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 - Cube memory arrows sit on the left and on the right.
 - Invest countdowns and the dice rules use the same width as other tips. Lines inside a tip sit at the same distance, and tip headings use the same weight.
 - The pact choice rings in the top bar use the same tip as the rest of the game.
-- In the browser shop, gold packs, Great Feasts, bundles, and Cruel Mode cost less.
+- In the browser shop, gold packs, Great Feasts, bundles, and Cruel Mode cost less, and the old price is crossed out.
+- The browser shop shows a light blue Winter Sale tag, and the price you pay is the same blue.
 - Every tip uses the same dark background, the same text, and the same divider. Level badges, the production cycle, and combat breakdowns match the other tips.
 - Every tip stops at the same width. On a phone that width is a little smaller, and a long description wraps inside the box.
 - Construction queue and villager preset boxes are a little smaller, with more space between them.

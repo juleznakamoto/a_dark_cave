@@ -180,8 +180,33 @@ describe('Shop Items Configuration', () => {
   });
 
   describe('Cruel Mode price', () => {
-    it('is 4.49 EUR', () => {
+    it('is 4.49 EUR, with 4.99 EUR shown crossed out', () => {
       expect(SHOP_ITEMS.cruel_mode.price).toBe(449);
+      expect(SHOP_ITEMS.cruel_mode.originalPrice).toBe(499);
+    });
+  });
+
+  describe('Browser sale list prices', () => {
+    it('keeps the previous browser prices as crossed-out list prices', () => {
+      const previousPrices: Record<string, number> = {
+        cruel_mode: 499,
+        gold_250: 149,
+        gold_1000: 149,
+        gold_2500: 299,
+        gold_5000: 549,
+        gold_15000: 899,
+        gold_30000: 1499,
+        great_feast_1: 149,
+        great_feast_3: 299,
+        basic_survival_bundle: 649,
+        advanced_bundle: 999,
+        ashen_throne_bundle: 1349,
+      };
+      for (const [id, previous] of Object.entries(previousPrices)) {
+        const item = SHOP_ITEMS[id];
+        expect(item.originalPrice).toBe(previous);
+        expect(item.price).toBeLessThan(previous);
+      }
     });
   });
 
@@ -323,10 +348,12 @@ describe('Shop Items Configuration', () => {
 
     it('should validate basic bundle catalog price vs component sum', () => {
       expect(SHOP_ITEMS.basic_survival_bundle.price).toBe(499);
+      expect(SHOP_ITEMS.basic_survival_bundle.originalPrice).toBe(649);
       const listSum = bundleComponentsListPriceSumCents(
         SHOP_ITEMS.basic_survival_bundle.bundleComponents!,
         SHOP_ITEMS,
       );
+      expect(listSum).toBe(549 + 149);
       expect(listSum).toBeGreaterThan(SHOP_ITEMS.basic_survival_bundle.price);
     });
 
@@ -388,8 +415,9 @@ describe('Shop Items Configuration', () => {
     it('should have correct pricing for advanced bundle', () => {
       const bundle = SHOP_ITEMS.advanced_bundle;
       expect(bundle.price).toBe(799);
+      expect(bundle.originalPrice).toBe(999);
       expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
-        SHOP_ITEMS.gold_15000.price + SHOP_ITEMS.great_feast_3.price,
+        899 + 299,
       );
     });
 
@@ -476,10 +504,9 @@ describe('Shop Items Configuration', () => {
     it('should have correct catalog pricing', () => {
       const bundle = SHOP_ITEMS.ashen_throne_bundle;
       expect(bundle.price).toBe(1199);
+      expect(bundle.originalPrice).toBe(1349);
       expect(bundleComponentsListPriceSumCents(bundle.bundleComponents!, SHOP_ITEMS)).toBe(
-        SHOP_ITEMS.gold_15000.price +
-        SHOP_ITEMS.great_feast_3.price +
-        SHOP_ITEMS.cruel_mode.price,
+        899 + 299 + 499,
       );
     });
 

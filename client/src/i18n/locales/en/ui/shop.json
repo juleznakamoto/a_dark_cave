@@ -1,6 +1,7 @@
 {
   "shop": {
     "title": "Trader",
+    "winterSale": "Winter Sale",
     "purchase": "Purchase",
     "forSale": "For Sale",
     "forSalePlaythroughNote": "Purchases can be used again in every playthrough.",

@@ -1,6 +1,7 @@
 {
   "shop": {
     "title": "商人",
+    "winterSale": "冬季特惠",
     "purchase": "购买",
     "forSale": "待售",
     "forSalePlaythroughNote": "购买可在每一局游戏中再次使用。",

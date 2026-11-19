@@ -740,15 +740,23 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
   });
 
   describe('Price Display', () => {
-    it('should show catalog price without MSRP strikethrough for single items', async () => {
+    it('should show the previous price struck through on a gold pack', async () => {
       const onClose = vi.fn();
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        const catalogPrice = screen.getAllByText(/^8\.99 €$/);
-        expect(catalogPrice.some((el) => !el.classList.contains('line-through'))).toBe(
+        const previousPrice = screen.getAllByText(/^8\.99 €$/);
+        expect(previousPrice.some((el) => el.classList.contains('line-through'))).toBe(
           true,
         );
+        const salePrice = screen.getAllByText(/^7\.49 €$/);
+        expect(salePrice.some((el) => !el.classList.contains('line-through'))).toBe(
+          true,
+        );
+        expect(salePrice.some((el) => el.classList.contains('text-sky-300'))).toBe(
+          true,
+        );
+        expect(screen.getByText('Winter Sale')).toBeInTheDocument();
         expect(screen.queryByText(/12\.49\s*€/)).not.toBeInTheDocument();
       });
     });
@@ -761,11 +769,11 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
       render(<ShopDialog isOpen={true} onClose={onClose} />);
 
       await waitFor(() => {
-        const struckCatalog = screen.getAllByText(/^8\.99 €$/);
+        const struckCatalog = screen.getAllByText(/^7\.49 €$/);
         expect(
           struckCatalog.some((el) => el.classList.contains('line-through')),
         ).toBe(true);
-        expect(screen.getAllByText(/^7\.19 €$/).length).toBeGreaterThan(0);
+        expect(screen.getAllByText(/^5\.99 €$/).length).toBeGreaterThan(0);
       });
     });
   });
@@ -921,19 +929,10 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
 
       await waitFor(() => {
         expect(screen.getByText("Fading Wanderer Bundle")).toBeInTheDocument();
-        // Wait for currency detection (EUR) and price display
-        expect(screen.getByText(/^6\.49 €$/)).toBeInTheDocument();
+        expect(screen.getByText(/^4\.99 €$/)).toBeInTheDocument();
       });
 
-      const componentSumEuro = (
-        bundleComponentsListPriceSumCents(
-          SHOP_ITEMS.basic_survival_bundle.bundleComponents!,
-          SHOP_ITEMS,
-        ) / 100
-      ).toFixed(2);
-      const originalPrices = screen.getAllByText(
-        new RegExp(`${componentSumEuro.replace('.', '\\.')}\\s*€`),
-      );
+      const originalPrices = screen.getAllByText(/^6\.49 €$/);
       expect(originalPrices.some((el) => el.classList.contains('line-through'))).toBe(true);
     }, 20_000);
 
@@ -1316,19 +1315,11 @@ describe('ShopDialog', { timeout: 15_000 }, () => {
       bundleScope = bundleScope.parentElement;
     }
     expect(bundleScope).toBeTruthy();
-    const salePriceEls = within(bundleScope!).getAllByText(/^9\.99 €$/);
+    const salePriceEls = within(bundleScope!).getAllByText(/^7\.99 €$/);
     expect(
       salePriceEls.some((el) => !el.className.includes('line-through')),
     ).toBe(true);
-    const listSumEuro = (
-      bundleComponentsListPriceSumCents(
-        SHOP_ITEMS.advanced_bundle.bundleComponents!,
-        SHOP_ITEMS,
-      ) / 100
-    ).toFixed(2);
-    const originalPrice = within(bundleScope!).getByText(
-      new RegExp(`${listSumEuro.replace('.', '\\.')}\\s*€`),
-    );
+    const originalPrice = within(bundleScope!).getByText(/^9\.99 €$/);
     expect(originalPrice).toHaveClass('line-through');
   });
 

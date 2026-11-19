@@ -1,6 +1,7 @@
 {
   "shop": {
     "title": "商人",
+    "winterSale": "ウィンターセール",
     "purchase": "購入",
     "forSale": "販売中",
     "forSalePlaythroughNote": "購入品はどの周回でも使えます。",

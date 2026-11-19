@@ -1,6 +1,7 @@
 {
   "shop": {
     "title": "Händler",
+    "winterSale": "Winterangebot",
     "purchase": "Kaufen",
     "forSale": "Zum Verkauf",
     "forSalePlaythroughNote": "Käufe können in jedem Durchlauf erneut verwendet werden.",
