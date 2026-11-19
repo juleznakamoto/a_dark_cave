@@ -1372,7 +1372,7 @@ export default function GameContainer() {
               over the transparent header/footer strips. */}
           {isPaused && (
             <div
-              className="absolute inset-x-0 bg-black/30 pointer-events-auto overflow-hidden overlay-fade-in"
+              className="absolute inset-x-0 bg-black/40 pointer-events-auto overflow-hidden overlay-fade-in"
               style={{
                 top: headerInset,
                 bottom: footerInset,

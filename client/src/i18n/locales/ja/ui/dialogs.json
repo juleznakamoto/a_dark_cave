@@ -114,7 +114,6 @@
   },
   "invite": {
     "button": "招待",
-    "copyInviteCode": "招待コードをコピー",
     "goldBonus": "+{{amount}}金貨",
     "linkCopied": "招待リンクをコピーしました！",
     "linkCopiedDesc": "友人と共有すると、それぞれ{{amount}}金貨を受け取れます。",

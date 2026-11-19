@@ -114,7 +114,6 @@
   },
   "invite": {
     "button": "Davet Et",
-    "copyInviteCode": "Davet Kodunu Kopyala",
     "goldBonus": "+{{amount}} Altın",
     "linkCopied": "Davet bağlantısı kopyalandı!",
     "linkCopiedDesc": "Arkadaşlarınla paylaş, her biri için {{amount}} Altın kazan.",

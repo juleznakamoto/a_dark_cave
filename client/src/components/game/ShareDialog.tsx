@@ -59,6 +59,7 @@ import { hasReachedFirstAttackWaves } from "@/game/shareCardStats";
 
 const SHARE_IMAGE_WIDTH = 1080;
 const SHARE_IMAGE_HEIGHT = 1350;
+const SHARE_CARD_RADIUS = 36;
 const PREVIEW_MAX_WIDTH = 360;
 const CARD_BG = "#0b0b0e";
 const SHARE_URL = "https://a-dark-cave.com";
@@ -67,6 +68,89 @@ const SHARE_URL_IMAGE = "a-dark-cave.com";
 const SHARE_CARD_ENTRANCE_DURATION_MS = 500;
 /** Extra pause after the card lands before action buttons appear. */
 const SHARE_ACTIONS_DELAY_MS = SHARE_CARD_ENTRANCE_DURATION_MS + 300;
+/** Same row on phone and computer: 32px tall, a little room under the card. */
+const SHARE_ACTION_BUTTON_CLASS = "shrink-0 font-medium h-8 px-3.5";
+
+/** Stroke sits in the 5px rim gap. Half the stroke is inset so it stays on the card. */
+const SHARE_RIM_STROKE = 5;
+const SHARE_RIM_TRAVEL_MS = 4000;
+
+/** One soft sheen: wide dim tail, brighter middle, short white peak. */
+const SHARE_RIM_BANDS = [
+  { className: "adc-share-rim-sheen", portion: 0.16, phase: 0 },
+  { className: "adc-share-rim-mid", portion: 0.09, phase: 0.035 },
+  { className: "adc-share-rim-core", portion: 0.035, phase: 0.0625 },
+] as const;
+
+/**
+ * Perimeter of the rim stroke in SVG user units. pathLength is not used:
+ * iOS and Chrome treat a CSS dash of "16" as 16px, which tiles the light
+ * around the whole card instead of leaving one traveling spot.
+ */
+function shareRimPerimeter(): number {
+  const inset = SHARE_RIM_STROKE / 2;
+  const width = SHARE_IMAGE_WIDTH - SHARE_RIM_STROKE;
+  const height = SHARE_IMAGE_HEIGHT - SHARE_RIM_STROKE;
+  const radius = SHARE_CARD_RADIUS - inset;
+  const straight =
+    2 * (width - 2 * radius + (height - 2 * radius));
+  return straight + 2 * Math.PI * radius;
+}
+
+/**
+ * Traveling edge light for the on-screen preview.
+ * Shown only on iOS (see `.adc-share-rim` in glowing-shadow.css). The scaled
+ * conic rim stays in the card for other browsers and is omitted from the PNG.
+ */
+function SharePreviewRim() {
+  const svgRef = useRef<SVGSVGElement>(null);
+  const inset = SHARE_RIM_STROKE / 2;
+  const rect = {
+    x: inset,
+    y: inset,
+    width: SHARE_IMAGE_WIDTH - SHARE_RIM_STROKE,
+    height: SHARE_IMAGE_HEIGHT - SHARE_RIM_STROKE,
+    rx: SHARE_CARD_RADIUS - inset,
+    ry: SHARE_CARD_RADIUS - inset,
+  };
+
+  useLayoutEffect(() => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const length = shareRimPerimeter();
+    const animations = SHARE_RIM_BANDS.map(({ className, portion, phase }) => {
+      const el = svg.querySelector(`.${className}`);
+      if (!(el instanceof SVGGeometryElement)) return null;
+      const dash = portion * length;
+      el.setAttribute("stroke-dasharray", `${dash} ${length - dash}`);
+      const start = -phase * length;
+      return el.animate(
+        [
+          { strokeDashoffset: `${start}px` },
+          { strokeDashoffset: `${start - length}px` },
+        ],
+        { duration: SHARE_RIM_TRAVEL_MS, iterations: Infinity, easing: "linear" },
+      );
+    });
+    return () => {
+      for (const animation of animations) animation?.cancel();
+    };
+  }, []);
+
+  return (
+    <svg
+      ref={svgRef}
+      className="adc-share-rim"
+      viewBox={`0 0 ${SHARE_IMAGE_WIDTH} ${SHARE_IMAGE_HEIGHT}`}
+      preserveAspectRatio="none"
+      aria-hidden
+    >
+      {SHARE_RIM_BANDS.map(({ className }) => (
+        <rect key={className} className={className} {...rect} />
+      ))}
+    </svg>
+  );
+}
 
 function computeSharePreviewScale(): number {
   if (typeof window === "undefined") return 0.3;
@@ -362,7 +446,7 @@ function ShareCard({
         width: SHARE_IMAGE_WIDTH,
         height: SHARE_IMAGE_HEIGHT,
         backgroundColor: CARD_BG,
-        borderRadius: 36,
+        borderRadius: SHARE_CARD_RADIUS,
       }}
     >
       <GlowingShadow
@@ -843,7 +927,7 @@ export default function ShareDialog() {
         layerZIndex={70}
         backdrop="black"
         style={{ animation: "none" }}
-        className="flex w-max max-w-[min(var(--adc-dialog-viewport-w,95vw),28rem)] max-h-[95vh] flex-col items-center gap-4 overflow-visible border-0 bg-transparent p-0 shadow-none duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none sm:rounded-none"
+        className="flex w-max max-w-[min(var(--adc-dialog-viewport-w,95vw),28rem)] max-h-[95vh] flex-col items-center gap-5 overflow-visible border-0 bg-transparent p-0 shadow-none duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none sm:rounded-none"
       >
         <DialogTitle className="sr-only">
           {t("share.title", { defaultValue: "See your progress" })}
@@ -855,6 +939,7 @@ export default function ShareDialog() {
           style={{
             width: SHARE_IMAGE_WIDTH * previewScale,
             height: SHARE_IMAGE_HEIGHT * previewScale,
+            borderRadius: SHARE_CARD_RADIUS * previewScale,
           }}
         >
           <div
@@ -954,6 +1039,7 @@ export default function ShareDialog() {
                 />
               </div>
             </div>
+            <SharePreviewRim />
             {/* Anchored to the card (not the wider button row) so inset clears the rounded corner. */}
             <DialogClose className="adc-dialog-close absolute right-4 top-4 z-10 flex items-center justify-center rounded-sm p-0 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
               <X className="adc-dialog-close-icon" aria-hidden="true" />
@@ -980,13 +1066,13 @@ export default function ShareDialog() {
               <Button
                 variant="outline"
                 size="xs"
-                className="shrink-0 font-medium px-3"
+                className={SHARE_ACTION_BUTTON_CLASS}
                 onClick={() => {
                   void handleCopyInviteLink();
                 }}
               >
-                {t("invite.copyInviteCode", {
-                  defaultValue: "Copy Invite Code",
+                {t("footer.inviteFriends", {
+                  defaultValue: "Invite Friends",
                 })}
               </Button>
             </TooltipWrapper>
@@ -994,7 +1080,7 @@ export default function ShareDialog() {
           <Button
             variant="outline"
             size="xs"
-            className="shrink-0 font-medium px-3"
+            className={SHARE_ACTION_BUTTON_CLASS}
             button_id="share-save"
             onClick={() => {
               void handleDownload();
@@ -1005,7 +1091,7 @@ export default function ShareDialog() {
           <Button
             variant="outline"
             size="xs"
-            className="shrink-0 font-medium px-3"
+            className={SHARE_ACTION_BUTTON_CLASS}
             button_id="share-copy"
             onClick={() => {
               void handleCopyImage();
@@ -1015,7 +1101,7 @@ export default function ShareDialog() {
           </Button>
           <Button
             size="xs"
-            className="shrink-0 font-medium px-3"
+            className={SHARE_ACTION_BUTTON_CLASS}
             button_id="share-share"
             onClick={() => {
               void handleShare();

@@ -4,9 +4,12 @@ import { PACT_CHOICE_MAX } from "@/game/rules/pacts";
 export function PactChoicesHeaderMark({
   count,
   label,
+  highlighted = false,
 }: {
   count: number;
   label: string;
+  /** Tip is open. On a phone the rings stay at hover brightness while that tip is up. */
+  highlighted?: boolean;
 }) {
   const filled = Math.min(
     PACT_CHOICE_MAX,
@@ -19,6 +22,7 @@ export function PactChoicesHeaderMark({
       aria-label={label}
       data-testid="pact-choices-indicator"
       data-pact-choices={filled}
+      data-highlighted={highlighted ? "true" : "false"}
     >
       {Array.from({ length: PACT_CHOICE_MAX }, (_, index) => {
         const unlocked = index < filled;

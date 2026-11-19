@@ -114,7 +114,6 @@
   },
   "invite": {
     "button": "Invita",
-    "copyInviteCode": "Copia codice invito",
     "goldBonus": "+{{amount}} oro",
     "linkCopied": "Link di invito copiato!",
     "linkCopiedDesc": "Condividilo con gli amici per guadagnare {{amount}} oro ciascuno.",

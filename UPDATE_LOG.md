@@ -14,6 +14,9 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- Save, Copy, and Share under your progress card are a little larger, and they sit a little farther below the card.
+- On the website, the progress card button says Invite Friends.
+- While the game is paused, the dark layer over the panels is a little darker.
 - Blessing choices work like pact choices. Select a card, then press Continue. The cards stay the same height when a description uses two lines.
 - The Book of Ascension tip says you improve actions by repeating them.
 - The Pause and Menu marks in the top bar are a little larger.
@@ -126,6 +129,8 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- The light on your progress card travels around the edge again.
+- On a phone, the pact choice rings in the header brighten while their tip is open.
 - On a phone, scrolling the village list lets go of a job's + or - button, so villagers stop moving while the list scrolls.
 - On a phone, the resource list fills the side panel when you drag that panel taller.
 - Leaving the app and coming back no longer leaves the ambience music silent until you restart.

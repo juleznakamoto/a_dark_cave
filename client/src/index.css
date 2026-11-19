@@ -1137,12 +1137,12 @@ html[data-adc-chrome-stage="0"] {
 @keyframes share-card-enter {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    translate: 0 20px;
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    translate: 0 0;
   }
 }
 
@@ -1730,11 +1730,13 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
   opacity: 0.4;
 }
 
-.game-header-pact-choices:hover .game-header-pact-choice {
+.game-header-pact-choices:hover .game-header-pact-choice,
+.game-header-pact-choices[data-highlighted="true"] .game-header-pact-choice {
   opacity: 1;
 }
 
-.game-header-pact-choices:hover .game-header-pact-choice[data-filled="false"] {
+.game-header-pact-choices:hover .game-header-pact-choice[data-filled="false"],
+.game-header-pact-choices[data-highlighted="true"] .game-header-pact-choice[data-filled="false"] {
   opacity: 0.8;
 }
 

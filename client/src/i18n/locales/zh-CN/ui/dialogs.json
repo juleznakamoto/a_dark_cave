@@ -114,7 +114,6 @@
   },
   "invite": {
     "button": "邀请",
-    "copyInviteCode": "复制邀请码",
     "goldBonus": "+{{amount}} 黄金",
     "linkCopied": "邀请链接已复制！",
     "linkCopiedDesc": "分享给好友，每人可获得 {{amount}} 黄金。",

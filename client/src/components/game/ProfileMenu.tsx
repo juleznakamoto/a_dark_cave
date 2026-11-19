@@ -37,6 +37,7 @@ import { CruelModeHeaderMark } from "@/components/game/CruelModeHeaderMark";
 import { PactChoicesHeaderMark } from "@/components/game/PactChoicesHeaderMark";
 import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
+import { useGlobalTooltipOpen } from "@/hooks/useGlobalTooltip";
 import { arePactsEnabled } from "@/game/rules/pacts";
 import { DropdownMenuItemWithTooltip } from "@/components/game/DropdownMenuItemWithTooltip";
 import {
@@ -642,6 +643,8 @@ export function GameHeaderControls() {
   const pactChoicesLabel = t("footer.pactChoicesUnlocked", {
     defaultValue: "Pact choices unlocked",
   });
+  const pactChoicesHighlighted =
+    useGlobalTooltipOpen("header-pact-choices") === true;
 
   return (
     <div className="flex items-center gap-0.5 shrink-0">
@@ -658,6 +661,7 @@ export function GameHeaderControls() {
           <PactChoicesHeaderMark
             count={pactChoices}
             label={pactChoicesLabel}
+            highlighted={pactChoicesHighlighted}
           />
         </TooltipWrapper>
       )}

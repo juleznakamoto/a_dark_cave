@@ -116,7 +116,6 @@
   },
   "invite": {
     "button": "Zaproś",
-    "copyInviteCode": "Kopiuj kod zaproszenia",
     "goldBonus": "+{{amount}} złota",
     "linkCopied": "Skopiowano link zaproszenia!",
     "linkCopiedDesc": "Udostępnij go znajomym – za każde zaproszenie oboje dostaniecie {{amount}} złota.",

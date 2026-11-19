@@ -213,6 +213,69 @@
   filter: drop-shadow(0 0 12px rgb(255 255 255 / 36%));
 }
 
+/*
+ * iOS WebKit flattens the scaled, rotating conic rim into a solid halo
+ * (ancestor filter + transform, and overflow clipping a rotated child).
+ * The preview draws the same sheen at on-screen size instead: an SVG stroke
+ * along the card edge, with no filter on the ancestor so the dash can move.
+ */
+.adc-share-rim {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.adc-share-rim-sheen,
+.adc-share-rim-mid,
+.adc-share-rim-core {
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Dash length is set in user units by SharePreviewRim. pathLength would turn
+   those dashes into a dotted ring, which is the solid halo this replaces. */
+.adc-share-rim-sheen {
+  stroke: #8e949c;
+  opacity: 0.55;
+}
+
+.adc-share-rim-mid {
+  stroke: #d5d8dc;
+  opacity: 0.9;
+}
+
+.adc-share-rim-core {
+  stroke: #fff;
+}
+
+@supports (-webkit-touch-callout: none) {
+  .adc-share-preview {
+    filter: none;
+    box-shadow: 0 0 7.2px rgb(255 255 255 / 23%);
+    transition: box-shadow 400ms ease;
+  }
+
+  .adc-share-preview:hover {
+    filter: none;
+    box-shadow: 0 0 12px rgb(255 255 255 / 36%);
+  }
+
+  .adc-share-preview .adc-gs__rim {
+    display: none;
+  }
+
+  .adc-share-rim {
+    display: block;
+  }
+}
+
 .adc-gs:before,
 .adc-gs:after {
   content: "";
