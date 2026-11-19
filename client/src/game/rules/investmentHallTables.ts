@@ -332,24 +332,40 @@ export function buildInvestmentResultDialogPayload(
   };
 }
 
+/** Stake choices, smallest first. Coinhouse, Bank, and Treasury unlock each step. */
+export const INVESTMENT_STAKE_AMOUNTS = [100, 500, 1000] as const;
+
+export type InvestmentStakeAmount = (typeof INVESTMENT_STAKE_AMOUNTS)[number];
+
+/** Smallest stake Invest offers. Below this, the Invest button stays closed. */
+export const MIN_INVESTMENT_STAKE_GOLD = INVESTMENT_STAKE_AMOUNTS[0];
+
+export function isInvestmentStakeAmount(
+  amountGold: number,
+): amountGold is InvestmentStakeAmount {
+  return (INVESTMENT_STAKE_AMOUNTS as readonly number[]).includes(amountGold);
+}
+
 export function getMaxInvestmentStake(state: {
   buildings: Pick<
     GameState["buildings"],
     "coinhouse" | "bank" | "treasury"
   >;
 }): number {
-  if (state.buildings.treasury > 0) return 1000;
-  if (state.buildings.bank > 0) return 500;
-  if (state.buildings.coinhouse > 0) return 100;
+  const [coinhouseStake, bankStake, treasuryStake] = INVESTMENT_STAKE_AMOUNTS;
+  if (state.buildings.treasury > 0) return treasuryStake;
+  if (state.buildings.bank > 0) return bankStake;
+  if (state.buildings.coinhouse > 0) return coinhouseStake;
   return 0;
 }
 
-/** Building that raises the stake cap to this amount. Null for the Coinhouse cap (100). */
+/** Building that raises the stake cap to this amount. Null for the Coinhouse stake. */
 export function getInvestmentStakeUnlockBuilding(
   amountGold: number,
 ): "bank" | "treasury" | null {
-  if (amountGold >= 1000) return "treasury";
-  if (amountGold >= 500) return "bank";
+  const [, bankStake, treasuryStake] = INVESTMENT_STAKE_AMOUNTS;
+  if (amountGold >= treasuryStake) return "treasury";
+  if (amountGold >= bankStake) return "bank";
   return null;
 }
 

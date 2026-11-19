@@ -172,6 +172,22 @@ export function sharedProgressSegmentOpacity(element: HTMLElement): number {
   return SHARED_PROGRESS_BAR_REST_OPACITY;
 }
 
+/**
+ * Partial Improve paints redraw only the growing bar and leave the rest of
+ * the canvas untouched. iOS throws that buffer away after every frame unless
+ * it is preserved, which takes the smoke off every other Estate bar until
+ * the fill animation ends.
+ */
+export const SHARED_PROGRESS_SHADER_CONTEXT_ATTRIBUTES: WebGLContextAttributes =
+  {
+    alpha: true,
+    antialias: false,
+    depth: false,
+    stencil: false,
+    premultipliedAlpha: true,
+    preserveDrawingBuffer: true,
+  };
+
 /** Resting smoke clock. `seconds` passed to the shader is real time times this. */
 const SHARED_PROGRESS_SHADER_TIME_SCALE = 0.15;
 /** Hovered estate and attack-wave bars. 11 = 1000% faster than the resting clock. */
@@ -357,13 +373,10 @@ class SharedProgressShaderRenderer {
       canvas.width = 1;
       canvas.height = 1;
     }
-    const gl = canvas.getContext("webgl", {
-      alpha: true,
-      antialias: false,
-      depth: false,
-      stencil: false,
-      premultipliedAlpha: true,
-    });
+    const gl = canvas.getContext(
+      "webgl",
+      SHARED_PROGRESS_SHADER_CONTEXT_ATTRIBUTES,
+    );
     if (!gl) throw new Error("WebGL1 context not available");
     this.gl = gl;
 
@@ -500,7 +513,8 @@ class SharedProgressShaderRenderer {
      * When set, skip the full clear and redraw only segments inside these
      * bars. Their cells are scissor-cleared first so a shrinking fill does
      * not leave smoke behind. Other bars keep the pixels from the last full
-     * frame.
+     * frame, which requires `preserveDrawingBuffer` (iOS clears the canvas
+     * after each present otherwise).
      */
     growingRoots: ArrayLike<Node> | null = null,
   ) {

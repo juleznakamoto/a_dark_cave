@@ -189,4 +189,45 @@ describe("CubeDialog estate swipe", () => {
       });
     }
   });
+
+  it("abandons a swipe when the browser cancels the touch", () => {
+    const before = useGameStore.getState();
+    act(() => {
+      useGameStore.setState((state) => ({
+        relics: { ...state.relics, whispering_cube: true },
+        events: { ...state.events, cube01: true },
+        eventDialog: {
+          ...state.eventDialog,
+          isOpen: true,
+          currentEvent: cubeEvent("cubeDiscovery", true),
+        },
+      }));
+    });
+
+    try {
+      render(<Harness event={cubeEvent("cubeDiscovery", true)} />);
+      const surface = document.querySelector(
+        "[data-testid='cube-memory-surface']",
+      ) as Element;
+      act(() => {
+        fireTouch("touchstart", surface, 200, 100);
+        fireTouch("touchmove", surface, 100, 104);
+        fireTouch("touchcancel", surface, 100, 104);
+        // A later lift must not finish the gesture the browser already took.
+        fireTouch("touchend", surface, 100, 104);
+      });
+      expect(useGameStore.getState().eventDialog.currentEvent?.eventId).toBe(
+        "cubeDiscovery",
+      );
+    } finally {
+      act(() => {
+        useGameStore.setState({
+          relics: before.relics,
+          events: before.events,
+          eventDialog: before.eventDialog,
+          clickAnalytics: before.clickAnalytics,
+        });
+      });
+    }
+  });
 });

@@ -24,7 +24,11 @@ import {
   getLuckyChancePercent,
   getSuccessChancePercent,
   getInvestmentStakeUnlockBuilding,
+  getMaxInvestmentStake,
+  INVESTMENT_STAKE_AMOUNTS,
+  isInvestmentStakeAmount,
   isInvestmentWaveReadyForUi,
+  MIN_INVESTMENT_STAKE_GOLD,
   LUCKY_CHANCE_WIN_MULTIPLIER,
   lossGold,
   luckyChanceSuccessProfitGold,
@@ -92,11 +96,17 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
   const buildings = useGameStore((s) => s.buildings);
   const startInvestment = useGameStore((s) => s.startInvestment);
 
-  const maxStake = useMemo(() => {
-    if (buildings.treasury > 0) return 1000;
-    if (buildings.bank > 0) return 500;
-    return 100;
-  }, [buildings.treasury, buildings.bank]);
+  const maxStake = useMemo(
+    () =>
+      getMaxInvestmentStake({
+        buildings: {
+          coinhouse: buildings.coinhouse,
+          bank: buildings.bank,
+          treasury: buildings.treasury,
+        },
+      }),
+    [buildings.coinhouse, buildings.bank, buildings.treasury],
+  );
 
   const luckyChancePct = useMemo(
     () =>
@@ -108,9 +118,9 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
     [buildings.coinhouse, buildings.bank, buildings.treasury],
   );
 
-  const amounts = [100, 500, 1000] as const;
+  const amounts = INVESTMENT_STAKE_AMOUNTS;
   const [strategy, setStrategy] = useState("0");
-  const [amountStr, setAmountStr] = useState("100");
+  const [amountStr, setAmountStr] = useState(String(MIN_INVESTMENT_STAKE_GOLD));
 
   const offers = investmentHallState.offers;
 
@@ -127,9 +137,10 @@ export default function InvestDialog({ open, onOpenChange }: Props) {
   }, [offers, strategy, amountStr]);
 
   useEffect(() => {
-    if (open && canInvestUi && maxStake >= 100) {
+    if (open && canInvestUi && maxStake >= MIN_INVESTMENT_STAKE_GOLD) {
       const allowed = amounts.filter((a) => a <= maxStake);
-      if (!allowed.includes(Number(amountStr) as 100 | 500 | 1000)) {
+      const stake = Number(amountStr);
+      if (!isInvestmentStakeAmount(stake) || !allowed.includes(stake)) {
         setAmountStr(String(allowed[allowed.length - 1]));
       }
     }

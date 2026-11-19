@@ -149,6 +149,7 @@ import InvestDialog from "@/components/game/InvestDialog";
 import {
   getInvestmentWaveGapMs,
   isInvestmentWaveReadyForUi,
+  MIN_INVESTMENT_STAKE_GOLD,
 } from "@/game/rules/investmentHallTables";
 import { GAME_CONSTANTS, getCallMerchantGoldCost } from "@/game/constants";
 import {
@@ -233,14 +234,23 @@ function VillageInvestButton({ label }: { label: string }) {
   const { t } = useUiTranslation();
   const playFrozen = useDemoPlayFrozen();
   const playTime = useGameStore((s) => s.playTime);
+  const gold = useGameStore((s) => s.resources?.gold ?? 0);
   const investmentHallState = useGameStore((s) => s.investmentHallState);
   const investDialogOpen = useGameStore((s) => s.investDialogOpen);
   const setInvestDialogOpen = useGameStore((s) => s.setInvestDialogOpen);
+  const canAffordMinInvest = gold >= MIN_INVESTMENT_STAKE_GOLD;
 
   const handleInvestDialogOpenChange = useCallback(
     (next: boolean) => {
       if (next && playFrozen) return;
-      if (next && !isInvestmentWaveReadyForUi(useGameStore.getState())) return;
+      const state = useGameStore.getState();
+      if (next && !isInvestmentWaveReadyForUi(state)) return;
+      if (
+        next &&
+        (state.resources?.gold ?? 0) < MIN_INVESTMENT_STAKE_GOLD
+      ) {
+        return;
+      }
       setInvestDialogOpen(next);
     },
     [playFrozen, setInvestDialogOpen],
@@ -288,6 +298,13 @@ function VillageInvestButton({ label }: { label: string }) {
         {t("village.investPreparing")}
       </div>
     )
+  ) : !canAffordMinInvest ? (
+    <div>
+      {t("village.investNeedGold", {
+        amount: MIN_INVESTMENT_STAKE_GOLD,
+        defaultValue: "At least {{amount}} Gold needed to invest",
+      })}
+    </div>
   ) : undefined;
 
   return (
@@ -298,7 +315,7 @@ function VillageInvestButton({ label }: { label: string }) {
         data-testid="button-invest"
         actionId="invest"
         button_id="invest"
-        disabled={playFrozen || !investReady}
+        disabled={playFrozen || !investReady || !canAffordMinInvest}
         playTimeCooldown={investPlayTimeCooldown}
         size="xs"
         variant="outline"

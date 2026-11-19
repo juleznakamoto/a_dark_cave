@@ -59,6 +59,7 @@
     "investCompleteIn": "投资 {{time}} 后完成",
     "investAvailableIn": "投资已结束。新方案将在 {{time}} 后出现。",
     "investPreparing": "正在准备投资方案……",
+    "investNeedGold": "投资至少需要 {{amount}} 黄金",
     "jobs": {
       "gatherer": "采集者",
       "hunter": "猎人",

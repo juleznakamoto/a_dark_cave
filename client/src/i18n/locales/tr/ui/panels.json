@@ -59,6 +59,7 @@
     "investCompleteIn": "Yatırım {{time}} sonra tamamlanacak",
     "investAvailableIn": "Yatırım tamamlandı. Yeni teklifler {{time}} sonra.",
     "investPreparing": "Yatırım teklifleri hazırlanıyor…",
+    "investNeedGold": "Yatırım için en az {{amount}} Altın gerekli",
     "jobs": {
       "gatherer": "Toplayıcı",
       "hunter": "Avcı",

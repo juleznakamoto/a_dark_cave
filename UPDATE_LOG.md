@@ -14,6 +14,10 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- Lantern tips list torch cost first on every tier, then mining and cave explore.
+- Trade Post and Clerk's Hut tips list their unlock first on every tier.
+- Bastion and Hungering Moat tips list attack before defense.
+- The Invest button stays inactive until you have at least 100 Gold, and its tip says so.
 - Buttons in dialogs use the same gray fill as other buttons you can use.
 - Buttons you can use have a slightly stronger gray fill.
 - Buttons you cannot use have a faint gray fill.
@@ -136,6 +140,8 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- While one Estate bar fills, the smoke in the other bars stays.
+- A notification or system gesture that interrupts a cube memory swipe leaves you on the memory you were reading.
 - Tips, menus, and dialogs stop at the top of the header, clear of the notch.
 - Notices sit below the top bar, clear of the clock and status icons.
 - The light on your progress card travels around the edge as a soft glow.

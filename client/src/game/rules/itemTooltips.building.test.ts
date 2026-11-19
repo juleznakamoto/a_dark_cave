@@ -281,9 +281,9 @@ describe("building tooltip audit at max tier", () => {
     ).toEqual([
       ["Higher Trade Amounts", "+2 Trades at Travelling Merchant"],
       [
+        "Unlocks Call Merchant",
         "Higher Trade Amounts",
         "+1 Trade at Travelling Merchant",
-        "Unlocks Call Merchant",
       ],
     ]);
 

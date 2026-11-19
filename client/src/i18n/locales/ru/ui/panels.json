@@ -67,6 +67,7 @@
     "investCompleteIn": "Инвестиция завершится через {{time}}",
     "investAvailableIn": "Инвестиция завершена. Новые предложения через {{time}}.",
     "investPreparing": "Подготовка инвестиционных предложений…",
+    "investNeedGold": "Для инвестиции нужно не менее {{amount}} золота",
     "jobs": {
       "gatherer": "Собиратель",
       "hunter": "Охотник",

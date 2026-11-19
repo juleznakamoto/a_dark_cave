@@ -89,6 +89,17 @@ function getWeaponEffectLines(itemId: string): WeaponEffectLine[] {
     });
   }
 
+  // Same order as the current-tier tooltip: general bonuses, then action bonuses.
+  const torchCostReduction = effect.bonuses?.generalBonuses?.torchCostReduction ?? 0;
+  if (torchCostReduction > 0) {
+    lines.push({
+      key: "torchCostReduction",
+      line: getUiTooltip("torchCostReduction", "Torch cost: -{{count}}", {
+        count: torchCostReduction,
+      }),
+    });
+  }
+
   for (const [actionId, bonus] of Object.entries(
     effect.bonuses?.actionBonuses ?? {},
   )) {
@@ -119,16 +130,6 @@ function getWeaponEffectLines(itemId: string): WeaponEffectLine[] {
         ),
       });
     }
-  }
-
-  const torchCostReduction = effect.bonuses?.generalBonuses?.torchCostReduction ?? 0;
-  if (torchCostReduction > 0) {
-    lines.push({
-      key: "torchCostReduction",
-      line: getUiTooltip("torchCostReduction", "Torch cost: -{{count}}", {
-        count: torchCostReduction,
-      }),
-    });
   }
 
   const unlock = CHAIN_UNLOCKS[itemId];

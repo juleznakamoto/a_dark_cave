@@ -223,7 +223,9 @@ export default function CubeDialog({
     };
 
     const onCancel = () => {
-      finish(lastX, lastY);
+      // The browser took the gesture (notification, system gesture). Drop it.
+      // Completing from the last point would page a memory the finger never finished.
+      tracking = false;
     };
 
     // Document, not the card. iOS delivers the move to the document while a

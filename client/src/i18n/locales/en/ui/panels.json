@@ -59,6 +59,7 @@
     "investCompleteIn": "Investment complete in {{time}}",
     "investAvailableIn": "Investment finished. Next offers in {{time}}.",
     "investPreparing": "Preparing investment offers…",
+    "investNeedGold": "At least {{amount}} Gold needed to invest",
     "jobs": {
       "gatherer": "Gatherer",
       "hunter": "Hunter",

@@ -183,6 +183,7 @@ import {
   generateInvestmentOffers,
   getMaxInvestmentStake,
   getInvestmentWaveGapMs,
+  isInvestmentStakeAmount,
   investmentHallLuckyChanceBonusPct,
 } from "@/game/rules/investmentHallTables";
 import {
@@ -547,7 +548,7 @@ export const createMerchantSlice: GameStoreCreator<Partial<GameStore>> = (set, g
       return { ok: false, reason: "Invalid offer." };
     }
     const maxStake = getMaxInvestmentStake(state);
-    if (![100, 500, 1000].includes(amountGold) || amountGold > maxStake) {
+    if (!isInvestmentStakeAmount(amountGold) || amountGold > maxStake) {
       return { ok: false, reason: "Invalid stake amount." };
     }
     if (state.resources.gold < amountGold) {

@@ -59,6 +59,7 @@
     "investCompleteIn": "投資完了まで{{time}}",
     "investAvailableIn": "投資は終わりました。次の案件まで{{time}}。",
     "investPreparing": "投資案件を準備中…",
+    "investNeedGold": "投資には少なくとも{{amount}}金貨が必要です",
     "jobs": {
       "gatherer": "採集者",
       "hunter": "狩人",

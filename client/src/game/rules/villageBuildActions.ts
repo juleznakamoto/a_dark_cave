@@ -116,8 +116,8 @@ export function getBastionTooltipEffectsForLevel(
 ): BuildingTooltipEffect[] {
   const stats = BASTION_STATS_BY_LEVEL[level] ?? BASTION_STATS_BY_LEVEL[2];
   return [
-    bt("defenseBonus", "+{{amount}} Defense", { amount: stats.defense }),
     bt("attackBonus", "+{{amount}} Attack", { amount: stats.attack }),
+    bt("defenseBonus", "+{{amount}} Defense", { amount: stats.defense }),
     bt("integrityBonus", "+{{amount}} Integrity", { amount: stats.integrity }),
   ];
 }
@@ -893,8 +893,8 @@ export const villageBuildActions: Record<string, Action> = {
     description:
       "Bottomless trench of black water, where something hungry waits to drag down all who enter.",
     tooltipEffects: [
-      bt("defenseBonus", "+{{amount}} Defense", { amount: 15 }),
       bt("attackBonus", "+{{amount}} Attack", { amount: 5 }),
+      bt("defenseBonus", "+{{amount}} Defense", { amount: 15 }),
     ],
     building: true,
     show_when: {
@@ -1895,8 +1895,8 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Clerk's Hut",
     description: "Hut where scholars study to gain Insight about the world",
     tooltipEffects: [
-      bt("knowledgeBonus", "+{{amount}} Knowledge", { amount: 2 }),
       bt("unlocksScholar", "Unlocks Scholar"),
+      bt("knowledgeBonus", "+{{amount}} Knowledge", { amount: 2 }),
       bt("scholarInsight", "Scholar: +{{amount}} Insight", { amount: 1 }),
     ],
     building: true,
@@ -2519,9 +2519,9 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Trade Post",
     description: "Trading post attracting merchants selling goods",
     tooltipEffects: [
+      bt("unlocksCallMerchant", "Unlocks Call Merchant"),
       { ...bt("higherTradeAmounts", "Higher Trade Amounts"), repeatEveryLevel: true },
       bt("tradesAtMerchant", "+{{count}} Trade at Travelling Merchant", { count: 1 }),
-      bt("unlocksCallMerchant", "Unlocks Call Merchant"),
     ],
     building: true,
     show_when: {

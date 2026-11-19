@@ -10,6 +10,7 @@ import {
   nextSharedProgressHoverExtraSeconds,
   SHARED_PROGRESS_BAR_REST_OPACITY,
   SHARED_PROGRESS_SHADER_COLOR_TOKENS,
+  SHARED_PROGRESS_SHADER_CONTEXT_ATTRIBUTES,
   sharedProgressSegmentOpacity,
 } from "./shared-progress-shader";
 
@@ -65,6 +66,14 @@ describe("resolveSharedProgressPaintScope", () => {
   it("keeps idle smoke on a full redraw and tracks only a growing bar", () => {
     expect(resolveSharedProgressPaintScope(false)).toBe("full");
     expect(resolveSharedProgressPaintScope(true)).toBe("growing");
+  });
+});
+
+describe("shared progress shader context", () => {
+  it("preserves the drawing buffer so a partial Improve paint keeps the other bars", () => {
+    expect(
+      SHARED_PROGRESS_SHADER_CONTEXT_ATTRIBUTES.preserveDrawingBuffer,
+    ).toBe(true);
   });
 });
 

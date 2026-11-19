@@ -108,10 +108,24 @@ describe("weapon upgrade tooltips", () => {
     expect(getWeaponUpgradeHighlightId("iron_lantern")).toBeNull();
     expect(getWeaponUpgradeHighlightId("steel_lantern")).toBe("iron_lantern");
     expect(getWeaponUpgradeMarginalEffectLines("steel_lantern")).toEqual([
+      "Torch cost: -2",
       "Mining: +50% Bonus",
       "Mining: -1.5s Duration",
       "Cave Explore: +50% Bonus",
-      "Torch cost: -2",
+    ]);
+    expect(getWeaponUpgradeLevelSections("obsidian_lantern").map((section) => section.effects)).toEqual([
+      [
+        "Torch cost: -2",
+        "Mining: +50% Bonus",
+        "Mining: -1.5s Duration",
+        "Cave Explore: +50% Bonus",
+      ],
+      [
+        "Torch cost: -1",
+        "Mining: +25% Bonus",
+        "Mining: -1s Duration",
+        "Cave Explore: +25% Bonus",
+      ],
     ]);
   });
 });

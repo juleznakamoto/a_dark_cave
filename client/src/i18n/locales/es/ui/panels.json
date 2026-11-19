@@ -59,6 +59,7 @@
     "investCompleteIn": "La inversión termina en {{time}}",
     "investAvailableIn": "Inversión terminada. Próximas ofertas en {{time}}.",
     "investPreparing": "Preparando ofertas de inversión…",
+    "investNeedGold": "Hacen falta al menos {{amount}} de oro para invertir",
     "jobs": {
       "gatherer": "Recolector",
       "hunter": "Cazador",
