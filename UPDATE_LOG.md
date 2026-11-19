@@ -15,7 +15,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 #### Changed
 
 - Cube memories that said Continue now say Close.
-- Cube memory arrows sit beside the memory, on the left and on the right.
+- Cube memory arrows sit on the left and on the right.
 - Invest countdowns and the dice rules use the same width as other tips. Lines inside a tip sit at the same distance, and tip headings use the same weight.
 - The pact choice rings in the top bar use the same tip as the rest of the game.
 - In the browser shop, gold packs, Great Feasts, bundles, and Cruel Mode cost less.
@@ -30,7 +30,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 - In the dice game, Roll and No Roll sit farther apart.
 - The Ambience and Sound knobs in Settings are a little larger, so they are easier to grab.
 - Pressing or dragging the line between panels shows the grab handle for a few seconds, then it fades out.
-- Cube memories on the Estate close right away, and the side arrows switch memories without a short wait. Those arrows are larger, and the memory window is wider.
+- Cube memories on the Estate close right away, and the side arrows switch memories without a short wait. Those arrows are larger.
 - Pact choice cards are a little wider on phones.
 - The Insight tip for absolving an item now says it reduces Madness of the item by 1.
 - Pause, production, and Focus status rings in the top bar are a little larger.
@@ -79,6 +79,12 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 - On a phone, tapping the pact choice rings or the Cruel Mode mark in the header shows what they mean.
 - On the start screen, a sentence that wraps onto a second line still dissolves when you light the fire.
 
+### Steam
+
+#### Changed
+
+- On a computer, a cube memory is almost square, a little taller than it is wide.
+
 ### iOS
 
 #### Added
@@ -90,6 +96,8 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- On a phone, the arrows on a cube memory sit against the memory and the edge of the screen.
+- On a phone, the arrow marks beside a cube memory are a little larger.
 - Swipe left or right on a cube memory to move to the next or previous memory.
 - On a phone, Rewards in the top bar shows only the diamond icon, without the word Rewards.
 - On a phone, the Rewards dialog uses more of the screen width.

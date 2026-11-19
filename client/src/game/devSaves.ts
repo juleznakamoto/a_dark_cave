@@ -161,12 +161,31 @@ function withInvestHall(base: GameState): GameState {
 }
 
 function withEstate(base: GameState): GameState {
+  // The village already has huts and a deeper cave trip, so the first cube
+  // memories are already finished. Stop before cube03, which still needs the ruins.
   return withSeenTabBlinks(
     {
       ...base,
       buildings: {
         ...base.buildings,
         darkEstate: 1,
+      },
+      relics: {
+        ...base.relics,
+        whispering_cube: true,
+      },
+      events: {
+        ...base.events,
+        cube01: true,
+        cubeLostCivilization: true,
+        cube02: true,
+      },
+      story: {
+        ...base.story,
+        seen: {
+          ...base.story?.seen,
+          cubeStoryArchiveV2Applied: true,
+        },
       },
     },
     ["estate"],

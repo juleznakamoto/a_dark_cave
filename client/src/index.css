@@ -1324,11 +1324,7 @@ button.new-item-pulse-text,
   height: calc(var(--adc-corner-badge-hit) * var(--adc-control-scale, 1));
   box-sizing: border-box;
   /* (hit - disc) / 2 — keeps the red circle at disc size inside the hit host. */
-  border: calc(
-    (var(--adc-corner-badge-hit) - var(--adc-corner-badge-disc)) / 2 *
-      var(--adc-control-scale, 1)
-  )
-    solid transparent;
+  border: calc((var(--adc-corner-badge-hit) - var(--adc-corner-badge-disc)) / 2 * var(--adc-control-scale, 1)) solid transparent;
   background-clip: padding-box;
 }
 
@@ -1349,11 +1345,7 @@ button.new-item-pulse-text,
   width: calc(var(--adc-corner-badge-hit) * var(--adc-control-scale, 1));
   height: calc(var(--adc-corner-badge-hit) * var(--adc-control-scale, 1));
   box-sizing: border-box;
-  border: calc(
-    (var(--adc-corner-badge-hit) - var(--adc-corner-badge-disc)) / 2 *
-      var(--adc-control-scale, 1)
-  )
-    solid transparent;
+  border: calc((var(--adc-corner-badge-hit) - var(--adc-corner-badge-disc)) / 2 * var(--adc-control-scale, 1)) solid transparent;
   background-clip: padding-box;
 }
 
@@ -1840,33 +1832,67 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
   opacity: 0.7;
 }
 
-/* Arrows stay in the margin beside the frame. The paging dialog narrows so
-   that margin exists even on a phone, instead of letting the arrows overlap
-   the memory. */
+/* Desktop keeps the original 21rem height and is a little narrower than
+   that, so the card is almost square. Phones use 84vw, and the arrows
+   sit in the side margin, outside the frame. */
 .cube-dialog-content {
-  --cube-arrow-size: 3.575rem;
-  --cube-arrow-gap: 1.5rem;
-  --cube-arrow-outset: calc(var(--cube-arrow-size) + var(--cube-arrow-gap));
-  --adc-dialog-max-w: 28rem;
+  --adc-dialog-max-w: 20rem;
+  height: auto;
+  min-height: 21rem;
+  max-height: 90dvh;
+}
+
+@media (max-width: 767px) {
+  .cube-dialog-content {
+    --adc-dialog-viewport-w: 84vw;
+    --adc-dialog-max-w: 84vw;
+  }
 }
 
 .cube-dialog-content--paging {
-  --adc-dialog-max-w: min(
-    28rem,
-    calc(
-      100vw - (2 * var(--cube-arrow-outset)) - 1rem - env(safe-area-inset-left, 0px) -
-        env(safe-area-inset-right, 0px)
-    )
-  );
   touch-action: pan-y;
 }
 
+.cube-event-arrow {
+  --cube-arrow-size: 3.575rem;
+  --cube-arrow-gap: 0.75rem;
+  top: calc(50% - (var(--cube-arrow-size) / 2));
+}
+
 .cube-event-arrow[data-direction="previous"] {
-  left: calc(-1 * var(--cube-arrow-outset));
+  left: calc(-1 * (var(--cube-arrow-size) + var(--cube-arrow-gap)));
 }
 
 .cube-event-arrow[data-direction="next"] {
-  right: calc(-1 * var(--cube-arrow-outset));
+  right: calc(-1 * (var(--cube-arrow-size) + var(--cube-arrow-gap)));
+}
+
+@media (max-width: 767px) {
+
+  /* 84vw leaves 8vw on each side. The arrow fills that strip,
+     touching the cube and the screen edge. */
+  button.cube-event-arrow {
+    --cube-arrow-gap: 0px;
+    --cube-arrow-size: 8vw;
+    box-sizing: border-box;
+    width: 8vw;
+    height: 8vw;
+    margin: 0;
+    padding: 0;
+  }
+
+  button.cube-event-arrow[data-direction="previous"] {
+    left: calc(50% - 50vw);
+  }
+
+  button.cube-event-arrow[data-direction="next"] {
+    right: calc(50% - 50vw);
+  }
+
+  button.cube-event-arrow svg {
+    width: 77.5%;
+    height: 77.5%;
+  }
 }
 
 /* Shared dialog X: square hit target + icon grow slightly with text size. */
@@ -2173,11 +2199,7 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
 
   /* SVG filter owns gooey; triangles only rotate (no CSS blur). */
   .building-action-badge--playing .building-action-badge__ios-goo .building-action-badge__triangle,
-  .insight-action-badge-trigger.insight-action-badge-trigger--playing:not(
-      .insight-action-badge-trigger--unaffordable
-    )
-    .building-action-badge__ios-goo
-    .building-action-badge__triangle {
+  .insight-action-badge-trigger.insight-action-badge-trigger--playing:not(.insight-action-badge-trigger--unaffordable) .building-action-badge__ios-goo .building-action-badge__triangle {
     filter: none !important;
   }
 }
@@ -2190,15 +2212,8 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
   display: block;
 }
 
-.building-action-badge--ios-goo.building-action-badge--playing
-  .building-action-badge__ios-goo
-  .building-action-badge__triangle,
-.insight-action-badge-trigger.insight-action-badge-trigger--playing:not(
-    .insight-action-badge-trigger--unaffordable
-  )
-  .building-action-badge--ios-goo
-  .building-action-badge__ios-goo
-  .building-action-badge__triangle {
+.building-action-badge--ios-goo.building-action-badge--playing .building-action-badge__ios-goo .building-action-badge__triangle,
+.insight-action-badge-trigger.insight-action-badge-trigger--playing:not(.insight-action-badge-trigger--unaffordable) .building-action-badge--ios-goo .building-action-badge__ios-goo .building-action-badge__triangle {
   filter: none !important;
 }
 
@@ -2953,21 +2968,20 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
 /* Red unpause cue: wait 15s paused, then pulse a red glow every 2s.
    Override --continue-pause-glow-delay (e.g. 0s) on the animations demo. */
 @keyframes continue-pause-glow {
+
   0%,
   100% {
     filter: drop-shadow(0 0 0 transparent);
   }
 
   50% {
-    filter: drop-shadow(0 0 6px rgba(220, 38, 38, 0.95))
-      drop-shadow(0 0 14px rgba(220, 38, 38, 0.55));
+    filter: drop-shadow(0 0 6px rgba(220, 38, 38, 0.95)) drop-shadow(0 0 14px rgba(220, 38, 38, 0.55));
   }
 }
 
 .continue-pause-glow {
   --continue-pause-glow-delay: 15s;
-  animation: continue-pause-glow 2s ease-in-out
-    var(--continue-pause-glow-delay) infinite;
+  animation: continue-pause-glow 2s ease-in-out var(--continue-pause-glow-delay) infinite;
 }
 
 @keyframes donate-heart-pump {

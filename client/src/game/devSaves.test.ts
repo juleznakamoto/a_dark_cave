@@ -18,6 +18,7 @@ import {
 } from "./devSaves";
 import { SOCIAL_PROMPT_AUTO_OPEN_COUNT } from "./socialPromptAuto";
 import { canActivateSleep } from "./sleepActivation";
+import { isDemoEndCubeEventCompleted } from "./demoEndCatalog";
 import { boneyardCrossCount } from "./rules/boneyardMadness";
 
 describe("dev save catalog", () => {
@@ -104,6 +105,11 @@ describe("dev save catalog", () => {
     expect(state.buildings.darkEstate).toBeGreaterThan(0);
     expect(canActivateSleep(state)).toBe(true);
     expect(state.idleModeState.isActive).toBe(false);
+    expect(isDemoEndCubeEventCompleted(state, "cubeDiscovery")).toBe(true);
+    expect(isDemoEndCubeEventCompleted(state, "cube01")).toBe(true);
+    expect(isDemoEndCubeEventCompleted(state, "cubeLostCivilization")).toBe(true);
+    expect(isDemoEndCubeEventCompleted(state, "cube02")).toBe(true);
+    expect(isDemoEndCubeEventCompleted(state, "cube03")).toBe(false);
   });
 
   it("sleep-active keeps a pending sleep session", () => {

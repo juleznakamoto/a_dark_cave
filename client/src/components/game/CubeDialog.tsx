@@ -52,13 +52,13 @@ function CubeEventArrow({
       data-direction={direction}
       onClick={onClick}
       className={cn(
+        // Inside the dialog so a click is not treated as an outside press.
+        // The cube is translated, so fixed would stick to the frame anyway.
         // Center with top, not translate. The open click lock sets
         // `transform: none` on buttons, which would drop a translate and
         // jump the arrow up when the button becomes clickable.
         // ~30% larger than the old h-11 / h-6 (2.75rem / 1.5rem).
-        // Side position lives in CSS, outside the frame. The paging dialog
-        // narrows so the arrow never sits on the memory.
-        "cube-event-arrow absolute top-[calc(50%-1.7875rem)] z-30 flex h-[3.575rem] w-[3.575rem] items-center justify-center text-muted-foreground opacity-70 transition-[opacity,color] hover:text-white hover:opacity-100",
+        "cube-event-arrow absolute z-30 flex h-[3.575rem] w-[3.575rem] items-center justify-center text-muted-foreground opacity-70 transition-[opacity,color] hover:text-white hover:opacity-100",
       )}
     >
       <Icon className="h-[1.95rem] w-[1.95rem]" aria-hidden />
@@ -330,7 +330,7 @@ export default function CubeDialog({
         // stay live, including when an arrow swaps in the next memory.
         openClickLockMs={event.viewOnly ? 0 : undefined}
         className={cn(
-          "cube-dialog-content [&>.adc-dialog-close]:hidden border-2 border-gray-400 shadow-2xl min-h-[21rem] max-h-[90dvh] flex flex-col overflow-visible z-[100]",
+          "cube-dialog-content [&>.adc-dialog-close]:hidden border-2 border-gray-400 shadow-2xl flex flex-col overflow-visible z-[100]",
           canPage && "cube-dialog-content--paging",
         )}
         style={chromeRuleColorStyle("#9ca3af")}
@@ -368,7 +368,7 @@ export default function CubeDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex-1 flex items-end justify-center pt-4">
+        <div className="flex flex-1 items-end justify-center pt-4">
           <Button
             onClick={handleClose}
             variant="outline"
