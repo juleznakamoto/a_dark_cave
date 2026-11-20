@@ -22,7 +22,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 - While the game is paused, status marks in the top bar fade out, then your play time and pact choices fade in. Pact choices stay hidden while you play, and they sit to the left of the other top-right icons without moving them. Cruel Mode and Rewards stay.
 - A chosen pact's eye blinks a little more often, and each blink lasts a slightly different length.
 - When a village job is full, its limit turns a soft yellow.
-- When a village job is full, pressing + blinks its limit three times in solid yellow.
+- When a village job is full, pressing + blinks both the slash and the limit three times in bright yellow.
 - When the Trader tab appears, it glows gold and sparks. It no longer flashes green.
 - While you sleep, the invite button stays under the mist.
 - On a phone, Privacy and Imprint sit next to each other on the title screen.

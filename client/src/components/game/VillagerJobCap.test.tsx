@@ -69,7 +69,7 @@ describe("VillagerJobCap", () => {
     expect(cap).toHaveTextContent("/20");
     expect(cap.className).not.toContain("villager-cap-flash");
     expect(cap.className).toContain("text-muted-foreground");
-    expect(number).toHaveTextContent("20");
+    expect(number.textContent).toBe("/20");
     expect(number.className).toContain("villager-cap-flash");
     expect(number.className).not.toContain("villager-cap-flash--full");
   });
@@ -100,7 +100,7 @@ describe("VillagerJobCap", () => {
     );
 
     const first = screen.getByTestId("villager-job-cap-number-hunter");
-    expect(first).toHaveTextContent("10");
+    expect(first.textContent).toBe("/10");
     expect(first.className).toContain("villager-cap-flash--full");
 
     rerender(

@@ -48,7 +48,7 @@ export function VillagerJobCap({
         atCap ? AT_CAP_CLASS : "text-muted-foreground",
       )}
     >
-      /<span
+      <span
         key={flashGeneration}
         data-testid={`villager-job-cap-number-${jobId}`}
         className={cn(
@@ -56,7 +56,7 @@ export function VillagerJobCap({
           flashGeneration > 0 && atCap && "villager-cap-flash--full",
         )}
       >
-        {cap}
+        /{cap}
       </span>
     </span>
   );
