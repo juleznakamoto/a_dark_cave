@@ -53,6 +53,7 @@ import {
   heartfireIndicatorIcon,
 } from "@/game/headerIndicatorIcons";
 import { isDemoPlayFrozen } from "@/game/demoLimit";
+import { capOverlongTimedEffects } from "@/game/timedEffects";
 import { GREAT_FEAST_DURATION_MS } from "@shared/shopItems";
 import { useNewItemPulseTooltips } from "@/hooks/useNewItemPulseTooltip";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
@@ -74,6 +75,12 @@ const HEADER_STATUS_INDICATOR_TOOLTIP_IDS = [
   "focus-progress",
   "bad-dreams-progress",
 ] as const;
+
+/** 0 at the start of an effect, 100 when it ends. Never wraps past either end. */
+function ringPercent(elapsedMs: number, durationMs: number): number {
+  if (durationMs <= 0) return 0;
+  return Math.min(100, Math.max(0, (elapsedMs / durationMs) * 100));
+}
 
 function HeaderIndicatorGlyph({ id }: { id: string }) {
   const icon = headerIndicatorIcon(id);
@@ -243,6 +250,25 @@ export function GameHeaderStatusIndicators({
   const focusIcon = headerIndicatorIcon("focus");
   const badDreamsIcon = headerIndicatorIcon("badDreams");
 
+  // Repair end times that outlive the effect (a second wake can add the
+  // whole sleep). The loop does this too, but not while a dialog has it frozen.
+  useEffect(() => {
+    const patch = capOverlongTimedEffects(useGameStore.getState());
+    if (patch) useGameStore.setState(patch);
+  }, [
+    staringDeerState,
+    forestFearState,
+    feastState,
+    greatFeastState,
+    solsticeState,
+    curseState,
+    frostfallState,
+    focusState,
+    badDreamsState,
+    miningBoostState,
+    brimstoneFluxState,
+  ]);
+
   const [feastProgress, setFeastProgress] = useState(0);
   const [solsticeProgress, setSolsticeProgress] = useState(0);
   const [focusProgress, setFocusProgress] = useState(0);
@@ -256,14 +282,14 @@ export function GameHeaderStatusIndicators({
           greatFeastState.durationMs || GREAT_FEAST_DURATION_MS;
         const greatFeastElapsed =
           greatFeastDuration - (greatFeastState.endTime - now);
-        setFeastProgress((greatFeastElapsed / greatFeastDuration) * 100);
+        setFeastProgress(ringPercent(greatFeastElapsed, greatFeastDuration));
       } else if (feastState?.isActive && feastState.endTime > now) {
         const state = useGameStore.getState();
         const baseDuration = 10 * 60 * 1000;
         const btpBonus = state.BTP === 1 ? 5 * 60 * 1000 : 0;
         const feastDuration = baseDuration + btpBonus;
         const feastElapsed = feastDuration - (feastState.endTime - now);
-        setFeastProgress((feastElapsed / feastDuration) * 100);
+        setFeastProgress(ringPercent(feastElapsed, feastDuration));
       } else {
         setFeastProgress(0);
       }
@@ -283,7 +309,7 @@ export function GameHeaderStatusIndicators({
         );
         const solsticeElapsed =
           solsticeDuration - (solsticeState.endTime - now);
-        setSolsticeProgress((solsticeElapsed / solsticeDuration) * 100);
+        setSolsticeProgress(ringPercent(solsticeElapsed, solsticeDuration));
       } else {
         setSolsticeProgress(0);
       }
@@ -308,9 +334,7 @@ export function GameHeaderStatusIndicators({
             : null;
         const focusDuration = fromStored ?? fromRange ?? 60_000;
         const focusElapsed = focusDuration - (focusState.endTime - now);
-        setFocusProgress(
-          Math.min(100, Math.max(0, (focusElapsed / focusDuration) * 100)),
-        );
+        setFocusProgress(ringPercent(focusElapsed, focusDuration));
       } else {
         setFocusProgress(0);
         if (
@@ -352,9 +376,7 @@ export function GameHeaderStatusIndicators({
             : null;
         const duration = fromStored ?? fromRange ?? 10 * 60 * 1000;
         const elapsed = duration - (badDreamsState.endTime - now);
-        setBadDreamsProgress(
-          Math.min(100, Math.max(0, (elapsed / duration) * 100)),
-        );
+        setBadDreamsProgress(ringPercent(elapsed, duration));
       } else {
         setBadDreamsProgress(0);
         if (
@@ -568,7 +590,7 @@ export function GameHeaderStatusIndicators({
                   cruelModeScale(state),
                 );
                 const elapsed = totalDuration - timeRemaining;
-                return Math.min(100, (elapsed / totalDuration) * 100);
+                return ringPercent(elapsed, totalDuration);
               })()}
               size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
               fill
@@ -606,7 +628,7 @@ export function GameHeaderStatusIndicators({
                 );
                 const totalDuration = disgustDurationMs(state.cruelMode);
                 const elapsed = totalDuration - timeRemaining;
-                return Math.min(100, (elapsed / totalDuration) * 100);
+                return ringPercent(elapsed, totalDuration);
               })()}
               size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
               fill
@@ -641,7 +663,7 @@ export function GameHeaderStatusIndicators({
                 const boostDuration = 30 * 60 * 1000;
                 const boostElapsed =
                   boostDuration - (miningBoostState.endTime - Date.now());
-                return (boostElapsed / boostDuration) * 100;
+                return ringPercent(boostElapsed, boostDuration);
               })()}
               size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
               fill
@@ -676,7 +698,7 @@ export function GameHeaderStatusIndicators({
                 const fluxElapsed =
                   BRIMSTONE_FLUX_DURATION_MS -
                   (brimstoneFluxState.endTime - Date.now());
-                return (fluxElapsed / BRIMSTONE_FLUX_DURATION_MS) * 100;
+                return ringPercent(fluxElapsed, BRIMSTONE_FLUX_DURATION_MS);
               })()}
               size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
               fill
@@ -714,7 +736,7 @@ export function GameHeaderStatusIndicators({
                   frostfallState.endTime - Date.now(),
                 );
                 const elapsed = frostfallDuration - timeRemaining;
-                return Math.min(100, (elapsed / frostfallDuration) * 100);
+                return ringPercent(elapsed, frostfallDuration);
               })()}
               size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
               fill
@@ -750,7 +772,7 @@ export function GameHeaderStatusIndicators({
                   fogState.endTime - Date.now(),
                 );
                 const elapsed = fogDuration - timeRemaining;
-                return Math.min(100, (elapsed / fogDuration) * 100);
+                return ringPercent(elapsed, fogDuration);
               })()}
               size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
               fill
@@ -787,10 +809,7 @@ export function GameHeaderStatusIndicators({
                   staringDeerState.endTime - Date.now(),
                 );
                 const elapsed = STARING_DEER_DURATION_MS - timeRemaining;
-                return Math.min(
-                  100,
-                  (elapsed / STARING_DEER_DURATION_MS) * 100,
-                );
+                return ringPercent(elapsed, STARING_DEER_DURATION_MS);
               })()}
               size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
               fill
@@ -828,7 +847,7 @@ export function GameHeaderStatusIndicators({
                 );
                 const forestFearDuration = getForestFearDurationMs(state.BTP);
                 const elapsed = forestFearDuration - timeRemaining;
-                return Math.min(100, (elapsed / forestFearDuration) * 100);
+                return ringPercent(elapsed, forestFearDuration);
               })()}
               size={GAME_PANEL_HEADER_INDICATOR_SIZE_PX}
               fill

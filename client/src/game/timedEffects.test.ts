@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  capOverlongTimedEffects,
   processTimedEffects,
   TIMED_EFFECT_KEYS,
   type TimedEffectsState,
@@ -111,6 +112,32 @@ describe("processTimedEffects", () => {
       {
         feastState: { isActive: true },
         curseState: undefined,
+      },
+      now,
+    );
+    expect(patch).toBeNull();
+  });
+
+  it("caps an active effect that outlives its real length", () => {
+    const patch = capOverlongTimedEffects(
+      {
+        ...baseState(),
+        staringDeerState: { isActive: true, endTime: now + 10 * 24 * 60 * 60 * 1000 },
+        fogState: { isActive: true, endTime: now + 10 * 24 * 60 * 60 * 1000, duration: 60_000 },
+      },
+      now,
+    );
+    expect(patch?.staringDeerState?.endTime).toBe(now + 15 * 60 * 1000);
+    expect(patch?.staringDeerState?.isActive).toBe(true);
+    // Fog stacks, so a long end time is left alone.
+    expect(patch?.fogState).toBeUndefined();
+  });
+
+  it("leaves an effect that is still inside its maximum", () => {
+    const patch = capOverlongTimedEffects(
+      {
+        ...baseState(),
+        staringDeerState: { isActive: true, endTime: now + 14 * 60 * 1000 },
       },
       now,
     );

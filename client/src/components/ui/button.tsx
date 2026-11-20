@@ -13,12 +13,12 @@ import { cn } from "@/lib/utils"
 import { DialogButtonSurfaceContext } from "@/components/ui/dialogButtonSurface"
 import { buttonVariants } from "./button-variants"
 
-/** Dialog action buttons share the panel-button wash. Ghost, link, and danger stay as they are. */
+/** Outline dialog buttons share the panel wash. Primary, ghost, link, and danger stay as they are. */
 function dialogButtonFill(variant: ButtonProps["variant"]): string | null {
-  if (variant === "ghost" || variant === "link" || variant === "destructive") {
-    return null;
+  if (variant === "outline" || variant === "secondary") {
+    return "bg-neutral-600/15 hover:bg-accent";
   }
-  return "bg-neutral-600/15 hover:bg-accent";
+  return null;
 }
 
 export interface ButtonProps

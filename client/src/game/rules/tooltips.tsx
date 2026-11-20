@@ -20,6 +20,7 @@ import {
   HEARTFIRE_LEVEL_DURATION_MS,
 } from "@/game/heartfireClock";
 import { BRIMSTONE_FLUX_STEEL_BONUS } from "./eventsBrimstoneFlux";
+import { STARING_DEER_DURATION_MS } from "./eventsStaringDeer";
 import {
   getMadnessDeathChancePerCycle,
   madnessDeathChanceToTooltipPercent,
@@ -1099,7 +1100,10 @@ export const staringDeerTooltip: TooltipConfig = {
       staringDeerState?.isActive && staringDeerState.endTime > Date.now();
 
     if (isActive) {
-      const remainingMs = staringDeerState.endTime - Date.now();
+      const remainingMs = Math.min(
+        STARING_DEER_DURATION_MS,
+        Math.max(0, staringDeerState.endTime - Date.now()),
+      );
       return (
         <>
           <div className="font-bold">

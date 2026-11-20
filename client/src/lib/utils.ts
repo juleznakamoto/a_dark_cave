@@ -106,8 +106,9 @@ export function formatPrice(cents: number, currency: "EUR" | "USD"): string {
 
 /**
  * Format seconds as compact duration (e.g. 90 -> "1m 30s", 5 -> "5s").
- * Omit the minutes segment when under one minute. Use for remaining-time /
- * countdown copy in tooltips and UI.
+ * Hours and days take over once the span is that long, so a multi-day
+ * countdown is not shown as tens of thousands of minutes.
+ * Omit a leading zero unit. Use for remaining-time / countdown copy.
  */
 export function formatCompactDuration(
   seconds: number,
@@ -117,8 +118,12 @@ export function formatCompactDuration(
     0,
     rounding === "round" ? Math.round(seconds) : Math.ceil(seconds),
   );
-  const minutes = Math.floor(totalSeconds / 60);
+  const days = Math.floor(totalSeconds / 86400);
+  const hours = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
   const secs = totalSeconds % 60;
+  if (days > 0) return hours > 0 ? `${days}d ${hours}h` : `${days}d`;
+  if (hours > 0) return minutes > 0 ? `${hours}h ${minutes}m` : `${hours}h`;
   if (minutes === 0) return `${secs}s`;
   return `${minutes}m ${secs}s`;
 }

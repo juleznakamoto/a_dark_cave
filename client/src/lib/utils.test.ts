@@ -75,6 +75,10 @@ describe("formatCompactDuration", () => {
   it("ceils by default and can round", () => {
     expect(formatCompactDuration(61.1)).toBe("1m 2s");
     expect(formatCompactDuration(61.1, "round")).toBe("1m 1s");
+    expect(formatCompactDuration(90 * 60)).toBe("1h 30m");
+    expect(formatCompactDuration(3600)).toBe("1h");
+    expect(formatCompactDuration(10 * 86400 + 18 * 3600)).toBe("10d 18h");
+    expect(formatCompactDuration(2 * 86400)).toBe("2d");
   });
 });
 

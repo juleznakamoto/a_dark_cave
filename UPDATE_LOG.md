@@ -31,6 +31,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 - Trade Post and Clerk's Hut tips list their unlock first on every tier.
 - Bastion and Hungering Moat tips list attack before defense.
 - The Invest button stays inactive until you have at least 100 Gold, and its tip says so.
+- Sign in, Share, Give Feedback, Redeem, and the other solid red dialog buttons are red again.
 - Buttons in dialogs use the same gray fill as other buttons you can use.
 - Buttons you can use have a slightly stronger gray fill.
 - Buttons you cannot use have a faint gray fill.
@@ -89,6 +90,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- Staring Deer and the other short village effects no longer count down in the tens of thousands of minutes. The time stays within the effect's real length, and a long countdown shows days and hours.
 - Pointing at the knowledge mark on an event no longer shows a hand.
 - A dialog that was waiting no longer opens while the game is paused. It opens after you resume.
 - Stat icons in success chance tips and on choice buttons sit level with the text beside them.

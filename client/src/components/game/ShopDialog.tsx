@@ -699,8 +699,8 @@ async function detectCurrency(): Promise<"EUR" | "USD"> {
 }
 
 /**
- * Buy buttons, checkout, and filter chips keep the solid primary and outline
- * styles. Other dialogs use the shared gray wash.
+ * Filter chips keep their outline fill. The dialog wash only replaces
+ * outline buttons, so buy and checkout stay red here too.
  */
 function ShopButtonSurface({ children }: { children: React.ReactNode }) {
   return (

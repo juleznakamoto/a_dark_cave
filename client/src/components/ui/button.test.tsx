@@ -124,6 +124,9 @@ describe("Button destroyed outline chrome", () => {
       "bg-neutral-600/15",
     );
     expect(screen.getByRole("button", { name: "Share" }).className).toContain(
+      "bg-primary",
+    );
+    expect(screen.getByRole("button", { name: "Share" }).className).not.toContain(
       "bg-neutral-600/15",
     );
     expect(screen.getByRole("button", { name: "Delete" }).className).not.toContain(

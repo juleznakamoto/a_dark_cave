@@ -96,9 +96,10 @@ const SOCIAL_TASK_LIST_CLASS =
   "mt-2 grid grid-cols-[auto_minmax(0,1fr)_auto_auto] gap-x-2 gap-y-3 sm:gap-x-3";
 const SOCIAL_TASK_ROW_CLASS =
   "col-span-full grid grid-cols-subgrid items-center rounded-md border border-border p-3";
-/** Stretch every task-row action to the shared button column (widest label wins). */
+/** Stretch every task-row action to the shared button column (widest label wins).
+ * Explicit primary fill beats the shared gray dialog wash so these stay red. */
 const SOCIAL_TASK_ACTION_BTN_CLASS =
-  "w-full font-medium px-2 text-[length:calc(0.75rem+var(--adc-text-delta,0px))]";
+  "w-full font-medium px-2 text-[length:calc(0.75rem+var(--adc-text-delta,0px))] bg-primary text-primary-foreground hover:bg-primary/90";
 /** Every reward chip uses the gold treatment, including wood, food, stone, and silver. */
 const SOCIAL_TASK_REWARD_CHIP_CLASS =
   "inline-flex w-fit shrink-0 items-center justify-self-end rounded px-1 py-1 text-xxs font-semibold tabular-nums bg-yellow-500/15 text-yellow-400 border border-yellow-500/35";

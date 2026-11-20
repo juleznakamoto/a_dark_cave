@@ -346,6 +346,8 @@ function IdleModeDialogOpen() {
   productionSpeedMultiplierRef.current = PRODUCTION_SPEED_MULTIPLIER;
   // How many 15s cycles are already in accumulatedResources.
   const appliedSleepIntervalsRef = useRef(0);
+  // Wake grants resources and shifts buff timers. A second click must not do it again.
+  const endingSleepRef = useRef(false);
 
   // Reset local state when game changes (new game started)
   useEffect(() => {
@@ -363,6 +365,7 @@ function IdleModeDialogOpen() {
   // effect does not list idleModeState in its deps.
   useEffect(() => {
     if (idleModeDialog.isOpen && !isActive) {
+      endingSleepRef.current = false;
       const initNow = Date.now();
       const session = useGameStore.getState().idleModeState;
 
@@ -514,8 +517,22 @@ function IdleModeDialogOpen() {
   }, [isActive, idleModeDialog.isOpen, startTime]);
 
   const handleEndIdleMode = () => {
+    if (endingSleepRef.current) return;
+    endingSleepRef.current = true;
     const now = Date.now();
-    const elapsed = startTime > 0 ? Math.max(0, now - startTime) : 0;
+    // Store clock, not the closure: a second click in this turn must not add
+    // the sleep pause again (that stretched a 15 minute effect across days).
+    const sessionStart = useGameStore.getState().idleModeState?.startTime ?? 0;
+    const elapsed = sessionStart > 0 ? Math.max(0, now - sessionStart) : 0;
+    if (sessionStart > 0) {
+      const liveIdle = useGameStore.getState().idleModeState;
+      useGameStore.setState({
+        idleModeState: {
+          ...liveIdle,
+          startTime: 0,
+        },
+      });
+    }
 
     // Freeze wall-clock bonus/debuff timers for the whole sleep session (incl. results screen).
     // Must run before the game loop resumes and clears expired endTimes.
@@ -523,7 +540,7 @@ function IdleModeDialogOpen() {
     const timerPatch = buildSleepBonusTimerFreezePatch(
       currentGameState as SleepBonusTimerState,
       elapsed,
-      startTime,
+      sessionStart,
     );
     if (Object.keys(timerPatch).length > 0) {
       useGameStore.setState(timerPatch as Partial<typeof currentGameState>);
