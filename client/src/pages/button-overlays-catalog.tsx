@@ -349,7 +349,7 @@ export function ButtonOverlaysCatalog() {
                 className="button-hotkey-dismiss flex items-center justify-center rounded-full bg-red-950 text-white shadow-sm border border-red-800/50"
                 aria-label="Dismiss"
               >
-                <X className="h-4 w-4 stroke-[3]" />
+                <X className="h-[18px] w-[18px] stroke-[3]" />
               </button>
             </div>
           </OverlayCell>

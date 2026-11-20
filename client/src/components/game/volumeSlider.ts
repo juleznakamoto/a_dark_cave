@@ -37,3 +37,29 @@ export const VOLUME_SLIDER_TRACK = `${VOLUME_SLIDER_TRACK_BASE} ${VOLUME_SLIDER_
 
 /** Horizontal settings slider (ambience and sound). */
 export const VOLUME_SLIDER = `w-full h-5 ${VOLUME_SLIDER_TRACK_BASE} ${SETTINGS_VOLUME_SLIDER_THUMB}`;
+
+/**
+ * Settings knob is `w-4` (1rem). A native range slides that knob's center
+ * across `trackWidth - thumbWidth`, inset by half a knob at each end.
+ */
+export function volumeFromClientX(
+  clientX: number,
+  trackLeft: number,
+  trackWidth: number,
+  thumbWidth: number,
+): number {
+  const travel = trackWidth - thumbWidth;
+  if (!(travel > 0)) return 0;
+  const along = clientX - trackLeft - thumbWidth / 2;
+  const ratio = Math.min(1, Math.max(0, along / travel));
+  return Math.round(ratio * 100) / 100;
+}
+
+/** 1rem in pixels, matching the settings knob. Falls back to 16. */
+export function settingsVolumeThumbWidthPx(): number {
+  if (typeof document === "undefined") return 16;
+  const rootPx = Number.parseFloat(
+    getComputedStyle(document.documentElement).fontSize,
+  );
+  return Number.isFinite(rootPx) && rootPx > 0 ? rootPx : 16;
+}

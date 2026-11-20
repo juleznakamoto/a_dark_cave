@@ -39,7 +39,8 @@ import {
   matchesCruelWorldCode,
 } from "@/game/steamCruelModeUnlock";
 import { AudioGlyphIcon, GameUiIcon } from "@/components/game/GameUiIcon";
-import { VOLUME_SLIDER } from "@/components/game/volumeSlider";
+import SettingsVolumeSlider from "@/components/game/SettingsVolumeSlider";
+import { playHaptic } from "@/lib/haptics";
 import { useEffect, useState } from "react";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import { useLocation } from "wouter";
@@ -175,20 +176,12 @@ function AudioControlRow({
       >
         {title}
       </Button>
-      <div className="flex min-h-9 items-center">
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.01}
-          value={muted ? 0 : volume}
-          disabled={muted}
-          aria-label={label}
-          style={{ "--slider-fill": `${(muted ? 0 : volume) * 100}%` } as React.CSSProperties}
-          onChange={(e) => onVolumeChange(Number(e.target.value))}
-          className={`${VOLUME_SLIDER} ${muted ? "opacity-40 cursor-not-allowed" : ""}`}
-        />
-      </div>
+      <SettingsVolumeSlider
+        label={label}
+        muted={muted}
+        volume={volume}
+        onVolumeChange={onVolumeChange}
+      />
     </>
   );
 }
@@ -496,9 +489,11 @@ export default function SettingsDialog({
                 <span className="flex-1 text-sm">{t("settings.haptics")}</span>
                 <Checkbox
                   checked={!hapticsMuted}
-                  onCheckedChange={(checked) =>
-                    setHapticsMuted(checked !== true)
-                  }
+                  onCheckedChange={(checked) => {
+                    const enabled = checked === true;
+                    setHapticsMuted(!enabled);
+                    if (enabled) playHaptic("hapticsOn");
+                  }}
                   aria-label={t("settings.haptics")}
                   data-testid="settings-haptics"
                 />

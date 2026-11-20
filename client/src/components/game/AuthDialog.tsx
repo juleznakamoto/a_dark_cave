@@ -133,6 +133,7 @@ export default function AuthDialog({
         toast({
           title: t("auth.signedInTitle"),
           description: t("auth.signedInDesc"),
+          success: true,
         });
 
         const { useGameStore } = await import("@/game/state");
@@ -155,6 +156,7 @@ export default function AuthDialog({
         toast({
           title: t("auth.resetSent"),
           description: t("auth.resetSentDesc"),
+          success: true,
         });
         setMode("signin");
       }

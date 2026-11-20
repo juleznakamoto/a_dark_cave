@@ -119,6 +119,7 @@ export async function processStripePaymentReturn(): Promise<void> {
         description: insightBonusMessage
           ? `${baseDescription} ${insightBonusMessage}`
           : baseDescription,
+        success: true,
       });
     } else {
       stripStripeReturnParamsFromUrl();

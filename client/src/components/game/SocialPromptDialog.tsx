@@ -450,6 +450,7 @@ export default function SocialPromptDialog({
       toast({
         title: t("profile.subscribed"),
         description: t("profile.subscribedDesc"),
+        success: true,
       });
     } catch (e: unknown) {
       toast({
@@ -469,6 +470,7 @@ export default function SocialPromptDialog({
       toast({
         title: t("invite.linkCopied"),
         description: t("invite.linkCopiedDesc", { amount: REFERRAL_REWARD_GOLD }),
+        success: true,
       });
     } catch (error) {
       const notSignedIn = isInviteNotSignedInError(error);

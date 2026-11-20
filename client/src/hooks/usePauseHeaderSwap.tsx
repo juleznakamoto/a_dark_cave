@@ -20,8 +20,9 @@ type Resident = "effects" | "chrome";
 const PauseHeaderSwapContext = createContext<PauseHeaderSwap | null>(null);
 
 /**
- * Manual pause: header status marks fade out, then the play-time and pact
- * choices fade in. Resume reverses that so the two groups do not overlap.
+ * Pause and the sleep window: header status marks fade out, then the
+ * play-time and pact choices fade in. Closing reverses that so the two
+ * groups do not overlap.
  * `holdMs` is how long the outgoing group stays up (0 when nothing is showing).
  */
 export function usePauseHeaderSwap(

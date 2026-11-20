@@ -1933,8 +1933,8 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
 }
 
 .adc-dialog-close-icon {
-  width: calc(1rem * var(--adc-control-scale, 1));
-  height: calc(1rem * var(--adc-control-scale, 1));
+  width: calc(18px * var(--adc-control-scale, 1));
+  height: calc(18px * var(--adc-control-scale, 1));
 }
 
 /* Fills the trigger hit target without participating in flex layout (avoids

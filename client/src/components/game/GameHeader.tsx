@@ -14,7 +14,7 @@ import {
   GAME_HEADER_SAFE_AREA_TOP,
 } from "./gameChrome";
 import { useGameStore } from "@/game/state";
-import { PAUSE_UI_FADE_MS, useFadePresence } from "@/hooks/useFadePresence";
+import { PAUSE_UI_FADE_MS } from "@/hooks/useFadePresence";
 import {
   PauseHeaderSwapProvider,
   usePauseHeaderChrome,
@@ -29,19 +29,16 @@ const HEADER_PAUSE_BTN =
 
 function HeaderPausedPlayTime() {
   // Null while playing, so playTime ticks do not re-render the header.
-  // Sleep hides the status rings and freezes play time, so show it here too.
-  // Manual pause waits until the status marks have faded out.
-  const manualPause = useGameStore(
-    (s) => s.isPaused && !s.idleModeDialog.isOpen,
+  // Pause and the sleep window share one swap: status marks fade out, then
+  // this timer fades in with the pact choices.
+  const showTime = useGameStore(
+    (s) => s.isPaused || s.idleModeDialog.isOpen,
   );
-  const idleOpen = useGameStore((s) => s.idleModeDialog.isOpen);
   const pausedPlayTimeMs = useGameStore((s) =>
-    manualPause || idleOpen ? (s.playTime ?? 0) : null,
+    showTime ? (s.playTime ?? 0) : null,
   );
   const { t } = useUiTranslation();
-  const idleFade = useFadePresence(idleOpen);
-  const pauseChrome = usePauseHeaderChrome();
-  const fade = manualPause ? pauseChrome : idleFade;
+  const fade = usePauseHeaderChrome();
   const textRef = useRef("00:00:00");
   if (pausedPlayTimeMs !== null) {
     textRef.current = formatDurationMs(pausedPlayTimeMs);
@@ -77,6 +74,10 @@ function HeaderPauseButton() {
   const isPaused = useGameStore((s) => s.isPaused);
   const togglePause = useGameStore((s) => s.togglePause);
   const idleModeDialogOpen = useGameStore((s) => s.idleModeDialog.isOpen);
+  // Sleep uses the resume mark, but it is not a manual pause: no red, no pulse.
+  // The button stays inert so it does not toggle pause under the sleep window.
+  const showResume = isPaused || idleModeDialogOpen;
+  const manualPauseLook = isPaused && !idleModeDialogOpen;
 
   return (
     <Button
@@ -87,13 +88,13 @@ function HeaderPauseButton() {
       button_id="header-pause"
       data-testid="button-pause-game"
       disabled={idleModeDialogOpen}
-      aria-label={isPaused ? t("footer.resumeGame") : t("footer.pauseGame")}
-      className={`${HEADER_PAUSE_BTN} touch-manipulation ${idleModeDialogOpen ? "opacity-30 cursor-not-allowed" : ""} ${isPaused ? "!text-red-600 !opacity-100" : "text-neutral-300"} ${isPaused && !idleModeDialogOpen ? "continue-pause-glow" : ""}`}
+      aria-label={showResume ? t("footer.resumeGame") : t("footer.pauseGame")}
+      className={`${HEADER_PAUSE_BTN} touch-manipulation ${idleModeDialogOpen ? "disabled:opacity-100" : ""} ${manualPauseLook ? "!text-red-600 !opacity-100 continue-pause-glow" : "text-neutral-300"}`}
     >
       <GameUiIcon
-        name={isPaused ? "unpause" : "pause"}
+        name={showResume ? "unpause" : "pause"}
         sizeClassName="game-header-pause-icon"
-        className={isPaused ? undefined : "opacity-80"}
+        className={manualPauseLook ? undefined : idleModeDialogOpen ? "opacity-50" : "opacity-80"}
       />
     </Button>
   );
@@ -107,8 +108,9 @@ export default function GameHeader() {
   const onEffectsPresence = useCallback((present: boolean) => {
     setEffectHoldMs(present ? PAUSE_UI_FADE_MS : 0);
   }, []);
-  const manualPause = isPaused && !idleModeDialogOpen;
-  const swap = usePauseHeaderSwap(manualPause, effectHoldMs);
+  // Sleep opens the same header swap as pause: marks out, then timer and pacts.
+  const headerChrome = isPaused || idleModeDialogOpen;
+  const swap = usePauseHeaderSwap(headerChrome, effectHoldMs);
   const effectsClassName = `pause-ui-fade ${
     swap.effects.visible ? "opacity-100" : "pointer-events-none opacity-0"
   }`;
@@ -129,7 +131,7 @@ export default function GameHeader() {
               <HeaderPauseButton />
               <HeaderPausedPlayTime />
             </div>
-            {!idleModeDialogOpen && swap.effects.mounted && (
+            {swap.effects.mounted && (
               <GameHeaderStatusIndicators
                 className={effectsClassName}
                 onPresenceChange={onEffectsPresence}

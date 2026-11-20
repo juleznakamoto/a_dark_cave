@@ -138,6 +138,7 @@ export default function ResetPassword() {
       toast({
         title: 'Password updated successfully',
         description: 'You can now sign in with your new password.',
+        success: true,
       });
       setTimeout(() => setLocation('/'), 2000);
     } catch (error: any) {

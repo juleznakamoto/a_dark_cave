@@ -1224,6 +1224,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
           toast({
             title: t("common:status.success"),
             description: t("shop.freeGoldAdded", { amount: freeGoldAmount }),
+            success: true,
           });
 
           // Return early - don't save to database
@@ -1339,6 +1340,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
         toast({
           title: t("common:status.success"),
           description: t("shop.freeItemAdded", { name: resolvedItemName }),
+          success: true,
         });
       } catch (error) {
         logger.error("Error claiming free item:", error);
@@ -1635,6 +1637,7 @@ function ShopDialogOpen({ isOpen, onClose, onOpen }: ShopDialogProps) {
     toast({
       title: t("shop.purchaseSuccessful"),
       description: successDescription,
+      success: true,
     });
 
     try {

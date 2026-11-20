@@ -36,6 +36,7 @@ export const DEV_ONLY_PAGES = [
   "@/pages/building-shape-demo",
   "@/pages/tooltips-demo",
   "@/pages/dialogs-demo",
+  "@/pages/toasts-demo",
 ] as const;
 
 export function omittedPageSpecs(

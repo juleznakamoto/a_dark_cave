@@ -46,6 +46,7 @@ async function copyInviteFromSocialMenu(
         "Share it with friends to earn {{amount}} Gold each.",
         { amount: REFERRAL_REWARD_GOLD },
       ),
+      success: true,
     });
   } catch (error) {
     const notSignedIn = isInviteNotSignedInError(error);

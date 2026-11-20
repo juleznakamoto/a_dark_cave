@@ -51,6 +51,11 @@ const DEV_PAGES = [
     title: "Tooltips",
     blurb: "Every tooltip layout, with the game's own copy.",
   },
+  {
+    href: "/dev/toasts",
+    title: "Toasts",
+    blurb: "Every toast the game can show.",
+  },
 ] as const;
 
 export default function DevDashboard() {

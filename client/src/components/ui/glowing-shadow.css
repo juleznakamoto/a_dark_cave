@@ -227,39 +227,28 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  overflow: visible;
+  /* The clip path keeps the light in the rim. This stops any leftover blur. */
+  overflow: hidden;
 }
 
-.adc-share-rim-sheen,
-.adc-share-rim-core {
+/* One stroke, only as thick as the rim. A wider stroke reads as two edges. */
+.adc-share-rim-sheen {
   fill: none;
   stroke: #fff;
   stroke-linecap: round;
   stroke-linejoin: round;
-}
-
-/* Wide bloom. Blur lives on the SVG filter, in user units. */
-.adc-share-rim-sheen {
-  stroke-width: 16;
-  opacity: 0.55;
-}
-
-/* Shorter peak, lightly blurred so it does not sit as a second hard line. */
-.adc-share-rim-core {
-  stroke-width: 6;
-  opacity: 0.95;
+  opacity: 1;
 }
 
 @supports (-webkit-touch-callout: none) {
   .adc-share-preview {
     filter: none;
-    box-shadow: 0 0 7.2px rgb(255 255 255 / 23%);
-    transition: box-shadow 400ms ease;
+    box-shadow: none;
   }
 
   .adc-share-preview:hover {
     filter: none;
-    box-shadow: 0 0 12px rgb(255 255 255 / 36%);
+    box-shadow: none;
   }
 
   .adc-share-preview .adc-gs__rim {

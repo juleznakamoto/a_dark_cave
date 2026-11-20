@@ -37,12 +37,14 @@ describe("playHaptic", () => {
     selectionChanged.mockClear();
   });
 
-  it("maps lighting the fire and blasting the gate to a heavy impact", async () => {
+  it("maps lighting the fire, blasting the gate, and turning haptics on to a heavy impact", async () => {
     const { playHaptic } = await import("./haptics");
     playHaptic("makeFire");
     playHaptic("blastGate");
+    playHaptic("hapticsOn");
     expect(impact).toHaveBeenNthCalledWith(1, { style: "HEAVY" });
     expect(impact).toHaveBeenNthCalledWith(2, { style: "HEAVY" });
+    expect(impact).toHaveBeenNthCalledWith(3, { style: "HEAVY" });
   });
 
   it("maps feed fire, insight, prior, coins, claim, improve, and the lantern to medium", async () => {

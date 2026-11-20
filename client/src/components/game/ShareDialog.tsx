@@ -74,117 +74,110 @@ const SHARE_ACTION_BUTTON_CLASS = "shrink-0 font-medium h-8 px-3.5";
 
 /** Stroke sits in the 5px rim gap. Half the stroke is inset so it stays on the card. */
 const SHARE_RIM_STROKE = 5;
+/** Matches `.adc-gs--frame .adc-gs__content` radius: card radius minus 2px. */
+const SHARE_RIM_CONTENT_RADIUS_TRIM = 2;
 const SHARE_RIM_TRAVEL_MS = 4000;
+/** Bright fraction of the edge. Blur feathers the ends, same idea as the conic spot. */
+const SHARE_RIM_PORTION = 0.12;
 
 /**
- * One glow: a wide blurred bloom and a shorter, softer peak on the same path.
- * Hard strokes read as two lines on iOS, where CSS blur on this rim is ignored.
+ * Perimeter of a rounded rect. pathLength is not used: iOS and Chrome treat a
+ * CSS dash of "16" as 16px, which tiles the light around the whole card.
  */
-const SHARE_RIM_BANDS = [
-  { className: "adc-share-rim-sheen", portion: 0.14, phase: 0, filter: "glow" },
-  { className: "adc-share-rim-core", portion: 0.05, phase: 0.045, filter: "soft" },
-] as const;
-
-/**
- * Perimeter of the rim stroke in SVG user units. pathLength is not used:
- * iOS and Chrome treat a CSS dash of "16" as 16px, which tiles the light
- * around the whole card instead of leaving one traveling spot.
- */
-function shareRimPerimeter(): number {
-  const inset = SHARE_RIM_STROKE / 2;
-  const width = SHARE_IMAGE_WIDTH - SHARE_RIM_STROKE;
-  const height = SHARE_IMAGE_HEIGHT - SHARE_RIM_STROKE;
-  const radius = SHARE_CARD_RADIUS - inset;
-  const straight =
-    2 * (width - 2 * radius + (height - 2 * radius));
+function shareRimPerimeter(width: number, height: number, radius: number): number {
+  const straight = 2 * (width - 2 * radius + (height - 2 * radius));
   return straight + 2 * Math.PI * radius;
+}
+
+/** Closed rounded-rect path. Even-odd pair of these punches the rim gap. */
+function roundedRectPath(
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  radius: number,
+): string {
+  const r = Math.max(0, Math.min(radius, width / 2, height / 2));
+  return `M${x + r},${y} H${x + width - r} A${r},${r} 0 0 1 ${x + width},${y + r} V${y + height - r} A${r},${r} 0 0 1 ${x + width - r},${y + height} H${x + r} A${r},${r} 0 0 1 ${x},${y + height - r} V${y + r} A${r},${r} 0 0 1 ${x + r},${y} Z`;
 }
 
 /**
  * Traveling edge light for the on-screen preview.
  * Shown only on iOS (see `.adc-share-rim` in glowing-shadow.css). The scaled
  * conic rim stays in the card for other browsers and is omitted from the PNG.
+ *
+ * The viewBox is the preview's CSS size. The stroke is only as thick as the
+ * rim gap and clipped to that gap, so the light stays on the border.
  */
-function SharePreviewRim() {
+function SharePreviewRim({
+  width,
+  height,
+}: {
+  width: number;
+  height: number;
+}) {
   const svgRef = useRef<SVGSVGElement>(null);
   const rawId = useId().replace(/:/g, "");
-  const glowFilterId = `${rawId}-glow`;
-  const softFilterId = `${rawId}-soft`;
-  const inset = SHARE_RIM_STROKE / 2;
+  const clipId = `${rawId}-rim`;
+  const scale = width / SHARE_IMAGE_WIDTH;
+  const rim = SHARE_RIM_STROKE * scale;
+  const inset = rim / 2;
+  const radius = Math.max(0, SHARE_CARD_RADIUS * scale - inset);
   const rect = {
     x: inset,
     y: inset,
-    width: SHARE_IMAGE_WIDTH - SHARE_RIM_STROKE,
-    height: SHARE_IMAGE_HEIGHT - SHARE_RIM_STROKE,
-    rx: SHARE_CARD_RADIUS - inset,
-    ry: SHARE_CARD_RADIUS - inset,
+    width: Math.max(0, width - rim),
+    height: Math.max(0, height - rim),
+    rx: radius,
+    ry: radius,
   };
+  const length = shareRimPerimeter(rect.width, rect.height, radius);
+  const outerRadius = SHARE_CARD_RADIUS * scale;
+  const innerRadius = Math.max(0, (SHARE_CARD_RADIUS - SHARE_RIM_CONTENT_RADIUS_TRIM) * scale);
 
   useLayoutEffect(() => {
     const svg = svgRef.current;
-    if (!svg) return;
-    const length = shareRimPerimeter();
-    const animations = SHARE_RIM_BANDS.map(({ className, portion, phase }) => {
-      const el = svg.querySelector(`.${className}`);
-      if (!(el instanceof SVGGeometryElement)) return null;
-      const dash = portion * length;
-      el.setAttribute("stroke-dasharray", `${dash} ${length - dash}`);
-      const start = -phase * length;
-      return el.animate(
-        [
-          { strokeDashoffset: `${start}px` },
-          { strokeDashoffset: `${start - length}px` },
-        ],
-        { duration: SHARE_RIM_TRAVEL_MS, iterations: Infinity, easing: "linear" },
-      );
-    });
-    return () => {
-      for (const animation of animations) animation?.cancel();
-    };
-  }, []);
+    if (!svg || length <= 0) return;
+    const el = svg.querySelector(".adc-share-rim-sheen");
+    if (!(el instanceof SVGGeometryElement)) return;
+    const dash = SHARE_RIM_PORTION * length;
+    el.setAttribute("stroke-dasharray", `${dash} ${length - dash}`);
+    const animation = el.animate(
+      [
+        { strokeDashoffset: "0px" },
+        { strokeDashoffset: `${-length}px` },
+      ],
+      { duration: SHARE_RIM_TRAVEL_MS, iterations: Infinity, easing: "linear" },
+    );
+    return () => animation.cancel();
+  }, [length]);
 
   return (
     <svg
       ref={svgRef}
       className="adc-share-rim"
-      viewBox={`0 0 ${SHARE_IMAGE_WIDTH} ${SHARE_IMAGE_HEIGHT}`}
+      viewBox={`0 0 ${width} ${height}`}
       preserveAspectRatio="none"
-      overflow="visible"
+      overflow="hidden"
+      style={{ clipPath: `inset(0 round ${outerRadius}px)` }}
       aria-hidden
     >
       <defs>
-        {/* SVG blur, not CSS filter: WebKit ignores CSS blur on this stroke. */}
-        <filter
-          id={glowFilterId}
-          x={-80}
-          y={-80}
-          width={SHARE_IMAGE_WIDTH + 160}
-          height={SHARE_IMAGE_HEIGHT + 160}
-          filterUnits="userSpaceOnUse"
-          colorInterpolationFilters="sRGB"
-        >
-          <feGaussianBlur stdDeviation="14" />
-        </filter>
-        <filter
-          id={softFilterId}
-          x={-40}
-          y={-40}
-          width={SHARE_IMAGE_WIDTH + 80}
-          height={SHARE_IMAGE_HEIGHT + 80}
-          filterUnits="userSpaceOnUse"
-          colorInterpolationFilters="sRGB"
-        >
-          <feGaussianBlur stdDeviation="5" />
-        </filter>
+        {/* Same gap the desktop rim uses: nothing inside the card, nothing outside it. */}
+        <clipPath id={clipId} clipPathUnits="userSpaceOnUse">
+          <path
+            clipRule="evenodd"
+            d={`${roundedRectPath(0, 0, width, height, outerRadius)} ${roundedRectPath(rim, rim, Math.max(0, width - rim * 2), Math.max(0, height - rim * 2), innerRadius)}`}
+          />
+        </clipPath>
       </defs>
-      {SHARE_RIM_BANDS.map(({ className, filter }) => (
+      <g clipPath={`url(#${clipId})`}>
         <rect
-          key={className}
-          className={className}
-          filter={`url(#${filter === "glow" ? glowFilterId : softFilterId})`}
+          className="adc-share-rim-sheen"
+          strokeWidth={rim}
           {...rect}
         />
-      ))}
+      </g>
     </svg>
   );
 }
@@ -867,6 +860,7 @@ export default function ShareDialog() {
         description: t("invite.linkCopiedDesc", {
           amount: REFERRAL_REWARD_GOLD,
         }),
+        success: true,
       });
     } catch (error) {
       const notSignedIn = isInviteNotSignedInError(error);
@@ -903,6 +897,7 @@ export default function ShareDialog() {
       .then(() => {
         toast({
           title: t("share.savedTitle", { defaultValue: "Image saved" }),
+          success: true,
         });
       })
       .catch((error: unknown) => {
@@ -934,6 +929,7 @@ export default function ShareDialog() {
           title: t("share.copiedTitle", {
             defaultValue: "Copied to clipboard",
           }),
+          success: true,
         });
       })
       .catch((error: unknown) => {
@@ -1076,7 +1072,10 @@ export default function ShareDialog() {
                 />
               </div>
             </div>
-            <SharePreviewRim />
+            <SharePreviewRim
+              width={SHARE_IMAGE_WIDTH * previewScale}
+              height={SHARE_IMAGE_HEIGHT * previewScale}
+            />
             {/* Anchored to the card (not the wider button row) so inset clears the rounded corner. */}
             <DialogClose className="adc-dialog-close absolute right-4 top-4 z-10 flex items-center justify-center rounded-sm p-0 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
               <X className="adc-dialog-close-icon" aria-hidden="true" />

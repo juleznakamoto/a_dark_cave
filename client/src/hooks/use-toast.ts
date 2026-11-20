@@ -15,6 +15,8 @@ type ToasterToast = ToastProps & {
   action?: ToastActionElement
   /** When false, hide the close button and ignore swipe/dismiss. Default true. */
   dismissible?: boolean
+  /** Green check before the title. Errors and notices leave this off. */
+  success?: boolean
 }
 
 const actionTypes = {
@@ -154,6 +156,10 @@ function dispatch(action: Action) {
   })
 }
 
+/** Matches the button the live toaster renders for `toast({ action })`. */
+export const TOAST_ACTION_BUTTON_CLASS =
+  "inline-flex h-8 shrink-0 items-center justify-center rounded-md border-0 bg-primary hover:bg-primary/90 text-white px-3 text-sm font-medium ring-offset-background transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+
 type Toast = Omit<ToasterToast, "id" | "action"> & {
   action?: {
     label: string;
@@ -184,7 +190,7 @@ function toast({ action, dismissible = true, ...props }: Toast) {
           action.onClick();
           if (dismissible) dismiss();
         },
-        className: 'inline-flex h-8 shrink-0 items-center justify-center rounded-md border-0 bg-primary hover:bg-primary/90 text-white px-3 text-sm font-medium ring-offset-background transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+        className: TOAST_ACTION_BUTTON_CLASS,
       },
       action.label
     ) as unknown as ToastActionElement;

@@ -260,6 +260,7 @@ function useProfileMenuState() {
 
       toast({
         title: t("profile.signedOut"),
+        success: true,
       });
     } catch (error) {
       toast({
@@ -320,6 +321,7 @@ function useProfileMenuState() {
       } else {
         toast({
           title: t("profile.gameSaved"),
+          success: true,
         });
       }
     } catch (error) {
@@ -349,6 +351,7 @@ function useProfileMenuState() {
       toast({
         title: t("profile.accountDeleted"),
         description: t("profile.accountDeletedDesc"),
+        success: true,
       });
     } catch (e: unknown) {
       toast({
@@ -393,6 +396,7 @@ function useProfileMenuState() {
         description: next
           ? t("profile.subscribedDesc")
           : t("profile.unsubscribedDesc"),
+        success: true,
       });
       setAccountDropdownOpen(false);
     } catch (e: unknown) {

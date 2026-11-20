@@ -15,6 +15,9 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- Success messages start with a green check before the title. Errors use the same toast, with a red X.
+- While the sleep window is open, the top bar matches pause: status marks fade out, then your play time and pact choices fade in. The pause mark switches to resume at half strength, without turning red or pulsing.
+- The X on dialogs, toasts, and the hotkey hint is a little larger.
 - On the press page, the gameplay trailer plays from YouTube.
 - When a dialog offers one choice, that button sits in the center.
 - The sleep window is wider.
@@ -128,6 +131,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- Turning haptics on gives a heavy tap.
 - The app stays upright. Turning the phone or iPad sideways no longer rotates the game.
 
 #### Added
@@ -163,12 +167,13 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- Ambience and sound sliders keep following your finger when it also moves up or down.
 - While the app is loading, the website links along the bottom are gone.
 - While one Estate bar fills, the smoke in the other bars stays.
 - A notification or system gesture that interrupts a cube memory swipe leaves you on the memory you were reading.
 - Tips, menus, and dialogs stop at the top of the header, clear of the notch.
 - Notices sit below the top bar, clear of the clock and status icons.
-- The light on your progress card travels around the edge as a soft glow.
+- The light on your progress card travels around the border as one soft glow.
 - On a phone, the pact choice rings in the header brighten while their tip is open.
 - On a phone, scrolling the village list lets go of a job's + or - button, so villagers stop moving while the list scrolls.
 - On a phone, the resource list fills the side panel when you drag that panel taller.

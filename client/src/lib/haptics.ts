@@ -36,7 +36,8 @@ export type HapticEvent =
   | "wanderersLantern"
   | "sleep"
   | "mapCoin"
-  | "logFilter";
+  | "logFilter"
+  | "hapticsOn";
 
 type HapticPreset =
   | { kind: "impact"; style: (typeof ImpactStyle)[keyof typeof ImpactStyle] }
@@ -70,6 +71,7 @@ const HAPTIC_PRESETS: Record<HapticEvent, HapticPreset> = {
   sleep: { kind: "notification", type: NotificationType.Success },
   mapCoin: { kind: "impact", style: ImpactStyle.Medium },
   logFilter: { kind: "impact", style: ImpactStyle.Light },
+  hapticsOn: { kind: "impact", style: ImpactStyle.Heavy },
 };
 
 /** True after this click already played a haptic. Reset by `armClickHaptic`. */

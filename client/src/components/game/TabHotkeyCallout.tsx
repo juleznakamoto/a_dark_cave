@@ -169,7 +169,7 @@ export default function TabHotkeyCallout({
           data-testid={dismissTestId}
           onClick={onDismiss}
         >
-          <X className="h-4 w-4 stroke-[3]" />
+          <X className="h-[18px] w-[18px] stroke-[3]" />
         </button>
         <div
           className="relative mx-auto h-3.5"

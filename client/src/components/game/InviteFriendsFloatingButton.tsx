@@ -76,6 +76,7 @@ export default function InviteFriendsFloatingButton() {
       toast({
         title: t("invite.linkCopied"),
         description: t("invite.linkCopiedDesc", { amount: REFERRAL_REWARD_GOLD }),
+        success: true,
       });
     } catch (error) {
       const notSignedIn = isInviteNotSignedInError(error);

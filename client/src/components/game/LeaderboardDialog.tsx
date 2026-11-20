@@ -289,6 +289,7 @@ export default function LeaderboardDialog({
       toast({
         title: t("leaderboard.usernameSaved"),
         description: t("leaderboard.usernameSavedDesc"),
+        success: true,
       });
 
       fetchLeaderboards();
