@@ -791,10 +791,10 @@ export default function GamblerDiceDialog({
         ref={dialogContentRef}
         className={
           isOutcome
-            ? "z-[70] overflow-visible [--adc-dialog-max-w:28rem] [&>button]:hidden duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none"
+            ? "in-game-dialog-content z-[70] overflow-visible [&>button]:hidden duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none"
             : dialogLocked
-              ? "z-[70] flex max-h-[85vh] flex-col gap-0 overflow-hidden border-2 border-amber-900/50 shadow-2xl [&>button]:hidden [--adc-dialog-max-w:24rem] duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none"
-              : "z-[70] flex flex-col gap-0 overflow-hidden border-2 border-amber-900/50 shadow-2xl [&>button]:hidden [--adc-dialog-max-w:24rem] max-h-[85vh] duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none"
+              ? "in-game-dialog-content z-[70] flex max-h-[85vh] flex-col gap-0 overflow-hidden border-2 border-amber-900/50 shadow-2xl [&>button]:hidden duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none"
+              : "in-game-dialog-content z-[70] flex flex-col gap-0 overflow-hidden border-2 border-amber-900/50 shadow-2xl [&>button]:hidden max-h-[85vh] duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none"
         }
         style={
           isOutcome
@@ -862,7 +862,7 @@ export default function GamblerDiceDialog({
                       })}
                     </p>
                   </div>
-                  <div className={gameActionButtonGridClassName()}>
+                  <div className={gameActionButtonGridClassName(inGamblerTutorial ? "justify-center" : undefined)}>
                     {inGamblerTutorial ? (
                       <Button
                         variant="outline"

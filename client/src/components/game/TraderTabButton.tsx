@@ -12,7 +12,6 @@ import {
   TAB_ICON_ALIGN_CLASS,
   TAB_ICON_SIZE_CLASS,
 } from "./gameChrome";
-import { getTabUnlockAttentionClass } from "@/game/tabUnlockBlink";
 
 const TRADER_TAB_HINT_INTERVAL_MS = 15 * 60 * 1000;
 const TRADER_TAB_HINT_DURATION_MS = 10 * 1000;
@@ -23,7 +22,6 @@ interface TraderTabButtonProps {
   isPaused: boolean;
   isAnimating: boolean;
   isFadePhase: boolean;
-  isGreenPulse: boolean;
   onClick: () => void;
 }
 
@@ -33,7 +31,6 @@ export function TraderTabButton({
   isPaused,
   isAnimating,
   isFadePhase,
-  isGreenPulse,
   onClick,
 }: TraderTabButtonProps) {
   const { t } = useUiTranslation();
@@ -47,14 +44,20 @@ export function TraderTabButton({
   const setForcedEmitRef = useRef(setForcedEmit);
   setForcedEmitRef.current = setForcedEmit;
 
-  const showActiveGlow = isHintActive;
+  // After the fade, stay on the gold coin glow. The shared green tab flash
+  // paints this mask icon, and on a phone that reads as a hard green blink.
+  const unlockAttention = isAnimating && !isFadePhase;
+  const showActiveGlow = isHintActive || unlockAttention;
+
+  useEffect(() => {
+    setForcedEmitRef.current(showActiveGlow);
+  }, [showActiveGlow]);
 
   useEffect(() => {
     let endTimeout: ReturnType<typeof setTimeout> | null = null;
 
     const endHint = () => {
       setIsHintActive(false);
-      setForcedEmitRef.current(false);
       endTimeout = null;
     };
 
@@ -62,7 +65,6 @@ export function TraderTabButton({
       if (useGameStore.getState().shopDialogOpen) return;
 
       setIsHintActive(true);
-      setForcedEmitRef.current(true);
       if (endTimeout) clearTimeout(endTimeout);
       endTimeout = setTimeout(endHint, TRADER_TAB_HINT_DURATION_MS);
     };
@@ -86,11 +88,7 @@ export function TraderTabButton({
         className={cn(
           tabButtonClass,
           "group shrink-0 gap-1.5",
-          getTabUnlockAttentionClass({
-            isAnimating,
-            isFadePhase,
-            isGreenPulse,
-          }),
+          isAnimating && isFadePhase && "tab-fade-in",
         )}
         onClick={onClick}
         data-testid="tab-trader"
@@ -117,7 +115,7 @@ export function TraderTabButton({
           <span
             className={cn(
               "col-start-1 row-start-1 font-medium transition-[opacity,color]",
-              isAnimating
+              isAnimating && isFadePhase
                 ? ""
                 : showActiveGlow
                   ? "opacity-100 font-semibold text-yellow-500"

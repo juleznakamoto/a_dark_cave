@@ -19,6 +19,10 @@ export const EVENT_STAT_ICONS: Record<string, { icon: string; color: string }> =
   madness: { icon: "✺", color: "text-violet-300/80" },
 };
 
+/**
+ * Noto stat glyphs sit high in the em box. This lines the ink up with
+ * neighboring text-xs, on tips and on choice buttons.
+ */
 export function RelevantStatIcon({
   stat,
   className,
@@ -33,7 +37,7 @@ export function RelevantStatIcon({
   return (
     <span
       className={cn(
-        "font-noto-symbols-2 inline-flex w-4 shrink-0 items-center justify-center translate-y-px text-xs leading-none",
+        "font-noto-symbols-2 inline-flex w-4 shrink-0 items-center justify-center translate-y-[0.19em] text-xs leading-none",
         statInfo.color,
         className,
       )}

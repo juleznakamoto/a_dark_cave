@@ -2978,6 +2978,15 @@
     "message": "Una mañana, de paseo, ves a cinco niños pequeños de pie entre los árboles. No se mueven. Solo te miran fijamente.",
     "title": "Niños que miran fijamente"
   },
+  "madnessWarning": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Una noche ves a una anciana sentada junto a una cabaña, mirando el fuego. Al acercarte, murmura sin levantar la vista: «Lo veo en tus ojos. Has visto cosas inquietantes. Este mundo puede volverte loco con facilidad. Y con una mente loca, lo malo tiene que ocurrir.»",
+    "title": "Susurros de la locura"
+  },
   "whisperingVoices": {
     "choices": {
       "ignore": {

@@ -123,7 +123,7 @@ export default function OutcomeDialog({
       <Dialog open={isOpen} onOpenChange={() => { }}>
         <DialogContent
           openClickLockKey={`${title}-${buttonId}`}
-          className={`[--adc-dialog-max-w:24rem] z-[70] gap-4 [&>button]:hidden border-2 shadow-2xl ${border}`}
+          className={`in-game-dialog-content z-[70] gap-4 [&>button]:hidden border-2 shadow-2xl ${border}`}
           style={chromeRuleColorStyle(chromeColor)}
         >
           <div

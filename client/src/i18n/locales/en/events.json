@@ -2978,6 +2978,15 @@
     "message": "One morning on a walk you see five young children standing between the trees. They do not move. They only stare at you.",
     "title": "Staring Children"
   },
+  "madnessWarning": {
+    "choices": {
+      "continue": {
+        "label": "Continue"
+      }
+    },
+    "message": "One evening you see an old woman sitting next to a hut, staring into the fire. As you approach, she murmurs without looking up: 'I see it in your eyes. You have seen unsettling things. This world can easily drive you mad. And with a mad mind, bad things are bound to happen.'",
+    "title": "Whispers of Madness"
+  },
   "whisperingVoices": {
     "choices": {
       "ignore": {

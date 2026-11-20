@@ -104,6 +104,7 @@ import {
   getTabUnlockAttentionClass,
   TAB_UNLOCK_FADE_MS,
   TAB_UNLOCK_GREEN_PULSE_MS,
+  tabUnlockUsesGreenPulse,
   withTabUnlockBlinkSeen,
   type TabUnlockBlinkId,
 } from "@/game/tabUnlockBlink";
@@ -845,7 +846,9 @@ export default function GameContainer() {
       });
       markTabUnlockBlinkDismissed(tabId);
       maybeAdvancePrevTabUnlockRef();
-      scheduleTabUnlockGreenPulse(tabId);
+      if (tabUnlockUsesGreenPulse(tabId)) {
+        scheduleTabUnlockGreenPulse(tabId);
+      }
     },
     [
       clearTabUnlockFadeTimeout,
@@ -1712,7 +1715,6 @@ export default function GameContainer() {
                           isPaused={isPaused}
                           isAnimating={animatingTabs.has("trader")}
                           isFadePhase={fadePhaseTabs.has("trader")}
-                          isGreenPulse={greenPulseTabs.has("trader")}
                           onClick={() => {
                             clearTabAnimation("trader");
                             setShopDialogOpen(true, "tab");
@@ -1763,8 +1765,9 @@ export default function GameContainer() {
             </section>
           </main>
 
-          {/* Sleep Mode Mist Background - covers main panels; header, footer, and promos stay above.
-              Absolute (not fixed): same stacking fix as the pause overlay. */}
+          {/* Sleep Mode Mist Background - covers main panels and the floating invite.
+              Header and footer stay above. Absolute (not fixed): same stacking
+              fix as the pause overlay. */}
           {idleModeDialog.isOpen && (
             <div
               className="absolute inset-x-0 pointer-events-auto overflow-hidden"

@@ -2978,6 +2978,15 @@
     "message": "Bir sabah yürüyüşte, ağaçların arasında duran beş küçük çocuk görüyorsun. Kımıldamıyorlar. Sadece sana dik dik bakıyorlar.",
     "title": "Dik Dik Bakan Çocuklar"
   },
+  "madnessWarning": {
+    "choices": {
+      "continue": {
+        "label": "Devam Et"
+      }
+    },
+    "message": "Bir akşam, bir kulübenin yanında oturmuş ateşe bakan yaşlı bir kadın görüyorsun. Yaklaşınca başını kaldırmadan mırıldanıyor: 'Gözlerinde görüyorum. Rahatsız edici şeyler görmüşsün. Bu dünya insanı kolayca delirtebilir. Deli bir akılla kötü şeyler kaçınılmazdır.'",
+    "title": "Deliliğin Fısıltıları"
+  },
   "whisperingVoices": {
     "choices": {
       "ignore": {

@@ -10,7 +10,7 @@ function prefersReducedMotion(): boolean {
   );
 }
 
-function fadeMs(durationMs: number): number {
+export function pauseUiDurationMs(durationMs: number): number {
   return prefersReducedMotion() ? 0 : durationMs;
 }
 
@@ -33,13 +33,13 @@ export function useFadePresence(
     }
     setVisible(false);
     if (!mounted) return;
-    const id = window.setTimeout(() => setMounted(false), fadeMs(durationMs));
+    const id = window.setTimeout(() => setMounted(false), pauseUiDurationMs(durationMs));
     return () => window.clearTimeout(id);
   }, [open, mounted, durationMs]);
 
   useEffect(() => {
     if (!mounted || !open) return;
-    if (fadeMs(durationMs) === 0) {
+    if (pauseUiDurationMs(durationMs) === 0) {
       setVisible(true);
       return;
     }

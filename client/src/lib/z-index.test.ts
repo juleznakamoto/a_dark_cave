@@ -2,6 +2,10 @@ import { describe, expect, it } from "vitest";
 import { Z_INDEX } from "./z-index";
 
 describe("Z_INDEX", () => {
+  it("keeps the sleep invite under the mist shader", () => {
+    expect(Z_INDEX.sleepPromo).toBeLessThan(Z_INDEX.sleepFog);
+  });
+
   it("keeps the Steam wishlist callout under modal backdrops and above the invite", () => {
     expect(Z_INDEX.hoverCalloutUnderModal).toBeLessThan(Z_INDEX.dialogOverlay);
     expect(Z_INDEX.hoverCallout).toBeGreaterThan(Z_INDEX.floatingPromo);

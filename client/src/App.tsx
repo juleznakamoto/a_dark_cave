@@ -10,21 +10,13 @@ import PageLoadSpinner, {
 import AppErrorBoundary from "@/components/AppErrorBoundary";
 import { shouldBootGameSurface } from "@/game/startupBootSurface";
 
-const steamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
-const iosBuild = import.meta.env.VITE_IOS_BUILD === "1";
 const crazyGamesBuild = import.meta.env.VITE_CRAZYGAMES === "1";
 const itchBuild = import.meta.env.VITE_ITCH === "1";
-const offlinePortalBuild = steamBuild || iosBuild || crazyGamesBuild || itchBuild;
 const hashRoutedPortalBuild = crazyGamesBuild || itchBuild;
 
-function redirectHome() {
-  return Promise.resolve({ default: () => <Redirect to="/" /> });
-}
-
-// Lazy load admin dashboard (recharts, date-fns, 11 tabs - only admins need this)
-const AdminDashboard = lazy(() =>
-  offlinePortalBuild ? redirectHome() : import("@/pages/admin/dashboard"),
-);
+// Real dynamic imports. A false branch still ships the page. Packaged builds
+// alias these modules to a redirect stub in vite.sitePages.ts.
+const AdminDashboard = lazy(() => import("@/pages/admin/dashboard"));
 
 const StartScreenPage = lazy(() => import("@/pages/start-screen-page"));
 const GamePage = lazy(() => import("@/pages/game"));
@@ -41,33 +33,16 @@ function PlayRoute() {
 // Lazy load all other pages
 const EndScreenPage = lazy(() => import("@/pages/end-screen"));
 const NotFound = lazy(() => import("@/pages/not-found"));
-const ResetPassword = lazy(() =>
-  offlinePortalBuild ? redirectHome() : import("@/pages/reset-password"),
-);
-const Imprint = lazy(() =>
-  offlinePortalBuild ? redirectHome() : import("@/pages/imprint"),
-);
-const Privacy = lazy(() =>
-  offlinePortalBuild ? redirectHome() : import("@/pages/privacy"),
-);
-const Faq = lazy(() =>
-  offlinePortalBuild ? redirectHome() : import("@/pages/faq"),
-);
-const About = lazy(() =>
-  offlinePortalBuild ? redirectHome() : import("@/pages/about"),
-);
-const Press = lazy(() =>
-  offlinePortalBuild ? redirectHome() : import("@/pages/press"),
-);
-const Terms = lazy(() =>
-  offlinePortalBuild ? redirectHome() : import("@/pages/terms"),
-);
-const Withdrawal = lazy(() =>
-  offlinePortalBuild ? redirectHome() : import("@/pages/withdrawal"),
-);
-const Unsubscribe = lazy(() =>
-  offlinePortalBuild ? redirectHome() : import("@/pages/unsubscribe"),
-);
+const ResetPassword = lazy(() => import("@/pages/reset-password"));
+const Imprint = lazy(() => import("@/pages/imprint"));
+const Privacy = lazy(() => import("@/pages/privacy"));
+const Faq = lazy(() => import("@/pages/faq"));
+const About = lazy(() => import("@/pages/about"));
+const Press = lazy(() => import("@/pages/press"));
+const Terms = lazy(() => import("@/pages/terms"));
+const Withdrawal = lazy(() => import("@/pages/withdrawal"));
+const Unsubscribe = lazy(() => import("@/pages/unsubscribe"));
+// Production builds alias these to the same stub. The dev server keeps them.
 const StarshipShaderDemo = lazy(() => import("@/pages/starship-shader-demo"));
 const AnimationsDemo = lazy(() => import("@/pages/animations-demo"));
 const CombatDialogDemo = lazy(() => import("@/pages/combat-dialog-demo"));
@@ -79,6 +54,7 @@ const ProductionIconsDemo = lazy(
 const VillageMapDemo = lazy(() => import("@/pages/village-map-demo"));
 const BuildingShapeDemo = lazy(() => import("@/pages/building-shape-demo"));
 const TooltipsDemo = lazy(() => import("@/pages/tooltips-demo"));
+const DialogsDemo = lazy(() => import("@/pages/dialogs-demo"));
 const DevDashboard = lazy(() => import("@/pages/dev-dashboard"));
 
 function AppRoutes() {
@@ -115,6 +91,7 @@ function AppRoutes() {
         <Route path="/dev/village-map" component={VillageMapDemo} />
         <Route path="/dev/building-shapes" component={BuildingShapeDemo} />
         <Route path="/dev/tooltips" component={TooltipsDemo} />
+        <Route path="/dev/dialogs" component={DialogsDemo} />
         <Route path="/dev/estate-bar-upgrade">
           {() => <Redirect to="/dev/animations#estate-bars" />}
         </Route>

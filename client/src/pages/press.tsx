@@ -14,7 +14,9 @@ import {
   PRESS_PATH,
   PRESS_PERMISSIONS,
   PRESS_SCREENSHOTS,
+  PRESS_TRAILER_EMBED_URL,
   PRESS_TRAILER_FILE_HREF,
+  PRESS_TRAILER_WATCH_URL,
   PRESS_VIDEOS,
   PRESS_ZIP_HREF,
   pressCoverageUpdatedLabel,
@@ -302,16 +304,24 @@ export default function Press() {
         <section className="space-y-3">
           <h2 className="m-0 text-lg text-white">Gameplay trailer</h2>
           <div className="aspect-video overflow-hidden rounded border border-neutral-800 bg-black">
-            <video
+            <iframe
               title="A Dark Cave gameplay trailer"
-              src={PRESS_TRAILER_FILE_HREF}
-              className="h-full w-full"
-              controls
-              playsInline
-              preload="metadata"
+              src={PRESS_TRAILER_EMBED_URL}
+              className="h-full w-full border-0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
             />
           </div>
-          <p className="m-0">
+          <p className="m-0 flex flex-wrap gap-x-4 gap-y-1">
+            <a
+              href={PRESS_TRAILER_WATCH_URL}
+              className={linkClassName}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Watch on YouTube
+            </a>
             <a
               href={PRESS_TRAILER_FILE_HREF}
               download={PRESS_VIDEOS[0]?.fileName}

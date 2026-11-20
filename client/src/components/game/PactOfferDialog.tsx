@@ -129,13 +129,21 @@ function usePactOfferViewportStyle(): CSSProperties | undefined {
   return style;
 }
 
-const PACT_EYE_BLINK_MS = 300;
-const PACT_EYE_BLINK_GAP_MIN_MS = 10_000;
-const PACT_EYE_BLINK_GAP_MAX_MS = 30_000;
+const PACT_EYE_BLINK_MIN_MS = 150;
+const PACT_EYE_BLINK_MAX_MS = 300;
+const PACT_EYE_BLINK_GAP_MIN_MS = 5_000;
+const PACT_EYE_BLINK_GAP_MAX_MS = 20_000;
+
+function randomBetween(min: number, max: number): number {
+  return min + Math.random() * (max - min);
+}
 
 function nextPactEyeBlinkDelayMs(): number {
-  const span = PACT_EYE_BLINK_GAP_MAX_MS - PACT_EYE_BLINK_GAP_MIN_MS;
-  return PACT_EYE_BLINK_GAP_MIN_MS + Math.random() * span;
+  return randomBetween(PACT_EYE_BLINK_GAP_MIN_MS, PACT_EYE_BLINK_GAP_MAX_MS);
+}
+
+function nextPactEyeBlinkLengthMs(): number {
+  return randomBetween(PACT_EYE_BLINK_MIN_MS, PACT_EYE_BLINK_MAX_MS);
 }
 
 /** Open while the card is chosen. Closes for one blink, then opens again. */
@@ -167,7 +175,7 @@ export function PactOfferEye({
           if (!alive) return;
           setBlinking(false);
           schedule();
-        }, PACT_EYE_BLINK_MS);
+        }, nextPactEyeBlinkLengthMs());
       }, nextPactEyeBlinkDelayMs());
     };
 

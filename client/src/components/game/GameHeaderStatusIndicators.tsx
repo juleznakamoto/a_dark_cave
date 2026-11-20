@@ -212,7 +212,14 @@ function ProductionCycleIndicator({
   );
 }
 
-export function GameHeaderStatusIndicators() {
+export function GameHeaderStatusIndicators({
+  className,
+  onPresenceChange,
+}: {
+  className?: string;
+  /** True while any status ring is on screen. Pause uses this to skip an empty wait. */
+  onPresenceChange?: (present: boolean) => void;
+} = {}) {
   const { pulseClassName, onMouseEnter, onMouseLeave } =
     useNewItemPulseTooltips(HEADER_STATUS_INDICATOR_TOOLTIP_IDS);
 
@@ -425,11 +432,15 @@ export function GameHeaderStatusIndicators() {
     isFocus ||
     isBadDreams;
 
+  useEffect(() => {
+    onPresenceChange?.(hasAny);
+  }, [hasAny, onPresenceChange]);
+
   if (!hasAny) return null;
 
   return (
     <div
-      className="flex flex-wrap items-center justify-start gap-x-2.5 gap-y-1.5 md:gap-x-3"
+      className={`flex flex-wrap items-center justify-start gap-x-2.5 gap-y-1.5 md:gap-x-3${className ? ` ${className}` : ""}`}
       data-testid="header-status-indicators"
     >
       {hasVillagers && (

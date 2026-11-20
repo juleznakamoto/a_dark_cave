@@ -25,6 +25,7 @@ import { cn } from "@/lib/utils";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { ActionTooltipSeparator } from "@/game/rules/actionTooltipLayout";
 import CubeDialog from "./CubeDialog";
+import MadnessDialog from "./MadnessDialog";
 import VillageEffectDialog from "./VillageEffectDialog";
 import { useUiTranslation } from "@/i18n/useUiTranslation";
 import {
@@ -380,6 +381,20 @@ function EventDialogOpen({
     );
   }
 
+  if (catalogId === "madnessWarning" && continueChoice) {
+    return (
+      <MadnessDialog
+        isOpen={isOpen}
+        data={{
+          successLog: displayMessage,
+          madnessChange: 0,
+          title: displayTitle,
+        }}
+        onClose={() => handleChoice(continueChoice.id)}
+      />
+    );
+  }
+
   return (
     <>
       {isCubeEvent ? (
@@ -399,7 +414,7 @@ function EventDialogOpen({
         >
           <DialogContent
             openClickLockKey={event.id}
-            className={`z-[60] gap-4 [--adc-dialog-max-w:28rem] [&>button]:hidden ${isMadnessEvent ? 'border-2 border-violet-600 shadow-2xl max-h-[90dvh] flex flex-col overflow-visible' : ''}`}
+            className={`in-game-dialog-content z-[60] flex flex-col [&>button]:hidden ${isMadnessEvent ? 'border-2 border-violet-600 shadow-2xl max-h-[90dvh] overflow-visible' : ''}`}
             style={isMadnessEvent ? chromeRuleColorStyle("#7c3aed") : undefined}
           >
             {isMadnessEvent && (
@@ -451,7 +466,8 @@ function EventDialogOpen({
               </DialogDescription>
             </DialogHeader>
 
-            <div className={gameActionButtonGridClassName()}>
+            <div className="mt-auto flex flex-col gap-4 pt-4">
+            <div className={gameActionButtonGridClassName(eventChoices.length === 1 ? "justify-center" : undefined)}>
               {eventChoices.map((choice) => {
                 const tradeChoice = choice as typeof choice & Partial<MerchantTradeData>;
                 const cost = choice.cost;
@@ -635,6 +651,7 @@ function EventDialogOpen({
                 </div>
               </div>
             )}
+            </div>
           </DialogContent>
         </Dialog>
       )}

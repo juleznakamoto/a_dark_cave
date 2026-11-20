@@ -2978,6 +2978,15 @@
     "message": "Una mattina, durante una passeggiata, vedi cinque bambini piccoli fermi tra gli alberi. Non si muovono. Ti fissano e basta.",
     "title": "Bambini che fissano"
   },
+  "madnessWarning": {
+    "choices": {
+      "continue": {
+        "label": "Continua"
+      }
+    },
+    "message": "Una sera vedi una vecchia seduta accanto a una capanna, lo sguardo nel fuoco. Quando ti avvicini, mormora senza alzare gli occhi: «Lo vedo nei tuoi occhi. Hai visto cose inquietanti. Questo mondo può farti impazzire facilmente. E con una mente folle, il male deve accadere.»",
+    "title": "Sussurri di follia"
+  },
   "whisperingVoices": {
     "choices": {
       "ignore": {

@@ -17,6 +17,11 @@ const DEV_PAGES = [
     blurb: "Fight dialog with a late-game loadout.",
   },
   {
+    href: "/dev/dialogs",
+    title: "Dialogs",
+    blurb: "Every dialog, two real examples each.",
+  },
+  {
     href: "/dev/demo-end",
     title: "Demo end",
     blurb: "Steam and Galaxy demo end dialog.",

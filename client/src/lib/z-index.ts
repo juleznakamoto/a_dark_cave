@@ -3,8 +3,8 @@
  * Use these constants instead of magic numbers.
  *
  * Hierarchy (low → high):
- * - sleepFog: Sleep-mode mist overlay (covers main panels; below footer and promos)
- * - sleepPromo: Floating invite CTA during sleep (above fog, below footer)
+ * - sleepPromo: Floating invite CTA during sleep (below the mist shader)
+ * - sleepFog: Sleep-mode mist overlay (covers main panels and the invite; below footer)
  * - tabHotkeyOverlay: Pause / village hotkey tutorial callout (body-portaled, above buttons)
  * - hoverCalloutUnderModal: Footer callouts (Wishlist on Steam) while a modal is open
  * - gameParticleLayer: Click particles above side panel/tabs/log, below action buttons
@@ -20,10 +20,10 @@
  * - topLayer: Full-screen overlays (end screen, start screen CTA)
  */
 export const Z_INDEX = {
+  /** Floating invite during sleep. Below the mist so the shader covers it. */
+  sleepPromo: 30,
   /** Sleep mist / pause overlay — absolute in the game shell, covers main content only (under header/footer). Action buttons must drop below this while active. */
   sleepFog: 40,
-  /** Floating invite button during sleep — above fog, below footer (50). */
-  sleepPromo: 45,
   /** Tab hotkey hint/box; must sit above action buttons and their badges. */
   tabHotkeyOverlay: 46,
   /**

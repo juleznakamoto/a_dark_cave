@@ -5,6 +5,7 @@ import {
   getNewlyUnlockedTabsForBlink,
   getTabUnlockAttentionClass,
   isTabUnlockBlinkSeen,
+  tabUnlockUsesGreenPulse,
   TAB_UNLOCK_BLINK_SEEN_KEYS,
 } from "./tabUnlockBlink";
 import type { GameState } from "@shared/schema";
@@ -73,6 +74,12 @@ describe("tabUnlockBlink", () => {
         "bastion",
       ),
     ).toBe(true);
+  });
+
+  it("leaves the trader on its gold glow instead of the green flash", () => {
+    expect(tabUnlockUsesGreenPulse("trader")).toBe(false);
+    expect(tabUnlockUsesGreenPulse("village")).toBe(true);
+    expect(tabUnlockUsesGreenPulse("map")).toBe(true);
   });
 
   it("getTabUnlockAttentionClass fades, then glows, then escalates to green", () => {

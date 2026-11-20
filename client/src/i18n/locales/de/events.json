@@ -2978,6 +2978,15 @@
     "message": "An einem Morgen, auf einem Spaziergang, siehst du fünf junge Kinder zwischen den Bäumen stehen. Sie rühren sich nicht. Sie starren dich nur an.",
     "title": "Starrende Kinder"
   },
+  "madnessWarning": {
+    "choices": {
+      "continue": {
+        "label": "Weiter"
+      }
+    },
+    "message": "Eines Abends siehst du eine alte Frau neben einer Hütte sitzen. Sie starrt ins Feuer. Als du näherkommst, murmelt sie, ohne aufzusehen: „Ich sehe es in deinen Augen. Du hast beunruhigende Dinge gesehen. Diese Welt kann einen leicht in den Wahnsinn treiben. Und mit einem irren Geist muss Schlimmes geschehen.“",
+    "title": "Flüstern des Wahnsinns"
+  },
   "whisperingVoices": {
     "choices": {
       "ignore": {

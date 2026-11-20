@@ -2980,6 +2980,15 @@
     "message": "Pewnego ranka na spacerze widzisz pięcioro małych dzieci stojących między drzewami. Nie ruszają się. Tylko wpatrują się w ciebie.",
     "title": "Wpatrujące się dzieci"
   },
+  "madnessWarning": {
+    "choices": {
+      "continue": {
+        "label": "Kontynuuj"
+      }
+    },
+    "message": "Pewnego wieczoru widzisz starą kobietę siedzącą przy chacie i wpatrzoną w ogień. Gdy podchodzisz, mruczy, nie podnosząc wzroku: „Widzę to w twoich oczach. Widziałeś niepokojące rzeczy. Ten świat łatwo może doprowadzić do szaleństwa. A przy szalonym umyśle złe rzeczy muszą się zdarzyć.”",
+    "title": "Szepty szaleństwa"
+  },
   "whisperingVoices": {
     "choices": {
       "ignore": {

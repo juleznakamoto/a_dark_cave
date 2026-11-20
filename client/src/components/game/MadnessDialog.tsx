@@ -51,7 +51,9 @@ const effectDisplayName = (
 
 export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogProps) {
   const { t } = useUiTranslation();
-  if (!data || data.madnessChange === 0) return null;
+  const showChange = (data?.madnessChange ?? 0) !== 0;
+  // A narrative visit can open with no Madness change. A blank popup cannot.
+  if (!data || (!showChange && !data.successLog?.trim())) return null;
 
   const { rewards, successLog, madnessChange, title } = data;
 
@@ -159,12 +161,14 @@ export default function MadnessDialog({ isOpen, data, onClose }: MadnessDialogPr
   const content = (
     <>
       {hasRewardItems && <div className="space-y-1">{rewardItems}</div>}
-      <div className="text-sm text-violet-300">
-        {t("madness.change", {
-          sign: madnessChange > 0 ? "+" : "-",
-          amount: formatNumber(Math.abs(madnessChange)),
-        })}
-      </div>
+      {showChange && (
+        <div className="text-sm text-violet-300">
+          {t("madness.change", {
+            sign: madnessChange > 0 ? "+" : "-",
+            amount: formatNumber(Math.abs(madnessChange)),
+          })}
+        </div>
+      )}
     </>
   );
 

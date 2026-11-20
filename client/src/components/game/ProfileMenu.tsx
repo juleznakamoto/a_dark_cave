@@ -39,6 +39,7 @@ import { HoverCalloutTooltip } from "@/components/game/HoverCalloutTooltip";
 import { TooltipWrapper } from "@/components/game/TooltipWrapper";
 import { useGlobalTooltipOpen } from "@/hooks/useGlobalTooltip";
 import { arePactsEnabled } from "@/game/rules/pacts";
+import { usePauseHeaderChrome } from "@/hooks/usePauseHeaderSwap";
 import { DropdownMenuItemWithTooltip } from "@/components/game/DropdownMenuItemWithTooltip";
 import {
   DropdownMenu,
@@ -645,17 +646,17 @@ export function GameHeaderControls() {
   });
   const pactChoicesHighlighted =
     useGlobalTooltipOpen("header-pact-choices") === true;
+  const pauseChrome = usePauseHeaderChrome();
 
   return (
-    <div className="flex items-center gap-0.5 shrink-0">
-      <GameHeaderRewardsShortcut />
-      {arePactsEnabled() && pactChoices >= 1 && (
+    <div className="relative flex items-center gap-0.5 shrink-0">
+      {arePactsEnabled() && pactChoices >= 1 && pauseChrome.mounted && (
         <TooltipWrapper
           tooltip={pactChoicesLabel}
           tooltipId="header-pact-choices"
           disabled
           side="bottom"
-          className="relative mr-1 inline-flex items-center"
+          className={`pause-ui-fade absolute right-full top-1/2 z-10 mr-1 inline-flex -translate-y-1/2 items-center ${pauseChrome.visible ? "opacity-100" : "pointer-events-none opacity-0"}`}
           tooltipTriggerClassName="inline-flex items-center"
         >
           <PactChoicesHeaderMark
@@ -665,6 +666,7 @@ export function GameHeaderControls() {
           />
         </TooltipWrapper>
       )}
+      <GameHeaderRewardsShortcut />
       {cruelMode && (
         <HoverCalloutTooltip
           label={t("footer.cruelModeActive")}

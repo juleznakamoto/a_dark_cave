@@ -1711,7 +1711,8 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
   height: calc(22px * var(--adc-control-scale, 1));
 }
 
-/* Pact-choice rings left of the Cruel Mode mark.
+/* Pact-choice rings. Parked just left of the right-side header icons, out of
+   flow, so fading them in does not shift Rewards, Cruel Mode, or the menu.
    Same 28px row as the header icon buttons so the rings share their midline. */
 .game-header-pact-choices {
   height: 1.75rem;
@@ -1851,21 +1852,29 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
   opacity: 0.7;
 }
 
-/* 20rem wide and at least 21rem tall, so the card stays a little taller
-   than it is wide. Below 768px, 84vw is used only when 20rem would not
-   fit, which still leaves 8vw on each side for the arrows. */
+/* 22rem wide and at least 23rem tall, so the card stays a little taller
+   than it is wide. Below 768px, 84vw is used only when 22rem would not
+   fit, which still leaves 8vw on each side for the arrows. A short
+   screen caps the height so the card stays on screen. */
 .cube-dialog-content {
-  --adc-dialog-max-w: 20rem;
+  --cube-dialog-w: 22rem;
+  --adc-dialog-max-w: var(--cube-dialog-w);
   height: auto;
-  min-height: 21rem;
+  min-height: min(23rem, 90dvh);
   max-height: 90dvh;
 }
 
 @media (max-width: 767px) {
   .cube-dialog-content {
-    --adc-dialog-viewport-w: min(20rem, 84vw);
-    --adc-dialog-max-w: min(20rem, 84vw);
+    --adc-dialog-viewport-w: min(var(--cube-dialog-w), 84vw);
+    --adc-dialog-max-w: min(var(--cube-dialog-w), 84vw);
   }
+}
+
+/* Reward cards are 24rem wide. Story events, the gambler, and invest
+   use that same width. Sleep is 30rem. Fights and cube memories keep their own size. */
+.in-game-dialog-content {
+  --adc-dialog-max-w: 24rem;
 }
 
 .cube-dialog-content--paging {
@@ -1901,7 +1910,7 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
      window keeps the desktop size instead of stretching into the leftover
      space. */
   button.cube-event-arrow {
-    --cube-side-room: calc((100vw - min(20rem, 84vw)) / 2);
+    --cube-side-room: calc((100vw - min(var(--cube-dialog-w), 84vw)) / 2);
     --cube-arrow-gap: clamp(0px, var(--cube-side-room) - 3.575rem, 0.75rem);
     --cube-arrow-size: min(3.575rem, var(--cube-side-room) - var(--cube-arrow-gap));
     box-sizing: border-box;
@@ -3256,7 +3265,7 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   opacity: 0;
 }
 
-/* Pause hotkey hint and Steam play-time. Opacity utilities drive the fade. */
+/* Pause hotkey hint, header status marks, play time, and pact choices. Opacity utilities drive the fade. */
 .pause-ui-fade {
   transition-property: opacity;
   transition-duration: 1000ms;
@@ -3348,7 +3357,8 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   animation: improve-text-flash 0.35s ease-out forwards;
 }
 
-/* Job /max: three quick flashes when an Insight upgrade raises the cap.
+/* Job /max: three quick flashes when an Insight upgrade raises the cap,
+   or when + is pressed on a job that is already full.
    0% and 100% color come from the element's own text color. */
 @keyframes villager-cap-flash {
   15% {

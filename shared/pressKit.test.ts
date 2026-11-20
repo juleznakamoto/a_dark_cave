@@ -151,8 +151,12 @@ describe("press kit copy", () => {
     expect(html).toContain(PRESS_LOCKED_LINE);
     expect(html).toContain("Short boilerplate");
     expect(html).toContain("/press-kit/a_dark_cave_press_kit.zip");
+    expect(html).toContain("https://www.youtube.com/watch?v=qDnoID3GcKc");
     expect(html).toContain("/press-kit/video/a_dark_cave_gameplay_trailer.mp4");
     expect(html).not.toContain("G8Gm7o4cZfQ");
+    expect(
+      pressLinksInGroup("social").find((link) => link.id === "trailer")?.href,
+    ).toBe("https://www.youtube.com/watch?v=qDnoID3GcKc");
     expect(html).toContain("support@a-dark-cave.com");
     expect(html).toContain("27 October 2026");
     expect(html).toContain("$7.99");

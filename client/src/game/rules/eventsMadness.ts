@@ -3,6 +3,7 @@ import { calculateSuccessChance, defineSuccessChance } from "./eventSuccessChanc
 import { GameState } from "@shared/schema";
 import { addFreeVillagersWithinCap, killVillagers } from "@/game/stateHelpers";
 import { getTotalMadness, getTotalLuck } from "./effectsCalculation";
+import { MADNESS_WARNING_MIN } from "@/game/madnessIntro";
 import { getCurrentPopulation, getMaxPopulation } from "../population";
 import { CRUEL_MODE, cruelModeScale } from "../cruelMode";
 import { btpLootAmount } from "@/game/btpLoot";
@@ -25,6 +26,31 @@ const watchingChildrenApproach = defineSuccessChance({
 });
 
 export const madnessEvents: Record<string, GameEvent> = {
+  /**
+   * Once Madness reaches 10. Average wait is half a minute, and it happens
+   * only once. The usual gap after another dialog still applies.
+   */
+  madnessWarning: {
+    id: "madnessWarning",
+    condition: (state: GameState) =>
+      getTotalMadness(state) >= MADNESS_WARNING_MIN &&
+      !state.events.madnessWarning,
+    timeProbability: 0.5,
+    priority: 15,
+    repeatable: false,
+    choices: [
+      {
+        id: "continue",
+        effect: (state: GameState) => ({
+          events: {
+            ...state.events,
+            madnessWarning: true,
+          },
+        }),
+      },
+    ],
+  },
+
   whisperingVoices: {
     id: "whisperingVoices",
     condition: (state: GameState) =>

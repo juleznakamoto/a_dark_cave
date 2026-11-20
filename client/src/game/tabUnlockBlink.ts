@@ -26,6 +26,16 @@ export const TAB_UNLOCK_FADE_MS = 3000;
 /** After the new-tab glow has run this long without a click, switch to the timed-event green pulse. */
 export const TAB_UNLOCK_GREEN_PULSE_MS = 20_000;
 
+/**
+ * Location tabs escalate to the green flash.
+ * The trader coin stack does not: that flash sets `color` on the button, and
+ * the mask icon follows it, so on a phone the whole control strobes green.
+ * The trader keeps its gold glow instead.
+ */
+export function tabUnlockUsesGreenPulse(tabId: TabUnlockBlinkId): boolean {
+  return tabId !== "trader";
+}
+
 export function getTabUnlockAttentionClass(options: {
   isAnimating: boolean;
   isFadePhase: boolean;

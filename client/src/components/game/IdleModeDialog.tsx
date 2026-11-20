@@ -742,7 +742,7 @@ function IdleModeDialogOpen() {
       modal={false}
     >
       <DialogContent
-        className="[--adc-dialog-max-w:28rem]"
+        className="[--adc-dialog-max-w:30rem]"
         layerZIndex={60}
         hideClose={true}
         hideOverlay={true}

@@ -4,6 +4,11 @@ import path from "path";
 import { execSync } from "node:child_process";
 import { compression } from "vite-plugin-compression2";
 import { vendorManualChunk } from "./vite.vendorChunks";
+import {
+  isPackagedGameBuild,
+  removeSiteOnlyPublic,
+} from "./vite.sitePublic";
+import { omittedPageAliases, omittedPageSpecs } from "./vite.sitePages";
 
 /**
  * Baked into the client bundle; compared against `/api/version` at runtime.
@@ -45,6 +50,21 @@ function resolveWebOutDir(): string {
   return resolved;
 }
 
+function omitSiteOnlyPublicPlugin(outDir: string): Plugin {
+  return {
+    name: "omit-site-only-public",
+    apply: "build",
+    enforce: "post",
+    closeBundle() {
+      if (!isPackagedGameBuild()) return;
+      const removed = removeSiteOnlyPublic(outDir);
+      if (removed.length > 0) {
+        console.log(`Omitted site-only public files: ${removed.join(", ")}`);
+      }
+    },
+  };
+}
+
 function relativePortalHtmlPlugin(): Plugin {
   return {
     name: "relative-portal-html",
@@ -53,9 +73,11 @@ function relativePortalHtmlPlugin(): Plugin {
       let next = html;
       if (isCrazyGamesBuild) {
         // Absolute SDK URL first so the relative-path rewrite does not touch it.
+        // defer keeps document order (SDK before the module) without blocking
+        // the body, so the boot spinner can paint while the file downloads.
         next = next.replace(
           "</head>",
-          '  <script src="https://sdk.crazygames.com/crazygames-sdk-v3.js"></script>\n</head>',
+          '  <script defer src="https://sdk.crazygames.com/crazygames-sdk-v3.js"></script>\n</head>',
         );
       }
       next = next
@@ -75,6 +97,7 @@ export default defineConfig(async ({ mode }) => ({
     react(),
     relativePortalHtmlPlugin(),
     compression(),
+    omitSiteOnlyPublicPlugin(resolveWebOutDir()),
     ...(process.env.NODE_ENV !== "production" &&
       process.env.REPL_ID !== undefined
       ? [
@@ -89,42 +112,77 @@ export default defineConfig(async ({ mode }) => ({
     __BUILD_SHA__: JSON.stringify(resolveBuildSha(mode)),
   },
   resolve: {
-    alias: {
-      "@": path.resolve(clientRoot, "src"),
-      "@shared": path.resolve(import.meta.dirname, "shared"),
-      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+    alias: [
+      // Exact page matches before the "@" prefix, or the real files still ship.
+      ...omittedPageAliases(
+        omittedPageSpecs(process.env, mode),
+        path.resolve(clientRoot, "src/stubs/offline/hiddenPage.tsx"),
+      ),
+      {
+        find: "@shared",
+        replacement: path.resolve(import.meta.dirname, "shared"),
+      },
+      {
+        find: "@assets",
+        replacement: path.resolve(import.meta.dirname, "attached_assets"),
+      },
       ...(useOfflineStubs
-        ? {
-          "@/lib/supabase": path.resolve(clientRoot, "src/stubs/steam/supabase.ts"),
-          "@/lib/playlight": path.resolve(clientRoot, "src/stubs/steam/playlight.ts"),
-          "@/lib/stripePaymentReturn": path.resolve(
-            clientRoot,
-            "src/stubs/steam/stripePaymentReturn.ts",
-          ),
-        }
-        : {}),
+        ? [
+            {
+              find: "@/lib/supabase",
+              replacement: path.resolve(clientRoot, "src/stubs/steam/supabase.ts"),
+            },
+            {
+              find: "@/lib/playlight",
+              replacement: path.resolve(clientRoot, "src/stubs/steam/playlight.ts"),
+            },
+            {
+              find: "@/lib/stripePaymentReturn",
+              replacement: path.resolve(
+                clientRoot,
+                "src/stubs/steam/stripePaymentReturn.ts",
+              ),
+            },
+          ]
+        : []),
       ...(!isIosBuild
-        ? {
-          "@capacitor/filesystem": path.resolve(
-            clientRoot,
-            "src/stubs/capacitor/filesystem.ts",
-          ),
-          "@capacitor/app": path.resolve(clientRoot, "src/stubs/capacitor/app.ts"),
-          "@capacitor/status-bar": path.resolve(
-            clientRoot,
-            "src/stubs/capacitor/statusBar.ts",
-          ),
-          "@capacitor-community/media": path.resolve(
-            clientRoot,
-            "src/stubs/capacitor/media.ts",
-          ),
-          "@capacitor/haptics": path.resolve(
-            clientRoot,
-            "src/stubs/capacitor/haptics.ts",
-          ),
-        }
-        : {}),
-    },
+        ? [
+            {
+              find: "@capacitor/filesystem",
+              replacement: path.resolve(
+                clientRoot,
+                "src/stubs/capacitor/filesystem.ts",
+              ),
+            },
+            {
+              find: "@capacitor/app",
+              replacement: path.resolve(clientRoot, "src/stubs/capacitor/app.ts"),
+            },
+            {
+              find: "@capacitor/status-bar",
+              replacement: path.resolve(
+                clientRoot,
+                "src/stubs/capacitor/statusBar.ts",
+              ),
+            },
+            {
+              find: "@capacitor-community/media",
+              replacement: path.resolve(
+                clientRoot,
+                "src/stubs/capacitor/media.ts",
+              ),
+            },
+            {
+              find: "@capacitor/haptics",
+              replacement: path.resolve(
+                clientRoot,
+                "src/stubs/capacitor/haptics.ts",
+              ),
+            },
+          ]
+        : []),
+      { find: "@", replacement: path.resolve(clientRoot, "src") },
+    ],
   },
   root: clientRoot,
   build: {

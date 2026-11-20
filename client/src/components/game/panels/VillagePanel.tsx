@@ -462,6 +462,21 @@ export default function VillagePanel() {
   const { sparks, spawnParticles } = useFeedFireParticles();
 
   const [presetSaveConfirmed, setPresetSaveConfirmed] = useState(false);
+  const [jobCapFlashNonce, setJobCapFlashNonce] = useState<
+    Record<string, number>
+  >({});
+  const lastCapPulseAtRef = useRef(0);
+  const pulseFullJobCap = useCallback((jobId: string) => {
+    const now = performance.now();
+    // One press can emit pointerdown and contextmenu. Collapse that pair.
+    // A later press still restarts the blink.
+    if (now - lastCapPulseAtRef.current < 50) return;
+    lastCapPulseAtRef.current = now;
+    setJobCapFlashNonce((prev) => ({
+      ...prev,
+      [jobId]: (prev[jobId] ?? 0) + 1,
+    }));
+  }, []);
   const presetSaveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
     null,
   );
@@ -1235,6 +1250,16 @@ export default function VillagePanel() {
           </Button>
           {renderVillagerCount(currentCount)}
           <Button
+            onPointerDown={(e) => {
+              if (e.button !== 0 || !atCap) return;
+              pulseFullJobCap(jobId);
+            }}
+            onKeyDown={(e) => {
+              if (!atCap || e.repeat) return;
+              if (e.key !== "Enter" && e.key !== " ") return;
+              e.preventDefault();
+              pulseFullJobCap(jobId);
+            }}
             onMouseDown={(e) => {
               if (e.button !== 0) return;
               if (!canAssignMore) return;
@@ -1250,6 +1275,10 @@ export default function VillagePanel() {
             onMouseLeave={() => stopHold(false)}
             onContextMenu={(e) => {
               e.preventDefault();
+              if (atCap) {
+                pulseFullJobCap(jobId);
+                return;
+              }
               if (canAssignMore) {
                 assignVillager(jobId, 10);
               }
@@ -1259,11 +1288,14 @@ export default function VillagePanel() {
             }}
             onTouchEnd={endTouchHold}
             onTouchCancel={endTouchHold}
-            disabled={!canAssignMore}
+            disabled={!canAssignMore && !atCap}
             variant="outline"
             size="xs"
             compactChrome
-            className={villagerCountButtonClassName(!canAssignMore)}
+            className={cn(
+              villagerCountButtonClassName(!canAssignMore),
+              atCap && "cursor-default",
+            )}
             style={{
               touchAction: "manipulation",
             }}
@@ -1284,6 +1316,7 @@ export default function VillagePanel() {
             jobId={jobId}
             cap={cap}
             atCap={atCap}
+            flashNonce={jobCapFlashNonce[jobId] ?? 0}
             className={VILLAGER_COUNT_CAP_CLASS}
           />
         ) : (

@@ -29,6 +29,7 @@ import { GAME_CONSTANTS } from "./constants";
 import { getGameActions } from "./rules/actionsRegistry";
 import { migrateVillagerPresetsPurchasedOnLoad } from "./villagerJobPresets";
 import { migrateInsightIntroSeenOnLoad } from "./insightIntro";
+import { migrateMadnessWarningSeenOnLoad } from "./madnessIntro";
 import { isSteamBuild } from "@/lib/edition";
 import {
   buildPersistedGameState,
@@ -1217,6 +1218,10 @@ export function applyGameStateLoadMigrations(state: GameState): GameState {
   const insightIntro = migrateInsightIntroSeenOnLoad(migrated);
   if (insightIntro) {
     migrated = { ...migrated, ...insightIntro };
+  }
+  const madnessWarning = migrateMadnessWarningSeenOnLoad(migrated);
+  if (madnessWarning) {
+    migrated = { ...migrated, ...madnessWarning };
   }
   return migrated;
 }

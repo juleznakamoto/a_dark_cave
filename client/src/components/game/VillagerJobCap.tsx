@@ -6,27 +6,35 @@ type VillagerJobCapProps = {
   cap: number;
   atCap: boolean;
   className: string;
+  /** Bump to replay the three-blink, for example + pressed while already full. */
+  flashNonce?: number;
 };
 
 /**
  * /max beside a villager job. Flashes three times when the cap rises
- * (Insight upgrade applies after its reveal animation).
+ * (Insight upgrade applies after its reveal animation), and again when
+ * flashNonce increases.
  */
 export function VillagerJobCap({
   jobId,
   cap,
   atCap,
   className,
+  flashNonce = 0,
 }: VillagerJobCapProps) {
   const previousCapRef = useRef(cap);
+  const previousNonceRef = useRef(flashNonce);
   const [flashGeneration, setFlashGeneration] = useState(0);
 
   useEffect(() => {
-    if (cap > previousCapRef.current) {
+    const capRose = cap > previousCapRef.current;
+    const nonceBumped = flashNonce > previousNonceRef.current;
+    if (capRose || nonceBumped) {
       setFlashGeneration((generation) => generation + 1);
     }
     previousCapRef.current = cap;
-  }, [cap]);
+    previousNonceRef.current = flashNonce;
+  }, [cap, flashNonce]);
 
   return (
     <span

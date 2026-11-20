@@ -179,8 +179,10 @@ Organization `logo` may keep `/og-image.png` until a real wordmark exists.
   Do not say "optional full game unlock" for the browser game.
 - Steam app IDs: full game `4882240`, demo `4971800` (`steam_appid.txt`,
   `steam_appid_demo.txt`).
-- Gameplay trailer is the local MP4 at
-  `client/public/press-kit/video/a_dark_cave_gameplay_trailer.mp4`.
+- Gameplay trailer on /press is the YouTube video
+  `https://www.youtube.com/watch?v=qDnoID3GcKc` (A Dark Cave | Gameplay Trailer).
   Do not link the older YouTube upload `G8Gm7o4cZfQ`.
+  The press-kit MP4 stays a download at
+  `client/public/press-kit/video/a_dark_cave_gameplay_trailer.mp4`.
 - UI locales live under `client/src/i18n/locales/` as `en`, `de`, `fr`, `es`,
   `it`, `pt-BR`, `zh-CN`, `ja`, `pl`, `ru`, `tr`.

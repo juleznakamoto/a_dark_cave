@@ -101,7 +101,7 @@ export default function FooterNetworkMenu({
             data-testid="button-footer-social"
             aria-label={socialLabel}
             className={cn(
-              `group shrink-0 px-1 py-1 text-xs text-neutral-300 hover:!text-neutral-300 flex items-center gap-1 ${GAME_CHROME_NO_BG_HOVER}`,
+              `group shrink-0 px-1 py-1 text-xs font-medium text-neutral-300 hover:!text-neutral-300 flex items-center gap-1 ${GAME_CHROME_NO_BG_HOVER}`,
               triggerClassName,
             )}
           >

@@ -103,7 +103,7 @@ all game logic lives in the client. **Supabase** handles auth/cloud saves.
 | `i18n/` | Bootstrap, resolvers, `locales/{lang}/`. |
 | `lib/` | Cross-cutting: logger, edition, audio, Supabase, fonts, reload. |
 | `achievements/` | Ring configs, progress, Steam unlock mapping. |
-| `stubs/steam/` | Vite aliases that drop web-only chunks from the Steam build. |
+| `stubs/` | Vite aliases that drop code a build does not run. `stubs/steam/` replaces web-only services. `stubs/offline/hiddenPage.tsx` replaces pages that build does not show (`vite.sitePages.ts`). |
 
 **Boot:** web `/` always paints the start screen first (including returning
 saves). The Game chunk prefetches after first paint + first input, then mounts

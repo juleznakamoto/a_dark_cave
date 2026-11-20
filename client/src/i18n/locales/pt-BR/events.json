@@ -2978,6 +2978,15 @@
     "message": "Numa manhã de caminhada, você vê cinco crianças pequenas paradas entre as árvores. Elas não se mexem. Só encaram você.",
     "title": "Crianças que encaram"
   },
+  "madnessWarning": {
+    "choices": {
+      "continue": {
+        "label": "Continuar"
+      }
+    },
+    "message": "Uma noite você vê uma velha sentada ao lado de uma cabana, olhando para o fogo. Ao se aproximar, ela murmura sem erguer os olhos: “Vejo isso nos seus olhos. Você viu coisas inquietantes. Este mundo pode enlouquecer fácil. E com uma mente louca, coisas ruins vão acontecer.”",
+    "title": "Sussurros da Loucura"
+  },
   "whisperingVoices": {
     "choices": {
       "ignore": {

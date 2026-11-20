@@ -2978,6 +2978,15 @@
     "message": "Un matin, en marchant, vous voyez cinq jeunes enfants debout entre les arbres. Ils ne bougent pas. Ils se contentent de vous fixer.",
     "title": "Enfants qui fixent"
   },
+  "madnessWarning": {
+    "choices": {
+      "continue": {
+        "label": "Continuer"
+      }
+    },
+    "message": "Un soir, vous voyez une vieille femme assise près d'une hutte, les yeux sur le feu. Quand vous approchez, elle murmure sans lever le regard : « Je le vois dans vos yeux. Vous avez vu des choses troublantes. Ce monde peut facilement vous rendre fou. Et avec un esprit fou, le malheur est inévitable. »",
+    "title": "Murmures de la folie"
+  },
   "whisperingVoices": {
     "choices": {
       "ignore": {

@@ -30,7 +30,7 @@ describe("PactOfferEye", () => {
     vi.restoreAllMocks();
   });
 
-  it("closes a chosen eye for 300ms, then opens it again", () => {
+  it("closes a chosen eye for the rolled blink, then opens it again", () => {
     installMedia(false);
     vi.spyOn(Math, "random").mockReturnValue(0);
     vi.useFakeTimers();
@@ -38,7 +38,7 @@ describe("PactOfferEye", () => {
     expect(eyeMask()).toContain("precision_boost");
 
     act(() => {
-      vi.advanceTimersByTime(9_999);
+      vi.advanceTimersByTime(4_999);
     });
     expect(eyeMask()).toContain("precision_boost");
 
@@ -48,7 +48,7 @@ describe("PactOfferEye", () => {
     expect(eyeMask()).toContain("cracked_eye");
 
     act(() => {
-      vi.advanceTimersByTime(299);
+      vi.advanceTimersByTime(149);
     });
     expect(eyeMask()).toContain("cracked_eye");
 

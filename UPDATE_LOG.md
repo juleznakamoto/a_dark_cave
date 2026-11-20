@@ -10,10 +10,21 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Added
 
+- Once your Madness reaches 10, Whispers of Madness may appear: an old woman by a hut, staring into the fire.
 - When silver, gold, or insight goes up, its icon in the resource list sparks for a moment.
 
 #### Changed
 
+- On the press page, the gameplay trailer plays from YouTube.
+- When a dialog offers one choice, that button sits in the center.
+- The sleep window is wider.
+- Cube memories are a little wider, and the card stays a bit taller than it is wide.
+- While the game is paused, status marks in the top bar fade out, then your play time and pact choices fade in. Pact choices stay hidden while you play, and they sit to the left of the other top-right icons without moving them. Cruel Mode and Rewards stay.
+- A chosen pact's eye blinks a little more often, and each blink lasts a slightly different length.
+- When a village job is full, pressing + blinks its limit three times.
+- When the Trader tab appears, it glows gold and sparks. It no longer flashes green.
+- While you sleep, the invite button stays under the mist.
+- On a phone, Privacy and Imprint sit next to each other on the title screen.
 - In the shop, pointing at a card draws a line inside the edge. The text and button stay put.
 - Lantern tips list torch cost first on every tier, then mining and cave explore.
 - Trade Post and Clerk's Hut tips list their unlock first on every tier.
@@ -78,6 +89,8 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- Stat icons in success chance tips and on choice buttons sit level with the text beside them.
+- The Social label in the footer matches the weight of the other footer words.
 - A cube memory stays almost square when the window is narrow.
 - Insight in the resource list stops glowing after you reveal an achievement title, unlock a queue slot or villager preset, or speed up a build.
 - Long lines in tips stay inside the box, including side-list building tips, larger text, and longer translations.
@@ -108,6 +121,10 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 - On a computer, a cube memory is almost square, a little taller than it is wide.
 
 ### iOS
+
+#### Changed
+
+- The app stays upright. Turning the phone or iPad sideways no longer rotates the game.
 
 #### Added
 
