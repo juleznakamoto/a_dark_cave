@@ -12,6 +12,7 @@ import { useShallow } from "zustand/react/shallow";
 import GameTabs from "./GameTabs";
 import GameFooter from "./GameFooter";
 import GameHeader from "./GameHeader";
+import { useCrazyGamesGameplay } from "@/hooks/useCrazyGamesGameplay";
 import { useDocumentChromeVisualStage } from "@/game/chromeStageTransition";
 import {
   getMadnessVisualStage,
@@ -227,6 +228,7 @@ export default function GameContainer() {
       villageMapSeenTiers: state.villageMapSeenTiers,
     })),
   );
+  useCrazyGamesGameplay(flags.gameStarted, isPaused);
 
   const mapTabVisible = shouldShowMapTab({
     mapUnlocked: flags.mapUnlocked === true,

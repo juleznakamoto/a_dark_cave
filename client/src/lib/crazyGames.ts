@@ -5,6 +5,9 @@
  * index.html. On `/crazygames` on our own site the script is absent and every
  * method is a no-op. Always go through this module; game code never touches
  * `window.CrazyGames` directly.
+ *
+ * Basic Launch needs `game.gameplayStart` when the cave is playable and
+ * `game.gameplayStop` on pause or the title screen. Ads stay off.
  */
 import { isCrazyGamesBuild, isCrazyGamesEdition } from "@/lib/edition";
 import { logger } from "@/lib/logger";
@@ -19,9 +22,15 @@ export interface CrazyGamesDataModule {
   clear(): void;
 }
 
+export interface CrazyGamesGameModule {
+  gameplayStart(): void;
+  gameplayStop(): void;
+}
+
 export interface CrazyGamesSdk {
   init(): Promise<void>;
   data?: CrazyGamesDataModule;
+  game?: CrazyGamesGameModule;
 }
 
 let initPromise: Promise<boolean> | null = null;
@@ -110,4 +119,37 @@ export function getCrazyGamesData(): CrazyGamesDataModule | null {
   } catch {
     return null;
   }
+}
+
+let gameplayReported = false;
+let gameplayTail: Promise<void> = Promise.resolve();
+
+function canSignalCrazyGames(): boolean {
+  return isCrazyGamesBuild || hasCrazyGamesSdk();
+}
+
+/**
+ * Tell CrazyGames the player is in the cave (start) or on a break (stop).
+ * The title screen and a paused game are breaks. The first start is what
+ * their Basic Launch check measures. Calls are ordered so a late init cannot
+ * start after a newer stop.
+ */
+export function syncCrazyGamesGameplay(playing: boolean): Promise<void> {
+  if (!canSignalCrazyGames()) return Promise.resolve();
+  const run = gameplayTail.then(() => applyCrazyGamesGameplay(playing));
+  gameplayTail = run.catch((error) => {
+    logger.warn("[CRAZYGAMES] gameplay signal failed:", error);
+  });
+  return gameplayTail;
+}
+
+async function applyCrazyGamesGameplay(playing: boolean): Promise<void> {
+  if (playing === gameplayReported) return;
+  const ready = await initCrazyGamesSdk();
+  if (!ready || playing === gameplayReported) return;
+  const game = getSdk()?.game;
+  if (!game) return;
+  if (playing) game.gameplayStart();
+  else game.gameplayStop();
+  gameplayReported = playing;
 }
