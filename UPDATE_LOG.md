@@ -21,6 +21,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 - Cube memories are a little wider, and the card stays a bit taller than it is wide.
 - While the game is paused, status marks in the top bar fade out, then your play time and pact choices fade in. Pact choices stay hidden while you play, and they sit to the left of the other top-right icons without moving them. Cruel Mode and Rewards stay.
 - A chosen pact's eye blinks a little more often, and each blink lasts a slightly different length.
+- When a village job is full, its limit turns a soft yellow.
 - When a village job is full, pressing + blinks its limit three times.
 - When the Trader tab appears, it glows gold and sparks. It no longer flashes green.
 - While you sleep, the invite button stays under the mist.
@@ -69,7 +70,6 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 - The Focus mark on action tips is a little larger while Focus is active.
 - Action-button corner badges (Prior, Abort, level, Focus, Insight, boost) share a larger tap target. Prior and Abort discs are a little bigger too.
 - Pause, production, and Focus status rings sit in the top bar to the right of Pause. Rewards sits just left of your pact choices. On the web, A Dark Cave sits in the bottom-left bar; Steam has no title link there.
-- When a village job is full, its /max turns yellow like a full resource.
 - The Wandering Collector only appears after you have seen gold.
 - Village − and + job buttons and insight marks are a little larger.
 - After you stay paused for 15 seconds, the red resume button pulses with a soft glow.

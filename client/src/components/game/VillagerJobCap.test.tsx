@@ -15,13 +15,13 @@ describe("VillagerJobCap", () => {
 
     const cap = screen.getByTestId("villager-job-cap-hunter");
     expect(cap).toHaveTextContent("/10");
-    expect(cap.className).toContain("text-yellow-500");
+    expect(cap.className).toContain("text-yellow-600/80");
     expect(screen.getByTestId("villager-job-cap-number-hunter").className).not.toContain(
       "villager-cap-flash",
     );
   });
 
-  it("uses muted /cap below capacity and yellow at capacity", () => {
+  it("uses muted gray below capacity and a softer yellow when full", () => {
     const { rerender } = render(
       <VillagerJobCap
         jobId="hunter"
@@ -36,14 +36,14 @@ describe("VillagerJobCap", () => {
     );
     expect(
       screen.getByTestId("villager-job-cap-hunter").className,
-    ).not.toContain("text-yellow-500");
+    ).not.toContain("text-yellow-600/80");
 
     rerender(
       <VillagerJobCap jobId="hunter" cap={10} atCap className={className} />,
     );
 
     expect(screen.getByTestId("villager-job-cap-hunter").className).toContain(
-      "text-yellow-500",
+      "text-yellow-600/80",
     );
     expect(
       screen.getByTestId("villager-job-cap-hunter").className,

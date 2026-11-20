@@ -10,6 +10,9 @@ type VillagerJobCapProps = {
   flashNonce?: number;
 };
 
+/** Softer than a full resource amount (text-yellow-500). Same mute as village production. */
+const AT_CAP_CLASS = "text-yellow-600/80";
+
 /**
  * /max beside a villager job. Flashes three times when the cap rises
  * (Insight upgrade applies after its reveal animation), and again when
@@ -42,7 +45,7 @@ export function VillagerJobCap({
       data-testid={`villager-job-cap-${jobId}`}
       className={cn(
         className,
-        atCap ? "text-yellow-500" : "text-muted-foreground",
+        atCap ? AT_CAP_CLASS : "text-muted-foreground",
       )}
     >
       /<span
