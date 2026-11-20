@@ -37,7 +37,7 @@ const UNREAD_ORB_PX = 12;
  * CSS-shrink to 18. Only 20 / 32 / 64 are valid size props.
  */
 const LOG_FILTER_ORB_DRAW = 20 as const;
-const LOG_FILTER_ORB_PX = 16;
+const LOG_FILTER_ORB_PX = 18;
 /** `hsl(0, 87.6%, 52.55%)`, the `--primary` token. ThinkingOrb only accepts rgb() or hex. */
 const UNREAD_ORB_COLOR = "rgb(240, 28, 28)";
 
@@ -319,7 +319,7 @@ function LogPanel() {
       >
         <div className="pl-0 relative">
           <div ref={topRef} />
-          <div className="space-y-[calc(0.25rem*0.5)] md:space-y-1 text-sm pb-10 pr-6">
+          <div className="game-scroll-end-wide space-y-[calc(0.25rem*0.5)] md:space-y-1 text-sm pb-10 pr-6">
             {recentEntries.map((entry: any, index: number) => {
               const typedEntry = entry as ExtendedLogEntry;
               const isUnread = !readEntries.has(typedEntry.id);

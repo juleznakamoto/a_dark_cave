@@ -411,7 +411,7 @@ function AchievementTabContent({
         viewportClassName="[&>div]:!block [&>div]:min-w-0 [&>div]:w-full"
         scrollAreaId={`achievements-${tabId}`}
       >
-        <div className="min-w-0 space-y-1 pb-6">
+        <div className="game-scroll-end min-w-0 space-y-1 pb-6">
           <div className={GAME_TAB_SECTION_HEADER_ROW}>
             <h3 className={GAME_TAB_SECTION_HEADER}>
               {forceRedacted ? (
@@ -556,7 +556,7 @@ export default function AchievementsPanel() {
         className="flex h-full flex-col flex-1 min-h-0 overflow-hidden"
       >
         <TabsList
-          className={`sticky top-0 z-10 grid w-full mb-0.5 shrink-0 overflow-visible h-auto min-h-12 bg-transparent py-1 pl-2 ${tabGridClass}`}
+          className={`sticky top-0 z-10 grid w-full mb-0 shrink-0 overflow-visible h-auto min-h-12 bg-transparent py-1 pl-2 ${tabGridClass}`}
         >
           <TabTriggerWithTooltipWhenLocked
             value="basic"

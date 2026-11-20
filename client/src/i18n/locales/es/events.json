@@ -308,9 +308,6 @@
       "continue": {
         "label": "Continuar"
       }
-    },
-    "log": {
-      "outcome1": "Los cazadores marcan el lugar. Se puede enviar un grupo mayor cuando estés listo."
     }
   },
   "brimstoneFlux1": {

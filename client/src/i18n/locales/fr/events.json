@@ -308,9 +308,6 @@
       "continue": {
         "label": "Continuer"
       }
-    },
-    "log": {
-      "outcome1": "Les chasseurs marquent l'endroit. Un groupe plus nombreux pourra partir quand vous serez prêt."
     }
   },
   "brimstoneFlux1": {

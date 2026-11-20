@@ -152,19 +152,6 @@ import { TIMER_URGENCY_PULSE_MS } from "@/game/timerUrgencyPulse";
 
 const TAB_ICON_SIZE = TAB_ICON_SIZE_CLASS;
 
-/** Hourglass sits just under the tab label size, on the text baseline. */
-function TimedEventTabTitle({ label }: { label: string }) {
-  return (
-    <span className="inline-flex items-baseline gap-1">
-      <GameUiIcon
-        name="timedEvent"
-        sizeClassName="h-[0.85em] w-[0.57em]"
-        className="timer-symbol opacity-100"
-      />
-      {label}
-    </span>
-  );
-}
 const steamBuild = import.meta.env.VITE_STEAM_BUILD === "1";
 const iosBuild = import.meta.env.VITE_IOS_BUILD === "1";
 const ShareDialog = lazy(() => import("./ShareDialog"));
@@ -697,33 +684,32 @@ export default function GameContainer() {
     }
   }, [activeTab, currentTimedEventId]);
 
-  // Green pulse until opened; red in the last 30 seconds
+  // Green pulse until opened, then the name stays that green.
+  // Red pulse in the last 30 seconds while the tab is not open.
   useEffect(() => {
-    if (
-      !timedEventTab.isActive ||
-      !timedEventTab.expiryTime ||
-      activeTab === "timedevent"
-    ) {
+    if (!timedEventTab.isActive || !timedEventTab.expiryTime) {
       setTimedEventTabPulseClass("");
       return;
     }
 
     const updatePulse = () => {
+      const state = useGameStore.getState();
       syncTimedEventTabPauseTracking();
-      const remaining =
-        getTimedEventTabEffectiveRemainingMs(useGameStore.getState()) ?? 0;
+      const remaining = getTimedEventTabEffectiveRemainingMs(state) ?? 0;
 
       if (remaining <= 0) {
         setTimedEventTabPulseClass("");
         return;
       }
 
-      if (remaining <= TIMER_URGENCY_PULSE_MS) {
+      const viewing = state.activeTab === "timedevent";
+
+      if (!viewing && remaining <= TIMER_URGENCY_PULSE_MS) {
         setTimedEventTabPulseClass("timer-tab-pulse-red");
-      } else if (!hasViewedCurrentTimedEvent) {
+      } else if (!viewing && !hasViewedCurrentTimedEvent) {
         setTimedEventTabPulseClass("timer-tab-pulse-green");
       } else {
-        setTimedEventTabPulseClass("");
+        setTimedEventTabPulseClass("timer-tab-event-green");
       }
     };
 
@@ -1056,7 +1042,7 @@ export default function GameContainer() {
     if (timedEventTab.isActive) {
       tabs.push({
         id: "timedevent",
-        icon: <TimedEventTabTitle label={timedEventTabLabel} />,
+        icon: <span>{timedEventTabLabel}</span>,
         label: timedEventTabLabel,
         onClick: () => setActiveTab("timedevent"),
       });
@@ -1325,15 +1311,16 @@ export default function GameContainer() {
           <title>A Dark Cave</title>
         </Helmet>
         <div
-          className="fixed inset-0 bg-background text-foreground flex flex-col"
+          className={`fixed inset-0 bg-background text-foreground flex flex-col${iosEditionActive ? " ios-shell" : ""}`}
           style={{
             ...iosChromeViewportStyle,
-            // The web view is edge to edge. Header padding fills the status bar
-            // with the header bg; shell padding keeps sides and the home indicator.
+            // The web view is edge to edge. Header padding fills the status bar.
+            // Side insets stay on the shell. The home-indicator strip is part of
+            // the action-column scrollport; `.game-scroll-end` pads the list end
+            // so the last row can still rest on the safe line.
             ...(iosEditionActive
               ? {
                   paddingRight: "env(safe-area-inset-right, 0px)",
-                  paddingBottom: "env(safe-area-inset-bottom, 0px)",
                   paddingLeft: "env(safe-area-inset-left, 0px)",
                 }
               : null),
@@ -1705,7 +1692,7 @@ export default function GameContainer() {
                             }}
                             data-testid="tab-timedevent"
                           >
-                            <TimedEventTabTitle label={timedEventTabLabel} />
+                            {timedEventTabLabel}
                           </button>
                         )}
                       </div>

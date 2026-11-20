@@ -1287,6 +1287,34 @@ button.new-item-pulse-text,
   will-change: transform;
 }
 
+/* iOS: the home-indicator strip is inside the scrollport, so lists can use it.
+   This spacer is after the rows, so a full scroll still parks the last row
+   on the safe line (same resting place as the old shell padding).
+   On a phone only the action column meets that strip. On a wide iOS layout
+   there is no footer, so the log and the resource list meet it too. */
+.ios-shell .game-scroll-end::after,
+.ios-shell .game-scroll-end-wide::after {
+  content: "";
+  display: block;
+  height: 0;
+  pointer-events: none;
+}
+
+.ios-shell .game-scroll-end::after {
+  height: env(safe-area-inset-bottom, 0px);
+}
+
+@media (min-width: 768px) {
+  .ios-shell .game-scroll-end-wide::after {
+    height: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+/* The village map does not scroll. Keep the drawing above the home indicator. */
+.ios-shell .village-map-overlay {
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+}
+
 .building-action-badge {
   position: relative;
   z-index: 20;
@@ -1935,6 +1963,17 @@ html.adc-text-xxxlarge .game-panel-produce-effects {
 .adc-dialog-close-icon {
   width: calc(18px * var(--adc-control-scale, 1));
   height: calc(18px * var(--adc-control-scale, 1));
+}
+
+/* Share card only. The mark is 4px larger than other dialogs. */
+.adc-share-close.adc-dialog-close {
+  width: calc(1.5rem * var(--adc-control-scale, 1) + 4px);
+  height: calc(1.5rem * var(--adc-control-scale, 1) + 4px);
+}
+
+.adc-share-close .adc-dialog-close-icon {
+  width: calc(18px * var(--adc-control-scale, 1) + 4px);
+  height: calc(18px * var(--adc-control-scale, 1) + 4px);
 }
 
 /* Fills the trigger hit target without participating in flex layout (avoids
@@ -3183,11 +3222,6 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   }
 }
 
-.timer-symbol {
-  display: inline-block;
-  pointer-events: none;
-}
-
 .timer-tab-pulse {
   animation: timer-symbol-pulse 1s ease-in-out infinite;
 }
@@ -3234,6 +3268,13 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   animation: timer-tab-pulse-event-red 1.2s ease-in-out infinite;
 }
 
+/* Same green as the pulse midpoint. Important: body color is important and
+   would otherwise paint the label white once the blink class is gone. */
+.timer-tab-event-green {
+  opacity: 1 !important;
+  color: rgb(34 197 94) !important;
+}
+
 @keyframes overlay-fade-in {
   from {
     opacity: 0;
@@ -3268,8 +3309,13 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
 /* Pause hotkey hint, header status marks, play time, and pact choices. Opacity utilities drive the fade. */
 .pause-ui-fade {
   transition-property: opacity;
-  transition-duration: 1000ms;
+  transition-duration: var(--pause-ui-fade-duration, 1000ms);
   transition-timing-function: ease;
+}
+
+/* Matches HEADER_SWAP_FADE_MS: status marks out, then play time and pacts in. */
+.header-swap-fade {
+  --pause-ui-fade-duration: 500ms;
 }
 
 @media (prefers-reduced-motion: reduce) {

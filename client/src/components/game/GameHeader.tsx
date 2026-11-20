@@ -14,7 +14,7 @@ import {
   GAME_HEADER_SAFE_AREA_TOP,
 } from "./gameChrome";
 import { useGameStore } from "@/game/state";
-import { PAUSE_UI_FADE_MS } from "@/hooks/useFadePresence";
+import { HEADER_SWAP_FADE_MS } from "@/hooks/useFadePresence";
 import {
   PauseHeaderSwapProvider,
   usePauseHeaderChrome,
@@ -104,9 +104,9 @@ export default function GameHeader() {
   const iosEditionActive = useIosEditionActive();
   const idleModeDialogOpen = useGameStore((s) => s.idleModeDialog.isOpen);
   const isPaused = useGameStore((s) => s.isPaused);
-  const [effectHoldMs, setEffectHoldMs] = useState(PAUSE_UI_FADE_MS);
+  const [effectHoldMs, setEffectHoldMs] = useState(HEADER_SWAP_FADE_MS);
   const onEffectsPresence = useCallback((present: boolean) => {
-    setEffectHoldMs(present ? PAUSE_UI_FADE_MS : 0);
+    setEffectHoldMs(present ? HEADER_SWAP_FADE_MS : 0);
   }, []);
   // Sleep opens the same header swap as pause: marks out, then timer and pacts.
   const headerChrome = isPaused || idleModeDialogOpen;
@@ -118,7 +118,7 @@ export default function GameHeader() {
   return (
     <PauseHeaderSwapProvider value={swap}>
       <header
-        className={`relative z-50 flex min-h-9 flex-shrink-0 items-center bg-background ${GAME_CHROME_RULE_BOTTOM} px-1 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible`}
+        className={`header-swap-fade relative z-50 flex min-h-9 flex-shrink-0 items-center bg-background ${GAME_CHROME_RULE_BOTTOM} px-1 py-1 text-xs text-muted-foreground pointer-events-auto overflow-visible`}
         style={
           iosEditionActive
             ? { paddingTop: GAME_HEADER_SAFE_AREA_TOP }

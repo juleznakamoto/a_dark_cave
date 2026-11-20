@@ -58,8 +58,9 @@ export const GAME_TAB_SECTION_STACK = "space-y-3";
  * Shared top/bottom inset for location-tab scroll bodies (Cave, Village, Forest,
  * Estate, Bastion, Timed Event). Padding, not margin: hanging corner badges must
  * stay inside the ScrollArea, and every tab must start on the same line.
+ * `game-scroll-end` is the iOS home-indicator spacer (see index.css).
  */
-export const GAME_TAB_PANEL_BODY = "game-tab-panel-body mb-2";
+export const GAME_TAB_PANEL_BODY = "game-tab-panel-body game-scroll-end mb-2";
 
 /** 18px row for section titles inside location tabs (Build, Explore, Rest, …). */
 export const GAME_TAB_SECTION_HEADER_ROW =

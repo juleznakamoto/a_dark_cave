@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 
-/** Pause hint and Steam play-time fade. */
+/** Pause hotkey hint. */
 export const PAUSE_UI_FADE_MS = 1000;
+
+/** Header status marks fade out, then play time and pact choices fade in. */
+export const HEADER_SWAP_FADE_MS = 500;
 
 function prefersReducedMotion(): boolean {
   return (

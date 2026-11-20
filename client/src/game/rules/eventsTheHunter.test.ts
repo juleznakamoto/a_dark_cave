@@ -147,6 +147,7 @@ describe("the cabin report", () => {
       state({ theHunterState: { lastAcceptedLevel: 5 } }),
     );
     expect(next.story?.seen?.woodenCabinUnlocked).toBe(true);
+    expect((next as { _logMessageKey?: string })._logMessageKey).toBeUndefined();
     expect(
       event.condition!(
         state({

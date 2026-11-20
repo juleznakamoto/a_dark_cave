@@ -777,7 +777,7 @@ export const madnessProductionTooltip: TooltipConfig = {
 
     return (
       <>
-        <div>
+        <div className="font-bold">
           {getUiTooltip("madnessLevel", "Madness: {{value}}", {
             value: totalMadness,
           })}

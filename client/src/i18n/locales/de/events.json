@@ -308,9 +308,6 @@
       "continue": {
         "label": "Weiter"
       }
-    },
-    "log": {
-      "outcome1": "Die Jäger markieren den Ort. Eine größere Gruppe kann aufbrechen, sobald du bereit bist."
     }
   },
   "brimstoneFlux1": {

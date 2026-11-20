@@ -1,6 +1,5 @@
 import {
   useEffect,
-  useId,
   useLayoutEffect,
   useRef,
   useState,
@@ -72,113 +71,35 @@ const SHARE_ACTIONS_DELAY_MS = SHARE_CARD_ENTRANCE_DURATION_MS + 300;
 /** Same row on phone and computer: 32px tall, a little room under the card. */
 const SHARE_ACTION_BUTTON_CLASS = "shrink-0 font-medium h-8 px-3.5";
 
-/** Stroke sits in the 5px rim gap. Half the stroke is inset so it stays on the card. */
+/** Same 5px gap the desktop rim uses, in the full-size card. */
 const SHARE_RIM_STROKE = 5;
-/** Matches `.adc-gs--frame .adc-gs__content` radius: card radius minus 2px. */
-const SHARE_RIM_CONTENT_RADIUS_TRIM = 2;
-const SHARE_RIM_TRAVEL_MS = 4000;
-/** Bright fraction of the edge. Blur feathers the ends, same idea as the conic spot. */
-const SHARE_RIM_PORTION = 0.12;
-
-/**
- * Perimeter of a rounded rect. pathLength is not used: iOS and Chrome treat a
- * CSS dash of "16" as 16px, which tiles the light around the whole card.
- */
-function shareRimPerimeter(width: number, height: number, radius: number): number {
-  const straight = 2 * (width - 2 * radius + (height - 2 * radius));
-  return straight + 2 * Math.PI * radius;
-}
-
-/** Closed rounded-rect path. Even-odd pair of these punches the rim gap. */
-function roundedRectPath(
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  radius: number,
-): string {
-  const r = Math.max(0, Math.min(radius, width / 2, height / 2));
-  return `M${x + r},${y} H${x + width - r} A${r},${r} 0 0 1 ${x + width},${y + r} V${y + height - r} A${r},${r} 0 0 1 ${x + width - r},${y + height} H${x + r} A${r},${r} 0 0 1 ${x},${y + height - r} V${y + r} A${r},${r} 0 0 1 ${x + r},${y} Z`;
-}
 
 /**
  * Traveling edge light for the on-screen preview.
  * Shown only on iOS (see `.adc-share-rim` in glowing-shadow.css). The scaled
  * conic rim stays in the card for other browsers and is omitted from the PNG.
  *
- * The viewBox is the preview's CSS size. The stroke is only as thick as the
- * rim gap and clipped to that gap, so the light stays on the border.
+ * Drawn at the preview's CSS size, masked to the rim gap. A stroke filled the
+ * whole border on iOS, where the dash did not leave a single soft spot.
  */
 function SharePreviewRim({
   width,
-  height,
 }: {
   width: number;
   height: number;
 }) {
-  const svgRef = useRef<SVGSVGElement>(null);
-  const rawId = useId().replace(/:/g, "");
-  const clipId = `${rawId}-rim`;
   const scale = width / SHARE_IMAGE_WIDTH;
-  const rim = SHARE_RIM_STROKE * scale;
-  const inset = rim / 2;
-  const radius = Math.max(0, SHARE_CARD_RADIUS * scale - inset);
-  const rect = {
-    x: inset,
-    y: inset,
-    width: Math.max(0, width - rim),
-    height: Math.max(0, height - rim),
-    rx: radius,
-    ry: radius,
-  };
-  const length = shareRimPerimeter(rect.width, rect.height, radius);
-  const outerRadius = SHARE_CARD_RADIUS * scale;
-  const innerRadius = Math.max(0, (SHARE_CARD_RADIUS - SHARE_RIM_CONTENT_RADIUS_TRIM) * scale);
-
-  useLayoutEffect(() => {
-    const svg = svgRef.current;
-    if (!svg || length <= 0) return;
-    const el = svg.querySelector(".adc-share-rim-sheen");
-    if (!(el instanceof SVGGeometryElement)) return;
-    const dash = SHARE_RIM_PORTION * length;
-    el.setAttribute("stroke-dasharray", `${dash} ${length - dash}`);
-    const animation = el.animate(
-      [
-        { strokeDashoffset: "0px" },
-        { strokeDashoffset: `${-length}px` },
-      ],
-      { duration: SHARE_RIM_TRAVEL_MS, iterations: Infinity, easing: "linear" },
-    );
-    return () => animation.cancel();
-  }, [length]);
-
   return (
-    <svg
-      ref={svgRef}
+    <div
       className="adc-share-rim"
-      viewBox={`0 0 ${width} ${height}`}
-      preserveAspectRatio="none"
-      overflow="hidden"
-      style={{ clipPath: `inset(0 round ${outerRadius}px)` }}
+      style={{
+        borderRadius: SHARE_CARD_RADIUS * scale,
+        padding: SHARE_RIM_STROKE * scale,
+      }}
       aria-hidden
     >
-      <defs>
-        {/* Same gap the desktop rim uses: nothing inside the card, nothing outside it. */}
-        <clipPath id={clipId} clipPathUnits="userSpaceOnUse">
-          <path
-            clipRule="evenodd"
-            d={`${roundedRectPath(0, 0, width, height, outerRadius)} ${roundedRectPath(rim, rim, Math.max(0, width - rim * 2), Math.max(0, height - rim * 2), innerRadius)}`}
-          />
-        </clipPath>
-      </defs>
-      <g clipPath={`url(#${clipId})`}>
-        <rect
-          className="adc-share-rim-sheen"
-          strokeWidth={rim}
-          {...rect}
-        />
-      </g>
-    </svg>
+      <div className="adc-share-rim-spin" />
+    </div>
   );
 }
 
@@ -1077,7 +998,7 @@ export default function ShareDialog() {
               height={SHARE_IMAGE_HEIGHT * previewScale}
             />
             {/* Anchored to the card (not the wider button row) so inset clears the rounded corner. */}
-            <DialogClose className="adc-dialog-close absolute right-4 top-4 z-10 flex items-center justify-center rounded-sm p-0 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+            <DialogClose className="adc-dialog-close adc-share-close absolute right-4 top-4 z-10 flex items-center justify-center rounded-sm p-0 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
               <X className="adc-dialog-close-icon" aria-hidden="true" />
               <span className="sr-only">Close</span>
             </DialogClose>
@@ -1087,7 +1008,8 @@ export default function ShareDialog() {
         <div
           key={`actions-${entranceKey}`}
           className={cn(
-            "adc-share-actions-enter flex shrink-0 flex-wrap justify-center gap-2",
+            "adc-share-actions-enter flex shrink-0 flex-wrap justify-center",
+            iosEditionActive ? "gap-4" : "gap-2",
             actionsReady && "is-ready",
           )}
         >

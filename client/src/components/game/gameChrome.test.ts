@@ -21,6 +21,7 @@ describe("destroyed chrome switch", () => {
 
   it("uses one padded inset for every location-tab body", () => {
     expect(GAME_TAB_PANEL_BODY).toContain("game-tab-panel-body");
+    expect(GAME_TAB_PANEL_BODY).toContain("game-scroll-end");
     expect(GAME_TAB_PANEL_BODY).not.toMatch(/md:pt-0|mt-2/);
   });
 

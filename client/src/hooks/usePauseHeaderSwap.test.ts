@@ -58,7 +58,13 @@ describe("usePauseHeaderSwap", () => {
     expect(result.current.effects.mounted).toBe(false);
 
     act(() => {
-      vi.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(499);
+    });
+    expect(result.current.chrome.mounted).toBe(true);
+    expect(result.current.effects.mounted).toBe(false);
+
+    act(() => {
+      vi.advanceTimersByTime(1);
     });
     expect(result.current.chrome.mounted).toBe(false);
     expect(result.current.effects.mounted).toBe(true);
@@ -128,7 +134,7 @@ describe("usePauseHeaderSwap", () => {
     expect(result.current.chrome).toEqual({ mounted: true, visible: false });
 
     act(() => {
-      vi.advanceTimersByTime(999);
+      vi.advanceTimersByTime(499);
     });
     expect(result.current.chrome.mounted).toBe(true);
     expect(result.current.effects.mounted).toBe(false);

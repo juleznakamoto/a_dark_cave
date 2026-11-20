@@ -308,9 +308,6 @@
       "continue": {
         "label": "Devam Et"
       }
-    },
-    "log": {
-      "outcome1": "Avcılar yeri işaretliyor. Hazır olduğunda daha kalabalık bir grup gönderebilirsin."
     }
   },
   "brimstoneFlux1": {

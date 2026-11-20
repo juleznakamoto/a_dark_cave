@@ -897,7 +897,7 @@ export default function SidePanel() {
         className="h-full w-full pb-1.5 pr-2"
         scrollAreaId={`side-panel-${activeTab}`}
       >
-        <div className={cn("pb-1", SIDE_PANEL_GRID_CLASS)}>
+        <div className={cn("game-scroll-end-wide pb-1", SIDE_PANEL_GRID_CLASS)}>
           <div className={cn(SIDE_PANEL_SECTION_SPACING_CLASS)}>
             {panelResourceItems.length > 0 && shouldShowSection("resources") && (
               <SidePanelSection

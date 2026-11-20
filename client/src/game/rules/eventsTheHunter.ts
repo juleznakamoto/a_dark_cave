@@ -118,7 +118,6 @@ const theHunterCabin: GameEvent = {
           theHunterCabin: true,
           theHunterCabin_seen: true,
         },
-        _logMessageKey: "outcome1",
       }),
     },
   ],

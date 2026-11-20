@@ -6,7 +6,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { PAUSE_UI_FADE_MS, pauseUiDurationMs } from "@/hooks/useFadePresence";
+import { HEADER_SWAP_FADE_MS, pauseUiDurationMs } from "@/hooks/useFadePresence";
 
 export type PauseHeaderFade = { mounted: boolean; visible: boolean };
 
@@ -27,7 +27,7 @@ const PauseHeaderSwapContext = createContext<PauseHeaderSwap | null>(null);
  */
 export function usePauseHeaderSwap(
   paused: boolean,
-  holdMs = PAUSE_UI_FADE_MS,
+  holdMs = HEADER_SWAP_FADE_MS,
 ): PauseHeaderSwap {
   const [resident, setResident] = useState<Resident>(paused ? "chrome" : "effects");
   const [visible, setVisible] = useState(true);
@@ -42,7 +42,7 @@ export function usePauseHeaderSwap(
       setVisible(false);
       // Empty status row: show the timer immediately. Leaving the timer always
       // waits out its fade, even when no status marks will come back.
-      const wait = resident === "effects" ? holdRef.current : PAUSE_UI_FADE_MS;
+      const wait = resident === "effects" ? holdRef.current : HEADER_SWAP_FADE_MS;
       const id = window.setTimeout(
         () => setResident(next),
         pauseUiDurationMs(wait),

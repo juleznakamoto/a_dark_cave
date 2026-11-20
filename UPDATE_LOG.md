@@ -15,6 +15,12 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- A Cabin in the Woods closes when you continue. The follow-up no longer appears.
+- After you open an Event or Merchant tab, the name stays green.
+- The Event and Merchant tabs show the name only.
+- The filter marks in the event log are a little larger.
+- The close mark on your progress card is a little larger.
+- The Madness status tip shows Madness in bold.
 - Success messages start with a green check before the title. Errors use the same toast, with a red X.
 - While the sleep window is open, the top bar matches pause: status marks fade out, then your play time and pact choices fade in. The pause mark switches to resume at half strength, without turning red or pulsing.
 - The X on dialogs, toasts, and the hotkey hint is a little larger.
@@ -131,6 +137,8 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- Location lists use the space around the home indicator. You can still scroll the last row up above it.
+- Save, Copy, and Share under your progress card sit farther apart.
 - Turning haptics on gives a heavy tap.
 - The app stays upright. Turning the phone or iPad sideways no longer rotates the game.
 
