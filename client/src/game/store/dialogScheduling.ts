@@ -126,8 +126,15 @@ function scheduleWhenDialogClear(
   setTimeout(() => {
     let wasBlocked = false;
     const tryOpen = () => {
-      if (isBlocked(get())) {
+      const store = get();
+      if (isBlocked(store)) {
         wasBlocked = true;
+        setTimeout(tryOpen, DIALOG_DEFER_POLL_MS);
+        return;
+      }
+      // Pause is not a dialog, so it must not start another handoff gap.
+      // A queued event still has to wait until the player resumes.
+      if (store.isPaused) {
         setTimeout(tryOpen, DIALOG_DEFER_POLL_MS);
         return;
       }

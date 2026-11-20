@@ -1410,6 +1410,63 @@ describe("pending modal event persist", () => {
     vi.useRealTimers();
   });
 
+  it("does not open a pending event while paused after Sleep", async () => {
+    vi.useFakeTimers();
+    try {
+      const savedState = {
+        ...createInitialState(),
+        pendingModalEvent: {
+          eventId: "paleFigure",
+          openedAt: 1_700_000_000_000,
+          title: "The Slender Figure",
+          message: "A slender figure waits.",
+        },
+        idleModeState: {
+          isActive: true,
+          startTime: 1_700_000_000_000,
+          needsDisplay: true,
+          lastWokeAt: 0,
+        },
+        log: [],
+      };
+
+      mockLoadGame.mockResolvedValue(savedState);
+      await useGameStore.getState().loadGame();
+
+      vi.advanceTimersByTime(200);
+      useGameStore.getState().setIdleModeDialog(true);
+      vi.advanceTimersByTime(200);
+
+      useGameStore.setState({
+        idleModeState: {
+          isActive: false,
+          startTime: 0,
+          needsDisplay: false,
+          lastWokeAt: Date.now(),
+        },
+        idleModeDialog: { isOpen: false },
+      });
+
+      // Poll notices Sleep closed and starts the 5s handoff.
+      vi.advanceTimersByTime(200);
+      useGameStore.setState({ isPaused: true });
+
+      // Handoff ends, then several pause polls. The dialog stays shut.
+      vi.advanceTimersByTime(5_000 + 1_000);
+      expect(useGameStore.getState().eventDialog.isOpen).toBe(false);
+      expect(useGameStore.getState().isPaused).toBe(true);
+
+      useGameStore.setState({ isPaused: false });
+      vi.advanceTimersByTime(200);
+      expect(useGameStore.getState().eventDialog.isOpen).toBe(true);
+      expect(useGameStore.getState().eventDialog.currentEvent?.eventId).toBe(
+        "paleFigure",
+      );
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("returns to the timed-event tab when a visit is still active", async () => {
     const savedState = {
       ...createInitialState(),

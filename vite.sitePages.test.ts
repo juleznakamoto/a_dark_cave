@@ -5,6 +5,7 @@ import {
   PACKAGED_HIDDEN_PAGES,
   omittedPageAliases,
   omittedPageSpecs,
+  stripStaticSiteNav,
 } from "./vite.sitePages";
 
 const APP_SOURCE = readFileSync("client/src/App.tsx", "utf8");
@@ -39,6 +40,22 @@ describe("omittedPageAliases", () => {
     expect(alias?.find.test("@/pages/village-map-demo")).toBe(true);
     expect(alias?.find.test("@/pages/village-map-demo/catalog")).toBe(false);
     expect(alias?.find.test("@/pages/press")).toBe(false);
+  });
+
+  it("drops the boot-screen website links", () => {
+    const html = [
+      '<div id="root"></div>',
+      '<nav id="adc-static-nav" aria-label="Site">',
+      '  <a href="https://a-dark-cave.com/faq">FAQ</a>',
+      '  <a href="https://a-dark-cave.com/privacy">Privacy Policy</a>',
+      "</nav>",
+      '<main id="seo-fallback"></main>',
+    ].join("\n");
+    const stripped = stripStaticSiteNav(html);
+    expect(stripped).not.toContain("adc-static-nav");
+    expect(stripped).not.toContain("a-dark-cave.com/faq");
+    expect(stripped).toContain('id="root"');
+    expect(stripped).toContain('id="seo-fallback"');
   });
 
   it("lists only pages App.tsx actually loads", () => {

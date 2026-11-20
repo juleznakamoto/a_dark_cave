@@ -61,3 +61,11 @@ export function omittedPageAliases(
     replacement,
   }));
 }
+
+/**
+ * Homepage links in `index.html` for crawlers. The iOS app has no FAQ, About,
+ * Press, or legal pages, so the boot screen must not paint them.
+ */
+export function stripStaticSiteNav(html: string): string {
+  return html.replace(/<nav id="adc-static-nav"[\s\S]*?<\/nav>\s*/, "");
+}

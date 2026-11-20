@@ -89,6 +89,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- A dialog that was waiting no longer opens while the game is paused. It opens after you resume.
 - Stat icons in success chance tips and on choice buttons sit level with the text beside them.
 - The Social label in the footer matches the weight of the other footer words.
 - A cube memory stays almost square when the window is narrow.
@@ -159,6 +160,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Fixed
 
+- While the app is loading, the website links along the bottom are gone.
 - While one Estate bar fills, the smoke in the other bars stays.
 - A notification or system gesture that interrupts a cube memory swipe leaves you on the memory you were reading.
 - Tips, menus, and dialogs stop at the top of the header, clear of the notch.

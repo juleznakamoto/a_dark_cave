@@ -8,7 +8,11 @@ import {
   isPackagedGameBuild,
   removeSiteOnlyPublic,
 } from "./vite.sitePublic";
-import { omittedPageAliases, omittedPageSpecs } from "./vite.sitePages";
+import {
+  omittedPageAliases,
+  omittedPageSpecs,
+  stripStaticSiteNav,
+} from "./vite.sitePages";
 
 /**
  * Baked into the client bundle; compared against `/api/version` at runtime.
@@ -85,6 +89,9 @@ function relativePortalHtmlPlugin(): Plugin {
         .replaceAll('src="/', 'src="./');
       if (isItchBuild) {
         next = next.replaceAll("utm_source=a_dark_cave", "utm_source=itch");
+      }
+      if (isIosBuild) {
+        next = stripStaticSiteNav(next);
       }
       return next;
     },
