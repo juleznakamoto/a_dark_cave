@@ -3359,7 +3359,8 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
 
 /* Job /max: three quick flashes when an Insight upgrade raises the cap,
    or when + is pressed on a job that is already full.
-   0% and 100% color come from the element's own text color. */
+   0% and 100% color come from the element's own text color.
+   A full job peaks at yellow-600 with no transparency, matching text-yellow-600. */
 @keyframes villager-cap-flash {
   15% {
     color: #fff;
@@ -3367,8 +3368,19 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
   }
 }
 
+@keyframes villager-cap-flash-full {
+  15% {
+    color: #ca8a04;
+    text-shadow: 0 0 10px rgba(202, 138, 4, 0.95);
+  }
+}
+
 .villager-cap-flash {
   animation: villager-cap-flash 0.4s ease-out 3;
+}
+
+.villager-cap-flash--full {
+  animation-name: villager-cap-flash-full;
 }
 
 /* Footer demo progress: three blinks after a stage fills in. */
@@ -3398,6 +3410,7 @@ html[data-tab-hidden] .exclusive-promo-shockwave-ring:not(.exclusive-promo-shock
 @media (prefers-reduced-motion: reduce) {
 
   .villager-cap-flash,
+  .villager-cap-flash--full,
   .demo-stage-flash {
     animation: none;
   }

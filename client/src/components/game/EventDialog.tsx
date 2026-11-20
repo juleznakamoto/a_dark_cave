@@ -447,7 +447,7 @@ function EventDialogOpen({
                         tooltipId="event-time-bonus"
                         disabled
                       >
-                        <span className="font-noto-symbols-2 text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block text-xl">
+                        <span className="font-noto-symbols-2 text-blue-300/80 hover:text-blue-300 transition-colors inline-block text-xl">
                           ✧
                         </span>
                       </TooltipWrapper>

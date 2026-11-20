@@ -766,7 +766,7 @@ export default function TimedEventPanel() {
           tooltipId="merchant-discount"
           disabled
         >
-          <span className="font-noto-symbols-2 text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-flex shrink-0 items-center justify-center text-sm leading-none">
+          <span className="font-noto-symbols-2 text-blue-300/80 hover:text-blue-300 transition-colors inline-flex shrink-0 items-center justify-center text-sm leading-none">
             ✧
           </span>
         </TooltipWrapper>

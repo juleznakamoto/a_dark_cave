@@ -51,7 +51,10 @@ export function VillagerJobCap({
       /<span
         key={flashGeneration}
         data-testid={`villager-job-cap-number-${jobId}`}
-        className={cn(flashGeneration > 0 && "villager-cap-flash")}
+        className={cn(
+          flashGeneration > 0 && "villager-cap-flash",
+          flashGeneration > 0 && atCap && "villager-cap-flash--full",
+        )}
       >
         {cap}
       </span>

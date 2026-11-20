@@ -71,6 +71,7 @@ describe("VillagerJobCap", () => {
     expect(cap.className).toContain("text-muted-foreground");
     expect(number).toHaveTextContent("20");
     expect(number.className).toContain("villager-cap-flash");
+    expect(number.className).not.toContain("villager-cap-flash--full");
   });
 
   it("flashes three times when asked while the cap stays full", () => {
@@ -100,7 +101,7 @@ describe("VillagerJobCap", () => {
 
     const first = screen.getByTestId("villager-job-cap-number-hunter");
     expect(first).toHaveTextContent("10");
-    expect(first.className).toContain("villager-cap-flash");
+    expect(first.className).toContain("villager-cap-flash--full");
 
     rerender(
       <VillagerJobCap
@@ -114,7 +115,7 @@ describe("VillagerJobCap", () => {
 
     const second = screen.getByTestId("villager-job-cap-number-hunter");
     expect(second).not.toBe(first);
-    expect(second.className).toContain("villager-cap-flash");
+    expect(second.className).toContain("villager-cap-flash--full");
   });
 
   it("does not flash when the cap stays the same or drops", () => {
