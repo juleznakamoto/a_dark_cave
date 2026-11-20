@@ -7,7 +7,7 @@ export const DEMO_WOODEN_HUT_LIMIT = 8;
 /** Full-game Dark Estate wood/stone cost. Demo uses {@link DEMO_DARK_ESTATE_RESOURCE_COST}. */
 export const FULL_DARK_ESTATE_RESOURCE_COST = 500;
 
-/** Steam / Galaxy / CrazyGames demo Dark Estate wood/stone cost. */
+/** Steam, Galaxy, and itch demo Dark Estate wood/stone cost. */
 export const DEMO_DARK_ESTATE_RESOURCE_COST = 250;
 
 /** Full-game Prior offer: 6 wooden huts, or 5 in Cruel Mode. */

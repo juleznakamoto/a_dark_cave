@@ -107,7 +107,7 @@ const GAME_MODE_DEFAULTS: Record<DevGameMode, string> = {
   demoEnd: "Demo End",
   steamEndCruelOn: "Steam End (Cruel On)",
   steamEndCruelOff: "Steam End (Cruel Off)",
-  crazyGamesDemo: "CrazyGames Demo",
+  crazyGamesDemo: "CrazyGames",
   ios: "iOS",
 };
 

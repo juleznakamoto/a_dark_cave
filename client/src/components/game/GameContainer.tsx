@@ -693,8 +693,10 @@ export default function GameContainer() {
     }
 
     const updatePulse = () => {
-      const state = useGameStore.getState();
+      // Sync first. It writes pauseAccumMs / pauseStartedAt, and the
+      // remaining-time read has to see those fields.
       syncTimedEventTabPauseTracking();
+      const state = useGameStore.getState();
       const remaining = getTimedEventTabEffectiveRemainingMs(state) ?? 0;
 
       if (remaining <= 0) {
@@ -1410,7 +1412,7 @@ export default function GameContainer() {
           Mobile (stacked top → bottom): event log, side panel, tabs/actions. */}
           <main
             ref={panelResize.mainRef}
-            className="relative flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(20rem,28rem)_minmax(32rem,1fr)_minmax(14rem,26rem)] min-h-0 overflow-hidden"
+            className="relative flex-1 pb-0 flex flex-col md:grid md:w-full md:grid-cols-[minmax(20rem,28rem)_minmax(28rem,1fr)_minmax(14rem,26rem)] min-h-0 overflow-hidden"
             style={panelResize.mainStyle}
           >
             {/* Click-particle portal — above side panel, tabs, log; below action buttons (z-50).

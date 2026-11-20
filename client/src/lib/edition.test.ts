@@ -10,17 +10,25 @@ describe("CrazyGames edition", () => {
     vi.unstubAllGlobals();
   });
 
-  it("treats /crazygames as a local-only capped demo with Steam-demo chrome", async () => {
+  it("treats /crazygames as the full local-only game", async () => {
     vi.stubGlobal("window", {
       location: { pathname: "/crazygames" },
     });
     const edition = await loadEdition();
     expect(edition.isCrazyGamesEdition()).toBe(true);
-    expect(edition.isDemoEdition()).toBe(true);
-    expect(edition.isSteamDemoActive()).toBe(true);
+    expect(edition.isDemoEdition()).toBe(false);
+    expect(edition.isSteamDemoActive()).toBe(false);
     expect(edition.isLocalOnlyEdition()).toBe(true);
     expect(edition.isFullGameUnlockedEdition()).toBe(true);
     expect(edition.isSteamEditionActive()).toBe(true);
+  });
+
+  it("does not cap DEV CrazyGames mode", async () => {
+    const edition = await loadEdition();
+    edition.setDevGameModeOverride("crazyGamesDemo");
+    expect(edition.isDemoEdition()).toBe(false);
+    expect(edition.isSteamDemoActive()).toBe(false);
+    edition.setDevGameModeOverride("normal");
   });
 
   it("hides the Steam store link for DEV Steam modes, not CrazyGames", async () => {

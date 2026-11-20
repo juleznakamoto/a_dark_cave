@@ -1,7 +1,7 @@
 import { isDemoEdition } from "@/lib/edition";
 
 /**
- * Demo editions (Steam demo, Galaxy, CrazyGames) raise click-action *base*
+ * Demo editions (Steam demo, Galaxy, itch) raise click-action *base*
  * grants. Existing bonuses still apply on the scaled base. This is not a
  * bonus source: it must not appear in `getActionBonuses` / side-panel lines.
  */

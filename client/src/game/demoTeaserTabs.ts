@@ -1,7 +1,7 @@
 import type { GameTab } from "@/game/types";
 
 /**
- * Location tabs the Steam / Galaxy / CrazyGames demo can tease at demo end.
+ * Location tabs the Steam, Galaxy, and itch demos can tease at demo end.
  * During live demo play, locked tabs stay hidden (same as the full game).
  * At demo end, locked ones render as redacted bars.
  * The Map tab is not in this list: at demo end it opens for real and draws

@@ -50,6 +50,24 @@ describe("isSteamCruelModeUnlockAvailable", () => {
     ).toBe(true);
   });
 
+  it("offers Cruel Mode on CrazyGames after a normal win", () => {
+    expect(
+      isSteamCruelModeUnlockAvailable({
+        devGameMode: "crazyGamesDemo",
+        hasWonNormalGame: true,
+      }),
+    ).toBe(true);
+  });
+
+  it("stays off on CrazyGames before a normal win", () => {
+    expect(
+      isSteamCruelModeUnlockAvailable({
+        devGameMode: "crazyGamesDemo",
+        hasWonNormalGame: false,
+      }),
+    ).toBe(false);
+  });
+
   it("stays off on web Normal Mode even after a normal win", () => {
     expect(
       isSteamCruelModeUnlockAvailable({

@@ -23,9 +23,7 @@ function isDevCappedDemoMode(devGameMode: DevGameMode): boolean {
   return (
     import.meta.env.DEV &&
     !isSteamBuild &&
-    (devGameMode === "steamDemo" ||
-      devGameMode === "demoEnd" ||
-      devGameMode === "crazyGamesDemo")
+    (devGameMode === "steamDemo" || devGameMode === "demoEnd")
   );
 }
 
@@ -52,8 +50,8 @@ export function useSteamEditionActive(): boolean {
 }
 
 /**
- * Steam desktop or CrazyGames (Steam-demo chrome), or DEV Game Mode simulating
- * those. Excludes Galaxy.
+ * Steam desktop or CrazyGames, or DEV Game Mode simulating those.
+ * Galaxy stays on the web footer.
  */
 export function useSteamDesktopEditionActive(): boolean {
   const devGameMode = useGameStore((s) => s.devGameMode);
@@ -70,24 +68,22 @@ export function useHideSteamStoreLink(): boolean {
   return shouldHideSteamStoreLink(devGameMode);
 }
 
-/** Reactive Galaxy / CrazyGames / itch / Steam demo / DEV capped demo — wooden-hut cap + demo-end dialog. */
+/** Galaxy, itch, Steam demo, or DEV capped demo. Wooden-hut cap and demo-end dialog. */
 export function useDemoEditionActive(): boolean {
   const devGameMode = useGameStore((s) => s.devGameMode);
   return (
     isGalaxyEdition() ||
-    isCrazyGamesEdition() ||
     isItchEdition() ||
     isSteamDemoRuntime() ||
     isDevCappedDemoMode(devGameMode)
   );
 }
 
-/** Steam demo / CrazyGames / itch chrome (build, path, or DEV Game Mode) — footer progress bar. */
+/** Steam demo or itch chrome (build, path, or DEV Game Mode). Footer progress bar. */
 export function useSteamDemoActive(): boolean {
   const devGameMode = useGameStore((s) => s.devGameMode);
   return (
     isSteamDemoRuntime() ||
-    isCrazyGamesEdition() ||
     isItchEdition() ||
     isDevCappedDemoMode(devGameMode)
   );
@@ -129,7 +125,7 @@ export function useDemoEndCatalogActive(): boolean {
   return demoEnded && hintsEnabled;
 }
 
-/** CrazyGames folder, `/crazygames` path, or DEV Game Mode CrazyGames Demo. */
+/** CrazyGames folder, `/crazygames` path, or DEV Game Mode CrazyGames. */
 export function useCrazyGamesEditionActive(): boolean {
   const devGameMode = useGameStore((s) => s.devGameMode);
   return (

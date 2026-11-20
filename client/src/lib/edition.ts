@@ -11,11 +11,12 @@
  * local-only game as Steam full, without Steamworks.
  * Steam partner achievements sync on full and demo
  * ({@link shouldSyncSteamAchievements}); the demo only pushes basic IDs.
- * CrazyGames uses `VITE_CRAZYGAMES=1` (`build:crazygames`) or the `/crazygames` path.
- * itch.io uses `VITE_ITCH=1` (`package:itch`) or the `/itch` preview path.
+ * CrazyGames uses `VITE_CRAZYGAMES=1` (`build:crazygames`) or the `/crazygames`
+ * path. It is the full game (no hut cap). itch.io uses `VITE_ITCH=1`
+ * (`package:itch`) or the `/itch` preview path and stays a demo.
  *
  * In DEV (non-Steam builds), Settings → Game Mode can simulate Steam Game /
- * Demo / Demo End / Steam End (Cruel On/Off) / CrazyGames Demo / iOS via
+ * Demo / Demo End / Steam End (Cruel On/Off) / CrazyGames / iOS via
  * {@link setDevGameModeOverride}. iOS is the buy-once app without Steam
  * desktop chrome (no wishlist, no Steam review, no Quit).
  */
@@ -56,7 +57,7 @@ export function shouldSyncSteamAchievements(): boolean {
 /** Convenience inverse for readability at web-only call sites. */
 export const isWebBuild = !isSteamBuild && !isIosBuild;
 
-/** CrazyGames HTML5 demo folder (`build:crazygames`). */
+/** CrazyGames HTML5 folder (`build:crazygames`). Full game, local save. */
 export const isCrazyGamesBuild = import.meta.env.VITE_CRAZYGAMES === "1";
 
 /** itch.io HTML5 demo folder (`package:itch`). */
@@ -158,8 +159,8 @@ export function isGalaxyEdition(): boolean {
 }
 
 /**
- * CrazyGames demo: dedicated folder (`VITE_CRAZYGAMES=1`) or `/crazygames` on the
- * main site. DEV Game Mode is handled separately (same pattern as Steam Demo).
+ * CrazyGames: dedicated folder (`VITE_CRAZYGAMES=1`) or `/crazygames` on the
+ * main site. Full game (no hut cap). DEV Game Mode is handled separately.
  */
 export function isCrazyGamesEdition(): boolean {
   return isCrazyGamesBuild || isPathPrefix(CRAZYGAMES_PATH_PREFIX);
@@ -173,32 +174,27 @@ export function isItchEdition(): boolean {
   return isItchBuild || isPathPrefix(ITCH_PATH_PREFIX);
 }
 
-/** Web Galaxy / CrazyGames / itch demo or Steam desktop demo — capped at the wooden hut limit. */
+/** Galaxy, itch, or the Steam desktop demo. Capped at the wooden hut limit. */
 export function isDemoEdition(): boolean {
   return (
     isGalaxyEdition() ||
-    isCrazyGamesEdition() ||
     isItchEdition() ||
     isSteamDemoRuntime() ||
     isDevGameMode("steamDemo") ||
-    isDevGameMode("demoEnd") ||
-    isDevGameMode("crazyGamesDemo")
+    isDevGameMode("demoEnd")
   );
 }
 
 /**
- * Steam-demo chrome (footer progress bar, no donate). CrazyGames and itch use
- * the same chrome but keep the Steam store link. Galaxy keeps Steam + donate
- * and does not show the progress bar.
+ * Footer progress bar for the Steam demo and itch. Galaxy keeps Steam and
+ * donate, without the bar. CrazyGames is the full game and leaves the bar off.
  */
 export function isSteamDemoActive(): boolean {
   return (
     isSteamDemoRuntime() ||
-    isCrazyGamesEdition() ||
     isItchEdition() ||
     isDevGameMode("steamDemo") ||
-    isDevGameMode("demoEnd") ||
-    isDevGameMode("crazyGamesDemo")
+    isDevGameMode("demoEnd")
   );
 }
 

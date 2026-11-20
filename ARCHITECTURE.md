@@ -200,9 +200,10 @@ shared/schema.ts - Zod persisted shape
 
 Same client, switched by build/URL flags in `client/src/lib/edition.ts`.
 Steam, iOS, Galaxy, CrazyGames, and itch are local-only (no Supabase, Stripe, shop, Playlight,
-leaderboard, or marketing). Demo editions cap at 8 wooden huts
+leaderboard, or marketing). Galaxy, itch, and the Steam demo cap at 8 wooden huts
 (`client/src/game/demoLimit.ts`) and share demo-end chrome (Steam wishlist).
-The iOS app is the buy-once full game (no demo in v1).
+CrazyGames is the full game (no hut cap), still local-only. The iOS app is the
+buy-once full game (no demo in v1).
 
 | Edition | How it is selected | Save isolation | Package |
 |---------|--------------------|----------------|---------|
@@ -210,7 +211,7 @@ The iOS app is the buy-once full game (no demo in v1).
 | Steam full | `VITE_STEAM_BUILD=1` | IndexedDB + `%APPDATA%\A Dark Cave\adc-steam-save.dat` | `electron:package` |
 | Steam demo | `VITE_STEAM_DEMO=1` | Demo IndexedDB + `adc-steam-demo-save.dat` (shared folder, different file) | `electron:package:demo` |
 | Galaxy | URL `/galaxy` | `galaxySave` | hosted at `/galaxy` |
-| CrazyGames | `VITE_CRAZYGAMES=1` or `/crazygames` | `crazyGamesSave` + SDK Data + `localStorage` | `package:crazygames` |
+| CrazyGames (full) | `VITE_CRAZYGAMES=1` or `/crazygames` | `crazyGamesSave` + SDK Data + `localStorage` | `package:crazygames` |
 | itch.io demo | `VITE_ITCH=1` or `/itch` | `itchSave` | `package:itch` (`release/a-dark-cave-itch/`) |
 | iOS | `VITE_IOS_BUILD=1` | IndexedDB `iosSave` + `adc-ios-save.dat` in the app sandbox | `build:ios`, then the `ios` GitHub workflow |
 

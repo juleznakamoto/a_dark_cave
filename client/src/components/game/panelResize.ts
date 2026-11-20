@@ -25,12 +25,12 @@ type PanelId = "sidePanel" | "log";
  */
 export const PANEL_RESIZE = {
   desktop: {
-    middleMinPx: 512,
+    middleMinPx: 448,
     sidePanel: { minPx: 240, maxPx: 600 },
     logPanel: { minPx: 200, maxPx: 560 },
     defaultSidePanelTemplate: "minmax(20rem, 28rem)",
     defaultLogPanelTemplate: "minmax(14rem, 26rem)",
-    middleTemplate: "minmax(32rem, 1fr)",
+    middleTemplate: "minmax(28rem, 1fr)",
   },
   mobile: {
     gameMinPx: 160,

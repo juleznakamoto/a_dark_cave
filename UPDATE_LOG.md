@@ -15,6 +15,7 @@ Steam and iOS each have a log. Most notes are shared: write those once under Sha
 
 #### Changed
 
+- On a narrower window, the center column can be a little narrower, so the event log stays on screen.
 - A Cabin in the Woods closes when you continue. The follow-up no longer appears.
 - After you open an Event or Merchant tab, the name stays green.
 - The Event and Merchant tabs show the name only.

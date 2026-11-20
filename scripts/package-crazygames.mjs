@@ -1,5 +1,5 @@
 /**
- * Build a CrazyGames HTML5 folder (Steam-demo chrome, relative asset paths).
+ * Build a CrazyGames HTML5 folder (full game, relative asset paths).
  *
  * Output:
  * - `release/a-dark-cave-crazygames/` (playable files)
@@ -25,7 +25,7 @@ function run(command, env = {}) {
   });
 }
 
-console.log("Building CrazyGames demo (VITE_CRAZYGAMES=1, relative base)...");
+console.log("Building CrazyGames (VITE_CRAZYGAMES=1, relative base)...");
 run("cross-env VITE_CRAZYGAMES=1 vite build");
 
 mkdirSync(releaseDir, { recursive: true });

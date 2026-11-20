@@ -52,14 +52,14 @@ export function markCruelWorldCodeEntered(
 }
 
 /**
- * Steam full game, the iOS app, or a DEV Steam Game / iOS / Steam End
- * simulation: the player may start Cruel Mode after a normal-mode finish, or
- * immediately after entering the CRUELWORLD code in Settings.
+ * Steam full game, the iOS app, CrazyGames, or a DEV Steam Game / iOS /
+ * Steam End simulation: the player may start Cruel Mode after a normal-mode
+ * finish, or immediately after entering the CRUELWORLD code in Settings.
  *
- * Gated by {@link STEAM_CRUEL_MODE_UNLOCK}. The Steam demo never offers it.
- * Settings → Steam End (Cruel Off) stays hidden. Settings → Steam End
- * (Cruel On) always offers it, and DEV Settings → Steam Game or iOS offers
- * it before a normal win so the new-game checkbox can be checked.
+ * Gated by {@link STEAM_CRUEL_MODE_UNLOCK}. The Steam demo, Galaxy, and itch
+ * never offer it. Settings → Steam End (Cruel Off) stays hidden. Settings →
+ * Steam End (Cruel On) always offers it, and DEV Settings → Steam Game or
+ * iOS offers it before a normal win so the new-game checkbox can be checked.
  */
 export function isSteamCruelModeUnlockAvailable(
   input: SteamCruelModeUnlockInput = {},
@@ -78,12 +78,14 @@ export function isSteamCruelModeUnlockAvailable(
   }
   if (!STEAM_CRUEL_MODE_UNLOCK) return false;
   if (isSteamDemoBuild || isSteamDemoRuntime()) return false;
-  if (isGalaxyEdition() || isCrazyGamesEdition() || isItchEdition()) return false;
+  if (isGalaxyEdition() || isItchEdition()) return false;
   const onBuyOnceFull =
     isSteamFullBuild ||
     isIosBuild ||
+    isCrazyGamesEdition() ||
     isSimulatedSteamGameMode(mode) ||
-    mode === "ios";
+    mode === "ios" ||
+    mode === "crazyGamesDemo";
   if (input.cruelWorldCode === true && onBuyOnceFull) return true;
   if (input.hasWonNormalGame !== true) return false;
   return onBuyOnceFull;
